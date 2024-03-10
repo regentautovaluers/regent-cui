@@ -1,0 +1,212 @@
+<template>
+	<main class="min-h-screen h-screen">
+		<nav
+			class="py-4 flex justify-between items-center px-3 md:pl-[330px] md:pr-[20px] sticky top-0 z-20 bg-white flex-wrap">
+			<div class="flex space-x-8 w-fit md:w-1/3">
+				<!-- Navigation Toggle -->
+				<button
+					type="button"
+					class="text-gray-500 hover:text-gray-600"
+					data-hs-overlay="#docs-sidebar"
+					aria-controls="docs-sidebar"
+					aria-label="Toggle navigation">
+					<span class="sr-only">Toggle Navigation</span>
+					<img
+						src="/images/topnav/hamburger-menu-icon.svg"
+						alt="Hamburger Menu Icon" />
+				</button>
+				<!-- End Navigation Toggle -->
+				<h1 class="text-2xl md:text-3xl font-semibold hidden md:flex">
+					{{ currentRoute }}
+				</h1>
+			</div>
+
+			<!-- div with the search box -->
+			<div class="relative flex-grow md:w-1/3">
+				<input
+					type="text"
+					class="peer py-3 px-4 ps-11 block w-full bg-gray-200 border-transparent rounded-2xl text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="Search for vehicles, drivers and locations..." />
+				<div
+					class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+					<img
+						src="/images/topnav/search-icon.svg"
+						alt="Search Icon" />
+				</div>
+			</div>
+			<!-- end of div with the search box -->
+
+			<!-- div with notifications, messages and profile information -->
+			<div
+				class="flex items-center space-x-3 w-full md:w-1/3 justify-between md:justify-end mt-2 md:mt-0">
+				<!-- notifications & messages -->
+				<div class="flex space-x-3 mr-4">
+					<TopnavAccentBoxes>
+						<template #iconSlot>
+							<img
+								src="/images/topnav/notification-icon.svg"
+								alt="" />
+						</template>
+						<template #countSlot>{{ messageCount }}</template>
+					</TopnavAccentBoxes>
+					<TopnavAccentBoxes>
+						<template #iconSlot>
+							<img
+								src="/images/topnav/message-chat-icon.svg"
+								alt="" />
+						</template>
+						<template #countSlot>
+							{{ notificationCount }}
+						</template>
+					</TopnavAccentBoxes>
+				</div>
+
+				<!-- profile information chip -->
+				<div class="flex items-center space-x-4">
+					<img
+						class="inline-block size-[62px] rounded-full"
+						src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+						alt="User Image" />
+					<div class="flex flex-col">
+						<span class="font-bold tracking">Jane Kabura</span>
+						<span class="text-gray-500">AIC Insurance</span>
+					</div>
+				</div>
+			</div>
+			<!-- end of div with notifications, messages and profile information mentioned above -->
+		</nav>
+
+		<div
+			id="docs-sidebar"
+			class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-80 bg-white border-e border-gray-200 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0">
+			<div class="px-6 py-8 sticky z-20 top-0 bg-white">
+				<a
+					class="flex-none text-xl font-semibold dark:text-white"
+					href="#"
+					aria-label="Brand"
+					><img
+						src="/images/regent-autovaluers-logo.svg"
+						alt="Regent Logo"
+				/></a>
+			</div>
+			<nav
+				class="hs-accordion-group w-full flex flex-col flex-wrap pl-6"
+				data-hs-accordion-always-open>
+				<ul class="space-y-1.5">
+					<!-- 'Home' route -->
+					<ChildlessParentRoute
+						:display-name="applicationRoutes[0].displayName"
+						:icon="applicationRoutes[0].icon"
+						:route-name="applicationRoutes[0].routeName"
+						@change-current-route-name="
+							handleChangeCurrentRouteName
+						" />
+
+					<!-- 'Vehicle Valuation' route -->
+					<ChildedParentRoute
+						:display-name="applicationRoutes[1].displayName"
+						:icon="applicationRoutes[1].icon"
+						:route-name="applicationRoutes[1].routeName"
+						:children="applicationRoutes[1].children"
+						@change-current-route-name="
+							handleChangeCurrentRouteName
+						" />
+
+					<!-- 'Roadside Assistance' route -->
+					<ChildedParentRoute
+						:display-name="applicationRoutes[2].displayName"
+						:icon="applicationRoutes[2].icon"
+						:route-name="applicationRoutes[2].routeName"
+						:children="applicationRoutes[2].children"
+						@change-current-route-name="
+							handleChangeCurrentRouteName
+						" />
+
+					<!-- 'Memberships' route -->
+					<ChildedParentRoute
+						:display-name="applicationRoutes[5].displayName"
+						:icon="applicationRoutes[5].icon"
+						:route-name="applicationRoutes[5].routeName"
+						:children="applicationRoutes[5].children"
+						@change-current-route-name="
+							handleChangeCurrentRouteName
+						" />
+				</ul>
+			</nav>
+			<div class="mt-5">
+				<!-- Sidebar advertisement -->
+				<div class="mb-20 px-4">
+					<SidenavAdvertCarousel />
+				</div>
+
+				<!-- Ending links -->
+				<ul class="space-y-1.5 flex flex-col flex-wrap pl-6">
+					<!-- 'Settings' route -->
+					<ChildlessParentRoute
+						:display-name="applicationRoutes[4].displayName"
+						:icon="applicationRoutes[4].icon"
+						:route-name="applicationRoutes[4].routeName"
+						@change-current-route-name="
+							handleChangeCurrentRouteName
+						" />
+
+					<!-- 'Settings' route -->
+					<ChildlessParentRoute
+						:display-name="applicationRoutes[3].displayName"
+						:icon="applicationRoutes[3].icon"
+						:route-name="applicationRoutes[3].routeName"
+						@change-current-route-name="
+							handleChangeCurrentRouteName
+						" />
+				</ul>
+				<div class="text-gray-500 text-sm flex flex-col px-6 mt-5">
+					<span class="font-semibold">Regent Valuers Limited</span>
+					<span>&copy; 2024 All Rights Reserved</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- the main div where every route will be shown -->
+		<div class="w-full h-full min-h-full">
+			<slot />
+		</div>
+	</main>
+</template>
+
+<script setup lang="ts">
+	import applicationRoutes from "~/types/routes";
+	// macro imports
+	const route = useRoute();
+
+	const notificationCount: Ref<number> = ref(10);
+	const messageCount: Ref<number> = ref(10);
+
+	const currentRoute: Ref<string> = ref("Home");
+	const computedCurrentRoute = computed((): string => {
+		const currentRoutePath = route.path;
+
+		return currentRoutePath;
+	});
+	console.log(computedCurrentRoute.value);
+
+	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
+		currentRoute.value = currentClickedRoute;
+	}
+</script>
+
+<style scoped>
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+	}
+
+	/* Hide scrollbar for Chrome, Safari and Opera */
+	::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Hide scrollbar for IE, Edge and Firefox */
+	.no-scrollbar {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+</style>

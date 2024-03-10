@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .responsive-view {
+        @apply px-3 md:pl-[340px] md:pr-[20px];
+    }
+}
