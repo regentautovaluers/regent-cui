@@ -133,7 +133,7 @@
 			<div class="w-full">
 				<label
 					for="dropzone-file"
-					class="mt-3 flex flex-col items-center justify-between border-[1.9px] border-gray-400 border-dashed cursor-pointer h-16 rounded py-3 px-4 bg-blue-400 bg-opacity-50">
+					class="mt-3 flex flex-col items-center justify-between border-[1.9px] border-gray-400 border-dashed cursor-pointer h-16 rounded-lg py-3 px-4 bg-blue-400 bg-opacity-50">
 					<div class="flex items-center justify-between w-full">
 						<span class="text-blue-500">
 							Click here to upload the completed Excel document
