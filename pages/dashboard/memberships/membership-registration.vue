@@ -11,7 +11,7 @@
 						:class="[
 							'border-b-2 pb-1',
 							currentRegForm === 0
-								? 'border-b-blue-500'
+								? 'border-b-blue-600 text-blue-600'
 								: 'border-b-inherit',
 						]">
 						<span>Individual Registration</span>
@@ -21,7 +21,7 @@
 						:class="[
 							'border-b-2 pb-1',
 							currentRegForm === 1
-								? 'border-b-blue-500'
+								? 'border-b-blue-600 text-blue-600'
 								: 'border-b-inherit',
 						]">
 						<span>Bulk / Fleet Registration</span>
