@@ -19,16 +19,6 @@
 									<th
 										scope="col"
 										class="px-6 py-3 text-start font-bold text-gray-500">
-										Start Date
-									</th>
-									<th
-										scope="col"
-										class="px-6 py-3 text-start font-bold text-gray-500">
-										End Date
-									</th>
-									<th
-										scope="col"
-										class="px-6 py-3 text-start font-bold text-gray-500">
 										Type
 									</th>
 									<th
