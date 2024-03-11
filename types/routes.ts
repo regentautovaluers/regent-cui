@@ -104,7 +104,7 @@ const applicationRoutes: ApplicationRoute[] = [
 			{
 				id: 2,
 				displayName: "Manage Fleets",
-				routeName: "new-member",
+				routeName: "manage-fleets",
 			},
 			{
 				id: 3,
