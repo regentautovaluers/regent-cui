@@ -208,16 +208,16 @@
 			>
 		</button>
 		<div
-			class="flex flex-col md:flex-row space-y-3 md:space-y-0 items-center space-x-0 md:space-x-4 mt-4">
+			class="flex flex-col md:flex-row space-y-3 md:space-y-0 items-center space-x-0 md:space-x-4 mt-4 w-full md:w-1/2">
 			<div
-				class="border border-blue-600 rounded p-2 h-fit w-full md:w-72">
+				class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
 				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">
 					Vehicles Added
 				</h1>
 				<h2 class="text-lg text-gray-500">{{ userVehicles.length }}</h2>
 			</div>
 			<div
-				class="border border-blue-600 rounded p-2 h-fit w-full md:w-72">
+				class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
 				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">
 					Total Price
 				</h1>
@@ -232,7 +232,7 @@
 		</div>
 		<button
 			type="submit"
-			class="py-3 px-4 w-full mt-7 lg:w-[40.7%] text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
 			<span v-if="!formSubmissionLoading">Create Membership</span>
 			<div
 				v-if="formSubmissionLoading"
