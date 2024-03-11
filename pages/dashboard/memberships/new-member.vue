@@ -50,6 +50,8 @@
 									name: 'membership-registration',
 									query: {
 										registrationType: 'roadside-assistance',
+										// TODO: Ensure the registration cost is dynamically calculated
+										registrationCost: 3000,
 									},
 								}"
 								class="w-fit p-4 rounded-md inline-flex space-x-2 items-center">
