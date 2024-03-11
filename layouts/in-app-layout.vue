@@ -1,5 +1,5 @@
 <template>
-	<main class="min-h-screen h-screen">
+	<main class="h-screen">
 		<nav
 			class="py-4 flex justify-between items-center px-3 md:pl-[330px] md:pr-[20px] sticky top-0 z-20 bg-white flex-wrap">
 			<div class="flex space-x-8 w-fit md:w-1/3">
