@@ -3,14 +3,23 @@
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
 			James Otieno
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-500">12/20/2023</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-500">12/20/2023</td>
 		<td class="px-6 py-4 whitespace-nowrap text-blue-600 font-semibold">
 			Individual
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
-			5
+			<NuxtLink
+				:to="{
+					name: 'membership-details',
+					query: {
+						clientName: 'James Otieno',
+						numberOfVehicles: 5,
+						clientPhone: '+254113883976',
+						clientEmail: 'jamesotieno@gmail.com',
+					},
+				}"
+				>5</NuxtLink
+			>
 		</td>
 		<td
 			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
@@ -38,7 +47,7 @@
 				</button>
 
 				<div
-					class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full font-semibold"
+					class="hs-dropdown-menu border transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full font-semibold"
 					aria-labelledby="hs-dropdown-hover-event">
 					<NuxtLink
 						:to="{ name: 'edit-membership-details' }"
@@ -46,10 +55,18 @@
 						Edit Details
 					</NuxtLink>
 					<NuxtLink
-						:to="{ name: 'view-memberships' }"
-						class="flex items-center gap-x-3.5 p-3 rounded-b-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none">
-						View Memberships
-					</NuxtLink>
+						class="flex items-center gap-x-3.5 p-3 rounded-b-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none"
+						:to="{
+							name: 'membership-details',
+							query: {
+								clientName: 'James Otieno',
+								numberOfVehicles: 5,
+								clientPhone: '+254113883976',
+								clientEmail: 'jamesotieno@gmail.com',
+							},
+						}"
+						>View Memberships</NuxtLink
+					>
 				</div>
 			</div>
 		</td>
