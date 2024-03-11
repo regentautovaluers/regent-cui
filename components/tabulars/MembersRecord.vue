@@ -4,6 +4,7 @@
 			James Otieno
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-500">12/20/2023</td>
+		<td class="px-6 py-4 whitespace-nowrap text-gray-500">12/20/2023</td>
 		<td class="px-6 py-4 whitespace-nowrap text-blue-600 font-semibold">
 			Individual
 		</td>
