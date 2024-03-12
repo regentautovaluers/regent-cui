@@ -17,7 +17,7 @@
 				</button>
 				<!-- End Navigation Toggle -->
 				<h1 class="text-2xl md:text-3xl font-semibold hidden md:flex">
-					{{ currentRoute || computedCurrentRoute }}
+					{{ currentRoute }}
 				</h1>
 			</div>
 
@@ -68,8 +68,10 @@
 						src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
 						alt="User Image" />
 					<div class="flex flex-col">
-						<span class="font-bold tracking">Jane Kabura</span>
-						<span class="text-gray-500">AIC Insurance</span>
+						<span class="font-bold tracking">{{
+							getDetails.username
+						}}</span>
+						<span class="text-gray-500">{{ getDetails.company }}</span>
 					</div>
 				</div>
 			</div>
@@ -178,21 +180,20 @@
 
 	const notificationCount: Ref<number> = ref(10);
 	const messageCount: Ref<number> = ref(10);
-
 	const currentRoute: Ref<string | null> = ref(null);
-	const computedCurrentRoute = computed((): string => {
-		if(route.name === 'dashboard-home') {
-			return "Home";
-		}
+	// const computedCurrentRoute = computed((): string => {
+	// 	if(route.name === 'dashboard-home') {
+	// 		return "Home";
+	// 	}
 
-		const currentRoutePath = route.path;
-		const currentRoutePathTokens = currentRoutePath.split("/");
+	// 	const currentRoutePath = route.path;
+	// 	const currentRoutePathTokens = currentRoutePath.split("/");
 
-		return capitalizeFirstLetterOfEachWord(
-			currentRoutePathTokens[2].split("-").join(" ")
-		);
-	});
-	console.log(computedCurrentRoute.value);
+	// 	return capitalizeFirstLetterOfEachWord(
+	// 		currentRoutePathTokens[2].split("-").join(" ")
+	// 	);
+	// });
+	const { getDetails } = usePrincipal();
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;

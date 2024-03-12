@@ -10,7 +10,7 @@
 					alt="User Image" />
 				<div class="flex flex-col">
 					<span class="text-blue-600 font-semibold"
-						>Hi, Jane Kabura</span
+						>Hi, {{ getDetails.username }}</span
 					>
 					<span>You Have 4050 Registered Members</span>
 				</div>
@@ -213,4 +213,6 @@
 		name: "memberships-home",
 		layout: "in-app-layout",
 	});
+	
+	const { getDetails } = usePrincipal();
 </script>
