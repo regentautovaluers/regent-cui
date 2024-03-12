@@ -22,6 +22,50 @@
 					id="fleet-name"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="e.g Kenya Power & Lightning Company" />
+				<div
+					class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3 mt-7">
+					<!-- Full Name Field -->
+					<div class="w-full lg:w-1/3">
+						<label
+							for="contact-person-name"
+							class="block font-medium mb-2 dark:text-white"
+							>Contact Person Name</label
+						>
+						<input
+							type="text"
+							id="contact-person-name"
+							class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							placeholder="Client Name as On Their National ID" />
+					</div>
+
+					<!-- Phone Field -->
+					<div class="w-full lg:w-1/3">
+						<label
+							for="contact-person-phone"
+							class="block font-medium mb-2 dark:text-white"
+							>Contact Person Phone</label
+						>
+						<input
+							type="text"
+							id="contact-person-phone"
+							class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							placeholder="+254704080056" />
+					</div>
+
+					<!-- Email field -->
+					<div class="w-full lg:w-1/3">
+						<label
+							for="contact-person-email"
+							class="block font-medium mb-2 dark:text-white"
+							>Contact Person Email</label
+						>
+						<input
+							type="email"
+							id="contact-person-email"
+							class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							placeholder="youremail@co.ke" />
+					</div>
+				</div>
 				<button
 					type="submit"
 					class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
