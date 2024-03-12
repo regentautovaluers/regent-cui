@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 			pathPrefix: false,
 		},
 	],
-	modules: ["nuxt-icons", "nuxt-icon", "nuxt-icon"],
+	modules: ["nuxt-icons", "nuxt-icon", "nuxt-icon", "@pinia/nuxt"],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -64,5 +64,15 @@ export default defineNuxtConfig({
 			],
 		},
 	},
+	pinia: {
+		autoImports: ["defineStore", "storeToRefs"],
+	},
 	plugins: ["~/plugins/preline.client.ts"],
+	routeRules: {
+		"/api/**": {
+			proxy: {
+				to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
+			},
+		},
+	},
 });
