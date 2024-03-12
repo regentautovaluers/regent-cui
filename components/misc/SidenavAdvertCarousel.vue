@@ -5,7 +5,7 @@
             "loadingClasses": "opacity-0",
             "isAutoPlay": true
         }'
-		class="relative bg-red-500">
+		class="relative">
 		<div
 			class="hs-carousel relative overflow-hidden w-full min-h-[340px] bg-white rounded-lg">
 			<div
@@ -14,7 +14,7 @@
 					class="hs-carousel-slide"
 					v-for="(advertisement, index) in advertisements"
 					:key="index">
-					<div class="flex justify-center h-full  bg-gray-100 p-6">
+					<div class="flex justify-center h-full bg-gray-100 p-6">
 						<span
 							class="self-center text-4xl transition duration-700"
 							>{{ advertisement }}</span

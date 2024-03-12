@@ -17,7 +17,7 @@
 				</button>
 				<!-- End Navigation Toggle -->
 				<h1 class="text-2xl md:text-3xl font-semibold hidden md:flex">
-					{{ currentRoute }}
+					{{ currentRoute || computedCurrentRoute }}
 				</h1>
 			</div>
 
@@ -179,16 +179,36 @@
 	const notificationCount: Ref<number> = ref(10);
 	const messageCount: Ref<number> = ref(10);
 
-	const currentRoute: Ref<string> = ref("Home");
+	const currentRoute: Ref<string | null> = ref(null);
 	const computedCurrentRoute = computed((): string => {
-		const currentRoutePath = route.path;
+		if(route.name === 'dashboard-home') {
+			return "Home";
+		}
 
-		return currentRoutePath;
+		const currentRoutePath = route.path;
+		const currentRoutePathTokens = currentRoutePath.split("/");
+
+		return capitalizeFirstLetterOfEachWord(
+			currentRoutePathTokens[2].split("-").join(" ")
+		);
 	});
 	console.log(computedCurrentRoute.value);
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;
+	}
+
+	function capitalizeFirstLetterOfEachWord(sentence: string) {
+		// Split the sentence into an array of words
+		const words = sentence.split(" ");
+
+		// Capitalize the first letter of each word
+		const capitalizedWords = words.map((word) => {
+			return word.charAt(0).toUpperCase() + word.slice(1);
+		});
+
+		// Join the words back together into a sentence
+		return capitalizedWords.join(" ");
 	}
 </script>
 
