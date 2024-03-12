@@ -63,11 +63,18 @@
 									</th>
 									<th
 										scope="col"
+										class="px-6 py-3 text-start font-bold text-gray-500">
+										Payment Status
+									</th>
+									<th
+										scope="col"
 										class="px-6 py-3 text-end" />
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200">
-								<MembershipRecord v-for="a in 5" />
+								<MembershipRecord
+									v-for="a in 5"
+									:client-name="$route.query.clientName as string" />
 							</tbody>
 						</table>
 					</div>
