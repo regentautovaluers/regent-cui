@@ -166,10 +166,8 @@
 			</div>
 		</div>
 
-		<!-- the main div where every route will be shown -->
-		<div class="w-full h-full min-h-full">
-			<slot />
-		</div>
+		<!-- the main place where every route will be shown -->
+		<slot />
 	</main>
 </template>
 
