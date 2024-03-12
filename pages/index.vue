@@ -6,9 +6,9 @@
 			class="h-36" />
 	</div>
 	<form
-		class="mt-16"
+		class="mt-12"
 		@submit.prevent="handleLoginFormSubmission">
-		<div class="flex flex-col font-semibold space-y-1 text-5xl">
+		<div class="flex flex-col font-semibold space-y-1 text-3xl lg:text-5xl">
 			<span class="tracking-wide">Hello,</span>
 			<span class="tracking-wide">Welcome Back</span>
 		</div>
@@ -16,12 +16,21 @@
 			<input
 				type="text"
 				class="py-5 px-3 block w-full border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-				placeholder="Enter your e-mail" />
+				placeholder="Enter your e-mail / username"
+				v-model="username"
+				required />
+			<div>
+				<input
+					:type="displayPassword ? 'text' : 'password'"
+					class="py-5 px-3 block w-full border-gray-200 valid:border-gray-200 invalid:border-red-500 peer rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="Enter your password"
+					v-model="password"
+					required />
+				<p class="invisible peer-invalid:visible text-sm text-red-500">
+					Please provide your password
+				</p>
+			</div>
 
-			<input
-				:type="displayPassword ? 'text' : 'password'"
-				class="py-5 px-3 block w-full border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-				placeholder="Enter your password" />
 			<div class="flex justify-end py-2 items-center">
 				<input
 					type="checkbox"
@@ -80,12 +89,54 @@
 	// refs and reactives
 	const formSubmissionLoading: Ref<boolean> = ref(false);
 	const displayPassword: Ref<boolean> = ref(false);
+	const username: Ref<string> = ref("");
+	const password: Ref<string> = ref("");
+	const authToken = useCookie("corp_auth_token", {
+		watch: true,
+		httpOnly: false,
+		domain: "localhost",
+		path: "/",
+	});
+	const { setDetails } = usePrincipal();
+	const { openToast } = useToast();
 
 	async function handleLoginFormSubmission(): Promise<void> {
-		// a service function will handle the logging in of users
+		try {
+			await $fetch("/api/corp-login", {
+				method: "POST",
+				query: {
+					uname: username.value,
+					pwd: password.value,
+				},
+				async onResponse({ response }) {
+					if (response.status === 200) {
+						const responseData: Object[] = JSON.parse(
+							response._data
+						);
 
-		router.push({
-			name: "dashboard-home",
-		});
+						if (responseData.length === 0) {
+							throw new Error("Invalid login credentials");
+						}
+						const principalDetails = responseData[0];
+
+						// set the auth token
+						authToken.value = "test-auth-token";
+
+						// store the prinicpal
+						await setDetails(principalDetails);
+
+						openToast("Login successfull", "success");
+
+						// login the user
+						router.push({
+							name: "dashboard-home",
+						});
+					}
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Login failed. Please try again!", "danger");
+		}
 	}
 </script>
