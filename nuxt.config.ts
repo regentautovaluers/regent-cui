@@ -43,8 +43,25 @@ export default defineNuxtConfig({
 					rel: "manifest",
 					href: "/manifest.json",
 				},
+				{
+					rel: "stylesheet",
+					href: "./node_modules/apexcharts/dist/apexcharts.css",
+					tagPosition: "head",
+				},
 			],
 			title: "Regent Auto Valuers",
+			script: [
+				{
+					src: "./node_modules/lodash/lodash.min.js",
+				},
+				{
+					src: "./node_modules/apexcharts/dist/apexcharts.min.js",
+					tagPosition: "bodyClose",
+				},
+				{
+					src: "https://preline.co/assets/js/hs-apexcharts-helpers.js",
+				},
+			],
 		},
 	},
 	plugins: ["~/plugins/preline.client.ts"],
