@@ -1,5 +1,5 @@
 <template>
-	<div class="py-10 bg-[#f6f9f2] responsive-view h-full">
+	<div class="py-10 bg-[#f6f9f2] responsive-view h-fit">
 		<div class="bg-white w-full p-10 px-2 lg:px-10">
 			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
