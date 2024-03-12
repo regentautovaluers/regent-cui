@@ -45,39 +45,7 @@
 			</div>
 		</div>
 
-		<!-- Cover Period -->
-		<div class="flex items-center justify-between space-x-3 mt-7">
-			<!-- Starting date Field -->
-			<div class="w-1/2">
-				<label
-					for="cover-period-starts"
-					class="block font-medium mb-2 dark:text-white"
-					>Cover Period Starts</label
-				>
-				<input
-					type="date"
-					id="cover-period-starts"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Enter Customer Name as Seen In Their National ID" />
-			</div>
-
-			<!-- Ending date Field -->
-			<div class="w-1/2">
-				<label
-					for="cover-period-ends"
-					class="block font-medium mb-2 dark:text-white"
-					>Cover Period Ends</label
-				>
-				<input
-					type="date"
-					id="cover-period-ends"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Enter Customer Name as Seen In Their National ID" />
-			</div>
-		</div>
-
 		<h1 class="mt-16 text-2xl antialiased">Register Your Vehicles</h1>
-
 		<!-- Vehicle Details & Payment & Status -->
 		<div
 			class="mt-7"
@@ -184,6 +152,36 @@
 					</select>
 				</div>
 			</div>
+			<!-- Cover Period -->
+			<div class="flex items-center justify-between space-x-3 mt-7">
+				<!-- Starting date Field -->
+				<div class="w-1/2">
+					<label
+						for="cover-period-starts"
+						class="block font-medium mb-2 dark:text-white"
+						>Cover Period Starts</label
+					>
+					<input
+						type="date"
+						id="cover-period-starts"
+						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						placeholder="Enter Customer Name as Seen In Their National ID" />
+				</div>
+
+				<!-- Ending date Field -->
+				<div class="w-1/2">
+					<label
+						for="cover-period-ends"
+						class="block font-medium mb-2 dark:text-white"
+						>Cover Period Ends</label
+					>
+					<input
+						type="date"
+						id="cover-period-ends"
+						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						placeholder="Enter Customer Name as Seen In Their National ID" />
+				</div>
+			</div>
 		</div>
 		<button
 			class="inline-flex items-center space-x-2 my-7 text-blue-600"
@@ -195,6 +193,8 @@
 						vehicleModel: '',
 						paymentStatus: '',
 						membershipStatus: '',
+						coverPeriodStarts: '',
+						covertPeriodEnds: '',
 					})
 			">
 			<Icon
@@ -250,6 +250,8 @@
 		vehicleModel: string;
 		paymentStatus: string;
 		membershipStatus: string;
+		coverPeriodStarts: string;
+		covertPeriodEnds: string;
 	};
 
 	const formSubmissionLoading = ref(false);
@@ -260,6 +262,8 @@
 			vehicleModel: "",
 			paymentStatus: "",
 			membershipStatus: "",
+			coverPeriodStarts: "",
+			covertPeriodEnds: "",
 		},
 	]);
 
