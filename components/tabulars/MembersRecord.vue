@@ -23,7 +23,7 @@
 		</td>
 		<td
 			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
-			<span class="text-start">+254 712345678</span>
+			<span class="text-start">+254712345678</span>
 			<span class="text-start">jamesotieno@gmail.com</span>
 		</td>
 		<td>
@@ -50,7 +50,15 @@
 					class="hs-dropdown-menu border transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full font-semibold"
 					aria-labelledby="hs-dropdown-hover-event">
 					<NuxtLink
-						:to="{ name: 'edit-membership-details' }"
+						:to="{
+							name: 'edit-member-details',
+							query: {
+								memberName: 'James Otieno',
+								memberPhone: '+254712345678',
+								memberEmail: 'jamesotieno@gmail.com',
+								memberId: 'testId',
+							},
+						}"
 						class="flex items-center gap-x-3.5 p-3 rounded-t-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none">
 						Edit Details
 					</NuxtLink>
