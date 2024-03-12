@@ -16,11 +16,15 @@
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-blue-500">
-			Individual
+			Roadside Assistance
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-green-500">
 			Active
+		</td>
+		<td
+			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
+			Paid
 		</td>
 		<td>
 			<div class="hs-dropdown relative inline-flex [--placement:left]">
@@ -45,26 +49,37 @@
 				<div
 					class="hs-dropdown-menu border transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full font-semibold"
 					aria-labelledby="hs-dropdown-hover-event">
-					<button
-						class="flex items-center gap-x-3.5 p-3 rounded-t-lg w-full text-sm text-red-700 hover:bg-red-300 focus:outline-none">
-						Delete Membership
-					</button>
 					<!-- TODO: create page to edit membership -->
 					<NuxtLink
-						class="flex items-center gap-x-3.5 p-3 rounded-b-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none"
+						class="flex items-center gap-x-3.5 p-3 rounded-t-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none"
 						:to="{
-							name: 'membership-details',
+							name: 'edit-membership-details',
 							query: {
-								clientName: 'James Otieno',
-								numberOfVehicles: 5,
-								clientPhone: '+254113883976',
-								clientEmail: 'jamesotieno@gmail.com',
+								membershipId: 'test-id',
+								vehicleRegistration: 'KDF 345Y',
+								vehicleMake: 'Toyota',
+								vehicleModel: 'Camri',
+								membershipStatus: 'Active',
+								paymentStatus: 'Paid',
+								clientName: componentProps.clientName,
 							},
 						}"
 						>Edit Membership</NuxtLink
 					>
+					<button
+						class="flex items-center gap-x-3.5 p-3 rounded-b-lg w-full text-sm text-red-700 hover:bg-red-300 focus:outline-none">
+						Delete Membership
+					</button>
 				</div>
 			</div>
 		</td>
 	</tr>
 </template>
+
+<script setup lang="ts">
+	export interface ComponentProps {
+		clientName: string;
+	}
+
+	const componentProps = defineProps<ComponentProps>();
+</script>
