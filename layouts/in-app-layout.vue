@@ -248,7 +248,7 @@
 		await nullOutDetails();
 
 		// navigate user to the login page
-		openToast("Login successfull", "success");
+		openToast("Logout successfull", "success");
 
 		// login the user
 		router.push({
