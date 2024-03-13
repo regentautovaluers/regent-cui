@@ -233,7 +233,7 @@
 			@click="
 				() =>
 					userVehicles.push({
-						membershipTypeId: 2,
+						membershipTypeId: Number($route.query.membershipTypeId),
 						registration: '',
 						make: '',
 						model: '',
@@ -303,6 +303,7 @@
 		end_date: string;
 	};
 
+	const route = useRoute();
 	const formSubmissionLoading = ref(false);
 	const clientFullName = ref("");
 	const clientPhoneNumber = ref("");
@@ -312,7 +313,7 @@
 	const formErrorMessage: Ref<null | string> = ref(null);
 	const userVehicles: Ref<vehicleRegistrationDetails[]> = ref([
 		{
-			membershipTypeId: 2,
+			membershipTypeId: Number(route.query.membershipTypeId),
 			registration: "",
 			make: "",
 			model: "",

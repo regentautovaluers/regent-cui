@@ -41,46 +41,7 @@
 					</div>
 					<!-- filter controls -->
 					<div class="flex flex-nowrap items-center space-x-3">
-						<!-- filter by status -->
-						<div
-							class="hs-dropdown relative inline-flex [--placement:bottom-right]">
-							<button
-								id="hs-dropdown-default"
-								type="button"
-								class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-								Status
-								<svg
-									class="hs-dropdown-open:rotate-180 size-4"
-									xmlns="http://www.w3.org/2000/svg"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round">
-									<path d="m6 9 6 6 6-6" />
-								</svg>
-							</button>
-
-							<div
-								class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
-								aria-labelledby="hs-dropdown-default">
-								<a
-									class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-									href="#">
-									Newsletter
-								</a>
-								<a
-									class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-									href="#">
-									Purchases
-								</a>
-							</div>
-						</div>
-
-						<!-- filter by type -->
+						<!-- filter by Membership type -->
 						<div
 							class="hs-dropdown relative inline-flex [--placement:bottom-right]">
 							<button
@@ -202,6 +163,12 @@
 					</div>
 				</div>
 				<!-- end of data table -->
+				<div class="mt-2 w-full rounded-sm flex justify-between py-2">
+					<span
+						>Showing {{ pageSize }} of
+						{{ totalNumber }} members.</span
+					>
+				</div>
 			</div>
 			<div class="bg-green-700 p-2"></div>
 		</div>
@@ -213,6 +180,8 @@
 		name: "memberships-home",
 		layout: "in-app-layout",
 	});
-	
+	const pageSize: Ref<number> = ref(10);
+	const totalNumber: Ref<number> = ref(0);
+
 	const { getDetails } = usePrincipal();
 </script>

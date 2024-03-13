@@ -1,7 +1,11 @@
 import { ofetch } from "ofetch";
+import { useStorage } from "@vueuse/core";
 
 export default defineNuxtPlugin((_nuxtApp) => {
-	const authToken = useCookie("corp_auth_token");
+	// TODO: Verify in the future that the || here does not produce a bug
+	const authToken =
+		useCookie("corp_auth_token") ||
+		useStorage("corp_auth_token", "", sessionStorage);
 	const { openToast } = useToast();
 
 	globalThis.$fetch = ofetch.create({
