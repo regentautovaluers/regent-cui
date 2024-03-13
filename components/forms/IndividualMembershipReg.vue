@@ -13,7 +13,9 @@
 					type="text"
 					id="full-name"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Client Name as On Their National ID" />
+					placeholder="Client Name as On Their National ID"
+					required
+					v-model="clientFullName" />
 			</div>
 
 			<!-- Phone Field -->
@@ -27,7 +29,9 @@
 					type="text"
 					id="phone"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="+254704080056" />
+					placeholder="+254704080056"
+					required
+					v-model="clientPhoneNumber" />
 			</div>
 
 			<!-- Email field -->
@@ -41,9 +45,16 @@
 					type="email"
 					id="phone"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="youremail@co.ke" />
+					placeholder="youremail@co.ke"
+					required
+					v-model="clientEmail" />
 			</div>
 		</div>
+		<p
+			class="text-sm text-red-500 font-semibold"
+			v-if="formErrorMessage">
+			{{ formErrorMessage }}
+		</p>
 
 		<h1 class="mt-16 text-2xl antialiased">Register Your Vehicles</h1>
 		<!-- Vehicle Details & Payment & Status -->
@@ -51,6 +62,12 @@
 			class="mt-7"
 			v-for="(vehicle, index) in userVehicles"
 			:key="index">
+			<!-- this field is hidden. it holds the data for membershipTypeId -->
+			<input
+				type="text"
+				hidden
+				v-model="vehicle.membershipTypeId" />
+
 			<div
 				class="flex flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0">
 				<!-- Reg Number -->
@@ -65,7 +82,8 @@
 						id="vehicle-registration-number"
 						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						placeholder="KCD 345G"
-						v-model="vehicle.registrationNumber" />
+						required
+						v-model="vehicle.registration" />
 				</div>
 				<!-- Vehicle Make -->
 				<div class="w-full lg:w-1/3">
@@ -77,7 +95,8 @@
 					<select
 						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						id="vehicle-make"
-						v-model="vehicle.vehicleMake">
+						required
+						v-model="vehicle.make">
 						<option
 							v-for="(make, index) in [
 								'Make A',
@@ -100,7 +119,8 @@
 					<select
 						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						id="vehicle-model"
-						v-model="vehicle.vehicleModel">
+						required
+						v-model="vehicle.model">
 						<option
 							v-for="(model, index) in [
 								'Model A',
@@ -108,12 +128,29 @@
 								'Model C',
 								'Model D',
 							]"
-							:key="index">
+							:key="index"
+							:value="model">
 							{{ model }}
 						</option>
 					</select>
 				</div>
 			</div>
+			<!--Vehicle Color Field -->
+			<div class="w-full mt-4">
+				<label
+					for="full-name"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Color</label
+				>
+				<input
+					type="text"
+					id="full-name"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="e.g Red"
+					required
+					v-model="vehicle.color" />
+			</div>
+
 			<div class="flex items-center justify-between space-x-3 mt-4">
 				<!-- Payment Status Field -->
 				<div class="w-1/2 md:w-1/3">
@@ -125,10 +162,12 @@
 					<select
 						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						id="payment-status"
-						v-model="vehicle.paymentStatus">
+						required
+						v-model="vehicle.payment_status">
 						<option
 							v-for="(status, index) in ['Paid', 'Not Paid']"
-							:key="index">
+							:key="index"
+							:value="status.toLocaleLowerCase()">
 							{{ status }}
 						</option>
 					</select>
@@ -143,10 +182,12 @@
 					<select
 						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						id="membership-status"
-						v-model="vehicle.paymentStatus">
+						required
+						v-model="vehicle.membership_status">
 						<option
-							v-for="(status, index) in ['Active', 'Not Active']"
-							:key="index">
+							v-for="(status, index) in ['Active', 'Inactive']"
+							:key="index"
+							:value="status.toLocaleLowerCase()">
 							{{ status }}
 						</option>
 					</select>
@@ -165,7 +206,9 @@
 						type="date"
 						id="cover-period-starts"
 						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-						placeholder="Enter Customer Name as Seen In Their National ID" />
+						placeholder="Enter Customer Name as Seen In Their National ID"
+						required
+						v-model="vehicle.start_date" />
 				</div>
 
 				<!-- Ending date Field -->
@@ -179,7 +222,9 @@
 						type="date"
 						id="cover-period-ends"
 						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-						placeholder="Enter Customer Name as Seen In Their National ID" />
+						placeholder="Enter Customer Name as Seen In Their National ID"
+						required
+						v-model="vehicle.end_date" />
 				</div>
 			</div>
 		</div>
@@ -188,13 +233,15 @@
 			@click="
 				() =>
 					userVehicles.push({
-						registrationNumber: '',
-						vehicleMake: '',
-						vehicleModel: '',
-						paymentStatus: '',
-						membershipStatus: '',
-						coverPeriodStarts: '',
-						covertPeriodEnds: '',
+						membershipTypeId: 2,
+						registration: '',
+						make: '',
+						model: '',
+						color: '',
+						payment_status: '',
+						membership_status: '',
+						start_date: '',
+						end_date: '',
 					})
 			">
 			<Icon
@@ -245,27 +292,94 @@
 
 <script setup lang="ts">
 	type vehicleRegistrationDetails = {
-		registrationNumber: string;
-		vehicleMake: string;
-		vehicleModel: string;
-		paymentStatus: string;
-		membershipStatus: string;
-		coverPeriodStarts: string;
-		covertPeriodEnds: string;
+		membershipTypeId: number;
+		registration: string;
+		make: string;
+		model: string;
+		color: string;
+		payment_status: string;
+		membership_status: string;
+		start_date: string;
+		end_date: string;
 	};
 
 	const formSubmissionLoading = ref(false);
+	const clientFullName = ref("");
+	const clientPhoneNumber = ref("");
+	const clientEmail = ref("");
+	const { getDetails } = usePrincipal();
+	const { openToast } = useToast();
+	const formErrorMessage: Ref<null | string> = ref(null);
 	const userVehicles: Ref<vehicleRegistrationDetails[]> = ref([
 		{
-			registrationNumber: "",
-			vehicleMake: "",
-			vehicleModel: "",
-			paymentStatus: "",
-			membershipStatus: "",
-			coverPeriodStarts: "",
-			covertPeriodEnds: "",
+			membershipTypeId: 2,
+			registration: "",
+			make: "",
+			model: "",
+			color: "",
+			payment_status: "",
+			membership_status: "",
+			start_date: "",
+			end_date: "",
 		},
 	]);
 
-	function registerIndividualMember(): void {}
+	async function registerIndividualMember(): Promise<void> {
+		formSubmissionLoading.value = true;
+		let membershipId = 0;
+
+		try {
+			await $fetch("http://192.168.18.45:4000/api/v1/memberships", {
+				method: "POST",
+				body: JSON.stringify({
+					full_name: clientFullName.value,
+					phone_number: clientPhoneNumber.value,
+					userEmail: clientEmail.value,
+					corporateId: getDetails.acc_id,
+					category: "individual",
+					recordedBy: getDetails.username,
+				}),
+
+				async onResponse({ response }) {
+					console.log(response._data);
+					if (response.status === 201) {
+						membershipId = response._data.id;
+					} else if (response.status === 400) {
+						formErrorMessage.value = response._data.message;
+						openToast("Please check your data!", "warning");
+						formSubmissionLoading.value = false;
+					} else {
+						throw new Error("Something went wrong");
+					}
+				},
+			}).then(async () => {
+				await $fetch(
+					"http://192.168.18.45:4000/api/v1/membershipVehicles",
+					{
+						method: "POST",
+						body: JSON.stringify({
+							membershipId: membershipId,
+							vehicles: userVehicles.value,
+						}),
+
+						async onResponse({ response }) {
+							if (response.status === 201) {
+								formSubmissionLoading.value = false;
+								openToast(
+									"Membership creation successful",
+									"success"
+								);
+							} else {
+								throw new Error("Something went wrong");
+							}
+						},
+					}
+				);
+			});
+		} catch (err) {
+			console.log("An error occured: ", err);
+			formSubmissionLoading.value = false;
+			openToast("Request failed. Please try again!", "danger");
+		}
+	}
 </script>
