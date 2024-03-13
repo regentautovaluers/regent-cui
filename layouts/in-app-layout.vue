@@ -71,7 +71,9 @@
 						<span class="font-bold tracking">{{
 							getDetails.username
 						}}</span>
-						<span class="text-gray-500">{{ getDetails.company }}</span>
+						<span class="text-gray-500">{{
+							getDetails.company
+						}}</span>
 					</div>
 				</div>
 			</div>
@@ -160,6 +162,17 @@
 						@change-current-route-name="
 							handleChangeCurrentRouteName
 						" />
+
+					<!-- 'Logout Button' -->
+					<li>
+						<button
+							class="flex items-center gap-x-3.5 w-full py-5 rounded-s-2xl px-2.5 bg-gray-100 hover:bg-gray-100 font-semibold border-r-4 border-r-blue-600 text-gray-500"
+							@click="handleClientLogout">
+							<nuxt-icon name="material-symbols:logout" /><span
+								>Logout</span
+							>
+						</button>
+					</li>
 				</ul>
 				<div class="text-gray-500 text-sm flex flex-col px-6 mt-5">
 					<span class="font-semibold">Regent Valuers Limited</span>
@@ -175,8 +188,10 @@
 
 <script setup lang="ts">
 	import applicationRoutes from "~/types/routes";
+	import { useStorage } from "@vueuse/core";
 	// macro imports
 	const route = useRoute();
+	const router = useRouter();
 
 	const notificationCount: Ref<number> = ref(10);
 	const messageCount: Ref<number> = ref(10);
@@ -193,7 +208,19 @@
 	// 		currentRoutePathTokens[2].split("-").join(" ")
 	// 	);
 	// });
-	const { getDetails } = usePrincipal();
+	const { getDetails, nullOutDetails } = usePrincipal();
+	const { openToast } = useToast();
+	const rememberableAuthToken = useCookie("corp_auth_token", {
+		watch: true,
+		httpOnly: false,
+		domain: "localhost",
+		path: "/",
+	});
+	const forgetableAuthToken = useStorage(
+		"corp_auth_token",
+		"",
+		sessionStorage
+	);
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;
@@ -210,6 +237,23 @@
 
 		// Join the words back together into a sentence
 		return capitalizedWords.join(" ");
+	}
+
+	async function handleClientLogout() {
+		// null out stored tokens wherever they are stored
+		forgetableAuthToken.value = null;
+		rememberableAuthToken.value = null;
+
+		// null out the principal in the local storage
+		await nullOutDetails();
+
+		// navigate user to the login page
+		openToast("Login successfull", "success");
+
+		// login the user
+		router.push({
+			name: "authentication-page",
+		});
 	}
 </script>
 
