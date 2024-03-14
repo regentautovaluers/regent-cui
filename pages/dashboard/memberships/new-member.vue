@@ -30,7 +30,9 @@
 								}}</span>
 								/ Year
 							</h1>
-							<p>{{ membership.membership_description }}</p>
+							<p class="group-hover:text-white">
+								{{ membership.membership_description }}
+							</p>
 							<ul class="space-y-2 group-hover:text-white">
 								<li
 									class="flex space-x-3 items-center"
