@@ -9,20 +9,25 @@
 					class="block font-medium mb-2 dark:text-white"
 					>Corporate Name</label
 				>
-				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="corporate-name">
-					<option
-						v-for="(make, index) in [
-							'Kenya Power & Lighting Company',
-							'Minet Insurance',
-							'Riara Group of Schools',
-							'Safaricom Kenya LTD',
-						]"
-						:key="index">
-						{{ make }}
-					</option>
-				</select>
+				<div class="relative">
+					<select
+						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						id="corporate-name"
+						v-model="selectedFleetId">
+						<option selected>Select from one of your fleets</option>
+						<option
+							v-for="(fleet, index) in availableFleets"
+							:key="index"
+							:value="fleet.id">
+							{{ fleet.fleetname }}
+						</option>
+					</select>
+					<div
+						v-if="retrievingFleetList"
+						class="absolute top-[38%] right-8 animate-spin inline-block size-5 border-[2px] border-gray-500 border-current border-t-transparent rounded-full"
+						role="status"
+						aria-label="loading" />
+				</div>
 			</div>
 		</div>
 		<div
@@ -37,6 +42,8 @@
 				<input
 					type="text"
 					id="contact-person-name"
+					disabled
+					v-model="contactFullName"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="Client Name as On Their National ID" />
 			</div>
@@ -51,6 +58,8 @@
 				<input
 					type="text"
 					id="contact-person-phone"
+					disabled
+					v-model="contactPhoneNumber"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="+254704080056" />
 			</div>
@@ -65,39 +74,10 @@
 				<input
 					type="email"
 					id="contact-person-email"
+					disabled
+					v-model="contactEmail"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="youremail@co.ke" />
-			</div>
-		</div>
-
-		<!-- Cover Period -->
-		<div class="flex items-center justify-between space-x-3 mt-7">
-			<!-- Starting date Field -->
-			<div class="w-1/2">
-				<label
-					for="cover-period-starts"
-					class="block font-medium mb-2 dark:text-white"
-					>Cover Period Starts</label
-				>
-				<input
-					type="date"
-					id="cover-period-starts"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Enter Customer Name as Seen In Their National ID" />
-			</div>
-
-			<!-- Ending date Field -->
-			<div class="w-1/2">
-				<label
-					for="cover-period-ends"
-					class="block font-medium mb-2 dark:text-white"
-					>Cover Period Ends</label
-				>
-				<input
-					type="date"
-					id="cover-period-ends"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Enter Customer Name as Seen In Their National ID" />
 			</div>
 		</div>
 
@@ -147,7 +127,9 @@
 						id="dropzone-file"
 						type="file"
 						accept=".xlsx"
-						class="hidden" />
+						class="hidden"
+						ref="excelFile"
+						@change="parseUploadedExcelFile" />
 				</label>
 			</div>
 			<!-- File Uploading Progress Form -->
@@ -161,12 +143,12 @@
 					aria-valuemax="100">
 					<div
 						class="flex flex-col justify-center rounded-full overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
-						style="width: 1%"></div>
+						:style="{ width: `${currentPercentage}%` }" />
 				</div>
 				<div
 					class="flex items-center justify-between w-full text-end text-lg text-gray-500 antialiased">
-					<span> UPLOAD PROGESS </span>
-					<span>0%</span>
+					<span> PROCESSING PROGESS </span>
+					<span>{{ currentPercentage }}%</span>
 				</div>
 				<!-- End Progress Bar -->
 			</div>
@@ -187,6 +169,141 @@
 </template>
 
 <script setup lang="ts">
-	const formSubmissionLoading = ref(false);
-	function registerBulkMember(): void {}
+	import readXlsxFile from "read-excel-file";
+	import { type bulkProcessedType } from "~/types/types";
+
+	const formSubmissionLoading = ref(null);
+	const excelFile = ref("excelFile");
+	const { getDetails } = usePrincipal();
+	const processedFleetData: Ref<bulkProcessedType[]> = ref([]);
+	const route = useRoute();
+	const currentPercentage = ref(0);
+	const availableFleets: Ref<Object[]> = ref([]);
+	const { openToast } = useToast();
+	const selectedFleetId: Ref<number> = ref(0);
+	const retrievingFleetList: Ref<boolean> = ref(false);
+	const contactFullName: Ref<string> = ref("");
+	const contactPhoneNumber: Ref<string> = ref("");
+	const contactEmail: Ref<string> = ref("");
+
+	watch(selectedFleetId, (newFleetId) => {
+		const fleetDetails = availableFleets.value.find(
+			(fleet) => fleet.id === newFleetId
+		);
+
+		contactFullName.value = fleetDetails.contact_full_name;
+		contactPhoneNumber.value = fleetDetails.contact_phone_number;
+		contactEmail.value = fleetDetails.contact_email;
+	});
+
+	async function registerBulkMember(): Promise<void> {
+		try {
+			await $fetch("http://192.168.18.45:4000/api/v1/memberships/bulk", {
+				method: "POST",
+				body: JSON.stringify(processedFleetData.value),
+				async onResponse({ response }) {
+					console.log(response.status);
+					console.log(response._data);
+					// if (response.status === 200) {
+					// 	const responseData: Object[] = JSON.parse(
+					// 		response._data
+					// 	);
+
+					// 	if (responseData.length === 0) {
+					// 		throw new Error("Invalid login credentials");
+					// 	}
+					// 	const principalDetails = responseData[0];
+
+					// 	// set the auth token based on the 'remember me' choice
+					// 	if (rememberAuthDetails.value) {
+					// 		rememberableAuthToken.value = "test-auth-token";
+					// 	} else {
+					// 		forgetableAuthToken.value = "test-auth-token";
+					// 	}
+
+					// 	// store the prinicpal
+					// 	await setDetails(principalDetails);
+
+					// 	openToast("Login successfull", "success");
+
+					// 	// login the user
+					// 	router.push({
+					// 		name: "dashboard-home",
+					// 	});
+					// }
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			// openToast("Login failed. Please try again!", "danger");
+		}
+	}
+
+	async function parseUploadedExcelFile(): Promise<void> {
+		const fileInput = excelFile.value;
+		if (fileInput.files.length > 0) {
+			const file = fileInput.files[0];
+			let fileData: Object[] | null = null;
+			// console.log("File name: ", file.name);
+			// console.log("File size: ", file.size);
+
+			// off to process the excel file
+			await readXlsxFile(file).then((data) => {
+				fileData = data;
+			});
+
+			const percentageContribution = 100 / (fileData.length - 1);
+
+			for (let i = 1; i < fileData.length; i++) {
+				processedFleetData.value.push({
+					full_name: fileData[i][0],
+					phone_number: `+254${fileData[i][1]}`,
+					userEmail: fileData[i][2],
+					corporateId: getDetails.acc_id,
+					membershipTypeId: Number(route.query.membershipTypeId),
+					registration: fileData[i][3],
+					start_date: fileData[i][4],
+					end_date: fileData[i][5],
+					make: "Default",
+					model: "Default",
+					color: "Default",
+					payment_status: "paid",
+					membership_status: "active",
+					recordedBy: getDetails.username,
+					category: "corporate",
+					fleetId: selectedFleetId.value,
+				});
+				currentPercentage.value += percentageContribution;
+			}
+		}
+	}
+
+	onMounted(async () => {
+		retrievingFleetList.value = true;
+		try {
+			await $fetch(
+				`http://192.168.18.45:4000/api/v1/fleets/corporate/${getDetails.acc_id}`,
+				{
+					method: "GET",
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error("Failed to retrieve fleets");
+						}
+						availableFleets.value = response._data;
+						retrievingFleetList.value = false;
+					},
+				}
+			);
+		} catch (error) {
+			console.log("An error occured: ", error);
+			retrievingFleetList.value = false;
+			openToast("Failed to retrieve fleets! Reload page!", "danger");
+		}
+	});
 </script>
+
+<style>
+	.progressbar {
+		width: v-bind(currentPercentage.value) %;
+	}
+</style>
