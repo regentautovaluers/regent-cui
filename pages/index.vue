@@ -78,6 +78,12 @@
 	</form>
 </template>
 
+<style scoped>
+	input[type="password"]::-ms-reveal {
+		display: none;
+	}
+</style>
+
 <script setup lang="ts">
 	import { useStorage } from "@vueuse/core";
 	definePageMeta({
