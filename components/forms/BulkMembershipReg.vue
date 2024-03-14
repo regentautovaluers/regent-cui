@@ -172,7 +172,7 @@
 	import readXlsxFile from "read-excel-file";
 	import { type bulkProcessedType } from "~/types/types";
 
-	const formSubmissionLoading = ref(null);
+	const formSubmissionLoading = ref(false);
 	const excelFile = ref("excelFile");
 	const { getDetails } = usePrincipal();
 	const processedFleetData: Ref<bulkProcessedType[]> = ref([]);
@@ -197,45 +197,27 @@
 	});
 
 	async function registerBulkMember(): Promise<void> {
+		formSubmissionLoading.value = true;
 		try {
 			await $fetch("http://192.168.18.45:4000/api/v1/memberships/bulk", {
 				method: "POST",
 				body: JSON.stringify(processedFleetData.value),
 				async onResponse({ response }) {
-					console.log(response.status);
-					console.log(response._data);
-					// if (response.status === 200) {
-					// 	const responseData: Object[] = JSON.parse(
-					// 		response._data
-					// 	);
+					if (response.status !== 200) {
+						throw new Error("Failed to create bulk memberships");
+					}
 
-					// 	if (responseData.length === 0) {
-					// 		throw new Error("Invalid login credentials");
-					// 	}
-					// 	const principalDetails = responseData[0];
-
-					// 	// set the auth token based on the 'remember me' choice
-					// 	if (rememberAuthDetails.value) {
-					// 		rememberableAuthToken.value = "test-auth-token";
-					// 	} else {
-					// 		forgetableAuthToken.value = "test-auth-token";
-					// 	}
-
-					// 	// store the prinicpal
-					// 	await setDetails(principalDetails);
-
-					// 	openToast("Login successfull", "success");
-
-					// 	// login the user
-					// 	router.push({
-					// 		name: "dashboard-home",
-					// 	});
-					// }
+					openToast(
+						"Bulk memberships created successfully.",
+						"success"
+					);
 				},
 			});
 		} catch (error) {
 			console.log("An error occured: ", error);
-			// openToast("Login failed. Please try again!", "danger");
+			openToast("Operation failed. Please try again!", "danger");
+		} finally {
+			formSubmissionLoading.value = false;
 		}
 	}
 
