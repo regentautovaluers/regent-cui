@@ -75,4 +75,9 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	runtimeConfig: {
+		public: {
+			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
+		},
+	},
 });

@@ -102,6 +102,7 @@
 	});
 	const membershipTypes: Ref<Object[]> = ref([]);
 	const { openToast } = useToast();
+	const runtimeConfig = useRuntimeConfig();
 
 	function cleanupMembershipBenefits(inputString: string) {
 		// Step 1: Parse the string into an array
@@ -123,15 +124,20 @@
 
 	onMounted(async () => {
 		try {
-			await $fetch("http://192.168.18.45:4000/api/v1/membershiptypes", {
-				method: "GET",
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error("Failed to retrieve membership types");
-					}
-					membershipTypes.value = response._data;
-				},
-			});
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershiptypes`,
+				{
+					method: "GET",
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve membership types"
+							);
+						}
+						membershipTypes.value = response._data;
+					},
+				}
+			);
 		} catch (error) {
 			console.log("An error occured: ", error);
 			openToast(

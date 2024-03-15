@@ -103,27 +103,31 @@
 	const contactEmail: Ref<string | null> = ref(null);
 	const { getDetails } = usePrincipal();
 	const { openToast } = useToast();
+	const runtimeConfig = useRuntimeConfig();
 
 	async function addToCorporateFleet() {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("http://192.168.18.45:4000/api/v1/fleets", {
-				method: "POST",
-				body: JSON.stringify({
-					corporate: getDetails.acc_id,
-					fleetname: fleetName.value,
-					contact_full_name: contactFullName.value,
-					contact_phone_number: contactPhoneNumber.value,
-					contact_email: contactEmail.value,
-					recordedBy: getDetails.username,
-				}),
-				async onResponse({ response }) {
-					if (response.status === 201) {
-						openToast("Fleet created successfully", "success");
-						formSubmissionLoading.value = false;
-					}
-				},
-			});
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets`,
+				{
+					method: "POST",
+					body: JSON.stringify({
+						corporate: getDetails.acc_id,
+						fleetname: fleetName.value,
+						contact_full_name: contactFullName.value,
+						contact_phone_number: contactPhoneNumber.value,
+						contact_email: contactEmail.value,
+						recordedBy: getDetails.username,
+					}),
+					async onResponse({ response }) {
+						if (response.status === 201) {
+							openToast("Fleet created successfully", "success");
+							formSubmissionLoading.value = false;
+						}
+					},
+				}
+			);
 		} catch (error) {
 			console.log("An error occured: ", error);
 			formSubmissionLoading.value = false;

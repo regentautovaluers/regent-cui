@@ -112,11 +112,12 @@
 	const { openToast } = useToast();
 	const route = useRoute();
 	const memberVehiclesList: Ref<object[] | null> = ref(null);
+	const runtimeConfig = useRuntimeConfig();
 
 	onMounted(async () => {
 		try {
 			await $fetch(
-				`http://192.168.18.45:4000/api/v1/membershipVehicles/membership/${route.query.id}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/membership/${route.query.id}`,
 				{
 					method: "GET",
 					async onResponse({ response }) {

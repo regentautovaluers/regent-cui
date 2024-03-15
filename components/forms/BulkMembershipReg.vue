@@ -185,6 +185,7 @@
 	const contactFullName: Ref<string> = ref("");
 	const contactPhoneNumber: Ref<string> = ref("");
 	const contactEmail: Ref<string> = ref("");
+	const runtimeConfig = useRuntimeConfig();
 
 	watch(selectedFleetId, (newFleetId) => {
 		const fleetDetails = availableFleets.value.find(
@@ -199,20 +200,25 @@
 	async function registerBulkMember(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("http://192.168.18.45:4000/api/v1/memberships/bulk", {
-				method: "POST",
-				body: JSON.stringify(processedFleetData.value),
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error("Failed to create bulk memberships");
-					}
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships/bulk`,
+				{
+					method: "POST",
+					body: JSON.stringify(processedFleetData.value),
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to create bulk memberships"
+							);
+						}
 
-					openToast(
-						"Bulk memberships created successfully.",
-						"success"
-					);
-				},
-			});
+						openToast(
+							"Bulk memberships created successfully.",
+							"success"
+						);
+					},
+				}
+			);
 		} catch (error) {
 			console.log("An error occured: ", error);
 			openToast("Operation failed. Please try again!", "danger");
@@ -264,7 +270,7 @@
 		retrievingFleetList.value = true;
 		try {
 			await $fetch(
-				`http://192.168.18.45:4000/api/v1/fleets/corporate/${getDetails.acc_id}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.acc_id}`,
 				{
 					method: "GET",
 					async onResponse({ response }) {

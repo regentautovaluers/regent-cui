@@ -310,6 +310,7 @@
 	const clientEmail = ref("");
 	const { getDetails } = usePrincipal();
 	const { openToast } = useToast();
+	const runtimeConfig = useRuntimeConfig();
 	const formErrorMessage: Ref<null | string> = ref(null);
 	const userVehicles: Ref<vehicleRegistrationDetails[]> = ref([
 		{
@@ -330,32 +331,35 @@
 		let membershipId = 0;
 
 		try {
-			await $fetch("http://192.168.18.45:4000/api/v1/memberships", {
-				method: "POST",
-				body: JSON.stringify({
-					full_name: clientFullName.value,
-					phone_number: clientPhoneNumber.value,
-					userEmail: clientEmail.value,
-					corporateId: getDetails.acc_id,
-					category: "individual",
-					recordedBy: getDetails.username,
-				}),
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+				{
+					method: "POST",
+					body: JSON.stringify({
+						full_name: clientFullName.value,
+						phone_number: clientPhoneNumber.value,
+						userEmail: clientEmail.value,
+						corporateId: getDetails.acc_id,
+						category: "individual",
+						recordedBy: getDetails.username,
+					}),
 
-				async onResponse({ response }) {
-					console.log(response._data);
-					if (response.status === 201) {
-						membershipId = response._data.id;
-					} else if (response.status === 400) {
-						formErrorMessage.value = response._data.message;
-						openToast("Please check your data!", "warning");
-						formSubmissionLoading.value = false;
-					} else {
-						throw new Error("Something went wrong");
-					}
-				},
-			}).then(async () => {
+					async onResponse({ response }) {
+						console.log(response._data);
+						if (response.status === 201) {
+							membershipId = response._data.id;
+						} else if (response.status === 400) {
+							formErrorMessage.value = response._data.message;
+							openToast("Please check your data!", "warning");
+							formSubmissionLoading.value = false;
+						} else {
+							throw new Error("Something went wrong");
+						}
+					},
+				}
+			).then(async () => {
 				await $fetch(
-					"http://192.168.18.45:4000/api/v1/membershipVehicles",
+					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles`,
 					{
 						method: "POST",
 						body: JSON.stringify({

@@ -209,26 +209,30 @@
 	const page: Ref<number> = ref(0);
 	const size: Ref<number> = ref(205);
 	const { openToast } = useToast();
+	const runtimeConfig = useRuntimeConfig();
 	const membersList: Ref<object[] | null> = ref(null);
 
 	onMounted(async () => {
 		try {
-			await $fetch("http://192.168.18.45:4000/api/v1/memberships", {
-				method: "GET",
-				query: {
-					corporateId: getDetails.acc_id,
-					page: page.value,
-					size: size.value,
-				},
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
-						);
-					}
-					membersList.value = response._data.memberships;
-				},
-			});
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+				{
+					method: "GET",
+					query: {
+						corporateId: getDetails.acc_id,
+						page: page.value,
+						size: size.value,
+					},
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve corporate's members"
+							);
+						}
+						membersList.value = response._data.memberships;
+					},
+				}
+			);
 		} catch (error) {
 			console.log("An error occured: ", error);
 			openToast("Failed to load your members. Reload page!", "danger");
