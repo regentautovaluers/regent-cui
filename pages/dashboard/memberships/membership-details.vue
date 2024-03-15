@@ -73,8 +73,26 @@
 							</thead>
 							<tbody class="divide-y divide-gray-200">
 								<MembershipRecord
-									v-for="a in 5"
-									:client-name="$route.query.clientName as string" />
+									v-for="(
+										record, index
+									) in memberVehiclesList"
+									:key="index"
+									:client-name="$route.query.clientName as string"
+									:membership-id="record.id"
+									:membership-type="
+										record.membershipType.membership_name
+									"
+									:payment-status="record.payment_status"
+									:membership-status="
+										record.membership_status
+									"
+									:vehicle-model="record.model"
+									:vehicle-make="record.make"
+									:membership-end-date="record.end_date"
+									:membership-start-date="record.start_date"
+									:vehicle-registration="
+										record.registration
+									" />
 							</tbody>
 						</table>
 					</div>
@@ -89,5 +107,31 @@
 	definePageMeta({
 		name: "membership-details",
 		layout: "in-app-layout",
+	});
+
+	const { openToast } = useToast();
+	const route = useRoute();
+	const memberVehiclesList: Ref<object[] | null> = ref(null);
+
+	onMounted(async () => {
+		try {
+			await $fetch(
+				`http://192.168.18.45:4000/api/v1/membershipVehicles/membership/${route.query.id}`,
+				{
+					method: "GET",
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve corporate's members"
+							);
+						}
+						memberVehiclesList.value = response._data;
+					},
+				}
+			);
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Failed to load your members. Reload page!", "danger");
+		}
 	});
 </script>

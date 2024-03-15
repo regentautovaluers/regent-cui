@@ -1,30 +1,30 @@
 <template>
 	<tr class="hover:shadow-lg">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-pink-600">
-			KDF 345Y
+			{{ componentProps.vehicleRegistration }}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			11/03/2024
+			{{ componentProps.membershipStartDate }}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			10/03/2025
+			{{ componentProps.membershipEndDate }}
 		</td>
 		<td
 			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
-			<span class="text-start">Toyota</span>
-			<span class="text-start">Camri</span>
+			<span class="text-start">{{ componentProps.vehicleMake }}</span>
+			<span class="text-start">{{ componentProps.vehicleModel }}</span>
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-blue-500">
-			Roadside Assistance
+			{{ capitalizeFirstLetterOfEachWord(componentProps.membershipType) }}
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-green-500">
-			Active
+			{{ capitalizeFirstLetter(componentProps.membershipStatus) }}
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
-			Paid
+			{{ capitalizeFirstLetter(componentProps.paymentStatus) }}
 		</td>
 		<td>
 			<div class="hs-dropdown relative inline-flex [--placement:left]">
@@ -55,13 +55,13 @@
 						:to="{
 							name: 'edit-membership-details',
 							query: {
-								membershipId: 'test-id',
+								membershipId: componentProps.membershipId,
 								vehicleRegistration: 'KDF 345Y',
 								vehicleMake: 'Toyota',
 								vehicleModel: 'Camri',
 								membershipStatus: 'Active',
 								paymentStatus: 'Paid',
-								clientName: componentProps.clientName,
+								clientName: $route.query.clientName,
 							},
 						}"
 						>Edit Membership</NuxtLink
@@ -78,8 +78,51 @@
 
 <script setup lang="ts">
 	export interface ComponentProps {
-		clientName: string;
+		vehicleRegistration: string;
+		membershipStartDate: string;
+		membershipEndDate: string;
+		vehicleMake: string;
+		vehicleModel: string;
+		membershipStatus: string;
+		paymentStatus: string;
+		membershipType: string;
+		membershipId: number;
 	}
 
 	const componentProps = defineProps<ComponentProps>();
+
+	function capitalizeFirstLetterOfEachWord(sentence: string): string {
+		// Check if the sentence is not empty
+		if (sentence && sentence.length > 0) {
+			// Split the sentence into words
+			const words = sentence.split(" ");
+			// Capitalize the first letter of each word
+			const capitalizedWords = words.map((word) => {
+				if (word && word.length > 0) {
+					const firstLetter = word.charAt(0).toUpperCase();
+					const restOfWord = word.slice(1);
+					return firstLetter + restOfWord;
+				}
+				return word;
+			});
+			// Join the words back together with spaces
+			return capitalizedWords.join(" ");
+		}
+		// If the sentence is empty, return it as is
+		return sentence;
+	}
+
+	function capitalizeFirstLetter(word: string): string {
+		// Check if the word is not empty
+		if (word && word.length > 0) {
+			// Extract the first character and convert it to uppercase
+			const firstLetter = word.charAt(0).toUpperCase();
+			// Concatenate the rest of the string starting from the second character
+			const restOfWord = word.slice(1);
+			// Return the modified string
+			return firstLetter + restOfWord;
+		}
+		// If the word is empty, return it as is
+		return word;
+	}
 </script>
