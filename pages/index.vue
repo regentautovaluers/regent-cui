@@ -119,6 +119,7 @@
 	const { openToast } = useToast();
 
 	async function handleLoginFormSubmission(): Promise<void> {
+		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/corp-login", {
 				method: "POST",
@@ -159,6 +160,8 @@
 		} catch (error) {
 			console.log("An error occured: ", error);
 			openToast("Login failed. Please try again!", "danger");
+		} finally {
+			formSubmissionLoading.value = false;
 		}
 	}
 </script>
