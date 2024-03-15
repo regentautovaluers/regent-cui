@@ -98,13 +98,19 @@
 						required
 						v-model="vehicle.make">
 						<option
+							value="Default Make"
+							selected>
+							Default Make
+						</option>
+						<option
 							v-for="(make, index) in [
 								'Make A',
 								'Make B',
 								'Make C',
 								'Make D',
 							]"
-							:key="index">
+							:key="index"
+							:value="make">
 							{{ make }}
 						</option>
 					</select>
@@ -121,6 +127,11 @@
 						id="vehicle-model"
 						required
 						v-model="vehicle.model">
+						<option
+							value="Default Model"
+							selected>
+							Default Model
+						</option>
 						<option
 							v-for="(model, index) in [
 								'Model A',

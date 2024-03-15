@@ -14,7 +14,7 @@
 					id="phone"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="+254704080056"
-					:value="$route.query.memberPhone" />
+					v-model="clientPhone" />
 			</div>
 
 			<!-- Email field -->
@@ -29,7 +29,7 @@
 					id="phone"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="youremail@co.ke"
-					:value="$route.query.memberEmail" />
+					v-model="clientEmail" />
 			</div>
 		</div>
 
@@ -45,7 +45,7 @@
 				id="full-name"
 				class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 				placeholder="Client Name as On Their National ID"
-				:value="$route.query.memberName" />
+				v-model="clientName" />
 		</div>
 
 		<!-- submit button -->
@@ -63,6 +63,44 @@
 </template>
 
 <script setup lang="ts">
+	const route = useRoute();
 	const formSubmissionLoading = ref(false);
-	function updateMemberDetails(): void {}
+	const clientEmail: Ref<string> = ref(route.query.memberEmail as string);
+	const clientPhone: Ref<string> = ref(route.query.memberPhone as string);
+	const clientName: Ref<string> = ref(route.query.memberName as string);
+	const runtimeConfig = useRuntimeConfig();
+	const { openToast } = useToast();
+
+	async function updateMemberDetails(): Promise<void> {
+		formSubmissionLoading.value = true;
+		try {
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships/${route.query.memberId}`,
+				{
+					method: "PATCH",
+					body: JSON.stringify({
+						full_name: clientName.value,
+						phone_number: clientPhone.value,
+						userEmail: clientEmail.value,
+					}),
+
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error("Member details not updated.");
+						}
+
+						openToast(
+							"Member details updated successfully",
+							"success"
+						);
+					},
+				}
+			);
+		} catch (error) {
+			console.log("Error encountered. Reason: ", error);
+			openToast("Failed to update member details. Try again!", "danger");
+		} finally {
+			formSubmissionLoading.value = false;
+		}
+	}
 </script>

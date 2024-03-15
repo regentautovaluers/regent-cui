@@ -155,7 +155,6 @@
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
-										<!-- TODO: remeber to fixup the number of vehicles here to not be hardcoded -->
 										<MembersRecord
 											v-for="(
 												member, index
@@ -207,35 +206,33 @@
 	const totalNumber: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
 	const page: Ref<number> = ref(0);
-	const size: Ref<number> = ref(205);
+	const size: Ref<number> = ref(10);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const membersList: Ref<object[] | null> = ref(null);
 
-	onMounted(async () => {
-		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-				{
-					method: "GET",
-					query: {
-						corporateId: getDetails.acc_id,
-						page: page.value,
-						size: size.value,
-					},
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve corporate's members"
-							);
-						}
-						membersList.value = response._data.memberships;
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Failed to load your members. Reload page!", "danger");
-		}
-	});
+	try {
+		await $fetch(
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+			{
+				method: "GET",
+				query: {
+					corporateId: getDetails.acc_id,
+					page: page.value,
+					size: size.value,
+				},
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error(
+							"Failed to retrieve corporate's members"
+						);
+					}
+					membersList.value = response._data.memberships;
+				},
+			}
+		);
+	} catch (error) {
+		console.log("An error occured: ", error);
+		openToast("Failed to load your members. Reload page!", "danger");
+	}
 </script>

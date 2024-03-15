@@ -30,7 +30,7 @@
 					id="phone"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="youremail@co.ke"
-					:value="$route.query.vehicleRegistration" />
+					v-model="vehicleRegistration" />
 			</div>
 		</div>
 		<!-- Vehicle Make and Model -->
@@ -45,7 +45,9 @@
 				>
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="vehicle-make">
+					id="vehicle-make"
+					v-model="vehicleMake">
+					<option value="Default Make">Default Make</option>
 					<option
 						v-for="(make, index) in [
 							'Make A',
@@ -53,7 +55,8 @@
 							'Make C',
 							'Make D',
 						]"
-						:key="index">
+						:key="index"
+						:value="make">
 						{{ make }}
 					</option>
 				</select>
@@ -67,7 +70,9 @@
 				>
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="vehicle-model">
+					id="vehicle-model"
+					v-model="vehicleModel">
+					<option value="Default Model">Default Model</option>
 					<option
 						v-for="(model, index) in [
 							'Model A',
@@ -75,7 +80,8 @@
 							'Model C',
 							'Model D',
 						]"
-						:key="index">
+						:key="index"
+						:value="model">
 						{{ model }}
 					</option>
 				</select>
@@ -92,10 +98,12 @@
 				>
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="payment-status">
+					id="payment-status"
+					v-model="paymentStatus">
 					<option
 						v-for="(status, index) in ['Paid', 'Not Paid']"
-						:key="index">
+						:key="index"
+						:value="status.toLocaleLowerCase()">
 						{{ status }}
 					</option>
 				</select>
@@ -109,10 +117,12 @@
 				>
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="membership-status">
+					id="membership-status"
+					v-model="membershipStatus">
 					<option
 						v-for="(status, index) in ['Active', 'Not Active']"
-						:key="index">
+						:key="index"
+						:value="status.toLocaleLowerCase()">
 						{{ status }}
 					</option>
 				</select>
@@ -133,5 +143,53 @@
 
 <script setup lang="ts">
 	const formSubmissionLoading = ref(false);
-	function updateMembershipDetails(): void {}
+	const route = useRoute();
+	const runtimeConfig = useRuntimeConfig();
+	const vehicleRegistration: Ref<string> = ref(
+		route.query.vehicleRegistration as string
+	);
+	const vehicleMake: Ref<string> = ref(route.query.vehicleMake as string);
+	const vehicleModel: Ref<string> = ref(route.query.vehicleModel as string);
+	const paymentStatus: Ref<string> = ref(route.query.paymentStatus as string);
+	const membershipStatus: Ref<string> = ref(
+		route.query.membershipStatus as string
+	);
+	const { openToast } = useToast();
+
+	async function updateMembershipDetails(): Promise<void> {
+		formSubmissionLoading.value = true;
+		try {
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/${route.query.membershipId}`,
+				{
+					method: "PATCH",
+					body: JSON.stringify({
+						registration: vehicleRegistration.value,
+						make: vehicleMake.value,
+						model: vehicleModel.value,
+						payment_status: paymentStatus.value,
+						membership_status: membershipStatus.value,
+					}),
+
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error("Member details not updated.");
+						}
+
+						openToast(
+							"Membership details updated successfully",
+							"success"
+						);
+
+						// TODO: Return user back to the page they were on before they came here
+					},
+				}
+			);
+		} catch (error) {
+			console.log("Error encountered. Reason: ", error);
+			openToast("Failed to update member details. Try again!", "danger");
+		} finally {
+			formSubmissionLoading.value = false;
+		}
+	}
 </script>
