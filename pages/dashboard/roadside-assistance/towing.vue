@@ -1,9 +1,11 @@
 <template>
-	<div class="py-10 responsive-view grid grid-cols-[.5fr,.6fr]">
-		<div class="h-full bg-red-500">
-			<h1>Welcome to towing in roadside assistance</h1>
+	<div
+		class="py-10 responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
+		<div
+			class="h-96 lg:h-full w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
+			<GoogleMapsRenderer />
 		</div>
-		<div class="p-5">
+		<div class="p-2 lg:p-5">
 			<h1 class="mb-4 text-3xl antialiased font-semibold">
 				Request Towing
 			</h1>
