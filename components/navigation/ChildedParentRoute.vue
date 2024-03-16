@@ -5,7 +5,9 @@
 		<button
 			type="button"
 			class="hs-accordion-toggle rounded-s-2xl hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent w-full text-start flex items-center gap-x-3.5 py-4 px-2.5 font-semibold hover:bg-gray-100 text-gray-500">
-			<nuxt-icon :name="icon" />
+			<img
+				:src="icon"
+				alt="Route Icon" />
 			<nuxt-link
 				:to="{ name: componentProps.routeName }"
 				@click="
