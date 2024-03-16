@@ -2,17 +2,17 @@ import { Loader } from "@googlemaps/js-api-loader";
 
 export default function () {
 	const runtimeConfig = useRuntimeConfig();
-	const center = reactive({
+	const center = ref({
 		lat: 0,
 		lng: 0,
 	});
-	const pickupPointCoords = reactive({
+	const pickupPointCoords = ref({
 		lat: -1.267451,
 		lng: 36.808521,
 	});
 	const pickupPointName = ref("");
 
-	const dropOffPointCoords = reactive({
+	const dropOffPointCoords = ref({
 		lat: -1.267451,
 		lng: 36.808521,
 	});
@@ -27,14 +27,6 @@ export default function () {
 		const Places = await loader.importLibrary("places");
 		// the center, defaultbounds are not necessary but are best practices to limit/focus search results
 
-		// Create a bounding box with sides ~10km away from the center point
-		const defaultBounds = {
-			north: center.lat + 0.1,
-			south: center.lat - 0.1,
-			east: center.lng + 0.1,
-			west: center.lng - 0.1,
-		};
-
 		//this const will be the first arg for the new instance of the Places API
 
 		const input = document.getElementById(
@@ -43,7 +35,6 @@ export default function () {
 
 		//this object will be our second arg for the new instance of the Places API
 		const options = {
-			bounds: defaultBounds, //optional
 			types: ["establishment"], //optioanl
 			componentRestrictions: { country: "ke" }, //limiter for the places api search
 			fields: ["address_components", "geometry", "icon", "name"], //allows the api to accept these inputs and return similar ones
@@ -57,8 +48,8 @@ export default function () {
 		autocomplete.addListener("place_changed", () => {
 			const place = autocomplete.getPlace(); //this callback is inherent you will see it if you logged autocomplete
 			// console.log("place", place);
-			dropOffPointCoords.lat = place.geometry?.location?.lat();
-			dropOffPointCoords.lng = place.geometry?.location?.lng();
+			dropOffPointCoords.value.lat = place.geometry?.location?.lat();
+			dropOffPointCoords.value.lng = place.geometry?.location?.lng();
 			dropOffPointName.value = `${place.address_components[0].short_name} ${place.address_components[1].short_name}, ${place.address_components[2].short_name}`;
 		});
 	}
@@ -72,14 +63,6 @@ export default function () {
 		const Places = await loader.importLibrary("places");
 		// the center, defaultbounds are not necessary but are best practices to limit/focus search results
 
-		// Create a bounding box with sides ~10km away from the center point
-		const defaultBounds = {
-			north: center.lat + 0.1,
-			south: center.lat - 0.1,
-			east: center.lng + 0.1,
-			west: center.lng - 0.1,
-		};
-
 		//this const will be the first arg for the new instance of the Places API
 
 		const input = document.getElementById(
@@ -88,7 +71,6 @@ export default function () {
 
 		//this object will be our second arg for the new instance of the Places API
 		const options = {
-			bounds: defaultBounds, //optional
 			types: ["establishment"], //optioanl
 			componentRestrictions: { country: "ke" }, //limiter for the places api search
 			fields: ["address_components", "geometry", "icon", "name"], //allows the api to accept these inputs and return similar ones
@@ -102,8 +84,8 @@ export default function () {
 		autocomplete.addListener("place_changed", () => {
 			const place = autocomplete.getPlace(); //this callback is inherent you will see it if you logged autocomplete
 			// console.log("place", place);
-			pickupPointCoords.lat = place.geometry?.location?.lat();
-			pickupPointCoords.lng = place.geometry?.location?.lng();
+			pickupPointCoords.value.lat = place.geometry?.location?.lat();
+			pickupPointCoords.value.lng = place.geometry?.location?.lng();
 			pickupPointName.value = `${place.address_components[0].short_name} ${place.address_components[1].short_name}, ${place.address_components[2].short_name}`;
 		});
 	}

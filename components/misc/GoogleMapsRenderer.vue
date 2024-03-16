@@ -1,7 +1,7 @@
 <template>
 	<GoogleMap
 		:api-key="googleMapsApiKey"
-		style="width: 100%; height: 100%; border-radius: "
+		style="width: 100%; height: 100%"
 		:center="center"
 		:zoom="14">
 		<Marker :options="markerOptions" />
@@ -13,22 +13,21 @@
 <script setup lang="ts">
 	import { GoogleMap, Marker } from "vue3-google-map";
 
-	const { center, pickupPoint, dropOffPoint } = useLocations();
-
+	const { center, pickupPointCoords, dropOffPointCoords } = useLocations();
 	const markerOptions = {
-		position: center,
+		position: center.value,
 		label: "Y",
 		title: "You Are Here",
 		color: "green",
 	};
 	const pickupMarkerOptions = {
-		position: pickupPoint,
+		position: pickupPointCoords.value,
 		label: "P",
 		title: "Pickup Client Here",
 	};
 
 	const dropOffMarkerOptions = {
-		position: dropOffPoint,
+		position: dropOffPointCoords.value,
 		label: "D",
 		title: "Drop Client Here",
 	};
@@ -50,8 +49,8 @@
 				const latitude = position.coords.latitude;
 				const longitude = position.coords.longitude;
 
-				center.lat = latitude;
-				center.lng = longitude;
+				center.value.lat = latitude;
+				center.value.lng = longitude;
 			},
 			// Error callback
 			function (error) {
