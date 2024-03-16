@@ -6,14 +6,17 @@ export default function () {
 		lat: 0,
 		lng: 0,
 	});
-	const pickupPoint = reactive({
-		lat: 0,
-		lng: 0,
+	const pickupPointCoords = reactive({
+		lat: -1.267451,
+		lng: 36.808521,
 	});
-	const dropOffPoint = reactive({
-		lat: 0,
-		lng: 0,
+	const pickupPointName = ref("");
+
+	const dropOffPointCoords = reactive({
+		lat: -1.267451,
+		lng: 36.808521,
 	});
+	const dropOffPointName = ref("");
 
 	async function bindToDropOffLocation() {
 		const loader = new Loader({
@@ -54,8 +57,9 @@ export default function () {
 		autocomplete.addListener("place_changed", () => {
 			const place = autocomplete.getPlace(); //this callback is inherent you will see it if you logged autocomplete
 			// console.log("place", place);
-			dropOffPoint.lat = place.geometry?.location?.lat();
-			dropOffPoint.lng = place.geometry?.location?.lng();
+			dropOffPointCoords.lat = place.geometry?.location?.lat();
+			dropOffPointCoords.lng = place.geometry?.location?.lng();
+			dropOffPointName.value = `${place.address_components[0].short_name} ${place.address_components[1].short_name}, ${place.address_components[2].short_name}`;
 		});
 	}
 
@@ -98,17 +102,18 @@ export default function () {
 		autocomplete.addListener("place_changed", () => {
 			const place = autocomplete.getPlace(); //this callback is inherent you will see it if you logged autocomplete
 			// console.log("place", place);
-			pickupPoint.lat = place.geometry?.location?.lat();
-			pickupPoint.lng = place.geometry?.location?.lng();
-
-			console.log("pickup point: ", pickupPoint);
+			pickupPointCoords.lat = place.geometry?.location?.lat();
+			pickupPointCoords.lng = place.geometry?.location?.lng();
+			pickupPointName.value = `${place.address_components[0].short_name} ${place.address_components[1].short_name}, ${place.address_components[2].short_name}`;
 		});
 	}
 
 	return {
 		center,
-		pickupPoint,
-		dropOffPoint,
+		pickupPointCoords,
+		dropOffPointCoords,
+		pickupPointName,
+		dropOffPointName,
 		bindToDropOffLocation,
 		bindToPickUpLocation,
 	};
