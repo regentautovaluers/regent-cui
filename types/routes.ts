@@ -56,11 +56,7 @@ const applicationRoutes: ApplicationRoute[] = [
 				displayName: "Tyre Change",
 				routeName: "ava-tyre-change",
 			},
-			{
-				id: 3,
-				displayName: "Mobile Service",
-				routeName: "ava-mobile-service",
-			},
+
 			{
 				id: 4,
 				displayName: "Jumpstarting",
@@ -70,6 +66,11 @@ const applicationRoutes: ApplicationRoute[] = [
 				id: 5,
 				displayName: "Fuel Delivery",
 				routeName: "ava-fuel-delivery",
+			},
+			{
+				id: 3,
+				displayName: "Mobile Service",
+				routeName: "ava-mobile-service",
 			},
 			{
 				id: 6,
