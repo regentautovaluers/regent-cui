@@ -56,14 +56,14 @@
 		<!-- pickup location -->
 		<div class="mt-5">
 			<label
-				for="registration-number"
+				for="pickup-location"
 				class="block font-medium mb-2 dark:text-white"
 				>Pickup Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
-					id="registration-number"
+					id="pickup-location"
 					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
 					placeholder="Type an address to search"
 					required />
@@ -77,14 +77,14 @@
 		<!-- drop off location -->
 		<div class="mt-5">
 			<label
-				for="registration-number"
+				for="dropoff-location"
 				class="block font-medium mb-2 dark:text-white"
 				>Drop Off Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
-					id="registration-number"
+					id="dropoff-location"
 					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
 					placeholder="Type an address to search"
 					required />
@@ -140,14 +140,31 @@
 	const vehicleMake: Ref<string> = ref("Test Make");
 	const vehicleModel: Ref<string> = ref("Test Model");
 	const formSubmissionLoading = ref(false);
+	const { bindToDropOffLocation, bindToPickUpLocation } = useLocations();
 
 	const vehicleMakeAndModel = computed(
 		() => `${vehicleMake.value} ${vehicleModel.value}`
 	);
+
+	onMounted(async () => {
+		await bindToPickUpLocation().then(() => bindToDropOffLocation());
+	});
 </script>
 
 <style lang="css">
 	.progressbar {
 		width: v-bind(currentPercentage.value) %;
+	}
+
+	.pac-container {
+		border-radius: 10px;
+		margin-top: 2px;
+		box-shadow: 10px;
+	}
+
+	.pac-item {
+		padding-top: 6px;
+		padding-bottom: 6px;
+		font-size: 12px;
 	}
 </style>
