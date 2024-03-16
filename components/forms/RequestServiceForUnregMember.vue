@@ -1,5 +1,7 @@
 <template>
-	<form class="py-12">
+	<form
+		class="py-12"
+		@submit.prevent="handleServiceReqFormSubmission">
 		<!-- client contacts -->
 		<div
 			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
@@ -15,6 +17,7 @@
 					id="full-name"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="Client Name as On Their National ID"
+					v-model="userName"
 					required />
 			</div>
 
@@ -29,9 +32,26 @@
 					type="text"
 					id="phone"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="+254704080056"
+					placeholder="e.g. 0704080056"
+					v-model="userPhoneNumber"
 					required />
 			</div>
+		</div>
+
+		<!-- Client Email -->
+		<div class="w-full mt-3">
+			<label
+				for="client-email"
+				class="block font-medium mb-2 dark:text-white"
+				>Client Email</label
+			>
+			<input
+				type="text"
+				id="client-email"
+				class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+				placeholder="Valid client's email"
+				v-model="userEmail"
+				required />
 		</div>
 
 		<!-- vehicle registration, make, model -->
@@ -48,7 +68,8 @@
 					type="text"
 					id="vehicle-registration-number"
 					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="KCD 345G"
+					placeholder="e.g.KCD 345G"
+					v-model="vehicleRegistration"
 					required />
 			</div>
 			<!-- Vehicle Make -->
@@ -61,6 +82,7 @@
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					id="vehicle-make"
+					v-model="vehicleMake"
 					required>
 					<option
 						value="Default Make"
@@ -90,6 +112,7 @@
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					id="vehicle-model"
+					v-model="vehicleModel"
 					required>
 					<option
 						value="Default Model"
@@ -110,6 +133,66 @@
 				</select>
 			</div>
 		</div>
+		<!-- fuel type and cost -->
+		<div
+			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0"
+			v-if="componentProps.optionalElementsRendered.includes('fuelData')">
+			<!-- Fuel Type -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="fuel-type"
+					class="block font-medium mb-2 dark:text-white"
+					>Fuel Type</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-type"
+					v-model="fuelType"
+					required>
+					<option
+						value="Select a Fuel Type"
+						selected>
+						Select a Fuel Type
+					</option>
+					<option
+						v-for="(fuelType, index) in [
+							'Diesel',
+							'Petrol',
+							'Kerosene',
+						]"
+						:key="index"
+						:value="fuelType">
+						{{ fuelType }}
+					</option>
+				</select>
+			</div>
+			<!-- Vehicle Model -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="fuel-price"
+					class="block font-medium mb-2 dark:text-white"
+					>Fuel Price</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-price"
+					v-model="fuelAmount"
+					required>
+					<option
+						value="Select Type to See Price"
+						selected>
+						Select Type to See Price
+					</option>
+					<option
+						v-for="(fuelPrice, index) in [1000, 2000, 3000]"
+						:key="index"
+						:value="fuelPrice">
+						{{ fuelPrice }}
+					</option>
+				</select>
+			</div>
+		</div>
+
 		<!-- pickup location -->
 		<div class="mt-5">
 			<label
@@ -161,11 +244,18 @@
 				id="comments-box"
 				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
 				rows="2"
-				placeholder="Provide optional comments for this service request."></textarea>
+				placeholder="Provide optional comments for this service request."
+				v-model="requestRemarks"></textarea>
 		</div>
 
 		<!-- statistics -->
-		<div class="flex justify-between mt-8 space-x-4">
+		<div
+			class="flex justify-between mt-8 space-x-4"
+			v-if="
+				componentProps.optionalElementsRendered.includes(
+					'bottomStatistics'
+				)
+			">
 			<div
 				class="w-1/3 p-4 rounded-md border border-pink-500"
 				v-for="a in 3">
@@ -188,9 +278,81 @@
 </template>
 
 <script setup lang="ts">
+	export interface ComponentProps {
+		backendServiceTypeName: string;
+		clientServiceTypeName: string;
+		optionalElementsRendered: string[];
+	}
+
+	const componentProps = defineProps<ComponentProps>();
 	const formSubmissionLoading = ref(false);
-	const { bindToDropOffLocation, bindToPickUpLocation } = useLocations();
+	const {
+		bindToDropOffLocation,
+		bindToPickUpLocation,
+		pickupPointCoords,
+		dropOffPointCoords,
+		pickupPointName,
+		dropOffPointName,
+	} = useLocations();
 	const { makeServiceRequest } = useServiceRequests();
+	const vehicleRegistration: Ref<string> = ref("");
+	const vehicleMake: Ref<string> = ref("Default Make");
+	const vehicleModel: Ref<string> = ref("Default Model");
+	const userName: Ref<string> = ref("");
+	const userPhoneNumber: Ref<string> = ref("");
+	const userEmail: Ref<string> = ref("");
+	const arrivalDuration: Ref<number> = ref(10);
+	const arrivalDistance: Ref<number> = ref(20);
+	const serviceCost: Ref<number> = ref(1000);
+	const pickupPoint: Ref<string> = ref(pickupPointName);
+	const pickupLatitude: Ref<number> = ref(pickupPointCoords.lat);
+	const pickupLongitude: Ref<number> = ref(pickupPointCoords.lng);
+	const destinationPoint: Ref<string> = ref(dropOffPointName);
+	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.lat);
+	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.lng);
+	const requestRemarks: Ref<string | null> = ref(null);
+	const fuelType: Ref<string | null> = ref(null);
+	const fuelAmount: Ref<number | null> = ref(null);
+	const { openToast } = useToast();
+
+	async function handleServiceReqFormSubmission() {
+		formSubmissionLoading.value = true;
+		try {
+			await makeServiceRequest(
+				userName.value,
+				userPhoneNumber.value,
+				userEmail.value,
+				componentProps.backendServiceTypeName,
+				vehicleRegistration.value,
+				1, // TODO: figure out what this category value here is for
+				arrivalDuration.value,
+				arrivalDistance.value,
+				serviceCost.value,
+				pickupPoint.value,
+				pickupLatitude.value,
+				pickupLongitude.value,
+				destinationPoint.value,
+				destinationLongitude.value,
+				destinationLatitude.value,
+				requestRemarks.value,
+				fuelType.value,
+				fuelAmount.value
+			).then(() => {
+				openToast(
+					`${componentProps.clientServiceTypeName} request succesfully went through!`,
+					"success"
+				);
+			});
+		} catch (err) {
+			console.log("Service request not made. Reason: ", err);
+			openToast(
+				`${componentProps.clientServiceTypeName} request failed to go thorugh!`,
+				"danger"
+			);
+		} finally {
+			formSubmissionLoading.value = false;
+		}
+	}
 
 	onMounted(async () => {
 		await bindToPickUpLocation().then(() => bindToDropOffLocation());

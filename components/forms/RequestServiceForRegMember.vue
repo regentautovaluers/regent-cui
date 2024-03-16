@@ -1,5 +1,7 @@
 <template>
-	<form class="py-12">
+	<form
+		class="py-12"
+		@submit.prevent="handleServiceReqFormSubmission">
 		<div class="w-full">
 			<label
 				for="registration-number"
@@ -11,13 +13,18 @@
 				id="registration-number"
 				class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 peer rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 				placeholder="Provide the registration number to search"
+				v-model="vehicleRegistration"
 				required />
 			<span class="invisible peer-focus:visible text-xs"
 				>Press ENTER key when you're done typing</span
 			>
 		</div>
 		<!-- Progress Bar -->
-		<div class="my-5">
+		<div
+			class="my-5"
+			v-if="
+				componentProps.optionalElementsRendered.includes('progressBar')
+			">
 			<div
 				class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
 				role="progressbar"
@@ -51,6 +58,66 @@
 				:value="vehicleMakeAndModel"
 				disabled
 				required />
+		</div>
+
+		<!-- fuel type and cost -->
+		<div
+			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0"
+			v-if="componentProps.optionalElementsRendered.includes('fuelData')">
+			<!-- Fuel Type -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="fuel-type"
+					class="block font-medium mb-2 dark:text-white"
+					>Fuel Type</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-type"
+					required
+					v-model="fuelType">
+					<option
+						value="Select a Fuel Type"
+						selected>
+						Select a Fuel Type
+					</option>
+					<option
+						v-for="(fuelType, index) in [
+							'Diesel',
+							'Petrol',
+							'Kerosene',
+						]"
+						:key="index"
+						:value="fuelType">
+						{{ fuelType }}
+					</option>
+				</select>
+			</div>
+			<!-- Vehicle Model -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="fuel-price"
+					class="block font-medium mb-2 dark:text-white"
+					>Fuel Price</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-price"
+					v-model="fuelAmount"
+					required>
+					<option
+						value="Select Type to See Price"
+						selected>
+						Select Type to See Price
+					</option>
+					<option
+						v-for="(fuelPrice, index) in [1000, 2000, 3000]"
+						:key="index"
+						:value="fuelPrice">
+						{{ fuelPrice }}
+					</option>
+				</select>
+			</div>
 		</div>
 
 		<!-- pickup location -->
@@ -106,11 +173,18 @@
 				id="comments-box"
 				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
 				rows="2"
-				placeholder="Provide optional comments for this service request."></textarea>
+				placeholder="Provide optional comments for this service request."
+				v-model="requestRemarks"></textarea>
 		</div>
 
 		<!-- statistics -->
-		<div class="flex justify-between mt-8 space-x-4">
+		<div
+			class="flex justify-between mt-8 space-x-4"
+			v-if="
+				componentProps.optionalElementsRendered.includes(
+					'bottomStatistics'
+				)
+			">
 			<div
 				class="w-1/3 p-4 rounded-md border border-pink-500"
 				v-for="a in 3">
@@ -123,7 +197,9 @@
 		<button
 			type="submit"
 			class="py-3 px-4 w-full mt-7 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
-			<span v-if="!formSubmissionLoading">Submit Towing Request</span>
+			<span v-if="!formSubmissionLoading"
+				>Submit {{ componentProps.clientServiceTypeName }} Request</span
+			>
 			<div
 				v-if="formSubmissionLoading"
 				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
@@ -134,17 +210,87 @@
 </template>
 
 <script setup lang="ts">
+	export interface ComponentProps {
+		backendServiceTypeName: string;
+		clientServiceTypeName: string;
+		optionalElementsRendered: string[];
+	}
+
+	const {
+		bindToDropOffLocation,
+		bindToPickUpLocation,
+		pickupPointCoords,
+		dropOffPointCoords,
+		pickupPointName,
+		dropOffPointName,
+	} = useLocations();
+	const componentProps = defineProps<ComponentProps>();
 	const currentPercentage: Ref<number> = ref(80);
-	const vehicleRegistration: Ref<string> = ref("KCG 002G");
 	const distanceLeftForTowing: Ref<number> = ref(16);
-	const vehicleMake: Ref<string> = ref("Test Make");
-	const vehicleModel: Ref<string> = ref("Test Model");
+	const vehicleRegistration: Ref<string> = ref("KCG 002G");
+	const vehicleMake: Ref<string> = ref("Default Make");
+	const vehicleModel: Ref<string> = ref("Default Model");
+	const userName: Ref<string> = ref("Bikathi Martin");
+	const userPhoneNumber: Ref<string> = ref("0113883976");
+	const userEmail: Ref<string> = ref("martbikathi@gmail.com");
 	const formSubmissionLoading = ref(false);
-	const { bindToDropOffLocation, bindToPickUpLocation } = useLocations();
+	const arrivalDuration: Ref<number> = ref(10);
+	const arrivalDistance: Ref<number> = ref(20);
+	const serviceCost: Ref<number> = ref(1000);
+	const pickupPoint: Ref<string> = ref(pickupPointName);
+	const pickupLatitude: Ref<number> = ref(pickupPointCoords.value.lat);
+	const pickupLongitude: Ref<number> = ref(pickupPointCoords.value.lng);
+	const destinationPoint: Ref<string> = ref(dropOffPointName);
+	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.value.lat);
+	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.value.lng);
+	const requestRemarks: Ref<string | null> = ref(null);
+	const fuelType: Ref<string | null> = ref(null);
+	const fuelAmount: Ref<number | null> = ref(null);
+	const { openToast } = useToast();
+	const { makeServiceRequest } = useServiceRequests();
 
 	const vehicleMakeAndModel = computed(
 		() => `${vehicleMake.value} ${vehicleModel.value}`
 	);
+
+	async function handleServiceReqFormSubmission() {
+		formSubmissionLoading.value = true;
+		try {
+			await makeServiceRequest(
+				userName.value,
+				userPhoneNumber.value,
+				userEmail.value,
+				componentProps.backendServiceTypeName,
+				vehicleRegistration.value,
+				1, // TODO: figure out what this category value here is for
+				arrivalDuration.value,
+				arrivalDistance.value,
+				serviceCost.value,
+				pickupPoint.value,
+				pickupLatitude.value,
+				pickupLongitude.value,
+				destinationPoint.value,
+				destinationLongitude.value,
+				destinationLatitude.value,
+				requestRemarks.value,
+				fuelType.value,
+				fuelAmount.value
+			).then(() => {
+				openToast(
+					`${componentProps.clientServiceTypeName} request succesfully went through!`,
+					"success"
+				);
+			});
+		} catch (err) {
+			console.log("Service request not made. Reason: ", err);
+			openToast(
+				`${componentProps.clientServiceTypeName} request failed to go thorugh!`,
+				"danger"
+			);
+		} finally {
+			formSubmissionLoading.value = false;
+		}
+	}
 
 	onMounted(async () => {
 		await bindToPickUpLocation().then(() => bindToDropOffLocation());
