@@ -36,8 +36,16 @@
 					</button>
 				</div>
 			</div>
-			<RequestServiceForRegMember v-if="currentRegForm === 0" />
-			<RequestServiceForUnregMember v-else />
+			<RequestServiceForRegMember
+				v-if="currentRegForm === 0"
+				client-service-type-name="jumpstarting service"
+				backend-service-type-name="Jumpstart"
+				:optional-elements-rendered="['bottomStatistics']" />
+			<RequestServiceForUnregMember
+				v-else
+				client-service-type-name="jumpstarting service"
+				backend-service-type-name="Jumpstart"
+				:optional-elements-rendered="['bottomStatistics']" />
 		</div>
 	</div>
 </template>

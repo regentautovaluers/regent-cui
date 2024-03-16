@@ -11,7 +11,6 @@
 			</h1>
 			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
-				<!-- TODO: fix issue with the border-b class to get rid of white space due to space-x-4 -->
 				<div
 					class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
 					<button
@@ -36,8 +35,16 @@
 					</button>
 				</div>
 			</div>
-			<RequestServiceForRegMember v-if="currentRegForm === 0" />
-			<RequestServiceForUnregMember v-else />
+			<RequestServiceForRegMember
+				v-if="currentRegForm === 0"
+				client-service-type-name="towing service"
+				backend-service-type-name="Tow"
+				:optional-elements-rendered="['bottomStatistics']" />
+			<RequestServiceForUnregMember
+				v-else
+				client-service-type-name="towing service"
+				backend-service-type-name="Tow"
+				:optional-elements-rendered="['bottomStatistics']" />
 		</div>
 	</div>
 </template>

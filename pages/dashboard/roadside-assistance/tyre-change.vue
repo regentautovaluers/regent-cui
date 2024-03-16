@@ -36,8 +36,16 @@
 					</button>
 				</div>
 			</div>
-			<RequestServiceForRegMember v-if="currentRegForm === 0" />
-			<RequestServiceForUnregMember v-else />
+			<RequestServiceForRegMember
+				v-if="currentRegForm === 0"
+				client-service-type-name="tyre change"
+				backend-service-type-name="Tyre"
+				:optional-elements-rendered="['bottomStatistics']" />
+			<RequestServiceForUnregMember
+				v-else
+				client-service-type-name="tyre change"
+				backend-service-type-name="Tyre"
+				:optional-elements-rendered="['bottomStatistics']" />
 		</div>
 	</div>
 </template>
