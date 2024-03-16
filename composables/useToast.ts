@@ -14,12 +14,13 @@ export default function () {
 				description: description,
 			},
 			{
-				timeout: 3500,
+				timeout: 4000,
 				type: type as ToastType,
 				showCloseButton: false,
 				transition: "bounce",
 				hideProgressBar: true,
 				showIcon: true,
+				position: "top-center",
 			}
 		);
 	}
