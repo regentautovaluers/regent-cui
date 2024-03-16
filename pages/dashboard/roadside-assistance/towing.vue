@@ -37,12 +37,15 @@
 			</div>
 			<RequestServiceForRegMember
 				v-if="currentRegForm === 0"
-				client-service-type-name="towing service"
+				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
-				:optional-elements-rendered="['bottomStatistics']" />
+				:optional-elements-rendered="[
+					'bottomStatistics',
+					'progressBar',
+				]" />
 			<RequestServiceForUnregMember
 				v-else
-				client-service-type-name="towing service"
+				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
 				:optional-elements-rendered="['bottomStatistics']" />
 		</div>

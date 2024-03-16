@@ -38,7 +38,7 @@
 			</div>
 			<RequestServiceForRegMember
 				v-if="currentRegForm === 0"
-				client-service-type-name="fuel delivery"
+				client-service-type-name="Fuel Delivery"
 				backend-service-type-name="Fuel Delivery"
 				:optional-elements-rendered="[
 					'bottomStatistics',
@@ -46,7 +46,7 @@
 				]" />
 			<RequestServiceForUnregMember
 				v-else
-				client-service-type-name="fuel delivery"
+				client-service-type-name="Fuel Delivery"
 				backend-service-type-name="Fuel Delivery"
 				:optional-elements-rendered="[
 					'bottomStatistics',

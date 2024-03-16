@@ -38,12 +38,12 @@
 			</div>
 			<RequestServiceForRegMember
 				v-if="currentRegForm === 0"
-				client-service-type-name="jumpstarting service"
+				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
 				:optional-elements-rendered="['bottomStatistics']" />
 			<RequestServiceForUnregMember
 				v-else
-				client-service-type-name="jumpstarting service"
+				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
 				:optional-elements-rendered="['bottomStatistics']" />
 		</div>

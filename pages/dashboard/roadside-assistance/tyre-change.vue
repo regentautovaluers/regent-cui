@@ -38,12 +38,12 @@
 			</div>
 			<RequestServiceForRegMember
 				v-if="currentRegForm === 0"
-				client-service-type-name="tyre change"
+				client-service-type-name="Tyre Change"
 				backend-service-type-name="Tyre"
 				:optional-elements-rendered="['bottomStatistics']" />
 			<RequestServiceForUnregMember
 				v-else
-				client-service-type-name="tyre change"
+				client-service-type-name="Tyre Change"
 				backend-service-type-name="Tyre"
 				:optional-elements-rendered="['bottomStatistics']" />
 		</div>
