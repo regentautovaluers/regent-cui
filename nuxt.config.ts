@@ -1,8 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	routeRules: {
+		// turn of server side rendering for all roadside assistance routes due to Google Maps Rendering
+		"/dashboard/roadside-assistance/": {
+			ssr: false,
+		},
+
+		// turn of SSR for the home route
+		"/": {
+			ssr: false,
+		},
+	},
 	devtools: { enabled: true },
 	css: ["~/assets/css/main.css"],
-	ssr: false,
 	devServer: {
 		port: 8000,
 	},
@@ -43,24 +53,24 @@ export default defineNuxtConfig({
 					rel: "manifest",
 					href: "/manifest.json",
 				},
-				{
-					rel: "stylesheet",
-					href: "./node_modules/apexcharts/dist/apexcharts.css",
-					tagPosition: "head",
-				},
+				// {
+				// 	rel: "stylesheet",
+				// 	href: "./node_modules/apexcharts/dist/apexcharts.css",
+				// 	tagPosition: "head",
+				// },
 			],
 			title: "Regent Auto Valuers",
 			script: [
-				{
-					src: "./node_modules/lodash/lodash.min.js",
-				},
-				{
-					src: "./node_modules/apexcharts/dist/apexcharts.min.js",
-					tagPosition: "bodyClose",
-				},
-				{
-					src: "https://preline.co/assets/js/hs-apexcharts-helpers.js",
-				},
+				// {
+				// 	src: "./node_modules/lodash/lodash.min.js",
+				// },
+				// {
+				// 	src: "./node_modules/apexcharts/dist/apexcharts.min.js",
+				// 	tagPosition: "bodyClose",
+				// },
+				// {
+				// 	src: "https://preline.co/assets/js/hs-apexcharts-helpers.js",
+				// },
 			],
 		},
 	},

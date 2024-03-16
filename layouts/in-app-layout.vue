@@ -216,11 +216,10 @@
 		domain: "localhost",
 		path: "/",
 	});
-	const forgetableAuthToken = useStorage(
-		"corp_auth_token",
-		"",
-		sessionStorage
-	);
+	const forgetableAuthToken =
+		typeof window !== "undefined"
+			? useStorage("corp_auth_token", "", sessionStorage)
+			: null;
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;

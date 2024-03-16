@@ -17,7 +17,6 @@
     "@preline/dropdown": "^2.0.2",
     "@preline/overlay": "^2.0.2",
     "@vueuse/core": "^10.9.0",
-    "apexcharts": "^3.47.0",
     "lodash": "^4.17.21",
     "mosha-vue-toastify": "^1.0.23",
     "nuxt": "^3.10.3",

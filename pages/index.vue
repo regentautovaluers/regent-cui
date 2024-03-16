@@ -110,11 +110,10 @@
 	});
 
 	// we store auth token in session storage if Remember me is unselected
-	const forgetableAuthToken = useStorage(
-		"corp_auth_token",
-		"",
-		sessionStorage
-	);
+	const forgetableAuthToken =
+		typeof window !== "undefined"
+			? useStorage("corp_auth_token", "", sessionStorage)
+			: null;
 	const { setDetails } = usePrincipal();
 	const { openToast } = useToast();
 

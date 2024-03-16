@@ -38,9 +38,7 @@
 									class="flex space-x-3 items-center"
 									v-for="(
 										benefit, index
-									) in cleanupMembershipBenefits(
-										membership.benefits
-									)"
+									) in membership.benefits"
 									:key="index">
 									<svg
 										class="flex-shrink-0 size-4 mt-0.5 group-hover:text-white text-black"
@@ -104,31 +102,38 @@
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 
-	function cleanupMembershipBenefits(inputString: string) {
-		// Step 1: Parse the string into an array
-		let array = JSON.parse(inputString);
+	// function cleanupMembershipBenefits(inputString: string) {
+	// 	// Step 1: Parse the string into an array
+	// 	let array = JSON.parse(inputString);
 
-		// Step 2: Iterate over the array to clean each string
-		let cleanedArray = array.map((item: string) => {
-			// Remove unnecessary characters (e.g., backslashes)
-			let cleanedItem = item.replace(/\\/g, "");
-			// Ensure the string is properly formatted as a sentence
-			cleanedItem =
-				cleanedItem.charAt(0).toUpperCase() + cleanedItem.slice(1);
-			return cleanedItem;
-		});
+	// 	// Step 2: Iterate over the array to clean each string
+	// 	let cleanedArray = array.map((item: string) => {
+	// 		// Remove unnecessary characters (e.g., backslashes)
+	// 		let cleanedItem = item.replace(/\\/g, "");
+	// 		// Ensure the string is properly formatted as a sentence
+	// 		cleanedItem =
+	// 			cleanedItem.charAt(0).toUpperCase() + cleanedItem.slice(1);
+	// 		return cleanedItem;
+	// 	});
 
-		// Step 3: Return the cleaned array
-		return cleanedArray;
-	}
+	// 	// Step 3: Return the cleaned array
+	// 	return cleanedArray;
+	// }
 
 	onMounted(async () => {
+		console.log("component mounted...");
+		console.log(
+			"making request to: ",
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershiptypes`
+		);
 		try {
 			await $fetch(
 				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershiptypes`,
 				{
 					method: "GET",
 					async onResponse({ response }) {
+						console.log("response status: ", response.status);
+						console.log("response body: ", response._data);
 						if (response.status !== 200) {
 							throw new Error(
 								"Failed to retrieve membership types"
