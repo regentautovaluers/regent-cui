@@ -89,5 +89,8 @@ export default defineNuxtConfig({
 		public: {
 			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
 		},
+		app: {
+			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
+		},
 	},
 });
