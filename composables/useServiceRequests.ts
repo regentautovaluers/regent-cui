@@ -19,52 +19,6 @@ export default function () {
 		fuelType: string | null,
 		fuelAmount: number | null
 	) {
-		/*
-		try {
-			await $fetch("https://app.ava.ke/Dispatch/websiteCreate", {
-				method: "POST",
-				query: {
-					appUserName: userName,
-					appUserPhone: userPhoneNumber,
-					appUserEmail: userEmail,
-					appServiceType: serviceType,
-					appRegistration: vehicleRegistration,
-					appCategory: category,
-					appDuration: `${arrivalDuration} mins`,
-					appDistance: `${arrivalDistance} km`,
-					appCost: serviceCost,
-					appPickupPoint: pickupPoint,
-					appPickupLat: pickupLatitude,
-					appPickupLon: pickupLongitude,
-					appDestinationPoint: destinationPoint,
-					appDestinationLat: destinationLatitude,
-					appDestinationLon: destinationLongitude,
-					...(requestRemarks !== null ? { appRemarks: requestRemarks } : {}),
-					...(fuelType !== null
-						? { appFuelType: fuelType }
-						: {}),
-					...(fuelAmount !== null
-						? { appFuelAmount: fuelAmount }
-						: {}),
-				},
-
-				async onResponse({ response }) {
-					console.log("Make service response body: ", response._data);
-					console.log(
-						"Make service response status: ",
-						response.status
-					);
-					// if (response.status !== 200) {
-					// 	throw new Error("Member details not updated.");
-					// }
-
-					// TODO: Return user back to the page they were on before they came here
-				},
-			});
-		} catch (error) {
-			console.log("Error encountered. Reason: ", error);
-		}
-		*/
 		console.log(
 			"Provided data: ",
 			JSON.stringify(
@@ -96,6 +50,49 @@ export default function () {
 				2
 			)
 		);
+		try {
+			await $fetch("https://app.ava.ke/Dispatch/websiteCreate", {
+				method: "POST",
+				query: {
+					appUserName: userName,
+					appUserPhone: userPhoneNumber,
+					appUserEmail: userEmail,
+					appServiceType: serviceType,
+					appRegistration: vehicleRegistration,
+					appCategory: category,
+					appDuration: `${arrivalDuration} mins`,
+					appDistance: `${arrivalDistance} km`,
+					appCost: serviceCost,
+					appPickupPoint: pickupPoint,
+					appPickupLat: pickupLatitude,
+					appPickupLon: pickupLongitude,
+					appDestinationPoint: destinationPoint,
+					appDestinationLat: destinationLatitude,
+					appDestinationLon: destinationLongitude,
+					...(requestRemarks !== null
+						? { appRemarks: requestRemarks }
+						: {}),
+					...(fuelType !== null ? { appFuelType: fuelType } : {}),
+					...(fuelAmount !== null
+						? { appFuelAmount: fuelAmount }
+						: {}),
+				},
+
+				async onResponse({ response }) {
+					console.log("Make service response body: ", response._data);
+					console.log(
+						"Make service response status: ",
+						response.status
+					);
+					if (response.status !== 200) {
+						throw new Error("Member details not updated.");
+					}
+				},
+			});
+		} catch (error) {
+			console.log("Service request error encountered. Reason: ", error);
+			throw new Error("Service request not made!");
+		}
 	}
 
 	return { makeServiceRequest };
