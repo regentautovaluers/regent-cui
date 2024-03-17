@@ -104,6 +104,7 @@
 	const runtimeConfig = useRuntimeConfig();
 	const corporateFleets: Ref<Object[] | null> = ref(null);
 	const showAddToFleetsForm: Ref<boolean> = ref(false);
+	const formSubmissionLoading: Ref<boolean> = ref(false);
 
 	try {
 		await $fetch(
