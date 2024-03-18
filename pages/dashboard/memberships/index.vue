@@ -12,7 +12,7 @@
 					<span class="text-blue-600 font-semibold"
 						>Hi, {{ getDetails.username }}</span
 					>
-					<span>You Have 4050 Registered Members</span>
+					<span>You Have {{ totalNumber }} Registered Members</span>
 				</div>
 			</div>
 			<NuxtLink
@@ -21,7 +21,8 @@
 				>ADD A NEW MEMBER</NuxtLink
 			>
 		</div>
-		<div class="mt-6 grid grid-cols-1 lg:grid-cols-[0.75fr,auto]">
+		<div class="mt-6 grid grid-cols-1">
+			<!-- place 'lg:grid-cols-[0.75fr,auto]' into the classes list at this line -->
 			<div class="p-2">
 				<!-- search & filter controls -->
 				<div
@@ -48,7 +49,7 @@
 								id="hs-dropdown-default"
 								type="button"
 								class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-								Membership Type
+								Membership Category
 								<svg
 									class="hs-dropdown-open:rotate-180 size-4"
 									xmlns="http://www.w3.org/2000/svg"
@@ -63,59 +64,36 @@
 									<path d="m6 9 6 6 6-6" />
 								</svg>
 							</button>
-
 							<div
-								class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
+								class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2"
 								aria-labelledby="hs-dropdown-default">
-								<a
-									class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-									href="#">
-									Newsletter
-								</a>
-								<a
-									class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-									href="#">
-									Purchases
-								</a>
-							</div>
-						</div>
-
-						<!-- TODO: filter by date/ period -->
-						<div
-							class="hs-dropdown relative inline-flex [--placement:bottom-right]">
-							<button
-								id="hs-dropdown-default"
-								type="button"
-								class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-								Filter Period
-								<svg
-									class="hs-dropdown-open:rotate-180 size-4"
-									xmlns="http://www.w3.org/2000/svg"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round">
-									<path d="m6 9 6 6 6-6" />
-								</svg>
-							</button>
-
-							<div
-								class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
-								aria-labelledby="hs-dropdown-default">
-								<a
-									class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-									href="#">
-									Newsletter
-								</a>
-								<a
-									class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-									href="#">
-									Purchases
-								</a>
+								<div
+									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+									<input
+										type="radio"
+										name="hs-default-radio"
+										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+										id="hs-default-radio" />
+									<label
+										for="hs-default-radio"
+										class="text-gray-500 ms-2 dark:text-gray-400"
+										>Corporate Registration</label
+									>
+								</div>
+								<div
+									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+									<input
+										type="radio"
+										name="hs-default-radio"
+										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+										id="hs-checked-radio"
+										checked />
+									<label
+										for="hs-checked-radio"
+										class="text-gray-500 ms-2 dark:text-gray-400"
+										>Individual Registration</label
+									>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -187,12 +165,11 @@
 				<!-- end of data table -->
 				<div class="mt-2 w-full rounded-sm flex justify-between py-2">
 					<span
-						>Showing {{ pageSize }} of
-						{{ totalNumber }} members.</span
+						>Showing {{ page + 1 }} of {{ totalPages }} pages.</span
 					>
 				</div>
 			</div>
-			<div class="bg-green-700 p-2"></div>
+			<!-- <div class="bg-green-700 p-2"></div> -->
 		</div>
 	</div>
 </template>
@@ -207,6 +184,7 @@
 	const { getDetails } = usePrincipal();
 	const page: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
+	const totalPages: Ref<number> = ref(0);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const membersList: Ref<object[] | null> = ref(null);
@@ -228,6 +206,8 @@
 						);
 					}
 					membersList.value = response._data.memberships;
+					totalNumber.value = response._data.totalCount;
+					totalPages.value = response._data.totalPages;
 				},
 			}
 		);
