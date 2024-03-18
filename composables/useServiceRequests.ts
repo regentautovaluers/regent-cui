@@ -1,4 +1,5 @@
 export default function () {
+	const runtimeConfig = useRuntimeConfig();
 	async function makeServiceRequest(
 		userName: string,
 		userPhoneNumber: string,
@@ -19,13 +20,16 @@ export default function () {
 		fuelType: string | null,
 		fuelAmount: number | null
 	) {
+		/*
 		console.log(
 			"Provided data: ",
 			JSON.stringify(
 				{
 					appUserName: userName,
 					appUserPhone: userPhoneNumber,
-					appUserEmail: userEmail,
+					...(userEmail !== undefined
+						? { appUserEmail: userEmail }
+						: {}),
 					appServiceType: serviceType,
 					appRegistration: vehicleRegistration,
 					appCategory: category,
@@ -50,45 +54,55 @@ export default function () {
 				2
 			)
 		);
-		try {
-			await $fetch("https://app.ava.ke/Dispatch/websiteCreate", {
-				method: "POST",
-				query: {
-					appUserName: userName,
-					appUserPhone: userPhoneNumber,
-					appUserEmail: userEmail,
-					appServiceType: serviceType,
-					appRegistration: vehicleRegistration,
-					appCategory: category,
-					appDuration: `${arrivalDuration} mins`,
-					appDistance: `${arrivalDistance} km`,
-					appCost: serviceCost,
-					appPickupPoint: pickupPoint,
-					appPickupLat: pickupLatitude,
-					appPickupLon: pickupLongitude,
-					appDestinationPoint: destinationPoint,
-					appDestinationLat: destinationLatitude,
-					appDestinationLon: destinationLongitude,
-					...(requestRemarks !== null
-						? { appRemarks: requestRemarks }
-						: {}),
-					...(fuelType !== null ? { appFuelType: fuelType } : {}),
-					...(fuelAmount !== null
-						? { appFuelAmount: fuelAmount }
-						: {}),
-				},
+		*/
 
-				async onResponse({ response }) {
-					console.log("Make service response body: ", response._data);
-					console.log(
-						"Make service response status: ",
-						response.status
-					);
-					if (response.status !== 200) {
-						throw new Error("Member details not updated.");
-					}
-				},
-			});
+		try {
+			await $fetch(
+				`${runtimeConfig.public.AVA_BASE_URL}/Dispatch/websiteCreate`,
+				{
+					method: "POST",
+					query: {
+						appUserName: userName,
+						appUserPhone: userPhoneNumber,
+						...(userEmail !== undefined
+							? { appUserEmail: userEmail }
+							: {}),
+						appServiceType: serviceType,
+						appRegistration: vehicleRegistration,
+						appCategory: category,
+						appDuration: `${arrivalDuration} mins`,
+						appDistance: `${arrivalDistance} km`,
+						appCost: serviceCost,
+						appPickupPoint: pickupPoint,
+						appPickupLat: pickupLatitude,
+						appPickupLon: pickupLongitude,
+						appDestinationPoint: destinationPoint,
+						appDestinationLat: destinationLatitude,
+						appDestinationLon: destinationLongitude,
+						...(requestRemarks !== null
+							? { appRemarks: requestRemarks }
+							: {}),
+						...(fuelType !== null ? { appFuelType: fuelType } : {}),
+						...(fuelAmount !== null
+							? { appFuelAmount: fuelAmount }
+							: {}),
+					},
+
+					async onResponse({ response }) {
+						console.log(
+							"Make service response body: ",
+							response._data
+						);
+						console.log(
+							"Make service response status: ",
+							response.status
+						);
+						if (response.status !== 200) {
+							throw new Error("Member details not updated.");
+						}
+					},
+				}
+			);
 		} catch (error) {
 			console.log("Service request error encountered. Reason: ", error);
 			throw new Error("Service request not made!");

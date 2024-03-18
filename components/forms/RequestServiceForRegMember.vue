@@ -2,7 +2,7 @@
 	<form
 		class="py-12"
 		@submit.prevent="handleServiceReqFormSubmission">
-		<div class="w-full">
+		<div class="w-full registration relative">
 			<label
 				for="registration-number"
 				class="block font-medium mb-2 dark:text-white"
@@ -14,7 +14,13 @@
 				class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 peer rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 				placeholder="Provide the registration number to search"
 				v-model="vehicleRegistration"
+				@keypress.enter.prevent="handleRegistrationInputEnterEvent"
 				required />
+			<div
+				v-if="vehicleSearchLoading"
+				class="absolute top-[45%] right-4 animate-spin inline-block size-5 border-[2px] border-gray-500 border-current border-t-transparent rounded-full"
+				role="status"
+				aria-label="loading" />
 			<span class="invisible peer-focus:visible text-xs"
 				>Press ENTER key when you're done typing</span
 			>
@@ -225,14 +231,17 @@
 		dropOffPointName,
 	} = useLocations();
 	const componentProps = defineProps<ComponentProps>();
+	const { getDetails } = usePrincipal();
+	const runtimeConfig = useRuntimeConfig();
+	const vehicleSearchLoading: Ref<boolean> = ref(false);
 	const currentPercentage: Ref<number> = ref(80);
 	const distanceLeftForTowing: Ref<number> = ref(16);
-	const vehicleRegistration: Ref<string> = ref("KCG 002G");
-	const vehicleMake: Ref<string> = ref("Default Make");
-	const vehicleModel: Ref<string> = ref("Default Model");
-	const userName: Ref<string> = ref("Bikathi Martin");
-	const userPhoneNumber: Ref<string> = ref("0113883976");
-	const userEmail: Ref<string> = ref("martbikathi@gmail.com");
+	const vehicleRegistration: Ref<string> = ref("");
+	const vehicleMake: Ref<string> = ref("");
+	const vehicleModel: Ref<string> = ref("");
+	const userName: Ref<string> = ref("");
+	const userPhoneNumber: Ref<string> = ref("");
+	const userEmail: Ref<string | null> = ref(null);
 	const formSubmissionLoading = ref(false);
 	const arrivalDuration: Ref<number> = ref(10);
 	const arrivalDistance: Ref<number> = ref(20);
@@ -289,6 +298,61 @@
 			);
 		} finally {
 			formSubmissionLoading.value = false;
+		}
+	}
+
+	async function handleRegistrationInputEnterEvent(): Promise<void> {
+		if (vehicleRegistration.value !== "") {
+			vehicleSearchLoading.value = true;
+			try {
+				await $fetch(
+					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/bookings`,
+					{
+						method: "GET",
+						query: {
+							registration: vehicleRegistration.value,
+							corporateId: getDetails.acc_id,
+						},
+						async onResponse({ response }) {
+							if (response.status === 404) {
+								openToast(
+									"Vehicle registration not found. Please search again!",
+									"warning"
+								);
+								vehicleRegistration.value = "";
+							} else {
+								openToast(
+									"Vehicle registration found. Necessary fields autohandled!",
+									"success"
+								);
+
+								// fill the needed fields
+								const registrationDetails = response._data;
+								vehicleRegistration.value =
+									registrationDetails.membershipVehicle.registration;
+								userName.value =
+									registrationDetails.membership.full_name;
+								userPhoneNumber.value =
+									registrationDetails.membership.phone_number.replace(
+										"+254",
+										"0"
+									);
+								vehicleMake.value =
+									registrationDetails.membershipVehicle.make;
+								vehicleModel.value =
+									registrationDetails.membershipVehicle.model;
+							}
+						},
+					}
+				);
+			} catch (error) {
+				console.log("An error occured: ", error);
+				openToast("Search failed. Please try again!", "danger");
+			} finally {
+				vehicleSearchLoading.value = false;
+			}
+		} else {
+			openToast("Please provide a registration number!", "warning");
 		}
 	}
 
