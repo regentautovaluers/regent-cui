@@ -123,7 +123,6 @@
 	}
 
 	onMounted(async () => {
-		console.log("component mounted...");
 		console.log(
 			"making request to: ",
 			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershiptypes`
