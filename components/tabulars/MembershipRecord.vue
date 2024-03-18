@@ -26,32 +26,6 @@
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
 			{{ capitalizeFirstLetter(componentProps.paymentStatus) }}
 		</td>
-		<NuxtLink
-			class="flex items-center gap-x-3.5 p-3 rounded-t-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none"
-			:to="{
-				name: 'edit-membership-details',
-				query: {
-					membershipId: componentProps.membershipId,
-					vehicleRegistration: componentProps.vehicleRegistration,
-					vehicleMake: componentProps.vehicleMake,
-					vehicleModel: componentProps.vehicleModel,
-					membershipStatus: componentProps.membershipStatus,
-					paymentStatus: componentProps.paymentStatus,
-					clientName: $route.query.clientName,
-				},
-			}"
-			>Edit Membership</NuxtLink
-		>
-		<button
-			class="flex items-center gap-x-3.5 p-3 rounded-b-lg w-full text-sm text-red-700 hover:bg-red-300 focus:outline-none"
-			@click="deleteMembershipRecord">
-			<span>Delete Membership</span>
-			<div
-				v-if="deleteMembershipLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-				role="status"
-				aria-label="loading" />
-		</button>
 		<td>
 			<div class="hs-dropdown relative inline-flex [--placement:left]">
 				<button
@@ -91,12 +65,12 @@
 								clientName: $route.query.clientName,
 							},
 						}"
-						>Edit Membership</NuxtLink
+						>Edit Vehicle</NuxtLink
 					>
 					<button
 						class="flex items-center gap-x-3.5 p-3 rounded-b-lg w-full text-sm text-red-700 hover:bg-red-300 focus:outline-none"
 						@click="deleteMembershipRecord">
-						<span>Delete Membership</span>
+						<span>Delete Vehicle</span>
 						<div
 							v-if="deleteMembershipLoading"
 							class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
