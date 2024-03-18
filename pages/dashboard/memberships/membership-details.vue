@@ -114,25 +114,23 @@
 	const memberVehiclesList: Ref<object[] | null> = ref(null);
 	const runtimeConfig = useRuntimeConfig();
 
-	onMounted(async () => {
-		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/membership/${route.query.id}`,
-				{
-					method: "GET",
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve corporate's members"
-							);
-						}
-						memberVehiclesList.value = response._data;
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Failed to load your members. Reload page!", "danger");
-		}
-	});
+	try {
+		await $fetch(
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/membership/${route.query.id}`,
+			{
+				method: "GET",
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error(
+							"Failed to retrieve corporate's members"
+						);
+					}
+					memberVehiclesList.value = response._data;
+				},
+			}
+		);
+	} catch (error) {
+		console.log("An error occured: ", error);
+		openToast("Failed to load your members. Reload page!", "danger");
+	}
 </script>
