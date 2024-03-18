@@ -133,7 +133,13 @@
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
+										<MembersTableLoader
+											v-if="displayLoader" />
 										<MembersRecord
+											v-else-if="
+												!displayLoader &&
+												membersList?.length > 1
+											"
 											v-for="(
 												member, index
 											) in membersList"
@@ -179,17 +185,18 @@
 		name: "memberships-home",
 		layout: "in-app-layout",
 	});
-	const pageSize: Ref<number> = ref(10);
 	const totalNumber: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
 	const page: Ref<number> = ref(0);
-	const size: Ref<number> = ref(10);
+	const size: Ref<number> = ref(100);
 	const totalPages: Ref<number> = ref(0);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const membersList: Ref<object[] | null> = ref(null);
+	const displayLoader: Ref<boolean> = ref(false);
 
 	try {
+		displayLoader.value = true;
 		await $fetch(
 			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
 			{
@@ -208,6 +215,9 @@
 					membersList.value = response._data.memberships;
 					totalNumber.value = response._data.totalCount;
 					totalPages.value = response._data.totalPages;
+
+					// disable loader
+					displayLoader.value = false;
 				},
 			}
 		);
