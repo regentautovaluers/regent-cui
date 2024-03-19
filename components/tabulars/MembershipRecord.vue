@@ -150,14 +150,11 @@
 						}
 
 						openToast(
-							"Member details deleted successfully. Page will redirect!",
+							"Member details deleted successfully. Page should redirect!",
 							"success"
 						);
 
-						// TODO: Ensure that the page goes back to where the user previously was
-						router.push({
-							name: "",
-						});
+						router.back();
 					},
 				}
 			);
