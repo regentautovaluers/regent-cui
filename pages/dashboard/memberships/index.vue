@@ -138,11 +138,11 @@
 										<MembersRecord
 											v-else-if="
 												!displayLoader &&
-												membersList?.length > 1
+												computedPagedList?.length >= 1
 											"
 											v-for="(
 												member, index
-											) in membersList"
+											) in computedPagedList"
 											:key="index"
 											:member-name="member.full_name"
 											:membership-category="
@@ -169,10 +169,30 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div class="mt-2 w-full rounded-sm flex justify-between py-2">
+				<div
+					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 					<span
 						>Showing {{ page + 1 }} of {{ totalPages }} pages.</span
 					>
+					<div class="space-x-1">
+						<!-- <button
+							@click="nextPage"
+							type="button"
+							class="p-2 size-10 inline-flex justify-center text-sm font-semibold rounded-full border bg-transparent text-blue-500 hover:text-white bg-blue-200 hover:bg-blue-700">
+							1
+						</button> -->
+						<button
+							@click="nextPage"
+							type="button"
+							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+							<span v-if="!fetchingMoreData">Next Page</span>
+							<div
+								v-if="fetchingMoreData"
+								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								role="status"
+								aria-label="loading" />
+						</button>
+					</div>
 				</div>
 			</div>
 			<!-- <div class="bg-green-700 p-2"></div> -->
@@ -188,12 +208,67 @@
 	const totalNumber: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
 	const page: Ref<number> = ref(0);
-	const size: Ref<number> = ref(100);
+	const size: Ref<number> = ref(10);
 	const totalPages: Ref<number> = ref(0);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
-	const membersList: Ref<object[] | null> = ref(null);
+	const membersList: Ref<object[]> = ref([]);
 	const displayLoader: Ref<boolean> = ref(false);
+	const fetchingMoreData: Ref<boolean> = ref(false);
+
+	const computedPagedList = computed(() => {
+		const start = (page.value + 1 - 1) * size.value;
+		const end = start + size.value;
+
+		if (membersList.value?.length !== 0) {
+			if (membersList.value?.length < 1) {
+				return membersList.value;
+			} else {
+				return membersList.value?.slice(start, end);
+			}
+		}
+	});
+
+	watch(page, async (newValue, oldValue) => {
+		if (newValue > oldValue) {
+			fetchingMoreData.value = true;
+			try {
+				await $fetch(
+					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+					{
+						method: "GET",
+						query: {
+							corporateId: getDetails.acc_id,
+							page: newValue,
+							size: size.value,
+						},
+						async onResponse({ response }) {
+							if (response.status !== 200) {
+								throw new Error(
+									"Failed to retrieve corporate's members"
+								);
+							}
+							membersList.value = membersList?.value?.concat(
+								response._data.memberships
+							);
+							console.log(
+								"Length of members list after watcher: ",
+								membersList?.value?.length
+							);
+						},
+					}
+				);
+			} catch (error) {
+				console.log("An error occured: ", error);
+				openToast(
+					"Failed to load more members. Reload page!",
+					"danger"
+				);
+			} finally {
+				fetchingMoreData.value = false;
+			}
+		}
+	});
 
 	try {
 		displayLoader.value = true;
@@ -213,6 +288,10 @@
 						);
 					}
 					membersList.value = response._data.memberships;
+					console.log(
+						"Size of members afer page load: ",
+						membersList?.value?.length
+					);
 					totalNumber.value = response._data.totalCount;
 					totalPages.value = response._data.totalPages;
 
@@ -224,5 +303,11 @@
 	} catch (error) {
 		console.log("An error occured: ", error);
 		openToast("Failed to load your members. Reload page!", "danger");
+	}
+
+	function nextPage(): void {
+		if (page.value + 1 < totalPages.value) {
+			page.value++;
+		}
 	}
 </script>
