@@ -17,7 +17,7 @@
 				</button>
 				<!-- End Navigation Toggle -->
 				<h1 class="text-2xl md:text-3xl font-semibold hidden md:flex">
-					{{ currentRoute }}
+					{{ currentRoute || computedCurrentRoute }}
 				</h1>
 			</div>
 
@@ -169,10 +169,8 @@
 							class="flex items-center gap-x-3.5 w-full py-5 rounded-s-2xl px-2.5 bg-gray-100 hover:bg-gray-100 font-semibold border-r-4 border-r-blue-600 text-gray-500"
 							@click="handleClientLogout">
 							<img
-				src="/icons/sidenav/logout-icon.svg"
-				alt="Route Icon" /><span
-								>Logout</span
-							>
+								src="/icons/sidenav/logout-icon.svg"
+								alt="Route Icon" /><span>Logout</span>
 						</button>
 					</li>
 				</ul>
@@ -198,18 +196,20 @@
 	const notificationCount: Ref<number> = ref(10);
 	const messageCount: Ref<number> = ref(10);
 	const currentRoute: Ref<string | null> = ref(null);
-	// const computedCurrentRoute = computed((): string => {
-	// 	if(route.name === 'dashboard-home') {
-	// 		return "Home";
-	// 	}
+	const computedCurrentRoute = computed((): string | null => {
+		if (route.name === "dashboard-home") {
+			return "Home";
+		}
 
-	// 	const currentRoutePath = route.path;
-	// 	const currentRoutePathTokens = currentRoutePath.split("/");
+		const currentRoutePath = route.path;
+		const currentRoutePathTokens = currentRoutePath.split("/");
 
-	// 	return capitalizeFirstLetterOfEachWord(
-	// 		currentRoutePathTokens[2].split("-").join(" ")
-	// 	);
-	// });
+		return currentRoutePathTokens.length > 2
+			? capitalizeFirstLetterOfEachWord(
+					currentRoutePathTokens[2].split("-").join(" ")
+			  )
+			: null;
+	});
 	const { getDetails, nullOutDetails } = usePrincipal();
 	const { openToast } = useToast();
 	const rememberableAuthToken = useCookie("corp_auth_token", {
