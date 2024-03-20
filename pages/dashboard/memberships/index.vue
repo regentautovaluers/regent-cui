@@ -103,7 +103,7 @@
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
 							<div
-								class="border rounded-sm shadow overflow-hidden">
+								class="border rounded-lg shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -133,35 +133,22 @@
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
-										<MembersTableLoader
-											v-if="displayLoader" />
-										<MembersRecord
-											v-else-if="
-												!displayLoader &&
-												computedPagedList?.length >= 1
-											"
-											v-for="(
-												member, index
-											) in computedPagedList"
-											:key="index"
-											:member-name="member.full_name"
-											:membership-category="
-												member.category
-											"
-											:id="member.id"
-											:number-of-vehicles="
-												member.membershipVehicleCount
-											"
-											:member-email="
-												!member.userEmail
-													? 'Email not provided'
-													: member.userEmail
-											"
-											:member-phone="
-												!member.phone_number
-													? 'Phone number not provided'
-													: member.phone_number
-											" />
+										<Suspense>
+											<template #default>
+												<MembersRecord
+													@total-number="
+														(totalMembers) =>
+															(totalNumber =
+																totalMembers)
+													" />
+											</template>
+
+											<template #fallback>
+												<MembersTableLoader
+													v-for="a in 5"
+													:key="a" />
+											</template>
+										</Suspense>
 									</tbody>
 								</table>
 							</div>
@@ -169,18 +156,18 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div
+				<!-- <div
 					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 					<span
 						>Showing {{ page + 1 }} of {{ totalPages }} pages.</span
 					>
 					<div class="space-x-1">
-						<!-- <button
+						<button
 							@click="nextPage"
 							type="button"
 							class="p-2 size-10 inline-flex justify-center text-sm font-semibold rounded-full border bg-transparent text-blue-500 hover:text-white bg-blue-200 hover:bg-blue-700">
 							1
-						</button> -->
+						</button>
 						<button
 							@click="nextPage"
 							type="button"
@@ -193,7 +180,7 @@
 								aria-label="loading" />
 						</button>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<!-- <div class="bg-green-700 p-2"></div> -->
 		</div>
@@ -207,107 +194,4 @@
 	});
 	const totalNumber: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
-	const page: Ref<number> = ref(0);
-	const size: Ref<number> = ref(10);
-	const totalPages: Ref<number> = ref(0);
-	const { openToast } = useToast();
-	const runtimeConfig = useRuntimeConfig();
-	const membersList: Ref<object[]> = ref([]);
-	const displayLoader: Ref<boolean> = ref(false);
-	const fetchingMoreData: Ref<boolean> = ref(false);
-
-	const computedPagedList = computed(() => {
-		const start = (page.value + 1 - 1) * size.value;
-		const end = start + size.value;
-
-		if (membersList.value?.length !== 0) {
-			if (membersList.value?.length < 1) {
-				return membersList.value;
-			} else {
-				return membersList.value?.slice(start, end);
-			}
-		}
-	});
-
-	watch(page, async (newValue, oldValue) => {
-		if (newValue > oldValue) {
-			fetchingMoreData.value = true;
-			try {
-				await $fetch(
-					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-					{
-						method: "GET",
-						query: {
-							corporateId: getDetails.acc_id,
-							page: newValue,
-							size: size.value,
-						},
-						async onResponse({ response }) {
-							if (response.status !== 200) {
-								throw new Error(
-									"Failed to retrieve corporate's members"
-								);
-							}
-							membersList.value = membersList?.value?.concat(
-								response._data.memberships
-							);
-							console.log(
-								"Length of members list after watcher: ",
-								membersList?.value?.length
-							);
-						},
-					}
-				);
-			} catch (error) {
-				console.log("An error occured: ", error);
-				openToast(
-					"Failed to load more members. Reload page!",
-					"danger"
-				);
-			} finally {
-				fetchingMoreData.value = false;
-			}
-		}
-	});
-
-	try {
-		displayLoader.value = true;
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-			{
-				method: "GET",
-				query: {
-					corporateId: getDetails.acc_id,
-					page: page.value,
-					size: size.value,
-				},
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
-						);
-					}
-					membersList.value = response._data.memberships;
-					console.log(
-						"Size of members afer page load: ",
-						membersList?.value?.length
-					);
-					totalNumber.value = response._data.totalCount;
-					totalPages.value = response._data.totalPages;
-
-					// disable loader
-					displayLoader.value = false;
-				},
-			}
-		);
-	} catch (error) {
-		console.log("An error occured: ", error);
-		openToast("Failed to load your members. Reload page!", "danger");
-	}
-
-	function nextPage(): void {
-		if (page.value + 1 < totalPages.value) {
-			page.value++;
-		}
-	}
 </script>
