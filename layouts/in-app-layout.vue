@@ -189,6 +189,7 @@
 <script setup lang="ts">
 	import applicationRoutes from "~/types/routes";
 	import { useStorage } from "@vueuse/core";
+	import useUtils from "~/composables/useUtils";
 	// macro imports
 	const route = useRoute();
 	const router = useRouter();
@@ -212,6 +213,7 @@
 	});
 	const { getDetails, nullOutDetails } = usePrincipal();
 	const { openToast } = useToast();
+	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const rememberableAuthToken = useCookie("corp_auth_token", {
 		watch: true,
 		httpOnly: false,
@@ -225,19 +227,6 @@
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;
-	}
-
-	function capitalizeFirstLetterOfEachWord(sentence: string) {
-		// Split the sentence into an array of words
-		const words = sentence.split(" ");
-
-		// Capitalize the first letter of each word
-		const capitalizedWords = words.map((word) => {
-			return word.charAt(0).toUpperCase() + word.slice(1);
-		});
-
-		// Join the words back together into a sentence
-		return capitalizedWords.join(" ");
 	}
 
 	async function handleClientLogout() {
