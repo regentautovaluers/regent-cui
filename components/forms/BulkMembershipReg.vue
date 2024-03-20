@@ -186,6 +186,7 @@
 	const contactPhoneNumber: Ref<string> = ref("");
 	const contactEmail: Ref<string> = ref("");
 	const runtimeConfig = useRuntimeConfig();
+	const { toTitleCase } = useUtils();
 
 	watch(selectedFleetId, (newFleetId) => {
 		const fleetDetails = availableFleets.value.find(
@@ -244,8 +245,8 @@
 
 			for (let i = 1; i < fileData.length; i++) {
 				processedFleetData.value.push({
-					full_name: fileData[i][0],
-					phone_number: `+254${fileData[i][1]}`,
+					full_name: toTitleCase(fileData[i][0]),
+					phone_number: `254${fileData[i][1]}`,
 					userEmail: fileData[i][2],
 					corporateId: getDetails.acc_id,
 					membershipTypeId: Number(route.query.membershipTypeId),
