@@ -10,9 +10,7 @@
 	</tr> -->
 	<tr
 		class="hover:shadow-lg odd:bg-gray-200/50"
-		v-for="(member, i) in !componentProps.defaultFilterFlag
-			? membersList
-			: filteredList"
+		v-for="(member, i) in filteredList"
 		:key="i">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
 			{{ member.full_name }}
@@ -56,7 +54,7 @@
 			}}</span>
 		</td>
 		<td>
-			<div class="hs-dropdown relative inline-flex ">
+			<div class="hs-dropdown relative inline-flex">
 				<button
 					id="hs-dropdown-hover-event"
 					type="button"
@@ -174,6 +172,10 @@
 	const filteredList = computed(() => {
 		if (!membersList.value) {
 			return [];
+		}
+
+		if (!componentProps.defaultFilterFlag) {
+			return membersList.value;
 		}
 
 		// Filter the memberships array
