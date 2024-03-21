@@ -122,34 +122,24 @@
 		return cleanedArray;
 	}
 
-	onMounted(async () => {
-		console.log(
-			"making request to: ",
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershiptypes`
+	try {
+		await $fetch(
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/control-unit/membershiptypes`,
+			{
+				method: "GET",
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Failed to retrieve membership types");
+					}
+					membershipTypes.value = response._data;
+				},
+			}
 		);
-		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershiptypes`,
-				{
-					method: "GET",
-					async onResponse({ response }) {
-						console.log("response status: ", response.status);
-						console.log("response body: ", response._data);
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve membership types"
-							);
-						}
-						membershipTypes.value = response._data;
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast(
-				"Failed to load available memberships. Reload page!",
-				"danger"
-			);
-		}
-	});
+	} catch (error) {
+		console.log("An error occured: ", error);
+		openToast(
+			"Failed to load available memberships. Reload page!",
+			"danger"
+		);
+	}
 </script>
