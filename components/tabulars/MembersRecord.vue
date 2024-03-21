@@ -9,7 +9,7 @@
 		</td>
 	</tr> -->
 	<tr
-		class="hover:shadow-lg"
+		class="hover:shadow-lg odd:bg-gray-200/50"
 		v-for="(member, i) in !componentProps.defaultFilterFlag
 			? membersList
 			: filteredList"
@@ -33,7 +33,15 @@
 						id: member.id,
 					},
 				}"
-				>{{ member.membershipVehicleCount }}</NuxtLink
+				>{{
+					!componentProps.defaultFilterFlag
+						? member.membershipVehicleCount
+						: member.membershipVehicleCounts.find(
+								(data) =>
+									data.membership_name ===
+									componentProps.defaultFilterFlag
+						  ).vehicleCount
+				}}</NuxtLink
 			>
 		</td>
 		<td
