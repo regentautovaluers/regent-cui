@@ -111,13 +111,14 @@
 <script setup lang="ts">
 	export interface ComponentProps {
 		defaultFilterFlag?: string;
+		currentPage: number;
 	}
 
 	const componentProps = defineProps<ComponentProps>();
 	const { capitalizeFirstLetter } = useUtils();
 	const membersList: Ref<object[]> = ref([]);
-	const page: Ref<number> = ref(0);
-	const size: Ref<number> = ref(100);
+	const page: Ref<number> = computed(() => componentProps.currentPage);
+	const size: Ref<number> = ref(10);
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const { openToast } = useToast();
@@ -125,7 +126,7 @@
 	const { getDetails } = usePrincipal();
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const fetchErrorOccured: Ref<boolean> = ref(false);
-	const emits = defineEmits(["totalNumber"]);
+	const emits = defineEmits(["provideStatistics"]);
 
 	const computedPagedList = computed(() => {
 		const start = (page.value + 1 - 1) * size.value;
@@ -159,7 +160,11 @@
 					membersList.value = response._data.memberships;
 					totalNumber.value = response._data.totalCount;
 					totalPages.value = response._data.totalPages;
-					emits("totalNumber", totalNumber.value);
+					emits(
+						"provideStatistics",
+						totalNumber.value,
+						totalPages.value
+					);
 				},
 			}
 		);
@@ -179,7 +184,7 @@
 		}
 
 		// Filter the memberships array
-		const filteredMemberships = membersList.value.filter(
+		const filteredMemberships: object[] = membersList.value.filter(
 			(membership: any) => {
 				return membership.membershipVehicleCounts.some(
 					(vehicleCount: any) => {
@@ -192,7 +197,11 @@
 			}
 		);
 
-		return filteredMemberships;
+		if (filteredMemberships.length === 0 && page.value < totalPages.value) {
+			loadMoreUsers();
+		} else {
+			return filteredMemberships;
+		}
 	});
 
 	watch(page, async (newValue, oldValue) => {
@@ -217,10 +226,6 @@
 							membersList.value = membersList?.value?.concat(
 								response._data.memberships
 							);
-							console.log(
-								"Length of members list after watcher: ",
-								membersList?.value?.length
-							);
 						},
 					}
 				);
@@ -235,6 +240,41 @@
 			}
 		}
 	});
+
+	async function loadMoreUsers(): Promise<void> {
+		try {
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+				{
+					method: "GET",
+					query: {
+						corporateId: getDetails.acc_id,
+						page: page.value,
+						size: size.value,
+					},
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve corporate's members"
+							);
+						}
+						membersList.value = response._data.memberships;
+						totalNumber.value = response._data.totalCount;
+						totalPages.value = response._data.totalPages;
+						emits(
+							"provideStatistics",
+							totalNumber.value,
+							totalPages.value
+						);
+					},
+				}
+			);
+		} catch (error) {
+			console.log("An error occured: ", error);
+			fetchErrorOccured.value = true;
+			openToast("Failed to load your members. Reload page!", "danger");
+		}
+	}
 
 	function nextPage(): void {
 		if (page.value + 1 < totalPages.value) {
