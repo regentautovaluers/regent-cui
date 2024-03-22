@@ -180,7 +180,7 @@
 		}
 
 		if (!componentProps.defaultFilterFlag) {
-			return membersList.value;
+			return computedPagedList.value;
 		}
 
 		// Filter the memberships array
@@ -197,10 +197,21 @@
 			}
 		);
 
-		if (filteredMemberships.length === 0 && page.value < totalPages.value) {
+		// Paginate the filtered memberships
+		const start = (page.value - 1) * size.value;
+		const end = start + size.value;
+		const paginatedFilteredMemberships = filteredMemberships.slice(
+			start,
+			end
+		);
+
+		if (
+			paginatedFilteredMemberships.length === 0 &&
+			page.value < totalPages.value
+		) {
 			loadMoreUsers();
 		} else {
-			return filteredMemberships;
+			return paginatedFilteredMemberships;
 		}
 	});
 
