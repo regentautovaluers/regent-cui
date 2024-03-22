@@ -31,8 +31,9 @@
 					<div class="relative flex-grow mr-10">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 bg-gray-200 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-							placeholder="Search Here" />
+							class="peer py-3 h-12 px-4 ps-11 bg-gray-100 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							placeholder="Search Here"
+							v-model="searchFilterTerm" />
 						<div
 							class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
 							<img
@@ -136,10 +137,13 @@
 										<Suspense>
 											<template #default>
 												<MembersRecord
-													@total-number="
-														(totalMembers) =>
-															(totalNumber =
-																totalMembers)
+													:current-page="currentPage"
+													@provide-statistics="
+														(totalMembers: number , totPages: number) =>
+															{
+																totalNumber = totalMembers; 
+																totalPages = totPages;
+															}
 													" />
 											</template>
 
@@ -156,20 +160,30 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<!-- <div
+				<div
 					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 					<span
-						>Showing {{ page + 1 }} of {{ totalPages }} pages.</span
+						>Showing {{ currentPage + 1 }} of
+						{{ totalPages }} pages.</span
 					>
 					<div class="space-x-1">
 						<button
-							@click="nextPage"
+							v-for="page in currentPage + 1"
+							:key="page"
 							type="button"
-							class="p-2 size-10 inline-flex justify-center text-sm font-semibold rounded-full border bg-transparent text-blue-500 hover:text-white bg-blue-200 hover:bg-blue-700">
-							1
+							class="p-2 size-10 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700">
+							{{ page }}
 						</button>
 						<button
-							@click="nextPage"
+							v-if="
+								totalPages > 1 && currentPage + 1 < totalPages
+							"
+							@click="
+								() => {
+									if (currentPage + 1 < totalPages)
+										currentPage++;
+								}
+							"
 							type="button"
 							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
 							<span v-if="!fetchingMoreData">Next Page</span>
@@ -180,7 +194,7 @@
 								aria-label="loading" />
 						</button>
 					</div>
-				</div> -->
+				</div>
 			</div>
 			<!-- <div class="bg-green-700 p-2"></div> -->
 		</div>
@@ -193,5 +207,10 @@
 		layout: "in-app-layout",
 	});
 	const totalNumber: Ref<number> = ref(0);
+	const currentPage: Ref<number> = ref(0);
+	const totalPages: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
+	const searchFilterTerm: Ref<string> = ref("");
+	const searchMembershipCategory: Ref<string | null> = ref(null);
+	const fetchingMoreData: Ref<boolean> = ref(false);
 </script>
