@@ -73,15 +73,8 @@
 			</div>
 		</div>
 		<!-- end of data table -->
-		<div
-			class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+		<div class="mt-2 w-full rounded-sm flex justify-end items-center py-2">
 			<button
-				v-if="totalPages > 1 && currentPage + 1 < totalPages"
-				@click="
-					() => {
-						if (currentPage + 1 < totalPages) currentPage++;
-					}
-				"
 				type="button"
 				class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
 				<span v-if="!fetchingMoreData">Next Page</span>
@@ -101,7 +94,5 @@
 		layout: "in-app-layout",
 	});
 
-	const currentPage: Ref<number> = ref(0);
-	const totalPages: Ref<number> = ref(0);
 	const fetchingMoreData: Ref<boolean> = ref(false);
 </script>
