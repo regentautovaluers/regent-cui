@@ -1,16 +1,7 @@
 <template>
-	<!-- <tr
-		v-if="fetchErrorOccured"
-		class="bg-green-500">
-		<td
-			colspan="100%"
-			class="flex flex-col items-center justify-center h-fit">
-			<h1>Fetch error occured</h1>
-		</td>
-	</tr> -->
 	<tr
 		class="hover:shadow-lg odd:bg-gray-200/50"
-		v-for="(member, i) in filteredList"
+		v-for="(member, i) in membersList"
 		:key="i">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
 			{{ member.full_name }}
@@ -31,15 +22,7 @@
 						id: member.id,
 					},
 				}"
-				>{{
-					!componentProps.defaultFilterFlag
-						? member.membershipVehicleCount
-						: member.membershipVehicleCounts.find(
-								(data) =>
-									data.membership_name ===
-									componentProps.defaultFilterFlag
-						  ).vehicleCount
-				}}</NuxtLink
+				>{{ member.membershipVehicleCount }}</NuxtLink
 			>
 		</td>
 		<td
@@ -110,7 +93,6 @@
 
 <script setup lang="ts">
 	export interface ComponentProps {
-		defaultFilterFlag?: string;
 		currentPage: number;
 	}
 
@@ -124,7 +106,6 @@
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const { getDetails } = usePrincipal();
-	const fetchingMoreData: Ref<boolean> = ref(false);
 	const fetchErrorOccured: Ref<boolean> = ref(false);
 	const emits = defineEmits(["provideStatistics"]);
 
@@ -173,125 +154,4 @@
 		fetchErrorOccured.value = true;
 		openToast("Failed to load your members. Reload page!", "danger");
 	}
-
-	const filteredList = computed(() => {
-		if (!membersList.value) {
-			return [];
-		}
-
-		if (!componentProps.defaultFilterFlag) {
-			return computedPagedList.value;
-		}
-
-		// Filter the memberships array
-		const filteredMemberships: object[] = membersList.value.filter(
-			(membership: any) => {
-				return membership.membershipVehicleCounts.some(
-					(vehicleCount: any) => {
-						return (
-							vehicleCount.membership_name ===
-							componentProps.defaultFilterFlag
-						);
-					}
-				);
-			}
-		);
-
-		// Paginate the filtered memberships
-		const start = (page.value - 1) * size.value;
-		const end = start + size.value;
-		const paginatedFilteredMemberships = filteredMemberships.slice(
-			start,
-			end
-		);
-
-		if (
-			paginatedFilteredMemberships.length === 0 &&
-			page.value < totalPages.value
-		) {
-			loadMoreUsers();
-		} else {
-			return paginatedFilteredMemberships;
-		}
-	});
-
-	watch(page, async (newValue, oldValue) => {
-		if (newValue > oldValue) {
-			fetchingMoreData.value = true;
-			try {
-				await $fetch(
-					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-					{
-						method: "GET",
-						query: {
-							corporateId: getDetails.acc_id,
-							page: newValue,
-							size: size.value,
-						},
-						async onResponse({ response }) {
-							if (response.status !== 200) {
-								throw new Error(
-									"Failed to retrieve corporate's members"
-								);
-							}
-							membersList.value = membersList?.value?.concat(
-								response._data.memberships
-							);
-						},
-					}
-				);
-			} catch (error) {
-				console.log("An error occured: ", error);
-				openToast(
-					"Failed to load more members. Reload page!",
-					"danger"
-				);
-			} finally {
-				fetchingMoreData.value = false;
-			}
-		}
-	});
-
-	async function loadMoreUsers(): Promise<void> {
-		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-				{
-					method: "GET",
-					query: {
-						corporateId: getDetails.acc_id,
-						page: page.value,
-						size: size.value,
-					},
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve corporate's members"
-							);
-						}
-						membersList.value = response._data.memberships;
-						totalNumber.value = response._data.totalCount;
-						totalPages.value = response._data.totalPages;
-						emits(
-							"provideStatistics",
-							totalNumber.value,
-							totalPages.value
-						);
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			fetchErrorOccured.value = true;
-			openToast("Failed to load your members. Reload page!", "danger");
-		}
-	}
-
-	function nextPage(): void {
-		if (page.value + 1 < totalPages.value) {
-			page.value++;
-		}
-	}
-
-	function determineSourceList() {}
 </script>
