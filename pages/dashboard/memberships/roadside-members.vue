@@ -57,15 +57,7 @@
 								<Suspense>
 									<template #default>
 										<FilteredMembersRecord
-											:current-page="currentPage"
-											default-filter-flag="Roadside Assistance"
-											@provide-statistics="
-														(totalMembers: number , totPages: number) =>
-															{
-																totalNumber = totalMembers; 
-																totalPages = totPages;
-															}
-													" />
+											default-filter-flag="Roadside Assistance" />
 									</template>
 
 									<template #fallback>
@@ -83,35 +75,22 @@
 		<!-- end of data table -->
 		<div
 			class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
-			<span
-				>Showing {{ currentPage + 1 }} of {{ totalPages }} pages.</span
-			>
-			<div class="space-x-1">
-				<button
-					v-for="page in currentPage + 1"
-					:key="page"
-					@click="() => (currentPage = 0)"
-					type="button"
-					class="p-2 size-10 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700">
-					{{ page }}
-				</button>
-				<button
-					v-if="totalPages > 1 && currentPage + 1 < totalPages"
-					@click="
-						() => {
-							if (currentPage + 1 < totalPages) currentPage++;
-						}
-					"
-					type="button"
-					class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
-					<span v-if="!fetchingMoreData">Next Page</span>
-					<div
-						v-if="fetchingMoreData"
-						class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-						role="status"
-						aria-label="loading" />
-				</button>
-			</div>
+			<button
+				v-if="totalPages > 1 && currentPage + 1 < totalPages"
+				@click="
+					() => {
+						if (currentPage + 1 < totalPages) currentPage++;
+					}
+				"
+				type="button"
+				class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+				<span v-if="!fetchingMoreData">Next Page</span>
+				<div
+					v-if="fetchingMoreData"
+					class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+					role="status"
+					aria-label="loading" />
+			</button>
 		</div>
 	</div>
 </template>
@@ -122,11 +101,7 @@
 		layout: "in-app-layout",
 	});
 
-	const totalNumber: Ref<number> = ref(0);
 	const currentPage: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
-	const { getDetails } = usePrincipal();
-	const searchFilterTerm: Ref<string> = ref("");
-	const searchMembershipCategory: Ref<string | null> = ref(null);
 	const fetchingMoreData: Ref<boolean> = ref(false);
 </script>
