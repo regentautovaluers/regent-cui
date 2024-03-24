@@ -110,14 +110,13 @@
 
 <script setup lang="ts">
 	export interface ComponentProps {
-		defaultFilterFlag?: string;
-		currentPage: number;
+		defaultFilterFlag: string;
 	}
 
 	const componentProps = defineProps<ComponentProps>();
 	const { capitalizeFirstLetter } = useUtils();
 	const membersList: Ref<object[]> = ref([]);
-	const page: Ref<number> = computed(() => componentProps.currentPage);
+	const page: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
@@ -126,20 +125,6 @@
 	const { getDetails } = usePrincipal();
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const fetchErrorOccured: Ref<boolean> = ref(false);
-	const emits = defineEmits(["provideStatistics"]);
-
-	const computedPagedList = computed(() => {
-		const start = (page.value + 1 - 1) * size.value;
-		const end = start + size.value;
-
-		if (membersList.value?.length !== 0) {
-			if (membersList.value?.length < 1) {
-				return membersList.value;
-			} else {
-				return membersList.value?.slice(start, end);
-			}
-		}
-	});
 
 	try {
 		await $fetch(
@@ -160,11 +145,6 @@
 					membersList.value = response._data.memberships;
 					totalNumber.value = response._data.totalCount;
 					totalPages.value = response._data.totalPages;
-					emits(
-						"provideStatistics",
-						totalNumber.value,
-						totalPages.value
-					);
 				},
 			}
 		);
@@ -177,10 +157,6 @@
 	const filteredList = computed(() => {
 		if (!membersList.value) {
 			return [];
-		}
-
-		if (!componentProps.defaultFilterFlag) {
-			return computedPagedList.value;
 		}
 
 		// Filter the memberships array
@@ -197,37 +173,10 @@
 			}
 		);
 
-		// Paginate the filtered memberships
-		const start = (page.value - 1) * size.value;
-		const end = start + size.value;
-		const paginatedFilteredMemberships = filteredMemberships.slice(
-			start,
-			end
-		);
-
-		if (
-			paginatedFilteredMemberships.length === 0 &&
-			page.value < totalPages.value
-		) {
-			loadMoreUsers();
-		} else {
-			return paginatedFilteredMemberships;
-		}
+		return filteredMemberships;
 	});
 
 	watch(page, async (newValue, oldValue) => {
-		if (newValue < oldValue) {
-			// Check if the new page's data is already in the membersList array
-			const start = (newValue - 1) * size.value;
-			const end = start + size.value;
-			const existingData = membersList.value?.slice(start, end);
-
-			if (existingData && existingData.length === size.value) {
-				// Data for the new page is already in the membersList array
-				return;
-			}
-		}
-
 		if (newValue > oldValue) {
 			fetchingMoreData.value = true;
 			try {
@@ -263,47 +212,4 @@
 			}
 		}
 	});
-
-	async function loadMoreUsers(): Promise<void> {
-		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-				{
-					method: "GET",
-					query: {
-						corporateId: getDetails.acc_id,
-						page: page.value,
-						size: size.value,
-					},
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve corporate's members"
-							);
-						}
-						membersList.value = response._data.memberships;
-						totalNumber.value = response._data.totalCount;
-						totalPages.value = response._data.totalPages;
-						emits(
-							"provideStatistics",
-							totalNumber.value,
-							totalPages.value
-						);
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			fetchErrorOccured.value = true;
-			openToast("Failed to load your members. Reload page!", "danger");
-		}
-	}
-
-	function nextPage(): void {
-		if (page.value + 1 < totalPages.value) {
-			page.value++;
-		}
-	}
-
-	function determineSourceList() {}
 </script>

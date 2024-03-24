@@ -2,7 +2,7 @@
 	<div class="py-10 h-fit responsive-view">
 		<!-- top card with link to add new member -->
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
+			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg">
 			<div class="flex space-x-2 items-center w-full md:w-fit">
 				<img
 					class="inline-block size-[60px] rounded-full"
@@ -77,11 +77,12 @@
 									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
 									<input
 										type="radio"
-										name="hs-default-radio"
+										name="corporate-type"
 										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-										id="hs-default-radio" />
+										id="corporate-type"
+										v-model="searchMembershipCategory" />
 									<label
-										for="hs-default-radio"
+										for="corporate-type"
 										class="text-gray-500 ms-2 dark:text-gray-400"
 										>Corporate Registration</label
 									>
@@ -90,12 +91,12 @@
 									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
 									<input
 										type="radio"
-										name="hs-default-radio"
+										name="individual-type"
 										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
 										id="hs-checked-radio"
-										checked />
+										v-model="searchMembershipCategory" />
 									<label
-										for="hs-checked-radio"
+										for="individual-type"
 										class="text-gray-500 ms-2 dark:text-gray-400"
 										>Individual Registration</label
 									>
@@ -143,6 +144,12 @@
 											<template #default>
 												<MembersRecord
 													:current-page="currentPage"
+													:search-term="
+														searchFilterTerm
+													"
+													:membership-category="
+														searchMembershipCategory
+													"
 													@next-page-loaded="
 														() =>
 															(fetchingMoreData = false)
@@ -225,7 +232,7 @@
 	const loadedPages: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
-	const searchFilterTerm: Ref<string> = ref("");
+	const searchFilterTerm: Ref<string | null> = ref(null);
 	const searchMembershipCategory: Ref<string | null> = ref(null);
 	const fetchingMoreData: Ref<boolean> = ref(false);
 </script>
