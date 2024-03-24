@@ -57,7 +57,15 @@
 								<Suspense>
 									<template #default>
 										<FilteredMembersRecord
-											default-filter-flag="Emergency Evacuation" />
+											default-filter-flag="Emergency Evacuation"
+											:active-page="currentPage"
+											@show-loader="
+												(status) =>
+													(fetchingMoreData = status)
+											"
+											@current-page="
+												(page) => (currentPage = page)
+											" />
 									</template>
 
 									<template #fallback>
@@ -95,4 +103,5 @@
 	});
 
 	const fetchingMoreData: Ref<boolean> = ref(false);
+	const currentPage: Ref<number> = ref(0);
 </script>
