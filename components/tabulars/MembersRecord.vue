@@ -1,7 +1,7 @@
 <template>
 	<tr
 		class="hover:shadow-lg odd:bg-gray-200/50"
-		v-for="(member, i) in membersList"
+		v-for="(member, i) in computedPagedList"
 		:key="i">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
 			{{ member.full_name }}
@@ -108,6 +108,7 @@
 	const { getDetails } = usePrincipal();
 	const fetchErrorOccured: Ref<boolean> = ref(false);
 	const emits = defineEmits(["provideStatistics"]);
+	const fetchedPages: Ref<number[]> = ref([]);
 
 	const computedPagedList = computed(() => {
 		const start = (page.value + 1 - 1) * size.value;
@@ -141,6 +142,11 @@
 					membersList.value = response._data.memberships;
 					totalNumber.value = response._data.totalCount;
 					totalPages.value = response._data.totalPages;
+
+					// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
+					// we dont fetch it again
+					fetchedPages.value.push(0);
+
 					emits(
 						"provideStatistics",
 						totalNumber.value,
@@ -154,4 +160,44 @@
 		fetchErrorOccured.value = true;
 		openToast("Failed to load your members. Reload page!", "danger");
 	}
+
+	watch(page, async (newValue, oldValue) => {
+		if (fetchedPages.value.includes(newValue)) {
+			return;
+		} else if (
+			newValue > oldValue &&
+			!fetchedPages.value.includes(newValue)
+		) {
+			fetchedPages.value.push(newValue);
+			try {
+				await $fetch(
+					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+					{
+						method: "GET",
+						query: {
+							corporateId: getDetails.acc_id,
+							page: newValue,
+							size: size.value,
+						},
+						async onResponse({ response }) {
+							if (response.status !== 200) {
+								throw new Error(
+									"Failed to retrieve corporate's members"
+								);
+							}
+							membersList.value = membersList?.value?.concat(
+								response._data.memberships
+							);
+						},
+					}
+				);
+			} catch (error) {
+				console.log("An error occured: ", error);
+				openToast(
+					"Failed to load more members. Reload page!",
+					"danger"
+				);
+			}
+		}
+	});
 </script>
