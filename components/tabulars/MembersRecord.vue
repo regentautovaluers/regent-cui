@@ -107,7 +107,7 @@
 	const runtimeConfig = useRuntimeConfig();
 	const { getDetails } = usePrincipal();
 	const fetchErrorOccured: Ref<boolean> = ref(false);
-	const emits = defineEmits(["provideStatistics"]);
+	const emits = defineEmits(["provideStatistics", "nextPageLoaded"]);
 	const fetchedPages: Ref<number[]> = ref([]);
 
 	const computedPagedList = computed(() => {
@@ -188,6 +188,8 @@
 							membersList.value = membersList?.value?.concat(
 								response._data.memberships
 							);
+
+							emits("nextPageLoaded");
 						},
 					}
 				);

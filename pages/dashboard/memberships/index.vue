@@ -22,17 +22,17 @@
 			>
 		</div>
 		<div class="mt-6 grid grid-cols-1">
-			<!-- place 'lg:grid-cols-[0.75fr,auto]' into the classes list at this line -->
+			<!-- TODO: place 'lg:grid-cols-[0.75fr,auto]' into the classes list at this line -->
 			<div class="p-2">
 				<!-- search & filter controls -->
 				<div
 					class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
 					<!-- search box -->
-					<div class="relative flex-grow mr-10">
+					<div class="relative flex-grow mr-10 max-w-[25%]">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 bg-gray-100 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-							placeholder="Search Here"
+							class="peer py-3 h-12 px-4 ps-11 bg-gray-100 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							placeholder="Search Name, Email or Phone Number"
 							v-model="searchFilterTerm" />
 						<div
 							class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
@@ -138,11 +138,16 @@
 											<template #default>
 												<MembersRecord
 													:current-page="currentPage"
+													@next-page-loaded="
+														() =>
+															(fetchingMoreData = false)
+													"
 													@provide-statistics="
 														(totalMembers: number , totPages: number) =>
 															{
 																totalNumber = totalMembers; 
 																totalPages = totPages;
+																loadedPages++;
 															}
 													" />
 											</template>
@@ -168,20 +173,24 @@
 					>
 					<div class="space-x-1">
 						<button
-							v-for="page in currentPage + 1"
+							v-for="page in loadedPages"
 							:key="page"
+							@click="() => (currentPage = page - 1)"
 							type="button"
 							class="p-2 size-10 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700">
 							{{ page }}
 						</button>
 						<button
-							v-if="
-								totalPages > 1 && currentPage + 1 < totalPages
-							"
+							v-if="loadedPages < totalPages"
 							@click="
 								() => {
-									if (currentPage + 1 < totalPages)
+									if (currentPage + 1 < totalPages) {
 										currentPage++;
+										loadedPages++;
+
+										// show the loading indicator
+										fetchingMoreData = true;
+									}
 								}
 							"
 							type="button"
@@ -196,7 +205,6 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="bg-green-700 p-2"></div> -->
 		</div>
 	</div>
 </template>
@@ -206,8 +214,10 @@
 		name: "memberships-home",
 		layout: "in-app-layout",
 	});
+
 	const totalNumber: Ref<number> = ref(0);
 	const currentPage: Ref<number> = ref(0);
+	const loadedPages: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
 	const searchFilterTerm: Ref<string> = ref("");
