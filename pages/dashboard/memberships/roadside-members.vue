@@ -58,8 +58,11 @@
 												(pages) => (totalPages = pages)
 											"
 											@update-current-page="
-												(activePage) =>
-													(currentPage = activePage)
+												(activePage: number | null) => {
+													if(!activePage) {
+														currentPage++
+													} else {currentPage = activePage}
+												}
 											" />
 									</template>
 

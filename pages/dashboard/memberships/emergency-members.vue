@@ -5,9 +5,7 @@
 		</h1>
 		<!-- download as PDF section -->
 		<div
-			class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
-			
-		</div>
+			class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap"></div>
 		<!-- start of data table -->
 		<div class="flex flex-col">
 			<div class="-m-1.5 overflow-x-auto">
@@ -60,7 +58,7 @@
 												(pages) => (totalPages = pages)
 											"
 											@update-current-page="
-												(activePage: number) => {
+												(activePage: number | null) => {
 													if(!activePage) {
 														currentPage++
 													} else {currentPage = activePage}

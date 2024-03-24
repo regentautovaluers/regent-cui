@@ -13,6 +13,9 @@
 		v-for="(member, i) in membersList"
 		:key="i">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
+			{{ i + 1 }}
+		</td>
+		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
 			{{ member.full_name }}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-blue-600 font-semibold">
@@ -115,7 +118,7 @@
 	const componentProps = defineProps<ComponentProps>();
 	const { capitalizeFirstLetter } = useUtils();
 	const membersList: Ref<object[]> = ref([]);
-	const page: Ref<number> = ref(0);
+	const page = computed(() => componentProps.activePage);
 	const size: Ref<number> = ref(10);
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
@@ -124,7 +127,12 @@
 	const { getDetails } = usePrincipal();
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const fetchErrorOccured: Ref<boolean> = ref(false);
-	const emits = defineEmits(["showLoader", "currentPage"]);
+	const fetchedPages: Ref<number[]> = ref([]);
+	const emits = defineEmits([
+		"showLoader",
+		"provideStatistics",
+		"updateCurrentPage",
+	]);
 
 	try {
 		console.log("Getting list on page load...");
@@ -153,6 +161,11 @@
 
 					totalNumber.value = response._data.totalCount;
 					totalPages.value = response._data.totalPages;
+
+					// we add page 0 to the list of fetchedPages so that we dont fetch it again
+					fetchedPages.value.push(0);
+
+					emits("provideStatistics", totalPages.value);
 					filterMembersRecord(response._data.memberships);
 
 					console.log(
@@ -173,8 +186,12 @@
 	watch(
 		page,
 		async (newValue) => {
+			emits("updateCurrentPage", newValue);
 			console.log("Watcher triggered due to page number change...");
-			if (newValue < totalPages.value) {
+			if (
+				!fetchedPages.value.includes(newValue) &&
+				newValue < totalPages.value
+			) {
 				console.log(
 					"condition for running filter met... will be fetching more data..."
 				);
@@ -233,7 +250,8 @@
 			console.log(
 				"After filtering, list is empty.. increasing page size.. watcher should run next..."
 			);
-			page.value += 1;
+			// page.value += 1;
+			emits("updateCurrentPage");
 			console.log("New page size after increase: ", page.value);
 		} else {
 			membersList.value = membersList.value.concat(filteredMemberships);
