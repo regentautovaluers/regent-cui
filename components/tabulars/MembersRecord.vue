@@ -94,6 +94,8 @@
 <script setup lang="ts">
 	export interface ComponentProps {
 		currentPage: number;
+		searchTerm: string | null;
+		membershipCategory: string | null;
 	}
 
 	const componentProps = defineProps<ComponentProps>();
@@ -109,6 +111,14 @@
 	const fetchErrorOccured: Ref<boolean> = ref(false);
 	const emits = defineEmits(["provideStatistics", "nextPageLoaded"]);
 	const fetchedPages: Ref<number[]> = ref([]);
+
+	// for filtering purposes
+	const filterBySearchTerm: ComputedRef<string | null> = computed(
+		() => componentProps.searchTerm
+	);
+	const filterByMembershipCat: ComputedRef<string | null> = computed(
+		() => componentProps.membershipCategory
+	);
 
 	const computedPagedList = computed(() => {
 		const start = (page.value + 1 - 1) * size.value;
