@@ -3,23 +3,9 @@
 		<h1 class="my-5 text-2xl antialiased font-semibold">
 			Roadside Assistance Members
 		</h1>
-		<!-- search & filter controls -->
+		<!-- download as PDF section -->
 		<div
-			class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
-			<!-- search box -->
-			<div class="relative flex-grow mr-10">
-				<input
-					type="text"
-					class="peer py-3 h-12 px-4 ps-11 bg-gray-200 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Search Here" />
-				<div
-					class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-					<img
-						src="/images/topnav/search-icon.svg"
-						alt="Search Icon" />
-				</div>
-			</div>
-		</div>
+			class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap"></div>
 		<!-- start of data table -->
 		<div class="flex flex-col">
 			<div class="-m-1.5 overflow-x-auto">
@@ -28,6 +14,11 @@
 						<table class="min-w-full divide-y">
 							<thead>
 								<tr>
+									<th
+										scope="col"
+										class="px-6 py-3 text-start font-bold text-gray-500">
+										No.
+									</th>
 									<th
 										scope="col"
 										class="px-6 py-3 text-start font-bold text-gray-500">
@@ -63,8 +54,12 @@
 												(status) =>
 													(fetchingMoreData = status)
 											"
-											@current-page="
-												(page) => (currentPage = page)
+											@provide-statistics="
+												(pages) => (totalPages = pages)
+											"
+											@update-current-page="
+												(activePage) =>
+													(currentPage = activePage)
 											" />
 									</template>
 
@@ -84,8 +79,10 @@
 		<div class="mt-2 w-full rounded-sm flex justify-end items-center py-2">
 			<button
 				type="button"
+				v-if="currentPage + 1 < totalPages"
+				@click="currentPage += 1"
 				class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
-				<span v-if="!fetchingMoreData">Next Page</span>
+				<span v-if="!fetchingMoreData">Load More</span>
 				<div
 					v-if="fetchingMoreData"
 					class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
@@ -104,4 +101,5 @@
 
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const currentPage: Ref<number> = ref(0);
+	const totalPages: Ref<number> = ref(0);
 </script>
