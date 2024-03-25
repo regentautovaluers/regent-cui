@@ -78,7 +78,7 @@
 										<input
 											type="radio"
 											name="membership-category"
-											value="corporate-members"
+											value="corporate"
 											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
 											id="corporate-type"
 											v-model="
@@ -95,7 +95,7 @@
 										<input
 											type="radio"
 											name="membership-category"
-											value="individual-members"
+											value="individual"
 											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
 											id="individual-type"
 											v-model="
@@ -119,6 +119,9 @@
 								() => {
 									searchFilterTerm = null;
 									searchMembershipCategory = null;
+									remountTableValue++;
+									loadedPages = 0;
+									currentPage = 0;
 								}
 							"
 							title="Clear Filters"
@@ -167,6 +170,7 @@
 										<Suspense>
 											<template #default>
 												<MembersRecord
+													:key="remountTableValue"
 													:current-page="currentPage"
 													:search-term="
 														searchFilterTerm
@@ -185,6 +189,13 @@
 																totalPages = totPages;
 																loadedPages++;
 															}
+													"
+													@reset-statistics="
+														() => {
+															totalPages = 0;
+															loadedPages = 0;
+															currentPage = 0;
+														}
 													" />
 											</template>
 
@@ -259,4 +270,5 @@
 	const searchFilterTerm: Ref<string | null> = ref(null);
 	const searchMembershipCategory: Ref<string | null> = ref(null);
 	const fetchingMoreData: Ref<boolean> = ref(false);
+	const remountTableValue: Ref<number> = ref(0);
 </script>

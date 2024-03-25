@@ -109,7 +109,11 @@
 	const runtimeConfig = useRuntimeConfig();
 	const { getDetails } = usePrincipal();
 	const fetchErrorOccured: Ref<boolean> = ref(false);
-	const emits = defineEmits(["provideStatistics", "nextPageLoaded"]);
+	const emits = defineEmits([
+		"provideStatistics",
+		"nextPageLoaded",
+		"resetStatistics",
+	]);
 	const fetchedPages: Ref<number[]> = ref([]);
 
 	// for filtering purposes
@@ -121,10 +125,15 @@
 	);
 
 	watch([filterBySearchTerm, filterByMembershipCat], async (newValues) => {
-		// console.log("Search term new value: ", newValues[0]);
-		// console.log("Membership cat new value: ", newValues[1]);
 		if (newValues[0] !== null || newValues[1] !== null) {
+			// before querying for anything, reset the values set by the inital load or default page loads
 			membersList.value = [];
+			totalPages.value = 0;
+			fetchedPages.value = [];
+
+			// emit even to tell parent to reset the counters it is tracking
+			emits("resetStatistics");
+
 			try {
 				await $fetch(
 					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
@@ -241,6 +250,12 @@
 							corporateId: getDetails.acc_id,
 							page: newValue,
 							size: size.value,
+							...(filterBySearchTerm.value !== null
+								? { searchTerm: filterBySearchTerm.value }
+								: {}),
+							...(filterByMembershipCat.value !== null
+								? { category: filterByMembershipCat.value }
+								: {}),
 						},
 						async onResponse({ response }) {
 							if (response.status !== 200) {
