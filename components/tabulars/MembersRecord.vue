@@ -120,6 +120,59 @@
 		() => componentProps.membershipCategory
 	);
 
+	watch([filterBySearchTerm, filterByMembershipCat], async (newValues) => {
+		// console.log("Search term new value: ", newValues[0]);
+		// console.log("Membership cat new value: ", newValues[1]);
+		if (newValues[0] !== null || newValues[1] !== null) {
+			membersList.value = [];
+			try {
+				await $fetch(
+					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+					{
+						method: "GET",
+						query: {
+							corporateId: getDetails.acc_id,
+							page: page.value,
+							size: size.value,
+							...(newValues[0] !== null
+								? { searchTerm: newValues[0] }
+								: {}),
+							...(newValues[1] !== null
+								? { category: newValues[1] }
+								: {}),
+						},
+						async onResponse({ response }) {
+							if (response.status !== 200) {
+								throw new Error(
+									"Failed to retrieve filtered corporate's members"
+								);
+							}
+							membersList.value = response._data.memberships;
+							totalPages.value = response._data.totalPages;
+
+							// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
+							// we dont fetch it again
+							fetchedPages.value.push(0);
+
+							emits(
+								"provideStatistics",
+								totalNumber.value,
+								totalPages.value
+							);
+						},
+					}
+				);
+			} catch (error) {
+				console.log("An error occured: ", error);
+				fetchErrorOccured.value = true;
+				openToast(
+					"Failed to load filtered members. Reload page!",
+					"danger"
+				);
+			}
+		}
+	});
+
 	const computedPagedList = computed(() => {
 		const start = (page.value + 1 - 1) * size.value;
 		const end = start + size.value;
