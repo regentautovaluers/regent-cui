@@ -232,39 +232,88 @@
 		const fileInput = excelFile.value;
 		if (fileInput.files.length > 0) {
 			const file = fileInput.files[0];
-			let fileData: Object[] | null = null;
+			let fileData: Object[] = [];
 			// console.log("File name: ", file.name);
 			// console.log("File size: ", file.size);
 
 			// off to process the excel file
-			await readXlsxFile(file).then((data) => {
-				fileData = data;
-			});
-
-			const percentageContribution = 100 / (fileData.length - 1);
-
-			for (let i = 1; i < fileData.length; i++) {
-				processedFleetData.value.push({
-					full_name: toTitleCase(fileData[i][0]),
-					phone_number: `254${fileData[i][1]}`,
-					userEmail: fileData[i][2],
-					corporateId: getDetails.acc_id,
-					membershipTypeId: Number(route.query.membershipTypeId),
-					registration: fileData[i][3],
-					start_date: fileData[i][4],
-					end_date: fileData[i][5],
-					make: "Default Make",
-					model: "Default Model",
-					color: "Default Color",
-					payment_status: "paid",
-					membership_status: "active",
-					recordedBy: getDetails.username,
-					category: "corporate",
-					fleetId: selectedFleetId.value,
-				});
-				currentPercentage.value += percentageContribution;
+			try {
+				await readXlsxFile(file)
+					.then((data) => {
+						fileData = data;
+					})
+					.then(() => validateUploadedDataIntegrity(fileData))
+					.then(() => pushFleetDataPostValidation(fileData));
+			} catch (err) {
+				console.log("An error has occured: ", err);
 			}
 		}
+	}
+
+	function validateUploadedDataIntegrity(data: Object[]): void {
+		// each item here is the individual row in the excel converted to an arrat
+		data.forEach((item: any, index: number) => {
+			if (index === 0) return;
+
+			// check for client name
+			if (item[0] === null)
+				throw new Error(
+					`Name of person on row ${index + 1} is missing`
+				);
+
+			// check for client phone number
+			if (item[1] === null)
+				throw new Error(
+					`Phone number of person on row ${index + 1} is missing`
+				);
+
+			// check for vehicle registration
+			if (item[3] === null)
+				throw new Error(
+					`Vehicle registration of person on row ${
+						index + 1
+					} is missing`
+				);
+
+			// check for start date
+			if (item[4] === null)
+				throw new Error(
+					`Start date of insurance for person on row ${
+						index + 1
+					} is missing`
+				);
+
+			// check for end date
+			if (item[5] === null)
+				throw new Error(
+					`End date of insurance for person on row ${
+						index + 1
+					} is missing`
+				);
+		});
+	}
+
+	function pushFleetDataPostValidation(data: Object[]) {
+		data.forEach((item: any, index: number) => {
+			processedFleetData.value.push({
+				full_name: toTitleCase(item[0]),
+				phone_number: `254${item[1]}`,
+				userEmail: item[2],
+				corporateId: getDetails.acc_id,
+				membershipTypeId: Number(route.query.membershipTypeId),
+				registration: item[3],
+				start_date: item[4],
+				end_date: item[5],
+				make: "Default Make",
+				model: "Default Model",
+				color: "Default Color",
+				payment_status: "paid",
+				membership_status: "active",
+				recordedBy: getDetails.username,
+				category: "corporate",
+				fleetId: selectedFleetId.value,
+			});
+		});
 	}
 
 	onMounted(async () => {
