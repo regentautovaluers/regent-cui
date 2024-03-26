@@ -234,8 +234,8 @@
 	const { getDetails } = usePrincipal();
 	const runtimeConfig = useRuntimeConfig();
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
-	const currentPercentage: Ref<number> = ref(80);
-	const distanceLeftForTowing: Ref<number> = ref(16);
+	const currentPercentage: Ref<number> = ref(0);
+	const distanceLeftForTowing: Ref<number> = ref(0);
 	const vehicleRegistration: Ref<string> = ref("");
 	const vehicleMake: Ref<string> = ref("");
 	const vehicleModel: Ref<string> = ref("");
@@ -341,6 +341,16 @@
 									registrationDetails.membershipVehicle.make;
 								vehicleModel.value =
 									registrationDetails.membershipVehicle.model;
+								currentPercentage.value = calculatePercentage(
+									Number(
+										registrationDetails.membershipVehicle
+											.available_free_distance
+									)
+								);
+								distanceLeftForTowing.value = Number(
+									registrationDetails.membershipVehicle
+										.available_free_distance
+								);
 							}
 						},
 					}
@@ -354,6 +364,10 @@
 		} else {
 			openToast("Please provide a registration number!", "warning");
 		}
+	}
+
+	function calculatePercentage(freeDistance: number): number {
+		return (freeDistance * 100) / 20;
 	}
 
 	onMounted(async () => {
