@@ -128,31 +128,27 @@
 						type="file"
 						accept=".xlsx"
 						class="hidden"
-						ref="excelFile"
 						@change="parseUploadedExcelFile" />
 				</label>
 			</div>
-			<!-- File Uploading Progress Form -->
-			<div class="mt-3">
-				<!-- Progress Bar -->
+		</div>
+
+		<div class="mt-3">
+			<div
+				class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
+				role="progressbar"
+				aria-valuenow="1"
+				aria-valuemin="0"
+				aria-valuemax="100">
 				<div
-					class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
-					role="progressbar"
-					aria-valuenow="1"
-					aria-valuemin="0"
-					aria-valuemax="100">
-					<div
-						class="flex flex-col justify-center rounded-full overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
-						:style="{ width: `${currentPercentage}%` }" />
-				</div>
-				<div
-					class="flex items-center justify-between w-full text-end text-lg text-gray-500 antialiased">
-					<span> PROCESSING PROGESS </span>
-					<span>{{ currentPercentage }}%</span>
-				</div>
-				<!-- End Progress Bar -->
+					class="flex flex-col justify-center rounded-full overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
+					:style="{ width: currentProgress }" />
 			</div>
-			<!-- End File Uploading Progress Form -->
+			<div
+				class="flex items-center justify-between w-full text-end text-lg text-gray-500 antialiased">
+				<span>UPLOADING PROGRESS</span>
+				<span>{{ currentProgress }}</span>
+			</div>
 		</div>
 
 		<button
@@ -173,7 +169,6 @@
 	import { type bulkProcessedType } from "~/types/types";
 
 	const formSubmissionLoading = ref(false);
-	const excelFile = ref("excelFile");
 	const { getDetails } = usePrincipal();
 	const processedFleetData: Ref<bulkProcessedType[]> = ref([]);
 	const route = useRoute();
@@ -187,10 +182,12 @@
 	const contactEmail: Ref<string> = ref("");
 	const runtimeConfig = useRuntimeConfig();
 	const { toTitleCase } = useUtils();
-
+	const totalSize = ref(0);
+	const currentProgress = ref("0%");
+	const reader = new FileReader();
 	watch(selectedFleetId, (newFleetId) => {
-		const fleetDetails = availableFleets.value.find(
-			(fleet) => fleet.id === newFleetId
+		const fleetDetails: any = availableFleets.value.find(
+			(fleet: any) => fleet.id === newFleetId
 		);
 
 		contactFullName.value = fleetDetails.contact_full_name;
@@ -228,25 +225,30 @@
 		}
 	}
 
-	async function parseUploadedExcelFile(): Promise<void> {
-		const fileInput = excelFile.value;
-		if (fileInput.files.length > 0) {
-			const file = fileInput.files[0];
-			let fileData: Object[] = [];
-			// console.log("File name: ", file.name);
-			// console.log("File size: ", file.size);
+	async function parseUploadedExcelFile(e: any): Promise<void> {
+		const selectedFile = e.target.files[0];
 
-			// off to process the excel file
-			try {
-				await readXlsxFile(file)
-					.then((data) => {
-						fileData = data;
-					})
-					.then(() => validateUploadedDataIntegrity(fileData))
-					.then(() => pushFleetDataPostValidation(fileData));
-			} catch (err) {
-				console.log("An error has occured: ", err);
-			}
+		if (selectedFile) {
+			addListeners(reader);
+			reader.readAsDataURL(selectedFile);
+		}
+
+		let fileData: Object[] = [];
+		try {
+			await readXlsxFile(selectedFile)
+				.then((data) => {
+					fileData = data;
+				})
+				.then(() => validateUploadedDataIntegrity(fileData))
+				.then(() => pushFleetDataPostValidation(fileData));
+		} catch (err) {
+			console.log("An error has occured: ", err);
+		}
+		console.log("Data in file: ", fileData);
+
+		if (selectedFile) {
+			addListeners(reader);
+			reader.readAsDataURL(selectedFile);
 		}
 	}
 
@@ -338,6 +340,43 @@
 			openToast("Failed to retrieve fleets! Reload page!", "danger");
 		}
 	});
+
+	// Handle the file reading events
+	function handleEvent(event) {
+		if (["loadend", "load"].includes(event.type)) {
+			console.log("finished loading file");
+		}
+		if (event.type === "progress") {
+			currentProgress.value = `${
+				(event.loaded / totalSize.value).toFixed(2) * 100
+			}%`;
+			console.log("Progress: ", currentProgress.value);
+			console.log("Bytes transferred: ", event.loaded, "bytes");
+		}
+		if (event.type === "loadstart") {
+			totalSize.value = event.total;
+		}
+	}
+
+	// Attach event listeners to the reader
+	function addListeners(reader) {
+		reader.addEventListener("loadstart", handleEvent);
+		reader.addEventListener("load", handleEvent);
+		reader.addEventListener("loadend", handleEvent);
+		reader.addEventListener("progress", handleEvent);
+		reader.addEventListener("error", handleEvent);
+		reader.addEventListener("abort", handleEvent);
+	}
+
+	// Handle the file selection event
+	function handleSelected(e: any) {
+		console.log(e);
+		const selectedFile = e.target.files[0];
+		if (selectedFile) {
+			addListeners(reader);
+			reader.readAsDataURL(selectedFile);
+		}
+	}
 </script>
 
 <style>
