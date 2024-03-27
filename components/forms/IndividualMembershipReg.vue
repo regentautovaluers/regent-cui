@@ -92,29 +92,15 @@
 						class="block font-medium mb-2 dark:text-white"
 						>Vehicle Make</label
 					>
-					<select
-						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					<input
+						type="text"
 						id="vehicle-make"
+						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						placeholder="e.g Toyota"
 						required
-						v-model="vehicle.make">
-						<option
-							value="Default Make"
-							selected>
-							Default Make
-						</option>
-						<option
-							v-for="(make, index) in [
-								'Make A',
-								'Make B',
-								'Make C',
-								'Make D',
-							]"
-							:key="index"
-							:value="make">
-							{{ make }}
-						</option>
-					</select>
+						v-model="vehicle.make" />
 				</div>
+
 				<!-- Vehicle Model -->
 				<div class="w-full lg:w-1/3">
 					<label
@@ -122,28 +108,13 @@
 						class="block font-medium mb-2 dark:text-white"
 						>Vehicle Model</label
 					>
-					<select
-						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					<input
+						type="text"
 						id="vehicle-model"
+						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						placeholder="e.g Corolla"
 						required
-						v-model="vehicle.model">
-						<option
-							value="Default Model"
-							selected>
-							Default Model
-						</option>
-						<option
-							v-for="(model, index) in [
-								'Model A',
-								'Model B',
-								'Model C',
-								'Model D',
-							]"
-							:key="index"
-							:value="model">
-							{{ model }}
-						</option>
-					</select>
+						v-model="vehicle.model" />
 				</div>
 			</div>
 			<!--Vehicle Color Field -->
