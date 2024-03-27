@@ -271,6 +271,8 @@
 				userEmail.value,
 				componentProps.backendServiceTypeName,
 				vehicleRegistration.value,
+				vehicleMake.value,
+				vehicleModel.value,
 				1, // TODO: figure out what this category value here is for
 				arrivalDuration.value,
 				arrivalDistance.value,
@@ -328,15 +330,19 @@
 
 								// fill the needed fields
 								const registrationDetails = response._data;
+								console.log(
+									"Response data ENTER key: ",
+									registrationDetails
+								);
 								vehicleRegistration.value =
 									registrationDetails.membershipVehicle.registration;
 								userName.value =
 									registrationDetails.membership.full_name;
 								userPhoneNumber.value =
-									registrationDetails.membership.phone_number.replace(
-										"+254",
-										"0"
-									);
+									registrationDetails.membership.phone_number;
+								userEmail.value =
+									registrationDetails.membership.userEmail;
+
 								vehicleMake.value =
 									registrationDetails.membershipVehicle.make;
 								vehicleModel.value =
