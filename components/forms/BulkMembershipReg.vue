@@ -14,7 +14,6 @@
 						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						id="corporate-name"
 						v-model="selectedFleetId">
-						<option selected>Select from one of your fleets</option>
 						<option
 							v-for="(fleet, index) in availableFleets"
 							:key="index"
@@ -185,6 +184,7 @@
 	const totalSize = ref(0);
 	const currentProgress = ref("0%");
 	const reader = new FileReader();
+	const { formatExcelDate } = useUtils();
 	watch(selectedFleetId, (newFleetId) => {
 		const fleetDetails: any = availableFleets.value.find(
 			(fleet: any) => fleet.id === newFleetId
@@ -297,6 +297,8 @@
 
 	function pushFleetDataPostValidation(data: Object[]) {
 		data.forEach((item: any, index: number) => {
+			if (index === 0) return;
+
 			processedFleetData.value.push({
 				full_name: toTitleCase(item[0]),
 				phone_number: `254${item[1]}`,
@@ -304,8 +306,8 @@
 				corporateId: getDetails.acc_id,
 				membershipTypeId: Number(route.query.membershipTypeId),
 				registration: item[3],
-				start_date: item[4],
-				end_date: item[5],
+				start_date: formatExcelDate(item[4]),
+				end_date: formatExcelDate(item[5]),
 				make: "Default Make",
 				model: "Default Model",
 				color: "Default Color",
