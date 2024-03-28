@@ -5,11 +5,17 @@
 			<div
 				class="w-full lg:w-1/2 md:flex-row rounded-md items-center justify-between p-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
 				<h1 class="text-2xl antialiased font-semibold">
-					{{ $route.query.clientName }}
+					{{ memberVehiclesList[0].membership.full_name }}
 				</h1>
 				<div class="w-fit text-gray-500">
-					<h2>{{ $route.query.clientEmail }}</h2>
-					<h2>{{ $route.query.clientPhone }}</h2>
+					<h2>
+						{{
+							!memberVehiclesList[0].membership.userEmail
+								? "Email not provided"
+								: memberVehiclesList[0].membership.userEmail
+						}}
+					</h2>
+					<h2>+{{ memberVehiclesList[0].membership.phone_number }}</h2>
 				</div>
 			</div>
 			<div
@@ -18,7 +24,7 @@
 					Number of Vehicles
 				</h1>
 				<h2 class="text-xl text-gray-500">
-					{{ $route.query.numberOfVehicles }}
+					{{ memberVehiclesList?.length }}
 				</h2>
 				<div class="py-2 flex justify-end">
 					<ActionTriggeredModal trigger-button-name="Add Vehicle">
@@ -133,6 +139,10 @@
 						);
 					}
 					memberVehiclesList.value = response._data;
+					console.log(
+						"Member details on page load: ",
+						memberVehiclesList.value
+					);
 				},
 			}
 		);
