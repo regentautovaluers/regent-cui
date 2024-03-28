@@ -51,7 +51,7 @@
 			}}</span>
 		</td>
 		<td>
-			<div class="hs-dropdown relative inline-flex">
+			<div class="hs-dropdown relative inline-flex [--placement:left]">
 				<button
 					id="hs-dropdown-hover-event"
 					type="button"
@@ -102,12 +102,10 @@
 </template>
 
 <script setup lang="ts">
-	export interface ComponentProps {
+	const componentProps = defineProps<{
 		defaultFilterFlag: string;
 		activePage: number;
-	}
-
-	const componentProps = defineProps<ComponentProps>();
+	}>();
 	const { capitalizeFirstLetter } = useUtils();
 	const membersList: Ref<object[]> = ref([]);
 	const page = computed(() => componentProps.activePage);
