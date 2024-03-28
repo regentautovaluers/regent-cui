@@ -4,10 +4,10 @@
 			{{ componentProps.vehicleRegistration }}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			{{ componentProps.membershipStartDate }}
+			{{ formatServerProvidedDate(componentProps.membershipStartDate) }}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			{{ componentProps.membershipEndDate }}
+			{{ formatServerProvidedDate(componentProps.membershipEndDate) }}
 		</td>
 		<td
 			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-	export interface ComponentProps {
+	const componentProps = defineProps<{
 		vehicleRegistration: string;
 		membershipStartDate: string;
 		membershipEndDate: string;
@@ -94,13 +94,12 @@
 		paymentStatus: string;
 		membershipType: string;
 		membershipId: number;
-	}
-
-	const componentProps = defineProps<ComponentProps>();
+	}>();
 	const deleteMembershipLoading: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const router = useRouter();
 	const { openToast } = useToast();
+	const { formatServerProvidedDate } = useUtils();
 
 	function capitalizeFirstLetterOfEachWord(sentence: string): string {
 		// Check if the sentence is not empty
