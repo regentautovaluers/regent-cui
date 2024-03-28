@@ -3,7 +3,7 @@
 		<div
 			class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-3 lg:space-y-0">
 			<div
-				class="w-full lg:w-1/2 md:flex-row rounded-md items-center justify-between py-3 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
+				class="w-full lg:w-1/2 md:flex-row rounded-md items-center justify-between p-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
 				<h1 class="text-2xl antialiased font-semibold">
 					{{ $route.query.clientName }}
 				</h1>
@@ -13,13 +13,16 @@
 				</div>
 			</div>
 			<div
-				class="w-full lg:w-1/2 md:flex-row rounded-md items-center justify-between py-3 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
+				class="w-full lg:w-1/2 md:flex-row rounded-md items-center justify-between p-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
 				<h1 class="text-2xl antialiased font-semibold">
 					Number of Vehicles
 				</h1>
 				<h2 class="text-xl text-gray-500">
 					{{ $route.query.numberOfVehicles }}
 				</h2>
+				<div class="py-2 flex justify-end">
+					<CallableModal />
+				</div>
 			</div>
 		</div>
 
