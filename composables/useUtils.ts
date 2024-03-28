@@ -44,19 +44,11 @@ export default function useUtils() {
 		return words.join(" ");
 	}
 
-	function formatCalendarDate(unfDate: string): string {
-		// Parse the input date with the format dd/mm/yyyy
-		const parsedDate = parse(unfDate, "dd/MM/yyyy", new Date());
-		// Format the parsed date to dd-mm-yyyy
-		const formattedDate = format(parsedDate, "dd-MM-yyyy");
-		return formattedDate;
-	}
-
 	function formatExcelDate(unfDate: string): string {
 		// Parse the input date with the format yyyy-mm-dd
-		const parsedDate = parse(unfDate, "yyyy-MM-dd", new Date());
+		const parsedDate = parse(unfDate, "dd/MM/yyyy", new Date());
 		// Format the parsed date to dd-mm-yyyy
-		const formattedDate = format(parsedDate, "dd-MM-yyyy");
+		const formattedDate = format(parsedDate, "yyyy-MM-dd");
 		return formattedDate;
 	}
 
@@ -64,7 +56,6 @@ export default function useUtils() {
 		capitalizeFirstLetterOfEachWord,
 		capitalizeFirstLetter,
 		toTitleCase,
-		formatCalendarDate,
 		formatExcelDate,
 	};
 }
