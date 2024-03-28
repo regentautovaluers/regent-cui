@@ -15,10 +15,6 @@
 				:to="{
 					name: 'membership-details',
 					query: {
-						clientName: member.full_name,
-						numberOfVehicles: member.membershipVehicleCount,
-						clientPhone: member.phone_number,
-						clientEmail: member.userEmail,
 						id: member.id,
 					},
 				}"
@@ -30,7 +26,7 @@
 			<span class="text-start">{{
 				!member.phone_number
 					? "Phone Number Not Provided"
-					: member.phone_number
+					: `+${member.phone_number}`
 			}}</span>
 			<span class="text-start">{{
 				!member.userEmail ? "Email Not Provided" : member.userEmail
@@ -76,10 +72,6 @@
 						:to="{
 							name: 'membership-details',
 							query: {
-								clientName: member.full_name,
-								numberOfVehicles: member.membershipVehicleCount,
-								clientPhone: member.phone_number,
-								clientEmail: member.userEmail,
 								id: member.id,
 							},
 						}"

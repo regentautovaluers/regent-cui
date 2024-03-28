@@ -27,10 +27,6 @@
 				:to="{
 					name: 'membership-details',
 					query: {
-						clientName: member.full_name,
-						numberOfVehicles: member.membershipVehicleCount,
-						clientPhone: member.phone_number,
-						clientEmail: member.userEmail,
 						id: member.id,
 					},
 				}"
@@ -94,10 +90,6 @@
 						:to="{
 							name: 'membership-details',
 							query: {
-								clientName: member.full_name,
-								numberOfVehicles: member.membershipVehicleCount,
-								clientPhone: member.phone_number,
-								clientEmail: member.userEmail,
 								id: member.id,
 							},
 						}"
