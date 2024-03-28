@@ -21,7 +21,11 @@
 					{{ $route.query.numberOfVehicles }}
 				</h2>
 				<div class="py-2 flex justify-end">
-					<CallableModal />
+					<ActionTriggeredModal trigger-button-name="Add Vehicle">
+						<template #activeElement>
+							<AddNewVehicle />
+						</template>
+					</ActionTriggeredModal>
 				</div>
 			</div>
 		</div>
