@@ -52,10 +52,21 @@ export default function useUtils() {
 		return formattedDate;
 	}
 
+	function formatServerProvidedDate(servDate: string) {
+		// Parse the date string to a Date object
+		const date = new Date(servDate);
+
+		// Format the date to 'yyyy-MM-dd'
+		const formattedDate = format(date, "yyyy-MM-dd");
+
+		return formattedDate;
+	}
+
 	return {
 		capitalizeFirstLetterOfEachWord,
 		capitalizeFirstLetter,
 		toTitleCase,
 		formatExcelDate,
+		formatServerProvidedDate,
 	};
 }
