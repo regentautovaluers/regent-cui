@@ -189,6 +189,7 @@
 						id="cover-period-starts"
 						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						placeholder="Enter Customer Name as Seen In Their National ID"
+						pattern="\d{4}-\d{2}-\d{2}"
 						required
 						v-model="vehicle.start_date" />
 				</div>
@@ -205,6 +206,7 @@
 						id="cover-period-ends"
 						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						placeholder="Enter Customer Name as Seen In Their National ID"
+						pattern="\d{4}-\d{2}-\d{2}"
 						required
 						v-model="vehicle.end_date" />
 				</div>
