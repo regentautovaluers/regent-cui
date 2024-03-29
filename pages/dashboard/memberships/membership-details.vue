@@ -124,7 +124,7 @@
 
 	const { openToast } = useToast();
 	const route = useRoute();
-	const memberVehiclesList: Ref<object[] | null> = ref(null);
+	const memberVehiclesList: Ref<any[]> = ref([]);
 	const runtimeConfig = useRuntimeConfig();
 
 	try {
