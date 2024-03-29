@@ -1,6 +1,6 @@
 <template>
 	<tr
-		class="hover:shadow-lg odd:bg-gray-200/50"
+		class="hover:shadow-lg odd:bg-gray-100"
 		v-for="(member, i) in computedPagedList"
 		:key="i">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">

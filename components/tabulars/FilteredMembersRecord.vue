@@ -1,15 +1,6 @@
 <template>
-	<!-- <tr
-		v-if="fetchErrorOccured"
-		class="bg-green-500">
-		<td
-			colspan="100%"
-			class="flex flex-col items-center justify-center h-fit">
-			<h1>Fetch error occured</h1>
-		</td>
-	</tr> -->
 	<tr
-		class="hover:shadow-lg odd:bg-gray-200/50"
+		class="hover:shadow-lg odd:bg-gray-100"
 		v-for="(member, i) in membersList"
 		:key="i">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
