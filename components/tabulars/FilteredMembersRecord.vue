@@ -41,61 +41,40 @@
 		</td>
 		<td
 			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
-			<span class="text-start">{{
+			<span class="text-end">{{
 				!member.phone_number
 					? "Phone Number Not Provided"
 					: member.phone_number
 			}}</span>
-			<span class="text-start">{{
+			<span class="text-end">{{
 				!member.userEmail ? "Email Not Provided" : member.userEmail
 			}}</span>
 		</td>
-		<td>
-			<div class="hs-dropdown relative inline-flex [--placement:left]">
-				<button
-					id="hs-dropdown-hover-event"
-					type="button"
-					class="hs-dropdown-toggle py-3 px-4">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="1.5em"
-						height="2em"
-						viewBox="0 0 24 24">
-						<path
-							fill="none"
-							stroke="currentColor"
-							stroke-linejoin="round"
-							stroke-width="3.75"
-							d="M12 12h.01v.01H12zm0-7h.01v.01H12zm0 14h.01v.01H12z" />
-					</svg>
-				</button>
-				<div
-					class="hs-dropdown-menu border transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full font-semibold"
-					aria-labelledby="hs-dropdown-hover-event">
-					<NuxtLink
-						:to="{
-							name: 'edit-member-details',
-							query: {
-								memberName: member.full_name,
-								memberPhone: member.phone_number,
-								memberEmail: member.userEmail,
-								memberId: member.id,
-							},
-						}"
-						class="flex items-center gap-x-3.5 p-3 rounded-t-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none">
-						Edit Details
-					</NuxtLink>
-					<NuxtLink
-						class="flex items-center gap-x-3.5 p-3 rounded-b-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none"
-						:to="{
-							name: 'membership-details',
-							query: {
-								id: member.id,
-							},
-						}"
-						>View Memberships</NuxtLink
-					>
-				</div>
+		<td class="text-end px-2">
+			<div class="inline-flex rounded-lg shadow-sm">
+				<NuxtLink
+					:to="{
+						name: 'edit-member-details',
+						query: {
+							memberName: member.full_name,
+							memberPhone: member.phone_number,
+							memberEmail: member.userEmail,
+							memberId: member.id,
+						},
+					}"
+					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-lg text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
+					Edit Details
+				</NuxtLink>
+				<NuxtLink
+					:to="{
+						name: 'membership-details',
+						query: {
+							id: member.id,
+						},
+					}"
+					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-full text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
+					View Vehicles
+				</NuxtLink>
 			</div>
 		</td>
 	</tr>

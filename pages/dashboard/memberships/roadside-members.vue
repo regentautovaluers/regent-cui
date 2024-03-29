@@ -36,7 +36,7 @@
 									</th>
 									<th
 										scope="col"
-										class="px-6 py-3 text-start font-bold text-gray-500">
+										class="px-6 py-3 text-end font-bold text-gray-500">
 										Contacts
 									</th>
 									<th
