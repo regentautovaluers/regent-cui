@@ -1,30 +1,37 @@
 <template>
-	<tr class="hover:shadow-lg">
+	<tr
+		class="hover:shadow-lg"
+		v-for="(record, index) in memberVehiclesList"
+		:key="index">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-pink-600">
-			{{ componentProps.vehicleRegistration }}
+			{{ record.registration }}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			{{ formatServerProvidedDate(componentProps.membershipStartDate) }}
+			{{ formatServerProvidedDate(record.start_date) }}
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			{{ formatServerProvidedDate(componentProps.membershipEndDate) }}
+			{{ formatServerProvidedDate(record.end_date) }}
 		</td>
 		<td
 			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
-			<span class="text-start">{{ componentProps.vehicleMake }}</span>
-			<span class="text-start">{{ componentProps.vehicleModel }}</span>
+			<span class="text-start">{{ record.make }}</span>
+			<span class="text-start">{{ record.model }}</span>
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-blue-500">
-			{{ capitalizeFirstLetterOfEachWord(componentProps.membershipType) }}
+			{{
+				capitalizeFirstLetterOfEachWord(
+					record.membershipType.membership_name
+				)
+			}}
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-green-500">
-			{{ capitalizeFirstLetter(componentProps.membershipStatus) }}
+			{{ capitalizeFirstLetter(record.membership_status) }}
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
-			{{ capitalizeFirstLetter(componentProps.paymentStatus) }}
+			{{ capitalizeFirstLetter(record.payment_status) }}
 		</td>
 
 		<td>
@@ -33,22 +40,22 @@
 					:to="{
 						name: 'edit-membership-details',
 						query: {
-							membershipId: componentProps.membershipId,
-							vehicleRegistration:
-								componentProps.vehicleRegistration,
-							vehicleMake: componentProps.vehicleMake,
-							vehicleModel: componentProps.vehicleModel,
-							membershipStatus: componentProps.membershipStatus,
-							paymentStatus: componentProps.paymentStatus,
-							clientName: $route.query.clientName,
+							membershipId: record.id,
+							vehicleRegistration: record.registration,
+							vehicleMake: record.make,
+							vehicleModel: record.model,
+							membershipStatus: record.membership_status,
+							paymentStatus: record.payment_status,
+							clientName:
+								memberVehiclesList[0].membership.full_name,
 						},
 					}"
 					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-lg text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
 					Edit Vehicle
 				</NuxtLink>
 				<button
-					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-full text-sm font-medium focus:z-10 border border-gray-200 bg-red-500 text-white  hover:bg-red-600 whitespace-nowrap overflow-hidden text-overflow-ellipsis"
-					@click="deleteMembershipRecord">
+					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-full text-sm font-medium focus:z-10 border border-gray-200 bg-red-500 text-white hover:bg-red-600 whitespace-nowrap overflow-hidden text-overflow-ellipsis"
+					@click="deleteMembershipRecord(record.id)">
 					<span>Delete Vehicle</span>
 					<div
 						v-if="deleteMembershipLoading"
@@ -62,22 +69,43 @@
 </template>
 
 <script setup lang="ts">
-	const componentProps = defineProps<{
-		vehicleRegistration: string;
-		membershipStartDate: string;
-		membershipEndDate: string;
-		vehicleMake: string;
-		vehicleModel: string;
-		membershipStatus: string;
-		paymentStatus: string;
-		membershipType: string;
-		membershipId: number;
-	}>();
 	const deleteMembershipLoading: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const router = useRouter();
 	const { openToast } = useToast();
 	const { formatServerProvidedDate } = useUtils();
+	const route = useRoute();
+	const memberVehiclesList: Ref<any[]> = ref([]);
+	const emit = defineEmits(["provideClientDetails"]);
+
+	try {
+		await $fetch(
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/membership/${route.query.id}`,
+			{
+				method: "GET",
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error(
+							"Failed to retrieve corporate's members"
+						);
+					}
+					memberVehiclesList.value = response._data;
+					emit(
+						"provideClientDetails",
+						memberVehiclesList.value[0].membership.full_name,
+						!memberVehiclesList.value[0].membership.userEmail
+							? "Email not provided"
+							: memberVehiclesList.value[0].membership.userEmail,
+						memberVehiclesList.value[0].membership.phone_number,
+						memberVehiclesList.value.length
+					);
+				},
+			}
+		);
+	} catch (error) {
+		console.log("An error occured: ", error);
+		openToast("Failed to load your members. Reload page!", "danger");
+	}
 
 	function capitalizeFirstLetterOfEachWord(sentence: string): string {
 		// Check if the sentence is not empty
@@ -114,11 +142,11 @@
 		return word;
 	}
 
-	async function deleteMembershipRecord() {
+	async function deleteMembershipRecord(membershipId: number) {
 		deleteMembershipLoading.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/${componentProps.membershipId}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/${membershipId}`,
 				{
 					method: "DELETE",
 					async onResponse({ response }) {
