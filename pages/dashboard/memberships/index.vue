@@ -49,7 +49,7 @@
 					<div class="flex items-center space-x-2">
 						<div class="flex flex-nowrap items-center space-x-3">
 							<!-- filter by Membership type -->
-							<div
+							<!-- <div
 								class="hs-dropdown relative inline-flex [--placement:bottom-right]">
 								<button
 									id="hs-dropdown-default"
@@ -85,12 +85,10 @@
 											name="membership-category"
 											value="corporate"
 											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											id="corporate-type"
 											v-model="
 												searchMembershipCategory
 											" />
 										<label
-											for="corporate-type"
 											class="text-gray-500 ms-2 dark:text-gray-400"
 											>Corporate Registration</label
 										>
@@ -102,18 +100,16 @@
 											name="membership-category"
 											value="individual"
 											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											id="individual-type"
 											v-model="
 												searchMembershipCategory
 											" />
 										<label
-											for="individual-type"
 											class="text-gray-500 ms-2 dark:text-gray-400"
 											>Individual Registration</label
 										>
 									</div>
 								</div>
-							</div>
+							</div> -->
 						</div>
 						<button
 							v-if="
