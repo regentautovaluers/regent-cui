@@ -172,7 +172,7 @@
 	const processedFleetData: Ref<bulkProcessedType[]> = ref([]);
 	const route = useRoute();
 	const currentPercentage = ref(0);
-	const availableFleets: Ref<Object[]> = ref([]);
+	const availableFleets: Ref<any[]> = ref([]);
 	const { openToast } = useToast();
 	const selectedFleetId: Ref<number> = ref(0);
 	const retrievingFleetList: Ref<boolean> = ref(false);
@@ -344,16 +344,11 @@
 	});
 
 	// Handle the file reading events
-	function handleEvent(event) {
-		if (["loadend", "load"].includes(event.type)) {
-			console.log("finished loading file");
-		}
+	function handleEvent(event: any) {
 		if (event.type === "progress") {
 			currentProgress.value = `${
 				(event.loaded / totalSize.value).toFixed(2) * 100
 			}%`;
-			console.log("Progress: ", currentProgress.value);
-			console.log("Bytes transferred: ", event.loaded, "bytes");
 		}
 		if (event.type === "loadstart") {
 			totalSize.value = event.total;
@@ -361,23 +356,13 @@
 	}
 
 	// Attach event listeners to the reader
-	function addListeners(reader) {
+	function addListeners(reader: any) {
 		reader.addEventListener("loadstart", handleEvent);
 		reader.addEventListener("load", handleEvent);
 		reader.addEventListener("loadend", handleEvent);
 		reader.addEventListener("progress", handleEvent);
 		reader.addEventListener("error", handleEvent);
 		reader.addEventListener("abort", handleEvent);
-	}
-
-	// Handle the file selection event
-	function handleSelected(e: any) {
-		console.log(e);
-		const selectedFile = e.target.files[0];
-		if (selectedFile) {
-			addListeners(reader);
-			reader.readAsDataURL(selectedFile);
-		}
 	}
 </script>
 
