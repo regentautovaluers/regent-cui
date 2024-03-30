@@ -63,13 +63,11 @@
 </template>
 
 <script setup lang="ts">
-	export interface ComponentProps {
+	const componentProps = defineProps<{
 		currentPage: number;
 		searchTerm: string | null;
-		membershipCategory: string | null;
-	}
-
-	const componentProps = defineProps<ComponentProps>();
+		membershipCategory: any;
+	}>();
 	const { capitalizeFirstLetter } = useUtils();
 	const membersList: Ref<object[]> = ref([]);
 	const page: Ref<number> = computed(() => componentProps.currentPage);
