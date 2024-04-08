@@ -1,5 +1,5 @@
 <template>
-	<main class="min-h-screen h-screen">
+	<main class="h-screen">
 		<nav
 			class="py-4 flex justify-between items-center px-3 md:pl-[330px] md:pr-[20px] sticky top-0 z-20 bg-white flex-wrap">
 			<div class="flex space-x-8 w-fit md:w-1/3">
@@ -17,7 +17,7 @@
 				</button>
 				<!-- End Navigation Toggle -->
 				<h1 class="text-2xl md:text-3xl font-semibold hidden md:flex">
-					{{ currentRoute }}
+					{{ currentRoute || computedCurrentRoute }}
 				</h1>
 			</div>
 
@@ -64,12 +64,16 @@
 				<!-- profile information chip -->
 				<div class="flex items-center space-x-4">
 					<img
-						class="inline-block size-[62px] rounded-full"
+						class="inline-block size-[50px] rounded-full"
 						src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
 						alt="User Image" />
 					<div class="flex flex-col">
-						<span class="font-bold tracking">Jane Kabura</span>
-						<span class="text-gray-500">AIC Insurance</span>
+						<span class="font-bold tracking">{{
+							getDetails.username
+						}}</span>
+						<span class="text-gray-500">{{
+							getDetails.company
+						}}</span>
 					</div>
 				</div>
 			</div>
@@ -136,7 +140,9 @@
 			<div class="mt-5">
 				<!-- Sidebar advertisement -->
 				<div class="mb-20 px-4">
-					<SidenavAdvertCarousel />
+					<ClientOnly>
+						<SidenavAdvertCarousel />
+					</ClientOnly>
 				</div>
 
 				<!-- Ending links -->
@@ -158,6 +164,17 @@
 						@change-current-route-name="
 							handleChangeCurrentRouteName
 						" />
+
+					<!-- 'Logout Button' -->
+					<li>
+						<button
+							class="flex items-center gap-x-3.5 w-full py-5 rounded-s-2xl px-2.5 bg-gray-100 hover:bg-gray-100 font-semibold border-r-4 border-r-blue-600 text-gray-500"
+							@click="handleClientLogout">
+							<img
+								src="/icons/sidenav/logout-icon.svg"
+								alt="Route Icon" /><span>Logout</span>
+						</button>
+					</li>
 				</ul>
 				<div class="text-gray-500 text-sm flex flex-col px-6 mt-5">
 					<span class="font-semibold">Regent Valuers Limited</span>
@@ -166,31 +183,69 @@
 			</div>
 		</div>
 
-		<!-- the main div where every route will be shown -->
-		<div class="w-full h-full min-h-full">
-			<slot />
-		</div>
+		<!-- the main place where every route will be shown -->
+		<slot />
 	</main>
 </template>
 
 <script setup lang="ts">
 	import applicationRoutes from "~/types/routes";
+	import { useStorage } from "@vueuse/core";
+	import useUtils from "~/composables/useUtils";
 	// macro imports
 	const route = useRoute();
+	const router = useRouter();
 
 	const notificationCount: Ref<number> = ref(10);
 	const messageCount: Ref<number> = ref(10);
+	const currentRoute: Ref<string | null> = ref(null);
+	const computedCurrentRoute = computed((): string | null => {
+		if (route.name === "dashboard-home") {
+			return "Home";
+		}
 
-	const currentRoute: Ref<string> = ref("Home");
-	const computedCurrentRoute = computed((): string => {
 		const currentRoutePath = route.path;
+		const currentRoutePathTokens = currentRoutePath.split("/");
 
-		return currentRoutePath;
+		return currentRoutePathTokens.length > 2
+			? capitalizeFirstLetterOfEachWord(
+					currentRoutePathTokens[2].split("-").join(" ")
+			  )
+			: null;
 	});
-	console.log(computedCurrentRoute.value);
+	const { getDetails, nullOutDetails } = usePrincipal();
+	const { openToast } = useToast();
+	const { capitalizeFirstLetterOfEachWord } = useUtils();
+	const rememberableAuthToken = useCookie("corp_auth_token", {
+		watch: true,
+		httpOnly: false,
+		domain: "localhost",
+		path: "/",
+	});
+	const forgetableAuthToken =
+		typeof window !== "undefined"
+			? useStorage("corp_auth_token", "", sessionStorage)
+			: null;
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;
+	}
+
+	async function handleClientLogout() {
+		// null out stored tokens wherever they are stored
+		forgetableAuthToken.value = null;
+		rememberableAuthToken.value = null;
+
+		// null out the principal in the local storage
+		await nullOutDetails();
+
+		// navigate user to the login page
+		openToast("Logout successfull", "success");
+
+		// login the user
+		router.push({
+			name: "authentication-page",
+		});
 	}
 </script>
 

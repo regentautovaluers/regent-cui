@@ -1,11 +1,10 @@
 <template>
-	<div class="w-[35rem] bg-blue-600 flex h-fit rounded-sm py-10 text-lg">
+	<div
+		class="w-[35rem] bg-white border-2 border-blue-500 flex h-[29rem] py-10 hover:bg-blue-600 hover:border-none hover:border-blue-700 rounded-sm text-lg group">
 		<slot name="membershipType" />
-		<div class="flex-grow text-left pr-1">
+		<div class="flex-grow text-left pr-3">
 			<slot name="benefitsAndPricing" />
 			<slot name="registrationLink" />
 		</div>
 	</div>
 </template>
-
-<script setup lang="ts"></script>

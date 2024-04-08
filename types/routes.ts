@@ -4,13 +4,13 @@ const applicationRoutes: ApplicationRoute[] = [
 	{
 		id: 1,
 		displayName: "Home",
-		icon: "/sidenav/home-icon.svg",
+		icon: "/icons/sidenav/home-icon.svg",
 		routeName: "dashboard-home",
 	},
 	{
 		id: 2,
 		displayName: "Vehicle Valuation",
-		icon: "sidenav/vehicle-valuation-icon.svg",
+		icon: "/icons/sidenav/vehicle-valuation-icon.svg",
 		routeName: "valuation-home",
 		children: [
 			{
@@ -43,7 +43,7 @@ const applicationRoutes: ApplicationRoute[] = [
 	{
 		id: 3,
 		displayName: "Roadside Assistance",
-		icon: "sidenav/roadside-ass-icon.svg",
+		icon: "/icons/sidenav/roadside-ass-icon.svg",
 		routeName: "ava-home",
 		children: [
 			{
@@ -56,11 +56,7 @@ const applicationRoutes: ApplicationRoute[] = [
 				displayName: "Tyre Change",
 				routeName: "ava-tyre-change",
 			},
-			{
-				id: 3,
-				displayName: "Mobile Service",
-				routeName: "ava-mobile-service",
-			},
+
 			{
 				id: 4,
 				displayName: "Jumpstarting",
@@ -72,6 +68,11 @@ const applicationRoutes: ApplicationRoute[] = [
 				routeName: "ava-fuel-delivery",
 			},
 			{
+				id: 3,
+				displayName: "Mobile Service",
+				routeName: "ava-mobile-service",
+			},
+			{
 				id: 6,
 				displayName: "All Incidents",
 				routeName: "ava-all-incidents",
@@ -81,19 +82,19 @@ const applicationRoutes: ApplicationRoute[] = [
 	{
 		id: 4,
 		displayName: "Settings",
-		icon: "sidenav/settings-icon.svg",
+		icon: "/icons/sidenav/settings-icon.svg",
 		routeName: "dashboard-settings",
 	},
 	{
 		id: 5,
 		displayName: "Support",
-		icon: "sidenav/support-icon.svg",
+		icon: "/icons/sidenav/support-icon.svg",
 		routeName: "dashboard-support",
 	},
 	{
 		id: 6,
 		displayName: "Memberships",
-		icon: "sidenav/memberships-icon.svg",
+		icon: "/icons/sidenav/memberships-icon.svg",
 		routeName: "memberships-home",
 		children: [
 			{
@@ -104,7 +105,7 @@ const applicationRoutes: ApplicationRoute[] = [
 			{
 				id: 2,
 				displayName: "Manage Fleets",
-				routeName: "new-member",
+				routeName: "manage-fleets",
 			},
 			{
 				id: 3,

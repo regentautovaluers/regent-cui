@@ -1,8 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	routeRules: {
+		// turn of server side rendering for all roadside assistance routes due to Google Maps Rendering
+		"/dashboard/roadside-assistance/": {
+			ssr: false,
+		},
+
+		// turn of SSR for the home route
+		"/": {
+			ssr: false,
+		},
+	},
 	devtools: { enabled: true },
 	css: ["~/assets/css/main.css"],
-	ssr: false,
 	devServer: {
 		port: 8000,
 	},
@@ -12,7 +22,7 @@ export default defineNuxtConfig({
 			pathPrefix: false,
 		},
 	],
-	modules: ["nuxt-icons", "nuxt-icon", "nuxt-icon"],
+	modules: ["nuxt-icons", "nuxt-icon", "nuxt-icon", "@pinia/nuxt"],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -43,9 +53,45 @@ export default defineNuxtConfig({
 					rel: "manifest",
 					href: "/manifest.json",
 				},
+				// {
+				// 	rel: "stylesheet",
+				// 	href: "./node_modules/apexcharts/dist/apexcharts.css",
+				// 	tagPosition: "head",
+				// },
 			],
 			title: "Regent Auto Valuers",
+			script: [
+				// {
+				// 	src: "./node_modules/lodash/lodash.min.js",
+				// },
+				// {
+				// 	src: "./node_modules/apexcharts/dist/apexcharts.min.js",
+				// 	tagPosition: "bodyClose",
+				// },
+				// {
+				// 	src: "https://preline.co/assets/js/hs-apexcharts-helpers.js",
+				// },
+			],
 		},
 	},
+	pinia: {
+		autoImports: ["defineStore", "storeToRefs"],
+	},
 	plugins: ["~/plugins/preline.client.ts"],
+	routeRules: {
+		"/api/**": {
+			proxy: {
+				to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
+			},
+		},
+	},
+	runtimeConfig: {
+		public: {
+			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
+			AVA_BASE_URL: process.env.AVA_BASE_URL,
+		},
+		app: {
+			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
+		},
+	},
 });

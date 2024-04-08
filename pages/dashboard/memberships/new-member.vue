@@ -10,25 +10,40 @@
 					class="text-6xl py-3 italic font-semibold text-white antialiased">
 					Membership Types
 				</h1>
-				<div class="mt-44 flex justify-center space-x-10">
-					<MembershipTypesCard>
+				<div
+					class="mt-44 flex flex-col lg:flex-row items-center justify-center space-x-0 lg:space-x-10 space-y-10 lg:space-y-0">
+					<MembershipTypesCard
+						v-for="(membership, index) in membershipTypes"
+						:key="index">
 						<template #membershipType>
 							<div class="w-1/2">
 								<h1
-									class="font-semibold underline underline-offset-[16px]">
-									Roadside Assistance
+									class="font-semibold underline underline-offset-[16px] group-hover:text-white">
+									{{ membership.membership_name }}
 								</h1>
 							</div>
 						</template>
 						<template #benefitsAndPricing>
-							<h1>3500 / Month</h1>
-							<p>Roadside assistance that covers you for less</p>
-							<ul class="space-y-2">
+							<h1 class="group-hover:text-white">
+								<span class="text-3xl">{{
+									membership.membership_rate
+								}}</span>
+								/ Year
+							</h1>
+							<p class="group-hover:text-white">
+								{{ membership.membership_description }}
+							</p>
+							<ul class="space-y-2 group-hover:text-white">
 								<li
 									class="flex space-x-3 items-center"
-									v-for="a in 6">
+									v-for="(
+										benefit, index
+									) in cleanupMembershipBenefits(
+										membership.benefits
+									)"
+									:key="index">
 									<svg
-										class="flex-shrink-0 size-4 mt-0.5 text-white"
+										class="flex-shrink-0 size-4 mt-0.5 group-hover:text-white text-black"
 										xmlns="http://www.w3.org/2000/svg"
 										width="24"
 										height="24"
@@ -40,7 +55,7 @@
 										stroke-linejoin="round">
 										<polyline points="20 6 9 17 4 12" />
 									</svg>
-									<span>Sample Benefit comes here</span>
+									<span>{{ benefit }}</span>
 								</li>
 							</ul>
 						</template>
@@ -50,9 +65,14 @@
 									name: 'membership-registration',
 									query: {
 										registrationType: 'roadside-assistance',
+										// TODO: Ensure the registration cost is dynamically calculated
+										registrationCost: Number(
+											membership.membership_rate
+										),
+										membershipTypeId: membership.id,
 									},
 								}"
-								class="w-fit p-4 rounded-md inline-flex space-x-2 items-center">
+								class="w-fit p-4 rounded-md inline-flex space-x-2 items-center bg-black group-hover:bg-white group-hover:text-black text-white mt-2">
 								<span
 									><svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -80,4 +100,46 @@
 		name: "new-member",
 		layout: "in-app-layout",
 	});
+	const membershipTypes: Ref<Object[]> = ref([]);
+	const { openToast } = useToast();
+	const runtimeConfig = useRuntimeConfig();
+
+	function cleanupMembershipBenefits(inputString: string) {
+		// Step 1: Parse the string into an array
+		let array = JSON.parse(inputString);
+
+		// Step 2: Iterate over the array to clean each string
+		let cleanedArray = array.map((item: string) => {
+			// Remove unnecessary characters (e.g., backslashes)
+			let cleanedItem = item.replace(/\\/g, "");
+			// Ensure the string is properly formatted as a sentence
+			cleanedItem =
+				cleanedItem.charAt(0).toUpperCase() + cleanedItem.slice(1);
+			return cleanedItem;
+		});
+
+		// Step 3: Return the cleaned array
+		return cleanedArray;
+	}
+
+	try {
+		await $fetch(
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/control-unit/membershiptypes`,
+			{
+				method: "GET",
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Failed to retrieve membership types");
+					}
+					membershipTypes.value = response._data;
+				},
+			}
+		);
+	} catch (error) {
+		console.log("An error occured: ", error);
+		openToast(
+			"Failed to load available memberships. Reload page!",
+			"danger"
+		);
+	}
 </script>
