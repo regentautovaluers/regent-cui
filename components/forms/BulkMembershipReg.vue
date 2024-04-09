@@ -133,6 +133,16 @@
 		</div>
 
 		<div class="mt-3">
+			<span
+				class="font-medium"
+				:class="
+					errorMessage.type === 'error'
+						? 'text-red-500'
+						: 'text-green-500'
+				"
+				v-if="errorMessage"
+				>{{ errorMessage.message }}</span
+			>
 			<div
 				class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
 				role="progressbar"
@@ -152,7 +162,8 @@
 
 		<button
 			type="submit"
-			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+			:disabled="errorMessage !== null && errorMessage.type === 'error'"
+			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none disabled:bg-gray-500">
 			<span v-if="!formSubmissionLoading">Create Membership</span>
 			<div
 				v-if="formSubmissionLoading"
@@ -166,6 +177,7 @@
 <script setup lang="ts">
 	import readXlsxFile from "read-excel-file";
 	import { type bulkProcessedType } from "~/types/types";
+	import { type excelUploadErrMess } from "~/types/types";
 
 	const formSubmissionLoading = ref(false);
 	const { getDetails } = usePrincipal();
@@ -185,6 +197,7 @@
 	const currentProgress = ref("0%");
 	const reader = new FileReader();
 	const { formatExcelDate } = useUtils();
+	const errorMessage: Ref<excelUploadErrMess | null> = ref(null);
 	watch(selectedFleetId, (newFleetId) => {
 		const fleetDetails: any = availableFleets.value.find(
 			(fleet: any) => fleet.id === newFleetId
@@ -240,9 +253,24 @@
 					fileData = data;
 				})
 				.then(() => validateUploadedDataIntegrity(fileData))
-				.then(() => pushFleetDataPostValidation(fileData));
+				.then(() => {
+					pushFleetDataPostValidation(fileData);
+					const errorMss: excelUploadErrMess = {
+						message: "File validation passed successfully",
+						type: "success",
+					};
+
+					errorMessage.value = errorMss;
+				});
 		} catch (err) {
 			console.log("An error has occured: ", err);
+			const errorMss: excelUploadErrMess = {
+				message: err,
+				type: "error",
+			};
+
+			errorMessage.value = errorMss;
+			processedFleetData.value = [];
 		}
 		console.log("Data in file: ", fileData);
 
@@ -260,19 +288,19 @@
 			// check for client name
 			if (item[0] === null)
 				throw new Error(
-					`Name of person on row ${index + 1} is missing`
+					`Name of client on row ${index + 1} is missing`
 				);
 
 			// check for client phone number
 			if (item[1] === null)
 				throw new Error(
-					`Phone number of person on row ${index + 1} is missing`
+					`Phone of client number on row ${index + 1} is missing`
 				);
 
 			// check for vehicle registration
 			if (item[3] === null)
 				throw new Error(
-					`Vehicle registration of person on row ${
+					`Vehicle of client registration on row ${
 						index + 1
 					} is missing`
 				);
@@ -280,7 +308,7 @@
 			// check for start date
 			if (item[4] === null)
 				throw new Error(
-					`Start date of insurance for person on row ${
+					`Start date of client insurance on row ${
 						index + 1
 					} is missing`
 				);
@@ -288,7 +316,7 @@
 			// check for end date
 			if (item[5] === null)
 				throw new Error(
-					`End date of insurance for person on row ${
+					`End date of client insurance on row ${
 						index + 1
 					} is missing`
 				);

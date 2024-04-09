@@ -30,3 +30,8 @@ export type bulkProcessedType = {
 	category: string;
 	fleetId: number;
 };
+
+export type excelUploadErrMess = {
+	message: string | unknown;
+	type: string;
+};
