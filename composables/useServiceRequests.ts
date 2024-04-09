@@ -24,7 +24,9 @@ export default function () {
 		requestRemarks: string | null,
 		vehicleClass: string | null,
 		fuelType: string | null,
-		fuelAmount: number | null
+		fuelAmount: number | null,
+		tyreType: string | null,
+		hasSpareTyre: boolean | null
 	) {
 		console.log(
 			"Provided data: ",
@@ -101,6 +103,10 @@ export default function () {
 						...(fuelAmount !== null
 							? { appFuelAmount: fuelAmount }
 							: {}),
+						...(tyreType !== null ? { tyreType: tyreType } : {}),
+						...(hasSpareTyre !== null
+							? { hasSpareTyre: hasSpareTyre }
+							: {}),
 					}),
 
 					async onResponse({ response }) {
@@ -129,8 +135,11 @@ export default function () {
 			return "towingRequest";
 		} else if (route.name === "ava-jumpstarting") {
 			return "jumpstartingRequest";
+		} else if (route.name === "ava-fuel-delivery") {
+			return "fuelDeliveryRequest";
+		} else if (route.name === "ava-tyre-change") {
+			return "tyreChangeRequest";
 		}
-
 		return "";
 	}
 
