@@ -105,6 +105,74 @@
 			</div>
 		</div>
 
+		<!-- tire metadata -->
+		<div
+			class="flex items-center space-x-4 my-5"
+			v-if="
+				componentProps.optionalElementsRendered.includes('tyreMetadata')
+			">
+			<div class="flex flex-col space-x-4 w-full lg:w-1/2">
+				<span class="font-medium whitespace-nowrap mb-2"
+					>Have Spare Tyre</span
+				>
+				<div class="flex space-x-4">
+					<div class="flex hover:bg-gray-200 rounded-lg items-center">
+						<input
+							type="radio"
+							name="spare-tyre"
+							:value="true"
+							class="shrink-0 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							v-model="haveSpareTyre"
+							selected />
+						<label class="text-gray-500 ms-2 dark:text-gray-400"
+							>Yes</label
+						>
+					</div>
+					<div class="flex hover:bg-gray-200 rounded-lg items-center">
+						<input
+							type="radio"
+							name="spare-tyre"
+							:value="false"
+							class="shrink-0 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							v-model="haveSpareTyre" />
+						<label class="text-gray-500 ms-2 dark:text-gray-400"
+							>No</label
+						>
+					</div>
+				</div>
+			</div>
+			<div class="w-full flex flex-col lg:w-1/2">
+				<label
+					for="fuel-type"
+					class="font-medium whitespace-nowrap mb-2"
+					>Tyre Type</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-type"
+					required
+					v-model="tyreType">
+					<option value="Select a Tyre Type">
+						Select a Tyre Type
+					</option>
+					<option
+						v-for="(vType, index) in [
+							'tube',
+							'tubeless',
+							'unknown',
+						]"
+						:key="index"
+						:value="vType">
+						{{
+							capitalizeFirstLetterOfEachWord(vType) === "Unknown"
+								? "I Don't Know"
+								: capitalizeFirstLetterOfEachWord(vType)
+						}}
+					</option>
+				</select>
+			</div>
+		</div>
+
 		<!-- vehicle class -->
 		<div
 			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3"
@@ -316,15 +384,17 @@
 	const arrivalDistance: Ref<number> = ref(20);
 	const serviceCost: Ref<number> = ref(1000);
 	const pickupPoint: Ref<string> = ref(pickupPointName);
-	const pickupLatitude: Ref<number> = ref(pickupPointCoords.lat);
-	const pickupLongitude: Ref<number> = ref(pickupPointCoords.lng);
+	const pickupLatitude: Ref<number> = ref(pickupPointCoords.value.lat);
+	const pickupLongitude: Ref<number> = ref(pickupPointCoords.value.lng);
 	const destinationPoint: Ref<string> = ref(dropOffPointName);
-	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.lat);
-	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.lng);
+	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.value.lat);
+	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.value.lng);
 	const requestRemarks: Ref<string | null> = ref(null);
 	const vehicleClass: Ref<string | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
+	const haveSpareTyre: Ref<boolean> = ref(true);
+	const tyreType: Ref<string> = ref("tubeless");
 	const { openToast } = useToast();
 
 	async function handleServiceReqFormSubmission() {
@@ -352,7 +422,9 @@
 				requestRemarks.value,
 				vehicleClass.value,
 				fuelType.value,
-				fuelAmount.value
+				fuelAmount.value,
+				tyreType.value,
+				haveSpareTyre.value
 			).then(() => {
 				openToast(
 					`${componentProps.clientServiceTypeName} request succesfully went through!`,
