@@ -50,20 +50,79 @@
 		<!-- End Progress Bar -->
 
 		<!-- Vehicle Make and Model -->
-		<div class="w-full">
-			<label
-				for="registration-number"
-				class="block font-medium mb-2 dark:text-white"
-				>Vehicle Make and Model</label
-			>
-			<input
-				type="text"
-				id="registration-number"
-				class="py-3 px-4 h-[4.5rem] block w-full text-gray-500 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-80 disabled:pointer-events-none"
-				placeholder="Provide the registration number to search"
-				:value="vehicleMakeAndModel"
-				disabled
-				required />
+		<div class="w-full flex space-x-4">
+			<!-- Vehicle Make -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="vehicle-make"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Make</label
+				>
+				<input
+					type="text"
+					id="vehicle-make"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					placeholder="e.g Toyota"
+					required
+					disabled
+					v-model="vehicleMake" />
+			</div>
+
+			<!-- Vehicle Model -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="vehicle-model"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Model</label
+				>
+				<input
+					type="text"
+					id="vehicle-model"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					placeholder="e.g Corolla"
+					required
+					disabled
+					v-model="vehicleModel" />
+			</div>
+		</div>
+
+		<!-- vehicle class -->
+		<div
+			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3"
+			v-if="
+				componentProps.optionalElementsRendered.includes('vehicleClass')
+			">
+			<div class="w-full">
+				<label
+					for="fuel-type"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Class</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-type"
+					required
+					v-model="vehicleClass">
+					<option
+						value="Select a Fuel Type"
+						selected>
+						Select a Vehicle Class
+					</option>
+					<option
+						v-for="(vClass, index) in [
+							'sedan',
+							'suv',
+							'van',
+							'bus',
+							'truck',
+							'big truck',
+						]"
+						:key="index"
+						:value="vClass">
+						{{ capitalizeFirstLetterOfEachWord(vClass) }}
+					</option>
+				</select>
+			</div>
 		</div>
 
 		<!-- fuel type and cost -->
@@ -253,19 +312,19 @@
 	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.value.lat);
 	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.value.lng);
 	const requestRemarks: Ref<string | null> = ref(null);
+	const vehicleClass: Ref<string | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
 	const { openToast } = useToast();
-	const { makeServiceRequest } = useServiceRequests();
-
-	const vehicleMakeAndModel = computed(
-		() => `${vehicleMake.value} ${vehicleModel.value}`
-	);
+	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
+	const { capitalizeFirstLetterOfEachWord } = useUtils();
+	const route = useRoute();
 
 	async function handleServiceReqFormSubmission() {
 		formSubmissionLoading.value = true;
 		try {
 			await makeServiceRequest(
+				determineEndpointVar(),
 				userName.value,
 				userPhoneNumber.value,
 				userEmail.value,
@@ -284,6 +343,7 @@
 				destinationLongitude.value,
 				destinationLatitude.value,
 				requestRemarks.value,
+				vehicleClass.value,
 				fuelType.value,
 				fuelAmount.value
 			).then(() => {

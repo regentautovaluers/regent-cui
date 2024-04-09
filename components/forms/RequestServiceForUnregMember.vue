@@ -79,29 +79,15 @@
 					class="block font-medium mb-2 dark:text-white"
 					>Vehicle Make</label
 				>
-				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+				<input
+					type="text"
 					id="vehicle-make"
-					v-model="vehicleMake"
-					required>
-					<option
-						value="Default Make"
-						selected>
-						Default Make
-					</option>
-					<option
-						v-for="(make, index) in [
-							'Make A',
-							'Make B',
-							'Make C',
-							'Make D',
-						]"
-						:key="index"
-						:value="make">
-						{{ make }}
-					</option>
-				</select>
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="e.g Toyota"
+					required
+					v-model="vehicleMake" />
 			</div>
+
 			<!-- Vehicle Model -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -109,26 +95,50 @@
 					class="block font-medium mb-2 dark:text-white"
 					>Vehicle Model</label
 				>
+				<input
+					type="text"
+					id="vehicle-model"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="e.g Corolla"
+					required
+					v-model="vehicleModel" />
+			</div>
+		</div>
+
+		<!-- vehicle class -->
+		<div
+			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3"
+			v-if="
+				componentProps.optionalElementsRendered.includes('vehicleClass')
+			">
+			<div class="w-full">
+				<label
+					for="fuel-type"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Class</label
+				>
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="vehicle-model"
-					v-model="vehicleModel"
-					required>
+					id="fuel-type"
+					required
+					v-model="vehicleClass">
 					<option
-						value="Default Model"
+						value="Select a Fuel Type"
 						selected>
-						Default Model
+						Select a Vehicle Class
 					</option>
 					<option
-						v-for="(model, index) in [
-							'Model A',
-							'Model B',
-							'Model C',
-							'Model D',
+						v-for="(vClass, index) in [
+							'sedan',
+							'suv',
+							'van',
+							'bus',
+							'truck',
+							'big truck',
 						]"
 						:key="index"
-						:value="model">
-						{{ model }}
+						:value="vClass">
+						{{ capitalizeFirstLetterOfEachWord(vClass) }}
 					</option>
 				</select>
 			</div>
@@ -294,10 +304,11 @@
 		pickupPointName,
 		dropOffPointName,
 	} = useLocations();
-	const { makeServiceRequest } = useServiceRequests();
+	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
+	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const vehicleRegistration: Ref<string> = ref("");
-	const vehicleMake: Ref<string> = ref("Default Make");
-	const vehicleModel: Ref<string> = ref("Default Model");
+	const vehicleMake: Ref<string> = ref("");
+	const vehicleModel: Ref<string> = ref("");
 	const userName: Ref<string> = ref("");
 	const userPhoneNumber: Ref<string> = ref("");
 	const userEmail: Ref<string> = ref("");
@@ -311,6 +322,7 @@
 	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.lat);
 	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.lng);
 	const requestRemarks: Ref<string | null> = ref(null);
+	const vehicleClass: Ref<string | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
 	const { openToast } = useToast();
@@ -319,11 +331,14 @@
 		formSubmissionLoading.value = true;
 		try {
 			await makeServiceRequest(
+				determineEndpointVar(),
 				userName.value,
 				userPhoneNumber.value,
 				userEmail.value,
 				componentProps.backendServiceTypeName,
 				vehicleRegistration.value,
+				vehicleMake.value,
+				vehicleModel.value,
 				1, // TODO: figure out what this category value here is for
 				arrivalDuration.value,
 				arrivalDistance.value,
@@ -335,6 +350,7 @@
 				destinationLongitude.value,
 				destinationLatitude.value,
 				requestRemarks.value,
+				vehicleClass.value,
 				fuelType.value,
 				fuelAmount.value
 			).then(() => {
