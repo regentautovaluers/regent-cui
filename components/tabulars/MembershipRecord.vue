@@ -34,7 +34,11 @@
 			{{ capitalizeFirstLetter(record.payment_status) }}
 		</td>
 
-		<td>
+		<td
+			v-if="
+				getDetails.userlevel === 'admin' ||
+				getDetails.userlevel === 'broker'
+			">
 			<div class="inline-flex rounded-lg shadow-sm">
 				<NuxtLink
 					:to="{
@@ -77,6 +81,9 @@
 	const route = useRoute();
 	const memberVehiclesList: Ref<any[]> = ref([]);
 	const emit = defineEmits(["provideClientDetails"]);
+	const { capitalizeFirstLetterOfEachWord, capitalizeFirstLetter } =
+		useUtils();
+	const { getDetails } = usePrincipal();
 
 	try {
 		await $fetch(
@@ -105,41 +112,6 @@
 	} catch (error) {
 		console.log("An error occured: ", error);
 		openToast("Failed to load your members. Reload page!", "danger");
-	}
-
-	function capitalizeFirstLetterOfEachWord(sentence: string): string {
-		// Check if the sentence is not empty
-		if (sentence && sentence.length > 0) {
-			// Split the sentence into words
-			const words = sentence.split(" ");
-			// Capitalize the first letter of each word
-			const capitalizedWords = words.map((word) => {
-				if (word && word.length > 0) {
-					const firstLetter = word.charAt(0).toUpperCase();
-					const restOfWord = word.slice(1);
-					return firstLetter + restOfWord;
-				}
-				return word;
-			});
-			// Join the words back together with spaces
-			return capitalizedWords.join(" ");
-		}
-		// If the sentence is empty, return it as is
-		return sentence;
-	}
-
-	function capitalizeFirstLetter(word: string): string {
-		// Check if the word is not empty
-		if (word && word.length > 0) {
-			// Extract the first character and convert it to uppercase
-			const firstLetter = word.charAt(0).toUpperCase();
-			// Concatenate the rest of the string starting from the second character
-			const restOfWord = word.slice(1);
-			// Return the modified string
-			return firstLetter + restOfWord;
-		}
-		// If the word is empty, return it as is
-		return word;
 	}
 
 	async function deleteMembershipRecord(membershipId: number) {

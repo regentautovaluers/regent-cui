@@ -313,7 +313,7 @@
 						method: "GET",
 						query: {
 							registration: vehicleRegistration.value,
-							corporateId: getDetails.acc_id,
+							corporateId: getDetails.company,
 						},
 						async onResponse({ response }) {
 							if (response.status === 404) {

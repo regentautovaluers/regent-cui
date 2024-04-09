@@ -108,9 +108,9 @@
 
 	try {
 		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.acc_id}`,
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.company}`,
 			{
-				method: "GET",
+				method: "GET", 
 
 				async onResponse({ response }) {
 					if (response.status !== 200) {

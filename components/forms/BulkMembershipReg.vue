@@ -303,7 +303,7 @@
 				full_name: toTitleCase(item[0]),
 				phone_number: `254${item[1]}`,
 				userEmail: item[2],
-				corporateId: getDetails.acc_id,
+				corporateId: getDetails.company,
 				membershipTypeId: Number(route.query.membershipTypeId),
 				registration: item[3],
 				start_date: formatExcelDate(item[4]),
@@ -313,7 +313,7 @@
 				color: "Default Color",
 				payment_status: "paid",
 				membership_status: "active",
-				recordedBy: getDetails.username,
+				recordedBy: getDetails.acc_id,
 				category: "corporate",
 				fleetId: selectedFleetId.value,
 			});
@@ -324,7 +324,7 @@
 		retrievingFleetList.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.acc_id}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.company}`,
 				{
 					method: "GET",
 					async onResponse({ response }) {

@@ -323,9 +323,9 @@
 						full_name: clientFullName.value,
 						phone_number: clientPhoneNumber.value,
 						userEmail: clientEmail.value,
-						corporateId: getDetails.acc_id,
+						corporateId: getDetails.company,
 						category: "individual",
-						recordedBy: getDetails.username,
+						recordedBy: getDetails.acc_id,
 					}),
 
 					async onResponse({ response }) {
