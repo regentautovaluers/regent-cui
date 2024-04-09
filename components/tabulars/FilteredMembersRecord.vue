@@ -44,6 +44,10 @@
 		<td class="text-end px-2">
 			<div class="inline-flex rounded-lg shadow-sm">
 				<NuxtLink
+					v-if="
+ 						getDetails.userlevel === 'admin' ||
+						getDetails.userlevel === 'broker'
+					"
 					:to="{
 						name: 'edit-member-details',
 						query: {
@@ -102,7 +106,7 @@
 			{
 				method: "GET",
 				query: {
-					corporateId: getDetails.acc_id,
+					corporateId: getDetails.company,
 					page: page.value,
 					size: size.value,
 				},
@@ -162,7 +166,7 @@
 						{
 							method: "GET",
 							query: {
-								corporateId: getDetails.acc_id,
+								corporateId: getDetails.company,
 								page: newValue,
 								size: size.value,
 							},
