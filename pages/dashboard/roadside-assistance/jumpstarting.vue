@@ -40,12 +40,12 @@
 				v-if="currentRegForm === 0"
 				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
-				:optional-elements-rendered="['bottomStatistics']" />
+				:optional-elements-rendered="['bottomStatistics', 'vehicleClass']" />
 			<RequestServiceForUnregMember
 				v-else
 				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
-				:optional-elements-rendered="['bottomStatistics']" />
+				:optional-elements-rendered="['bottomStatistics', 'vehicleClass']" />
 		</div>
 	</div>
 </template>

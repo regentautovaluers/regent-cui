@@ -1,3 +1,5 @@
+import { parse, format } from "date-fns";
+
 export default function useUtils() {
 	function capitalizeFirstLetterOfEachWord(sentence: string): string {
 		// Split the sentence into an array of words
@@ -42,9 +44,29 @@ export default function useUtils() {
 		return words.join(" ");
 	}
 
+	function formatExcelDate(unfDate: string): string {
+		// Parse the input date with the format yyyy-mm-dd
+		const parsedDate = parse(unfDate, "dd/MM/yyyy", new Date());
+		// Format the parsed date to dd-mm-yyyy
+		const formattedDate = format(parsedDate, "yyyy-MM-dd");
+		return formattedDate;
+	}
+
+	function formatServerProvidedDate(servDate: string) {
+		// Parse the date string to a Date object
+		const date = new Date(servDate);
+
+		// Format the date to 'yyyy-MM-dd'
+		const formattedDate = format(date, "yyyy-MM-dd");
+
+		return formattedDate;
+	}
+
 	return {
 		capitalizeFirstLetterOfEachWord,
 		capitalizeFirstLetter,
 		toTitleCase,
+		formatExcelDate,
+		formatServerProvidedDate,
 	};
 }

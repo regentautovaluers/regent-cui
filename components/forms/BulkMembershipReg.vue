@@ -14,7 +14,6 @@
 						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 						id="corporate-name"
 						v-model="selectedFleetId">
-						<option selected>Select from one of your fleets</option>
 						<option
 							v-for="(fleet, index) in availableFleets"
 							:key="index"
@@ -128,36 +127,43 @@
 						type="file"
 						accept=".xlsx"
 						class="hidden"
-						ref="excelFile"
 						@change="parseUploadedExcelFile" />
 				</label>
 			</div>
-			<!-- File Uploading Progress Form -->
-			<div class="mt-3">
-				<!-- Progress Bar -->
+		</div>
+
+		<div class="mt-3">
+			<span
+				class="font-medium"
+				:class="
+					errorMessage.type === 'error'
+						? 'text-red-500'
+						: 'text-green-500'
+				"
+				v-if="errorMessage"
+				>{{ errorMessage.message }}</span
+			>
+			<div
+				class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
+				role="progressbar"
+				aria-valuenow="1"
+				aria-valuemin="0"
+				aria-valuemax="100">
 				<div
-					class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
-					role="progressbar"
-					aria-valuenow="1"
-					aria-valuemin="0"
-					aria-valuemax="100">
-					<div
-						class="flex flex-col justify-center rounded-full overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
-						:style="{ width: `${currentPercentage}%` }" />
-				</div>
-				<div
-					class="flex items-center justify-between w-full text-end text-lg text-gray-500 antialiased">
-					<span> PROCESSING PROGESS </span>
-					<span>{{ currentPercentage }}%</span>
-				</div>
-				<!-- End Progress Bar -->
+					class="flex flex-col justify-center rounded-full overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
+					:style="{ width: currentProgress }" />
 			</div>
-			<!-- End File Uploading Progress Form -->
+			<div
+				class="flex items-center justify-between w-full text-end text-lg text-gray-500 antialiased">
+				<span>UPLOADING PROGRESS</span>
+				<span>{{ currentProgress }}</span>
+			</div>
 		</div>
 
 		<button
 			type="submit"
-			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+			:disabled="errorMessage !== null && errorMessage.type === 'error'"
+			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none disabled:bg-gray-500">
 			<span v-if="!formSubmissionLoading">Create Membership</span>
 			<div
 				v-if="formSubmissionLoading"
@@ -171,14 +177,14 @@
 <script setup lang="ts">
 	import readXlsxFile from "read-excel-file";
 	import { type bulkProcessedType } from "~/types/types";
+	import { type excelUploadErrMess } from "~/types/types";
 
 	const formSubmissionLoading = ref(false);
-	const excelFile = ref("excelFile");
 	const { getDetails } = usePrincipal();
 	const processedFleetData: Ref<bulkProcessedType[]> = ref([]);
 	const route = useRoute();
 	const currentPercentage = ref(0);
-	const availableFleets: Ref<Object[]> = ref([]);
+	const availableFleets: Ref<any[]> = ref([]);
 	const { openToast } = useToast();
 	const selectedFleetId: Ref<number> = ref(0);
 	const retrievingFleetList: Ref<boolean> = ref(false);
@@ -187,10 +193,14 @@
 	const contactEmail: Ref<string> = ref("");
 	const runtimeConfig = useRuntimeConfig();
 	const { toTitleCase } = useUtils();
-
+	const totalSize = ref(0);
+	const currentProgress = ref("0%");
+	const reader = new FileReader();
+	const { formatExcelDate } = useUtils();
+	const errorMessage: Ref<excelUploadErrMess | null> = ref(null);
 	watch(selectedFleetId, (newFleetId) => {
-		const fleetDetails = availableFleets.value.find(
-			(fleet) => fleet.id === newFleetId
+		const fleetDetails: any = availableFleets.value.find(
+			(fleet: any) => fleet.id === newFleetId
 		);
 
 		contactFullName.value = fleetDetails.contact_full_name;
@@ -228,50 +238,121 @@
 		}
 	}
 
-	async function parseUploadedExcelFile(): Promise<void> {
-		const fileInput = excelFile.value;
-		if (fileInput.files.length > 0) {
-			const file = fileInput.files[0];
-			let fileData: Object[] | null = null;
-			// console.log("File name: ", file.name);
-			// console.log("File size: ", file.size);
+	async function parseUploadedExcelFile(e: any): Promise<void> {
+		const selectedFile = e.target.files[0];
 
-			// off to process the excel file
-			await readXlsxFile(file).then((data) => {
-				fileData = data;
-			});
-
-			const percentageContribution = 100 / (fileData.length - 1);
-
-			for (let i = 1; i < fileData.length; i++) {
-				processedFleetData.value.push({
-					full_name: toTitleCase(fileData[i][0]),
-					phone_number: `254${fileData[i][1]}`,
-					userEmail: fileData[i][2],
-					corporateId: getDetails.acc_id,
-					membershipTypeId: Number(route.query.membershipTypeId),
-					registration: fileData[i][3],
-					start_date: fileData[i][4],
-					end_date: fileData[i][5],
-					make: "Default Make",
-					model: "Default Model",
-					color: "Default Color",
-					payment_status: "paid",
-					membership_status: "active",
-					recordedBy: getDetails.username,
-					category: "corporate",
-					fleetId: selectedFleetId.value,
-				});
-				currentPercentage.value += percentageContribution;
-			}
+		if (selectedFile) {
+			addListeners(reader);
+			reader.readAsDataURL(selectedFile);
 		}
+
+		let fileData: Object[] = [];
+		try {
+			await readXlsxFile(selectedFile)
+				.then((data) => {
+					fileData = data;
+				})
+				.then(() => validateUploadedDataIntegrity(fileData))
+				.then(() => {
+					pushFleetDataPostValidation(fileData);
+					const errorMss: excelUploadErrMess = {
+						message: "File validation passed successfully",
+						type: "success",
+					};
+
+					errorMessage.value = errorMss;
+				});
+		} catch (err) {
+			console.log("An error has occured: ", err);
+			const errorMss: excelUploadErrMess = {
+				message: err,
+				type: "error",
+			};
+
+			errorMessage.value = errorMss;
+			processedFleetData.value = [];
+		}
+		console.log("Data in file: ", fileData);
+
+		if (selectedFile) {
+			addListeners(reader);
+			reader.readAsDataURL(selectedFile);
+		}
+	}
+
+	function validateUploadedDataIntegrity(data: Object[]): void {
+		// each item here is the individual row in the excel converted to an arrat
+		data.forEach((item: any, index: number) => {
+			if (index === 0) return;
+
+			// check for client name
+			if (item[0] === null)
+				throw new Error(
+					`Name of client on row ${index + 1} is missing`
+				);
+
+			// check for client phone number
+			if (item[1] === null)
+				throw new Error(
+					`Phone of client number on row ${index + 1} is missing`
+				);
+
+			// check for vehicle registration
+			if (item[3] === null)
+				throw new Error(
+					`Vehicle of client registration on row ${
+						index + 1
+					} is missing`
+				);
+
+			// check for start date
+			if (item[4] === null)
+				throw new Error(
+					`Start date of client insurance on row ${
+						index + 1
+					} is missing`
+				);
+
+			// check for end date
+			if (item[5] === null)
+				throw new Error(
+					`End date of client insurance on row ${
+						index + 1
+					} is missing`
+				);
+		});
+	}
+
+	function pushFleetDataPostValidation(data: Object[]) {
+		data.forEach((item: any, index: number) => {
+			if (index === 0) return;
+
+			processedFleetData.value.push({
+				full_name: toTitleCase(item[0]),
+				phone_number: `254${item[1]}`,
+				userEmail: item[2],
+				corporateId: getDetails.company,
+				membershipTypeId: Number(route.query.membershipTypeId),
+				registration: item[3],
+				start_date: formatExcelDate(item[4]),
+				end_date: formatExcelDate(item[5]),
+				make: "Default Make",
+				model: "Default Model",
+				color: "Default Color",
+				payment_status: "paid",
+				membership_status: "active",
+				recordedBy: getDetails.acc_id,
+				category: "corporate",
+				fleetId: selectedFleetId.value,
+			});
+		});
 	}
 
 	onMounted(async () => {
 		retrievingFleetList.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.acc_id}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.company}`,
 				{
 					method: "GET",
 					async onResponse({ response }) {
@@ -289,6 +370,28 @@
 			openToast("Failed to retrieve fleets! Reload page!", "danger");
 		}
 	});
+
+	// Handle the file reading events
+	function handleEvent(event: any) {
+		if (event.type === "progress") {
+			currentProgress.value = `${
+				(event.loaded / totalSize.value).toFixed(2) * 100
+			}%`;
+		}
+		if (event.type === "loadstart") {
+			totalSize.value = event.total;
+		}
+	}
+
+	// Attach event listeners to the reader
+	function addListeners(reader: any) {
+		reader.addEventListener("loadstart", handleEvent);
+		reader.addEventListener("load", handleEvent);
+		reader.addEventListener("loadend", handleEvent);
+		reader.addEventListener("progress", handleEvent);
+		reader.addEventListener("error", handleEvent);
+		reader.addEventListener("abort", handleEvent);
+	}
 </script>
 
 <style>

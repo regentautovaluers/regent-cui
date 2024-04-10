@@ -96,12 +96,12 @@
 				{
 					method: "POST",
 					body: JSON.stringify({
-						corporate: getDetails.acc_id,
+						corporate: getDetails.company,
 						fleetname: fleetName.value,
 						contact_full_name: contactFullName.value,
 						contact_phone_number: contactPhoneNumber.value,
 						contact_email: contactEmail.value,
-						recordedBy: getDetails.username,
+						recordedBy: getDetails.acc_id,
 					}),
 					async onResponse({ response }) {
 						if (response.status === 201) {

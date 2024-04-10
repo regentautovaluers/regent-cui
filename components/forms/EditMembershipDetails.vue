@@ -144,6 +144,7 @@
 <script setup lang="ts">
 	const formSubmissionLoading = ref(false);
 	const route = useRoute();
+	const router = useRouter();
 	const runtimeConfig = useRuntimeConfig();
 	const vehicleRegistration: Ref<string> = ref(
 		route.query.vehicleRegistration as string
@@ -181,7 +182,7 @@
 							"success"
 						);
 
-						// TODO: Return user back to the page they were on before they came here
+						router.back();
 					},
 				}
 			);

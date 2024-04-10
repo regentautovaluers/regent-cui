@@ -1,16 +1,7 @@
 <template>
-	<!-- <tr
-		v-if="fetchErrorOccured"
-		class="bg-green-500">
-		<td
-			colspan="100%"
-			class="flex flex-col items-center justify-center h-fit">
-			<h1>Fetch error occured</h1>
-		</td>
-	</tr> -->
 	<tr
-		class="hover:shadow-lg odd:bg-gray-200/50"
-		v-for="(member, i) in filteredList"
+		class="hover:shadow-lg odd:bg-gray-100"
+		v-for="(member, i) in computedPagedList"
 		:key="i">
 		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
 			{{ member.full_name }}
@@ -24,108 +15,145 @@
 				:to="{
 					name: 'membership-details',
 					query: {
-						clientName: member.full_name,
-						numberOfVehicles: member.membershipVehicleCount,
-						clientPhone: member.phone_number,
-						clientEmail: member.userEmail,
 						id: member.id,
 					},
 				}"
-				>{{
-					!componentProps.defaultFilterFlag
-						? member.membershipVehicleCount
-						: member.membershipVehicleCounts.find(
-								(data) =>
-									data.membership_name ===
-									componentProps.defaultFilterFlag
-						  ).vehicleCount
-				}}</NuxtLink
+				>{{ member.membershipVehicleCount }}</NuxtLink
 			>
 		</td>
 		<td
-			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
-			<span class="text-start">{{
+			class="px-6 py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
+			<span class="text-end">{{
 				!member.phone_number
 					? "Phone Number Not Provided"
-					: member.phone_number
+					: `+${member.phone_number}`
 			}}</span>
-			<span class="text-start">{{
+			<span class="text-end">{{
 				!member.userEmail ? "Email Not Provided" : member.userEmail
 			}}</span>
 		</td>
-		<td>
-			<div class="hs-dropdown relative inline-flex">
-				<button
-					id="hs-dropdown-hover-event"
-					type="button"
-					class="hs-dropdown-toggle py-3 px-4">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="1.5em"
-						height="2em"
-						viewBox="0 0 24 24">
-						<path
-							fill="none"
-							stroke="currentColor"
-							stroke-linejoin="round"
-							stroke-width="3.75"
-							d="M12 12h.01v.01H12zm0-7h.01v.01H12zm0 14h.01v.01H12z" />
-					</svg>
-				</button>
-				<div
-					class="hs-dropdown-menu border transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full font-semibold"
-					aria-labelledby="hs-dropdown-hover-event">
-					<NuxtLink
-						:to="{
-							name: 'edit-member-details',
-							query: {
-								memberName: member.full_name,
-								memberPhone: member.phone_number,
-								memberEmail: member.userEmail,
-								memberId: member.id,
-							},
-						}"
-						class="flex items-center gap-x-3.5 p-3 rounded-t-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none">
-						Edit Details
-					</NuxtLink>
-					<NuxtLink
-						class="flex items-center gap-x-3.5 p-3 rounded-b-lg text-sm text-blue-700 hover:bg-blue-300 focus:outline-none"
-						:to="{
-							name: 'membership-details',
-							query: {
-								clientName: member.full_name,
-								numberOfVehicles: member.membershipVehicleCount,
-								clientPhone: member.phone_number,
-								clientEmail: member.userEmail,
-								id: member.id,
-							},
-						}"
-						>View Memberships</NuxtLink
-					>
-				</div>
+		<td class="text-end px-2">
+			<div class="inline-flex rounded-lg shadow-sm">
+				<NuxtLink
+					v-if="
+						getDetails.userlevel === 'admin' ||
+						getDetails.userlevel === 'broker'
+					"
+					:to="{
+						name: 'edit-member-details',
+						query: {
+							memberName: member.full_name,
+							memberPhone: member.phone_number,
+							memberEmail: member.userEmail,
+							memberId: member.id,
+						},
+					}"
+					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-lg text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
+					Edit Details
+				</NuxtLink>
+				<NuxtLink
+					:to="{
+						name: 'membership-details',
+						query: {
+							id: member.id,
+						},
+					}"
+					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-full text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
+					View Vehicles
+				</NuxtLink>
 			</div>
 		</td>
 	</tr>
 </template>
 
 <script setup lang="ts">
-	export interface ComponentProps {
-		defaultFilterFlag?: string;
-	}
-
-	const componentProps = defineProps<ComponentProps>();
+	const componentProps = defineProps<{
+		currentPage: number;
+		searchTerm: string | null;
+		membershipCategory: any;
+	}>();
 	const { capitalizeFirstLetter } = useUtils();
 	const membersList: Ref<object[]> = ref([]);
-	const page: Ref<number> = ref(0);
-	const size: Ref<number> = ref(100);
+	const page: Ref<number> = computed(() => componentProps.currentPage);
+	const size: Ref<number> = ref(10);
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const { getDetails } = usePrincipal();
-	const fetchingMoreData: Ref<boolean> = ref(false);
 	const fetchErrorOccured: Ref<boolean> = ref(false);
-	const emits = defineEmits(["totalNumber"]);
+	const emits = defineEmits([
+		"provideStatistics",
+		"nextPageLoaded",
+		"resetStatistics",
+	]);
+	const fetchedPages: Ref<number[]> = ref([]);
+
+	// for filtering purposes
+	const filterBySearchTerm: ComputedRef<string | null> = computed(
+		() => componentProps.searchTerm
+	);
+	const filterByMembershipCat: ComputedRef<string | null> = computed(
+		() => componentProps.membershipCategory
+	);
+
+	watch([filterBySearchTerm, filterByMembershipCat], async (newValues) => {
+		if (newValues[0] !== null || newValues[1] !== null) {
+			// before querying for anything, reset the values set by the inital load or default page loads
+			membersList.value = [];
+			totalPages.value = 0;
+			fetchedPages.value = [];
+
+			// emit even to tell parent to reset the counters it is tracking
+			emits("resetStatistics");
+
+			try {
+				await $fetch(
+					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+					{
+						method: "GET",
+						query: {
+							corporateId: getDetails.company,
+							page: page.value,
+							size: size.value,
+							...(newValues[0] !== null
+								? { searchTerm: newValues[0] }
+								: {}),
+							...(newValues[1] !== null
+								? { category: newValues[1] }
+								: {}),
+						},
+						async onResponse({ response }) {
+							if (response.status !== 200) {
+								throw new Error(
+									"Failed to retrieve filtered corporate's members"
+								);
+							}
+							membersList.value = response._data.memberships;
+							totalPages.value = response._data.totalPages;
+
+							// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
+							// we dont fetch it again
+							fetchedPages.value.push(0);
+
+							emits(
+								"provideStatistics",
+								totalNumber.value,
+								totalPages.value
+							);
+						},
+					}
+				);
+			} catch (error) {
+				console.log("An error occured: ", error);
+				fetchErrorOccured.value = true;
+				openToast(
+					"Failed to load filtered members. Reload page!",
+					"danger"
+				);
+			}
+		}
+	});
 
 	const computedPagedList = computed(() => {
 		const start = (page.value + 1 - 1) * size.value;
@@ -146,7 +174,7 @@
 			{
 				method: "GET",
 				query: {
-					corporateId: getDetails.acc_id,
+					corporateId: getDetails.company,
 					page: page.value,
 					size: size.value,
 				},
@@ -159,7 +187,16 @@
 					membersList.value = response._data.memberships;
 					totalNumber.value = response._data.totalCount;
 					totalPages.value = response._data.totalPages;
-					emits("totalNumber", totalNumber.value);
+
+					// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
+					// we dont fetch it again
+					fetchedPages.value.push(0);
+
+					emits(
+						"provideStatistics",
+						totalNumber.value,
+						totalPages.value
+					);
 				},
 			}
 		);
@@ -169,44 +206,29 @@
 		openToast("Failed to load your members. Reload page!", "danger");
 	}
 
-	const filteredList = computed(() => {
-		if (!membersList.value) {
-			return [];
-		}
-
-		if (!componentProps.defaultFilterFlag) {
-			return membersList.value;
-		}
-
-		// Filter the memberships array
-		const filteredMemberships = membersList.value.filter(
-			(membership: any) => {
-				return membership.membershipVehicleCounts.some(
-					(vehicleCount: any) => {
-						return (
-							vehicleCount.membership_name ===
-							componentProps.defaultFilterFlag
-						);
-					}
-				);
-			}
-		);
-
-		return filteredMemberships;
-	});
-
 	watch(page, async (newValue, oldValue) => {
-		if (newValue > oldValue) {
-			fetchingMoreData.value = true;
+		if (fetchedPages.value.includes(newValue)) {
+			return;
+		} else if (
+			newValue > oldValue &&
+			!fetchedPages.value.includes(newValue)
+		) {
+			fetchedPages.value.push(newValue);
 			try {
 				await $fetch(
 					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
 					{
 						method: "GET",
 						query: {
-							corporateId: getDetails.acc_id,
+							corporateId: getDetails.company,
 							page: newValue,
 							size: size.value,
+							...(filterBySearchTerm.value !== null
+								? { searchTerm: filterBySearchTerm.value }
+								: {}),
+							...(filterByMembershipCat.value !== null
+								? { category: filterByMembershipCat.value }
+								: {}),
 						},
 						async onResponse({ response }) {
 							if (response.status !== 200) {
@@ -217,10 +239,8 @@
 							membersList.value = membersList?.value?.concat(
 								response._data.memberships
 							);
-							console.log(
-								"Length of members list after watcher: ",
-								membersList?.value?.length
-							);
+
+							emits("nextPageLoaded");
 						},
 					}
 				);
@@ -230,17 +250,7 @@
 					"Failed to load more members. Reload page!",
 					"danger"
 				);
-			} finally {
-				fetchingMoreData.value = false;
 			}
 		}
 	});
-
-	function nextPage(): void {
-		if (page.value + 1 < totalPages.value) {
-			page.value++;
-		}
-	}
-
-	function determineSourceList() {}
 </script>

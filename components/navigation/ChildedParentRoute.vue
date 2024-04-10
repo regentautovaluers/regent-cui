@@ -4,7 +4,11 @@
 		id="account-accordion">
 		<button
 			type="button"
-			class="hs-accordion-toggle rounded-s-2xl hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent w-full text-start flex items-center gap-x-3.5 py-4 px-2.5 font-semibold hover:bg-gray-100 text-gray-500">
+			class="hs-accordion-toggle rounded-s-2xl hs-accordion-active:hover:bg-gray-100 w-full text-start flex items-center gap-x-3.5 py-4 px-2.5 font-semibold hover:bg-gray-100 text-gray-500"
+			:class="{
+				'bg-gray-100 border-r-4 border-r-blue-600 text-blue-600':
+					isActiveRoute,
+			}">
 			<img
 				:src="icon"
 				alt="Route Icon" />
@@ -59,13 +63,24 @@
 						<div
 							class="relative z-10 size-7 flex justify-center items-center">
 							<div
-								class="h-6 w-3 rounded-full bg-white border-2 border-gray-300 group-hover:border-blue-600" />
+								class="h-6 w-3 rounded-full bg-white border-2 group-hover:border-blue-600"
+								:class="
+									route.name === child.routeName
+										? 'border-blue-600'
+										: 'border-gray-300'
+								" />
 						</div>
 					</div>
 					<!-- End Icon -->
 
 					<!-- Right Content -->
-					<div class="grow px-2 pb-8 text-gray-500">
+					<div
+						class="grow px-2 pb-8 font-semibold"
+						:class="
+							route.name === child.routeName
+								? 'text-blue-600'
+								: 'text-gray-500'
+						">
 						<NuxtLink
 							:to="{ name: child.routeName }"
 							@click="
@@ -95,5 +110,17 @@
 	}
 
 	const componentProps = defineProps<ComponentProps>();
+	const route = useRoute();
 	const emit = defineEmits(["changeCurrentRouteName"]);
+
+	// Function to check if the current route is the active route
+	const isActiveRoute = computed(() => {
+		const currentRouteName = route.name;
+		return (
+			currentRouteName === componentProps.routeName ||
+			componentProps.children.some(
+				(child) => child.routeName === currentRouteName
+			)
+		);
+	});
 </script>

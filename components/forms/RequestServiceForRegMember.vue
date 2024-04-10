@@ -50,20 +50,146 @@
 		<!-- End Progress Bar -->
 
 		<!-- Vehicle Make and Model -->
-		<div class="w-full">
-			<label
-				for="registration-number"
-				class="block font-medium mb-2 dark:text-white"
-				>Vehicle Make and Model</label
-			>
-			<input
-				type="text"
-				id="registration-number"
-				class="py-3 px-4 h-[4.5rem] block w-full text-gray-500 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-80 disabled:pointer-events-none"
-				placeholder="Provide the registration number to search"
-				:value="vehicleMakeAndModel"
-				disabled
-				required />
+		<div class="w-full flex space-x-4">
+			<!-- Vehicle Make -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="vehicle-make"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Make</label
+				>
+				<input
+					type="text"
+					id="vehicle-make"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					placeholder="e.g Toyota"
+					required
+					disabled
+					v-model="vehicleMake" />
+			</div>
+
+			<!-- Vehicle Model -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="vehicle-model"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Model</label
+				>
+				<input
+					type="text"
+					id="vehicle-model"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					placeholder="e.g Corolla"
+					required
+					disabled
+					v-model="vehicleModel" />
+			</div>
+		</div>
+		<!-- tire metadata -->
+		<div
+			class="flex items-center space-x-4 my-5"
+			v-if="
+				componentProps.optionalElementsRendered.includes('tyreMetadata')
+			">
+			<div class="flex flex-col space-x-4 w-full lg:w-1/2">
+				<span class="font-medium whitespace-nowrap mb-2"
+					>Have Spare Tyre</span
+				>
+				<div class="flex space-x-4">
+					<div class="flex hover:bg-gray-200 rounded-lg items-center">
+						<input
+							type="radio"
+							name="spare-tyre"
+							:value="true"
+							class="shrink-0 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							v-model="haveSpareTyre"
+							selected />
+						<label class="text-gray-500 ms-2 dark:text-gray-400"
+							>Yes</label
+						>
+					</div>
+					<div class="flex hover:bg-gray-200 rounded-lg items-center">
+						<input
+							type="radio"
+							name="spare-tyre"
+							:value="false"
+							class="shrink-0 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+							v-model="haveSpareTyre" />
+						<label class="text-gray-500 ms-2 dark:text-gray-400"
+							>No</label
+						>
+					</div>
+				</div>
+			</div>
+			<div class="w-full flex flex-col lg:w-1/2">
+				<label
+					for="fuel-type"
+					class="font-medium whitespace-nowrap mb-2"
+					>Tyre Type</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-type"
+					required
+					v-model="tyreType">
+					<option value="Select a Tyre Type">
+						Select a Tyre Type
+					</option>
+					<option
+						v-for="(vType, index) in [
+							'tube',
+							'tubeless',
+							'unknown',
+						]"
+						:key="index"
+						:value="vType">
+						{{
+							capitalizeFirstLetterOfEachWord(vType) === "Unknown"
+								? "I Don't Know"
+								: capitalizeFirstLetterOfEachWord(vType)
+						}}
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- vehicle class -->
+		<div
+			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3"
+			v-if="
+				componentProps.optionalElementsRendered.includes('vehicleClass')
+			">
+			<div class="w-full">
+				<label
+					for="fuel-type"
+					class="block font-medium mb-2 dark:text-white"
+					>Vehicle Class</label
+				>
+				<select
+					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					id="fuel-type"
+					required
+					v-model="vehicleClass">
+					<option
+						value="Select a Fuel Type"
+						selected>
+						Select a Vehicle Class
+					</option>
+					<option
+						v-for="(vClass, index) in [
+							'sedan',
+							'suv',
+							'van',
+							'bus',
+							'truck',
+							'big truck',
+						]"
+						:key="index"
+						:value="vClass">
+						{{ capitalizeFirstLetterOfEachWord(vClass) }}
+					</option>
+				</select>
+			</div>
 		</div>
 
 		<!-- fuel type and cost -->
@@ -94,7 +220,7 @@
 							'Kerosene',
 						]"
 						:key="index"
-						:value="fuelType">
+						:value="fuelType.toLowerCase()">
 						{{ fuelType }}
 					</option>
 				</select>
@@ -234,8 +360,8 @@
 	const { getDetails } = usePrincipal();
 	const runtimeConfig = useRuntimeConfig();
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
-	const currentPercentage: Ref<number> = ref(80);
-	const distanceLeftForTowing: Ref<number> = ref(16);
+	const currentPercentage: Ref<number> = ref(0);
+	const distanceLeftForTowing: Ref<number> = ref(0);
 	const vehicleRegistration: Ref<string> = ref("");
 	const vehicleMake: Ref<string> = ref("");
 	const vehicleModel: Ref<string> = ref("");
@@ -253,24 +379,27 @@
 	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.value.lat);
 	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.value.lng);
 	const requestRemarks: Ref<string | null> = ref(null);
+	const vehicleClass: Ref<string | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
+	const haveSpareTyre: Ref<boolean> = ref(true);
+	const tyreType: Ref<string> = ref("tubeless");
 	const { openToast } = useToast();
-	const { makeServiceRequest } = useServiceRequests();
-
-	const vehicleMakeAndModel = computed(
-		() => `${vehicleMake.value} ${vehicleModel.value}`
-	);
+	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
+	const { capitalizeFirstLetterOfEachWord } = useUtils();
 
 	async function handleServiceReqFormSubmission() {
 		formSubmissionLoading.value = true;
 		try {
 			await makeServiceRequest(
+				determineEndpointVar(),
 				userName.value,
 				userPhoneNumber.value,
 				userEmail.value,
 				componentProps.backendServiceTypeName,
 				vehicleRegistration.value,
+				vehicleMake.value,
+				vehicleModel.value,
 				1, // TODO: figure out what this category value here is for
 				arrivalDuration.value,
 				arrivalDistance.value,
@@ -282,8 +411,11 @@
 				destinationLongitude.value,
 				destinationLatitude.value,
 				requestRemarks.value,
+				vehicleClass.value,
 				fuelType.value,
-				fuelAmount.value
+				fuelAmount.value,
+				tyreType.value,
+				haveSpareTyre.value
 			).then(() => {
 				openToast(
 					`${componentProps.clientServiceTypeName} request succesfully went through!`,
@@ -311,7 +443,7 @@
 						method: "GET",
 						query: {
 							registration: vehicleRegistration.value,
-							corporateId: getDetails.acc_id,
+							corporateId: getDetails.company,
 						},
 						async onResponse({ response }) {
 							if (response.status === 404) {
@@ -328,19 +460,33 @@
 
 								// fill the needed fields
 								const registrationDetails = response._data;
+								console.log(
+									"Response data ENTER key: ",
+									registrationDetails
+								);
 								vehicleRegistration.value =
 									registrationDetails.membershipVehicle.registration;
 								userName.value =
 									registrationDetails.membership.full_name;
 								userPhoneNumber.value =
-									registrationDetails.membership.phone_number.replace(
-										"+254",
-										"0"
-									);
+									registrationDetails.membership.phone_number;
+								userEmail.value =
+									registrationDetails.membership.userEmail;
+
 								vehicleMake.value =
 									registrationDetails.membershipVehicle.make;
 								vehicleModel.value =
 									registrationDetails.membershipVehicle.model;
+								currentPercentage.value = calculatePercentage(
+									Number(
+										registrationDetails.membershipVehicle
+											.available_free_distance
+									)
+								);
+								distanceLeftForTowing.value = Number(
+									registrationDetails.membershipVehicle
+										.available_free_distance
+								);
 							}
 						},
 					}
@@ -354,6 +500,10 @@
 		} else {
 			openToast("Please provide a registration number!", "warning");
 		}
+	}
+
+	function calculatePercentage(freeDistance: number): number {
+		return (freeDistance * 100) / 20;
 	}
 
 	onMounted(async () => {

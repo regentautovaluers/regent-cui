@@ -1,11 +1,16 @@
 export default function () {
 	const runtimeConfig = useRuntimeConfig();
+	const { getDetails } = usePrincipal();
+	const route = useRoute();
 	async function makeServiceRequest(
+		endpointVarName: string,
 		userName: string,
 		userPhoneNumber: string,
 		userEmail: string,
 		serviceType: string,
 		vehicleRegistration: string,
+		vehicleMake: string,
+		vehicleModel: string,
 		category: number,
 		arrivalDuration: number,
 		arrivalDistance: number,
@@ -17,10 +22,12 @@ export default function () {
 		destinationLongitude: number,
 		destinationLatitude: number,
 		requestRemarks: string | null,
+		vehicleClass: string | null,
 		fuelType: string | null,
-		fuelAmount: number | null
+		fuelAmount: number | null,
+		tyreType: string | null,
+		hasSpareTyre: boolean | null
 	) {
-		/*
 		console.log(
 			"Provided data: ",
 			JSON.stringify(
@@ -32,9 +39,11 @@ export default function () {
 						: {}),
 					appServiceType: serviceType,
 					appRegistration: vehicleRegistration,
+					vehicle_make: vehicleMake,
+					vehicle_model: vehicleModel,
 					appCategory: category,
-					appDuration: `${arrivalDuration} mins`,
-					appDistance: `${arrivalDistance} km`,
+					appDuration: arrivalDuration,
+					appDistance: arrivalDistance,
 					appCost: serviceCost,
 					appPickupPoint: pickupPoint,
 					appPickupLat: pickupLatitude,
@@ -43,6 +52,9 @@ export default function () {
 					appDestinationLat: destinationLatitude,
 					appDestinationLon: destinationLongitude,
 					appRemarks: requestRemarks,
+					...(vehicleClass !== null
+						? { vehicleClass: vehicleClass }
+						: {}),
 					...(fuelType !== undefined
 						? { appFuelType: fuelType }
 						: {}),
@@ -54,24 +66,26 @@ export default function () {
 				2
 			)
 		);
-		*/
 
 		try {
 			await $fetch(
-				`${runtimeConfig.public.AVA_BASE_URL}/Dispatch/websiteCreate`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/mobile/${endpointVarName}`,
 				{
 					method: "POST",
-					query: {
+					body: JSON.stringify({
 						appUserName: userName,
+						corporate_client: getDetails.company,
 						appUserPhone: userPhoneNumber,
 						...(userEmail !== undefined
 							? { appUserEmail: userEmail }
 							: {}),
 						appServiceType: serviceType,
 						appRegistration: vehicleRegistration,
+						vehicle_make: vehicleMake,
+						vehicle_model: vehicleModel,
 						appCategory: category,
-						appDuration: `${arrivalDuration} mins`,
-						appDistance: `${arrivalDistance} km`,
+						appDuration: arrivalDuration,
+						appDistance: arrivalDistance,
 						appCost: serviceCost,
 						appPickupPoint: pickupPoint,
 						appPickupLat: pickupLatitude,
@@ -79,6 +93,9 @@ export default function () {
 						appDestinationPoint: destinationPoint,
 						appDestinationLat: destinationLatitude,
 						appDestinationLon: destinationLongitude,
+						...(vehicleClass !== null
+							? { vehicleClass: vehicleClass }
+							: {}),
 						...(requestRemarks !== null
 							? { appRemarks: requestRemarks }
 							: {}),
@@ -86,7 +103,11 @@ export default function () {
 						...(fuelAmount !== null
 							? { appFuelAmount: fuelAmount }
 							: {}),
-					},
+						...(tyreType !== null ? { tyreType: tyreType } : {}),
+						...(hasSpareTyre !== null
+							? { hasSpareTyre: hasSpareTyre }
+							: {}),
+					}),
 
 					async onResponse({ response }) {
 						console.log(
@@ -109,5 +130,18 @@ export default function () {
 		}
 	}
 
-	return { makeServiceRequest };
+	function determineEndpointVar(): string {
+		if (route.name === "ava-towing") {
+			return "towingRequest";
+		} else if (route.name === "ava-jumpstarting") {
+			return "jumpstartingRequest";
+		} else if (route.name === "ava-fuel-delivery") {
+			return "fuelDeliveryRequest";
+		} else if (route.name === "ava-tyre-change") {
+			return "tyreChangeRequest";
+		}
+		return "";
+	}
+
+	return { makeServiceRequest, determineEndpointVar };
 }

@@ -1,6 +1,6 @@
 <template>
 	<main class="flex h-screen">
-		<div class="w-[60%] h-screen hidden lg:flex">
+		<div class="w-[60%] min-w-[60%] h-full hidden lg:flex">
 			<img
 				src="/images/auth-img-parking-lot.webp"
 				alt="Auth Pages Image"
