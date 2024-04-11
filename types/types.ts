@@ -25,6 +25,7 @@ export type bulkProcessedType = {
 	color: string;
 	payment_status: string;
 	membership_status: string;
+	available_free_distance: any;
 	registration: string;
 	recordedBy: string;
 	category: string;

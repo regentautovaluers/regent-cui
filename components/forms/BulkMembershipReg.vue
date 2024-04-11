@@ -333,6 +333,7 @@
 				userEmail: item[2],
 				corporateId: getDetails.company,
 				membershipTypeId: Number(route.query.membershipTypeId),
+				available_free_distance: route.query.freeDistance,
 				registration: item[3],
 				start_date: formatExcelDate(item[4]),
 				end_date: formatExcelDate(item[5]),
