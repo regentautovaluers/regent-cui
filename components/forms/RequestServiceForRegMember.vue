@@ -477,15 +477,17 @@
 									registrationDetails.membershipVehicle.make;
 								vehicleModel.value =
 									registrationDetails.membershipVehicle.model;
-								currentPercentage.value = calculatePercentage(
-									Number(
-										registrationDetails.membershipVehicle
-											.available_free_distance
-									)
-								);
-								distanceLeftForTowing.value = Number(
+								distanceLeftForTowing.value =
 									registrationDetails.membershipVehicle
-										.available_free_distance
+										.available_free_distance === null
+										? 20
+										: Number(
+												registrationDetails
+													.membershipVehicle
+													.available_free_distance
+										  );
+								currentPercentage.value = calculatePercentage(
+									distanceLeftForTowing.value
 								);
 							}
 						},
