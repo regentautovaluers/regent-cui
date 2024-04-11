@@ -102,6 +102,8 @@ export default defineNuxtConfig({
 		},
 		app: {
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
+			AVA_BASE_UNAME: process.env.AVA_BASE_UNAME,
+			AVA_BASE_PASS: process.env.AVA_BASE_PASS,
 		},
 	},
 });
