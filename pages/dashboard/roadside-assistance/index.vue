@@ -1,5 +1,5 @@
 <template>
-	<div class="h-full">
+	<div class="py-10 h-full responsive-view">
 		<div class="flex items-center space-x-6 overflow-x-auto">
 			<AngularNavigationCardA
 				v-for="(route, index) in applicationRoutes[2].children?.slice(
