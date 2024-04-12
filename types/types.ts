@@ -36,3 +36,10 @@ export type excelUploadErrMess = {
 	message: string | unknown;
 	type: string;
 };
+
+export type moreServices = {
+	icon: string;
+	title: string;
+	description: string;
+	pageName: string;
+};
