@@ -43,22 +43,47 @@
 											<th
 												scope="col"
 												class="px-6 py-3 text-start font-bold text-gray-500">
-												Client Name
+												Broker
 											</th>
 											<th
 												scope="col"
 												class="px-6 py-3 text-start font-bold text-gray-500">
-												Membership Category
+												Customer
 											</th>
 											<th
 												scope="col"
 												class="px-6 py-3 text-center font-bold text-gray-500">
-												Vehicles
+												Policy No.
 											</th>
 											<th
 												scope="col"
 												class="px-6 py-3 text-end font-bold text-gray-500">
-												Contacts
+												Registration No.
+											</th>
+											<th
+												scope="col"
+												class="px-6 py-3 text-end font-bold text-gray-500">
+												Authorized By
+											</th>
+											<th
+												scope="col"
+												class="px-6 py-3 text-end font-bold text-gray-500">
+												Date
+											</th>
+											<th
+												scope="col"
+												class="px-6 py-3 text-end font-bold text-gray-500">
+												Authorization Ref No.
+											</th>
+											<th
+												scope="col"
+												class="px-6 py-3 text-end font-bold text-gray-500">
+												Phone No.
+											</th>
+											<th
+												scope="col"
+												class="px-6 py-3 text-end font-bold text-gray-500">
+												Regent Branch
 											</th>
 											<th
 												scope="col"
@@ -95,7 +120,7 @@
 			">
 			<NuxtLink
 				v-for="(service, index) in moreServicesData"
-				class="flex flex-col whitespace-normal p-6 rounded-2xl hover:shadow-lg hover:bg-white h-64 w-64 min-w-64 max-w-64 transition-transform hover:scale-105"
+				class="flex flex-col whitespace-normal p-6 rounded-2xl hover:shadow-lg hover:bg-white h-64 w-72 min-w-72 max-w-72 transition-transform hover:scale-105"
 				:key="index"
 				:to="{ name: service.pageName }"
 				><img
