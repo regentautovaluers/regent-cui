@@ -20,7 +20,7 @@ const applicationRoutes: ApplicationRoute[] = [
 			},
 			{
 				id: 2,
-				displayName: "Create Authorization Letter",
+				displayName: "My Authorization Letters",
 				routeName: "valuation-authorization-letter",
 			},
 			{
