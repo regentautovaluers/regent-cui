@@ -3,7 +3,7 @@
 		<img
 			src="/icons/misc/page-not-found.svg"
 			alt="Not Found Icon"
-			class="size-64" />
+			class="size-96" />
 
 		<h1 class="text-3xl font-bold mt-2">Page Not Found.</h1>
 		<NuxtLink
