@@ -15,3 +15,9 @@
         @apply bg-green-500;
     }
 }
+
+@layer base {
+    th, tr {
+        @apply whitespace-nowrap
+    }
+}
