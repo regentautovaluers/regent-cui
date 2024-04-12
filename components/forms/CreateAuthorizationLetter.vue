@@ -137,7 +137,7 @@
 						name="fileToUpload"
 						accept=".jpg, .png, .pdf, .doc, .docx"
 						multiple
-						class="w-fit rounded-md border-2 border-dashed border-black/75 p-2 file:mr-5 file:rounded-lg file:border-0 file:bg-blue-100 file:px-6 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:cursor-pointer hover:file:bg-amber-50 hover:file:text-amber-700" />
+						class="w-fit rounded-md border border-dashed border-black/75 p-2 file:mr-5 file:rounded-lg file:border-0 file:bg-blue-100 file:px-6 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:cursor-pointer hover:file:bg-amber-50 hover:file:text-amber-700" />
 				</label>
 			</div>
 			<span class="text-gray-500"
