@@ -1,12 +1,12 @@
 <template>
 	<main class="h-screen">
 		<nav
-			class="py-4 flex justify-between items-center px-3 sticky top-0 z-20 bg-white flex-wrap">
+			class="py-4 flex justify-between items-center px-3 md:pl-[330px] md:pr-[20px] sticky top-0 z-20 bg-white flex-wrap">
 			<div class="flex space-x-8 w-fit md:w-1/3">
 				<!-- Navigation Toggle -->
 				<button
 					type="button"
-					class="text-gray-500 hover:text-gray-600"
+					class="text-gray-500 hover:text-gray-600 md:hidden"
 					data-hs-overlay="#docs-sidebar"
 					aria-controls="docs-sidebar"
 					aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
 
 		<div
 			id="docs-sidebar"
-			class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-80 bg-white border-e border-gray-200 pb-10 overflow-y-auto">
+			class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-80 bg-white border-e border-gray-200 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0">
 			<div class="px-6 py-8 sticky z-20 top-0 bg-white">
 				<a
 					class="flex-none text-xl font-semibold dark:text-white"
