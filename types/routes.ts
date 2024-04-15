@@ -50,27 +50,32 @@ const applicationRoutes: ApplicationRoute[] = [
 				id: 1,
 				displayName: "Towing",
 				routeName: "ava-towing",
+				icon: "/icons/misc/request-towing-icon.svg",
 			},
 			{
 				id: 2,
 				displayName: "Tyre Change",
 				routeName: "ava-tyre-change",
+				icon: "/icons/misc/tyre-change-icon.svg",
 			},
 
 			{
 				id: 4,
 				displayName: "Jumpstarting",
 				routeName: "ava-jumpstarting",
+				icon: "/icons/misc/jumpstarting-icon.svg",
 			},
 			{
 				id: 5,
 				displayName: "Fuel Delivery",
 				routeName: "ava-fuel-delivery",
+				icon: "/icons/misc/fuel-delivery-icon.svg",
 			},
 			{
 				id: 3,
 				displayName: "Mobile Service",
 				routeName: "ava-mobile-service",
+				icon: "/icons/misc/mobile-service-icon.svg",
 			},
 			{
 				id: 6,

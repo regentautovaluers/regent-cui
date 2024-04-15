@@ -2,6 +2,7 @@ export type ApplicationChildRoute = {
 	id: number;
 	displayName: string;
 	routeName: string;
+	icon?: string;
 };
 
 export type ApplicationRoute = {
