@@ -26,14 +26,13 @@
 				>ADD A NEW MEMBER</NuxtLink
 			>
 		</div>
-		<div class="mt-6 grid grid-cols-1">
-			<!-- TODO: place 'lg:grid-cols-[0.75fr,auto]' into the classes list at this line -->
-			<div class="p-2">
+		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
+			<div class="md:w-[80%]">
 				<!-- search & filter controls -->
 				<div
 					class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
 					<!-- search box -->
-					<div class="relative flex-grow mr-10 max-w-[25%]">
+					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
 							type="text"
 							class="peer py-3 h-12 px-4 ps-11 bg-gray-100 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
@@ -49,7 +48,7 @@
 					<div class="flex items-center space-x-2">
 						<div class="flex flex-nowrap items-center space-x-3">
 							<!-- filter by Membership type -->
-							<!-- <div
+							<div
 								class="hs-dropdown relative inline-flex [--placement:bottom-right]">
 								<button
 									id="hs-dropdown-default"
@@ -109,7 +108,7 @@
 										>
 									</div>
 								</div>
-							</div> -->
+							</div>
 						</div>
 						<button
 							v-if="
@@ -170,7 +169,10 @@
 									<tbody class="divide-y divide-gray-200">
 										<Suspense>
 											<template #default>
+												<ErrorOrMissingData
+													v-if="fetchErrorOrEmpty" />
 												<MembersRecord
+													v-else
 													:key="remountTableValue"
 													:current-page="currentPage"
 													:search-term="
@@ -197,6 +199,10 @@
 															loadedPages = 0;
 															currentPage = 0;
 														}
+													"
+													@fetch-failed="
+														() =>
+															(fetchErrorOrEmpty = true)
 													" />
 											</template>
 
@@ -253,6 +259,103 @@
 					</div>
 				</div>
 			</div>
+			<!-- right ad and analysis graph -->
+			<div class="md:w-[20%] space-y-6">
+				<div class="border shadow min-h-96 rounded-lg">
+					<div class="flex items-center justify-between p-4">
+						<h1 class="text-2xl font-semibold">About</h1>
+						<!-- info switch -->
+						<div
+							class="hs-dropdown relative inline-flex [--placement:bottom-right]">
+							<button
+								id="hs-dropdown-default"
+								type="button"
+								class="hs-dropdown-toggle">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="30"
+									height="30"
+									viewBox="0 0 32 32">
+									<circle
+										cx="16"
+										cy="8"
+										r="2"
+										fill="currentColor" />
+									<circle
+										cx="16"
+										cy="16"
+										r="2"
+										fill="currentColor" />
+									<circle
+										cx="16"
+										cy="24"
+										r="2"
+										fill="currentColor" />
+								</svg>
+							</button>
+							<div
+								class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 border"
+								aria-labelledby="hs-dropdown-default">
+								<div
+									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+									<input
+										type="radio"
+										name="type-blob"
+										:value="0"
+										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+										v-model="currentTypeBlob" />
+									<label class="text-gray-500 ms-2"
+										>Roadside Assitance</label
+									>
+								</div>
+								<div
+									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+									<input
+										type="radio"
+										name="type-blob"
+										:value="1"
+										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+										v-model="currentTypeBlob" />
+									<label class="text-gray-500 ms-2"
+										>Emergency (E) Rescue</label
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex flex-col justify-center items-center p-2">
+						<div
+							class="bg-gray-300 p-5 rounded-full flex justify-center items-center">
+							<img
+								class="inline-block size-[66px]"
+								src="/icons/sidenav/memberships-icon.svg"
+								alt="Image Description" />
+						</div>
+						<h1 class="text-xl font-semibold">Our Membership</h1>
+						<h2 class="font-semibold text-gray-600 text-lg">
+							{{ membershipTypesBlob[currentTypeBlob].name }}
+						</h2>
+						<p class="text-sm mt-2 px-4">
+							{{ membershipTypesBlob[currentTypeBlob].blobText }}
+						</p>
+					</div>
+					<div class="space-y-4 border-t p-4">
+						<a
+							:href="
+								membershipTypesBlob[currentTypeBlob]
+									.externalLink
+							"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-2"
+							>Read More</a
+						>
+					</div>
+				</div>
+				<div class="border shadow min-h-96 rounded-lg">
+					<h1>Hello world</h1>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -272,4 +375,20 @@
 	const searchMembershipCategory: Ref<string | null> = ref(null);
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const remountTableValue: Ref<number> = ref(0);
+	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
+	const currentTypeBlob: Ref<number> = ref(0);
+	const membershipTypesBlob: any[] = [
+		{
+			name: "Roadside Assistance",
+			blobText:
+				"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil minima inventore veniam consequatur soluta fuga ipsa, rem repellendus asperiores eligendi unde beatae eaque dolorum dolorem sit ab dolor quam nostrum.",
+			externalLink: "https://www.google.com",
+		},
+		{
+			name: "Emergency Evacuation",
+			blobText:
+				"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil minima inventore veniam consequatur soluta fuga ipsa, rem repellendus asperiores eligendi unde beatae eaque dolorum dolorem sit ab dolor quam nostrum.",
+			externalLink: "https://www.google.com",
+		},
+	];
 </script>
