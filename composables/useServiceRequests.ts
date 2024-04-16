@@ -28,45 +28,6 @@ export default function () {
 		tyreType: string | null,
 		hasSpareTyre: boolean | null
 	) {
-		console.log(
-			"Provided data: ",
-			JSON.stringify(
-				{
-					appUserName: userName,
-					appUserPhone: userPhoneNumber,
-					...(userEmail !== undefined
-						? { appUserEmail: userEmail }
-						: {}),
-					appServiceType: serviceType,
-					appRegistration: vehicleRegistration,
-					vehicle_make: vehicleMake,
-					vehicle_model: vehicleModel,
-					appCategory: category,
-					appDuration: arrivalDuration,
-					appDistance: arrivalDistance,
-					appCost: serviceCost,
-					appPickupPoint: pickupPoint,
-					appPickupLat: pickupLatitude,
-					appPickupLon: pickupLongitude,
-					appDestinationPoint: destinationPoint,
-					appDestinationLat: destinationLatitude,
-					appDestinationLon: destinationLongitude,
-					appRemarks: requestRemarks,
-					...(vehicleClass !== null
-						? { vehicleClass: vehicleClass }
-						: {}),
-					...(fuelType !== undefined
-						? { appFuelType: fuelType }
-						: {}),
-					...(fuelAmount !== undefined
-						? { appFuelAmount: fuelAmount }
-						: {}),
-				},
-				null,
-				2
-			)
-		);
-
 		try {
 			await $fetch(
 				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/mobile/${endpointVarName}`,
@@ -110,16 +71,62 @@ export default function () {
 					}),
 
 					async onResponse({ response }) {
-						console.log(
-							"Make service response body: ",
-							response._data
-						);
-						console.log(
-							"Make service response status: ",
-							response.status
-						);
-						if (response.status !== 200) {
+						if (response.status !== 201) {
 							throw new Error("Member details not updated.");
+						} else {
+							console.log("Making duplicate request...");
+							await $fetch(
+								`${runtimeConfig.public.AVA_BASE_URL}/Dispatch/websiteCreate`,
+								{
+									method: "POST",
+									query: {
+										appUserName: userName,
+										corporate_client: getDetails.company,
+										appUserPhone: userPhoneNumber,
+										...(userEmail !== undefined
+											? { appUserEmail: userEmail }
+											: {}),
+										appServiceType: serviceType,
+										appRegistration: vehicleRegistration,
+										vehicle_make: vehicleMake,
+										vehicle_model: vehicleModel,
+										appCategory: category,
+										appDuration: arrivalDuration,
+										appDistance: arrivalDistance,
+										appCost: serviceCost,
+										appPickupPoint: pickupPoint,
+										appPickupLat: pickupLatitude,
+										appPickupLon: pickupLongitude,
+										appDestinationPoint: destinationPoint,
+										appDestinationLat: destinationLatitude,
+										appDestinationLon: destinationLongitude,
+										...(vehicleClass !== null
+											? { vehicleClass: vehicleClass }
+											: {}),
+										...(requestRemarks !== null
+											? { appRemarks: requestRemarks }
+											: {}),
+										...(fuelType !== null
+											? { appFuelType: fuelType }
+											: {}),
+										...(fuelAmount !== null
+											? { appFuelAmount: fuelAmount }
+											: {}),
+										...(tyreType !== null
+											? { tyreType: tyreType }
+											: {}),
+										...(hasSpareTyre !== null
+											? { hasSpareTyre: hasSpareTyre }
+											: {}),
+									},
+
+									async onResponse({ response }) {
+										if (response.status == 200) {
+											return;
+										}
+									},
+								}
+							);
 						}
 					},
 				}
