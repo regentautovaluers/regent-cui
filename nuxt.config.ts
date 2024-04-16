@@ -82,12 +82,13 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
+			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 			AVA_BASE_URL: process.env.AVA_BASE_URL,
 		},
 		app: {
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
-			AVA_BASE_UNAME: process.env.AVA_BASE_UNAME,
-			AVA_BASE_PASS: process.env.AVA_BASE_PASS,
+			VALUATION_BASE_UNAME: process.env.VALUATION_BASE_UNAME,
+			VALUATION_BASE_PASS: process.env.VALUATION_BASE_PASS,
 		},
 	},
 });
