@@ -120,7 +120,7 @@
 					id="membership-status"
 					v-model="membershipStatus">
 					<option
-						v-for="(status, index) in ['Active', 'Not Active']"
+						v-for="(status, index) in ['Active', 'Inactive']"
 						:key="index"
 						:value="status.toLocaleLowerCase()">
 						{{ status }}
