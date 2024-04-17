@@ -200,7 +200,7 @@
 											<th
 												scope="col"
 												class="px-6 py-3 text-end font-bold text-gray-500">
-												Location
+												Incident Location
 											</th>
 											<th
 												scope="col"
@@ -218,7 +218,7 @@
 											:reg-no="data.registration_no"
 											:client-name="data.user_name"
 											:client-phone="data.user_phone"
-											:date-time="data.date_created"
+											:date-time="formatServerProvidedDateTime(data.date_created)"
 											:serviceType="data.service"
 											:location="data.pickup_location"
 											:key="index" />
@@ -277,7 +277,7 @@
 					</div>
 					<ClientOnly>
 						<div class="flex justify-center">
-							<MembershipsDataChart />
+							<IncidentsDonutChart />
 						</div>
 					</ClientOnly>
 				</div>
@@ -330,6 +330,7 @@
 	const jumpstartingIncidents: Ref<any[] | null> = ref(null);
 	const towingIncidents: Ref<any[] | null> = ref(null);
 	const tyrechangeIncidents: Ref<any[] | null> = ref(null);
+	const { formatServerProvidedDateTime } = useUtils();
 	const compiledData = computed(() => {
 		return [
 			...(fuelDeliveryIncidents.value || []),
