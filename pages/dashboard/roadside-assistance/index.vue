@@ -1,7 +1,6 @@
 <template>
 	<div class="py-10 h-full responsive-view">
 		<!-- top card with link to add new member -->
-
 		<div
 			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg mb-6">
 			<div class="flex space-x-2 items-center w-full md:w-fit">
@@ -39,7 +38,7 @@
 			<div
 				v-for="(info, index) in subLinksInfo"
 				:key="index"
-				class="flex space-x-2">
+				class="flex items-start space-x-2">
 				<div>
 					<img
 						:src="info.icon"
@@ -48,7 +47,7 @@
 				</div>
 				<div class="flex flex-col space-y-2">
 					<span class="text-gray-600 font-semibold">{{
-						info.text
+						info.title
 					}}</span>
 					<span class="text-gray-500 font-semibold">Lorem</span>
 					<NuxtLink class="text-blue-600 font-semibold">
@@ -77,7 +76,7 @@
 					</div>
 					<ClientOnly>
 						<div class="flex justify-center">
-							<MembershipsDataChart />
+							<MembershipsDonutChart />
 						</div>
 					</ClientOnly>
 				</div>
@@ -355,7 +354,6 @@
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const remountTableValue: Ref<number> = ref(0);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
-	const currentTypeBlob: Ref<number> = ref(0);
 	const subLinksInfo: any[] = [
 		{
 			icon: "/icons/misc/roadside-registeredmems-icon.svg",
