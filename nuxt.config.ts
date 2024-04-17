@@ -1,10 +1,10 @@
 export default defineNuxtConfig({
 	routeRules: {
-		// "/api/**": {
-		// 	proxy: {
-		// 		to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
-		// 	},
-		// },
+		"/api/**": {
+			proxy: {
+				to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
+			},
+		},
 	},
 	ssr: true,
 	devtools: { enabled: true },
@@ -57,10 +57,7 @@ export default defineNuxtConfig({
 	pinia: {
 		autoImports: ["defineStore", "storeToRefs"],
 	},
-	plugins: [
-		"~/plugins/preline.client.ts",
-		{ src: "~/plugins/apexcharts.client.ts", ssr: false },
-	],
+	plugins: ["~/plugins/preline.client.ts", "~/plugins/chart.ts"],
 	runtimeConfig: {
 		public: {
 			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
