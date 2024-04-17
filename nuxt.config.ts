@@ -1,28 +1,10 @@
 export default defineNuxtConfig({
 	routeRules: {
-		// turn of server side rendering for all roadside assistance routes due to Google Maps Rendering
-		// "/dashboard/roadside-assistance/": {
-		// 	ssr: false,
+		// "/api/**": {
+		// 	proxy: {
+		// 		to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
+		// 	},
 		// },
-
-		// turn of SSR for the home route
-		"/": {
-			ssr: false,
-		},
-
-		// turn on SSR for the roadside members and e-members lists routes
-		"/dashboard/memberships/roadside-members": {
-			ssr: false,
-		},
-
-		"/dashboard/memberships/emergency-members": {
-			ssr: false,
-		},
-		"/api/**": {
-			proxy: {
-				to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
-			},
-		},
 	},
 	ssr: true,
 	devtools: { enabled: true },
