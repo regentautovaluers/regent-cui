@@ -33,7 +33,6 @@
 			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
 			{{ capitalizeFirstLetter(record.payment_status) }}
 		</td>
-
 		<td
 			v-if="
 				getDetails.userlevel === 'admin' ||

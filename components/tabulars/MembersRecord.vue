@@ -86,6 +86,7 @@
 		"provideStatistics",
 		"nextPageLoaded",
 		"resetStatistics",
+		"fetchFailed",
 	]);
 	const fetchedPages: Ref<number[]> = ref([]);
 
@@ -204,6 +205,7 @@
 		console.log("An error occured: ", error);
 		fetchErrorOccured.value = true;
 		openToast("Failed to load your members. Reload page!", "danger");
+		emits("fetchFailed");
 	}
 
 	watch(page, async (newValue, oldValue) => {
@@ -250,6 +252,7 @@
 					"Failed to load more members. Reload page!",
 					"danger"
 				);
+				emits("fetchFailed");
 			}
 		}
 	});
