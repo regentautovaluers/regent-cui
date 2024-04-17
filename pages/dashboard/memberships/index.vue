@@ -352,8 +352,15 @@
 						>
 					</div>
 				</div>
-				<div class="border shadow min-h-96 rounded-lg">
-					<h1>Hello world</h1>
+				<div class="border shadow min-h-[25rem] rounded-lg">
+					<div class="flex items-center justify-between p-4">
+						<h1 class="text-2xl font-semibold">Data Chart</h1>
+					</div>
+					<ClientOnly>
+						<div class="flex justify-center">
+							<MembershipsDonutChart />
+						</div>
+					</ClientOnly>
 				</div>
 			</div>
 		</div>
