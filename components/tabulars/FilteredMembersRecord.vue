@@ -45,7 +45,7 @@
 			<div class="inline-flex rounded-lg shadow-sm">
 				<NuxtLink
 					v-if="
- 						getDetails.userlevel === 'admin' ||
+						getDetails.userlevel === 'admin' ||
 						getDetails.userlevel === 'broker'
 					"
 					:to="{
@@ -111,6 +111,7 @@
 					size: size.value,
 				},
 				async onResponse({ response }) {
+					console.log("response body: ", response._data);
 					if (response.status !== 200) {
 						throw new Error(
 							"Failed to retrieve corporate's members"
