@@ -388,13 +388,13 @@
 		{
 			name: "Roadside Assistance",
 			blobText:
-				"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil minima inventore veniam consequatur soluta fuga ipsa, rem repellendus asperiores eligendi unde beatae eaque dolorum dolorem sit ab dolor quam nostrum.",
+				"Our 24/7 road rescue service swiftly gets you back on track, whether it’s a flat tire or a breakdown. Trust our highway heroes to ensure a smooth ride, so you can continue your journey with peace of mind! We’re committed to minimizing disruptions and maximizing safety, so you never miss a beat on the road.",
 			externalLink: "https://www.google.com",
 		},
 		{
 			name: "Emergency Evacuation",
 			blobText:
-				"Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil minima inventore veniam consequatur soluta fuga ipsa, rem repellendus asperiores eligendi unde beatae eaque dolorum dolorem sit ab dolor quam nostrum.",
+				"Our emergency response service is your lifeline during critical moments. Whether it’s a remote wilderness rescue or a medical evacuation, our team combines the speed of air travel with the stability of ground support. Trust us to swiftly reach you in rugged terrains or bustling urban areas, ensuring your safety when every second counts.",
 			externalLink: "https://www.google.com",
 		},
 	];
