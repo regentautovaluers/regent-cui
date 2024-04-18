@@ -13,14 +13,6 @@
 	const totalPaid: Ref<number> = ref(0);
 	const totalUnpaid: Ref<number> = ref(0);
 	const totalMemberships: Ref<number> = ref(0);
-	const collectiveData = computed(() => {
-		return [
-			totalActive.value,
-			totalInactive.value,
-			totalPaid.value,
-			totalUnpaid.value,
-		];
-	});
 
 	const chartData = computed(() => ({
 		labels: ["Paid", "Unpaid", "Active", "Inactive"],
