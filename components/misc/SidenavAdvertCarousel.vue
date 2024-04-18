@@ -14,11 +14,11 @@
 					class="hs-carousel-slide"
 					v-for="(advertisement, index) in advertisements"
 					:key="index">
-					<div class="flex justify-center h-full bg-gray-100 p-6">
-						<span
-							class="self-center text-4xl transition duration-700"
-							>{{ advertisement }}</span
-						>
+					<div class="flex justify-center h-full bg-red-100">
+						<img
+							:src="advertisement"
+							alt="Image Advertisement"
+							class="w-full h-full" />
 					</div>
 				</div>
 			</div>
@@ -36,5 +36,9 @@
 </template>
 
 <script setup lang="ts">
-	const advertisements = ref(["First Slide", "Second Slide", "Third Slide"]);
+	const advertisements = ref([
+		"https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.40%20PM.jpeg",
+		"https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.39%20PM.jpeg",
+		"https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.38%20PM%20(2).jpeg",
+	]);
 </script>
