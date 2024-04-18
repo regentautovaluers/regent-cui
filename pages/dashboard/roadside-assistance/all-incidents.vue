@@ -67,7 +67,7 @@
 						<input
 							type="text"
 							class="peer py-3 h-12 px-4 ps-11 bg-gray-100 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
-							placeholder="Search Name, Email or Phone Number"
+							placeholder="Search Name, Phone or Registration"
 							v-model="searchFilterTerm" />
 						<div
 							class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
@@ -90,7 +90,7 @@
 											? 'bg-white text-black'
 											: 'bg-blue-600 text-white'
 									">
-									Membership Category
+									Service Type
 									<svg
 										class="hs-dropdown-open:rotate-180 size-4"
 										xmlns="http://www.w3.org/2000/svg"
@@ -106,36 +106,38 @@
 									</svg>
 								</button>
 								<div
-									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2"
+									class="hs-dropdown-menu z-40 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2"
 									aria-labelledby="hs-dropdown-default">
 									<div
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+										class="flex hover:bg-gray-200 p-2 rounded-lg items-center"
+										v-for="(data, index) in [
+											{
+												val: 'towing',
+												text: 'Towing',
+											},
+											{
+												val: 'fuel delivery',
+												text: 'Fuel Delivery',
+											},
+											{
+												val: 'jumpstarting',
+												text: 'Jumpstarting',
+											},
+											{
+												val: 'tyre change',
+												text: 'Tyre Change',
+											},
+										]"
+										:key="index">
 										<input
 											type="radio"
 											name="membership-category"
-											value="corporate"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											v-model="
-												searchMembershipCategory
-											" />
+											:value="data.val"
+											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+											v-model="searchServiceType" />
 										<label
 											class="text-gray-500 ms-2 dark:text-gray-400"
-											>Corporate Registration</label
-										>
-									</div>
-									<div
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
-										<input
-											type="radio"
-											name="membership-category"
-											value="individual"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											v-model="
-												searchMembershipCategory
-											" />
-										<label
-											class="text-gray-500 ms-2 dark:text-gray-400"
-											>Individual Registration</label
+											>{{ data.text }}</label
 										>
 									</div>
 								</div>
@@ -144,12 +146,12 @@
 						<button
 							v-if="
 								searchFilterTerm !== null ||
-								searchMembershipCategory !== null
+								searchServiceType !== null
 							"
 							@click="
 								() => {
 									searchFilterTerm = null;
-									searchMembershipCategory = null;
+									searchServiceType = null;
 									remountTableValue++;
 									loadedPages = 0;
 									currentPage = 0;
@@ -199,7 +201,7 @@
 											</th>
 											<th
 												scope="col"
-												class="px-6 py-3 text-end font-bold text-gray-500">
+												class="px-6 py-3 text-center font-bold text-gray-500">
 												Incident Location
 											</th>
 											<th
@@ -218,8 +220,16 @@
 											:reg-no="data.registration_no"
 											:client-name="data.user_name"
 											:client-phone="data.user_phone"
-											:date-time="formatServerProvidedDateTime(data.date_created)"
-											:serviceType="data.service"
+											:date-time="
+												formatServerProvidedDateTime(
+													data.date_created
+												)
+											"
+											:serviceType="
+												makeServiceTypeFriendly(
+													data.service
+												)
+											"
 											:location="data.pickup_location"
 											:key="index" />
 									</tbody>
@@ -233,7 +243,7 @@
 					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 					<span
 						>Showing {{ currentPage + 1 }} of
-						{{ totalPages }} pages.</span
+						{{ totalNumber }} requests.</span
 					>
 					<div class="space-x-1">
 						<button
@@ -277,7 +287,17 @@
 					</div>
 					<ClientOnly>
 						<div class="flex justify-center">
-							<IncidentsDonutChart />
+							<IncidentsDonutChart
+								:total-fuel-delivery="countFuelDelivery"
+								:total-jumpstarting="countJumpstarting"
+								:total-towing="countTowing"
+								:total-tyre-change="countTyreChange"
+								:total-collective="
+									countFuelDelivery +
+									countJumpstarting +
+									countTowing +
+									countTyreChange
+								" />
 						</div>
 					</ClientOnly>
 				</div>
@@ -320,7 +340,7 @@
 	const loadedPages: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const searchFilterTerm: Ref<string | null> = ref(null);
-	const searchMembershipCategory: Ref<string | null> = ref(null);
+	const searchServiceType: Ref<string | null> = ref(null);
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const remountTableValue: Ref<number> = ref(0);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
@@ -332,13 +352,25 @@
 	const tyrechangeIncidents: Ref<any[] | null> = ref(null);
 	const { formatServerProvidedDateTime } = useUtils();
 	const compiledData = computed(() => {
-		return [
+		const aggData = [
 			...(fuelDeliveryIncidents.value || []),
 			...(jumpstartingIncidents.value || []),
 			...(towingIncidents.value || []),
 			...(tyrechangeIncidents.value || []),
 		];
+
+		totalNumber.value = aggData.length;
+		return aggData;
 	});
+	const countFuelDelivery = computed(
+		() => fuelDeliveryIncidents.value?.length
+	);
+	const countJumpstarting = computed(
+		() => jumpstartingIncidents.value?.length
+	);
+	const countTowing = computed(() => towingIncidents.value?.length);
+	const countTyreChange = computed(() => tyrechangeIncidents.value?.length);
+	const countTotalIncidents = ref(0);
 	const subLinksInfo: any[] = [
 		{
 			icon: "/icons/misc/roadside-mostreq-icon.svg",
@@ -387,5 +419,28 @@
 	} catch (error) {
 		console.log("An error occured: ", error);
 		openToast("Failed to load your members. Reload page!", "danger");
+	}
+
+	function determineMostRequestedService(): string {
+		return "";
+	}
+
+	function makeServiceTypeFriendly(rawType: string): string {
+		let friendlyType: string = "";
+		switch (rawType) {
+			case "towing":
+				friendlyType = "Towing";
+				break;
+			case "fueldelivery":
+				friendlyType = "Fuel Delivery";
+				break;
+			case "jumpstarting":
+				friendlyType = "Jumpstarting";
+				break;
+			case "tyre change":
+				friendlyType = "Tyre Change";
+		}
+
+		return friendlyType;
 	}
 </script>
