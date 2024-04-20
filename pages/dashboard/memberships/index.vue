@@ -119,7 +119,7 @@
 								() => {
 									searchFilterTerm = '';
 									searchMembershipCategory = '';
-									loadedPages = 0;
+									fetchedPages = [];
 									page = 0;
 								}
 							"
