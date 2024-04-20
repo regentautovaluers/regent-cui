@@ -1,5 +1,5 @@
 <template>
-	<tr class="hover:shadow-lg odd:bg-gray-100">
+	<tr class="hover:shadow-lg">
 		<td class="px-6 py-6 whitespace-nowrap font-semibold text-gray-600">
 			{{ componentProps.clientName }}
 		</td>
@@ -59,7 +59,7 @@
 				</button>
 
 				<div
-					class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full border"
+					class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full border z-20"
 					aria-labelledby="hs-dropdown-default">
 					<NuxtLink
 						v-if="
