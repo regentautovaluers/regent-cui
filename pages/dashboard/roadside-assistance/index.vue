@@ -72,7 +72,7 @@
 			<div class="md:w-[20%] space-y-6">
 				<div class="border shadow min-h-[26.5rem] rounded-lg">
 					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">Data Chart</h1>
+						<h1 class="text-2xl font-semibold">Memberships Glance</h1>
 					</div>
 					<ClientOnly>
 						<div class="flex justify-center">
