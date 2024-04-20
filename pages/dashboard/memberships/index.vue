@@ -35,7 +35,7 @@
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 bg-gray-100 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							class="peer py-3 h-12 px-4 ps-11 bg-gray-200 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
 							placeholder="Search Name, Email or Phone Number"
 							v-model="searchFilterTerm" />
 						<div
@@ -75,7 +75,7 @@
 									</svg>
 								</button>
 								<div
-									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2"
+									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 border after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 z-20"
 									aria-labelledby="hs-dropdown-default">
 									<div
 										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
@@ -112,16 +112,15 @@
 						</div>
 						<button
 							v-if="
-								searchFilterTerm !== null ||
-								searchMembershipCategory !== null
+								searchFilterTerm !== '' ||
+								searchMembershipCategory !== ''
 							"
 							@click="
 								() => {
-									searchFilterTerm = null;
-									searchMembershipCategory = null;
-									remountTableValue++;
+									searchFilterTerm = '';
+									searchMembershipCategory = '';
 									loadedPages = 0;
-									currentPage = 0;
+									page = 0;
 								}
 							"
 							title="Clear Filters"
@@ -156,10 +155,16 @@
 												class="px-6 py-3 text-center font-bold text-gray-500">
 												Vehicles
 											</th>
+
 											<th
 												scope="col"
 												class="px-6 py-3 text-end font-bold text-gray-500">
-												Contacts
+												Client Phone
+											</th>
+											<th
+												scope="col"
+												class="px-6 py-3 text-end font-bold text-gray-500">
+												Client Email
 											</th>
 											<th
 												scope="col"
@@ -167,51 +172,27 @@
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
-										<Suspense>
-											<template #default>
-												<ErrorOrMissingData
-													v-if="fetchErrorOrEmpty" />
-												<MembersRecord
-													v-else
-													:key="remountTableValue"
-													:current-page="currentPage"
-													:search-term="
-														searchFilterTerm
-													"
-													:membership-category="
-														searchMembershipCategory
-													"
-													@next-page-loaded="
-														() =>
-															(fetchingMoreData = false)
-													"
-													@provide-statistics="
-														(totalMembers: number , totPages: number) =>
-															{
-																totalNumber = totalMembers; 
-																totalPages = totPages;
-																loadedPages++;
-															}
-													"
-													@reset-statistics="
-														() => {
-															totalPages = 0;
-															loadedPages = 0;
-															currentPage = 0;
-														}
-													"
-													@fetch-failed="
-														() =>
-															(fetchErrorOrEmpty = true)
-													" />
-											</template>
-
-											<template #fallback>
-												<MembersTableLoader
-													v-for="a in 5"
-													:key="a" />
-											</template>
-										</Suspense>
+										<ErrorOrMissingData
+											v-if="fetchErrorOrEmpty" />
+										<MembersRecord
+											v-else
+											v-for="(
+												member, index
+											) in computedPagedList"
+											:key="index"
+											:clientName="member.full_name"
+											:membership-category="
+												member.category
+											"
+											:vehicle-count="
+												member.membershipVehicleCount
+											"
+											:member-id="member.id"
+											:client-phone="member.phone_number"
+											:client-email="member.userEmail" />
+										<!-- <MembersTableLoader
+											v-for="a in 5"
+											:key="a" /> -->
 									</tbody>
 								</table>
 							</div>
@@ -222,28 +203,23 @@
 				<div
 					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 					<span
-						>Showing {{ currentPage + 1 }} of
-						{{ totalPages }} pages.</span
+						>Showing {{ page + 1 }} of {{ totalPages }} pages.</span
 					>
-					<div class="space-x-1">
+					<div class="space-x-1 flex items-center">
 						<button
-							v-for="page in loadedPages"
-							:key="page"
-							@click="() => (currentPage = page - 1)"
+							v-for="(page, index) in fetchedPages"
+							:key="index"
+							@click="reducePage(page)"
 							type="button"
 							class="p-2 size-10 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700">
-							{{ page }}
+							{{ page + 1 }}
 						</button>
 						<button
-							v-if="loadedPages < totalPages"
+							v-if="fetchedPages.length < totalPages"
 							@click="
 								() => {
-									if (currentPage + 1 < totalPages) {
-										currentPage++;
-										loadedPages++;
-
-										// show the loading indicator
-										fetchingMoreData = true;
+									if (page + 1 < totalPages) {
+										page++;
 									}
 								}
 							"
@@ -335,7 +311,7 @@
 						<h2 class="font-semibold text-gray-600 text-lg">
 							{{ membershipTypesBlob[currentTypeBlob].name }}
 						</h2>
-						<p class="text-sm mt-2 px-4">
+						<p class="text-sm mt-2 px-4 text-gray-600">
 							{{ membershipTypesBlob[currentTypeBlob].blobText }}
 						</p>
 					</div>
@@ -354,7 +330,9 @@
 				</div>
 				<div class="border shadow min-h-[25rem] rounded-lg">
 					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">Data Chart</h1>
+						<h1 class="text-2xl font-semibold">
+							Memberships Glance
+						</h1>
 					</div>
 					<ClientOnly>
 						<div class="flex justify-center">
@@ -373,17 +351,20 @@
 		layout: "in-app-layout",
 	});
 
-	const totalNumber: Ref<number> = ref(0);
-	const currentPage: Ref<number> = ref(0);
-	const loadedPages: Ref<number> = ref(0);
-	const totalPages: Ref<number> = ref(0);
 	const { getDetails } = usePrincipal();
-	const searchFilterTerm: Ref<string | null> = ref(null);
-	const searchMembershipCategory: Ref<string | null> = ref(null);
-	const fetchingMoreData: Ref<boolean> = ref(false);
-	const remountTableValue: Ref<number> = ref(0);
-	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
 	const currentTypeBlob: Ref<number> = ref(0);
+	const {
+		computedPagedList,
+		searchFilterTerm,
+		searchMembershipCategory,
+		totalNumber,
+		totalPages,
+		fetchErrorOrEmpty,
+		fetchingMoreData,
+		page,
+		reducePage,
+		fetchedPages,
+	} = await useMemberships();
 	const membershipTypesBlob: any[] = [
 		{
 			name: "Roadside Assistance",
