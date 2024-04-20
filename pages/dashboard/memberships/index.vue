@@ -190,9 +190,6 @@
 											:member-id="member.id"
 											:client-phone="member.phone_number"
 											:client-email="member.userEmail" />
-										<!-- <MembersTableLoader
-											v-for="a in 5"
-											:key="a" /> -->
 									</tbody>
 								</table>
 							</div>
@@ -352,7 +349,6 @@
 	});
 
 	const { getDetails } = usePrincipal();
-	const currentTypeBlob: Ref<number> = ref(0);
 	const {
 		computedPagedList,
 		searchFilterTerm,
@@ -365,6 +361,7 @@
 		reducePage,
 		fetchedPages,
 	} = await useMemberships();
+	const currentTypeBlob: Ref<number> = ref(0);
 	const membershipTypesBlob: any[] = [
 		{
 			name: "Roadside Assistance",
