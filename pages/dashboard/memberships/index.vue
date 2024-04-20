@@ -360,7 +360,7 @@
 		page,
 		reducePage,
 		fetchedPages,
-	} = await useMemberships();
+	} = await useGeneralMemberships();
 	const currentTypeBlob: Ref<number> = ref(0);
 	const membershipTypesBlob: any[] = [
 		{
