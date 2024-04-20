@@ -14,6 +14,7 @@ export default async function () {
 	const fetchingMoreData: Ref<boolean> = ref(false);
 
 	try {
+		fetchErrorOrEmpty.value = true;
 		await $fetch(
 			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
 			{
@@ -36,6 +37,7 @@ export default async function () {
 					// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
 					// we dont fetch it again
 					fetchedPages.value.push(0);
+					fetchErrorOrEmpty.value = false;
 				},
 			}
 		);
