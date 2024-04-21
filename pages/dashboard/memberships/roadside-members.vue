@@ -17,11 +17,6 @@
 									<th
 										scope="col"
 										class="px-6 py-3 text-start font-bold text-gray-500">
-										No.
-									</th>
-									<th
-										scope="col"
-										class="px-6 py-3 text-start font-bold text-gray-500">
 										Client Name
 									</th>
 									<th
@@ -37,7 +32,12 @@
 									<th
 										scope="col"
 										class="px-6 py-3 text-end font-bold text-gray-500">
-										Contacts
+										Client Phone
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-end font-bold text-gray-500">
+										Client Email
 									</th>
 									<th
 										scope="col"
@@ -45,33 +45,21 @@
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200">
-								<Suspense>
-									<template #default>
-										<FilteredMembersRecord
-											default-filter-flag="Roadside Assistance"
-											:active-page="currentPage"
-											@show-loader="
-												(status) =>
-													(fetchingMoreData = status)
-											"
-											@provide-statistics="
-												(pages) => (totalPages = pages)
-											"
-											@update-current-page="
-												(activePage: number | null) => {
-													if(!activePage) {
-														currentPage++
-													} else {currentPage = activePage}
-												}
-											" />
-									</template>
-
-									<template #fallback>
-										<MembersTableLoader
-											v-for="a in 5"
-											:key="a" />
-									</template>
-								</Suspense>
+								<FilteredMembersRecord
+									v-for="(member, index) in membersList"
+									:key="index"
+									:client-name="member.full_name"
+									:membership-category="member.category"
+									:vehicle-count="
+										member.membershipVehicleCounts.find(
+											(data: any) =>
+												data.membership_name ===
+												'Roadside Assistance'
+										).vehicleCount
+									"
+									:member-id="member.id"
+									:client-phone="member.phone_number"
+									:client-email="member.userEmail" />
 							</tbody>
 						</table>
 					</div>
@@ -82,8 +70,8 @@
 		<div class="mt-2 w-full rounded-sm flex justify-end items-center py-2">
 			<button
 				type="button"
-				v-if="currentPage + 1 < totalPages"
-				@click="currentPage += 1"
+				v-if="page + 1 < totalPages"
+				@click="page += 1"
 				class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
 				<span v-if="!fetchingMoreData">Load More</span>
 				<div
@@ -102,7 +90,6 @@
 		layout: "in-app-layout",
 	});
 
-	const fetchingMoreData: Ref<boolean> = ref(false);
-	const currentPage: Ref<number> = ref(0);
-	const totalPages: Ref<number> = ref(0);
+	const { membersList, page, totalPages, fetchingMoreData } =
+		await useFilteredMemberships();
 </script>
