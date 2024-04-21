@@ -111,6 +111,33 @@
 	}>();
 	const { capitalizeFirstLetter } = useUtils();
 	const { getDetails } = usePrincipal();
+</script>
 
-	const { toggleDropdown, isDropdownVisible } = useCustomDropdown();
+<script lang="ts">
+	export default {
+		data() {
+			return {
+				isDropdownVisible: false,
+			};
+		},
+		methods: {
+			toggleDropdown() {
+				this.isDropdownVisible = !this.isDropdownVisible;
+			},
+			closeDropdown() {
+				this.isDropdownVisible = false;
+			},
+			handleClickOutside(event) {
+				if (!this.$refs.dropdownContainer.contains(event.target)) {
+					this.closeDropdown();
+				}
+			},
+		},
+		mounted() {
+			document.addEventListener("click", this.handleClickOutside);
+		},
+		beforeDestroy() {
+			document.removeEventListener("click", this.handleClickOutside);
+		},
+	};
 </script>
