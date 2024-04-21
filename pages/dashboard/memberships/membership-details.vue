@@ -165,10 +165,6 @@
 							"Failed to retrieve corporate's members"
 						);
 					}
-					console.log(
-						"Retrieved data: ",
-						JSON.stringify(response._data, null, 2)
-					);
 					memberVehiclesList.value = response._data;
 					clientFullName.value =
 						memberVehiclesList.value[0].membership.full_name;
