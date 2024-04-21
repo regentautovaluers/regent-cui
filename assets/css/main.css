@@ -23,5 +23,5 @@
 }
 
 .custom-dropdown {
-    @apply origin-center absolute z-20 p-2 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 right-0 left-auto;
+    @apply origin-center absolute z-20 p-1 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 -top-[170%] mb-10 -left-56;
 }
