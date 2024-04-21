@@ -109,7 +109,7 @@ export default async function () {
 		);
 
 		if (filteredMemberships.length === 0) {
-			// page.value += 1;
+			page.value += 1;
 		} else {
 			membersList.value = membersList.value.concat(filteredMemberships);
 		}
