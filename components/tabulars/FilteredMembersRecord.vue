@@ -1,9 +1,9 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-600">
+		<td class="px-6 py-6 whitespace-nowrap font-semibold text-gray-600">
 			{{ componentProps.clientName }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-blue-600 font-semibold">
+		<td class="px-6 py-6 whitespace-nowrap text-blue-600 font-semibold">
 			{{
 				`${capitalizeFirstLetter(
 					componentProps.membershipCategory
@@ -11,7 +11,7 @@
 			}}
 		</td>
 		<td
-			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
 			<NuxtLink
 				:to="{
 					name: 'membership-details',

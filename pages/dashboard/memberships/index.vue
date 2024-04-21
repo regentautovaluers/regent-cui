@@ -155,7 +155,6 @@
 												class="px-6 py-3 text-center font-bold text-gray-500">
 												Vehicles
 											</th>
-
 											<th
 												scope="col"
 												class="px-6 py-3 text-end font-bold text-gray-500">
