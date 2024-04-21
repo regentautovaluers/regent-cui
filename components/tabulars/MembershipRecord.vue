@@ -1,71 +1,94 @@
 <template>
-	<tr
-		class="hover:shadow-lg"
-		v-for="(record, index) in memberVehiclesList"
-		:key="index">
-		<td class="px-6 py-4 whitespace-nowrap font-semibold text-pink-600">
-			{{ record.registration }}
+	<tr class="hover:shadow-lg">
+		<td class="px-6 py-6 whitespace-nowrap font-semibold text-pink-600">
+			{{ componentProps.vehicleRegistration }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			{{ formatServerProvidedDate(record.start_date) }}
+		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+			{{ componentProps.startDate }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
-			{{ formatServerProvidedDate(record.end_date) }}
+		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+			{{ componentProps.endDate }}
 		</td>
 		<td
-			class="px-6 text-center py-4 whitespace-nowrap w-full text-gray-500 font-medium inline-flex flex-col">
-			<span class="text-start">{{ record.make }}</span>
-			<span class="text-start">{{ record.model }}</span>
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+			{{ componentProps.vehicleMake }}
 		</td>
 		<td
-			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-blue-500">
-			{{
-				capitalizeFirstLetterOfEachWord(
-					record.membershipType.membership_name
-				)
-			}}
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+			{{ componentProps.vehicleModel }}
 		</td>
 		<td
-			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-green-500">
-			{{ capitalizeFirstLetter(record.membership_status) }}
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+			{{ componentProps.membershipName }}
 		</td>
 		<td
-			class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
-			{{ capitalizeFirstLetter(record.payment_status) }}
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+			{{ componentProps.membershipStatus }}
 		</td>
 		<td
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
+			{{ componentProps.paymentStatus }}
+		</td>
+		<td
+			class="text-center"
 			v-if="
 				getDetails.userlevel === 'admin' ||
 				getDetails.userlevel === 'broker'
 			">
-			<div class="inline-flex rounded-lg shadow-sm">
-				<NuxtLink
-					:to="{
-						name: 'edit-membership-details',
-						query: {
-							membershipId: record.id,
-							vehicleRegistration: record.registration,
-							vehicleMake: record.make,
-							vehicleModel: record.model,
-							membershipStatus: record.membership_status,
-							paymentStatus: record.payment_status,
-							clientName:
-								memberVehiclesList[0].membership.full_name,
-						},
-					}"
-					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-lg text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
-					Edit Vehicle
-				</NuxtLink>
+			<div class="hs-dropdown relative inline-flex [--placement:left]">
 				<button
-					class="py-3 px-4 inline-flex items-center gap-x-2 -ms-px first:rounded-s-full first:ms-0 last:rounded-e-full text-sm font-medium focus:z-10 border border-gray-200 bg-red-500 text-white hover:bg-red-600 whitespace-nowrap overflow-hidden text-overflow-ellipsis"
-					@click="deleteMembershipRecord(record.id)">
-					<span>Delete Vehicle</span>
-					<div
-						v-if="deleteMembershipLoading"
-						class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-						role="status"
-						aria-label="loading" />
+					id="hs-dropdown-default"
+					type="button"
+					class="hs-dropdown-toggle">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="1.8em"
+						height="1.8em"
+						viewBox="0 0 24 24">
+						<path
+							fill="currentColor"
+							fill-rule="evenodd"
+							d="M10.5 5A1.5 1.5 0 0 1 12 3.5h.01a1.5 1.5 0 0 1 1.5 1.5v.01a1.5 1.5 0 0 1-1.5 1.5H12a1.5 1.5 0 0 1-1.5-1.5zm0 7a1.5 1.5 0 0 1 1.5-1.5h.01a1.5 1.5 0 0 1 1.5 1.5v.01a1.5 1.5 0 0 1-1.5 1.5H12a1.5 1.5 0 0 1-1.5-1.5zm1.5 5.5a1.5 1.5 0 0 0-1.5 1.5v.01a1.5 1.5 0 0 0 1.5 1.5h.01a1.5 1.5 0 0 0 1.5-1.5V19a1.5 1.5 0 0 0-1.5-1.5z"
+							clip-rule="evenodd" />
+					</svg>
 				</button>
+
+				<div
+					class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full border z-20 space-y-1"
+					aria-labelledby="hs-dropdown-default">
+					<NuxtLink
+						v-if="
+							getDetails.userlevel === 'admin' ||
+							getDetails.userlevel === 'broker'
+						"
+						:to="{
+							name: 'edit-membership-details',
+							query: {
+								membershipId: componentProps.membershipId,
+								vehicleRegistration:
+									componentProps.vehicleRegistration,
+								vehicleMake: componentProps.vehicleMake,
+								vehicleModel: componentProps.vehicleModel,
+								membershipStatus:
+									componentProps.membershipStatus,
+								paymentStatus: componentProps.paymentStatus,
+								clientName: clientName,
+							},
+						}"
+						class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+						Edit Vehicle
+					</NuxtLink>
+					<button
+						class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-red-500 hover:bg-red-600 focus:outline-none text-white"
+						@click="deleteMembershipRecord(membershipId)">
+						<span>Delete Vehicle</span>
+						<div
+							v-if="deleteMembershipLoading"
+							class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+							role="status"
+							aria-label="loading" />
+					</button>
+				</div>
 			</div>
 		</td>
 	</tr>
@@ -73,45 +96,23 @@
 
 <script setup lang="ts">
 	const deleteMembershipLoading: Ref<boolean> = ref(false);
+	const componentProps = defineProps<{
+		membershipId: number | any;
+		vehicleRegistration: string;
+		startDate: string;
+		endDate: string;
+		vehicleMake: string;
+		vehicleModel: string;
+		membershipName: string;
+		membershipStatus: string;
+		paymentStatus: string;
+		clientName: string;
+	}>();
 	const runtimeConfig = useRuntimeConfig();
 	const router = useRouter();
 	const { openToast } = useToast();
-	const { formatServerProvidedDate } = useUtils();
-	const route = useRoute();
-	const memberVehiclesList: Ref<any[]> = ref([]);
 	const emit = defineEmits(["provideClientDetails"]);
-	const { capitalizeFirstLetterOfEachWord, capitalizeFirstLetter } =
-		useUtils();
 	const { getDetails } = usePrincipal();
-
-	try {
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/membership/${route.query.id}`,
-			{
-				method: "GET",
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
-						);
-					}
-					memberVehiclesList.value = response._data;
-					emit(
-						"provideClientDetails",
-						memberVehiclesList.value[0].membership.full_name,
-						!memberVehiclesList.value[0].membership.userEmail
-							? "Email not provided"
-							: memberVehiclesList.value[0].membership.userEmail,
-						memberVehiclesList.value[0].membership.phone_number,
-						memberVehiclesList.value.length
-					);
-				},
-			}
-		);
-	} catch (error) {
-		console.log("An error occured: ", error);
-		openToast("Failed to load your members. Reload page!", "danger");
-	}
 
 	async function deleteMembershipRecord(membershipId: number) {
 		deleteMembershipLoading.value = true;
@@ -126,7 +127,7 @@
 						}
 
 						openToast(
-							"Member details deleted successfully. Page should redirect!",
+							"Member details deleted successfully.",
 							"success"
 						);
 
