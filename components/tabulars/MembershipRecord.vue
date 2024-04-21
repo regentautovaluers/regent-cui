@@ -29,17 +29,13 @@
 			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
 			{{ componentProps.paymentStatus }}
 		</td>
-		<td
-			class="text-center"
-			v-if="
-				getDetails.userlevel === 'admin' ||
-				getDetails.userlevel === 'broker'
-			">
-			<div class="hs-dropdown relative inline-flex [--placement:left]">
+		<td class="text-center">
+			<div
+				class="relative inline-block text-left"
+				ref="dropdownContainer">
 				<button
-					id="hs-dropdown-default"
-					type="button"
-					class="hs-dropdown-toggle">
+					@click="toggleDropdown"
+					class="shadow-sm">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="1.8em"
@@ -52,42 +48,48 @@
 							clip-rule="evenodd" />
 					</svg>
 				</button>
-
 				<div
-					class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full border z-20 space-y-1"
-					aria-labelledby="hs-dropdown-default">
-					<NuxtLink
-						v-if="
-							getDetails.userlevel === 'admin' ||
-							getDetails.userlevel === 'broker'
-						"
-						:to="{
-							name: 'edit-membership-details',
-							query: {
-								membershipId: componentProps.membershipId,
-								vehicleRegistration:
-									componentProps.vehicleRegistration,
-								vehicleMake: componentProps.vehicleMake,
-								vehicleModel: componentProps.vehicleModel,
-								membershipStatus:
-									componentProps.membershipStatus,
-								paymentStatus: componentProps.paymentStatus,
-								clientName: clientName,
-							},
-						}"
-						class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
-						Edit Vehicle
-					</NuxtLink>
-					<button
-						class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-red-500 hover:bg-red-600 focus:outline-none text-white"
-						@click="deleteMembershipRecord(membershipId)">
-						<span>Delete Vehicle</span>
-						<div
-							v-if="deleteMembershipLoading"
-							class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-							role="status"
-							aria-label="loading" />
-					</button>
+					v-if="isDropdownVisible"
+					@click.stop
+					class="custom-dropdown">
+					<div
+						class="py-1"
+						role="menu"
+						aria-orientation="vertical"
+						aria-labelledby="options-menu">
+						<NuxtLink
+							v-if="
+								getDetails.userlevel === 'admin' ||
+								getDetails.userlevel === 'broker'
+							"
+							:to="{
+								name: 'edit-membership-details',
+								query: {
+									membershipId: componentProps.membershipId,
+									vehicleRegistration:
+										componentProps.vehicleRegistration,
+									vehicleMake: componentProps.vehicleMake,
+									vehicleModel: componentProps.vehicleModel,
+									membershipStatus:
+										componentProps.membershipStatus,
+									paymentStatus: componentProps.paymentStatus,
+									clientName: clientName,
+								},
+							}"
+							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							Edit Vehicle
+						</NuxtLink>
+						<button
+							class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-red-500 hover:bg-red-600 focus:outline-none text-white"
+							@click="deleteMembershipRecord(membershipId)">
+							<span>Delete Vehicle</span>
+							<div
+								v-if="deleteMembershipLoading"
+								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								role="status"
+								aria-label="loading" />
+						</button>
+					</div>
 				</div>
 			</div>
 		</td>
@@ -113,6 +115,7 @@
 	const { openToast } = useToast();
 	const emit = defineEmits(["provideClientDetails"]);
 	const { getDetails } = usePrincipal();
+	const { toggleDropdown, isDropdownVisible } = useCustomDropdown();
 
 	async function deleteMembershipRecord(membershipId: number) {
 		deleteMembershipLoading.value = true;
