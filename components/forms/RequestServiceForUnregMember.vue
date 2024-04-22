@@ -152,9 +152,7 @@
 					id="fuel-type"
 					required
 					v-model="tyreType">
-					<option value="Select a Tyre Type">
-						Select a Tyre Type
-					</option>
+					<option value="">Select a Tyre Type</option>
 					<option
 						v-for="(vType, index) in [
 							'tube',
@@ -191,11 +189,6 @@
 					required
 					v-model="vehicleClass">
 					<option
-						value="Select a Fuel Type"
-						selected>
-						Select a Vehicle Class
-					</option>
-					<option
 						v-for="(vClass, index) in [
 							'sedan',
 							'suv',
@@ -228,11 +221,6 @@
 					v-model="fuelType"
 					required>
 					<option
-						value="Select a Fuel Type"
-						selected>
-						Select a Fuel Type
-					</option>
-					<option
 						v-for="(fuelType, index) in [
 							'Diesel',
 							'Petrol',
@@ -251,23 +239,13 @@
 					class="block font-medium mb-2 dark:text-white"
 					>Fuel Price</label
 				>
-				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+				<input
+					type="text"
 					id="fuel-price"
-					v-model="fuelAmount"
-					required>
-					<option
-						value="Select Type to See Price"
-						selected>
-						Select Type to See Price
-					</option>
-					<option
-						v-for="(fuelPrice, index) in [1000, 2000, 3000]"
-						:key="index"
-						:value="fuelPrice">
-						{{ fuelPrice }}
-					</option>
-				</select>
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="e.g 1000"
+					required
+					v-model="fuelAmount" />
 			</div>
 		</div>
 
@@ -394,7 +372,7 @@
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
 	const haveSpareTyre: Ref<boolean> = ref(true);
-	const tyreType: Ref<string> = ref("tubeless");
+	const tyreType: Ref<string> = ref("");
 	const { openToast } = useToast();
 
 	async function handleServiceReqFormSubmission() {

@@ -132,9 +132,7 @@
 					id="fuel-type"
 					required
 					v-model="tyreType">
-					<option value="Select a Tyre Type">
-						Select a Tyre Type
-					</option>
+					<option value="">Select a Tyre Type</option>
 					<option
 						v-for="(vType, index) in [
 							'tube',
@@ -170,11 +168,6 @@
 					id="fuel-type"
 					required
 					v-model="vehicleClass">
-					<option
-						value="Select a Fuel Type"
-						selected>
-						Select a Vehicle Class
-					</option>
 					<option
 						v-for="(vClass, index) in [
 							'sedan',
@@ -383,7 +376,7 @@
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
 	const haveSpareTyre: Ref<boolean> = ref(true);
-	const tyreType: Ref<string> = ref("tubeless");
+	const tyreType: Ref<string> = ref("");
 	const { openToast } = useToast();
 	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();

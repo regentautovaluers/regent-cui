@@ -5,15 +5,16 @@
 			<!-- Full Name Field -->
 			<div class="w-full">
 				<label
-					for="corporate-name"
+					for="fleet-name"
 					class="block font-medium mb-2 dark:text-white"
-					>Corporate Name</label
+					>Client Fleet</label
 				>
 				<div class="relative">
 					<select
 						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-						id="corporate-name"
+						id="fleet-name"
 						v-model="selectedFleetId">
+						<option :value="0">Select the Designated Fleet</option>
 						<option
 							v-for="(fleet, index) in availableFleets"
 							:key="index"
