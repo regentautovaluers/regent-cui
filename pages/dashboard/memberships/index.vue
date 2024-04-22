@@ -116,11 +116,11 @@
 								searchMembershipCategory !== ''
 							"
 							@click="
-								() => {
+								async () => {
 									searchFilterTerm = '';
 									searchMembershipCategory = '';
 									fetchedPages = [];
-									page = 0;
+									await loadInitialData();
 								}
 							"
 							title="Clear Filters"
@@ -358,8 +358,10 @@
 		fetchingMoreData,
 		page,
 		reducePage,
+		loadInitialData,
 		fetchedPages,
-	} = await useGeneralMemberships();
+	} = useGeneralMemberships();
+	await loadInitialData();
 	const currentTypeBlob: Ref<number> = ref(0);
 	const membershipTypesBlob: any[] = [
 		{
