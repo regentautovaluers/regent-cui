@@ -1,4 +1,4 @@
-export default async function () {
+export default function () {
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const membersList: Ref<any[]> = ref([]);
@@ -12,40 +12,6 @@ export default async function () {
 	const searchFilterTerm: Ref<string> = ref("");
 	const searchMembershipCategory: Ref<string> = ref("");
 	const fetchingMoreData: Ref<boolean> = ref(false);
-
-	try {
-		fetchErrorOrEmpty.value = true;
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-			{
-				method: "GET",
-				query: {
-					corporateId: getDetails.company,
-					page: page.value,
-					size: size.value,
-				},
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
-						);
-					}
-					membersList.value = response._data.memberships;
-					totalNumber.value = response._data.totalCount;
-					totalPages.value = response._data.totalPages;
-
-					// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
-					// we dont fetch it again
-					fetchedPages.value.push(0);
-					fetchErrorOrEmpty.value = false;
-				},
-			}
-		);
-	} catch (error) {
-		console.log("An error occured: ", error);
-		fetchErrorOrEmpty.value = true;
-		openToast("Failed to load your members. Reload page!", "danger");
-	}
 
 	const computedPagedList = computed(() => {
 		const start = (page.value + 1 - 1) * size.value;
@@ -110,12 +76,7 @@ export default async function () {
 	});
 
 	watch(page, async (newValue, oldValue) => {
-		if (fetchedPages.value.includes(newValue)) {
-			return;
-		} else if (
-			newValue > oldValue &&
-			!fetchedPages.value.includes(newValue)
-		) {
+		if (newValue > oldValue && !fetchedPages.value.includes(newValue)) {
 			try {
 				fetchingMoreData.value = false;
 				await $fetch(
@@ -162,6 +123,42 @@ export default async function () {
 		page.value = newPageView;
 	}
 
+	async function loadInitialData() {
+		fetchErrorOrEmpty.value = true;
+		try {
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+				{
+					method: "GET",
+					query: {
+						corporateId: getDetails.company,
+						page: page.value,
+						size: size.value,
+					},
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve corporate's members"
+							);
+						}
+						membersList.value = response._data.memberships;
+						totalNumber.value = response._data.totalCount;
+						totalPages.value = response._data.totalPages;
+
+						// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
+						// we dont fetch it again
+						fetchedPages.value.push(0);
+						fetchErrorOrEmpty.value = false;
+					},
+				}
+			);
+		} catch (error) {
+			console.log("An error occured: ", error);
+			fetchErrorOrEmpty.value = true;
+			openToast("Failed to load your members. Reload page!", "danger");
+		}
+	}
+
 	return {
 		totalNumber,
 		page,
@@ -172,6 +169,7 @@ export default async function () {
 		computedPagedList,
 		fetchingMoreData,
 		reducePage,
+		loadInitialData,
 		fetchedPages,
 	};
 }
