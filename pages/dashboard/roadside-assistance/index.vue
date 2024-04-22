@@ -192,11 +192,11 @@
 								searchMembershipCategory !== ''
 							"
 							@click="
-								() => {
+								async () => {
 									searchFilterTerm = '';
 									searchMembershipCategory = '';
 									fetchedPages = [];
-									page = 0;
+									await loadInitialData();
 								}
 							"
 							title="Clear Filters"
