@@ -33,9 +33,7 @@
 			<div
 				class="relative inline-block text-left"
 				ref="dropdownContainer">
-				<button
-					@click="toggleDropdown"
-					class="shadow-sm">
+				<button @click="toggleDropdown">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="1.8em"
