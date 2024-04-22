@@ -115,6 +115,32 @@
 	const { openToast } = useToast();
 	const emit = defineEmits(["provideClientDetails"]);
 	const { getDetails } = usePrincipal();
+	const isDropdownVisible = ref(false);
+	const dropdownContainer = ref(null);
+
+	function toggleDropdown() {
+		isDropdownVisible.value = !isDropdownVisible.value;
+	}
+
+	function closeDropdown() {
+		isDropdownVisible.value = false;
+	}
+
+	function handleClickOutside(event: MouseEvent) {
+		if (!event.target) return;
+		// Check if the click is outside the dropdown container
+		if (!dropdownContainer.value.contains(event.target as Node)) {
+			closeDropdown();
+		}
+	}
+
+	onMounted(() => {
+		document.addEventListener("click", handleClickOutside);
+	});
+
+	onBeforeUnmount(() => {
+		document.removeEventListener("click", handleClickOutside);
+	});
 
 	async function deleteMembershipRecord(membershipId: number) {
 		deleteMembershipLoading.value = true;
@@ -144,33 +170,4 @@
 			deleteMembershipLoading.value = false;
 		}
 	}
-</script>
-
-<script lang="ts">
-	export default {
-		data() {
-			return {
-				isDropdownVisible: false,
-			};
-		},
-		methods: {
-			toggleDropdown() {
-				this.isDropdownVisible = !this.isDropdownVisible;
-			},
-			closeDropdown() {
-				this.isDropdownVisible = false;
-			},
-			handleClickOutside(event) {
-				if (!this.$refs.dropdownContainer.contains(event.target)) {
-					this.closeDropdown();
-				}
-			},
-		},
-		mounted() {
-			document.addEventListener("click", this.handleClickOutside);
-		},
-		beforeDestroy() {
-			document.removeEventListener("click", this.handleClickOutside);
-		},
-	};
 </script>
