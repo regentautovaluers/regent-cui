@@ -66,8 +66,8 @@
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 bg-gray-100 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
-							placeholder="Search Name, Phone or Registration"
+							class="peer py-3 h-12 px-4 ps-11 bg-gray-200 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							placeholder="Search Name, Email, Phone or Registration"
 							v-model="searchFilterTerm" />
 						<div
 							class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
@@ -86,7 +86,7 @@
 									type="button"
 									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 text-gray-800 shadow-sm"
 									:class="
-										!searchMembershipCategory
+										searchServiceType === ''
 											? 'bg-white text-black'
 											: 'bg-blue-600 text-white'
 									">
@@ -116,7 +116,7 @@
 												text: 'Towing',
 											},
 											{
-												val: 'fuel delivery',
+												val: 'fueldelivery',
 												text: 'Fuel Delivery',
 											},
 											{
@@ -145,15 +145,13 @@
 						</div>
 						<button
 							v-if="
-								searchFilterTerm !== null ||
-								searchServiceType !== null
+								searchFilterTerm !== '' ||
+								searchServiceType !== ''
 							"
 							@click="
 								() => {
-									searchFilterTerm = null;
-									searchServiceType = null;
-									remountTableValue++;
-									loadedPages = 0;
+									searchFilterTerm = '';
+									searchServiceType = '';
 									currentPage = 0;
 								}
 							"
@@ -242,39 +240,24 @@
 				<div
 					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 					<span
-						>Showing {{ currentPage + 1 }} of
-						{{ totalNumber }} requests.</span
+						>Showing Page {{ currentPage + 1 }} of
+						{{ totalPages }}</span
 					>
-					<div class="space-x-1">
+					<div
+						class="space-x-1"
+						v-if="totalPages > 1">
 						<button
-							v-for="page in loadedPages"
-							:key="page"
-							@click="() => (currentPage = page - 1)"
-							type="button"
-							class="p-2 size-10 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700">
-							{{ page }}
+							@click="prevPage"
+							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							:disabled="currentPage === 0">
+							Previous
 						</button>
-						<button
-							v-if="loadedPages < totalPages"
-							@click="
-								() => {
-									if (currentPage + 1 < totalPages) {
-										currentPage++;
-										loadedPages++;
 
-										// show the loading indicator
-										fetchingMoreData = true;
-									}
-								}
-							"
-							type="button"
-							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
-							<span v-if="!fetchingMoreData">Next Page</span>
-							<div
-								v-if="fetchingMoreData"
-								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-								role="status"
-								aria-label="loading" />
+						<button
+							@click="nextPage"
+							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							:disabled="currentPage === totalPages - 1">
+							Next
 						</button>
 					</div>
 				</div>
@@ -290,13 +273,7 @@
 							:total-fuel-delivery="countFuelDelivery"
 							:total-jumpstarting="countJumpstarting"
 							:total-towing="countTowing"
-							:total-tyre-change="countTyreChange"
-							:total-collective="
-								countFuelDelivery +
-								countJumpstarting +
-								countTowing +
-								countTyreChange
-							" />
+							:total-tyre-change="countTyreChange" />
 					</div>
 				</div>
 				<div class="border shadow min-h-[28rem] rounded-lg">
@@ -335,12 +312,9 @@
 	const { getDetails } = usePrincipal();
 	const totalNumber: Ref<number> = ref(0);
 	const currentPage: Ref<number> = ref(0);
-	const loadedPages: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
-	const searchFilterTerm: Ref<string | null> = ref(null);
-	const searchServiceType: Ref<string | null> = ref(null);
-	const fetchingMoreData: Ref<boolean> = ref(false);
-	const remountTableValue: Ref<number> = ref(0);
+	const searchFilterTerm: Ref<string | null> = ref("");
+	const searchServiceType: Ref<string | ""> = ref("");
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
@@ -349,6 +323,7 @@
 	const towingIncidents: Ref<any[] | null> = ref(null);
 	const tyrechangeIncidents: Ref<any[] | null> = ref(null);
 	const { formatServerProvidedDateTime } = useUtils();
+	const ITEMS_PER_PAGE: number = 10;
 	const compiledData = computed(() => {
 		const aggData = [
 			...(fuelDeliveryIncidents.value || []),
@@ -357,8 +332,36 @@
 			...(tyrechangeIncidents.value || []),
 		];
 
-		totalNumber.value = aggData.length;
-		return aggData;
+		// Filter the aggData array based on the searchFilterTerm and searchServiceType
+		let filteredData = aggData.filter((item) => {
+			// Check if the searchFilterTerm matches any of the specified fields
+			const termMatch =
+				item.registration_no.includes(searchFilterTerm.value) ||
+				item.user_name.includes(searchFilterTerm.value) ||
+				item.user_email.includes(searchFilterTerm.value) ||
+				item.user_phone.includes(searchFilterTerm.value);
+
+			// Check if the searchServiceType matches the service field
+			const serviceTypeMatch = item.service === searchServiceType.value;
+
+			// Return true if both filters match or if both filters are disabled (empty strings)
+			return (
+				termMatch ||
+				serviceTypeMatch ||
+				(searchFilterTerm.value === "" &&
+					searchServiceType.value === "")
+			);
+		});
+
+		totalNumber.value = filteredData.length;
+		totalPages.value = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+		// Calculate the start and end indices for the current page
+		const startIndex = currentPage.value * ITEMS_PER_PAGE;
+		const endIndex = startIndex + ITEMS_PER_PAGE;
+
+		// Return only the items for the current page
+		return filteredData.slice(startIndex, endIndex);
 	});
 	const countFuelDelivery = computed(
 		() => fuelDeliveryIncidents.value?.length
@@ -368,7 +371,6 @@
 	);
 	const countTowing = computed(() => towingIncidents.value?.length);
 	const countTyreChange = computed(() => tyrechangeIncidents.value?.length);
-	const countTotalIncidents = ref(0);
 	const subLinksInfo: any[] = [
 		{
 			icon: "/icons/misc/roadside-mostreq-icon.svg",
@@ -396,31 +398,55 @@
 		},
 	];
 
-	try {
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/corp/reports/services/corporate/${getDetails.company}`,
-			{
-				method: "GET",
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error("Failed to retrieve incidents!");
-					}
-					fuelDeliveryIncidents.value = response._data.fueldelivery;
-					jumpstartingIncidents.value = response._data.jumpstarting;
-					towingIncidents.value = response._data.towing;
-					tyrechangeIncidents.value = response._data.tyrechange;
+	onMounted(async () => {
+		fetchErrorOrEmpty.value = true;
+		try {
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/corp/reports/services/corporate/${getDetails.company}`,
+				{
+					method: "GET",
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error("Failed to retrieve incidents!");
+						}
+						fuelDeliveryIncidents.value =
+							response._data.fueldelivery;
+						jumpstartingIncidents.value =
+							response._data.jumpstarting;
+						towingIncidents.value = response._data.towing;
+						tyrechangeIncidents.value = response._data.tyrechange;
 
-					openToast("Successfully loaded your incidents", "success");
-				},
-			}
-		);
-	} catch (error) {
-		console.log("An error occured: ", error);
-		openToast("Failed to load your members. Reload page!", "danger");
-	}
+						openToast(
+							"Successfully loaded your incidents",
+							"success"
+						);
+					},
+				}
+			);
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Failed to load your members. Reload page!", "danger");
+		} finally {
+			fetchErrorOrEmpty.value = false;
+		}
+	});
 
 	function determineMostRequestedService(): string {
 		return "";
+	}
+
+	// Add a method to navigate to the next page
+	function nextPage() {
+		if (currentPage.value < totalPages.value - 1) {
+			currentPage.value++;
+		}
+	}
+
+	// Add a method to navigate to the previous page
+	function prevPage() {
+		if (currentPage.value > 0) {
+			currentPage.value--;
+		}
 	}
 
 	function makeServiceTypeFriendly(rawType: string): string {
