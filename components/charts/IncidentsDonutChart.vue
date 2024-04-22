@@ -8,17 +8,21 @@
 	import { Doughnut } from "vue-chartjs";
 
 	const componentProps = defineProps<{
-		totalFuelDelivery: number;
-		totalJumpstarting: number;
-		totalTowing: number;
-		totalTyreChange: number;
-		totalCollective: number;
+		totalFuelDelivery: number | undefined;
+		totalJumpstarting: number | undefined;
+		totalTowing: number | undefined;
+		totalTyreChange: number | undefined;
 	}>();
 	const countFuelDelivery = computed(() => componentProps.totalFuelDelivery);
 	const countJumpstarting = computed(() => componentProps.totalJumpstarting);
 	const countTowing = computed(() => componentProps.totalTowing);
 	const countTyreChange = computed(() => componentProps.totalTyreChange);
-	const countTotalIncidents = computed(() => componentProps.totalCollective);
+	const countTotalIncidents = computed(
+		componentProps.totalFuelDelivery +
+			componentProps.totalJumpstarting +
+			componentProps.totalTowing +
+			componentProps.totalTyreChange
+	);
 	const chartData = computed(() => ({
 		labels: ["Fuel Delivery", "Jumpstarting", "Towing", "Tyre Change"],
 		datasets: [
