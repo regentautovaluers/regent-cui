@@ -39,52 +39,30 @@
 			<!-- Vehicle Make -->
 			<div class="w-full lg:w-1/2">
 				<label
-					for="vehicle-make"
+					for="phone"
 					class="block font-medium mb-2 dark:text-white"
 					>Vehicle Make</label
 				>
-				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="vehicle-make"
-					v-model="vehicleMake">
-					<option value="Default Make">Default Make</option>
-					<option
-						v-for="(make, index) in [
-							'Make A',
-							'Make B',
-							'Make C',
-							'Make D',
-						]"
-						:key="index"
-						:value="make">
-						{{ make }}
-					</option>
-				</select>
+				<input
+					type="text"
+					id="phone"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="e.g Toyota"
+					v-model="vehicleMake" />
 			</div>
 			<!-- Vehicle Model -->
 			<div class="w-full lg:w-1/2">
 				<label
-					for="vehicle-model"
+					for="phone"
 					class="block font-medium mb-2 dark:text-white"
 					>Vehicle Model</label
 				>
-				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					id="vehicle-model"
-					v-model="vehicleModel">
-					<option value="Default Model">Default Model</option>
-					<option
-						v-for="(model, index) in [
-							'Model A',
-							'Model B',
-							'Model C',
-							'Model D',
-						]"
-						:key="index"
-						:value="model">
-						{{ model }}
-					</option>
-				</select>
+				<input
+					type="text"
+					id="phone"
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="e.g Premio"
+					v-model="vehicleModel" />
 			</div>
 		</div>
 		<!--  -->
