@@ -14,4 +14,15 @@
     .active-child-route {
         @apply bg-green-500;
     }
+
+    .custom-dropdown {
+        @apply origin-center absolute z-20 p-1 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 -top-[170%] mb-10 -left-56;
+    }
 }
+
+@layer base {
+    th, tr {
+        @apply whitespace-nowrap
+    }
+}
+

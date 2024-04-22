@@ -57,8 +57,13 @@
 									</th>
 									<th
 										scope="col"
-										class="px-6 py-3 text-start font-bold text-gray-500">
-										Make & Model
+										class="px-6 py-3 text-center font-bold text-gray-500">
+										Make
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-center font-bold text-gray-500">
+										Model
 									</th>
 									<th
 										scope="col"
@@ -81,22 +86,45 @@
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200">
-								<Suspense>
-									<template #default>
-										<MembershipRecord
-											@provide-client-details="((fullName: string, email: string, phoneNumber: string, numberOfVehicles: number) => {
-												clientFullName = fullName;
-												clientPhoneNumber = phoneNumber;
-												numOfVehicles = numberOfVehicles;
-												clientEmail = email;
-										})" />
-									</template>
-									<template #fallback>
-										<MembershipTableLoader
-											v-for="a in 5"
-											:key="a" />
-									</template>
-								</Suspense>
+								<MembershipRecord
+									v-for="(
+										record, index
+									) in memberVehiclesList"
+									:key="index"
+									:membership-id="record.id"
+									:vehicle-registration="record.registration"
+									:start-date="
+										formatServerProvidedDate(
+											record.start_date
+										)
+									"
+									:end-date="
+										formatServerProvidedDate(
+											record.end_date
+										)
+									"
+									:vehicle-make="record.make"
+									:vehicle-model="record.model"
+									:membership-name="
+										capitalizeFirstLetterOfEachWord(
+											record.membershipType
+												.membership_name
+										)
+									"
+									:membership-status="
+										capitalizeFirstLetter(
+											record.membership_status
+										)
+									"
+									:payment-status="
+										capitalizeFirstLetter(
+											record.payment_status
+										)
+									"
+									:client-name="
+										memberVehiclesList[0].membership
+											.full_name
+									" />
 							</tbody>
 						</table>
 					</div>
@@ -116,4 +144,42 @@
 	const clientEmail: Ref<string> = ref("");
 	const clientPhoneNumber: Ref<string> = ref("");
 	const numOfVehicles: Ref<number> = ref(0);
+	const runtimeConfig = useRuntimeConfig();
+	const { openToast } = useToast();
+	const {
+		capitalizeFirstLetterOfEachWord,
+		capitalizeFirstLetter,
+		formatServerProvidedDate,
+	} = useUtils();
+	const memberVehiclesList: Ref<any[]> = ref([]);
+	const route = useRoute();
+
+	try {
+		await $fetch(
+			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/membership/${route.query.id}`,
+			{
+				method: "GET",
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error(
+							"Failed to retrieve corporate's members"
+						);
+					}
+					memberVehiclesList.value = response._data;
+					clientFullName.value =
+						memberVehiclesList.value[0].membership.full_name;
+					clientEmail.value = !memberVehiclesList.value[0].membership
+						.userEmail
+						? "Email not provided"
+						: memberVehiclesList.value[0].membership.userEmail;
+					clientPhoneNumber.value =
+						memberVehiclesList.value[0].membership.phone_number;
+					numOfVehicles.value = memberVehiclesList.value.length;
+				},
+			}
+		);
+	} catch (error) {
+		console.log("An error occured: ", error);
+		openToast("Failed to load your members. Reload page!", "danger");
+	}
 </script>

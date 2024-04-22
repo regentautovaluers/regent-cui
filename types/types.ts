@@ -2,6 +2,7 @@ export type ApplicationChildRoute = {
 	id: number;
 	displayName: string;
 	routeName: string;
+	icon?: string;
 };
 
 export type ApplicationRoute = {
@@ -25,6 +26,7 @@ export type bulkProcessedType = {
 	color: string;
 	payment_status: string;
 	membership_status: string;
+	available_free_distance: any;
 	registration: string;
 	recordedBy: string;
 	category: string;
@@ -34,4 +36,11 @@ export type bulkProcessedType = {
 export type excelUploadErrMess = {
 	message: string | unknown;
 	type: string;
+};
+
+export type moreServices = {
+	icon: string;
+	title: string;
+	description: string;
+	pageName: string;
 };

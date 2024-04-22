@@ -1,44 +1,27 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-6 whitespace-nowrap font-semibold text-gray-600">
+		<td class="px-6 py-6 whitespace-nowrap font-semibold text-pink-600">
+			{{ componentProps.regNo }}
+		</td>
+		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+			{{ componentProps.dateTime }}
+		</td>
+		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
 			{{ componentProps.clientName }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-blue-600 font-semibold">
-			{{
-				`${capitalizeFirstLetter(
-					componentProps.membershipCategory
-				)} Member`
-			}}
+		<td
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+			{{ componentProps.clientPhone }}
 		</td>
 		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
-			<NuxtLink
-				:to="{
-					name: 'membership-details',
-					query: {
-						id: componentProps.memberId,
-					},
-				}"
-				>{{ componentProps.vehicleCount }}</NuxtLink
-			>
+			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+			{{ componentProps.serviceType }}
 		</td>
 		<td
-			class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
-			{{
-				!componentProps.clientPhone
-					? "Phone Number Not Provided"
-					: `+${componentProps.clientPhone}`
-			}}
+			class="px-6 py-6 whitespace-nowrap text-ellipsis overflow-hidden text-end font-semibold text-pink-500">
+			{{ componentProps.location }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
-			{{
-				!componentProps.clientEmail
-					? "Email Not Provided"
-					: componentProps.clientEmail
-			}}
-		</td>
-		<td class="text-center">
+		<td>
 			<div
 				class="relative inline-block text-left"
 				ref="dropdownContainer">
@@ -58,38 +41,16 @@
 				<div
 					v-if="isDropdownVisible"
 					@click.stop
-					class="custom-dropdown">
+					class="custom-dropdown -top-[80%]">
 					<div
 						class="py-1"
 						role="menu"
 						aria-orientation="vertical"
 						aria-labelledby="options-menu">
 						<NuxtLink
-							v-if="
-								getDetails.userlevel === 'admin' ||
-								getDetails.userlevel === 'broker'
-							"
-							:to="{
-								name: 'edit-member-details',
-								query: {
-									memberName: componentProps.clientName,
-									memberPhone: componentProps.clientPhone,
-									memberEmail: componentProps.clientEmail,
-									memberId: componentProps.memberId,
-								},
-							}"
+							:to="{ name: 'ava-incident-report' }"
 							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
-							Edit Details
-						</NuxtLink>
-						<NuxtLink
-							:to="{
-								name: 'membership-details',
-								query: {
-									id: componentProps.memberId,
-								},
-							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
-							View Vehicles
+							View Report
 						</NuxtLink>
 					</div>
 				</div>
@@ -100,15 +61,14 @@
 
 <script setup lang="ts">
 	const componentProps = defineProps<{
+		index: number;
+		regNo: string;
+		dateTime: string;
 		clientName: string;
-		membershipCategory: string;
-		vehicleCount: string | number;
-		memberId: string | number;
 		clientPhone: string;
-		clientEmail: string | null;
+		serviceType: string;
+		location: string;
 	}>();
-	const { capitalizeFirstLetter } = useUtils();
-	const { getDetails } = usePrincipal();
 	const isDropdownVisible = ref(false);
 	const dropdownContainer = ref(null);
 

@@ -75,7 +75,7 @@
 
 					<!-- Right Content -->
 					<div
-						class="grow px-2 pb-8 font-semibold"
+						class="grow px-2 pb-8 font-medium"
 						:class="
 							route.name === child.routeName
 								? 'text-blue-600'

@@ -70,6 +70,7 @@
 											membership.membership_rate
 										),
 										membershipTypeId: membership.id,
+										freeDistance: membership.free_distance,
 									},
 								}"
 								class="w-fit p-4 rounded-md inline-flex space-x-2 items-center bg-black group-hover:bg-white group-hover:text-black text-white mt-2">
@@ -100,7 +101,7 @@
 		name: "new-member",
 		layout: "in-app-layout",
 	});
-	const membershipTypes: Ref<Object[]> = ref([]);
+	const membershipTypes: Ref<any[]> = ref([]);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 
