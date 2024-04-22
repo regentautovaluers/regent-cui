@@ -140,9 +140,7 @@
 			<div class="mt-5">
 				<!-- Sidebar advertisement -->
 				<div class="mb-20 px-4">
-					<ClientOnly>
-						<SidenavAdvertCarousel />
-					</ClientOnly>
+					<SidenavAdvertCarousel />
 				</div>
 
 				<!-- Ending links -->

@@ -14,7 +14,7 @@
 					class="hs-carousel-slide"
 					v-for="(advertisement, index) in advertisements"
 					:key="index">
-					<div class="flex justify-center h-full bg-red-100">
+					<div class="flex justify-center h-full bg-gray-100">
 						<img
 							:src="advertisement"
 							alt="Image Advertisement"
@@ -29,7 +29,7 @@
 			<span
 				v-for="index in advertisements"
 				:key="index"
-				class="hs-carousel-active:bg-pink-700 size-3 border border-gray-400 rounded-full cursor-pointer" />
+				class="hs-carousel-active:bg-pink-600 size-3 border border-gray-400 rounded-full cursor-pointer" />
 		</div>
 	</div>
 	<!-- End Slider -->
