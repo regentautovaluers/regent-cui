@@ -281,25 +281,23 @@
 			</div>
 			<!--left and analysis graph -->
 			<div class="md:w-[20%] space-y-6">
-				<div class="border shadow min-h-[28.9rem] rounded-lg">
+				<div class="border shadow min-h-[26rem] rounded-lg">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">Data Chart</h1>
 					</div>
-					<ClientOnly>
-						<div class="flex justify-center">
-							<IncidentsDonutChart
-								:total-fuel-delivery="countFuelDelivery"
-								:total-jumpstarting="countJumpstarting"
-								:total-towing="countTowing"
-								:total-tyre-change="countTyreChange"
-								:total-collective="
-									countFuelDelivery +
-									countJumpstarting +
-									countTowing +
-									countTyreChange
-								" />
-						</div>
-					</ClientOnly>
+					<div class="flex justify-center">
+						<IncidentsDonutChart
+							:total-fuel-delivery="countFuelDelivery"
+							:total-jumpstarting="countJumpstarting"
+							:total-towing="countTowing"
+							:total-tyre-change="countTyreChange"
+							:total-collective="
+								countFuelDelivery +
+								countJumpstarting +
+								countTowing +
+								countTyreChange
+							" />
+					</div>
 				</div>
 				<div class="border shadow min-h-[28rem] rounded-lg">
 					<div class="flex items-center justify-between p-4">
