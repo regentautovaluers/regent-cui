@@ -144,7 +144,9 @@ export default function () {
 						// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
 						// we dont fetch it again
 						fetchedPages.value.push(0);
-						fetchErrorOrEmpty.value = false;
+						if (membersList.value.length > 0) {
+							fetchErrorOrEmpty.value = false;
+						}
 					},
 				}
 			);
@@ -160,39 +162,7 @@ export default function () {
 	}
 
 	onMounted(async () => {
-		fetchErrorOrEmpty.value = true;
-		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-				{
-					method: "GET",
-					query: {
-						corporateId: getDetails.company,
-						page: page.value,
-						size: size.value,
-					},
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve corporate's members"
-							);
-						}
-						membersList.value = response._data.memberships;
-						totalNumber.value = response._data.totalCount;
-						totalPages.value = response._data.totalPages;
-
-						// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
-						// we dont fetch it again
-						fetchedPages.value.push(0);
-						fetchErrorOrEmpty.value = false;
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			fetchErrorOrEmpty.value = true;
-			openToast("Failed to load your members. Reload page!", "danger");
-		}
+		await manualLoadInitialData();
 	});
 
 	return {

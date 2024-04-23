@@ -8,7 +8,7 @@
 			class="inline-block mb-4" />
 		<br />
 		<span class="text-gray-500 text-lg font-semibold"
-			>Empty Dataset or Error Loading Dataset.</span
+			>Nothing to Show.</span
 		>
 	</td>
 </template>
