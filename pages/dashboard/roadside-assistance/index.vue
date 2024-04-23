@@ -222,7 +222,7 @@
 									searchFilterTerm = '';
 									searchMembershipCategory = '';
 									fetchedPages = [];
-									await loadInitialData();
+									await manualLoadInitialData();
 								}
 							"
 							title="Clear Filters"
@@ -355,6 +355,7 @@
 		fetchingMoreData,
 		page,
 		reducePage,
+		manualLoadInitialData,
 		fetchedPages,
 		totalNumber,
 	} = useGeneralMemberships();
