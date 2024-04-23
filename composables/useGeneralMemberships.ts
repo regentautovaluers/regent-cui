@@ -123,7 +123,7 @@ export default function () {
 		page.value = newPageView;
 	}
 
-	async function loadInitialData() {
+	onMounted(async () => {
 		fetchErrorOrEmpty.value = true;
 		try {
 			await $fetch(
@@ -157,7 +157,7 @@ export default function () {
 			fetchErrorOrEmpty.value = true;
 			openToast("Failed to load your members. Reload page!", "danger");
 		}
-	}
+	});
 
 	return {
 		totalNumber,
@@ -169,7 +169,6 @@ export default function () {
 		computedPagedList,
 		fetchingMoreData,
 		reducePage,
-		loadInitialData,
 		fetchedPages,
 	};
 }

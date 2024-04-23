@@ -358,10 +358,8 @@
 		fetchingMoreData,
 		page,
 		reducePage,
-		loadInitialData,
 		fetchedPages,
 	} = useGeneralMemberships();
-	await loadInitialData();
 	const currentTypeBlob: Ref<number> = ref(0);
 	const membershipTypesBlob: any[] = [
 		{
