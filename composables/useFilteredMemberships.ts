@@ -8,45 +8,48 @@ export default async function () {
 	const runtimeConfig = useRuntimeConfig();
 	const { getDetails } = usePrincipal();
 	const fetchingMoreData: Ref<boolean> = ref(false);
-	const fetchErrorOccured: Ref<boolean> = ref(false);
+	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
 	const fetchedPages: Ref<number[]> = ref([]);
 	const route = useRoute();
 
-	try {
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-			{
-				method: "GET",
-				query: {
-					corporateId: getDetails.company,
-					page: page.value,
-					size: size.value,
-				},
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
+	onMounted(async () => {
+		fetchErrorOrEmpty.value = true;
+		try {
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
+				{
+					method: "GET",
+					query: {
+						corporateId: getDetails.company,
+						page: page.value,
+						size: size.value,
+					},
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve corporate's members"
+							);
+						}
+
+						totalNumber.value = response._data.totalCount;
+						totalPages.value = response._data.totalPages;
+
+						// we add page 0 to the list of fetchedPages so that we dont fetch it again
+						fetchedPages.value.push(0);
+
+						filterMembersRecord(
+							response._data.memberships,
+							determineFilterFlag()
 						);
-					}
-
-					totalNumber.value = response._data.totalCount;
-					totalPages.value = response._data.totalPages;
-
-					// we add page 0 to the list of fetchedPages so that we dont fetch it again
-					fetchedPages.value.push(0);
-
-					filterMembersRecord(
-						response._data.memberships,
-						determineFilterFlag()
-					);
-				},
-			}
-		);
-	} catch (error) {
-		console.log("An error occured: ", error);
-		fetchErrorOccured.value = true;
-		openToast("Failed to load your members. Reload page!", "danger");
-	}
+					},
+				}
+			);
+		} catch (error) {
+			console.log("An error occured: ", error);
+			fetchErrorOrEmpty.value = true;
+			openToast("Failed to load your members. Reload page!", "danger");
+		}
+	});
 
 	watch(
 		page,
@@ -55,9 +58,6 @@ export default async function () {
 				!fetchedPages.value.includes(newValue) &&
 				newValue < totalPages.value
 			) {
-				console.log(
-					"condition for running filter met... will be fetching more data..."
-				);
 				fetchingMoreData.value = true;
 				try {
 					await $fetch(
@@ -112,6 +112,7 @@ export default async function () {
 			page.value += 1;
 		} else {
 			membersList.value = membersList.value.concat(filteredMemberships);
+			fetchErrorOrEmpty.value = false;
 		}
 	}
 
@@ -134,5 +135,6 @@ export default async function () {
 		page,
 		totalPages,
 		fetchingMoreData,
+		fetchErrorOrEmpty,
 	};
 }

@@ -119,11 +119,7 @@ export default function () {
 		}
 	});
 
-	function reducePage(newPageView: number) {
-		page.value = newPageView;
-	}
-
-	async function loadInitialData() {
+	async function manualLoadInitialData() {
 		fetchErrorOrEmpty.value = true;
 		try {
 			await $fetch(
@@ -148,7 +144,9 @@ export default function () {
 						// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
 						// we dont fetch it again
 						fetchedPages.value.push(0);
-						fetchErrorOrEmpty.value = false;
+						if (membersList.value.length > 0) {
+							fetchErrorOrEmpty.value = false;
+						}
 					},
 				}
 			);
@@ -158,6 +156,14 @@ export default function () {
 			openToast("Failed to load your members. Reload page!", "danger");
 		}
 	}
+
+	function reducePage(newPageView: number) {
+		page.value = newPageView;
+	}
+
+	onMounted(async () => {
+		await manualLoadInitialData();
+	});
 
 	return {
 		totalNumber,
@@ -169,7 +175,7 @@ export default function () {
 		computedPagedList,
 		fetchingMoreData,
 		reducePage,
-		loadInitialData,
+		manualLoadInitialData,
 		fetchedPages,
 	};
 }

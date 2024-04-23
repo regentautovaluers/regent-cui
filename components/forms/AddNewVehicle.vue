@@ -106,6 +106,7 @@
 						id="payment-status"
 						required
 						v-model="userVehicles.payment_status">
+						<option value="">Select a Payment Status</option>
 						<option
 							v-for="(status, index) in ['Paid', 'Not Paid']"
 							:key="index"
@@ -126,6 +127,7 @@
 						id="membership-status"
 						required
 						v-model="userVehicles.membership_status">
+						<option value="">Select a Membership Status</option>
 						<option
 							v-for="(status, index) in ['Active', 'Inactive']"
 							:key="index"
@@ -183,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-	const membershipTypes: Ref<Object[]> = ref([]);
+	const membershipTypes: Ref<any[]> = ref([]);
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
 	const route = useRoute();

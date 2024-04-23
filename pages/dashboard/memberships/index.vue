@@ -120,7 +120,7 @@
 									searchFilterTerm = '';
 									searchMembershipCategory = '';
 									fetchedPages = [];
-									await loadInitialData();
+									await manualLoadInitialData();
 								}
 							"
 							title="Clear Filters"
@@ -358,10 +358,9 @@
 		fetchingMoreData,
 		page,
 		reducePage,
-		loadInitialData,
+		manualLoadInitialData,
 		fetchedPages,
 	} = useGeneralMemberships();
-	await loadInitialData();
 	const currentTypeBlob: Ref<number> = ref(0);
 	const membershipTypesBlob: any[] = [
 		{

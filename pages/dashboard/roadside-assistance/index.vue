@@ -49,7 +49,9 @@
 					<span class="text-gray-600 font-semibold">{{
 						info.title
 					}}</span>
-					<span class="text-gray-500 font-semibold">Lorem</span>
+					<span class="text-gray-500 font-semibold">{{
+						info.data
+					}}</span>
 					<NuxtLink class="text-blue-600 font-semibold">
 						{{ info.text }}
 					</NuxtLink>
@@ -82,24 +84,48 @@
 						</div>
 					</ClientOnly>
 				</div>
-				<div class="border shadow min-h-[28rem] rounded-lg">
-					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">Recent Incidents</h1>
-						<NuxtLink :to="{ name: '' }"></NuxtLink>
+				<div
+					class="border shadow min-h-[28rem] rounded-lg flex flex-col">
+					<div class="flex items-center justify-between p-4 h-fit">
+						<h1 class="text-xl font-semibold">Recent Incidents</h1>
+						<NuxtLink
+							:to="{ name: 'ava-all-incidents' }"
+							class="text-blue-500 underline underline-offset-2 hover:text-blue-600"
+							>View All</NuxtLink
+						>
 					</div>
-					<div class="flex flex-col justify-center items-center p-2">
+					<div class="flex-grow flex flex-col justify-between p-3">
 						<div
-							class="bg-gray-300 p-5 rounded-full flex justify-center items-center">
+							v-if="!recentIncidentsCol"
+							class="flex-grow flex flex-col justify-center items-center">
 							<img
-								class="inline-block size-[66px]"
-								src="/icons/sidenav/memberships-icon.svg"
-								alt="Image Description" />
+								src="/icons/misc/empty-or-error.svg"
+								alt="Data Not Found"
+								class="inline-block mb-4" />
+							<br />
+							<span
+								class="text-gray-500 text-lg font-semibold text-center"
+								>Nothing to Show</span
+							>
+							<NuxtLink
+								:to="{ name: 'ava-towing' }"
+								class="text-blue-500 underline underline-offset-2 hover:text-blue-600"
+								>Make a towing request</NuxtLink
+							>
 						</div>
-						<h1 class="text-xl font-semibold">Our Membership</h1>
-						<h2 class="font-semibold text-gray-600 text-lg">
-							Hello world
-						</h2>
-						<p class="text-sm mt-2 px-4">Hello world</p>
+						<RecentIncidentsMinimal
+							v-else
+							v-for="(incident, index) in recentIncidentsCol"
+							:key="index"
+							:reg-no="incident.registration_no"
+							:date-time="
+								formatServerProvidedDateTime(
+									incident.date_created
+								)
+							"
+							:service-type="
+								makeServiceTypeFriendly(incident.service)
+							" />
 					</div>
 				</div>
 			</div>
@@ -196,7 +222,7 @@
 									searchFilterTerm = '';
 									searchMembershipCategory = '';
 									fetchedPages = [];
-									await loadInitialData();
+									await manualLoadInitialData();
 								}
 							"
 							title="Clear Filters"
@@ -329,32 +355,39 @@
 		fetchingMoreData,
 		page,
 		reducePage,
-		loadInitialData,
+		manualLoadInitialData,
 		fetchedPages,
+		totalNumber,
 	} = useGeneralMemberships();
-	await loadInitialData();
+	const { recentIncidentsCol, makeServiceTypeFriendly } = useIncidents();
+	const { formatServerProvidedDateTime } = useUtils();
+
 	const subLinksInfo: any[] = [
 		{
 			icon: "/icons/misc/roadside-registeredmems-icon.svg",
 			title: "Registered Members",
+			data: totalNumber.value,
 			link: "memberships-home",
 			text: "View Members",
 		},
 		{
 			icon: "/icons/misc/roadside-realttracking-icon.svg",
 			title: "Real-Time Tracking",
+			data: "Lorem",
 			link: "memberships-home",
 			text: "View Live Map",
 		},
 		{
 			icon: "/icons/misc/roadside-complord-icon.svg",
 			title: "Completed Orders",
+			data: "Lorem",
 			link: "memberships-home",
 			text: "View All",
 		},
 		{
 			icon: "/icons/misc/roadside-comms-icon.svg",
 			title: "Communications",
+			data: "Lorem",
 			link: "memberships-home",
 			text: "View Chats",
 		},
