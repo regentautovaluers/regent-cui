@@ -44,3 +44,8 @@ export type moreServices = {
 	description: string;
 	pageName: string;
 };
+
+export type locationCoordsMarker = {
+	lat: number;
+	lng: number;
+};
