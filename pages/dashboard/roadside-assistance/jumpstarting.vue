@@ -3,7 +3,26 @@
 		class="py-10 responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
 		<div
 			class="h-96 lg:h-full w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
-			<GoogleMapsRenderer />
+			<GoogleMap
+				ref="mapRef"
+				:api-key="googleMapsApiKey"
+				style="width: 100%; height: 100%"
+				:center="center"
+				:zoom="14">
+				<InfoWindow
+					v-if="
+						center.lat != Number.NEGATIVE_INFINITY &&
+						center.lat != Number.NEGATIVE_INFINITY
+					"
+					minWidth="500"
+					:options="{
+						position: center,
+					}">
+					<div class="bg-purple-600 rounded-md p-2 text-white">
+						<h1 class="font-semibold text-lg">You Are Here</h1>
+					</div>
+				</InfoWindow>
+			</GoogleMap>
 		</div>
 		<div class="p-2 lg:p-5">
 			<h1 class="mb-4 text-3xl antialiased font-semibold">
@@ -40,20 +59,57 @@
 				v-if="currentRegForm === 0"
 				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
-				:optional-elements-rendered="['bottomStatistics', 'vehicleClass']" />
+				:optional-elements-rendered="[
+					'bottomStatistics',
+					'vehicleClass',
+				]" />
 			<RequestServiceForUnregMember
 				v-else
 				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
-				:optional-elements-rendered="['bottomStatistics', 'vehicleClass']" />
+				:optional-elements-rendered="[
+					'bottomStatistics',
+					'vehicleClass',
+				]" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+	import { type locationCoordsMarker } from "~/types/types";
+	import { useGeolocation } from "@vueuse/core";
+	import { GoogleMap, InfoWindow } from "vue3-google-map";
+
 	definePageMeta({
 		name: "ava-jumpstarting",
 		layout: "in-app-layout",
 	});
 	const currentRegForm: Ref<number> = ref(0);
+	const runtimeConfig = useRuntimeConfig();
+	const googleMapsApiKey = runtimeConfig.app.GOOGLE_MAPS_APIKEY;
+	const center: Ref<locationCoordsMarker> = ref({
+		lat: Number.NEGATIVE_INFINITY,
+		lng: Number.NEGATIVE_INFINITY,
+	});
+	const mapRef: Ref<any> = ref(null);
+	const { coords } = useGeolocation();
+
+	watch([() => mapRef.value?.ready], ([ready]) => {
+		if (!ready) {
+			return;
+		} else {
+			center.value.lat = coords.value.latitude;
+			center.value.lng = coords.value.longitude;
+
+			console.log("You are at: ", JSON.stringify(center.value, null, 2));
+			if (
+				center.value.lat !== Number.NEGATIVE_INFINITY &&
+				center.value.lng !== Number.NEGATIVE_INFINITY
+			)
+				mapRef.value?.map.panTo({
+					lat: center.value.lat,
+					lng: center.value.lng,
+				});
+		}
+	});
 </script>
