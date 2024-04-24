@@ -1,24 +1,14 @@
-FROM node:18.13.0 AS builder
+
+FROM node:18.13.0
 WORKDIR /app
-COPY package*.json ./
+COPY ./package.json /app/package.json
 RUN npm install
-COPY . .
+COPY .env /app/.env   
+COPY . /app
 RUN npm run build
+EXPOSE 3000
 
-# Production stage
-FROM node:18.13.0-slim
+CMD ["npm", "run", "preview"]
 
-# Set working directory
-WORKDIR /app
 
-# Copy built assets from the builder stage
-COPY --from=builder /app/.nuxt ./.nuxt
-COPY --from=builder /app/static ./static
-COPY --from=builder /app/nuxt.config.js .
-COPY --from=builder /app/package*.json ./
 
-RUN npm install --production
-
-EXPOSE 8000
-
-CMD ["npm", "run", "dev"]
