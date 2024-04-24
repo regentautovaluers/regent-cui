@@ -349,7 +349,7 @@
 		dropOffPointCoords,
 		pickupPointName,
 		dropOffPointName,
-	} = useLocations();
+	} = useLocationsAPI();
 	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const vehicleRegistration: Ref<string> = ref("");

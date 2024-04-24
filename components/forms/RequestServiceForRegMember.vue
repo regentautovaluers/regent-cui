@@ -348,7 +348,7 @@
 		dropOffPointCoords,
 		pickupPointName,
 		dropOffPointName,
-	} = useLocations();
+	} = useLocationsAPI();
 	const componentProps = defineProps<ComponentProps>();
 	const { getDetails } = usePrincipal();
 	const runtimeConfig = useRuntimeConfig();
