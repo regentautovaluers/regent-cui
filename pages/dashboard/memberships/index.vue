@@ -78,33 +78,31 @@
 									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 border after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 z-20"
 									aria-labelledby="hs-dropdown-default">
 									<div
+										v-for="(option, index) in [
+											{
+												text: 'Corporate Members',
+												id: 'corp-cat',
+												value: 'corporate',
+											},
+											{
+												text: 'Individual Members',
+												id: 'indiv-cat',
+												value: 'individual',
+											},
+										]"
 										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+										<!-- prettier-ignore -->
 										<input
+											:id="option.id"
 											type="radio"
 											name="membership-category"
-											value="corporate"
+											:value="option.value"
 											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											v-model="
-												searchMembershipCategory
-											" />
+											v-model="searchMembershipCategory" />
 										<label
+											for="corp-cat"
 											class="text-gray-500 ms-2 dark:text-gray-400"
-											>Corporate Registration</label
-										>
-									</div>
-									<div
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
-										<input
-											type="radio"
-											name="membership-category"
-											value="individual"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											v-model="
-												searchMembershipCategory
-											" />
-										<label
-											class="text-gray-500 ms-2 dark:text-gray-400"
-											>Individual Registration</label
+											>{{ option.text }}</label
 										>
 									</div>
 								</div>
