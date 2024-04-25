@@ -29,6 +29,16 @@
 				Request Towing
 			</h1>
 			<div
+				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500"
+				role="alert">
+				If the map adjacent to this form has not loaded properly, kindly
+				click
+				<button @click="reloadPage">
+					<span class="font-semibold">Reload</span>
+				</button>
+				to reload it before filling the form.
+			</div>
+			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
 				<div
 					class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
@@ -108,4 +118,8 @@
 				});
 		}
 	});
+
+	function reloadPage() {
+		location.reload();
+	}
 </script>
