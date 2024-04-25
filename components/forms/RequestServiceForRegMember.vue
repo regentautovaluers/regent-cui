@@ -8,22 +8,26 @@
 				class="block font-medium mb-2 dark:text-white"
 				>Provide Vehicle Registration Number</label
 			>
-			<input
-				type="text"
-				id="registration-number"
-				class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 peer rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-				placeholder="Provide the registration number to search"
-				v-model="vehicleRegistration"
-				@keypress.enter.prevent="handleRegistrationInputEnterEvent"
-				required />
-			<div
-				v-if="vehicleSearchLoading"
-				class="absolute top-[45%] right-4 animate-spin inline-block size-5 border-[2px] border-gray-500 border-current border-t-transparent rounded-full"
-				role="status"
-				aria-label="loading" />
-			<span class="invisible peer-focus:visible text-xs"
-				>Press ENTER key when you're done typing</span
-			>
+			<div class="flex items-center">
+				<input
+					type="text"
+					id="registration-number"
+					class="py-3 px-4 h-[4.5rem] w-3/4 border-gray-200 peer rounded-s-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="Provide the registration number to search"
+					v-model="vehicleRegistration"
+					required />
+				<button
+					type="button"
+					@click="handleRegistrationInputEnterEvent"
+					class="py-3 px-4 w-1/4 text-lg h-[4.5rem] items-center font-semibold rounded-e-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+					Find Vehicle
+					<div
+						v-if="vehicleSearchLoading"
+						class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+						role="status"
+						aria-label="loading" />
+				</button>
+			</div>
 		</div>
 		<!-- Progress Bar -->
 		<div
