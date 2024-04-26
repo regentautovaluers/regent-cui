@@ -49,3 +49,8 @@ export type locationCoordsMarker = {
 	lat: number;
 	lng: number;
 };
+
+export type informativeCoordsMarker = {
+	info: string;
+	coords: locationCoordsMarker;
+};
