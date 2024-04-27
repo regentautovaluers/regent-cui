@@ -334,22 +334,15 @@
 </template>
 
 <script setup lang="ts">
-	export interface ComponentProps {
+	import { type informativeCoordsMarker } from "~/types/types";
+
+	const componentProps = defineProps<{
 		backendServiceTypeName: string;
 		clientServiceTypeName: string;
 		optionalElementsRendered: string[];
-	}
-
-	const componentProps = defineProps<ComponentProps>();
+	}>();
 	const formSubmissionLoading = ref(false);
-	const {
-		bindToDropOffLocation,
-		bindToPickUpLocation,
-		pickupPointCoords,
-		dropOffPointCoords,
-		pickupPointName,
-		dropOffPointName,
-	} = useLocationsAPI();
+	const runtimeConfig = useRuntimeConfig();
 	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const vehicleRegistration: Ref<string> = ref("");
@@ -361,12 +354,6 @@
 	const arrivalDuration: Ref<number> = ref(10);
 	const arrivalDistance: Ref<number> = ref(20);
 	const serviceCost: Ref<number> = ref(1000);
-	const pickupPoint: Ref<string> = ref(pickupPointName);
-	const pickupLatitude: Ref<number> = ref(pickupPointCoords.value.lat);
-	const pickupLongitude: Ref<number> = ref(pickupPointCoords.value.lng);
-	const destinationPoint: Ref<string> = ref(dropOffPointName);
-	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.value.lat);
-	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.value.lng);
 	const requestRemarks: Ref<string | null> = ref(null);
 	const vehicleClass: Ref<string | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
@@ -374,6 +361,49 @@
 	const haveSpareTyre: Ref<boolean> = ref(true);
 	const tyreType: Ref<string> = ref("");
 	const { openToast } = useToast();
+	const componentEmits = defineEmits<{
+		appendInfoMarker: [informativeCoordsMarker];
+	}>();
+	const {
+		bindToPickUpLocation,
+		bindToDropOffLocation,
+		pickupLatitude,
+		pickupLongitude,
+		destinationLongitude,
+		destinationLatitude,
+		pickupPointName,
+		dropOffPointName,
+	} = useLocationUtils();
+
+	watch([pickupLatitude, pickupLongitude], (newValues) => {
+		if (
+			newValues[0] !== Number.NEGATIVE_INFINITY &&
+			newValues[1] !== Number.NEGATIVE_INFINITY
+		) {
+			componentEmits("appendInfoMarker", {
+				info: "Client Is Here",
+				coords: {
+					lat: newValues[0],
+					lng: newValues[1],
+				},
+			});
+		}
+	});
+
+	watch([destinationLatitude, destinationLongitude], (newValues) => {
+		if (
+			newValues[0] !== Number.NEGATIVE_INFINITY &&
+			newValues[1] !== Number.NEGATIVE_INFINITY
+		) {
+			componentEmits("appendInfoMarker", {
+				info: "Destination Is Here",
+				coords: {
+					lat: newValues[0],
+					lng: newValues[1],
+				},
+			});
+		}
+	});
 
 	async function handleServiceReqFormSubmission() {
 		formSubmissionLoading.value = true;
@@ -391,10 +421,10 @@
 				arrivalDuration.value,
 				arrivalDistance.value,
 				serviceCost.value,
-				pickupPoint.value,
+				pickupPointName.value,
 				pickupLatitude.value,
 				pickupLongitude.value,
-				destinationPoint.value,
+				dropOffPointName.value,
 				destinationLongitude.value,
 				destinationLatitude.value,
 				requestRemarks.value,
