@@ -252,26 +252,32 @@
 		<!-- pickup location -->
 		<div class="mt-5">
 			<label
-				for="pickup-location"
+				for="client-location"
 				class="block font-medium mb-2 dark:text-white"
-				>Pickup Location</label
+				>Client Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
-					id="pickup-location"
+					id="client-location"
 					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
 					placeholder="Type an address to search"
 					required />
 				<img
 					src="/icons/misc/pick-up-location.svg"
-					alt="Pickup Location"
+					alt="Client Location"
 					class="absolute top-[25%]" />
 			</div>
 		</div>
 
 		<!-- drop off location -->
-		<div class="mt-5">
+		<div
+			class="mt-5"
+			v-if="
+				componentProps.optionalElementsRendered.includes(
+					'dropoffLocation'
+				)
+			">
 			<label
 				for="dropoff-location"
 				class="block font-medium mb-2 dark:text-white"
