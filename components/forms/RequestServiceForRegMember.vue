@@ -390,6 +390,7 @@
 			newValues[1] !== Number.NEGATIVE_INFINITY
 		) {
 			componentEmits("appendInfoMarker", {
+				id: 0,
 				info: "Client Is Here",
 				coords: {
 					lat: newValues[0],
@@ -405,6 +406,7 @@
 			newValues[1] !== Number.NEGATIVE_INFINITY
 		) {
 			componentEmits("appendInfoMarker", {
+				id: 1,
 				info: "Destination Is Here",
 				coords: {
 					lat: newValues[0],
