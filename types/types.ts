@@ -51,6 +51,7 @@ export type locationCoordsMarker = {
 };
 
 export type informativeCoordsMarker = {
+	id: number; // id 0 is for client current location and id 1 is for client destination(specifically for towing)
 	info: string;
 	coords: locationCoordsMarker;
 };
