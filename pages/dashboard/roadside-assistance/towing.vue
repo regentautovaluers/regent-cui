@@ -82,6 +82,7 @@
 				:optional-elements-rendered="[
 					'bottomStatistics',
 					'progressBar',
+					'dropoffLocation',
 				]"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
@@ -92,7 +93,10 @@
 				v-else
 				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
-				:optional-elements-rendered="['bottomStatistics']"
+				:optional-elements-rendered="[
+					'bottomStatistics',
+					'dropoffLocation',
+				]"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);
