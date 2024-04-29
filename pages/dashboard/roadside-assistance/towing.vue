@@ -22,6 +22,17 @@
 						<h1 class="font-semibold text-lg">You Are Here</h1>
 					</div>
 				</InfoWindow>
+				<InfoWindow
+					v-for="(marker, index) in otherMarkers"
+					:ket="index"
+					minWidth="500"
+					:options="{
+						position: marker.coords,
+					}">
+					<div class="bg-purple-600 rounded-md p-2 text-white">
+						<h1 class="font-semibold text-lg">{{ marker.info }}</h1>
+					</div>
+				</InfoWindow>
 			</GoogleMap>
 		</div>
 		<div class="p-2 lg:p-5">
@@ -71,18 +82,31 @@
 				:optional-elements-rendered="[
 					'bottomStatistics',
 					'progressBar',
-				]" />
+				]"
+				@append-info-marker="
+					(markerData: informativeCoordsMarker) => {
+						insertIntoOtherMarkers(markerData);
+					}
+				" />
 			<RequestServiceForUnregMember
 				v-else
 				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
-				:optional-elements-rendered="['bottomStatistics']" />
+				:optional-elements-rendered="['bottomStatistics']"
+				@append-info-marker="
+					(markerData: informativeCoordsMarker) => {
+						insertIntoOtherMarkers(markerData);
+					}
+				" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-	import { type locationCoordsMarker } from "~/types/types";
+	import {
+		type locationCoordsMarker,
+		type informativeCoordsMarker,
+	} from "~/types/types";
 	import { useGeolocation } from "@vueuse/core";
 	import { GoogleMap, InfoWindow } from "vue3-google-map";
 
@@ -90,6 +114,7 @@
 		name: "ava-towing",
 		layout: "in-app-layout",
 	});
+
 	const currentRegForm: Ref<number> = ref(0);
 	const runtimeConfig = useRuntimeConfig();
 	const googleMapsApiKey = runtimeConfig.app.GOOGLE_MAPS_APIKEY;
@@ -98,6 +123,7 @@
 		lng: Number.NEGATIVE_INFINITY,
 	});
 	const mapRef: Ref<any> = ref(null);
+	const otherMarkers: Ref<informativeCoordsMarker[]> = ref([]);
 	const { coords } = useGeolocation();
 
 	watch([() => mapRef.value?.ready], ([ready]) => {
@@ -107,7 +133,6 @@
 			center.value.lat = coords.value.latitude;
 			center.value.lng = coords.value.longitude;
 
-			console.log("You are at: ", JSON.stringify(center.value, null, 2));
 			if (
 				center.value.lat !== Number.NEGATIVE_INFINITY &&
 				center.value.lng !== Number.NEGATIVE_INFINITY
@@ -121,5 +146,32 @@
 
 	function reloadPage() {
 		location.reload();
+	}
+
+	function insertIntoOtherMarkers(markerData: informativeCoordsMarker): void {
+		// If the array is empty, simply push the markerData object
+		if (otherMarkers.value.length === 0) {
+			otherMarkers.value.push(markerData);
+		} else {
+			// Find the index of the existing marker with the same id
+			const existingMarkerIndex = otherMarkers.value.findIndex(
+				(infoMarker: informativeCoordsMarker) =>
+					infoMarker.id === markerData.id
+			);
+
+			// If an existing marker with the same id is found, replace it
+			if (existingMarkerIndex !== -1) {
+				otherMarkers.value[existingMarkerIndex] = markerData;
+			} else {
+				// If no existing marker with the same id is found, push the markerData object
+				otherMarkers.value.push(markerData);
+			}
+		}
+
+		// force the map to pan to this location
+		mapRef.value?.map.panTo({
+			lat: markerData.coords.lat,
+			lng: markerData.coords.lng,
+		});
 	}
 </script>
