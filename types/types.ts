@@ -44,3 +44,14 @@ export type moreServices = {
 	description: string;
 	pageName: string;
 };
+
+export type locationCoordsMarker = {
+	lat: number;
+	lng: number;
+};
+
+export type informativeCoordsMarker = {
+	id: number; // id 0 is for client current location and id 1 is for client destination(specifically for towing)
+	info: string;
+	coords: locationCoordsMarker;
+};
