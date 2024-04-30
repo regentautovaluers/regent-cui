@@ -188,7 +188,6 @@
 
 <script setup lang="ts">
 	import applicationRoutes from "~/types/routes";
-	import { useStorage } from "@vueuse/core";
 	import useUtils from "~/composables/useUtils";
 	// macro imports
 	const route = useRoute();
@@ -211,7 +210,7 @@
 			  )
 			: null;
 	});
-	const { getDetails, nullOutPrincipalDetails } = usePrincipal();
+	const { getDetails } = usePrincipal();
 	const { openToast } = useToast();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();
 
