@@ -1,4 +1,4 @@
-import { useStorage } from "@vueuse/core";
+import { useStorage, type RemovableRef } from "@vueuse/core";
 
 export default function () {
 	const { nullOutPrincipalDetails } = usePrincipal();
@@ -12,17 +12,19 @@ export default function () {
 	});
 
 	// we store auth token in session storage if Remember me is unselected
-	const forgetableAuthToken =
+	const forgetableAuthToken: RemovableRef<null | string> | null =
 		typeof window !== "undefined"
-			? useStorage("corp_auth_token", "", sessionStorage)
+			? useStorage("corp_auth_token", null, sessionStorage)
 			: null;
 
 	function handleSessionTokensSetup(rememberMe: boolean): void {
-		// set the auth token based on the 'remember me' choice
-		if (rememberMe) {
-			rememberableAuthToken.value = "test-auth-token";
-		} else {
-			forgetableAuthToken!.value = "test-auth-token";
+		if (forgetableAuthToken) {
+			if (rememberMe) {
+				// set the auth token based on the 'remember me' choice
+				rememberableAuthToken.value = "test-auth-token";
+			} else {
+				forgetableAuthToken!.value = "test-auth-token";
+			}
 		}
 	}
 
@@ -35,8 +37,25 @@ export default function () {
 		await nullOutPrincipalDetails();
 	}
 
+	function assertSessionExists(): boolean | undefined {
+		if (forgetableAuthToken) {
+			if (
+				forgetableAuthToken?.value === null &&
+				rememberableAuthToken.value === null
+			) {
+				return false;
+			} else if (
+				forgetableAuthToken?.value ||
+				rememberableAuthToken.value
+			) {
+				return true;
+			}
+		}
+	}
+
 	return {
 		handleSessionTokensSetup,
 		handleUnsetSessionTokens,
+		assertSessionExists,
 	};
 }
