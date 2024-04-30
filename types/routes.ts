@@ -71,12 +71,12 @@ const applicationRoutes: ApplicationRoute[] = [
 				routeName: "ava-fuel-delivery",
 				icon: "/icons/misc/fuel-delivery-icon.svg",
 			},
-			{
-				id: 3,
-				displayName: "Mobile Service",
-				routeName: "ava-mobile-service",
-				icon: "/icons/misc/mobile-service-icon.svg",
-			},
+			// {
+			// 	id: 3,
+			// 	displayName: "Mobile Service",
+			// 	routeName: "ava-mobile-service",
+			// 	icon: "/icons/misc/mobile-service-icon.svg",
+			// },
 			{
 				id: 6,
 				displayName: "All Incidents",

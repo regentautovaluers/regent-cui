@@ -49,7 +49,7 @@
 						type="checkbox"
 						class="shrink-0 size-6 mt-0.5 border-gray-200 rounded text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
 						id="remember-me"
-						v-model="rememberAuthDetails" />
+						v-model="rememberSession" />
 					<label
 						for="remember-me"
 						class="text-lg text-gray-500 ms-3 dark:text-gray-400"
@@ -85,37 +85,20 @@
 </style>
 
 <script setup lang="ts">
-	import { useStorage } from "@vueuse/core";
 	definePageMeta({
 		name: "authentication-page",
 		layout: "auth-pages-layout",
 	});
 
-	// macro imports
 	const router = useRouter();
-
-	// refs and reactives
 	const formSubmissionLoading: Ref<boolean> = ref(false);
 	const displayPassword: Ref<boolean> = ref(false);
 	const username: Ref<string> = ref("");
 	const password: Ref<string> = ref("");
-	const rememberAuthDetails: Ref<boolean> = ref(false);
-
-	// we store auth token in cookie of Remember me is selected
-	const rememberableAuthToken = useCookie("corp_auth_token", {
-		watch: true,
-		httpOnly: false,
-		domain: "localhost",
-		path: "/",
-	});
-
-	// we store auth token in session storage if Remember me is unselected
-	const forgetableAuthToken =
-		typeof window !== "undefined"
-			? useStorage("corp_auth_token", "", sessionStorage)
-			: null;
+	const rememberSession: Ref<boolean> = ref(false);
 	const { setDetails } = usePrincipal();
 	const { openToast } = useToast();
+	const { handleSessionTokensSetup } = useSessionContext();
 
 	async function handleLoginFormSubmission(): Promise<void> {
 		formSubmissionLoading.value = true;
@@ -125,6 +108,9 @@
 				query: {
 					uname: username.value,
 					pwd: password.value,
+				},
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
 				},
 				async onResponse({ response }) {
 					if (response.status === 200) {
@@ -137,22 +123,18 @@
 						}
 						const principalDetails = responseData[0];
 
-						// set the auth token based on the 'remember me' choice
-						if (rememberAuthDetails.value) {
-							rememberableAuthToken.value = "test-auth-token";
-						} else {
-							forgetableAuthToken.value = "test-auth-token";
-						}
+						// supply the session context with session-related tokens to store
+						handleSessionTokensSetup(rememberSession.value);
 
 						// store the prinicpal
 						await setDetails(principalDetails);
-
-						openToast("Login successfull", "success");
 
 						// login the user
 						router.push({
 							name: "dashboard-home",
 						});
+
+						openToast("Login successfull", "success");
 					}
 				},
 			});
