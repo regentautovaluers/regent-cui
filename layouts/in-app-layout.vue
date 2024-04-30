@@ -211,38 +211,25 @@
 			  )
 			: null;
 	});
-	const { getDetails, nullOutDetails } = usePrincipal();
+	const { getDetails, nullOutPrincipalDetails } = usePrincipal();
 	const { openToast } = useToast();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();
-	const rememberableAuthToken = useCookie("corp_auth_token", {
-		watch: true,
-		httpOnly: false,
-		domain: "localhost",
-		path: "/",
-	});
-	const forgetableAuthToken =
-		typeof window !== "undefined"
-			? useStorage("corp_auth_token", "", sessionStorage)
-			: null;
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;
 	}
 
+	const { handleUnsetSessionTokens } = useSessionContext();
+
 	async function handleClientLogout() {
-		// null out stored tokens wherever they are stored
-		forgetableAuthToken.value = null;
-		rememberableAuthToken.value = null;
+		await handleUnsetSessionTokens().then(() => {
+			// logout the user
+			router.push({
+				name: "authentication-page",
+			});
 
-		// null out the principal in the local storage
-		await nullOutDetails();
-
-		// navigate user to the login page
-		openToast("Logout successfull", "success");
-
-		// login the user
-		router.push({
-			name: "authentication-page",
+			// navigate user to the login page
+			openToast("Logout successfull", "success");
 		});
 	}
 </script>
