@@ -1,7 +1,7 @@
-import { useStorage } from "@vueuse/core";
+import { useStorage, type RemovableRef } from "@vueuse/core";
 
 export const usePrincipal = defineStore("PrincipalStore", () => {
-	const principal = useStorage("principal", {});
+	const principal: RemovableRef<object> = useStorage("principal", {});
 
 	const getDetails: Ref<any> = computed(() => principal.value);
 
@@ -13,9 +13,18 @@ export const usePrincipal = defineStore("PrincipalStore", () => {
 		principal.value = null;
 	}
 
+	function assertPrincipalExists(): boolean {
+		if (!principal.value) {
+			return false; // false as in there is no principal
+		} else {
+			return true;
+		}
+	}
+
 	return {
 		getDetails,
 		setDetails,
 		nullOutPrincipalDetails,
+		assertPrincipalExists,
 	};
 });
