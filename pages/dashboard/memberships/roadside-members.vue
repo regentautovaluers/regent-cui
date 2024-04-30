@@ -45,6 +45,7 @@
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200">
+								<ErrorOrMissingData v-if="fetchErrorOrEmpty" />
 								<FilteredMembersRecord
 									v-for="(member, index) in membersList"
 									:key="index"
@@ -90,6 +91,11 @@
 		layout: "in-app-layout",
 	});
 
-	const { membersList, page, totalPages, fetchingMoreData } =
-		await useFilteredMemberships();
+	const {
+		membersList,
+		page,
+		totalPages,
+		fetchingMoreData,
+		fetchErrorOrEmpty,
+	} = await useFilteredMemberships();
 </script>

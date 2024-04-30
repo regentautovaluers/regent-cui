@@ -25,5 +25,5 @@ logs
 # Project-specific files & folders
 public/manifest.backup.json
 .vscode
-
+pages/test-page.vue
 

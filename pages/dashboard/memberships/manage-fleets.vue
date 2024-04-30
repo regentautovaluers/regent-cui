@@ -62,13 +62,11 @@
 											class="px-6 py-3 text-start font-bold text-gray-500">
 											Registered Memberships
 										</th>
-										<!-- <th
-											scope="col"
-											class="px-6 py-3 text-end" /> -->
 									</tr>
 								</thead>
 								<tbody class="divide-y divide-gray-200">
-									<!-- TODO: remeber to fixup the number of vehicles here to not be hardcoded -->
+									<ErrorOrMissingData
+										v-if="fetchErrorOrEmpty" />
 									<FleetRecord
 										v-for="(
 											fleet, index
@@ -105,28 +103,36 @@
 	const corporateFleets: Ref<Object[] | null> = ref(null);
 	const showAddToFleetsForm: Ref<boolean> = ref(false);
 	const formSubmissionLoading: Ref<boolean> = ref(false);
+	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
+	onMounted(async () => {
+		fetchErrorOrEmpty.value = true;
+		try {
+			await $fetch(
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.company}`,
+				{
+					method: "GET",
 
-	try {
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.company}`,
-			{
-				method: "GET", 
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							openToast(
+								"Failed to retrieve fleets. Try again!",
+								"danger"
+							);
+						}
 
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						openToast(
-							"Failed to retrieve fleets. Try again!",
-							"danger"
-						);
-					}
-
-					corporateFleets.value = response._data;
-				},
-			}
-		);
-	} catch (error) {
-		console.log("An error occured: ", error);
-		formSubmissionLoading.value = false;
-		openToast("Request failed. Please try again!", "danger");
-	}
+						corporateFleets.value = response._data;
+						if (
+							corporateFleets.value &&
+							corporateFleets.value?.length > 0
+						)
+							fetchErrorOrEmpty.value = false;
+					},
+				}
+			);
+		} catch (error) {
+			console.log("An error occured: ", error);
+			formSubmissionLoading.value = false;
+			openToast("Request failed. Please try again!", "danger");
+		}
+	});
 </script>

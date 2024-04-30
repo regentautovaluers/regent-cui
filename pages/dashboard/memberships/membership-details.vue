@@ -1,34 +1,27 @@
 <template>
 	<div class="py-10 h-fit responsive-view">
 		<div
-			class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-3 lg:space-y-0">
-			<div
-				class="w-full lg:w-1/2 md:flex-row rounded-md items-center justify-between p-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
-				<h1 class="text-2xl antialiased font-semibold">
-					{{ clientFullName }}
-				</h1>
-				<div class="w-fit text-gray-500">
-					<h2>
-						{{ clientEmail }}
-					</h2>
-					<h2>+{{ clientPhoneNumber }}</h2>
+			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg">
+			<div class="flex space-x-2 items-center w-full md:w-fit">
+				<img
+					class="inline-block size-[60px] rounded-full"
+					src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+					alt="User Image" />
+				<div class="flex flex-col">
+					<span class="text-blue-600 font-semibold"
+						>{{ clientFullName }}
+					</span>
+					<span class="font-semibold text-gray-500"
+						>Has {{ numOfVehicles }} Registered Vehicles</span
+					>
 				</div>
 			</div>
-			<div
-				class="w-full lg:w-1/2 md:flex-row rounded-md items-center justify-between p-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0">
-				<h1 class="text-2xl antialiased font-semibold">
-					Number of Vehicles
-				</h1>
-				<h2 class="text-xl text-gray-500">
-					{{ numOfVehicles }}
-				</h2>
-				<div class="py-2 flex justify-end">
-					<ActionTriggeredModal trigger-button-name="Add Vehicle">
-						<template #activeElement>
-							<AddNewVehicle />
-						</template>
-					</ActionTriggeredModal>
-				</div>
+			<div class="py-2 flex justify-end">
+				<ActionTriggeredModal trigger-button-name="Add Vehicle">
+					<template #activeElement>
+						<AddNewVehicle />
+					</template>
+				</ActionTriggeredModal>
 			</div>
 		</div>
 

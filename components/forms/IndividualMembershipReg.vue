@@ -146,6 +146,7 @@
 						id="payment-status"
 						required
 						v-model="vehicle.payment_status">
+						<option value="">Select a Payment Status</option>
 						<option
 							v-for="(status, index) in ['Paid', 'Not Paid']"
 							:key="index"
@@ -166,6 +167,7 @@
 						id="membership-status"
 						required
 						v-model="vehicle.membership_status">
+						<option value="">Select a Membership Status</option>
 						<option
 							v-for="(status, index) in ['Active', 'Inactive']"
 							:key="index"

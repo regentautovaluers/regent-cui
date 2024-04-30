@@ -152,9 +152,7 @@
 					id="fuel-type"
 					required
 					v-model="tyreType">
-					<option value="Select a Tyre Type">
-						Select a Tyre Type
-					</option>
+					<option value="">Select a Tyre Type</option>
 					<option
 						v-for="(vType, index) in [
 							'tube',
@@ -191,11 +189,6 @@
 					required
 					v-model="vehicleClass">
 					<option
-						value="Select a Fuel Type"
-						selected>
-						Select a Vehicle Class
-					</option>
-					<option
 						v-for="(vClass, index) in [
 							'sedan',
 							'suv',
@@ -228,11 +221,6 @@
 					v-model="fuelType"
 					required>
 					<option
-						value="Select a Fuel Type"
-						selected>
-						Select a Fuel Type
-					</option>
-					<option
 						v-for="(fuelType, index) in [
 							'Diesel',
 							'Petrol',
@@ -251,48 +239,44 @@
 					class="block font-medium mb-2 dark:text-white"
 					>Fuel Price</label
 				>
-				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+				<input
+					type="text"
 					id="fuel-price"
-					v-model="fuelAmount"
-					required>
-					<option
-						value="Select Type to See Price"
-						selected>
-						Select Type to See Price
-					</option>
-					<option
-						v-for="(fuelPrice, index) in [1000, 2000, 3000]"
-						:key="index"
-						:value="fuelPrice">
-						{{ fuelPrice }}
-					</option>
-				</select>
+					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					placeholder="e.g 1000"
+					required
+					v-model="fuelAmount" />
 			</div>
 		</div>
 
 		<!-- pickup location -->
 		<div class="mt-5">
 			<label
-				for="pickup-location"
+				for="client-location"
 				class="block font-medium mb-2 dark:text-white"
-				>Pickup Location</label
+				>Client Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
-					id="pickup-location"
+					id="client-location"
 					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
 					placeholder="Type an address to search"
 					required />
 				<img
 					src="/icons/misc/pick-up-location.svg"
-					alt="Pickup Location"
+					alt="Client Location"
 					class="absolute top-[25%]" />
 			</div>
 		</div>
 		<!-- drop off location -->
-		<div class="mt-5">
+		<div
+			class="mt-5"
+			v-if="
+				componentProps.optionalElementsRendered.includes(
+					'dropoffLocation'
+				)
+			">
 			<label
 				for="dropoff-location"
 				class="block font-medium mb-2 dark:text-white"
@@ -356,22 +340,15 @@
 </template>
 
 <script setup lang="ts">
-	export interface ComponentProps {
+	import { type informativeCoordsMarker } from "~/types/types";
+
+	const componentProps = defineProps<{
 		backendServiceTypeName: string;
 		clientServiceTypeName: string;
 		optionalElementsRendered: string[];
-	}
-
-	const componentProps = defineProps<ComponentProps>();
+	}>();
 	const formSubmissionLoading = ref(false);
-	const {
-		bindToDropOffLocation,
-		bindToPickUpLocation,
-		pickupPointCoords,
-		dropOffPointCoords,
-		pickupPointName,
-		dropOffPointName,
-	} = useLocations();
+	const runtimeConfig = useRuntimeConfig();
 	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const vehicleRegistration: Ref<string> = ref("");
@@ -383,19 +360,58 @@
 	const arrivalDuration: Ref<number> = ref(10);
 	const arrivalDistance: Ref<number> = ref(20);
 	const serviceCost: Ref<number> = ref(1000);
-	const pickupPoint: Ref<string> = ref(pickupPointName);
-	const pickupLatitude: Ref<number> = ref(pickupPointCoords.value.lat);
-	const pickupLongitude: Ref<number> = ref(pickupPointCoords.value.lng);
-	const destinationPoint: Ref<string> = ref(dropOffPointName);
-	const destinationLatitude: Ref<number> = ref(dropOffPointCoords.value.lat);
-	const destinationLongitude: Ref<number> = ref(dropOffPointCoords.value.lng);
 	const requestRemarks: Ref<string | null> = ref(null);
 	const vehicleClass: Ref<string | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
 	const haveSpareTyre: Ref<boolean> = ref(true);
-	const tyreType: Ref<string> = ref("tubeless");
+	const tyreType: Ref<string> = ref("");
 	const { openToast } = useToast();
+	const componentEmits = defineEmits<{
+		appendInfoMarker: [informativeCoordsMarker];
+	}>();
+	const {
+		bindToPickUpLocation,
+		bindToDropOffLocation,
+		pickupLatitude,
+		pickupLongitude,
+		destinationLongitude,
+		destinationLatitude,
+		pickupPointName,
+		dropOffPointName,
+	} = useLocationUtils();
+
+	watch([pickupLatitude, pickupLongitude], (newValues) => {
+		if (
+			newValues[0] !== Number.NEGATIVE_INFINITY &&
+			newValues[1] !== Number.NEGATIVE_INFINITY
+		) {
+			componentEmits("appendInfoMarker", {
+				id: 0,
+				info: "Client Is Here",
+				coords: {
+					lat: newValues[0],
+					lng: newValues[1],
+				},
+			});
+		}
+	});
+
+	watch([destinationLatitude, destinationLongitude], (newValues) => {
+		if (
+			newValues[0] !== Number.NEGATIVE_INFINITY &&
+			newValues[1] !== Number.NEGATIVE_INFINITY
+		) {
+			componentEmits("appendInfoMarker", {
+				id: 1,
+				info: "Destination Is Here",
+				coords: {
+					lat: newValues[0],
+					lng: newValues[1],
+				},
+			});
+		}
+	});
 
 	async function handleServiceReqFormSubmission() {
 		formSubmissionLoading.value = true;
@@ -413,10 +429,10 @@
 				arrivalDuration.value,
 				arrivalDistance.value,
 				serviceCost.value,
-				pickupPoint.value,
+				pickupPointName.value,
 				pickupLatitude.value,
 				pickupLongitude.value,
-				destinationPoint.value,
+				dropOffPointName.value,
 				destinationLongitude.value,
 				destinationLatitude.value,
 				requestRemarks.value,
