@@ -21,7 +21,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 			return;
 		} else {
 			openToast("Untrusted session. Please login!", "danger");
-			router.replace({
+			router.push({
 				name: "authentication-page",
 			});
 
@@ -38,7 +38,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 				"success"
 			);
 
-			router.replace({
+			router.push({
 				name: "dashboard-home",
 			});
 		} else {
