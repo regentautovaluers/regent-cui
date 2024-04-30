@@ -9,13 +9,13 @@ export const usePrincipal = defineStore("PrincipalStore", () => {
 		principal.value = userDetails;
 	}
 
-	async function nullOutDetails(): Promise<void> {
+	async function nullOutPrincipalDetails(): Promise<void> {
 		principal.value = null;
 	}
 
 	return {
 		getDetails,
 		setDetails,
-		nullOutDetails,
+		nullOutPrincipalDetails,
 	};
 });
