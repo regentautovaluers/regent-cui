@@ -85,7 +85,6 @@
 </style>
 
 <script setup lang="ts">
-	import { useStorage } from "@vueuse/core";
 	definePageMeta({
 		name: "authentication-page",
 		layout: "auth-pages-layout",
