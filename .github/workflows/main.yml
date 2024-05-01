@@ -47,6 +47,7 @@ jobs:
         with:
           host: ${{ secrets.DROPLET_IP }}
           username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             export DOCKER_USERNAME="${{ secrets.DOCKERHUB_USERNAME }}"
@@ -55,13 +56,13 @@ jobs:
 
             cd /home/projects/AVA
             # Stop and remove the AvaFrontend container
-            docker-compose --env-file .env -f docker-compose.yml stop AvaFrontend
-            docker-compose --env-file .env -f docker-compose.yml rm -f AvaFrontend
+            docker-compose --env-file ./regent-cui/.env -f docker-compose.yml stop AvaFrontend
+            docker-compose --env-file ./regent-cui/.env -f docker-compose.yml rm -f AvaFrontend
             
             # Now attempt to remove the previous image
             docker rmi "${DOCKER_USERNAME}/avafrontend:${PREVIOUS_TAG}" || true
             
             # Proceed with the rest of the script
             docker pull "${DOCKER_USERNAME}/avafrontend:${GITHUB_RUN_NUMBER}"
-            docker-compose --env-file .env -f docker-compose.yml build AvaFrontend
-            docker-compose --env-file .env -f docker-compose.yml up -d AvaFrontend
+            docker-compose --env-file ./regent-cui/.env -f docker-compose.yml build AvaFrontend
+            docker-compose --env-file ./regent-cui/.env -f docker-compose.yml up -d AvaFrontend
