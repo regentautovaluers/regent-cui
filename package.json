@@ -7,8 +7,7 @@
     "dev": "npx nuxi dev --dotenv .env",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "env:local": "npx nuxi dev --dotenv .env.local"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.6",
