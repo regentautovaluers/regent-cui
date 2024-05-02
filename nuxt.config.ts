@@ -3,7 +3,7 @@ export default defineNuxtConfig({
 		transpile: ["mosha-vue-toastify", "@googlemaps/js-api-loader"],
 	},
 	routeRules: {
-		"/api/**": {
+		"/ava/api/**": {
 			proxy: {
 				to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
 			},
