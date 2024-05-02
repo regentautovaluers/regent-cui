@@ -66,3 +66,4 @@ jobs:
             docker pull "${DOCKER_USERNAME}/avafrontend:${GITHUB_RUN_NUMBER}"
             docker-compose --env-file ./regent-cui/.env -f docker-compose.yml build AvaFrontend
             docker-compose --env-file ./regent-cui/.env -f docker-compose.yml up -d AvaFrontend
+          
