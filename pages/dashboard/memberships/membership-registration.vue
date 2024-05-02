@@ -8,7 +8,7 @@
 					<button
 						@click="() => (currentRegForm = 0)"
 						:class="[
-							'border-b-2 pb-1',
+							'border-b-2',
 							currentRegForm === 0
 								? 'border-b-blue-600 text-blue-600'
 								: 'border-b-inherit',
@@ -18,7 +18,7 @@
 					<button
 						@click="() => (currentRegForm = 1)"
 						:class="[
-							'border-b-2 pb-1',
+							'border-b-2',
 							currentRegForm === 1
 								? 'border-b-blue-600 text-blue-600'
 								: 'border-b-inherit',
