@@ -5,10 +5,10 @@ COPY ./package.json /app/package.json
 RUN npm install
 COPY .env /app/.env   
 COPY . /app
-RUN npm run build
+RUN npm run generate
 EXPOSE 3000
 
-CMD ["npm", "run", "preview"]
+CMD ["npx", "serve", ".output/public"]
 
 
 

@@ -23,7 +23,7 @@ jobs:
           echo "VALUATION_BASE_PASS=${{ secrets.VALUATION_BASE_PASS }}" >> .env
           echo "AVA_BASE_URL=${{ secrets.AVA_BASE_URL }}" >> .env
           echo "IMAGE_TAG=${{ github.run_number }}" >> .env
-
+ 
 
           echo "Frontend IMAGE_TAG set to: ${{ github.run_number }}"         
     
