@@ -45,4 +45,15 @@ export default defineNuxtRouteMiddleware((to, from) => {
 			return;
 		}
 	}
+
+	// // if the user is in the /dashboard route and they try to navigate to any outside route without actually logging out,
+	// // block the navigation
+	// if (
+	// 	(unprotectedRouteNames.includes(to.name as string) &&
+	// 		assertSessionExists()) ||
+	// 	assertPrincipalExists()
+	// ) {
+	// 	openToast("Invalid Operation. Please Logout!", "danger");
+	// 	return abortNavigation();
+	// }
 });
