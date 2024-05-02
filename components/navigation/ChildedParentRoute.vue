@@ -6,7 +6,7 @@
 			type="button"
 			class="hs-accordion-toggle rounded-s-2xl hs-accordion-active:hover:bg-gray-100 w-full text-start flex items-center gap-x-3.5 py-4 px-2.5 font-semibold hover:bg-gray-100 text-gray-500"
 			:class="{
-				'bg-gray-100 border-r-4 border-r-blue-600 text-blue-600':
+				'bg-gray-100 border-r-[6px] border-r-blue-600 text-blue-600':
 					isActiveRoute,
 			}">
 			<img
