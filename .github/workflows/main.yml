@@ -53,7 +53,6 @@ jobs:
             export DOCKER_USERNAME="${{ secrets.DOCKERHUB_USERNAME }}"
             export GITHUB_RUN_NUMBER="${{ github.run_number }}"
             PREVIOUS_TAG=$(($GITHUB_RUN_NUMBER - 1))
-            echo  ${{ secrets.SSH_PRIVATE_KEY }}
             cd /home/projects/AVA
             # Stop and remove the AvaFrontend container
             docker-compose --env-file ./regent-cui/.env -f docker-compose.yml stop AvaFrontend
