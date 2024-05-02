@@ -99,49 +99,45 @@
 	const { setDetails } = usePrincipal();
 	const { openToast } = useToast();
 	const { handleSessionTokensSetup } = useSessionContext();
-	const runtimeConfig = useRuntimeConfig();
 
 	async function handleLoginFormSubmission(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch(
-				`${runtimeConfig.public.VALUATION_BASE_URL}/ava/api/corp-login`,
-				{
-					method: "POST",
-					query: {
-						uname: username.value,
-						pwd: password.value,
-					},
-					headers: {
-						"Content-Type": "application/x-www-form-urlencoded",
-					},
-					async onResponse({ response }) {
-						if (response.status === 200) {
-							const responseData: Object[] = JSON.parse(
-								response._data
-							);
+			await $fetch("/ava/api/corp-login", {
+				method: "POST",
+				query: {
+					uname: username.value,
+					pwd: password.value,
+				},
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				async onResponse({ response }) {
+					if (response.status === 200) {
+						const responseData: Object[] = JSON.parse(
+							response._data
+						);
 
-							if (responseData.length === 0) {
-								throw new Error("Invalid login credentials");
-							}
-							const principalDetails = responseData[0];
-
-							// supply the session context with session-related tokens to store
-							handleSessionTokensSetup(rememberSession.value);
-
-							// store the prinicpal
-							await setDetails(principalDetails);
-
-							// login the user
-							router.push({
-								name: "dashboard-home",
-							});
-
-							openToast("Login successfull", "success");
+						if (responseData.length === 0) {
+							throw new Error("Invalid login credentials");
 						}
-					},
-				}
-			);
+						const principalDetails = responseData[0];
+
+						// supply the session context with session-related tokens to store
+						handleSessionTokensSetup(rememberSession.value);
+
+						// store the prinicpal
+						await setDetails(principalDetails);
+
+						// login the user
+						router.push({
+							name: "dashboard-home",
+						});
+
+						openToast("Login successfull", "success");
+					}
+				},
+			});
 		} catch (error) {
 			console.log("An error occured: ", error);
 			openToast("Login failed. Please try again!", "danger");
