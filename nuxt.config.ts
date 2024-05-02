@@ -1,4 +1,7 @@
 export default defineNuxtConfig({
+	build: {
+		transpile: ["mosha-vue-toastify", "@googlemaps/js-api-loader"],
+	},
 	routeRules: {
 		"/api/**": {
 			proxy: {

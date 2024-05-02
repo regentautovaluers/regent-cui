@@ -1,4 +1,5 @@
 export default defineNuxtRouteMiddleware((to, from) => {
+	/*
 	const router = useRouter();
 	const { assertSessionExists } = useSessionContext();
 	const { assertPrincipalExists } = usePrincipal();
@@ -56,4 +57,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	// 	openToast("Invalid Operation. Please Logout!", "danger");
 	// 	return abortNavigation();
 	// }
+	*/
 });

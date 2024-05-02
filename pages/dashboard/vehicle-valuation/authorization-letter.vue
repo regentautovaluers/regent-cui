@@ -147,4 +147,38 @@
 	const currentView: Ref<number> = ref(0);
 	const { moreServicesData } = useMoreServicesNavData();
 	const fetchErrorOrEmpty: Ref<boolean> = ref(true);
+	const runtimeConfig = useRuntimeConfig();
+	const { openToast } = useToast();
+	const { getDetails } = usePrincipal();
+
+	onMounted(async () => {
+		try {
+			await $fetch("/ava/api/authorization/authorization_list", {
+				method: "GET",
+
+				query: {
+					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
+					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
+					corp: getDetails.company,
+				},
+				async onResponse({ response }) {
+					// if (response.status !== 200) {
+					// 	throw new Error(
+					// 		"Failed to retrieve tampered vehicles"
+					// 	);
+					// }
+
+					console.log("Response status: ", response.status);
+					console.log("Response body: ", response._data);
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast(
+				"Failed to load tampered vehicles. Reload page!",
+				"danger"
+			);
+			fetchErrorOrEmpty.value = true;
+		}
+	});
 </script>

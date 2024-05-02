@@ -90,6 +90,7 @@
 												value: 'individual',
 											},
 										]"
+										:key="index"
 										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
 										<!-- prettier-ignore -->
 										<input
@@ -122,7 +123,7 @@
 								}
 							"
 							title="Clear Filters"
-							class="bg-gray-300 inline-flex items-center justify-center p-2 rounded-full size-10">
+							class="bg-gray-300 text-center p-2 rounded-full size-10">
 							<Icon
 								name="material-symbols:close"
 								class="text-lg" />
