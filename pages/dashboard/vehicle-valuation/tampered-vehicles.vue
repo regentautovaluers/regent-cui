@@ -159,10 +159,10 @@
 								<tbody class="divide-y divide-gray-200">
 									<ErrorOrMissingData
 										v-if="fetchErrorOrEmpty" />
-									<ValuationsTableLoader
+									<!-- <ValuationsTableLoader
 										v-if="fetchLoading"
-										v-for="a in 5" />
-									<ValuationsRecord
+										v-for="a in 5" /> -->
+									<!-- <ValuationsRecord
 										v-if="
 											tamperedVehicles.length >= 1 &&
 											!fetchLoading
@@ -185,7 +185,7 @@
 										:nb-remarks="vehicle.nb"
 										:assessed-value="
 											vehicle.vehicle_assessed_value
-										" />
+										" /> -->
 								</tbody>
 							</table>
 						</div>
@@ -250,26 +250,28 @@
 	onMounted(async () => {
 		fetchLoading.value = true;
 		try {
-			await $fetch(
-				`${runtimeConfig.public.AVA_BASE_URL}/ava/api/tampered_vehicles`,
-				{
-					method: "POST",
-					query: {
-						uname: runtimeConfig.app.AVA_BASE_UNAME,
-						pwd: runtimeConfig.app.AVA_BASE_PASS,
-						corp: getDetails.company,
-					},
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve tampered vehicles"
-							);
-						}
+			await $fetch("/api/tampered_vehicles", {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				query: {
+					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
+					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
+					corp: getDetails.company,
+				},
+				async onResponse({ response }) {
+					// if (response.status !== 200) {
+					// 	throw new Error(
+					// 		"Failed to retrieve tampered vehicles"
+					// 	);
+					// }
 
-						tamperedVehicles.value = response._data;
-					},
-				}
-			);
+					// tamperedVehicles.value = response._data;
+					console.log("Response status: ", response.status);
+					console.log("Response body: ", response._data);
+				},
+			});
 		} catch (error) {
 			console.log("An error occured: ", error);
 			openToast(
