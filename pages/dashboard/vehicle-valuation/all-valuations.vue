@@ -124,8 +124,8 @@
 		</div>
 		<div
 			v-if="currentTable === 0"
-			class="mt-4">
-			<!-- start of data table -->
+			class="mt-4 lg:min-h-[40rem]">
+			<!-- start of completed valuations data table -->
 			<div class="flex flex-col">
 				<div class="-m-1.5 overflow-x-auto">
 					<div class="p-1.5 min-w-full inline-block align-middle">
@@ -145,12 +145,12 @@
 										</th>
 										<th
 											scope="col"
-											class="px-6 py-3 text-center font-bold text-gray-500">
+											class="px-6 py-3 text-start font-bold text-gray-500">
 											Vehicle Make
 										</th>
 										<th
 											scope="col"
-											class="px-6 py-3 text-end font-bold text-gray-500">
+											class="px-6 py-3 text-start font-bold text-gray-500">
 											Vehicle Model
 										</th>
 										<th
@@ -165,7 +165,7 @@
 										</th>
 										<th
 											scope="col"
-											class="px-6 py-3 text-end font-bold text-gray-500">
+											class="px-6 py-3 text-center font-bold text-gray-500">
 											Note Value
 										</th>
 										<th
@@ -178,7 +178,41 @@
 											class="px-6 py-3 text-end" />
 									</tr>
 								</thead>
-								<tbody class="divide-y divide-gray-200"></tbody>
+								<tbody class="divide-y divide-gray-200">
+									<ErrorOrMissingData
+										v-if="fetchCompleteErrorOrEmpty" />
+									<ValuationsRecord
+										v-for="(
+											record, index
+										) in computedCompleteValuations"
+										:key="index"
+										:vehicle-reg-no="
+											record.vehicleRegNumber
+										"
+										:client-name="
+											toTitleCase(
+												record.customer_name
+											)
+										"
+										:vehicle-make="
+											capitalizeFirstLetterOfEachWord(
+												record.vehicleMake
+											)
+										"
+										:vehicle-model="
+											capitalizeFirstLetterOfEachWord(
+												record.vehicleModel
+											)
+										"
+										:valuation-date="record.valuation_date"
+										:vehicle-value="record.vehicleValue"
+										:note-value="
+											lowerCaseEachLetter(
+												record.note_value
+											)
+										"
+										:booking-no="record.booking_no" />
+								</tbody>
 							</table>
 						</div>
 					</div>
@@ -188,7 +222,7 @@
 		</div>
 		<div
 			v-if="currentTable === 1"
-			class="mt-4">
+			class="mt-4 lg:min-h-[40rem]">
 			<!-- start of data table -->
 			<div class="flex flex-col">
 				<div class="-m-1.5 overflow-x-auto">
@@ -209,12 +243,12 @@
 										</th>
 										<th
 											scope="col"
-											class="px-6 py-3 text-center font-bold text-gray-500">
+											class="px-6 py-3 text-start font-bold text-gray-500">
 											Vehicle Make
 										</th>
 										<th
 											scope="col"
-											class="px-6 py-3 text-end font-bold text-gray-500">
+											class="px-6 py-3 text-start font-bold text-gray-500">
 											Vehicle Model
 										</th>
 										<th
@@ -229,7 +263,7 @@
 										</th>
 										<th
 											scope="col"
-											class="px-6 py-3 text-end font-bold text-gray-500">
+											class="px-6 py-3 text-center font-bold text-gray-500">
 											Note Value
 										</th>
 										<th
@@ -242,13 +276,68 @@
 											class="px-6 py-3 text-end" />
 									</tr>
 								</thead>
-								<tbody class="divide-y divide-gray-200"></tbody>
+								<tbody class="divide-y divide-gray-200">
+									<ErrorOrMissingData
+										v-if="fetchPendingErrorOrEmpty" />
+									<ValuationsRecord
+										v-for="(
+											record, index
+										) in computedPendingValuations"
+										:key="index"
+										:vehicle-reg-no="
+											record.vehicleRegNumber
+										"
+										:client-name="
+											toTitleCase(
+												record.customer_name
+											)
+										"
+										:vehicle-make="
+											capitalizeFirstLetterOfEachWord(
+												record.vehicleMake
+											)
+										"
+										:vehicle-model="
+											capitalizeFirstLetterOfEachWord(
+												record.vehicleModel
+											)
+										"
+										:valuation-date="record.valuation_date"
+										:vehicle-value="record.vehicleValue"
+										:note-value="
+											lowerCaseEachLetter(
+												record.note_value
+											)
+										"
+										:booking-no="record.booking_no" />
+								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- end of data table -->
+		</div>
+		<div
+			class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+			<span>Showing Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+			<div
+				class="space-x-1"
+				v-if="totalPages > 1">
+				<button
+					@click="prevPage"
+					class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+					:disabled="currentPage === 0">
+					Previous
+				</button>
+
+				<button
+					@click="nextPage"
+					class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+					:disabled="currentPage === totalPages - 1">
+					Next
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -262,6 +351,141 @@
 	const currentTable: Ref<number> = ref(0);
 	const searchFilterTerm: Ref<string> = ref("");
 	const searchByValuationDate: Ref<string> = ref("");
-	const recentValuations: Ref<any[] | null> = ref(null);
-	const pendingValuations: Ref<any[] | null> = ref(null);
+	const recentValuations: Ref<any[]> = ref([]);
+	const pendingValuations: Ref<any[]> = ref([]);
+	const fetchCompleteErrorOrEmpty: Ref<boolean> = ref(false);
+	const fetchPendingErrorOrEmpty: Ref<boolean> = ref(false);
+	const currentPage: Ref<number> = ref(0);
+	const totalPages: Ref<number> = ref(0);
+	const { openToast } = useToast();
+	const runtimeConfig = useRuntimeConfig();
+	const { getDetails } = usePrincipal();
+	const totalNumber: Ref<number> = ref(0);
+	const ITEMS_PER_PAGE: number = 10;
+	const { capitalizeFirstLetterOfEachWord, lowerCaseEachLetter, toTitleCase } = useUtils();
+
+	// TODO: Delete this at a later date
+	const searchServiceType: Ref<string | ""> = ref("");
+
+	// Add a method to navigate to the next page
+	function nextPage() {
+		if (currentPage.value < totalPages.value - 1) {
+			currentPage.value++;
+		}
+	}
+
+	// Add a method to navigate to the previous page
+	function prevPage() {
+		if (currentPage.value > 0) {
+			currentPage.value--;
+		}
+	}
+
+	function performValuationListsProcessing(sourceList: any[]): any[] {
+		// Filter the aggData array based on the searchFilterTerm and searchServiceType
+		let filteredData = sourceList.filter((item) => {
+			// Check if the searchFilterTerm matches any of the specified fields
+			const termMatch = item.vehicleRegNumber.includes(
+				searchFilterTerm.value
+			);
+
+			// Check if the searchServiceType matches the service field
+			const serviceTypeMatch = item.service === searchServiceType.value;
+
+			// Return true if both filters match or if both filters are disabled (empty strings)
+			return (
+				termMatch ||
+				serviceTypeMatch ||
+				(searchFilterTerm.value === "" &&
+					searchServiceType.value === "")
+			);
+		});
+
+		totalNumber.value = filteredData.length;
+		totalPages.value = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+		// Calculate the start and end indices for the current page
+		const startIndex = currentPage.value * ITEMS_PER_PAGE;
+		const endIndex = startIndex + ITEMS_PER_PAGE;
+
+		// Return only the items for the current page
+		return filteredData.slice(startIndex, endIndex);
+	}
+
+	async function fetchRecentValuations() {
+		fetchCompleteErrorOrEmpty.value = true;
+		try {
+			await $fetch("/ava/api/assessment/assessments_list", {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				query: {
+					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
+					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
+					corp: getDetails.company,
+				},
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Failed to retrieve incidents!");
+					}
+
+					recentValuations.value = JSON.parse(response._data);
+					fetchCompleteErrorOrEmpty.value = false;
+					openToast(
+						"Successfully loaded your recent valuations",
+						"success"
+					);
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Failed to load your members. Reload page!", "danger");
+		}
+	}
+
+	async function fetchPendingValuations() {
+		fetchPendingErrorOrEmpty.value = true;
+		try {
+			await $fetch("/ava/api/assessment/pending_list", {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				query: {
+					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
+					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
+					corp: getDetails.company,
+				},
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Failed to retrieve incidents!");
+					}
+
+					pendingValuations.value = JSON.parse(response._data);
+					fetchPendingErrorOrEmpty.value = false;
+					openToast(
+						"Successfully loaded your pending valuations",
+						"success"
+					);
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Failed to load your members. Reload page!", "danger");
+		}
+	}
+
+	const computedCompleteValuations = computed(() => {
+		return performValuationListsProcessing(recentValuations.value);
+	});
+
+	const computedPendingValuations = computed(() => {
+		return performValuationListsProcessing(pendingValuations.value);
+	});
+
+	onMounted(async () => {
+		await fetchRecentValuations();
+		await fetchPendingValuations();
+	});
 </script>
