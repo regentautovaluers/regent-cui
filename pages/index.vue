@@ -103,7 +103,7 @@
 	async function handleLoginFormSubmission(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/api/corp-login", {
+			await $fetch("/ava/api/corp-login", {
 				method: "POST",
 				query: {
 					uname: username.value,
