@@ -32,6 +32,10 @@ export default function useUtils() {
 		return words.join(" ");
 	}
 
+	function lowerCaseEachLetter(word: string): string {
+		return word.toLowerCase();
+	}
+
 	function formatExcelDate(unfDate: string): string {
 		const parsedDate = parse(unfDate, "dd/MM/yyyy", new Date());
 		const formattedDate = format(parsedDate, "yyyy-MM-dd");
@@ -57,6 +61,7 @@ export default function useUtils() {
 		capitalizeFirstLetterOfEachWord,
 		capitalizeFirstLetter,
 		toTitleCase,
+		lowerCaseEachLetter,
 		formatExcelDate,
 		formatServerProvidedDate,
 		formatServerProvidedDateTime,
