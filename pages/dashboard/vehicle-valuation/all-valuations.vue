@@ -27,18 +27,25 @@
 			</div>
 			<div class="flex-grow flex justify-end items-center">
 				<!-- search box -->
-				<div class="relative flex-grow max-w-[40%]">
-					<input
-						type="text"
-						class="peer py-3 h-12 px-4 bg-gray-200 border-transparent rounded-2xl focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
-						placeholder="Search Registration Number Here"
-						v-model="searchFilterTerm" />
-					<button
-						class="absolute inset-y-0 end-0 flex justify-center rounded-2xl w-14 bg-blue-500 pointer-events-none p-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-						<img
-							src="/images/topnav/search-icon.svg"
-							alt="Search Icon" />
-					</button>
+				<div class="flex-grow flex relative max-w-[40%]">
+					<form
+						class="w-full"
+						@submit.prevent="searchValuations">
+						<input
+							type="text"
+							required
+							class="peer py-3 h-12 px-4 bg-gray-200 border-transparent rounded-2xl focus:border-blue-500 focus:ring-blue-500 min-w-full"
+							placeholder="Search Registration Number Here"
+							v-model="searchFilterTerm" />
+						<button
+							type="submit"
+							class="absolute end-0 text-white inset-y-0 flex justify-center rounded-2xl w-14 bg-blue-500 p-2"
+							data-hs-overlay="#hs-valutionsearch-modal">
+							<img
+								src="/images/topnav/search-icon.svg"
+								alt="Search Icon" />
+						</button>
+					</form>
 				</div>
 				<div>
 					<!-- button to disable filters -->
@@ -285,6 +292,167 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- search modal -->
+	<div
+		id="hs-valutionsearch-modal"
+		class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+		<div
+			class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all lg:max-w-4xl lg:w-full m-3 lg:mx-auto">
+			<div
+				class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+				<div
+					class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+					<h3 class="font-bold text-gray-800 dark:text-white">
+						Search Results
+					</h3>
+					<button
+						@click="
+							() => {
+								valuationsFromSearch = [];
+							}
+						"
+						type="button"
+						class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
+						data-hs-overlay="#hs-valutionsearch-modal">
+						<span class="sr-only">Close</span>
+						<svg
+							class="flex-shrink-0 size-4"
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round">
+							<path d="M18 6 6 18"></path>
+							<path d="m6 6 12 12"></path>
+						</svg>
+					</button>
+				</div>
+				<div class="p-4 overflow-y-auto">
+					<!-- start of data table -->
+					<div class="flex flex-col">
+						<div class="-m-1.5 overflow-x-auto">
+							<div
+								class="p-1.5 min-w-full inline-block align-middle">
+								<div
+									class="border rounded-lg shadow overflow-hidden">
+									<table class="min-w-full divide-y">
+										<thead>
+											<tr>
+												<th
+													scope="col"
+													class="px-6 py-3 text-start font-bold text-gray-500">
+													Reg No.
+												</th>
+												<th
+													scope="col"
+													class="px-6 py-3 text-start font-bold text-gray-500">
+													Vehicle Make
+												</th>
+												<th
+													scope="col"
+													class="px-6 py-3 text-start font-bold text-gray-500">
+													Vehicle Model
+												</th>
+												<th
+													scope="col"
+													class="px-6 py-3 text-end font-bold text-gray-500">
+													Valuation Date
+												</th>
+												<th
+													scope="col"
+													class="px-6 py-3 text-end font-bold text-gray-500">
+													Assessed Value
+												</th>
+												<th
+													scope="col"
+													class="px-6 py-3 text-end" />
+											</tr>
+										</thead>
+										<tbody class="divide-y divide-gray-200">
+											<td
+												v-if="searchValuationLoading"
+												class="text-center py-4"
+												colspan="100%">
+												<LoadingIndicator
+													:bar-length="`w-[30%]`"
+													v-if="
+														searchValuationLoading
+													" />
+												<br />
+												<span
+													class="text-gray-500 text-lg font-semibold"
+													>Nothing to Show.</span
+												>
+											</td>
+											<ErrorOrMissingData
+												v-if="searchErrorOrEmpty" />
+											<MinimizedValuationsDataRecord
+												v-for="(
+													record, index
+												) in valuationsFromSearch"
+												:key="index"
+												:vehicle-id="record.vehicle_id"
+												:vehicle-reg-no="
+													record.vehicleRegNumber
+												"
+												:vehicle-make="
+													capitalizeFirstLetterOfEachWord(
+														record.vehicleMake
+													)
+												"
+												:vehicle-model="
+													capitalizeFirstLetterOfEachWord(
+														record.vehicleModel
+													)
+												"
+												:valuation-date="
+													record.valuation_date
+												"
+												:assessed-value="
+													Number(
+														record.assessed_value
+													).toLocaleString()
+												" />
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- end of data table -->
+				</div>
+				<!-- <div
+					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+					<span
+						>Showing Page {{ currentPage + 1 }} of
+						{{ searchTotalPages }}</span
+					>
+					<div
+						class="space-x-1"
+						v-if="totalPages > 1">
+						<button
+							@click="prevPage"
+							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							:disabled="currentPage === 0">
+							Previous
+						</button>
+
+						<button
+							@click="nextPage"
+							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							:disabled="currentPage === totalPages - 1">
+							Next
+						</button>
+					</div>
+				</div> -->
+			</div>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -301,12 +469,16 @@
 	const valuationsFromSearch: Ref<any[]> = ref([]);
 	const fetchCompleteErrorOrEmpty: Ref<boolean> = ref(false);
 	const fetchPendingErrorOrEmpty: Ref<boolean> = ref(false);
+	const searchValuationLoading: Ref<boolean> = ref(false);
+	const searchErrorOrEmpty: Ref<boolean> = ref(false);
 	const currentPage: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const { getDetails } = usePrincipal();
 	const totalNumber: Ref<number> = ref(0);
+	// const searchTotalNumber: Ref<number> = ref(0);
+	// const searchTotalPages: Ref<number> = ref(0);
 	const ITEMS_PER_PAGE: number = 10;
 	const {
 		capitalizeFirstLetterOfEachWord,
@@ -357,6 +529,18 @@
 		// Return only the items for the current page
 		return filteredData.slice(startIndex, endIndex);
 	}
+
+	// function performSearchListProcessing(sourceList: any[]): any {
+	// 	searchTotalNumber.value = sourceList.length;
+	// 	searchTotalPages.value = Math.ceil(sourceList.length / ITEMS_PER_PAGE);
+
+	// 	// Calculate the start and end indices for the current page
+	// 	const startIndex = currentPage.value * ITEMS_PER_PAGE;
+	// 	const endIndex = startIndex + ITEMS_PER_PAGE;
+
+	// 	// Return only the items for the current page
+	// 	return sourceList.slice(startIndex, endIndex);
+	// }
 
 	async function fetchRecentValuations() {
 		fetchCompleteErrorOrEmpty.value = true;
@@ -423,6 +607,7 @@
 	}
 
 	async function searchValuations() {
+		searchValuationLoading.value = true;
 		try {
 			await $fetch("/ava/api/assessment/search_assessment", {
 				method: "GET",
@@ -440,14 +625,22 @@
 						throw new Error("Failed to retrieve incidents!");
 					}
 
-					valuationsFromSearch.value = JSON.parse(response._data);
-					fetchPendingErrorOrEmpty.value = false;
-					openToast("Search valuations successfull", "success");
+					const searchResults: any[] = JSON.parse(response._data);
+					if (searchResults.length < 1) {
+						openToast("Search has no results!", "warning");
+						searchErrorOrEmpty.value = true;
+					} else {
+						valuationsFromSearch.value = searchResults;
+						openToast("Search valuations successfull", "success");
+					}
 				},
 			});
 		} catch (error) {
 			console.log("An error occured: ", error);
-			openToast("Failed to load your members. Reload page!", "danger");
+			openToast("Failed to load valuations. Reload page!", "danger");
+			searchErrorOrEmpty.value = true;
+		} finally {
+			searchValuationLoading.value = false;
 		}
 	}
 
@@ -458,6 +651,10 @@
 	const computedPendingValuations = computed(() => {
 		return performValuationListsProcessing(pendingValuations.value);
 	});
+
+	// const computedSearchValuations = computed(() => {
+	// 	return performSearchListProcessing(valuationsFromSearch.value);
+	// });
 
 	onMounted(async () => {
 		await fetchRecentValuations();
