@@ -56,7 +56,13 @@
 						aria-orientation="vertical"
 						aria-labelledby="options-menu">
 						<NuxtLink
-							:to="{ name: 'ava-incident-report' }"
+							:to="{
+								name: 'valuation-view-report',
+								query: {
+									registration: componentProps.vehicleRegNo,
+									id: componentProps.vehicleId,
+								},
+							}"
 							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
 							View Report
 						</NuxtLink>
@@ -69,6 +75,7 @@
 
 <script setup lang="ts">
 	const componentProps = defineProps<{
+		vehicleId: string;
 		vehicleRegNo: string;
 		clientName: string;
 		vehicleMake: string;
