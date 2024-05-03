@@ -12,7 +12,7 @@
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',
 					]">
-					<span>Complete</span>
+					<span>Recently Complete</span>
 				</button>
 				<button
 					@click="() => (currentTable = 1)"
@@ -22,7 +22,7 @@
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',
 					]">
-					<span>Pending</span>
+					<span>Pending Valuations</span>
 				</button>
 			</div>
 
@@ -186,13 +186,12 @@
 											record, index
 										) in computedCompleteValuations"
 										:key="index"
+										:vehicle-id="record.vehicle_id"
 										:vehicle-reg-no="
 											record.vehicleRegNumber
 										"
 										:client-name="
-											toTitleCase(
-												record.customer_name
-											)
+											toTitleCase(record.customer_name)
 										"
 										:vehicle-make="
 											capitalizeFirstLetterOfEachWord(
@@ -205,7 +204,11 @@
 											)
 										"
 										:valuation-date="record.valuation_date"
-										:vehicle-value="record.vehicleValue"
+										:vehicle-value="
+											Number(
+												record.vehicleValue
+											).toLocaleString()
+										"
 										:note-value="
 											lowerCaseEachLetter(
 												record.note_value
@@ -284,13 +287,12 @@
 											record, index
 										) in computedPendingValuations"
 										:key="index"
+										:vehicle-id="record.vehicle_id"
 										:vehicle-reg-no="
 											record.vehicleRegNumber
 										"
 										:client-name="
-											toTitleCase(
-												record.customer_name
-											)
+											toTitleCase(record.customer_name)
 										"
 										:vehicle-make="
 											capitalizeFirstLetterOfEachWord(
@@ -303,7 +305,11 @@
 											)
 										"
 										:valuation-date="record.valuation_date"
-										:vehicle-value="record.vehicleValue"
+										:vehicle-value="
+											Number(
+												record.vehicleValue
+											).toLocaleString()
+										"
 										:note-value="
 											lowerCaseEachLetter(
 												record.note_value
@@ -362,7 +368,11 @@
 	const { getDetails } = usePrincipal();
 	const totalNumber: Ref<number> = ref(0);
 	const ITEMS_PER_PAGE: number = 10;
-	const { capitalizeFirstLetterOfEachWord, lowerCaseEachLetter, toTitleCase } = useUtils();
+	const {
+		capitalizeFirstLetterOfEachWord,
+		lowerCaseEachLetter,
+		toTitleCase,
+	} = useUtils();
 
 	// TODO: Delete this at a later date
 	const searchServiceType: Ref<string | ""> = ref("");
