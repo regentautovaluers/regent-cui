@@ -52,7 +52,7 @@
 											</th>
 											<th
 												scope="col"
-												class="px-6 py-3 text-center font-bold text-gray-500">
+												class="px-6 py-3 text-start font-bold text-gray-500">
 												Policy No.
 											</th>
 											<th
@@ -67,7 +67,7 @@
 											</th>
 											<th
 												scope="col"
-												class="px-6 py-3 text-end font-bold text-gray-500">
+												class="px-6 py-3 text-center font-bold text-gray-500">
 												Date
 											</th>
 											<th
@@ -82,21 +82,85 @@
 											</th>
 											<th
 												scope="col"
-												class="px-6 py-3 text-end font-bold text-gray-500">
-												Regent Branch
+												class="px-6 py-3 text-start font-bold text-gray-500">
+												Regent Branch Email
 											</th>
-											<th
+											<!-- <th
 												scope="col"
-												class="px-6 py-3 text-end" />
+												class="px-6 py-3 text-end" /> -->
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
+										<td
+											v-if="
+												requestAuthorizationListLoading
+											"
+											class="text-center py-4"
+											colspan="100%">
+											<LoadingIndicator
+												:bar-length="`w-[30%]`"
+												v-if="
+													requestAuthorizationListLoading
+												" />
+											<br />
+											<span
+												class="text-gray-500 text-lg font-semibold"
+												>Nothing to Show.</span
+											>
+										</td>
 										<ErrorOrMissingData
 											v-if="fetchErrorOrEmpty" />
+										<AuthorizationLettersRecord
+											v-for="(
+												record, index
+											) in computedAuthorizationList"
+											:key="index"
+											:broker="toTitleCase(record.broker)"
+											:customer="
+												toTitleCase(record.customer)
+											"
+											:policy-no="record.policy_no"
+											:registration-no="record.reg_no"
+											:authorized-by="
+												record.authorized_by
+											"
+											:date="record.add_date"
+											:auth-ref-no="
+												record.authorization_ref_no
+											"
+											:phone-no="record.phone_number"
+											:regent-branch-email="
+												record.regent_branch_email
+											" />
 									</tbody>
 								</table>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div
+					class="mt-2 w-full rounded-sm flex justify-between items-center py-2"
+					v-if="currentView === 1">
+					<span
+						>Showing Page {{ currentPage + 1 }} of
+						{{ totalPages }}</span
+					>
+					<div
+						class="space-x-1"
+						v-if="totalPages > 1">
+						<button
+							@click="prevPage"
+							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							:disabled="currentPage === 0">
+							Previous
+						</button>
+
+						<button
+							@click="nextPage"
+							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							:disabled="currentPage === totalPages - 1">
+							Next
+						</button>
 					</div>
 				</div>
 			</div>
@@ -146,30 +210,43 @@
 
 	const currentView: Ref<number> = ref(0);
 	const { moreServicesData } = useMoreServicesNavData();
-	const fetchErrorOrEmpty: Ref<boolean> = ref(true);
+	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
 	const { getDetails } = usePrincipal();
+	const requestAuthorizationListLoading: Ref<boolean> = ref(false);
+	const authorizationList: Ref<any[]> = ref([]);
+	const totalNumber: Ref<number> = ref(0);
+	const totalPages: Ref<number> = ref(0);
+	const ITEMS_PER_PAGE: number = 10;
+	const currentPage: Ref<number> = ref(0);
+	const { toTitleCase } = useUtils();
 
 	onMounted(async () => {
 		try {
 			await $fetch("/ava/api/authorization/authorization_list", {
 				method: "GET",
-
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
 				query: {
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
 					corp: getDetails.company,
 				},
 				async onResponse({ response }) {
-					// if (response.status !== 200) {
-					// 	throw new Error(
-					// 		"Failed to retrieve tampered vehicles"
-					// 	);
-					// }
+					if (response.status !== 200) {
+						throw new Error("Failed to retrieve tampered vehicles");
+					}
 
-					console.log("Response status: ", response.status);
-					console.log("Response body: ", response._data);
+					const authListResuls: any[] = JSON.parse(response._data);
+					if (authListResuls.length < 1) {
+						openToast("Search has no results!", "warning");
+						fetchErrorOrEmpty.value = true;
+					} else {
+						authorizationList.value = authListResuls;
+						openToast("Search valuations successfull", "success");
+					}
 				},
 			});
 		} catch (error) {
@@ -179,6 +256,36 @@
 				"danger"
 			);
 			fetchErrorOrEmpty.value = true;
+		} finally {
+			requestAuthorizationListLoading.value = false;
 		}
+	});
+
+	// Add a method to navigate to the next page
+	function nextPage() {
+		if (currentPage.value < totalPages.value - 1) {
+			currentPage.value++;
+		}
+	}
+
+	// Add a method to navigate to the previous page
+	function prevPage() {
+		if (currentPage.value > 0) {
+			currentPage.value--;
+		}
+	}
+
+	const computedAuthorizationList: ComputedRef<any[]> = computed(() => {
+		totalNumber.value = authorizationList.value.length;
+		totalPages.value = Math.ceil(
+			authorizationList.value.length / ITEMS_PER_PAGE
+		);
+
+		// Calculate the start and end indices for the current page
+		const startIndex = currentPage.value * ITEMS_PER_PAGE;
+		const endIndex = startIndex + ITEMS_PER_PAGE;
+
+		// Return only the items for the current page
+		return authorizationList.value.slice(startIndex, endIndex);
 	});
 </script>
