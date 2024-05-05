@@ -62,6 +62,7 @@
 									record, index
 								) in computedAccountDetails"
 								:key="index"
+								:corp-user-id="record.corp_user_id"
 								:name-of-user="record.name_of_user"
 								:username="record.username"
 								:user-level="record.userlevel"
@@ -107,7 +108,7 @@
 	const { getDetails } = usePrincipal();
 	const { openToast } = useToast();
 	const accountsList: Ref<any[]> = ref([]);
-	const ITEMS_PER_PAGE: number = 12;
+	const ITEMS_PER_PAGE: number = 10;
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const currentPage: Ref<number> = ref(0);
