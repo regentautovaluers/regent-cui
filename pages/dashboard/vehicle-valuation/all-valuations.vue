@@ -386,7 +386,7 @@
 												<br />
 												<span
 													class="text-gray-500 text-lg font-semibold"
-													>Nothing to Show.</span
+													>Loading Your Data.</span
 												>
 											</td>
 											<ErrorOrMissingData
