@@ -43,7 +43,7 @@
 					@click.stop
 					class="custom-dropdown -top-[80%]">
 					<div
-						class="py-1"
+						class="py-1 space-y-1"
 						role="menu"
 						aria-orientation="vertical"
 						aria-labelledby="options-menu">
@@ -54,6 +54,36 @@
 							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
 							Update Account Details
 						</NuxtLink>
+						<button
+							class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-red-500 hover:bg-red-600 focus:outline-none text-white"
+							@click="
+								deactivateAccount(
+									componentProps.corpUserId,
+									componentProps.corp
+								)
+							">
+							<span>Deactivate Account</span>
+							<div
+								v-if="deActivateAccountLoading"
+								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								role="status"
+								aria-label="loading" />
+						</button>
+						<button
+							class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-green-500 hover:bg-green-600 focus:outline-none text-white"
+							@click="
+								activateAccount(
+									componentProps.corpUserId,
+									componentProps.corp
+								)
+							">
+							<span>Activate Account</span>
+							<div
+								v-if="activateAccountLoading"
+								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								role="status"
+								aria-label="loading" />
+						</button>
 					</div>
 				</div>
 			</div>
@@ -63,6 +93,7 @@
 
 <script setup lang="ts">
 	const componentProps = defineProps<{
+		corpUserId: string;
 		corp?: string;
 		nameOfUser: string;
 		username: string;
@@ -74,6 +105,11 @@
 
 	const isDropdownVisible = ref(false);
 	const dropdownContainer = ref(null);
+	const activateAccountLoading: Ref<boolean> = ref(false);
+	const deActivateAccountLoading: Ref<boolean> = ref(false);
+	const { openToast } = useToast();
+	const runtimeConfig = useRuntimeConfig();
+	const { getDetails } = usePrincipal();
 
 	function toggleDropdown() {
 		isDropdownVisible.value = !isDropdownVisible.value;
@@ -88,6 +124,72 @@
 		// Check if the click is outside the dropdown container
 		if (!dropdownContainer.value.contains(event.target as Node)) {
 			closeDropdown();
+		}
+	}
+
+	async function deactivateAccount(
+		corpUID: string,
+		corpName: string
+	): Promise<void> {
+		deActivateAccountLoading.value = true;
+		try {
+			await $fetch("/ava/api/corp-users/deactivate", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				query: {
+					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
+					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
+					corp: corpName,
+					corp_user_id: corpUID,
+				},
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Failed to deactivate user account!");
+					}
+
+					openToast("Account deactivation successfull", "success");
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Failed to deactivate account. Try again!", "danger");
+		} finally {
+			deActivateAccountLoading.value = false;
+		}
+	}
+
+	async function activateAccount(
+		corpUID: string,
+		corpName: string
+	): Promise<void> {
+		activateAccountLoading.value = true;
+		try {
+			await $fetch("/ava/api/corp-users/activate", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				query: {
+					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
+					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
+					corp: corpName,
+					corp_user_id: corpUID,
+				},
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Failed to activate user account!");
+					}
+
+					openToast("Account activation successfull", "success");
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Failed to activate account. Try again!", "danger");
+		} finally {
+			activateAccountLoading.value = false;
 		}
 	}
 
