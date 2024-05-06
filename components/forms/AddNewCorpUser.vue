@@ -27,7 +27,7 @@
 			<div class="flex flex-grow">
 				<input
 					type="email"
-					id="first-name"
+					id="email"
 					class="py-3 px-4 h-[3.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					placeholder="e.g johndoe@corporate.email.com"
 					required
