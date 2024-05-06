@@ -55,6 +55,7 @@
 							Update Account Details
 						</NuxtLink>
 						<button
+							v-if="componentProps.isActive === 'y'"
 							class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-red-500 hover:bg-red-600 focus:outline-none text-white"
 							@click="
 								deactivateAccount(
@@ -70,6 +71,7 @@
 								aria-label="loading" />
 						</button>
 						<button
+							v-if="componentProps.isActive === 'n'"
 							class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-green-500 hover:bg-green-600 focus:outline-none text-white"
 							@click="
 								activateAccount(
@@ -94,7 +96,7 @@
 <script setup lang="ts">
 	const componentProps = defineProps<{
 		corpUserId: string;
-		corp?: string;
+		corp: string;
 		nameOfUser: string;
 		username: string;
 		userLevel: string;
@@ -109,7 +111,6 @@
 	const deActivateAccountLoading: Ref<boolean> = ref(false);
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
 
 	function toggleDropdown() {
 		isDropdownVisible.value = !isDropdownVisible.value;
