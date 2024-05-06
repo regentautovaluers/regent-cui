@@ -50,6 +50,9 @@
 						<NuxtLink
 							:to="{
 								name: 'valuation-update-user-details',
+								query: {
+									'corpuid': componentProps.corpUserId,
+								},
 							}"
 							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
 							Update Account Details
