@@ -187,6 +187,10 @@ export default function useValuations() {
 	// 	return performSearchListProcessing(valuationsFromSearch.value);
 	// });
 
+	const firstTenComputedValuations = computed(() => {
+		return recentValuations.value.slice(0, 20);
+	});
+
 	return {
 		fetchRecentValuations,
 		fetchPendingValuations,
@@ -204,5 +208,6 @@ export default function useValuations() {
 		totalPages,
 		currentPage,
 		searchByValuationDate,
+		firstTenComputedValuations,
 	};
 }
