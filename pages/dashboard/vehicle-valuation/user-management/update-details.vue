@@ -1,5 +1,5 @@
 <template>
-	<h1>Update user details</h1>
+	<UpdateExistingCorpUser />
 </template>
 
 <script setup lang="ts">

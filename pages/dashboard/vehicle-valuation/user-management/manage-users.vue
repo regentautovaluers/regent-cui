@@ -62,6 +62,7 @@
 									record, index
 								) in computedAccountDetails"
 								:key="index"
+								:corp="record.corp"
 								:corp-user-id="record.corp_user_id"
 								:name-of-user="record.name_of_user"
 								:username="record.username"

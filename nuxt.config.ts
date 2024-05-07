@@ -66,6 +66,7 @@ export default defineNuxtConfig({
 			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
 			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 			AVA_BASE_URL: process.env.AVA_BASE_URL,
+			NODE_ENV: process.env.NODE_ENV,
 		},
 		app: {
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
