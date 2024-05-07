@@ -61,7 +61,7 @@
 					? 'animate-pulse disabled:bg-gray-200'
 					: null
 			">
-			<span v-if="!formSubmissionLoading">Add User Account</span>
+			<span v-if="!formSubmissionLoading">Update Account Details</span>
 			<div
 				v-if="formSubmissionLoading"
 				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
