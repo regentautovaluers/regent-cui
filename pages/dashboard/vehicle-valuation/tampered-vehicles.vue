@@ -2,9 +2,9 @@
 	<div class="py-10 bg-[#f6f9f2] responsive-view h-fit">
 		<div class="bg-white w-full p-10 px-2 lg:px-10">
 			<!-- search & filter controls -->
-			<div
+			<!-- <div
 				class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
-				<!-- search box -->
+				search box
 				<div class="relative flex-grow mr-10 max-w-[30%]">
 					<input
 						type="text"
@@ -18,86 +18,7 @@
 							alt="Search Icon" />
 					</div>
 				</div>
-				<div class="flex items-center space-x-2">
-					<div class="flex flex-nowrap items-center space-x-3">
-						<!-- filter by Membership type -->
-						<!-- <div
-								class="hs-dropdown relative inline-flex [--placement:bottom-right]">
-								<button
-									id="hs-dropdown-default"
-									type="button"
-									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 text-gray-800 shadow-sm"
-									:class="
-										!searchMembershipCategory
-											? 'bg-white text-black'
-											: 'bg-blue-600 text-white'
-									">
-									Membership Category
-									<svg
-										class="hs-dropdown-open:rotate-180 size-4"
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round">
-										<path d="m6 9 6 6 6-6" />
-									</svg>
-								</button>
-								<div
-									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2"
-									aria-labelledby="hs-dropdown-default">
-									<div
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
-										<input
-											type="radio"
-											name="membership-category"
-											value="corporate"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											v-model="
-												searchMembershipCategory
-											" />
-										<label
-											class="text-gray-500 ms-2 dark:text-gray-400"
-											>Corporate Registration</label
-										>
-									</div>
-									<div
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
-										<input
-											type="radio"
-											name="membership-category"
-											value="individual"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-											v-model="
-												searchMembershipCategory
-											" />
-										<label
-											class="text-gray-500 ms-2 dark:text-gray-400"
-											>Individual Registration</label
-										>
-									</div>
-								</div>
-							</div> -->
-					</div>
-					<button
-						v-if="searchFilterTerm !== null"
-						@click="
-							() => {
-								searchFilterTerm = null;
-							}
-						"
-						title="Clear Filters"
-						class="bg-gray-300 inline-flex items-center justify-center p-2 rounded-full size-10">
-						<Icon
-							name="material-symbols:close"
-							class="text-lg" />
-					</button>
-				</div>
-			</div>
+			</div> -->
 			<!-- start of data table -->
 			<div class="flex flex-col">
 				<div class="-m-1.5 overflow-x-auto">
@@ -114,7 +35,12 @@
 										<th
 											scope="col"
 											class="px-6 py-3 text-start font-bold text-gray-500">
-											Make & Model
+											Make
+										</th>
+										<th
+											scope="col"
+											class="px-6 py-3 text-start font-bold text-gray-500">
+											Model
 										</th>
 										<th
 											scope="col"
@@ -134,17 +60,7 @@
 										<th
 											scope="col"
 											class="px-6 py-3 text-end font-bold text-gray-500">
-											Market Value
-										</th>
-										<th
-											scope="col"
-											class="px-6 py-3 text-end font-bold text-gray-500">
-											Market Value
-										</th>
-										<th
-											scope="col"
-											class="px-6 py-3 text-end font-bold text-gray-500">
-											Customer
+											Client Name
 										</th>
 										<th
 											scope="col"
@@ -153,43 +69,76 @@
 										</th>
 										<th
 											scope="col"
+											class="px-6 py-3 text-start font-bold text-gray-500">
+											Attached Note
+										</th>
+										<th
+											scope="col"
 											class="px-6 py-3 text-end" />
 									</tr>
 								</thead>
 								<tbody class="divide-y divide-gray-200">
+									<td
+										v-if="tamperedVehiclesLoading"
+										class="text-center py-4"
+										colspan="100%">
+										<LoadingIndicator
+											:bar-length="`w-[30%]`"
+											v-if="tamperedVehiclesLoading" />
+										<br />
+										<span
+											class="text-gray-500 text-lg font-semibold"
+											>Loading Your Data.</span
+										>
+									</td>
 									<ErrorOrMissingData
 										v-if="fetchErrorOrEmpty" />
-									<!-- <ValuationsTableLoader
-										v-if="fetchLoading"
-										v-for="a in 5" /> -->
-									<!-- <ValuationsRecord
-										v-if="
-											tamperedVehicles.length >= 1 &&
-											!fetchLoading
-										"
+									<TamperedVehicles
 										v-for="(
-											vehicle, index
-										) in tamperedVehicles"
+											record, index
+										) in computedTamperedVehicles"
 										:key="index"
-										:index="index"
-										:registration="vehicle.reg_no"
-										:vehicleMake="vehicle.make"
-										:vehicle-model="vehicle.model"
-										:booking-num="
-											vehicle.vehicle_booking_no
+										:vehicle-reg-no="record.reg_no"
+										:vehicle-make="record.make"
+										:vehicle-model="record.model"
+										:booking-no="record.vehicle_booking_no"
+										:valuation-date="record.add_date"
+										:vehicle-assessed-value="
+											record.vehicle_assessed_value
 										"
-										:serial-num="vehicle.serial_no"
-										:date-added="vehicle.add_date"
-										:customer-name="vehicle.customer_name"
-										:regent-branch="vehicle.regent_branch"
-										:nb-remarks="vehicle.nb"
-										:assessed-value="
-											vehicle.vehicle_assessed_value
-										" /> -->
+										:client-name="
+											toTitleCase(record.customer_name)
+										"
+										:regent-branch="record.regent_branch"
+										:attached-note="record.nb" />
 								</tbody>
 							</table>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div
+				class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+				<span
+					>Showing Page {{ currentPage + 1 }} of
+					{{ totalPages }}</span
+				>
+				<div
+					class="space-x-1"
+					v-if="totalPages > 1">
+					<button
+						@click="prevPage"
+						class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+						:disabled="currentPage === 0">
+						Previous
+					</button>
+
+					<button
+						@click="nextPage"
+						class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+						:disabled="currentPage === totalPages - 1">
+						Next
+					</button>
 				</div>
 			</div>
 		</div>
@@ -237,8 +186,6 @@
 	});
 
 	const searchFilterTerm: Ref<string | null> = ref(null);
-	const page: Ref<number> = ref(0);
-	const size: Ref<number> = ref(10);
 	const tamperedVehicles: Ref<any[]> = ref([]);
 	const fetchLoading: Ref<boolean> = ref(false);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
@@ -246,11 +193,48 @@
 	const { getDetails } = usePrincipal();
 	const { openToast } = useToast();
 	const { moreServicesData } = useMoreServicesNavData();
+	const totalPages: Ref<number> = ref(0);
+	const totalNumber: Ref<number> = ref(0);
+	const ITEMS_PER_PAGE: number = 10;
+	const currentPage: Ref<number> = ref(0);
+	const tamperedVehiclesLoading: Ref<boolean> = ref(false);
+	const {
+		capitalizeFirstLetterOfEachWord,
+		lowerCaseEachLetter,
+		toTitleCase,
+	} = useUtils();
+	const computedTamperedVehicles: ComputedRef<any[]> = computed(() => {
+		totalNumber.value = tamperedVehicles.value.length;
+		totalPages.value = Math.ceil(
+			tamperedVehicles.value.length / ITEMS_PER_PAGE
+		);
+
+		// Calculate the start and end indices for the current page
+		const startIndex = currentPage.value * ITEMS_PER_PAGE;
+		const endIndex = startIndex + ITEMS_PER_PAGE;
+
+		// Return only the items for the current page
+		return tamperedVehicles.value.slice(startIndex, endIndex);
+	});
+
+	// Add a method to navigate to the next page
+	function nextPage() {
+		if (currentPage.value < totalPages.value - 1) {
+			currentPage.value++;
+		}
+	}
+
+	// Add a method to navigate to the previous page
+	function prevPage() {
+		if (currentPage.value > 0) {
+			currentPage.value--;
+		}
+	}
 
 	onMounted(async () => {
-		fetchLoading.value = true;
+		tamperedVehiclesLoading.value = true;
 		try {
-			await $fetch("/api/tampered_vehicles", {
+			await $fetch("/ava/api/tampered_vehicles", {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/x-www-form-urlencoded",
@@ -261,15 +245,24 @@
 					corp: getDetails.company,
 				},
 				async onResponse({ response }) {
-					// if (response.status !== 200) {
-					// 	throw new Error(
-					// 		"Failed to retrieve tampered vehicles"
-					// 	);
-					// }
+					if (response.status !== 200) {
+						throw new Error("Failed to retrieve tampered vehicles");
+					}
 
-					// tamperedVehicles.value = response._data;
-					console.log("Response status: ", response.status);
-					console.log("Response body: ", response._data);
+					const searchResults: any[] = JSON.parse(response._data);
+					if (searchResults.length < 1) {
+						openToast(
+							"Tampered vehicles has no results!",
+							"warning"
+						);
+						fetchErrorOrEmpty.value = true;
+					} else {
+						tamperedVehicles.value = searchResults;
+						openToast(
+							"Tampered vehicles loaded successfully",
+							"success"
+						);
+					}
 				},
 			});
 		} catch (error) {
@@ -280,7 +273,7 @@
 			);
 			fetchErrorOrEmpty.value = true;
 		} finally {
-			fetchLoading.value = false;
+			tamperedVehiclesLoading.value = false;
 		}
 	});
 </script>
