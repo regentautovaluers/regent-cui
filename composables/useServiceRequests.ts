@@ -79,6 +79,10 @@ export default function () {
 								`${runtimeConfig.public.AVA_BASE_URL}/Dispatch/websiteCreate`,
 								{
 									method: "POST",
+									headers: {
+										"Content-Type":
+											"application/x-www-form-urlencoded",
+									},
 									query: {
 										appUserName: userName,
 										corporate_client: getDetails.company,

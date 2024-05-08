@@ -61,19 +61,28 @@ export default function () {
 	);
 	const countTowing = computed(() => towingIncidents.value?.length);
 	const countTyreChange = computed(() => tyrechangeIncidents.value?.length);
-	const recentIncidentsCol = computed(() => {
+	const recentIncidentsCol: ComputedRef<any[]> = computed(() => {
+		const aggregateArray: any[] = [];
+
 		if (
 			fuelDeliveryIncidents.value &&
+			fuelDeliveryIncidents.value.length > 0
+		) {
+			aggregateArray.push(fuelDeliveryIncidents.value[0]);
+		}
+		if (
 			jumpstartingIncidents.value &&
-			towingIncidents.value &&
-			tyrechangeIncidents.value
-		)
-			return [
-				fuelDeliveryIncidents.value[0] || [],
-				jumpstartingIncidents.value[0] || [],
-				towingIncidents.value[0] || [],
-				tyrechangeIncidents.value[0] || [],
-			];
+			jumpstartingIncidents.value.length > 0
+		) {
+			aggregateArray.push(jumpstartingIncidents.value[0]);
+		}
+		if (towingIncidents.value && towingIncidents.value.length > 0) {
+			aggregateArray.push(towingIncidents.value[0]);
+		}
+		if (tyrechangeIncidents.value && tyrechangeIncidents.value.length > 0) {
+			aggregateArray.push(tyrechangeIncidents.value[0]);
+		}
+		return aggregateArray;
 	});
 	const determineMostRequestedService = computed(() => {
 		"Test Data";
