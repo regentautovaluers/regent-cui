@@ -94,7 +94,7 @@
 							>View All</NuxtLink
 						>
 					</div>
-					<div class="flex-grow flex flex-col justify-between p-3">
+					<div class="flex-grow flex flex-col p-3">
 						<div
 							v-if="!recentIncidentsCol"
 							class="flex-grow flex flex-col justify-center items-center">
@@ -192,6 +192,7 @@
 												value: 'individual',
 											},
 										]"
+										:key="index"
 										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
 										<!-- prettier-ignore -->
 										<input
@@ -365,7 +366,7 @@
 		{
 			icon: "/icons/misc/roadside-registeredmems-icon.svg",
 			title: "Registered Members",
-			data: totalNumber.value,
+			data: totalNumber,
 			link: "memberships-home",
 			text: "View Members",
 		},
