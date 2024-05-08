@@ -57,7 +57,7 @@ export default function () {
 		});
 		const Places = await loader.importLibrary("places");
 		const input = document.getElementById(
-			"pickup-location"
+			"client-location"
 		) as HTMLInputElement; //binds to our input element
 		const options = {
 			types: ["establishment"],
