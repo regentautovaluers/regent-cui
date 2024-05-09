@@ -99,43 +99,45 @@
 	const { setDetails } = usePrincipal();
 	const { openToast } = useToast();
 	const { handleSessionTokensSetup } = useSessionContext();
+	const runtimeConfig = useRuntimeConfig();
 
 	async function handleLoginFormSubmission(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/ava/api/corp-login", {
+			await $fetch(`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/temp/valuation-login`, {
 				method: "POST",
-				query: {
-					uname: username.value,
-					pwd: password.value,
-				},
+				body: JSON.stringify({
+					username: username.value,
+					password: password.value,
+				}),
 				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
+					"Content-Type": "application/json",
 				},
 				async onResponse({ response }) {
-					if (response.status === 200) {
-						const responseData: Object[] = JSON.parse(
-							response._data
-						);
-
-						if (responseData.length === 0) {
-							throw new Error("Invalid login credentials");
-						}
-						const principalDetails = responseData[0];
-
-						// supply the session context with session-related tokens to store
-						handleSessionTokensSetup(rememberSession.value);
-
-						// store the prinicpal
-						await setDetails(principalDetails);
-
-						// login the user
-						router.push({
-							name: "dashboard-home",
-						});
-
-						openToast("Login successfull", "success");
+					if(response.status === 400) {
+						throw new Error("Invalid login credentials");
 					}
+
+					if(response.status === 404 || response.status === 401) {
+						throw new Error("Invalid login credentials");
+					}
+
+					const responseData = response._data;
+					const principalDetails = responseData;
+
+					// supply the session context with session-related tokens to store
+					handleSessionTokensSetup(rememberSession.value);
+
+					// store the prinicpal
+					await setDetails(principalDetails);
+
+					// login the user
+					router.push({
+						name: "dashboard-home",
+					});
+
+					openToast("Login successfull", "success");
+				
 				},
 			});
 		} catch (error) {
