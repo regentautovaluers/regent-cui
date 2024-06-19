@@ -71,18 +71,6 @@
 			</div>
 		</div>
 		<div class="flex items-center mt-6">
-			<label class="w-1/6">Branch</label>
-			<div class="flex flex-grow">
-				<input
-					type="text"
-					id="branch"
-					class="py-3 px-4 h-[3.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
-					placeholder="e.g Westlands"
-					required
-					v-model="companyBranch" />
-			</div>
-		</div>
-		<div class="flex items-center mt-6">
 			<label class="w-1/6">User Privilege</label>
 			<div class="flex flex-grow space-x-4">
 				<label
