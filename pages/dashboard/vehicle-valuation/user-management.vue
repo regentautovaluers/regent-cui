@@ -14,7 +14,7 @@
 							to: 'valuation-manage-users',
 						},
 						{
-							text: 'Update User Details',
+							text: 'User Details',
 							to: 'valuation-update-user-details',
 						},
 					]"
@@ -29,8 +29,11 @@
 					>{{ link.text }}</NuxtLink
 				>
 			</div>
-			<div class="h-full w-5/6 max-w-5/6">
+			<div class="h-full w-4/6 max-w-5/6">
 				<NuxtPage />
+			</div>
+			<div class="h-full w-1/6 flex justify-center items-center">
+				<h1>hello world</h1>
 			</div>
 		</div>
 	</div>
