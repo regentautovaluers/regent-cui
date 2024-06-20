@@ -3,13 +3,6 @@ export default defineNuxtConfig({
 		transpile: ["mosha-vue-toastify", "@googlemaps/js-api-loader"],
 	},
 	ssr: true,
-	routeRules: {
-		"/ava/api/**": {
-			proxy: {
-				to: "https://mobi.regentautovaluers.co.ke/ava/api/**",
-			},
-		},
-	},
 	devtools: { enabled: true },
 	css: ["~/assets/css/main.css"],
 	devServer: {
@@ -66,7 +59,6 @@ export default defineNuxtConfig({
 			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
 			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 			AVA_BASE_URL: process.env.AVA_BASE_URL,
-			NODE_ENV: process.env.NODE_ENV,
 		},
 		app: {
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
