@@ -190,7 +190,7 @@
 	const fetchLoading: Ref<boolean> = ref(false);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const { moreServicesData } = useMoreServicesNavData();
 	const totalPages: Ref<number> = ref(0);
@@ -242,7 +242,7 @@
 				query: {
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status !== 200) {

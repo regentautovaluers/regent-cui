@@ -97,7 +97,7 @@
 		layout: "in-app-layout",
 	});
 
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const corporateFleets: Ref<Object[] | null> = ref(null);
@@ -108,7 +108,7 @@
 		fetchErrorOrEmpty.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.company}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
 				{
 					method: "GET",
 

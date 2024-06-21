@@ -12,7 +12,7 @@ export default function () {
 	const currentPage: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const ITEMS_PER_PAGE: number = 10;
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 
 	const compiledData = computed(() => {
 		const aggData = [
@@ -125,7 +125,7 @@ export default function () {
 		fetchErrorOrEmpty.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/corp/reports/services/corporate/${getDetails.company}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
 				{
 					method: "GET",
 					async onResponse({ response }) {

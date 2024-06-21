@@ -352,7 +352,7 @@
 		clientServiceTypeName: string;
 		optionalElementsRendered: string[];
 	}>();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
 	const currentPercentage: Ref<number> = ref(0);
@@ -477,7 +477,7 @@
 						method: "GET",
 						query: {
 							registration: vehicleRegistration.value,
-							corporateId: getDetails.company,
+							corporateId: getPrincipal.value.corpId,
 						},
 						async onResponse({ response }) {
 							if (response.status === 404) {

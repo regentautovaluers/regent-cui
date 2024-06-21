@@ -86,7 +86,7 @@
 	const formSubmissionLoading = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 
 	async function addToCorporateFleet() {
 		formSubmissionLoading.value = true;
@@ -96,12 +96,12 @@
 				{
 					method: "POST",
 					body: JSON.stringify({
-						corporate: getDetails.company,
+						corporate: getPrincipal.value.corpId,
 						fleetname: fleetName.value,
 						contact_full_name: contactFullName.value,
 						contact_phone_number: contactPhoneNumber.value,
 						contact_email: contactEmail.value,
-						recordedBy: getDetails.acc_id,
+						recordedBy: getPrincipal.value.userId,
 					}),
 					async onResponse({ response }) {
 						if (response.status === 201) {

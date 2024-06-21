@@ -11,7 +11,7 @@
 				<div class="flex flex-col">
 					<span
 						class="text-blue-600 font-semibold inline-flex items-center"
-						>Hi, {{ getDetails.username }}
+						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
 							alt="Hand Wave Icon"
@@ -346,7 +346,7 @@
 		layout: "in-app-layout",
 	});
 
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const {
 		computedPagedList,
 		searchFilterTerm,

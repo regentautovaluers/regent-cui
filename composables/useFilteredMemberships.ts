@@ -6,7 +6,7 @@ export default async function () {
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const fetchingMoreData: Ref<boolean> = ref(false);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
 	const fetchedPages: Ref<number[]> = ref([]);
@@ -20,7 +20,7 @@ export default async function () {
 				{
 					method: "GET",
 					query: {
-						corporateId: getDetails.company,
+						corporateId: getPrincipal.value.corpId,
 						page: page.value,
 						size: size.value,
 					},
@@ -65,7 +65,7 @@ export default async function () {
 						{
 							method: "GET",
 							query: {
-								corporateId: getDetails.company,
+								corporateId: getPrincipal.value.corpId,
 								page: newValue,
 								size: size.value,
 							},

@@ -57,8 +57,8 @@
 						aria-labelledby="options-menu">
 						<NuxtLink
 							v-if="
-								getDetails.userlevel === 'admin' ||
-								getDetails.userlevel === 'broker'
+								getPrincipal.userlevel === 'admin' ||
+								getPrincipal.userlevel === 'broker'
 							"
 							:to="{
 								name: 'edit-membership-details',
@@ -112,7 +112,7 @@
 	const router = useRouter();
 	const { openToast } = useToast();
 	const emit = defineEmits(["provideClientDetails"]);
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const isDropdownVisible = ref(false);
 	const dropdownContainer = ref(null);
 

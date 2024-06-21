@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 	import { Doughnut } from "vue-chartjs";
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
 	const totalActive: Ref<number> = ref(0);
 	const totalInactive: Ref<number> = ref(0);
@@ -43,7 +43,7 @@
 			{
 				method: "GET",
 				query: {
-					corporateId: getDetails.company,
+					corporateId: getPrincipal.value.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status !== 200) {

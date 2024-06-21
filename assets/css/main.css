@@ -18,6 +18,14 @@
     .custom-dropdown {
         @apply origin-center absolute z-20 p-1 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 -top-[170%] mb-10 -left-56;
     }
+
+    .generic-input {
+        @apply py-4 px-3 block w-full border-gray-200 valid:border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500;
+    }
+
+    .form-submit {
+        @apply py-3 px-4 w-full items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
+    }
 }
 
 @layer base {

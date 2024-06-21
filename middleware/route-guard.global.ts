@@ -2,7 +2,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	/*
 	const router = useRouter();
 	const { assertSessionExists } = useSessionContext();
-	const { assertPrincipalExists } = usePrincipal();
+	const { assertPrincipalExists } = useAuth();
 	const { openToast } = useToast();
 	const unprotectedRouteNames: string[] = [
 		"forgot-password",

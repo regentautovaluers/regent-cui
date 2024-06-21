@@ -1,6 +1,6 @@
 export default function () {
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const route = useRoute();
 	async function makeServiceRequest(
 		endpointVarName: string,
@@ -35,7 +35,7 @@ export default function () {
 					method: "POST",
 					body: JSON.stringify({
 						appUserName: userName,
-						corporate_client: getDetails.company,
+						corporate_client: getPrincipal.value.corpId,
 						appUserPhone: userPhoneNumber,
 						...(userEmail !== undefined
 							? { appUserEmail: userEmail }
@@ -85,7 +85,8 @@ export default function () {
 									},
 									query: {
 										appUserName: userName,
-										corporate_client: getDetails.company,
+										corporate_client:
+											getPrincipal.value.corpId,
 										appUserPhone: userPhoneNumber,
 										...(userEmail !== undefined
 											? { appUserEmail: userEmail }

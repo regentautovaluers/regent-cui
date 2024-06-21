@@ -14,7 +14,7 @@ export default defineNuxtConfig({
 			pathPrefix: false,
 		},
 	],
-	modules: ["nuxt-icons", "nuxt-icon", "nuxt-icon", "@pinia/nuxt"],
+	modules: ["nuxt-icons", "nuxt-icon"],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -50,9 +50,6 @@ export default defineNuxtConfig({
 			script: [],
 		},
 	},
-	pinia: {
-		autoImports: ["defineStore", "storeToRefs"],
-	},
 	plugins: ["~/plugins/preline.client.ts", "~/plugins/chart.ts"],
 	runtimeConfig: {
 		public: {
@@ -62,8 +59,6 @@ export default defineNuxtConfig({
 		},
 		app: {
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
-			VALUATION_BASE_UNAME: process.env.VALUATION_BASE_UNAME,
-			VALUATION_BASE_PASS: process.env.VALUATION_BASE_PASS,
 		},
 	},
 });

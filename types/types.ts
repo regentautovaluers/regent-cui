@@ -55,3 +55,14 @@ export type informativeCoordsMarker = {
 	info: string;
 	coords: locationCoordsMarker;
 };
+
+export type LoggedInPrincipal = {
+	userId: string;
+	username: string;
+	email: string;
+	phonenumber: string;
+	roles: string[];
+	profilePicture: string | null;
+	corpId: string;
+	corpName: string;
+};

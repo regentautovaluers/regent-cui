@@ -294,7 +294,7 @@
 	const clientFullName = ref("");
 	const clientPhoneNumber = ref("");
 	const clientEmail = ref("");
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const formErrorMessage: Ref<null | string> = ref(null);
@@ -325,9 +325,9 @@
 						full_name: clientFullName.value,
 						phone_number: clientPhoneNumber.value,
 						userEmail: clientEmail.value,
-						corporateId: getDetails.company,
+						corporateId: getPrincipal.value.corpId,
 						category: "individual",
-						recordedBy: getDetails.acc_id,
+						recordedBy: getPrincipal.value.userId,
 					}),
 
 					async onResponse({ response }) {

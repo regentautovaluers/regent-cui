@@ -106,7 +106,7 @@
 	const getUserAccountsLoading: Ref<boolean> = ref(false);
 	const queryErrorOrEmpty: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const accountsList: Ref<any[]> = ref([]);
 	const ITEMS_PER_PAGE: number = 10;
@@ -125,7 +125,7 @@
 				query: {
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status !== 200) {

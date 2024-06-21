@@ -11,7 +11,7 @@
 				<div class="flex flex-col">
 					<span
 						class="text-blue-600 font-semibold inline-flex items-center"
-						>Hi, {{ getDetails.username }}
+						>Hi, {{ getPrincipal.value.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
 							alt="Hand Wave Icon"
@@ -310,7 +310,7 @@
 	});
 
 	const { formatServerProvidedDateTime } = useUtils();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const {
 		nextPage,
 		prevPage,

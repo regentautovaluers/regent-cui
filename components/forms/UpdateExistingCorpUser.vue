@@ -78,7 +78,7 @@
 	const password: Ref<string> = ref("");
 	const userPrivilege: Ref<string> = ref("");
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const route = useRoute();
 	const corpUID: Ref<string> = ref(route.query.corpuid as string);
@@ -93,10 +93,10 @@
 					"Content-Type": "application/x-www-form-urlencoded",
 				},
 				query: {
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 					password: password.value,
 					access_level: userPrivilege.value,
-					added_by: getDetails.username,
+					added_by: getPrincipal.value.username,
 					created_by: "ava",
 					corp_user_id: corpUID,
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
@@ -134,7 +134,7 @@
 					"Content-Type": "application/x-www-form-urlencoded",
 				},
 				query: {
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 					corp_user_id: route.query.corpuid,
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,

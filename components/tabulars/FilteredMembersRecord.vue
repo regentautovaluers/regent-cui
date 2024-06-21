@@ -66,8 +66,8 @@
 						aria-labelledby="options-menu">
 						<NuxtLink
 							v-if="
-								getDetails.userlevel === 'admin' ||
-								getDetails.userlevel === 'broker'
+								getPrincipal.userlevel === 'admin' ||
+								getPrincipal.userlevel === 'broker'
 							"
 							:to="{
 								name: 'edit-member-details',
@@ -108,7 +108,7 @@
 		clientEmail: string | null;
 	}>();
 	const { capitalizeFirstLetter } = useUtils();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const isDropdownVisible = ref(false);
 	const dropdownContainer = ref(null);
 

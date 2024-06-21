@@ -1,6 +1,6 @@
 export default function useValuations() {
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const totalNumber: Ref<number> = ref(0);
 	// const searchTotalNumber: Ref<number> = ref(0);
 	// const searchTotalPages: Ref<number> = ref(0);
@@ -31,7 +31,7 @@ export default function useValuations() {
 				query: {
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 					reg_no: searchFilterTerm.value,
 				},
 				async onResponse({ response }) {
@@ -69,7 +69,7 @@ export default function useValuations() {
 				query: {
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status !== 200) {
@@ -101,7 +101,7 @@ export default function useValuations() {
 				query: {
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status !== 200) {

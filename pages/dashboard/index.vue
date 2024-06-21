@@ -15,7 +15,8 @@
 				:to-name="link.toName"
 				:link-text="link.linkText" />
 		</div>
-		<div class="my-20 flex">
+		
+		<!-- <div class="my-20 flex">
 			<div class="w-3/4 min-h-80 shadow-lg border rounded-xl p-4">
 				<div class="flex items-center justify-between">
 					<div>
@@ -71,8 +72,7 @@
 					</swiper>
 				</div>
 			</div>
-			<div></div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -89,13 +89,13 @@
 		layout: "in-app-layout",
 	});
 
-	const modules: SwiperModule[] = [Pagination, Navigation];
-	const {
-		fetchRecentValuations,
-		fetchCompleteErrorOrEmpty,
-		firstTenComputedValuations,
-	} = useValuations();
-	const { capitalizeFirstLetterOfEachWord, toTitleCase } = useUtils();
+	// const modules: SwiperModule[] = [Pagination, Navigation];
+	// const {
+	// 	fetchRecentValuations,
+	// 	fetchCompleteErrorOrEmpty,
+	// 	firstTenComputedValuations,
+	// } = useValuations();
+	// const { capitalizeFirstLetterOfEachWord, toTitleCase } = useUtils();
 	const availableMinifiedRoutes: any[] = [
 		{
 			imageLink: "/icons/home-dashboard-icons/vehicle-valuation.svg",
@@ -114,7 +114,7 @@
 		},
 	];
 
-	onMounted(async () => await fetchRecentValuations());
+	// onMounted(async () => await fetchRecentValuations());
 </script>
 
 <style>

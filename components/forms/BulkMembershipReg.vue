@@ -181,7 +181,7 @@
 	import { type excelUploadErrMess } from "~/types/types";
 
 	const formSubmissionLoading = ref(false);
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const processedFleetData: Ref<bulkProcessedType[]> = ref([]);
 	const route = useRoute();
 	const currentPercentage = ref(0);
@@ -332,7 +332,7 @@
 				full_name: toTitleCase(item[0]),
 				phone_number: `254${item[1]}`,
 				userEmail: item[2],
-				corporateId: getDetails.company,
+				corporateId: getPrincipal.value.corpId,
 				membershipTypeId: Number(route.query.membershipTypeId),
 				available_free_distance: route.query.freeDistance,
 				registration: item[3],
@@ -343,7 +343,7 @@
 				color: "Default Color",
 				payment_status: "paid",
 				membership_status: "active",
-				recordedBy: getDetails.acc_id,
+				recordedBy: getPrincipal.value.userId,
 				category: "corporate",
 				fleetId: selectedFleetId.value,
 			});
@@ -354,7 +354,7 @@
 		retrievingFleetList.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getDetails.company}`,
+				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
 				{
 					method: "GET",
 					async onResponse({ response }) {

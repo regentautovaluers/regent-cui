@@ -115,7 +115,7 @@
 	const companyBranch: Ref<string> = ref("");
 	const userPrivilege: Ref<string> = ref("");
 	const runtimeConfig = useRuntimeConfig();
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const userName: ComputedRef<string> = computed(
 		() => `${firstName.value} ${otherName.value}`
@@ -130,7 +130,7 @@
 					"Content-Type": "application/x-www-form-urlencoded",
 				},
 				query: {
-					corp: getDetails.company,
+					corp: getPrincipal.value.corpId,
 					name: userName.value,
 					email: email.value,
 					password: password.value,
@@ -138,7 +138,7 @@
 					phone: phoneNumber.value,
 					branch: companyBranch.value,
 					role: companyRole.value,
-					added_by: getDetails.username,
+					added_by: getPrincipal.value.username,
 					created_by: "ava",
 					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
 					pwd: runtimeConfig.app.VALUATION_BASE_PASS,

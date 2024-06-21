@@ -4,7 +4,7 @@ export default function () {
 	const membersList: Ref<any[]> = ref([]);
 	const page: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
-	const { getDetails } = usePrincipal();
+	const { getPrincipal } = useAuth();
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
@@ -39,7 +39,7 @@ export default function () {
 					{
 						method: "GET",
 						query: {
-							corporateId: getDetails.company,
+							corporateId: getPrincipal.value.corpId,
 							page: page.value,
 							size: size.value,
 							...(newValues[0] !== ""
@@ -84,7 +84,7 @@ export default function () {
 					{
 						method: "GET",
 						query: {
-							corporateId: getDetails.company,
+							corporateId: getPrincipal.value.corpId,
 							page: newValue,
 							size: size.value,
 							...(searchFilterTerm.value !== ""
@@ -127,7 +127,7 @@ export default function () {
 				{
 					method: "GET",
 					query: {
-						corporateId: getDetails.company,
+						corporateId: getPrincipal.value.corpId,
 						page: page.value,
 						size: size.value,
 					},

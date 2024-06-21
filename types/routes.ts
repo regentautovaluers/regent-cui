@@ -13,31 +13,31 @@ const applicationRoutes: ApplicationRoute[] = [
 		icon: "/icons/sidenav/vehicle-valuation-icon.svg",
 		routeName: "valuation-home",
 		children: [
-			{
-				id: 1,
-				displayName: "All Valuations",
-				routeName: "valuation-all-valuations",
-			},
-			{
-				id: 2,
-				displayName: "My Authorization Letters",
-				routeName: "valuation-authorization-letter",
-			},
-			{
-				id: 3,
-				displayName: "Reports",
-				routeName: "valuation-reports",
-			},
+			// {
+			// 	id: 1,
+			// 	displayName: "All Valuations",
+			// 	routeName: "valuation-all-valuations",
+			// },
+			// {
+			// 	id: 2,
+			// 	displayName: "My Authorization Letters",
+			// 	routeName: "valuation-authorization-letter",
+			// },
+			// {
+			// 	id: 3,
+			// 	displayName: "Reports",
+			// 	routeName: "valuation-reports",
+			// },
 			{
 				id: 4,
 				displayName: "User Management",
 				routeName: "valuation-user-management",
 			},
-			{
-				id: 5,
-				displayName: "Tampered Vehicles",
-				routeName: "valuation-tampered-vehicles",
-			},
+			// {
+			// 	id: 5,
+			// 	displayName: "Tampered Vehicles",
+			// 	routeName: "valuation-tampered-vehicles",
+			// },
 		],
 	},
 	{

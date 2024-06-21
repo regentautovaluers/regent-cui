@@ -69,10 +69,10 @@
 						alt="User Image" />
 					<div class="flex flex-col">
 						<span class="font-bold tracking">{{
-							getDetails.username
+							getPrincipal.username
 						}}</span>
 						<span class="text-gray-500">{{
-							getDetails.company
+							getPrincipal.corpName
 						}}</span>
 					</div>
 				</div>
@@ -167,7 +167,7 @@
 					<li>
 						<button
 							class="flex items-center gap-x-3.5 w-full py-5 rounded-s-2xl px-2.5 bg-gray-100 hover:bg-gray-100 font-semibold border-r-4 border-r-blue-600 text-gray-500"
-							@click="handleClientLogout">
+							@click="logout">
 							<img
 								src="/icons/sidenav/logout-icon.svg"
 								alt="Route Icon" /><span>Logout</span>
@@ -210,26 +210,12 @@
 			  )
 			: null;
 	});
-	const { getDetails } = usePrincipal();
+	const { getPrincipal, logout } = useAuth();
 	const { openToast } = useToast();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;
-	}
-
-	const { handleUnsetSessionTokens } = useSessionContext();
-
-	async function handleClientLogout() {
-		await handleUnsetSessionTokens().then(() => {
-			// logout the user
-			router.push({
-				name: "authentication-page",
-			});
-
-			// navigate user to the login page
-			openToast("Logout successfull", "success");
-		});
 	}
 </script>
 
