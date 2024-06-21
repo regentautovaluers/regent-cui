@@ -11,7 +11,7 @@
 				<div class="flex flex-col">
 					<span
 						class="text-blue-600 font-semibold inline-flex items-center"
-						>Hi, {{ getPrincipal.value.username }}
+						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
 							alt="Hand Wave Icon"
