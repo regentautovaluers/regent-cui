@@ -95,11 +95,15 @@
 	const dropdownContainer = ref(null);
 
 	const determinePrivilege = (): string => {
+		let privilege = "";
+
 		if (props.privilege.includes("ROLE_CORP_ADMIN")) {
-			return "Admin User";
+			privilege = "Admin User";
 		} else if(props.privilege.includes("ROLE_CORP_NORM")) {
-			return "Normal User"
+			privilege = "Normal User"
 		}
+
+		return privilege;
 	};
 
 	function toggleDropdown() {
