@@ -191,7 +191,6 @@
 	import useUtils from "~/composables/useUtils";
 	// macro imports
 	const route = useRoute();
-	const router = useRouter();
 
 	const notificationCount: Ref<number> = ref(10);
 	const messageCount: Ref<number> = ref(10);
@@ -211,7 +210,6 @@
 			: null;
 	});
 	const { getPrincipal, logout } = useAuth();
-	const { openToast } = useToast();
 	const { capitalizeFirstLetterOfEachWord } = useUtils();
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {

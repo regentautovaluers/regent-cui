@@ -10,7 +10,7 @@
 							to: 'valuation-users-add-user',
 						},
 						{
-							text: 'Manage Users',
+							text: 'Manage All Users',
 							to: 'valuation-manage-users',
 						},
 						{
@@ -22,18 +22,18 @@
 					class="p-2 hover:bg-gray-100 rounded-lg whitespace-nowrap"
 					:class="
 						$route.name === link.to
-							? 'text-blue-600 font-semibold'
+							? 'text-blue-600 font-semibold bg-gray-100'
 							: null
 					"
 					:key="index"
 					>{{ link.text }}</NuxtLink
 				>
 			</div>
-			<div class="h-full w-4/6 max-w-5/6">
+			<div class="h-full w-[65%]">
 				<NuxtPage />
 			</div>
-			<div class="h-full w-1/6 flex justify-center items-center">
-				<h1>hello world</h1>
+			<div class="h-full flex-grow flex justify-center items-center">
+				<UpdateUserProfilePic />
 			</div>
 		</div>
 	</div>

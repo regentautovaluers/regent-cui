@@ -10,12 +10,12 @@
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									Name Of User
+									Full Name
 								</th>
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									Username
+									Contact
 								</th>
 								<th
 									scope="col"
@@ -25,18 +25,14 @@
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									Active
+									Role
 								</th>
 								<th
 									scope="col"
-									class="px-6 py-3 text-center font-bold text-gray-500">
-									Creation Date
+									class="px-6 py-3 text-start font-bold text-gray-500">
+									Account Status
 								</th>
-								<th
-									scope="col"
-									class="px-6 py-3 text-end font-bold text-gray-500">
-									Created By
-								</th>
+
 								<th
 									scope="col"
 									class="px-6 py-3 text-end" />
