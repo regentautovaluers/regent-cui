@@ -14,7 +14,7 @@
 							to: 'valuation-users-add-user',
 						},
 						{
-							text: 'User Details',
+							text: 'Update Details',
 							to: 'valuation-update-user-details',
 						},
 					]"
