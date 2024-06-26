@@ -31,7 +31,7 @@ const applicationRoutes: ApplicationRoute[] = [
 			{
 				id: 4,
 				displayName: "User Management",
-				routeName: "valuation-user-management",
+				routeName: "valuation-my-account",
 			},
 			// {
 			// 	id: 5,
