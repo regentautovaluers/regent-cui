@@ -66,7 +66,7 @@
 							:to="{
 								name: 'valuation-update-user-details',
 								query: {
-									corpuid: props.corpId,
+									userId: props.userId,
 								},
 							}"
 							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
@@ -99,8 +99,8 @@
 
 		if (props.privilege.includes("ROLE_CORP_ADMIN")) {
 			privilege = "Admin User";
-		} else if(props.privilege.includes("ROLE_CORP_NORM")) {
-			privilege = "Normal User"
+		} else if (props.privilege.includes("ROLE_CORP_NORM")) {
+			privilege = "Normal User";
 		}
 
 		return privilege;

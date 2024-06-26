@@ -47,14 +47,13 @@
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
-			<label class="font-bold text-gray-500">Password</label>
+			<label class="font-bold text-gray-500">New Password</label>
 			<div class="flex flex-grow">
 				<input
 					type="password"
 					id="new-password"
 					class="generic-input"
 					placeholder="gnarly_squirell@123"
-					required
 					v-model="password" />
 			</div>
 		</div>
@@ -68,6 +67,19 @@
 					placeholder="Underwriter"
 					required
 					v-model="companyRole" />
+			</div>
+		</div>
+		<div class="flex flex-col mt-3">
+			<label class="font-bold text-gray-500">Account Status</label>
+			<div class="flex flex-grow">
+				<select
+					class="generic-input"
+					id="account-status"
+					required
+					v-model="isAccountEnabled">
+					<option :value="false">Not Active</option>
+					<option :value="true">Active</option>
+				</select>
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
@@ -113,17 +125,23 @@
 </template>
 
 <script setup lang="ts">
-	/*
 	import { LoopingRhombusesSpinner } from "epic-spinners";
 
 	const runtimeConfig = useRuntimeConfig();
+	const route = useRoute();
 	const { getPrincipal } = useAuth();
-	const {
-		pending: loadingAccountDetails,
-		error: loadAccountDetailsError,
-		data: accountDetails,
-		refresh: refreshOfferedServices,
-	} = (await useFetch("/api/v1/auth/corp-account/get-account", {
+	const formSubmissionLoading = ref(false);
+	const firstName: Ref<string> = ref("");
+	const otherName: Ref<string> = ref("");
+	const email: Ref<string> = ref("");
+	const phoneNumber: Ref<string> = ref("");
+	const password: Ref<string> = ref("");
+	const companyRole: Ref<string> = ref("");
+	const userRole: Ref<string> = ref("");
+	const { openToast } = useToast();
+	const isAccountEnabled: Ref<boolean> = ref(true);
+
+	useFetch("/api/v1/auth/corp-account/get-account", {
 		key: "userDetails",
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 		method: "GET",
@@ -131,27 +149,29 @@
 			Accept: "application/json",
 		},
 		query: {
-			userId: getPrincipal.value.userId,
+			userId: route.query.userId,
 		},
 		server: false,
 		lazy: false,
-		pick: ["data"],
-	})) as any;
-
-	// console.log("Account details: ", accountDetails.value.data.username);
-	const formSubmissionLoading = ref(false);
-	const firstName: Ref<string> = ref(
-		accountDetails.value.data.username.split(" ")[0]
-	);
-	const otherName: Ref<string> = ref(
-		accountDetails.value.data.username.split(" ")[1]
-	);
-	const email: Ref<string> = ref("");
-	const phoneNumber: Ref<string> = ref("");
-	const password: Ref<string> = ref("");
-	const companyRole: Ref<string> = ref("");
-	const userRole: Ref<string> = ref("");
-	const { openToast } = useToast();
+		onResponse({ response }) {
+			if (response.status === 200) {
+				const responseData = response._data.data;
+				firstName.value = responseData.username.split(" ")[0];
+				otherName.value = responseData.username.split(" ")[1];
+				email.value = responseData.email;
+				phoneNumber.value = responseData.phoneNumber;
+				password.value = responseData.password;
+				companyRole.value = responseData.roleInOrganization;
+				userRole.value = responseData.userRoles[0].toLowerCase();
+				isAccountEnabled.value = responseData.accountEnabled;
+			} else {
+				openToast(
+					"Failed to retrieve account details. Try again!",
+					"danger"
+				);
+			}
+		},
+	});
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
@@ -159,37 +179,48 @@
 		}
 	});
 
+	const computedPassword: ComputedRef = computed(() => {
+		if (password.value && password.value.length > 0) {
+			return password;
+		}
+
+		return null;
+	});
+
 	async function updateUserAccount(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/api/v1/auth/corp-account/signup", {
+			await $fetch("/api/v1/auth/corp-account/update-account-details", {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: "POST",
+				method: "PUT",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
+					userId: route.query.userId,
 					firstName: firstName.value,
 					lastName: otherName.value,
 					email: email.value,
 					phoneNumber: phoneNumber.value,
-					password: password.value,
-					profilePicture: null,
-					corporateId: getPrincipal.value.corpId,
+					newPassword: computedPassword.value,
+					roleInOrganization: companyRole.value,
+					isAccountEnabled: isAccountEnabled.value,
 					userRoles: [userRole.value],
 				}),
 				onResponse({ response }) {
-					console.info("Response data: ", response._data);
-					console.info("Response status: ", response.status);
+					if (response.status === 200) {
+						openToast("Account updated successfully!", "success");
+					} else {
+						throw new Error("Account updating failed. Try again!");
+					}
 				},
 			});
 		} catch (error) {
 			console.log("An error occured: ", error);
-			openToast("Account creation failed. Try again!", "danger");
+			openToast("Account updating failed. Try again!", "danger");
 		} finally {
 			formSubmissionLoading.value = false;
 		}
 	}
-		*/
 </script>

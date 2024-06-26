@@ -111,7 +111,7 @@
 	});
 
 	const computedPassword: ComputedRef = computed(() => {
-		if (password.value.length > 0) {
+		if (password.value && password.value.length > 0) {
 			return password;
 		}
 
