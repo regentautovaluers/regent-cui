@@ -6,6 +6,10 @@
 				<NuxtLink
 					v-for="(link, index) in [
 						{
+							text: 'My Account',
+							to: 'valuation-my-account',
+						},
+						{
 							text: 'Manage All Users',
 							to: 'valuation-manage-users',
 						},
