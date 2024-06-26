@@ -9,7 +9,7 @@
 		class="mt-12"
 		@submit.prevent="attemptLogin">
 		<div class="flex flex-col font-semibold space-y-1 text-3xl lg:text-5xl">
-			<span class="tracking-wide">Hello,</span>
+			<span class="tracking-wide">Hi,</span>
 			<span class="tracking-wide">Welcome Back</span>
 		</div>
 		<div class="space-y-4 py-2 mt-4">
