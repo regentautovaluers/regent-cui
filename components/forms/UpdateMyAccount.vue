@@ -2,7 +2,7 @@
 	<form
 		class="rounded-2xl shadow px-6 py-6 border"
 		@submit.prevent="updateMyAccount">
-		<h1 class="font-semibold text-lg my-b">Update User</h1>
+		<h1 class="font-semibold text-lg my-b">My Account</h1>
 		<div class="flex flex-col">
 			<label class="font-bold text-gray-500">Full Name</label>
 			<div class="flex w-full space-x-4">
@@ -54,7 +54,6 @@
 					id="new-password"
 					class="generic-input"
 					placeholder="gnarly_squirell@123"
-					required
 					v-model="password" />
 			</div>
 		</div>
@@ -124,7 +123,7 @@
 		try {
 			await $fetch("/api/v1/auth/corp-account/update-account-details", {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: "POST",
+				method: "PUT",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -140,13 +139,16 @@
 					isAccountEnabled: true,
 				}),
 				onResponse({ response }) {
-					console.info("Response data: ", response._data);
-					console.info("Response status: ", response.status);
+					if (response.status === 200) {
+						openToast("Account updated successfully!", "success");
+					} else {
+						throw new Error("Account updating failed. Try again!");
+					}
 				},
 			});
 		} catch (error) {
 			console.log("An error occured: ", error);
-			openToast("Account creation failed. Try again!", "danger");
+			openToast("Account updating failed. Try again!", "danger");
 		} finally {
 			formSubmissionLoading.value = false;
 		}
