@@ -193,18 +193,16 @@
 	const formSubmissionLoading: Ref<boolean> = ref(false);
 
 	try {
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/control-unit/membershiptypes`,
-			{
-				method: "GET",
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error("Failed to retrieve membership types");
-					}
-					membershipTypes.value = response._data;
-				},
-			}
-		);
+		await $fetch("/api/v1/control-unit/membershiptypes", {
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: "GET",
+			async onResponse({ response }) {
+				if (response.status !== 200) {
+					throw new Error("Failed to retrieve membership types");
+				}
+				membershipTypes.value = response._data;
+			},
+		});
 	} catch (error) {
 		console.log("An error occured: ", error);
 		openToast(
@@ -229,25 +227,23 @@
 		formSubmissionLoading.value = true;
 
 		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles`,
-				{
-					method: "POST",
-					body: JSON.stringify({
-						membershipId: membershipId,
-						vehicles: [userVehicles],
-					}),
+			await $fetch("/api/v1/membershipVehicles", {
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				method: "POST",
+				body: JSON.stringify({
+					membershipId: membershipId,
+					vehicles: [userVehicles],
+				}),
 
-					async onResponse({ response }) {
-						if (response.status === 201) {
-							formSubmissionLoading.value = false;
-							openToast("Vehicle added successfully", "success");
-						} else {
-							throw new Error("Something went wrong");
-						}
-					},
-				}
-			);
+				async onResponse({ response }) {
+					if (response.status === 201) {
+						formSubmissionLoading.value = false;
+						openToast("Vehicle added successfully", "success");
+					} else {
+						throw new Error("Something went wrong");
+					}
+				},
+			});
 		} catch (err) {
 			console.log("An error occured: ", err);
 			formSubmissionLoading.value = false;

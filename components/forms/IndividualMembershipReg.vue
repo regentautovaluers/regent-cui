@@ -344,28 +344,26 @@
 					},
 				}
 			).then(async () => {
-				await $fetch(
-					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles`,
-					{
-						method: "POST",
-						body: JSON.stringify({
-							membershipId: membershipId,
-							vehicles: userVehicles.value,
-						}),
+				await $fetch("/api/v1/membershipVehicles", {
+					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+					method: "POST",
+					body: JSON.stringify({
+						membershipId: membershipId,
+						vehicles: userVehicles.value,
+					}),
 
-						async onResponse({ response }) {
-							if (response.status === 201) {
-								formSubmissionLoading.value = false;
-								openToast(
-									"Membership creation successful",
-									"success"
-								);
-							} else {
-								throw new Error("Something went wrong");
-							}
-						},
-					}
-				);
+					async onResponse({ response }) {
+						if (response.status === 201) {
+							formSubmissionLoading.value = false;
+							openToast(
+								"Membership creation successful",
+								"success"
+							);
+						} else {
+							throw new Error("Something went wrong");
+						}
+					},
+				});
 			});
 		} catch (err) {
 			console.log("An error occured: ", err);

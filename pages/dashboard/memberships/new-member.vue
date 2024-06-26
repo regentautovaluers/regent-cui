@@ -124,18 +124,16 @@
 	}
 
 	try {
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/control-unit/membershiptypes`,
-			{
-				method: "GET",
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error("Failed to retrieve membership types");
-					}
-					membershipTypes.value = response._data;
-				},
-			}
-		);
+		await $fetch("/api/v1/control-unit/membershiptypes", {
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: "GET",
+			async onResponse({ response }) {
+				if (response.status !== 200) {
+					throw new Error("Failed to retrieve membership types");
+				}
+				membershipTypes.value = response._data;
+			},
+		});
 	} catch (error) {
 		console.log("An error occured: ", error);
 		openToast(

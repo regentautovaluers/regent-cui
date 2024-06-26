@@ -9,18 +9,21 @@
 		<RequiredActionAlert
 			alert-type="success"
 			width="w-[80%]"
-			alert-heading="Operation Blocked">
+			alert-heading="Authorization Warning"
+			warning-message="Please contact your administrator to effect the change in a safe way.">
 			<template #alertMessage>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-					excepturi numquam porro eveniet pariatur expedita eaque odit
-					vero obcaecati, similique ducimus deserunt corporis ipsum et
-					ad dolores nobis sit impedit!
+				<p class="text-center">
+					Attempting to change your password while you're not logged
+					in is not permitted.
 				</p>
 			</template>
 			<template #actionControls>
 				<button
-					class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+					class="py-2 px-2 text-center font-semibold rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+					Hello World
+				</button>
+				<button
+					class="py-2 px-2 text-center font-semibold rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700">
 					Hello World
 				</button>
 			</template>

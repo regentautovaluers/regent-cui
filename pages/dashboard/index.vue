@@ -136,5 +136,8 @@
 	.swiper-button-next,
 	.swiper-button-prev {
 		color: rgb(37 99 235); /* Change the color of the buttons */
+		background-color: white;
+		
+		padding: 2px;
 	}
 </style>

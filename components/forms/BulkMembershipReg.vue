@@ -274,11 +274,6 @@
 			processedFleetData.value = [];
 		}
 		console.log("Data in file: ", fileData);
-
-		if (selectedFile) {
-			addListeners(reader);
-			reader.readAsDataURL(selectedFile);
-		}
 	}
 
 	function validateUploadedDataIntegrity(data: Object[]): void {
@@ -327,7 +322,6 @@
 	function pushFleetDataPostValidation(data: Object[]) {
 		data.forEach((item: any, index: number) => {
 			if (index === 0) return;
-
 			processedFleetData.value.push({
 				full_name: toTitleCase(item[0]),
 				phone_number: `254${item[1]}`,
@@ -354,8 +348,9 @@
 		retrievingFleetList.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
+				`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
 				{
+					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 					method: "GET",
 					async onResponse({ response }) {
 						if (response.status !== 200) {

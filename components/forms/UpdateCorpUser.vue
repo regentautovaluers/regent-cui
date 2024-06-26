@@ -101,7 +101,7 @@
 				v-if="!formSubmissionLoading"
 				type="submit"
 				class="form-submit">
-				Create User Account
+				Update User Account
 			</button>
 			<looping-rhombuses-spinner
 				v-else
@@ -113,6 +113,7 @@
 </template>
 
 <script setup lang="ts">
+	/*
 	import { LoopingRhombusesSpinner } from "epic-spinners";
 
 	const runtimeConfig = useRuntimeConfig();
@@ -122,7 +123,8 @@
 		error: loadAccountDetailsError,
 		data: accountDetails,
 		refresh: refreshOfferedServices,
-	} = await useFetch("/api/v1/auth/corp-account/get-account", {
+	} = (await useFetch("/api/v1/auth/corp-account/get-account", {
+		key: "userDetails",
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 		method: "GET",
 		headers: {
@@ -133,12 +135,17 @@
 		},
 		server: false,
 		lazy: false,
-	});
+		pick: ["data"],
+	})) as any;
 
-	console.log("Account details: ", accountDetails.value.data.username);
+	// console.log("Account details: ", accountDetails.value.data.username);
 	const formSubmissionLoading = ref(false);
-	const firstName: Ref<string> = ref("");
-	const otherName: Ref<string> = ref("");
+	const firstName: Ref<string> = ref(
+		accountDetails.value.data.username.split(" ")[0]
+	);
+	const otherName: Ref<string> = ref(
+		accountDetails.value.data.username.split(" ")[1]
+	);
 	const email: Ref<string> = ref("");
 	const phoneNumber: Ref<string> = ref("");
 	const password: Ref<string> = ref("");
@@ -184,4 +191,5 @@
 			formSubmissionLoading.value = false;
 		}
 	}
+		*/
 </script>

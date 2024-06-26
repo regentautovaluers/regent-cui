@@ -149,8 +149,9 @@
 
 	try {
 		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/membership/${route.query.id}`,
+			`/api/v1/membershipVehicles/membership/${route.query.id}`,
 			{
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: "GET",
 				async onResponse({ response }) {
 					if (response.status !== 200) {

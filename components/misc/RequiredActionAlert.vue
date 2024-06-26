@@ -1,22 +1,24 @@
 <template>
 	<div
 		:class="[
-			'min-h-[24rem] h-fit rounded-2xl p-6',
-			notificationColor,
+			'min-h-[50%] w-full rounded-xl p-6 flex flex-col justify-between bg-gray-200',
 			width,
 		]">
-		<h1 class="inline-flex items-center space-x-2 font-semibold text-2xl">
-			<span
-				class="bg-green-500 rounded-full size-10 flex items-center justify-center mr-4">
-				<Icon
-					name="uil:github"
-					color="black"
-					size="30" />
-			</span>
+		<h1 class="text-center font-semibold text-2xl">
 			{{ componentProps.alertHeading }}
 		</h1>
 		<slot name="alertMessage" />
-		<slot name="actionControls" />
+		<div
+			class="rounded-xl bg-yellow-400 bg-opacity-70 h-16 flex p-2 items-center">
+			<div class="w-[15%]"></div>
+			<span class="text-center flex-grow">{{
+				componentProps.warningMessage
+			}}</span>
+		</div>
+
+		<div class="flex flex-col space-y-2">
+			<slot name="actionControls" />
+		</div>
 	</div>
 </template>
 
@@ -25,8 +27,8 @@
 		alertType: string;
 		width?: string;
 		alertHeading: string;
+		warningMessage: string;
 	}
 
 	const componentProps = defineProps<ComponentProps>();
-	const notificationColor = "bg-red-500";
 </script>

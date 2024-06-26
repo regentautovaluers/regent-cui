@@ -72,7 +72,7 @@
 			v-if="currentTable === 0"
 			class="mt-4 lg:min-h-[40rem]">
 			<!-- start of completed valuations data table -->
-			<div class="flex flex-col">
+			<div class="flex flex-col bg-white">
 				<div class="-m-1.5 overflow-x-auto">
 					<div class="p-1.5 min-w-full inline-block align-middle">
 						<div class="border rounded-lg shadow overflow-hidden">
@@ -173,7 +173,7 @@
 			v-if="currentTable === 1"
 			class="mt-4 lg:min-h-[40rem]">
 			<!-- start of data table -->
-			<div class="flex flex-col">
+			<div class="flex flex-col bg-white">
 				<div class="-m-1.5 overflow-x-auto">
 					<div class="p-1.5 min-w-full inline-block align-middle">
 						<div class="border rounded-lg shadow overflow-hidden">
@@ -484,7 +484,7 @@
 		searchValuationLoading,
 		totalPages,
 		currentPage,
-		searchByValuationDate
+		searchByValuationDate,
 	} = useValuations();
 
 	onMounted(async () => {
