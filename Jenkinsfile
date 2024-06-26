@@ -48,7 +48,11 @@ pipeline {
                             echo "Stopping and removing existing container..."
                             docker stop valuation-portal || true
                             docker rm valuation-portal || true
- 
+            
+                            echo "Removing existing image..."
+                            docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true
+                            docker rmi ${DOCKER_IMAGE}:latest || true
+                            
                             echo "Pulling new image..."
                             docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
 
