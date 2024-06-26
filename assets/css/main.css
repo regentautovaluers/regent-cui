@@ -28,6 +28,10 @@
     }
 }
 
+.radio-buttons { 
+    @apply shrink-0 ms-auto border-gray-200 rounded-full text-blue-600 focus:ring-blue-500;
+}
+
 @layer base {
     th, tr {
         @apply whitespace-nowrap

@@ -69,11 +69,10 @@
 					class="form-submit">
 					Login
 				</button>
-				<circles-to-rhombuses-spinner
+				<looping-rhombuses-spinner
 					v-else
-					:animation-duration="1200"
-					:circles-num="4"
-					:circle-size="16"
+					:animation-duration="2000"
+					:rhombus-size="20"
 					color="#2563eb" />
 			</div>
 		</div>
@@ -87,13 +86,12 @@
 </style>
 
 <script setup lang="ts">
-	import { CirclesToRhombusesSpinner } from "epic-spinners";
+	import { LoopingRhombusesSpinner } from "epic-spinners";
 	definePageMeta({
 		name: "authentication-page",
 		layout: "auth-pages-layout",
 	});
 
-	const formSubmissionLoading: Ref<boolean> = ref(false);
 	const displayPassword: Ref<boolean> = ref(false);
 	const {
 		email,

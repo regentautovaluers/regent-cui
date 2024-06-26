@@ -1,8 +1,8 @@
 <template>
 	<form
 		class="rounded-2xl shadow px-6 py-6 border"
-		@submit.prevent="createUserAccount">
-		<h1 class="font-semibold text-lg my-b">Add A New User</h1>
+		@submit.prevent="updateUserAccount">
+		<h1 class="font-semibold text-lg my-b">Update User</h1>
 		<div class="flex flex-col">
 			<label class="font-bold text-gray-500">Full Name</label>
 			<div class="flex w-full space-x-4">
@@ -12,14 +12,14 @@
 					class="generic-input"
 					placeholder="John"
 					required
-					v-model.trim="firstName" />
+					v-model="firstName" />
 				<input
 					type="text"
 					id="other-name"
 					class="generic-input"
 					placeholder="Doe"
 					required
-					v-model.trim="otherName" />
+					v-model="otherName" />
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
@@ -43,7 +43,7 @@
 					class="generic-input"
 					placeholder="254712345678"
 					required
-					v-model.trim="phoneNumber" />
+					v-model="phoneNumber" />
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
@@ -55,7 +55,7 @@
 					class="generic-input"
 					placeholder="gnarly_squirell@123"
 					required
-					v-model.trim="password" />
+					v-model="password" />
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
@@ -67,15 +67,15 @@
 					class="generic-input"
 					placeholder="Underwriter"
 					required
-					v-model.trim.lazy="companyRole" />
+					v-model="companyRole" />
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
 			<label class="font-bold text-gray-500">User Privilege</label>
 			<div class="flex flex-grow space-x-4">
 				<label
-					class="flex items-center py-4 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
-					<span class="text-gray-500"> Is A Normal User </span>
+					class="flex items-center py-3 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
+					<span class="text-gray-500">Is A Normal User</span>
 					<input
 						type="radio"
 						value="role_corp_norm"
@@ -85,8 +85,8 @@
 						v-model="userRole" />
 				</label>
 				<label
-					class="flex items-center py-4 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
-					<span class="text-gray-500"> Is An Admin </span>
+					class="flex items-center py-3 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
+					<span class="text-gray-500">Is An Admin</span>
 					<input
 						type="radio"
 						value="role_corp_admin"
@@ -96,7 +96,7 @@
 				</label>
 			</div>
 		</div>
-		<div class="flex w-full mt-4 lg:w-1/3 items-center justify-center">
+		<div class="flex w-full mt-2 lg:w-1/3 items-center justify-center">
 			<button
 				v-if="!formSubmissionLoading"
 				type="submit"
@@ -115,6 +115,27 @@
 <script setup lang="ts">
 	import { LoopingRhombusesSpinner } from "epic-spinners";
 
+	const runtimeConfig = useRuntimeConfig();
+	const { getPrincipal } = useAuth();
+	const {
+		pending: loadingAccountDetails,
+		error: loadAccountDetailsError,
+		data: accountDetails,
+		refresh: refreshOfferedServices,
+	} = await useFetch("/api/v1/auth/corp-account/get-account", {
+		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+		method: "GET",
+		headers: {
+			Accept: "application/json",
+		},
+		query: {
+			userId: getPrincipal.value.userId,
+		},
+		server: false,
+		lazy: false,
+	});
+
+	console.log("Account details: ", accountDetails.value.data.username);
 	const formSubmissionLoading = ref(false);
 	const firstName: Ref<string> = ref("");
 	const otherName: Ref<string> = ref("");
@@ -123,8 +144,6 @@
 	const password: Ref<string> = ref("");
 	const companyRole: Ref<string> = ref("");
 	const userRole: Ref<string> = ref("");
-	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 
 	watch(phoneNumber, (newNumber) => {
@@ -133,7 +152,7 @@
 		}
 	});
 
-	async function createUserAccount(): Promise<void> {
+	async function updateUserAccount(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/v1/auth/corp-account/signup", {
@@ -151,23 +170,11 @@
 					password: password.value,
 					profilePicture: null,
 					corporateId: getPrincipal.value.corpId,
-					roleInOrganization: companyRole.value,
 					userRoles: [userRole.value],
 				}),
 				onResponse({ response }) {
-					if (response.status === 200) {
-						openToast("Account creation successfull!", "success");
-					} else {
-						throw new Error("Account creation failed. Try again!");
-					}
-
-					firstName.value = "";
-					otherName.value = "";
-					email.value = "";
-					phoneNumber.value = "";
-					password.value = "";
-					companyRole.value = "";
-					userRole.value = "";
+					console.info("Response data: ", response._data);
+					console.info("Response status: ", response.status);
 				},
 			});
 		} catch (error) {

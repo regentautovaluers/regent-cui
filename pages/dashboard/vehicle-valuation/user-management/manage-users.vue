@@ -10,33 +10,29 @@
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									Name Of User
+									Full Name
 								</th>
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									Username
+									Contact
 								</th>
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									User Level
+									Privilege
 								</th>
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									Active
+									Corporate Role
 								</th>
 								<th
 									scope="col"
-									class="px-6 py-3 text-center font-bold text-gray-500">
-									Creation Date
+									class="px-6 py-3 text-start font-bold text-gray-500">
+									Account Status
 								</th>
-								<th
-									scope="col"
-									class="px-6 py-3 text-end font-bold text-gray-500">
-									Created By
-								</th>
+
 								<th
 									scope="col"
 									class="px-6 py-3 text-end" />
@@ -58,18 +54,16 @@
 							</td>
 							<ErrorOrMissingData v-if="queryErrorOrEmpty" />
 							<ValuationsUserAccRecord
-								v-for="(
-									record, index
-								) in computedAccountDetails"
+								v-for="(record, index) in accountsList"
 								:key="index"
-								:corp="record.corp"
-								:corp-user-id="record.corp_user_id"
-								:name-of-user="record.name_of_user"
+								:user-id="record.userId"
+								:corp-id="getPrincipal.corpId"
 								:username="record.username"
-								:user-level="record.userlevel"
-								:is-active="record.active"
-								:acc-creation-date="record.create_date"
-								:acc-created-by="record.created_by" />
+								:user-email="record.email"
+								:phone-number="record.phoneNumber"
+								:privilege="record.userRoles"
+								:corporate-role="record.roleInOrganization"
+								:is-active="record.accountEnabled" />
 						</tbody>
 					</table>
 				</div>
@@ -77,7 +71,7 @@
 		</div>
 	</div>
 	<!-- end of data table -->
-	<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+	<!-- <div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 		<span>Showing Page {{ currentPage + 1 }} of {{ totalPages }}</span>
 		<div
 			class="space-x-1"
@@ -96,92 +90,42 @@
 				Next
 			</button>
 		</div>
-	</div>
+	</div> -->
 </template>
 
 <script setup lang="ts">
 	definePageMeta({
 		name: "valuation-manage-users",
 	});
-	const getUserAccountsLoading: Ref<boolean> = ref(false);
-	const queryErrorOrEmpty: Ref<boolean> = ref(false);
+
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const accountsList: Ref<any[]> = ref([]);
-	const ITEMS_PER_PAGE: number = 10;
-	const totalNumber: Ref<number> = ref(0);
-	const totalPages: Ref<number> = ref(0);
 	const currentPage: Ref<number> = ref(0);
 
-	onMounted(async () => {
-		getUserAccountsLoading.value = true;
-		try {
-			await $fetch("/ava/api/corp-users", {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
-				},
-				query: {
-					uname: runtimeConfig.app.VALUATION_BASE_UNAME,
-					pwd: runtimeConfig.app.VALUATION_BASE_PASS,
-					corp: getPrincipal.value.corpId,
-				},
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error("Failed to retrieve user accounts!");
-					}
+	const { pending: getUserAccountsLoading, error: queryErrorOrEmpty } =
+		useFetch("/api/v1/auth/corp-account/get-accounts", {
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+			},
+			query: {
+				corporateId: getPrincipal.value.corpId,
+				page: currentPage.value,
+				size: 100,
+			},
+			server: false,
+			lazy: false,
+			watch: [currentPage],
+			onResponse({ response }) {
+				if (response.status !== 200) {
+				}
 
-					const accountsResults: any[] = JSON.parse(response._data);
-					if (accountsResults.length < 1) {
-						openToast(
-							"No user accounts found at the moment!",
-							"warning"
-						);
-						queryErrorOrEmpty.value = true;
-					} else {
-						accountsList.value = accountsResults;
-						openToast(
-							"Successfully retrieved your user accounts",
-							"success"
-						);
-					}
-				},
-			});
-		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Failed to load valuations. Reload page!", "danger");
-			queryErrorOrEmpty.value = true;
-		} finally {
-			getUserAccountsLoading.value = false;
-		}
-	});
-
-	// Add a method to navigate to the next page
-	function nextPage() {
-		if (currentPage.value < totalPages.value - 1) {
-			currentPage.value++;
-		}
-	}
-
-	// Add a method to navigate to the previous page
-	function prevPage() {
-		if (currentPage.value > 0) {
-			currentPage.value--;
-		}
-	}
-
-	const computedAccountDetails: ComputedRef<any[]> = computed(() => {
-		totalNumber.value = accountsList.value.length;
-		totalPages.value = Math.ceil(
-			accountsList.value.length / ITEMS_PER_PAGE
-		);
-
-		// Calculate the start and end indices for the current page
-		const startIndex = currentPage.value * ITEMS_PER_PAGE;
-		const endIndex = startIndex + ITEMS_PER_PAGE;
-
-		// Return only the items for the current page
-		return accountsList.value.slice(startIndex, endIndex);
-	});
+				if (response.status === 200) {
+					accountsList.value = response._data.data;
+				}
+			},
+		});
 </script>

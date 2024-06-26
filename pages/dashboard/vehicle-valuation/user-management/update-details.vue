@@ -1,5 +1,5 @@
 <template>
-	<UpdateExistingCorpUser />
+	<UpdateCorpUser />
 </template>
 
 <script setup lang="ts">
