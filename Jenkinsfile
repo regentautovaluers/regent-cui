@@ -34,7 +34,7 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
                         def image = docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}")
                         image.push()
-                        image.push('latest')
+                      
                     }
                 }
             }
@@ -51,7 +51,7 @@ pipeline {
             
                             echo "Removing existing image..."
                             docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true
-                            docker rmi ${DOCKER_IMAGE}:latest || true
+                            
                             
                             echo "Pulling new image..."
                             docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
