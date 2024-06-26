@@ -17,10 +17,10 @@
 							text: 'Add New User',
 							to: 'valuation-users-add-user',
 						},
-						{
-							text: 'Update Details',
-							to: 'valuation-update-user-details',
-						},
+						// {
+						// 	text: 'Update Details',
+						// 	to: 'valuation-update-user-details',
+						// },
 					]"
 					:to="{ name: link.to }"
 					class="p-2 hover:bg-gray-100 rounded-lg whitespace-nowrap"
