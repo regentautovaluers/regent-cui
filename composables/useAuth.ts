@@ -20,6 +20,7 @@ const useAuth = () => {
 			profilePicture: null,
 			corpId: "",
 			corpName: "",
+			roleInOrganization: "",
 		}
 	);
 	const authToken: CookieRef<string | null | undefined> =
@@ -60,6 +61,8 @@ const useAuth = () => {
 				}),
 
 				onResponse({ response }) {
+					console.log("response data: ", response._data);
+					console.log("response status: ", response.status);
 					switch (response.status) {
 						case 401: {
 							loginSuccess.value = false;
@@ -68,7 +71,7 @@ const useAuth = () => {
 							break;
 						}
 
-						default: {
+						case 200: {
 							loginSuccess.value = true;
 							loginAttemptMessage.value =
 								"Success. Will redirect you shortly!";
@@ -77,6 +80,12 @@ const useAuth = () => {
 							router.push({ name: "dashboard-home" });
 						}
 					}
+				},
+
+				onRequestError({ error }) {
+					loginSuccess.value = false;
+					loginAttemptMessage.value =
+						"Something went wrong! Try again!";
 				},
 			});
 		} catch (er) {
@@ -96,6 +105,7 @@ const useAuth = () => {
 			profilePicture: data.profilePicture,
 			corpId: data.corpId,
 			corpName: data.corpName,
+			roleInOrganization: data.roleInOrganization,
 		};
 
 		authenticatedPrincipal.value = principal;
@@ -109,13 +119,14 @@ const useAuth = () => {
 		// unset the principal
 		authenticatedPrincipal.value = {
 			userId: "",
-            username: "",
+			username: "",
 			email: "",
 			phonenumber: "",
 			roles: [],
 			profilePicture: null,
 			corpId: "",
 			corpName: "",
+			roleInOrganization: "",
 		};
 
 		// unset the auth token and csrf token
