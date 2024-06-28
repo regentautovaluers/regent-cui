@@ -34,7 +34,6 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
                         def image = docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}")
                         image.push()
-                      
                     }
                 }
             }
@@ -44,7 +43,7 @@ pipeline {
                 script {
                     sshagent(credentials: [env.SSH_CREDENTIALS_ID]) {
                         sh """
-                            ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${SERVER_IP} << EOF
+                            ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${SERVER_IP} << 'EOF'
                             echo "Stopping and removing existing container..."
                             docker stop valuation-portal || true
                             docker rm valuation-portal || true
@@ -52,21 +51,26 @@ pipeline {
                             echo "Removing existing image..."
                             docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true
                             
-                            
                             echo "Pulling new image..."
                             docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
 
+                            echo "Creating .env file..."
+                            cat <<EOT > .env
+DEV_TIME_HOST=${DEV_TIME_HOST}
+GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY}
+VALUATION_BASE_URL=${VALUATION_BASE_URL}
+AVA_BASE_URL=${AVA_BASE_URL}
+EOT
+
+                            echo "Contents of .env file:"
+                            cat .env
+
                             echo "Running new container..."
-                            docker run -d --name valuation-portal -p 3000:3000 \\
-                                -e DEV_TIME_HOST=${DEV_TIME_HOST} \\
-                                -e GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY} \\
-                                -e VALUATION_BASE_URL=${VALUATION_BASE_URL} \\
-                                -e AVA_BASE_URL=${AVA_BASE_URL} \\
-                                ${DOCKER_IMAGE}:${DOCKER_TAG}
+                            docker run -d --name valuation-portal --env-file .env -p 3000:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
 EOF
                         """
                     }
-                }   
+                }
             }
         }
     }
