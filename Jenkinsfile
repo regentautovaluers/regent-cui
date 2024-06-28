@@ -9,10 +9,9 @@ pipeline {
         SERVER_IP = '64.225.109.172'
         SSH_USERNAME = 'root'
         SSH_CREDENTIALS_ID = 'your-ssh-credentials-id'
-        DEV_TIME_HOST = 'http://localhost:4000'
         GOOGLE_MAPS_APIKEY = 'AIzaSyB8XLhNAJQbKA5N3PRyYNpnbUtgF36lyNQ'
-        VALUATION_BASE_URL = 'http://192.168.18.20'
-        AVA_BASE_URL = 'http://app.ava.ke'
+        VALUATION_BASE_URL = 'http://64.226.89.245:8100'
+        AVA_BASE_URL = 'http://64.225.109.172:4000'
     }
 
     stages {
@@ -56,7 +55,7 @@ pipeline {
 
                             echo "Creating .env file..."
                             cat <<EOT > .env
-DEV_TIME_HOST=${DEV_TIME_HOST}
+
 GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY}
 VALUATION_BASE_URL=${VALUATION_BASE_URL}
 AVA_BASE_URL=${AVA_BASE_URL}
@@ -66,7 +65,7 @@ EOT
                             cat .env
 
                             echo "Running new container..."
-                            docker run -d --name valuation-portal --env-file .env -p 3000:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
+                            docker run -d --restart always --name valuation-portal --env-file .env -p 3000:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
 EOF
                         """
                     }
