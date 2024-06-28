@@ -220,10 +220,7 @@
 						throw new Error("Failed to create bulk memberships");
 					}
 
-					openToast(
-						"Memberships created successfully.",
-						"success"
-					);
+					openToast("Memberships created successfully.", "success");
 				},
 			});
 		} catch (error) {
@@ -316,11 +313,11 @@
 				membershipTypeId: Number(route.query.membershipTypeId),
 				available_free_distance: route.query.freeDistance,
 				registration: item[3],
-				start_date: formatExcelDate(item[4]),
-				end_date: formatExcelDate(item[5]),
-				make: "N/A Make",
-				model: "N/A Model",
-				color: "N/A Color",
+				start_date: item[4],
+				end_date: item[5],
+				make: "Make N/A",
+				model: "Model N/A",
+				color: "Color N/A",
 				payment_status: "paid",
 				membership_status: "active",
 				recordedBy: getPrincipal.value.userId,
@@ -328,6 +325,8 @@
 				fleetId: selectedFleetId.value,
 			});
 		});
+
+		console.log("Processed fleet data: ", processedFleetData.value);
 	}
 
 	onMounted(async () => {
