@@ -139,7 +139,7 @@
 			</nav>
 			<div class="mt-5">
 				<!-- Sidebar advertisement -->
-				<div class="mb-20 px-4">
+				<div class="mb-5 px-4">
 					<SidenavAdvertCarousel />
 				</div>
 
