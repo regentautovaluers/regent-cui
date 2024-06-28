@@ -220,7 +220,6 @@
 	const totalPages: Ref<number> = ref(0);
 	const ITEMS_PER_PAGE: number = 10;
 	const currentPage: Ref<number> = ref(0);
-	const { toTitleCase } = useUtils();
 
 	onMounted(async () => {
 		try {

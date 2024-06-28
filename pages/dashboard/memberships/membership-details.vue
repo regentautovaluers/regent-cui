@@ -139,11 +139,6 @@
 	const numOfVehicles: Ref<number> = ref(0);
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
-	const {
-		capitalizeFirstLetterOfEachWord,
-		capitalizeFirstLetter,
-		formatServerProvidedDate,
-	} = useUtils();
 	const memberVehiclesList: Ref<any[]> = ref([]);
 	const route = useRoute();
 

@@ -107,7 +107,7 @@
 		clientPhone: string;
 		clientEmail: string | null;
 	}>();
-	const { capitalizeFirstLetter } = useUtils();
+
 	const { getPrincipal } = useAuth();
 	const isDropdownVisible = ref(false);
 	const dropdownContainer = ref(null);

@@ -350,7 +350,6 @@
 	const formSubmissionLoading = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
-	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const vehicleRegistration: Ref<string> = ref("");
 	const vehicleMake: Ref<string> = ref("");
 	const vehicleModel: Ref<string> = ref("");

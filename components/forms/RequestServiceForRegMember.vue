@@ -375,7 +375,6 @@
 	const tyreType: Ref<string> = ref("");
 	const { openToast } = useToast();
 	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
-	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const componentEmits = defineEmits<{
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();

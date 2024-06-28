@@ -11,7 +11,7 @@
 				>
 				<div class="relative">
 					<select
-						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						id="fleet-name"
 						v-model="selectedFleetId">
 						<option :value="0">Select the Designated Fleet</option>
@@ -44,7 +44,7 @@
 					id="contact-person-name"
 					disabled
 					v-model="contactFullName"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="Client Name as On Their National ID" />
 			</div>
 
@@ -60,8 +60,8 @@
 					id="contact-person-phone"
 					disabled
 					v-model="contactPhoneNumber"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="+254704080056" />
+					class="generic-input"
+					placeholder="254704080056" />
 			</div>
 
 			<!-- Email field -->
@@ -76,7 +76,7 @@
 					id="contact-person-email"
 					disabled
 					v-model="contactEmail"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="youremail@co.ke" />
 			</div>
 		</div>
@@ -156,7 +156,7 @@
 			</div>
 			<div
 				class="flex items-center justify-between w-full text-end text-lg text-gray-500 antialiased">
-				<span>UPLOADING PROGRESS</span>
+				<span>PARSING PROGRESS</span>
 				<span>{{ currentProgress }}</span>
 			</div>
 		</div>
@@ -193,12 +193,11 @@
 	const contactPhoneNumber: Ref<string> = ref("");
 	const contactEmail: Ref<string> = ref("");
 	const runtimeConfig = useRuntimeConfig();
-	const { toTitleCase } = useUtils();
 	const totalSize = ref(0);
 	const currentProgress = ref("0%");
 	const reader = new FileReader();
-	const { formatExcelDate } = useUtils();
 	const errorMessage: Ref<excelUploadErrMess | null> = ref(null);
+
 	watch(selectedFleetId, (newFleetId) => {
 		const fleetDetails: any = availableFleets.value.find(
 			(fleet: any) => fleet.id === newFleetId
@@ -209,7 +208,7 @@
 		contactEmail.value = fleetDetails.contact_email;
 	});
 
-	async function registerBulkMember(): Promise<void> {
+	const registerBulkMember = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/v1/memberships/bulk", {
@@ -222,7 +221,7 @@
 					}
 
 					openToast(
-						"Bulk memberships created successfully.",
+						"Memberships created successfully.",
 						"success"
 					);
 				},
@@ -233,9 +232,9 @@
 		} finally {
 			formSubmissionLoading.value = false;
 		}
-	}
+	};
 
-	async function parseUploadedExcelFile(e: any): Promise<void> {
+	const parseUploadedExcelFile = async (e: any): Promise<void> => {
 		const selectedFile = e.target.files[0];
 
 		if (selectedFile) {
@@ -243,34 +242,25 @@
 			reader.readAsDataURL(selectedFile);
 		}
 
-		let fileData: Object[] = [];
 		try {
-			await readXlsxFile(selectedFile)
-				.then((data) => {
-					fileData = data;
-				})
-				.then(() => validateUploadedDataIntegrity(fileData))
-				.then(() => {
-					pushFleetDataPostValidation(fileData);
-					const errorMss: excelUploadErrMess = {
-						message: "File validation passed successfully",
-						type: "success",
-					};
-
-					errorMessage.value = errorMss;
-				});
+			const data = await readXlsxFile(selectedFile);
+			validateUploadedDataIntegrity(data);
+			pushFleetDataPostValidation(data);
+			const errorMss: excelUploadErrMess = {
+				message: "File validation passed successfully",
+				type: "success",
+			};
+			errorMessage.value = errorMss;
 		} catch (err) {
 			console.log("An error has occured: ", err);
 			const errorMss: excelUploadErrMess = {
 				message: err,
 				type: "error",
 			};
-
 			errorMessage.value = errorMss;
 			processedFleetData.value = [];
 		}
-		console.log("Data in file: ", fileData);
-	}
+	};
 
 	function validateUploadedDataIntegrity(data: Object[]): void {
 		// each item here is the individual row in the excel converted to an arrat

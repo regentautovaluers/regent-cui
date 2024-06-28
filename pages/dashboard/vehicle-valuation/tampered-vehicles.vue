@@ -198,11 +198,6 @@
 	const ITEMS_PER_PAGE: number = 10;
 	const currentPage: Ref<number> = ref(0);
 	const tamperedVehiclesLoading: Ref<boolean> = ref(false);
-	const {
-		capitalizeFirstLetterOfEachWord,
-		lowerCaseEachLetter,
-		toTitleCase,
-	} = useUtils();
 	const computedTamperedVehicles: ComputedRef<any[]> = computed(() => {
 		totalNumber.value = tamperedVehicles.value.length;
 		totalPages.value = Math.ceil(

@@ -188,7 +188,6 @@
 
 <script setup lang="ts">
 	import applicationRoutes from "~/types/routes";
-	import useUtils from "~/composables/useUtils";
 	// macro imports
 	const route = useRoute();
 
@@ -210,7 +209,6 @@
 			: null;
 	});
 	const { getPrincipal, logout } = useAuth();
-	const { capitalizeFirstLetterOfEachWord } = useUtils();
 
 	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
 		currentRoute.value = currentClickedRoute;

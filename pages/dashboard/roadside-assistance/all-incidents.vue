@@ -309,7 +309,6 @@
 		layout: "in-app-layout",
 	});
 
-	const { formatServerProvidedDateTime } = useUtils();
 	const { getPrincipal } = useAuth();
 	const {
 		nextPage,
