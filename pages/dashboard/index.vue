@@ -95,7 +95,7 @@
 	// 	fetchCompleteErrorOrEmpty,
 	// 	firstTenComputedValuations,
 	// } = useValuations();
-	// const { capitalizeFirstLetterOfEachWord, toTitleCase } = useUtils();
+	// 
 	const availableMinifiedRoutes: any[] = [
 		{
 			imageLink: "/icons/home-dashboard-icons/vehicle-valuation.svg",

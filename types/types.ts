@@ -17,7 +17,7 @@ export type bulkProcessedType = {
 	full_name: string;
 	phone_number: string;
 	userEmail: string;
-	corporateId: number;
+	corporateId: string;
 	membershipTypeId: number;
 	start_date: string;
 	end_date: string;

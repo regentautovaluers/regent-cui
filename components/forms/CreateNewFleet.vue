@@ -1,6 +1,6 @@
 <template>
 	<form
-		@submit.prevent="addToCorporateFleet"
+		@submit.prevent="createFleet"
 		class="mt-5">
 		<!-- end of hidden field -->
 		<label
@@ -11,7 +11,7 @@
 		<input
 			type="text"
 			id="fleet-name"
-			class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+			class="generic-input"
 			placeholder="e.g Kenya Power & Lightning Company"
 			required
 			v-model="fleetName" />
@@ -27,7 +27,7 @@
 				<input
 					type="text"
 					id="contact-person-name"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="Client Name as On Their National ID"
 					required
 					v-model="contactFullName" />
@@ -43,7 +43,7 @@
 				<input
 					type="text"
 					id="contact-person-phone"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="+254704080056"
 					required
 					v-model="contactPhoneNumber" />
@@ -59,40 +59,55 @@
 				<input
 					type="email"
 					id="contact-person-email"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="youremail@co.ke"
 					required
 					v-model="contactEmail" />
 			</div>
 		</div>
-		<button
-			type="submit"
-			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
-			<span v-if="!formSubmissionLoading">Add to Fleet</span>
-			<div
-				v-if="formSubmissionLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-				role="status"
-				aria-label="loading" />
-		</button>
+		<div class="flex items-center justify-start mt-4">
+			<button
+				v-if="!formSubmissionLoading"
+				type="submit"
+				class="form-submit w-1/3">
+				Create Fleet
+			</button>
+			<looping-rhombuses-spinner
+				v-else
+				:animation-duration="2000"
+				:rhombus-size="20"
+				color="#2563eb" />
+		</div>
 	</form>
 </template>
 
 <script setup lang="ts">
-	const fleetName: Ref<string | null> = ref(null);
-	const contactFullName: Ref<string | null> = ref(null);
-	const contactPhoneNumber: Ref<string | null> = ref(null);
-	const contactEmail: Ref<string | null> = ref(null);
+	import { LoopingRhombusesSpinner } from "epic-spinners";
+
+	const fleetName: Ref<string> = ref("");
+	const contactFullName: Ref<string> = ref("");
+	const contactPhoneNumber: Ref<string> = ref("");
+	const contactEmail: Ref<string> = ref("");
 	const formSubmissionLoading = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
 	const { getPrincipal } = useAuth();
 
-	async function addToCorporateFleet() {
+	watch(contactPhoneNumber, (newNumber) => {
+		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
+			contactPhoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
+		}
+	});
+
+	const createFleet = async () => {
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/v1/fleets", {
 				baseUrl: runtimeConfig.public.AVA_BASE_URL,
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
 				method: "POST",
 				body: JSON.stringify({
 					corporate: getPrincipal.value.corpId,
@@ -102,17 +117,22 @@
 					contact_email: contactEmail.value,
 					recordedBy: getPrincipal.value.userId,
 				}),
-				async onResponse({ response }) {
+				onResponse({ response }) {
+					console.log("Create fleet response body: ", response._data);
+					console.log(
+						"Create fleet response status: ",
+						response.status
+					);
 					if (response.status === 201) {
 						openToast("Fleet created successfully", "success");
-						formSubmissionLoading.value = false;
 					}
 				},
 			});
 		} catch (error) {
 			console.log("An error occured: ", error);
-			formSubmissionLoading.value = false;
 			openToast("Request failed. Please try again!", "danger");
+		} finally {
+			formSubmissionLoading.value = false;
 		}
-	}
+	};
 </script>

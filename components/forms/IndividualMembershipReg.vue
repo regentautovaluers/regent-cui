@@ -12,7 +12,7 @@
 				<input
 					type="text"
 					id="full-name"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="Client Name as On Their National ID"
 					required
 					v-model="clientFullName" />
@@ -28,8 +28,8 @@
 				<input
 					type="text"
 					id="phone"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="+254704080056"
+					class="generic-input"
+					placeholder="254704080056"
 					required
 					v-model="clientPhoneNumber" />
 			</div>
@@ -44,7 +44,7 @@
 				<input
 					type="email"
 					id="phone"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="youremail@co.ke"
 					required
 					v-model="clientEmail" />
@@ -56,7 +56,7 @@
 			{{ formErrorMessage }}
 		</p>
 
-		<h1 class="mt-16 text-2xl antialiased">Register Your Vehicles</h1>
+		<h1 class="mt-8 text-2xl">Register Your Vehicles</h1>
 		<!-- Vehicle Details & Payment & Status -->
 		<div
 			class="mt-7"
@@ -80,7 +80,7 @@
 					<input
 						type="text"
 						id="vehicle-registration-number"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="KCD 345G"
 						required
 						v-model="vehicle.registration" />
@@ -95,7 +95,7 @@
 					<input
 						type="text"
 						id="vehicle-make"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="e.g Toyota"
 						required
 						v-model="vehicle.make" />
@@ -111,7 +111,7 @@
 					<input
 						type="text"
 						id="vehicle-model"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="e.g Corolla"
 						required
 						v-model="vehicle.model" />
@@ -127,7 +127,7 @@
 				<input
 					type="text"
 					id="full-name"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g Red"
 					required
 					v-model="vehicle.color" />
@@ -142,7 +142,7 @@
 						>Payment Status</label
 					>
 					<select
-						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						id="payment-status"
 						required
 						v-model="vehicle.payment_status">
@@ -163,7 +163,7 @@
 						>Membership Status</label
 					>
 					<select
-						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						id="membership-status"
 						required
 						v-model="vehicle.membership_status">
@@ -189,7 +189,7 @@
 					<input
 						type="date"
 						id="cover-period-starts"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="Enter Customer Name as Seen In Their National ID"
 						pattern="\d{4}-\d{2}-\d{2}"
 						required
@@ -206,7 +206,7 @@
 					<input
 						type="date"
 						id="cover-period-ends"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="Enter Customer Name as Seen In Their National ID"
 						pattern="\d{4}-\d{2}-\d{2}"
 						required
@@ -312,7 +312,13 @@
 		},
 	]);
 
-	async function registerIndividualMember(): Promise<void> {
+	watch(clientPhoneNumber, (newNumber) => {
+		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
+			clientPhoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
+		}
+	});
+
+	const registerIndividualMember = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		let membershipId = 0;
 
@@ -368,5 +374,5 @@
 			formSubmissionLoading.value = false;
 			openToast("Request failed. Please try again!", "danger");
 		}
-	}
+	};
 </script>

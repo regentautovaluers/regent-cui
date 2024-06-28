@@ -101,44 +101,36 @@
 		name: "new-member",
 		layout: "in-app-layout",
 	});
-	const membershipTypes: Ref<any[]> = ref([]);
+
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 
-	function cleanupMembershipBenefits(inputString: string) {
-		// Step 1: Parse the string into an array
+	const cleanupMembershipBenefits = (inputString: string) => {
 		let array = JSON.parse(inputString);
-
-		// Step 2: Iterate over the array to clean each string
 		let cleanedArray = array.map((item: string) => {
-			// Remove unnecessary characters (e.g., backslashes)
 			let cleanedItem = item.replace(/\\/g, "");
-			// Ensure the string is properly formatted as a sentence
 			cleanedItem =
 				cleanedItem.charAt(0).toUpperCase() + cleanedItem.slice(1);
 			return cleanedItem;
 		});
 
-		// Step 3: Return the cleaned array
 		return cleanedArray;
-	}
+	};
 
-	try {
-		await $fetch("/api/v1/control-unit/membershiptypes", {
+	const { data: membershipTypes } = useFetch(
+		"/api/v1/control-unit/membershiptypes",
+		{
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: "GET",
 			async onResponse({ response }) {
+				console.log("response data: ", response._data);
 				if (response.status !== 200) {
-					throw new Error("Failed to retrieve membership types");
+					openToast(
+						"Failed to load  membership types. Reload page!",
+						"danger"
+					);
 				}
-				membershipTypes.value = response._data;
 			},
-		});
-	} catch (error) {
-		console.log("An error occured: ", error);
-		openToast(
-			"Failed to load available memberships. Reload page!",
-			"danger"
-		);
-	}
+		}
+	) as any;
 </script>

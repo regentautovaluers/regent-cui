@@ -462,12 +462,6 @@
 	});
 
 	const currentTable: Ref<number> = ref(0);
-
-	const {
-		capitalizeFirstLetterOfEachWord,
-		lowerCaseEachLetter,
-		toTitleCase,
-	} = useUtils();
 	const {
 		fetchRecentValuations,
 		fetchPendingValuations,

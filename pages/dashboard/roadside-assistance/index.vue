@@ -360,7 +360,6 @@
 		totalNumber,
 	} = useGeneralMemberships();
 	const { recentIncidentsCol, makeServiceTypeFriendly } = useIncidents();
-	const { formatServerProvidedDateTime } = useUtils();
 
 	const subLinksInfo: any[] = [
 		{

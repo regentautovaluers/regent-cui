@@ -159,7 +159,6 @@
 </template>
 
 <script setup lang="ts">
-	const { capitalizeFirstLetterOfEachWord } = useUtils();
 	const formSubmissionLoading = ref(false);
 	async function createAuthorizationLetterRequestHandler(): Promise<void> {}
 </script>

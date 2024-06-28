@@ -1,10 +1,10 @@
 <template>
-	<div class="py-10 bg-[#f6f9f2] responsive-view h-full">
+	<div class="py-5 bg-[#f6f9f2] responsive-view h-full">
 		<div class="bg-white w-full p-10 px-2 lg:px-10">
 			<div class="flex items-center justify-end py-4">
 				<button
 					type="button"
-					class="px-4 mt-7 w-full lg:w-1/3 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+					class="py-3 px-4 mt-7 w-full lg:w-1/4 text-lg items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
 					@click="() => (showAddToFleetsForm = !showAddToFleetsForm)">
 					{{ showAddToFleetsForm ? "Hide Form" : "Create New Fleet" }}
 				</button>
@@ -14,9 +14,8 @@
 					Add To Your Fleets
 				</h1>
 				<p class="text-lg text-gray-500">
-					Note that each fleet you add using this form will be shown
-					to you as one of your corporate options when you make a bulk
-					membership registration.
+					Note that each fleet you add will appear as one of your
+					corporate options for a bulk membership registration.
 				</p>
 				<CreateNewFleet />
 			</div>
@@ -33,7 +32,7 @@
 			<div class="flex flex-col">
 				<div class="-m-1.5 overflow-x-auto">
 					<div class="p-1.5 min-w-full inline-block align-middle">
-						<div class="border rounded-sm shadow overflow-hidden">
+						<div class="border rounded-lg shadow overflow-hidden">
 							<table class="min-w-full divide-y">
 								<thead>
 									<tr>
@@ -102,38 +101,25 @@
 	const runtimeConfig = useRuntimeConfig();
 	const corporateFleets: Ref<Object[] | null> = ref(null);
 	const showAddToFleetsForm: Ref<boolean> = ref(false);
-	const formSubmissionLoading: Ref<boolean> = ref(false);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
-	onMounted(async () => {
-		fetchErrorOrEmpty.value = true;
-		try {
-			await $fetch(
-				`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
-				{
-					baseURL: runtimeConfig.public.AVA_BASE_URL,
-					method: "GET",
 
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							openToast(
-								"Failed to retrieve fleets. Try again!",
-								"danger"
-							);
-						}
+	await useFetch(`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`, {
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: "GET",
+		server: false,
+		lazy: false,
 
-						corporateFleets.value = response._data;
-						if (
-							corporateFleets.value &&
-							corporateFleets.value?.length > 0
-						)
-							fetchErrorOrEmpty.value = false;
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			formSubmissionLoading.value = false;
-			openToast("Request failed. Please try again!", "danger");
-		}
+		onResponse({ response }) {
+			if (response.status !== 200) {
+				openToast("Failed to retrieve fleets. Try again!", "danger");
+			}
+
+			corporateFleets.value = response._data;
+			if (corporateFleets.value && corporateFleets.value?.length > 0) {
+				fetchErrorOrEmpty.value = false;
+			} else {
+				fetchErrorOrEmpty.value = true;
+			}
+		},
 	});
 </script>
