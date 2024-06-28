@@ -144,7 +144,7 @@
 		deleteMembershipLoading.value = true;
 		try {
 			await $fetch(`/api/v1/membershipVehicles/${membershipId}`, {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
 				method: "DELETE",
 				async onResponse({ response }) {
 					if (response.status !== 204) {

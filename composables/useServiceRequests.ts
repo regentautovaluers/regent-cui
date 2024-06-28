@@ -29,113 +29,54 @@ export default function () {
 		hasSpareTyre: boolean | null
 	) {
 		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/mobile/${endpointVarName}`,
-				{
-					method: "POST",
-					body: JSON.stringify({
-						appUserName: userName,
-						corporate_client: getPrincipal.value.corpId,
-						appUserPhone: userPhoneNumber,
-						...(userEmail !== undefined
-							? { appUserEmail: userEmail }
-							: {}),
-						appServiceType: serviceType,
-						appRegistration: vehicleRegistration,
-						vehicle_make: vehicleMake,
-						vehicle_model: vehicleModel,
-						appCategory: category,
-						appDuration: arrivalDuration,
-						appDistance: arrivalDistance,
-						appCost: serviceCost,
-						appPickupPoint: pickupPoint,
-						appPickupLat: pickupLatitude,
-						appPickupLon: pickupLongitude,
-						appDestinationPoint: destinationPoint,
-						appDestinationLat: destinationLatitude,
-						appDestinationLon: destinationLongitude,
-						...(vehicleClass !== null
-							? { vehicleClass: vehicleClass }
-							: {}),
-						...(requestRemarks !== null
-							? { appRemarks: requestRemarks }
-							: {}),
-						...(fuelType !== null ? { appFuelType: fuelType } : {}),
-						...(fuelAmount !== null
-							? { appFuelAmount: fuelAmount }
-							: {}),
-						...(tyreType !== null ? { tyreType: tyreType } : {}),
-						...(hasSpareTyre !== null
-							? { hasSpareTyre: hasSpareTyre }
-							: {}),
-					}),
+			await $fetch(`/api/v1/mobile/${endpointVarName}`, {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: "POST",
+				body: JSON.stringify({
+					appUserName: userName,
+					corporate_client: getPrincipal.value.corpId,
+					appUserPhone: userPhoneNumber,
+					...(userEmail !== undefined
+						? { appUserEmail: userEmail }
+						: {}),
+					appServiceType: serviceType,
+					appRegistration: vehicleRegistration,
+					vehicle_make: vehicleMake,
+					vehicle_model: vehicleModel,
+					appCategory: category,
+					appDuration: arrivalDuration,
+					appDistance: arrivalDistance,
+					appCost: serviceCost,
+					appPickupPoint: pickupPoint,
+					appPickupLat: pickupLatitude,
+					appPickupLon: pickupLongitude,
+					appDestinationPoint: destinationPoint,
+					appDestinationLat: destinationLatitude,
+					appDestinationLon: destinationLongitude,
+					...(vehicleClass !== null
+						? { vehicleClass: vehicleClass }
+						: {}),
+					...(requestRemarks !== null
+						? { appRemarks: requestRemarks }
+						: {}),
+					...(fuelType !== null ? { appFuelType: fuelType } : {}),
+					...(fuelAmount !== null
+						? { appFuelAmount: fuelAmount }
+						: {}),
+					...(tyreType !== null ? { tyreType: tyreType } : {}),
+					...(hasSpareTyre !== null
+						? { hasSpareTyre: hasSpareTyre }
+						: {}),
+				}),
 
-					async onResponse({ response }) {
-						if (response.status !== 201) {
-							throw new Error("Member details not updated.");
-						} else {
-							console.log("Making duplicate request...");
-							await $fetch(
-								`${runtimeConfig.public.AVA_BASE_URL}/Dispatch/websiteCreate`,
-								{
-									method: "POST",
-									headers: {
-										"Content-Type":
-											"application/x-www-form-urlencoded",
-									},
-									query: {
-										appUserName: userName,
-										corporate_client:
-											getPrincipal.value.corpId,
-										appUserPhone: userPhoneNumber,
-										...(userEmail !== undefined
-											? { appUserEmail: userEmail }
-											: {}),
-										appServiceType: serviceType,
-										appRegistration: vehicleRegistration,
-										vehicle_make: vehicleMake,
-										vehicle_model: vehicleModel,
-										appCategory: category,
-										appDuration: arrivalDuration,
-										appDistance: arrivalDistance,
-										appCost: serviceCost,
-										appPickupPoint: pickupPoint,
-										appPickupLat: pickupLatitude,
-										appPickupLon: pickupLongitude,
-										appDestinationPoint: destinationPoint,
-										appDestinationLat: destinationLatitude,
-										appDestinationLon: destinationLongitude,
-										...(vehicleClass !== null
-											? { vehicleClass: vehicleClass }
-											: {}),
-										...(requestRemarks !== null
-											? { appRemarks: requestRemarks }
-											: {}),
-										...(fuelType !== null
-											? { appFuelType: fuelType }
-											: {}),
-										...(fuelAmount !== null
-											? { appFuelAmount: fuelAmount }
-											: {}),
-										...(tyreType !== null
-											? { tyreType: tyreType }
-											: {}),
-										...(hasSpareTyre !== null
-											? { hasSpareTyre: hasSpareTyre }
-											: {}),
-									},
-
-									async onResponse({ response }) {
-										if (response.status == 200) {
-											return;
-										}
-									},
-								}
-							);
-						}
-					},
-				}
-			);
+				async onResponse({ response }) {
+					if (response.status !== 201) {
+						throw new Error("Member details not updated.");
+					} else {
+						return;
+					}
+				},
+			});
 		} catch (error) {
 			console.log("Service request error encountered. Reason: ", error);
 			throw new Error("Service request not made!");

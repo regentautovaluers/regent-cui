@@ -212,25 +212,21 @@
 	async function registerBulkMember(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships/bulk`,
-				{
-					method: "POST",
-					body: JSON.stringify(processedFleetData.value),
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to create bulk memberships"
-							);
-						}
+			await $fetch("/api/v1/memberships/bulk", {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: "POST",
+				body: JSON.stringify(processedFleetData.value),
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Failed to create bulk memberships");
+					}
 
-						openToast(
-							"Bulk memberships created successfully.",
-							"success"
-						);
-					},
-				}
-			);
+					openToast(
+						"Bulk memberships created successfully.",
+						"success"
+					);
+				},
+			});
 		} catch (error) {
 			console.log("An error occured: ", error);
 			openToast("Operation failed. Please try again!", "danger");
@@ -332,9 +328,9 @@
 				registration: item[3],
 				start_date: formatExcelDate(item[4]),
 				end_date: formatExcelDate(item[5]),
-				make: "Default Make",
-				model: "Default Model",
-				color: "Default Color",
+				make: "N/A Make",
+				model: "N/A Model",
+				color: "N/A Color",
 				payment_status: "paid",
 				membership_status: "active",
 				recordedBy: getPrincipal.value.userId,
@@ -350,7 +346,7 @@
 			await $fetch(
 				`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
 				{
-					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
 					method: "GET",
 					async onResponse({ response }) {
 						if (response.status !== 200) {

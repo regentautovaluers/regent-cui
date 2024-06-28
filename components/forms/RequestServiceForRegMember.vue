@@ -471,62 +471,60 @@
 		if (vehicleRegistration.value !== "") {
 			vehicleSearchLoading.value = true;
 			try {
-				await $fetch(
-					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/bookings`,
-					{
-						method: "GET",
-						query: {
-							registration: vehicleRegistration.value,
-							corporateId: getPrincipal.value.corpId,
-						},
-						async onResponse({ response }) {
-							if (response.status === 404) {
-								openToast(
-									"Vehicle registration not found. Please search again!",
-									"warning"
-								);
-								vehicleRegistration.value = "";
-							} else {
-								openToast(
-									"Vehicle registration found. Necessary fields autohandled!",
-									"success"
-								);
+				await $fetch("/api/v1/bookings", {
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
+					method: "GET",
+					query: {
+						registration: vehicleRegistration.value,
+						corporateId: getPrincipal.value.corpId,
+					},
+					async onResponse({ response }) {
+						if (response.status === 404) {
+							openToast(
+								"Vehicle registration not found. Please search again!",
+								"warning"
+							);
+							vehicleRegistration.value = "";
+						} else {
+							openToast(
+								"Vehicle registration found. Necessary fields autohandled!",
+								"success"
+							);
 
-								// fill the needed fields
-								const registrationDetails = response._data;
-								console.log(
-									"Response data ENTER key: ",
-									registrationDetails
-								);
-								vehicleRegistration.value =
-									registrationDetails.membershipVehicle.registration;
-								userName.value =
-									registrationDetails.membership.full_name;
-								userPhoneNumber.value =
-									registrationDetails.membership.phone_number;
-								userEmail.value =
-									registrationDetails.membership.userEmail;
+							// fill the needed fields
+							const registrationDetails = response._data;
+							console.log(
+								"Response data ENTER key: ",
+								registrationDetails
+							);
+							vehicleRegistration.value =
+								registrationDetails.membershipVehicle.registration;
+							userName.value =
+								registrationDetails.membership.full_name;
+							userPhoneNumber.value =
+								registrationDetails.membership.phone_number;
+							userEmail.value =
+								registrationDetails.membership.userEmail;
 
-								vehicleMake.value =
-									registrationDetails.membershipVehicle.make;
-								vehicleModel.value =
-									registrationDetails.membershipVehicle.model;
-								distanceLeftForTowing.value =
-									registrationDetails.membershipVehicle
-										.available_free_distance === null
-										? 20
-										: Number(
-												registrationDetails
-													.membershipVehicle
-													.available_free_distance
-										  );
-								currentPercentage.value = calculatePercentage(
-									distanceLeftForTowing.value
-								);
-							}
-						},
-					}
-				);
+							vehicleMake.value =
+								registrationDetails.membershipVehicle.make;
+							vehicleModel.value =
+								registrationDetails.membershipVehicle.model;
+							distanceLeftForTowing.value =
+								registrationDetails.membershipVehicle
+									.available_free_distance === null
+									? 20
+									: Number(
+											registrationDetails
+												.membershipVehicle
+												.available_free_distance
+									  );
+							currentPercentage.value = calculatePercentage(
+								distanceLeftForTowing.value
+							);
+						}
+					},
+				});
 			} catch (error) {
 				console.log("An error occured: ", error);
 				openToast("Search failed. Please try again!", "danger");

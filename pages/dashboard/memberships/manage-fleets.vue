@@ -108,8 +108,9 @@
 		fetchErrorOrEmpty.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
+				`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
 				{
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
 					method: "GET",
 
 					async onResponse({ response }) {

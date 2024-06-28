@@ -34,36 +34,34 @@ export default function () {
 			fetchedPages.value = [];
 
 			try {
-				await $fetch(
-					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-					{
-						method: "GET",
-						query: {
-							corporateId: getPrincipal.value.corpId,
-							page: page.value,
-							size: size.value,
-							...(newValues[0] !== ""
-								? { searchTerm: newValues[0] }
-								: {}),
-							...(newValues[1] !== ""
-								? { category: newValues[1] }
-								: {}),
-						},
-						async onResponse({ response }) {
-							if (response.status !== 200) {
-								throw new Error(
-									"Failed to retrieve filtered corporate's members"
-								);
-							}
-							membersList.value = response._data.memberships;
-							totalPages.value = response._data.totalPages;
+				await $fetch("/api/v1/memberships", {
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
+					method: "GET",
+					query: {
+						corporateId: getPrincipal.value.corpId,
+						page: page.value,
+						size: size.value,
+						...(newValues[0] !== ""
+							? { searchTerm: newValues[0] }
+							: {}),
+						...(newValues[1] !== ""
+							? { category: newValues[1] }
+							: {}),
+					},
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve filtered corporate's members"
+							);
+						}
+						membersList.value = response._data.memberships;
+						totalPages.value = response._data.totalPages;
 
-							// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
-							// we dont fetch it again
-							fetchedPages.value.push(0);
-						},
-					}
-				);
+						// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
+						// we dont fetch it again
+						fetchedPages.value.push(0);
+					},
+				});
 			} catch (error) {
 				console.log("An error occured: ", error);
 				fetchErrorOrEmpty.value = true;
@@ -79,34 +77,32 @@ export default function () {
 		if (newValue > oldValue && !fetchedPages.value.includes(newValue)) {
 			try {
 				fetchingMoreData.value = false;
-				await $fetch(
-					`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-					{
-						method: "GET",
-						query: {
-							corporateId: getPrincipal.value.corpId,
-							page: newValue,
-							size: size.value,
-							...(searchFilterTerm.value !== ""
-								? { searchTerm: searchFilterTerm.value }
-								: {}),
-							...(searchMembershipCategory.value !== ""
-								? { category: searchMembershipCategory.value }
-								: {}),
-						},
-						async onResponse({ response }) {
-							if (response.status !== 200) {
-								throw new Error(
-									"Failed to retrieve corporate's members"
-								);
-							}
-							membersList.value = membersList?.value?.concat(
-								response._data.memberships
+				await $fetch("/api/v1/memberships", {
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
+					method: "GET",
+					query: {
+						corporateId: getPrincipal.value.corpId,
+						page: newValue,
+						size: size.value,
+						...(searchFilterTerm.value !== ""
+							? { searchTerm: searchFilterTerm.value }
+							: {}),
+						...(searchMembershipCategory.value !== ""
+							? { category: searchMembershipCategory.value }
+							: {}),
+					},
+					async onResponse({ response }) {
+						if (response.status !== 200) {
+							throw new Error(
+								"Failed to retrieve corporate's members"
 							);
-							fetchedPages.value.push(newValue);
-						},
-					}
-				);
+						}
+						membersList.value = membersList?.value?.concat(
+							response._data.memberships
+						);
+						fetchedPages.value.push(newValue);
+					},
+				});
 			} catch (error) {
 				console.log("An error occured: ", error);
 				openToast(
@@ -122,34 +118,32 @@ export default function () {
 	async function manualLoadInitialData() {
 		fetchErrorOrEmpty.value = true;
 		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-				{
-					method: "GET",
-					query: {
-						corporateId: getPrincipal.value.corpId,
-						page: page.value,
-						size: size.value,
-					},
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error(
-								"Failed to retrieve corporate's members"
-							);
-						}
-						membersList.value = response._data.memberships;
-						totalNumber.value = response._data.totalCount;
-						totalPages.value = response._data.totalPages;
+			await $fetch("/api/v1/memberships", {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: "GET",
+				query: {
+					corporateId: getPrincipal.value.corpId,
+					page: page.value,
+					size: size.value,
+				},
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error(
+							"Failed to retrieve corporate's members"
+						);
+					}
+					membersList.value = response._data.memberships;
+					totalNumber.value = response._data.totalCount;
+					totalPages.value = response._data.totalPages;
 
-						// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
-						// we dont fetch it again
-						fetchedPages.value.push(0);
-						if (membersList.value.length > 0) {
-							fetchErrorOrEmpty.value = false;
-						}
-					},
-				}
-			);
+					// we add page 0 to the list of fetchedPages so that when then user scrolls through the pages,
+					// we dont fetch it again
+					fetchedPages.value.push(0);
+					if (membersList.value.length > 0) {
+						fetchErrorOrEmpty.value = false;
+					}
+				},
+			});
 		} catch (error) {
 			console.log("An error occured: ", error);
 			fetchErrorOrEmpty.value = true;

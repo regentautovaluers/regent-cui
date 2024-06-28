@@ -20,7 +20,7 @@
     }
 
     .generic-input {
-        @apply py-4 px-3 block w-full border-gray-200 valid:border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none disabled:text-gray-500;
+        @apply py-4 px-3 block w-full border-gray-200 valid:border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none disabled:text-gray-500;
     }
 
     .form-submit {

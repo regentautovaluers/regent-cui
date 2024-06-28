@@ -141,7 +141,7 @@
 			await $fetch(
 				`/api/v1/membershipVehicles/${route.query.membershipId}`,
 				{
-					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
 					method: "PATCH",
 					body: JSON.stringify({
 						registration: vehicleRegistration.value,

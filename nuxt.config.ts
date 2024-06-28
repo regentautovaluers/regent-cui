@@ -53,7 +53,6 @@ export default defineNuxtConfig({
 	plugins: ["~/plugins/preline.client.ts", "~/plugins/chart.ts"],
 	runtimeConfig: {
 		public: {
-			DEV_TIME_HOST: process.env.DEV_TIME_HOST,
 			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 			AVA_BASE_URL: process.env.AVA_BASE_URL,
 		},

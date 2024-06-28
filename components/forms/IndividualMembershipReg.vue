@@ -317,35 +317,33 @@
 		let membershipId = 0;
 
 		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships`,
-				{
-					method: "POST",
-					body: JSON.stringify({
-						full_name: clientFullName.value,
-						phone_number: clientPhoneNumber.value,
-						userEmail: clientEmail.value,
-						corporateId: getPrincipal.value.corpId,
-						category: "individual",
-						recordedBy: getPrincipal.value.userId,
-					}),
+			await $fetch("/api/v1/memberships", {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: "POST",
+				body: JSON.stringify({
+					full_name: clientFullName.value,
+					phone_number: clientPhoneNumber.value,
+					userEmail: clientEmail.value,
+					corporateId: getPrincipal.value.corpId,
+					category: "individual",
+					recordedBy: getPrincipal.value.userId,
+				}),
 
-					async onResponse({ response }) {
-						console.log(response._data);
-						if (response.status === 201) {
-							membershipId = response._data.id;
-						} else if (response.status === 400) {
-							formErrorMessage.value = response._data.message;
-							openToast("Please check your data!", "warning");
-							formSubmissionLoading.value = false;
-						} else {
-							throw new Error("Something went wrong");
-						}
-					},
-				}
-			).then(async () => {
+				async onResponse({ response }) {
+					console.log(response._data);
+					if (response.status === 201) {
+						membershipId = response._data.id;
+					} else if (response.status === 400) {
+						formErrorMessage.value = response._data.message;
+						openToast("Please check your data!", "warning");
+						formSubmissionLoading.value = false;
+					} else {
+						throw new Error("Something went wrong");
+					}
+				},
+			}).then(async () => {
 				await $fetch("/api/v1/membershipVehicles", {
-					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
 					method: "POST",
 					body: JSON.stringify({
 						membershipId: membershipId,

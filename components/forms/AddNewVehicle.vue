@@ -194,7 +194,7 @@
 
 	try {
 		await $fetch("/api/v1/control-unit/membershiptypes", {
-			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: "GET",
 			async onResponse({ response }) {
 				if (response.status !== 200) {
@@ -228,7 +228,7 @@
 
 		try {
 			await $fetch("/api/v1/membershipVehicles", {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
 				method: "POST",
 				body: JSON.stringify({
 					membershipId: membershipId,
