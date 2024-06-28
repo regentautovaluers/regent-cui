@@ -139,8 +139,9 @@
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/${route.query.membershipId}`,
+				`/api/v1/membershipVehicles/${route.query.membershipId}`,
 				{
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
 					method: "PATCH",
 					body: JSON.stringify({
 						registration: vehicleRegistration.value,

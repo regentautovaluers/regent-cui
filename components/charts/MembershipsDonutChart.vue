@@ -38,27 +38,23 @@
 		},
 	});
 	try {
-		await $fetch(
-			`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/corp/reports/donut-graph-data`,
-			{
-				method: "GET",
-				query: {
-					corporateId: getPrincipal.value.corpId,
-				},
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
-						);
-					}
+		await $fetch("/api/v1/corp/reports/donut-graph-data", {
+			baseURL: runtimeConfig.public.AVA_BASE_URL,
+			method: "GET",
+			query: {
+				corporateId: getPrincipal.value.corpId,
+			},
+			async onResponse({ response }) {
+				if (response.status !== 200) {
+					throw new Error("Failed to retrieve corporate's members");
+				}
 
-					totalActive.value = response._data.active;
-					totalInactive.value = response._data.inactive;
-					totalPaid.value = response._data.paid;
-					totalUnpaid.value = response._data.unpaid;
-					totalMemberships.value = response._data.total;
-				},
-			}
-		);
+				totalActive.value = response._data.active;
+				totalInactive.value = response._data.inactive;
+				totalPaid.value = response._data.paid;
+				totalUnpaid.value = response._data.unpaid;
+				totalMemberships.value = response._data.total;
+			},
+		});
 	} catch (error) {}
 </script>

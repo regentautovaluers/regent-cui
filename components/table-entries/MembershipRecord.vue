@@ -143,24 +143,22 @@
 	async function deleteMembershipRecord(membershipId: number) {
 		deleteMembershipLoading.value = true;
 		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/membershipVehicles/${membershipId}`,
-				{
-					method: "DELETE",
-					async onResponse({ response }) {
-						if (response.status !== 204) {
-							throw new Error("Membership details not deleted.");
-						}
+			await $fetch(`/api/v1/membershipVehicles/${membershipId}`, {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: "DELETE",
+				async onResponse({ response }) {
+					if (response.status !== 204) {
+						throw new Error("Membership details not deleted.");
+					}
 
-						openToast(
-							"Member details deleted successfully.",
-							"success"
-						);
+					openToast(
+						"Member details deleted successfully.",
+						"success"
+					);
 
-						router.back();
-					},
-				}
-			);
+					router.back();
+				},
+			});
 		} catch (error) {
 			console.log("Error encountered. Reason: ", error);
 			openToast("Failed to delete member details. Try again!", "danger");

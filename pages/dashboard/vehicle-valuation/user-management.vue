@@ -6,6 +6,10 @@
 				<NuxtLink
 					v-for="(link, index) in [
 						{
+							text: 'My Account',
+							to: 'valuation-my-account',
+						},
+						{
 							text: 'Manage All Users',
 							to: 'valuation-manage-users',
 						},
@@ -13,10 +17,10 @@
 							text: 'Add New User',
 							to: 'valuation-users-add-user',
 						},
-						{
-							text: 'Update Details',
-							to: 'valuation-update-user-details',
-						},
+						// {
+						// 	text: 'Update Details',
+						// 	to: 'valuation-update-user-details',
+						// },
 					]"
 					:to="{ name: link.to }"
 					class="p-2 hover:bg-gray-100 rounded-lg whitespace-nowrap"

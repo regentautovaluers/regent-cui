@@ -1,8 +1,8 @@
 <template>
 	<form
 		class="rounded-2xl shadow px-6 py-6 border"
-		@submit.prevent="updateUserAccount">
-		<h1 class="font-semibold text-lg my-b">Update User</h1>
+		@submit.prevent="updateMyAccount">
+		<h1 class="font-semibold text-lg my-b">My Account</h1>
 		<div class="flex flex-col">
 			<label class="font-bold text-gray-500">Full Name</label>
 			<div class="flex w-full space-x-4">
@@ -47,7 +47,7 @@
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
-			<label class="font-bold text-gray-500">New Password</label>
+			<label class="font-bold text-gray-500">Password</label>
 			<div class="flex flex-grow">
 				<input
 					type="password"
@@ -66,46 +66,8 @@
 					class="generic-input"
 					placeholder="Underwriter"
 					required
+					disabled
 					v-model="companyRole" />
-			</div>
-		</div>
-		<div class="flex flex-col mt-3">
-			<label class="font-bold text-gray-500">Account Status</label>
-			<div class="flex flex-grow">
-				<select
-					class="generic-input"
-					id="account-status"
-					required
-					v-model="isAccountEnabled">
-					<option :value="false">Not Active</option>
-					<option :value="true">Active</option>
-				</select>
-			</div>
-		</div>
-		<div class="flex flex-col mt-3">
-			<label class="font-bold text-gray-500">User Privilege</label>
-			<div class="flex flex-grow space-x-4">
-				<label
-					class="flex items-center py-3 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
-					<span class="text-gray-500">Is A Normal User</span>
-					<input
-						type="radio"
-						value="role_corp_norm"
-						class="radio-buttons"
-						id="normal"
-						checked
-						v-model="userRole" />
-				</label>
-				<label
-					class="flex items-center py-3 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
-					<span class="text-gray-500">Is An Admin</span>
-					<input
-						type="radio"
-						value="role_corp_admin"
-						class="radio-buttons"
-						id="admin"
-						v-model="userRole" />
-				</label>
 			</div>
 		</div>
 		<div class="flex w-full mt-2 lg:w-1/3 items-center justify-center">
@@ -113,7 +75,7 @@
 				v-if="!formSubmissionLoading"
 				type="submit"
 				class="form-submit">
-				Update User Account
+				Update My Account
 			</button>
 			<looping-rhombuses-spinner
 				v-else
@@ -128,50 +90,19 @@
 	import { LoopingRhombusesSpinner } from "epic-spinners";
 
 	const runtimeConfig = useRuntimeConfig();
-	const route = useRoute();
 	const { getPrincipal } = useAuth();
 	const formSubmissionLoading = ref(false);
-	const firstName: Ref<string> = ref("");
-	const otherName: Ref<string> = ref("");
-	const email: Ref<string> = ref("");
-	const phoneNumber: Ref<string> = ref("");
+	const firstName: Ref<string> = ref(
+		getPrincipal.value.username.split(" ")[0]
+	);
+	const otherName: Ref<string> = ref(
+		getPrincipal.value.username.split(" ")[1]
+	);
+	const email: Ref<string> = ref(getPrincipal.value.email);
+	const phoneNumber: Ref<string> = ref(getPrincipal.value.phonenumber);
 	const password: Ref<string> = ref("");
-	const companyRole: Ref<string> = ref("");
-	const userRole: Ref<string> = ref("");
+	const companyRole: Ref<string> = ref(getPrincipal.value.roleInOrganization);
 	const { openToast } = useToast();
-	const isAccountEnabled: Ref<boolean> = ref(true);
-
-	useFetch("/api/v1/auth/corp-account/get-account", {
-		key: "userDetails",
-		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: "GET",
-		headers: {
-			Accept: "application/json",
-		},
-		query: {
-			userId: route.query.userId,
-		},
-		server: false,
-		lazy: false,
-		onResponse({ response }) {
-			if (response.status === 200) {
-				const responseData = response._data.data;
-				firstName.value = responseData.username.split(" ")[0];
-				otherName.value = responseData.username.split(" ")[1];
-				email.value = responseData.email;
-				phoneNumber.value = responseData.phoneNumber;
-				password.value = responseData.password;
-				companyRole.value = responseData.roleInOrganization;
-				userRole.value = responseData.userRoles[0].toLowerCase();
-				isAccountEnabled.value = responseData.accountEnabled;
-			} else {
-				openToast(
-					"Failed to retrieve account details. Try again!",
-					"danger"
-				);
-			}
-		},
-	});
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
@@ -187,7 +118,7 @@
 		return null;
 	});
 
-	async function updateUserAccount(): Promise<void> {
+	async function updateMyAccount(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/v1/auth/corp-account/update-account-details", {
@@ -198,15 +129,14 @@
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					userId: route.query.userId,
+					userId: getPrincipal.value.userId,
 					firstName: firstName.value,
 					lastName: otherName.value,
 					email: email.value,
 					phoneNumber: phoneNumber.value,
 					newPassword: computedPassword.value,
 					roleInOrganization: companyRole.value,
-					isAccountEnabled: isAccountEnabled.value,
-					userRoles: [userRole.value],
+					isAccountEnabled: true,
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {

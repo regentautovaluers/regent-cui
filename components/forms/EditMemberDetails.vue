@@ -74,28 +74,23 @@
 	async function updateMemberDetails(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/memberships/${route.query.memberId}`,
-				{
-					method: "PATCH",
-					body: JSON.stringify({
-						full_name: clientName.value,
-						phone_number: clientPhone.value,
-						userEmail: clientEmail.value,
-					}),
+			await $fetch("api/v1/memberships/${route.query.memberId}", {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: "PATCH",
+				body: JSON.stringify({
+					full_name: clientName.value,
+					phone_number: clientPhone.value,
+					userEmail: clientEmail.value,
+				}),
 
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error("Member details not updated.");
-						}
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error("Member details not updated.");
+					}
 
-						openToast(
-							"Member details updated successfully",
-							"success"
-						);
-					},
-				}
-			);
+					openToast("Member details updated successfully", "success");
+				},
+			});
 		} catch (error) {
 			console.log("Error encountered. Reason: ", error);
 			openToast("Failed to update member details. Try again!", "danger");

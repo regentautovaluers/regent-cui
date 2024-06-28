@@ -61,8 +61,6 @@ const useAuth = () => {
 				}),
 
 				onResponse({ response }) {
-					console.log("response data: ", response._data);
-					console.log("response status: ", response.status);
 					switch (response.status) {
 						case 401: {
 							loginSuccess.value = false;

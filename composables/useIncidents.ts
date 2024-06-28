@@ -125,8 +125,9 @@ export default function () {
 		fetchErrorOrEmpty.value = true;
 		try {
 			await $fetch(
-				`${runtimeConfig.public.DEV_TIME_HOST}/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
+				`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
 				{
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
 					method: "GET",
 					async onResponse({ response }) {
 						if (response.status !== 200) {
