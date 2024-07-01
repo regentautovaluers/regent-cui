@@ -4,24 +4,7 @@
 		<div class="flex space-x-4">
 			<div class="h-full flex flex-col space-y-1 w-[16%] min-w-1/6">
 				<NuxtLink
-					v-for="(link, index) in [
-						{
-							text: 'My Account',
-							to: 'valuation-my-account',
-						},
-						{
-							text: 'Manage All Users',
-							to: 'valuation-manage-users',
-						},
-						{
-							text: 'Add New User',
-							to: 'valuation-users-add-user',
-						},
-						// {
-						// 	text: 'Update Details',
-						// 	to: 'valuation-update-user-details',
-						// },
-					]"
+					v-for="(link, index) in computedInternalLinks"
 					:to="{ name: link.to }"
 					class="p-2 hover:bg-gray-100 rounded-lg whitespace-nowrap"
 					:class="
@@ -47,5 +30,43 @@
 	definePageMeta({
 		name: "valuation-user-management",
 		layout: "in-app-layout",
+	});
+
+	type InternalLink = {
+		text: string;
+		to: string;
+		forAdminOnly: boolean;
+	};
+
+	const { isPrincipalAdmin } = useAuth();
+	const internalLinks: InternalLink[] = [
+		{
+			text: "My Account",
+			to: "valuation-my-account",
+			forAdminOnly: false,
+		},
+		{
+			text: "Manage All Users",
+			to: "valuation-manage-users",
+			forAdminOnly: true,
+		},
+		{
+			text: "Add New User",
+			to: "valuation-users-add-user",
+			forAdminOnly: true,
+		},
+		// {
+		// 	text: 'Update Details',
+		// 	to: 'valuation-update-user-details',
+		// },
+	];
+
+	const computedInternalLinks: ComputedRef<InternalLink[]> = computed(() => {
+		return internalLinks.filter((link) => {
+			if (link.forAdminOnly) {
+				return isPrincipalAdmin();
+			}
+			return true;
+		});
 	});
 </script>
