@@ -92,6 +92,21 @@ const useAuth = () => {
 			loginAttemptLoading.value = false;
 		}
 	};
+
+	const isPrincipalAdmin = (): boolean => {
+		let isAdmin = false;
+
+		if (
+			authenticatedPrincipal.value.roles.includes(
+				"role_corp_admin".toUpperCase()
+			)
+		) {
+			isAdmin = true;
+		}
+
+		return isAdmin;
+	};
+
 	const setCredentialsInBrowserStorage = (data: any) => {
 		// set the principal
 		const principal: LoggedInPrincipal = {
@@ -145,6 +160,7 @@ const useAuth = () => {
 		getAuthToken,
 		getCsrfToken,
 		attemptLogin,
+		isPrincipalAdmin,
 		logout,
 	};
 };
