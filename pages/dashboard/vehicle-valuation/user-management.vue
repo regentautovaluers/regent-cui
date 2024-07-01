@@ -2,7 +2,7 @@
 	<div class="py-10 responsive-view h-fit">
 		<h1 class="text-xl my-5 md:text-3xl font-semibold">Actions</h1>
 		<div class="flex space-x-4">
-			<div class="h-full flex flex-col space-y-1 w-[12%] min-w-1/6">
+			<div class="h-full flex flex-col space-y-1 w-[16%] min-w-1/6">
 				<NuxtLink
 					v-for="(link, index) in [
 						{
@@ -33,7 +33,7 @@
 					>{{ link.text }}</NuxtLink
 				>
 			</div>
-			<div class="h-full w-[70%]">
+			<div class="h-full w-[65%]">
 				<NuxtPage />
 			</div>
 			<div class="h-full flex-grow flex justify-center items-center">
