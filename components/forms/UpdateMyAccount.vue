@@ -70,12 +70,12 @@
 					v-model="companyRole" />
 			</div>
 		</div>
-		<div class="flex w-full mt-2 lg:w-1/3 items-center justify-center">
+		<div class="flex mt-3 items-center justify-center">
 			<button
 				v-if="!formSubmissionLoading"
 				type="submit"
 				class="form-submit">
-				Update My Account
+				Update Account Details
 			</button>
 			<looping-rhombuses-spinner
 				v-else
