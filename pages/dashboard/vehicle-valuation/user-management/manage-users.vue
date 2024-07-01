@@ -25,7 +25,7 @@
 								<th
 									scope="col"
 									class="px-6 py-3 text-start font-bold text-gray-500">
-									Corporate Role
+									Role
 								</th>
 								<th
 									scope="col"
