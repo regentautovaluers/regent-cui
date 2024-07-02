@@ -62,7 +62,7 @@ export type LoggedInPrincipal = {
 	email: string;
 	phonenumber: string;
 	roles: string[];
-	profilePicture: string | null;
+	profilePicture: string;
 	corpId: string;
 	corpName: string;
 	roleInOrganization: string;

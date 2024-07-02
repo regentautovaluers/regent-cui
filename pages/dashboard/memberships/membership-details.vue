@@ -142,33 +142,31 @@
 	const memberVehiclesList: Ref<any[]> = ref([]);
 	const route = useRoute();
 
-	try {
-		await $fetch(
-			`/api/v1/membershipVehicles/membership/${route.query.id}`,
-			{
-				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "GET",
-				async onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
-						);
-					}
-					memberVehiclesList.value = response._data;
-					clientFullName.value =
-						memberVehiclesList.value[0].membership.full_name;
-					clientEmail.value = !memberVehiclesList.value[0].membership
-						.userEmail
-						? "Email not provided"
-						: memberVehiclesList.value[0].membership.userEmail;
-					clientPhoneNumber.value =
-						memberVehiclesList.value[0].membership.phone_number;
-					numOfVehicles.value = memberVehiclesList.value.length;
-				},
+	useFetch(`/api/v1/membershipVehicles/membership/${route.query.id}`, {
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: "GET",
+		server: false,
+		lazy: true,
+		onResponse({ response }) {
+			if (response.status !== 200) {
+				throw new Error("Failed to retrieve corporate's members");
 			}
-		);
-	} catch (error) {
-		console.log("An error occured: ", error);
-		openToast("Failed to load your members. Reload page!", "danger");
-	}
+			memberVehiclesList.value = response._data;
+			clientFullName.value =
+				memberVehiclesList.value[0].membership.full_name;
+			clientEmail.value = !memberVehiclesList.value[0].membership
+				.userEmail
+				? "Email not provided"
+				: memberVehiclesList.value[0].membership.userEmail;
+			clientPhoneNumber.value =
+				memberVehiclesList.value[0].membership.phone_number;
+			numOfVehicles.value = memberVehiclesList.value.length;
+		},
+		onRequestError() {
+			openToast(
+				"Failed to retrieve member vehicles. Please try again",
+				"error"
+			);
+		},
+	}) as any;
 </script>

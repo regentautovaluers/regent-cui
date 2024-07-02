@@ -14,22 +14,24 @@
 						center.lat != Number.NEGATIVE_INFINITY &&
 						center.lat != Number.NEGATIVE_INFINITY
 					"
-					minWidth="500"
 					:options="{
 						position: center,
+						minWidth: 240,
 					}">
-					<div class="bg-purple-600 rounded-md p-2 text-white">
-						<h1 class="font-semibold text-lg">You Are Here</h1>
+					<div class="bg-blue-600 rounded-lg p-2 text-white">
+						<h1 class="font-semibold text-lg">
+							Your Current Location
+						</h1>
 					</div>
 				</InfoWindow>
 				<InfoWindow
 					v-for="(marker, index) in otherMarkers"
-					:ket="index"
-					minWidth="500"
+					:id="index"
 					:options="{
 						position: marker.coords,
+						minWidth: 240,
 					}">
-					<div class="bg-purple-600 rounded-md p-2 text-white">
+					<div class="bg-blue-600 rounded-lg p-2 text-white">
 						<h1 class="font-semibold text-lg">{{ marker.info }}</h1>
 					</div>
 				</InfoWindow>
@@ -42,8 +44,7 @@
 			<div
 				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500"
 				role="alert">
-				If the map adjacent to this form has not loaded properly, kindly
-				click
+				If the map adjacent to this form has not loaded, kindly click
 				<button @click="reloadPage">
 					<span class="font-semibold">Reload</span>
 				</button>
@@ -179,3 +180,9 @@
 		});
 	}
 </script>
+
+<style scoped>
+	.gm-style-iw > button {
+		display: none;
+	}
+</style>

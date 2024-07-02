@@ -64,9 +64,9 @@
 				<!-- profile information chip -->
 				<div class="flex items-center space-x-4">
 					<img
-						class="inline-block size-[50px] rounded-full"
-						src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-						alt="User Image" />
+						class="size-[50px] rounded-full object-cover"
+						:src="getPrincipal.profilePicture"
+						alt="Profile Picture" />
 					<div class="flex flex-col">
 						<span class="font-bold tracking">{{
 							getPrincipal.username
@@ -188,12 +188,13 @@
 
 <script setup lang="ts">
 	import applicationRoutes from "~/types/routes";
-	// macro imports
-	const route = useRoute();
 
+	const route = useRoute();
 	const notificationCount: Ref<number> = ref(10);
 	const messageCount: Ref<number> = ref(10);
 	const currentRoute: Ref<string | null> = ref(null);
+	const { getPrincipal, logout } = useAuth();
+
 	const computedCurrentRoute = computed((): string | null => {
 		if (route.name === "dashboard-home") {
 			return "Home";
@@ -208,11 +209,12 @@
 			  )
 			: null;
 	});
-	const { getPrincipal, logout } = useAuth();
 
-	function handleChangeCurrentRouteName(currentClickedRoute: string): void {
+	const handleChangeCurrentRouteName = (
+		currentClickedRoute: string
+	): void => {
 		currentRoute.value = currentClickedRoute;
-	}
+	};
 </script>
 
 <style scoped>

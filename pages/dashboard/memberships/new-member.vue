@@ -122,8 +122,9 @@
 		{
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: "GET",
+			server: false,
+			lazy: false,
 			async onResponse({ response }) {
-				console.log("response data: ", response._data);
 				if (response.status !== 200) {
 					openToast(
 						"Failed to load  membership types. Reload page!",

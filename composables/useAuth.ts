@@ -17,7 +17,7 @@ const useAuth = () => {
 			email: "",
 			phonenumber: "",
 			roles: [],
-			profilePicture: null,
+			profilePicture: "",
 			corpId: "",
 			corpName: "",
 			roleInOrganization: "",
@@ -107,6 +107,10 @@ const useAuth = () => {
 		return isAdmin;
 	};
 
+	const updateProfilePicture = (picture: string) => {
+		authenticatedPrincipal.value.profilePicture = picture;
+	};
+
 	const setCredentialsInBrowserStorage = (data: any) => {
 		// set the principal
 		const principal: LoggedInPrincipal = {
@@ -115,7 +119,10 @@ const useAuth = () => {
 			email: data.email,
 			phonenumber: data.phoneNumber,
 			roles: data.userRoles,
-			profilePicture: data.profilePicture,
+			profilePicture:
+				data.profilePicture === null
+					? "/images/profile-pic-placeholder.jpg"
+					: data.profilePicture,
 			corpId: data.corpId,
 			corpName: data.corpName,
 			roleInOrganization: data.roleInOrganization,
@@ -136,7 +143,7 @@ const useAuth = () => {
 			email: "",
 			phonenumber: "",
 			roles: [],
-			profilePicture: null,
+			profilePicture: "",
 			corpId: "",
 			corpName: "",
 			roleInOrganization: "",
@@ -161,6 +168,7 @@ const useAuth = () => {
 		getCsrfToken,
 		attemptLogin,
 		isPrincipalAdmin,
+		updateProfilePicture,
 		logout,
 	};
 };

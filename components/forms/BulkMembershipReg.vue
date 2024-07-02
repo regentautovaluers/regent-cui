@@ -315,9 +315,9 @@
 				registration: item[3],
 				start_date: item[4],
 				end_date: item[5],
-				make: "Make N/A",
-				model: "Model N/A",
-				color: "Color N/A",
+				make: "N/A",
+				model: "N/A",
+				color: "N/A",
 				payment_status: "paid",
 				membership_status: "active",
 				recordedBy: getPrincipal.value.userId,
@@ -342,6 +342,10 @@
 							throw new Error("Failed to retrieve fleets");
 						}
 						availableFleets.value = response._data;
+						console.log(
+							"Available fleets: ",
+							availableFleets.value
+						);
 						retrievingFleetList.value = false;
 					},
 				}

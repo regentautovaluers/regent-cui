@@ -12,14 +12,14 @@
 				<input
 					type="text"
 					id="registration-number"
-					class="py-3 px-4 h-[4.5rem] w-3/4 border-gray-200 peer rounded-s-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input rounded-e-none"
 					placeholder="Provide the registration number to search"
 					v-model="vehicleRegistration"
 					required />
 				<button
 					type="button"
 					@click="handleRegistrationInputEnterEvent"
-					class="py-3 px-4 w-1/4 text-lg h-[4.5rem] items-center font-semibold rounded-e-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+					class="py-3 w-1/4 text-lg items-center h-[3.6rem] font-semibold rounded-e-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
 					Find Vehicle
 					<div
 						v-if="vehicleSearchLoading"
@@ -65,7 +65,7 @@
 				<input
 					type="text"
 					id="vehicle-make"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g Toyota"
 					required
 					disabled
@@ -82,7 +82,7 @@
 				<input
 					type="text"
 					id="vehicle-model"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g Corolla"
 					required
 					disabled
@@ -132,7 +132,7 @@
 					>Tyre Type</label
 				>
 				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					id="fuel-type"
 					required
 					v-model="tyreType">

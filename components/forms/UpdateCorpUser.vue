@@ -129,7 +129,6 @@
 
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
-	const { getPrincipal } = useAuth();
 	const formSubmissionLoading = ref(false);
 	const firstName: Ref<string> = ref("");
 	const otherName: Ref<string> = ref("");
