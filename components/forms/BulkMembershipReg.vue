@@ -90,10 +90,10 @@
 				structure or their sequence.</span
 			>
 			<a
-				href="https://drive.google.com/uc?export=download&id=1fiHgaJHvdKTnlw3u4R9QdO1LJ6tSey_5"
+				href="https://drive.google.com/uc?export=download&id=1syIGY-pabxNe5iBrZxyJbRNpxcd3D_dE"
 				target="_top"
 				type="button"
-				class="py-3 px-4 w-full mt-3 h-16 items-center rounded-lg border-2 border-dashed border-[1.9px] text-white disabled:opacity-50 disabled:pointer-events-none inline-flex justify-between bg-pink-400 bg-opacity-50">
+				class="py-3 px-4 w-full mt-3 h-16 items-center rounded-lg border-dashed border-[1.9px] text-white disabled:opacity-50 disabled:pointer-events-none inline-flex justify-between bg-pink-400 bg-opacity-50">
 				<span class="text-pink-500">
 					Click here to intiate excel template download
 				</span>
