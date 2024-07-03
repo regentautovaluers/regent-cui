@@ -45,7 +45,7 @@
 						<template #iconSlot>
 							<img
 								src="/images/topnav/notification-icon.svg"
-								alt="" />
+								alt="Notification Icon" />
 						</template>
 						<template #countSlot>{{ messageCount }}</template>
 					</TopnavAccentBoxes>
@@ -53,7 +53,7 @@
 						<template #iconSlot>
 							<img
 								src="/images/topnav/message-chat-icon.svg"
-								alt="" />
+								alt="Chat Icon" />
 						</template>
 						<template #countSlot>
 							{{ notificationCount }}

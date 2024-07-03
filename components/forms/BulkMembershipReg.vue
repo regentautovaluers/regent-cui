@@ -82,16 +82,18 @@
 		</div>
 
 		<!-- Download Excel document -->
-		<h1 class="mt-16 text-2xl antialiased">Download Excel Template</h1>
+		<h1 class="mt-5 text-2xl antialiased">Download Excel Template</h1>
 		<div class="flex flex-col">
 			<span class="text-lg text-gray-500"
 				>Kindly download our Excel template and complete all columns
-				exactly as provided. Please refrain from altering the column
+				exactly as provided. Kindly refrain from altering the column
 				structure or their sequence.</span
 			>
-			<button
+			<a
+				href="https://drive.google.com/uc?export=download&id=1fiHgaJHvdKTnlw3u4R9QdO1LJ6tSey_5"
+				target="_top"
 				type="button"
-				class="py-3 px-4 w-full mt-3 h-16 items-center rounded-lg border-2 border-dotted text-white disabled:opacity-50 disabled:pointer-events-none inline-flex justify-between bg-pink-400 bg-opacity-50">
+				class="py-3 px-4 w-full mt-3 h-16 items-center rounded-lg border-2 border-dashed border-[1.9px] text-white disabled:opacity-50 disabled:pointer-events-none inline-flex justify-between bg-pink-400 bg-opacity-50">
 				<span class="text-pink-500">
 					Click here to intiate excel template download
 				</span>
@@ -99,11 +101,11 @@
 					name="material-symbols-light:cloud-download"
 					class="text-pink-400"
 					size="38" />
-			</button>
+			</a>
 		</div>
 
 		<!-- upload Excel document -->
-		<h1 class="mt-10 text-2xl antialiased">Upload Excel Document</h1>
+		<h1 class="mt-5 text-2xl antialiased">Upload Excel Document</h1>
 		<div class="flex flex-col">
 			<span class="text-lg text-gray-500"
 				>Please upload the completed document to proceed with your
@@ -185,10 +187,8 @@
 	const processedFleetData: Ref<bulkProcessedType[]> = ref([]);
 	const route = useRoute();
 	const currentPercentage = ref(0);
-	const availableFleets: Ref<any[]> = ref([]);
 	const { openToast } = useToast();
 	const selectedFleetId: Ref<number> = ref(0);
-	const retrievingFleetList: Ref<boolean> = ref(false);
 	const contactFullName: Ref<string> = ref("");
 	const contactPhoneNumber: Ref<string> = ref("");
 	const contactEmail: Ref<string> = ref("");
@@ -197,6 +197,17 @@
 	const currentProgress = ref("0%");
 	const reader = new FileReader();
 	const errorMessage: Ref<excelUploadErrMess | null> = ref(null);
+
+	const { data: availableFleets, pending: retrievingFleetList } = useFetch(
+		`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
+		{
+			baseURL: runtimeConfig.public.AVA_BASE_URL,
+			method: "GET",
+			onRequestError() {
+				openToast("Failed to retrieve fleets! Reload page!", "danger");
+			},
+		}
+	) as any;
 
 	watch(selectedFleetId, (newFleetId) => {
 		const fleetDetails: any = availableFleets.value.find(
@@ -328,34 +339,6 @@
 
 		console.log("Processed fleet data: ", processedFleetData.value);
 	}
-
-	onMounted(async () => {
-		retrievingFleetList.value = true;
-		try {
-			await $fetch(
-				`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
-				{
-					baseURL: runtimeConfig.public.AVA_BASE_URL,
-					method: "GET",
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error("Failed to retrieve fleets");
-						}
-						availableFleets.value = response._data;
-						console.log(
-							"Available fleets: ",
-							availableFleets.value
-						);
-						retrievingFleetList.value = false;
-					},
-				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			retrievingFleetList.value = false;
-			openToast("Failed to retrieve fleets! Reload page!", "danger");
-		}
-	});
 
 	// Handle the file reading events
 	function handleEvent(event: any) {

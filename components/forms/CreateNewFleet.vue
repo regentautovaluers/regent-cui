@@ -102,12 +102,8 @@
 	const createFleet = async () => {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/api/v1/fleets", {
-				baseUrl: runtimeConfig.public.AVA_BASE_URL,
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
+			await $fetch(`${runtimeConfig.public.AVA_BASE_URL}/api/v1/fleets`, {
+				// baseUrl: runtimeConfig.public.AVA_BASE_URL,
 				method: "POST",
 				body: JSON.stringify({
 					corporate: getPrincipal.value.corpId,
@@ -117,6 +113,7 @@
 					contact_email: contactEmail.value,
 					recordedBy: getPrincipal.value.userId,
 				}),
+
 				onResponse({ response }) {
 					console.log("Create fleet response body: ", response._data);
 					console.log(

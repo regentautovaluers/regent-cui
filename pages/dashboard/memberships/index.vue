@@ -5,8 +5,8 @@
 			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg">
 			<div class="flex space-x-2 items-center w-full md:w-fit">
 				<img
-					class="inline-block size-[60px] rounded-full"
-					src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+					class="size-[60px] rounded-full object-cover"
+					:src="getPrincipal.profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
 					<span

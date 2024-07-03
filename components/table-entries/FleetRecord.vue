@@ -94,7 +94,7 @@
 		contactEmail: string;
 		contactPhone: string;
 		registeredMembers: string;
-		fleetId: string;
+		fleetId: number;
 	}
 
 	const componentProps = defineProps<ComponentProps>();
