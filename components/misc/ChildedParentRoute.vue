@@ -103,7 +103,6 @@
 	export interface ComponentProps {
 		displayName: string;
 		routeName: string;
-		icon: string;
 		children: ApplicationChildRoute[];
 	}
 

@@ -297,10 +297,10 @@
 					<div class="flex flex-col justify-center items-center p-2">
 						<div
 							class="bg-gray-300 p-5 rounded-full flex justify-center items-center">
-							<img
+							<!-- <img
 								class="inline-block size-[66px]"
 								src="/icons/sidenav/memberships-icon.svg"
-								alt="Image Description" />
+								alt="Image Description" /> -->
 						</div>
 						<h1 class="text-xl font-semibold">Our Membership</h1>
 						<h2 class="font-semibold text-gray-600 text-lg">
