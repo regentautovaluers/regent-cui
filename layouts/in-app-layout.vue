@@ -22,7 +22,7 @@
 			</div>
 
 			<!-- div with the search box -->
-			<div class="relative flex-grow md:w-1/3">
+			<!-- <div class="relative flex-grow md:w-1/3">
 				<input
 					type="text"
 					class="peer py-3 px-4 ps-11 block w-full bg-gray-200 border-transparent rounded-2xl text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
@@ -33,7 +33,7 @@
 						src="/images/topnav/search-icon.svg"
 						alt="Search Icon" />
 				</div>
-			</div>
+			</div> -->
 			<!-- end of div with the search box -->
 
 			<!-- div with notifications, messages and profile information -->
@@ -49,7 +49,7 @@
 						</template>
 						<template #countSlot>{{ messageCount }}</template>
 					</TopnavAccentBoxes>
-					<TopnavAccentBoxes>
+					<!-- <TopnavAccentBoxes>
 						<template #iconSlot>
 							<img
 								src="/images/topnav/message-chat-icon.svg"
@@ -58,7 +58,7 @@
 						<template #countSlot>
 							{{ notificationCount }}
 						</template>
-					</TopnavAccentBoxes>
+					</TopnavAccentBoxes> -->
 				</div>
 
 				<!-- profile information chip -->
@@ -83,15 +83,15 @@
 		<div
 			id="docs-sidebar"
 			class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-80 bg-white border-e border-gray-200 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0">
-			<div class="px-6 py-8 sticky z-20 top-0 bg-white">
-				<a
-					class="flex-none text-xl font-semibold dark:text-white"
-					href="#"
+			<div class="py-4 sticky z-20 top-0 bg-white">
+				<NuxtLink
+					:to="{ name: 'dashboard-home' }"
 					aria-label="Brand"
 					><img
 						src="/images/regent-autovaluers-logo.svg"
+						class="object-cover md:w-[90%]"
 						alt="Regent Logo"
-				/></a>
+				/></NuxtLink>
 			</div>
 			<nav
 				class="hs-accordion-group w-full flex flex-col flex-wrap pl-6"
