@@ -92,12 +92,6 @@ const applicationRoutes: ApplicationRoute[] = [
 	},
 	{
 		id: 5,
-		displayName: "Support",
-		icon: "/icons/sidenav/support-icon.svg",
-		routeName: "dashboard-support",
-	},
-	{
-		id: 6,
 		displayName: "Memberships",
 		icon: "/icons/sidenav/memberships-icon.svg",
 		routeName: "memberships-home",
