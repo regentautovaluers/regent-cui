@@ -54,7 +54,7 @@ export const formatServerProvidedDate = (servDate: string) => {
 	}
 };
 
-const formatServerProvidedDateTime = (servDateTime: string): string => {
+export const formatServerProvidedDateTime = (servDateTime: string): string => {
 	try {
 		// Parse the date string to a Date object
 		const date = new Date(servDateTime);
