@@ -21,35 +21,20 @@
 				</h1>
 			</div>
 
-			<!-- div with the search box -->
-			<!-- <div class="relative flex-grow md:w-1/3">
-				<input
-					type="text"
-					class="peer py-3 px-4 ps-11 block w-full bg-gray-200 border-transparent rounded-2xl text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Search for vehicles, drivers and locations..." />
-				<div
-					class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-					<img
-						src="/images/topnav/search-icon.svg"
-						alt="Search Icon" />
-				</div>
-			</div> -->
-			<!-- end of div with the search box -->
-
 			<!-- div with notifications, messages and profile information -->
 			<div
 				class="flex items-center space-x-3 w-full md:w-1/3 justify-between md:justify-end mt-2 md:mt-0">
 				<!-- notifications & messages -->
 				<div class="flex space-x-3 mr-4">
-					<TopnavAccentBoxes>
+					<!-- <TopnavAccentBoxes>
 						<template #iconSlot>
 							<img
 								src="/images/topnav/notification-icon.svg"
 								alt="Notification Icon" />
 						</template>
 						<template #countSlot>{{ messageCount }}</template>
-					</TopnavAccentBoxes>
-					<!-- <TopnavAccentBoxes>
+					</TopnavAccentBoxes> -->
+					<TopnavAccentBoxes>
 						<template #iconSlot>
 							<img
 								src="/images/topnav/message-chat-icon.svg"
@@ -58,7 +43,7 @@
 						<template #countSlot>
 							{{ notificationCount }}
 						</template>
-					</TopnavAccentBoxes> -->
+					</TopnavAccentBoxes>
 				</div>
 
 				<!-- profile information chip -->
@@ -93,8 +78,8 @@
 						alt="Regent Logo"
 				/></NuxtLink>
 			</div>
-			<nav
-				class="hs-accordion-group w-full flex flex-col flex-wrap pl-6"
+			<div
+				class="hs-accordion-group w-full flex flex-col flex-wrap pl-2"
 				data-hs-accordion-always-open>
 				<ul class="space-y-1.5">
 					<!-- 'Home' route -->
@@ -128,49 +113,37 @@
 
 					<!-- 'Memberships' route -->
 					<ChildedParentRoute
-						:display-name="applicationRoutes[5].displayName"
-						:icon="applicationRoutes[5].icon"
-						:route-name="applicationRoutes[5].routeName"
-						:children="applicationRoutes[5].children"
+						:display-name="applicationRoutes[4].displayName"
+						:icon="applicationRoutes[4].icon"
+						:route-name="applicationRoutes[4].routeName"
+						:children="applicationRoutes[4].children"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
 						" />
 				</ul>
-			</nav>
+			</div>
 			<div class="mt-5">
 				<!-- Sidebar advertisement -->
-				<div class="mb-5 px-4">
-					<SidenavAdvertCarousel />
-				</div>
+
+				<SidenavAdvertCarousel />
 
 				<!-- Ending links -->
-				<ul class="space-y-1.5 flex flex-col flex-wrap pl-6">
+				<ul class="space-y-1.5 flex flex-col flex-wrap pl-2">
 					<!-- 'Settings' route -->
-					<ChildlessParentRoute
-						:display-name="applicationRoutes[4].displayName"
-						:icon="applicationRoutes[4].icon"
-						:route-name="applicationRoutes[4].routeName"
-						@change-current-route-name="
-							handleChangeCurrentRouteName
-						" />
-
-					<!-- 'Settings' route -->
-					<ChildlessParentRoute
+					<!-- <ChildlessParentRoute
 						:display-name="applicationRoutes[3].displayName"
 						:icon="applicationRoutes[3].icon"
 						:route-name="applicationRoutes[3].routeName"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
-						" />
+						" /> -->
 
 					<!-- 'Logout Button' -->
 					<li>
 						<button
-							class="flex items-center gap-x-3.5 w-full py-5 rounded-s-2xl px-2.5 bg-gray-100 hover:bg-gray-100 font-semibold border-r-4 border-r-blue-600 text-gray-500"
+							class="flex items-center gap-x-3.5 w-full py-4 rounded-s-xl px-2.5 bg-gray-100 transition duration-200 hover:bg-gray-200 font-semibold text-gray-500"
 							@click="logout">
-							<img
-								src="/icons/sidenav/logout-icon.svg"
-								alt="Route Icon" /><span>Logout</span>
+							<span>Logout</span>
 						</button>
 					</li>
 				</ul>
