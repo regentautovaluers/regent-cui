@@ -13,7 +13,8 @@
 					<select
 						class="generic-input"
 						id="fleet-name"
-						v-model="selectedFleetId">
+						v-model="selectedFleetId"
+						required>
 						<option :value="0">Select the Designated Fleet</option>
 						<option
 							v-for="(fleet, index) in availableFleets"
@@ -90,7 +91,7 @@
 				structure or their sequence.</span
 			>
 			<a
-				href="https://drive.google.com/uc?export=download&id=1syIGY-pabxNe5iBrZxyJbRNpxcd3D_dE"
+				href="https://drive.google.com/uc?export=download&id=17h3Nh3de8p4bQvxjgkEWnsfozGsIqG1p"
 				target="_top"
 				type="button"
 				class="py-3 px-4 w-full mt-3 h-16 items-center rounded-lg border-dashed border-[1.9px] text-white disabled:opacity-50 disabled:pointer-events-none inline-flex justify-between bg-pink-400 bg-opacity-50">
@@ -334,6 +335,7 @@
 				recordedBy: getPrincipal.value.userId,
 				category: "corporate",
 				fleetId: selectedFleetId.value,
+				bill: null
 			});
 		});
 
