@@ -146,7 +146,7 @@
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
 		method: "GET",
 		server: false,
-		lazy: true,
+		lazy: false,
 		onResponse({ response }) {
 			if (response.status !== 200) {
 				throw new Error("Failed to retrieve corporate's members");
