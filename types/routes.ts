@@ -4,13 +4,12 @@ const applicationRoutes: ApplicationRoute[] = [
 	{
 		id: 1,
 		displayName: "Home",
-		icon: "/icons/sidenav/home-icon.svg",
 		routeName: "dashboard-home",
+		children: null,
 	},
 	{
 		id: 2,
 		displayName: "Vehicle Valuation",
-		icon: "/icons/sidenav/vehicle-valuation-icon.svg",
 		routeName: "valuation-home",
 		children: [
 			// {
@@ -43,7 +42,6 @@ const applicationRoutes: ApplicationRoute[] = [
 	{
 		id: 3,
 		displayName: "Roadside Assistance",
-		icon: "/icons/sidenav/roadside-ass-icon.svg",
 		routeName: "ava-home",
 		children: [
 			{
@@ -87,13 +85,12 @@ const applicationRoutes: ApplicationRoute[] = [
 	{
 		id: 4,
 		displayName: "Settings",
-		icon: "/icons/sidenav/settings-icon.svg",
 		routeName: "dashboard-settings",
+		children: null,
 	},
 	{
 		id: 5,
 		displayName: "Memberships",
-		icon: "/icons/sidenav/memberships-icon.svg",
 		routeName: "memberships-home",
 		children: [
 			{

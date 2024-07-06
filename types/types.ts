@@ -8,9 +8,8 @@ export type ApplicationChildRoute = {
 export type ApplicationRoute = {
 	id: number;
 	displayName: string;
-	icon: string;
 	routeName: string;
-	children?: ApplicationChildRoute[];
+	children: ApplicationChildRoute[] | null;
 };
 
 export type bulkProcessedType = {

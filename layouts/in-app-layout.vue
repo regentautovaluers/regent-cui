@@ -85,7 +85,6 @@
 					<!-- 'Home' route -->
 					<ChildlessParentRoute
 						:display-name="applicationRoutes[0].displayName"
-						:icon="applicationRoutes[0].icon"
 						:route-name="applicationRoutes[0].routeName"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
@@ -94,9 +93,8 @@
 					<!-- 'Vehicle Valuation' route -->
 					<ChildedParentRoute
 						:display-name="applicationRoutes[1].displayName"
-						:icon="applicationRoutes[1].icon"
 						:route-name="applicationRoutes[1].routeName"
-						:children="applicationRoutes[1].children"
+						:children="applicationRoutes[1].children as ApplicationChildRoute[]"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
 						" />
@@ -104,9 +102,8 @@
 					<!-- 'Roadside Assistance' route -->
 					<ChildedParentRoute
 						:display-name="applicationRoutes[2].displayName"
-						:icon="applicationRoutes[2].icon"
 						:route-name="applicationRoutes[2].routeName"
-						:children="applicationRoutes[2].children"
+						:children="applicationRoutes[2].children as ApplicationChildRoute[]"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
 						" />
@@ -114,9 +111,8 @@
 					<!-- 'Memberships' route -->
 					<ChildedParentRoute
 						:display-name="applicationRoutes[4].displayName"
-						:icon="applicationRoutes[4].icon"
 						:route-name="applicationRoutes[4].routeName"
-						:children="applicationRoutes[4].children"
+						:children="applicationRoutes[4].children as ApplicationChildRoute[]"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
 						" />
@@ -161,6 +157,7 @@
 
 <script setup lang="ts">
 	import applicationRoutes from "~/types/routes";
+	import type { ApplicationChildRoute } from "~/types/types";
 
 	const route = useRoute();
 	const notificationCount: Ref<number> = ref(10);
