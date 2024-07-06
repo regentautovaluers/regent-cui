@@ -5,25 +5,24 @@
             "loadingClasses": "opacity-0",
             "isAutoPlay": true
         }'
-		class="relative">
+		class="relative px-2 my-2">
 		<div
-			class="hs-carousel relative overflow-hidden w-full min-h-[340px] bg-white rounded-lg">
+			class="hs-carousel relative overflow-hidden w-full h-[340px] bg-white rounded-lg">
 			<div
 				class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
 				<div
 					class="hs-carousel-slide"
 					v-for="(advertisement, index) in advertisements"
 					:key="index">
-					<div class="flex justify-center h-full bg-gray-100">
+					<div class="flex justify-center w-full h-full bg-gray-100">
 						<img
 							:src="advertisement"
 							alt="Image Advertisement"
-							class="w-full h-full" />
+							class="object-fill" />
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<div
 			class="hs-carousel-pagination flex justify-center absolute top-3 start-0 end-0 space-x-2">
 			<span

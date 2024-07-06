@@ -9,9 +9,7 @@
 				'bg-gray-100 border-r-[6px] border-r-blue-600 text-blue-600':
 					isActiveRoute,
 			}">
-			<img
-				:src="icon"
-				alt="Route Icon" />
+			<slot />
 			<nuxt-link
 				:to="{ name: componentProps.routeName }"
 				@click="
