@@ -8,14 +8,24 @@
 			</h2>
 		</div>
 		<div class="my-20 flex items-center whitespace-nowrap space-x-10">
-			<DashboardHomepageNavCards
+			<NuxtLink
 				v-for="(link, index) in availableMinifiedRoutes"
 				:key="index"
-				:image-link="link.imageLink"
-				:to-name="link.toName"
-				:link-text="link.linkText" />
+				:to="{ name: link.toName }"
+				class="inline-flex flex-col items-center space-y-2">
+				<div
+					class="p-3 bg-[#f6f9f2] border size-24 rounded-[2rem] flex items-center justify-center">
+					<img
+						:src="link.imageLink"
+						alt="Link Icon"
+						class="size-16" />
+				</div>
+				<span class="font-semibold text-gray-500">{{
+					link.linkText
+				}}</span></NuxtLink
+			>
 		</div>
-		
+
 		<!-- <div class="my-20 flex">
 			<div class="w-3/4 min-h-80 shadow-lg border rounded-xl p-4">
 				<div class="flex items-center justify-between">
@@ -95,7 +105,7 @@
 	// 	fetchCompleteErrorOrEmpty,
 	// 	firstTenComputedValuations,
 	// } = useValuations();
-	// 
+	//
 	const availableMinifiedRoutes: any[] = [
 		{
 			imageLink: "/icons/home-dashboard-icons/vehicle-valuation.svg",
@@ -137,7 +147,7 @@
 	.swiper-button-prev {
 		color: rgb(37 99 235); /* Change the color of the buttons */
 		background-color: white;
-		
+
 		padding: 2px;
 	}
 </style>
