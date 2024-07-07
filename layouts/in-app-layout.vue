@@ -30,7 +30,7 @@
 					<button
 						class="w-12 relative rounded-2xl h-12 bg-gray-300 justify-center items-center hs-tooltip-toggle flex size-10 text-sm font-semibold border border-gray-200 text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
 						<img
-							src="/images/topnav/message-chat-icon.svg"
+							src="/images/topnav/notification-icon.svg"
 							alt="Chat Icon" />
 						<span
 							class="inline-flex justify-center items-center p-2 absolute size-7 -top-2 -right-3 rounded-full text-xs font-medium bg-pink-600 text-white"
@@ -38,9 +38,10 @@
 						>
 					</button>
 					<div
-						class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-3 px-4 bg-[#f6f9f2] border text-sm text-gray-600 rounded-xl shadow-md h-[50rem] w-[27rem]"
+						class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 bg-[#f6f9f2] border text-sm text-gray-600 rounded-xl shadow-md h-[50rem] w-[27rem]"
 						role="tooltip">
-						Notification Drawer
+						<h1 class="text-xl font-semibold m-4">Notification Drawer</h1>
+						<hr />
 					</div>
 				</div>
 
