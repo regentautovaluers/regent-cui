@@ -2,11 +2,11 @@
 	<div class="py-10 h-full responsive-view">
 		<!-- top card with link to add new member -->
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg mb-6">
+			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl mb-6">
 			<div class="flex space-x-2 items-center w-full md:w-fit">
 				<img
-					class="inline-block size-[60px] rounded-full"
-					src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+					class="object-cover size-[60px] rounded-full"
+					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
 					<span
@@ -28,13 +28,13 @@
 				>
 				<NuxtLink
 					:to="{ name: 'new-member' }"
-					class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-md w-full md:w-fit text-center"
+					class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-xl w-full md:w-fit text-center"
 					>ADD A NEW MEMBER</NuxtLink
 				>
 			</div>
 		</div>
 		<div
-			class="flex flex-col md:flex-row items-center justify-around py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg mb-6">
+			class="flex whitespace-nowrap overflow-x-scroll items-center justify-around py-5 px-6 border-2 border-gray-200 shadow-sm rounded-xl mb-6">
 			<div
 				v-for="(info, index) in subLinksInfo"
 				:key="index"
@@ -43,7 +43,7 @@
 					<img
 						:src="info.icon"
 						alt="Sublink Icon"
-						class="size-6" />
+						class="size-7" />
 				</div>
 				<div class="flex flex-col space-y-2">
 					<span class="text-gray-600 font-semibold">{{
@@ -66,7 +66,7 @@
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 bg-gray-200 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							class="peer py-3 h-12 px-4 ps-11 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
 							placeholder="Search Name, Email, Phone or Registration"
 							v-model="searchFilterTerm" />
 						<div
@@ -84,13 +84,17 @@
 								<button
 									id="hs-dropdown-default"
 									type="button"
-									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 text-gray-800 shadow-sm"
+									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-xl border border-gray-200 text-gray-800 shadow-sm"
 									:class="
 										searchServiceType === ''
 											? 'bg-white text-black'
 											: 'bg-blue-600 text-white'
 									">
-									Service Type
+									{{
+										searchServiceType === ""
+											? "Service Type"
+											: searchServiceType
+									}}
 									<svg
 										class="hs-dropdown-open:rotate-180 size-4"
 										xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +172,7 @@
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
 							<div
-								class="border rounded-lg shadow overflow-hidden">
+								class="border rounded-xl shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -262,13 +266,11 @@
 					</div>
 				</div>
 			</div>
-			<!--left and analysis graph -->
-			<div class="md:w-[20%] space-y-6">
-				<div class="border shadow min-h-[26rem] rounded-lg">
-					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">Data Chart</h1>
-					</div>
-					<div class="flex justify-center">
+			<!--right analysis graphs -->
+			<div class="md:w-[20%] space-y-6 h-full">
+				<div class="border shadow min-h-[28rem] rounded-xl">
+					<h1 class="text-2xl font-semibold m-4">Data Chart</h1>
+					<div class="flex justify-center flex-grow">
 						<IncidentsDonutChart
 							:total-fuel-delivery="countFuelDelivery"
 							:total-jumpstarting="countJumpstarting"
@@ -276,7 +278,7 @@
 							:total-tyre-change="countTyreChange" />
 					</div>
 				</div>
-				<div class="border shadow min-h-[28rem] rounded-lg">
+				<div class="border shadow min-h-[28rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">
 							Road Rescue Trends
@@ -326,6 +328,7 @@
 		fetchErrorOrEmpty,
 		makeServiceTypeFriendly,
 	} = useIncidents();
+	const profilePicture: Ref<string> = ref("");
 
 	const subLinksInfo: any[] = [
 		{
@@ -346,11 +349,7 @@
 			link: "memberships-home",
 			text: "View All",
 		},
-		{
-			icon: "/icons/misc/roadside-comms-icon.svg",
-			title: "Communications",
-			link: "memberships-home",
-			text: "View Chats",
-		},
 	];
+
+	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
