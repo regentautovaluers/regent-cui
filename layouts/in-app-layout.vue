@@ -25,25 +25,23 @@
 			<div
 				class="flex items-center space-x-3 w-full md:w-1/3 justify-between md:justify-end mt-2 md:mt-0">
 				<!-- notifications & messages -->
-				<div class="flex space-x-3 mr-4">
-					<!-- <TopnavAccentBoxes>
-						<template #iconSlot>
-							<img
-								src="/images/topnav/notification-icon.svg"
-								alt="Notification Icon" />
-						</template>
-						<template #countSlot>{{ messageCount }}</template>
-					</TopnavAccentBoxes> -->
-					<TopnavAccentBoxes>
-						<template #iconSlot>
-							<img
-								src="/images/topnav/message-chat-icon.svg"
-								alt="Chat Icon" />
-						</template>
-						<template #countSlot>
-							{{ notificationCount }}
-						</template>
-					</TopnavAccentBoxes>
+				<div
+					class="flex space-x-3 mr-4 hs-tooltip [--trigger:click] [--placement:bottom]">
+					<button
+						class="w-12 relative rounded-2xl h-12 bg-gray-300 justify-center items-center hs-tooltip-toggle flex size-10 text-sm font-semibold border border-gray-200 text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+						<img
+							src="/images/topnav/message-chat-icon.svg"
+							alt="Chat Icon" />
+						<span
+							class="inline-flex justify-center items-center p-2 absolute size-7 -top-2 -right-3 rounded-full text-xs font-medium bg-pink-600 text-white"
+							>{{ notificationCount }}</span
+						>
+					</button>
+					<div
+						class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-3 px-4 bg-[#f6f9f2] border text-sm text-gray-600 rounded-xl shadow-md h-[50rem] w-[27rem]"
+						role="tooltip">
+						Notification Drawer
+					</div>
 				</div>
 
 				<!-- profile information chip -->
@@ -120,20 +118,10 @@
 			</div>
 			<div class="mt-5">
 				<!-- Sidebar advertisement -->
-
 				<SidenavAdvertCarousel />
 
 				<!-- Ending links -->
 				<ul class="space-y-1.5 flex flex-col flex-wrap pl-2">
-					<!-- 'Settings' route -->
-					<!-- <ChildlessParentRoute
-						:display-name="applicationRoutes[3].displayName"
-						:icon="applicationRoutes[3].icon"
-						:route-name="applicationRoutes[3].routeName"
-						@change-current-route-name="
-							handleChangeCurrentRouteName
-						" /> -->
-
 					<!-- 'Logout Button' -->
 					<li>
 						<button
@@ -160,7 +148,7 @@
 	import type { ApplicationChildRoute } from "~/types/types";
 
 	const route = useRoute();
-	const notificationCount: Ref<number> = ref(10);
+	const notificationCount: Ref<number> = ref(0);
 	const currentRoute: Ref<string | null> = ref(null);
 	const { getPrincipal, logout } = useAuth();
 	const profilePicture: Ref<string> = ref("");
