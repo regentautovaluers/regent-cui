@@ -54,7 +54,7 @@
 		<!-- End Progress Bar -->
 
 		<!-- Vehicle Make and Model -->
-		<div class="w-full flex space-x-4">
+		<div class="w-full flex space-x-4 mt-4">
 			<!-- Vehicle Make -->
 			<div class="w-full lg:w-1/2">
 				<label
@@ -91,41 +91,41 @@
 		</div>
 		<!-- tire metadata -->
 		<div
-			class="flex items-center space-x-4 my-5"
 			v-if="
 				componentProps.optionalElementsRendered.includes('tyreMetadata')
 			">
-			<div class="flex flex-col space-x-4 w-full lg:w-1/2">
-				<span class="font-medium whitespace-nowrap mb-2"
-					>Have Spare Tyre</span
-				>
-				<div class="flex space-x-4">
-					<div class="flex hover:bg-gray-200 rounded-lg items-center">
-						<input
-							type="radio"
-							name="spare-tyre"
-							:value="true"
-							class="shrink-0 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-							v-model="haveSpareTyre"
-							selected />
-						<label class="text-gray-500 ms-2 dark:text-gray-400"
-							>Yes</label
-						>
-					</div>
-					<div class="flex hover:bg-gray-200 rounded-lg items-center">
-						<input
-							type="radio"
-							name="spare-tyre"
-							:value="false"
-							class="shrink-0 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-							v-model="haveSpareTyre" />
-						<label class="text-gray-500 ms-2 dark:text-gray-400"
-							>No</label
-						>
-					</div>
+			<div class="space-y-2 my-4">
+				<div>
+					<input
+						id="button1"
+						type="radio"
+						name="radio-vertical-group"
+						class="hidden peer"
+						:value="true"
+						v-model="haveSpareTyre"
+						selected />
+					<label
+						for="button1"
+						class="radio-inputs">
+						Client Has a Spare Tyre
+					</label>
+				</div>
+				<div>
+					<input
+						id="button2"
+						type="radio"
+						name="radio-vertical-group"
+						class="hidden peer"
+						:value="false"
+						v-model="haveSpareTyre" />
+					<label
+						for="button2"
+						class="radio-inputs">
+						Client Does Not Have a Spare Tyre
+					</label>
 				</div>
 			</div>
-			<div class="w-full flex flex-col lg:w-1/2">
+			<div class="w-full flex flex-col mt-4">
 				<label
 					for="fuel-type"
 					class="font-medium whitespace-nowrap mb-2"
@@ -378,6 +378,7 @@
 	const componentEmits = defineEmits<{
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();
+	const testCheckbox: Ref<string> = ref("");
 	const {
 		pickupLatitude,
 		pickupLongitude,
