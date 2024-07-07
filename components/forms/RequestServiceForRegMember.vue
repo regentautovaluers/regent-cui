@@ -8,22 +8,22 @@
 				class="block font-medium mb-2 dark:text-white"
 				>Provide Vehicle Registration Number</label
 			>
-			<div class="flex items-center">
+			<div class="flex items-center space-x-2">
 				<input
 					type="text"
 					id="registration-number"
-					class="generic-input rounded-e-none"
+					class="generic-input"
 					placeholder="Provide the registration number to search"
 					v-model="vehicleRegistration"
 					required />
 				<button
 					type="button"
 					@click="handleRegistrationInputEnterEvent"
-					class="py-3 w-1/4 text-lg items-center h-[3.6rem] font-semibold rounded-e-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+					class="py-3 w-1/4 text-lg inline-flex space-x-2 justify-between px-2 items-center h-[3.6rem] font-semibold rounded-xl border border-transparent bg-blue-600 text-white hover:bg-blue-700">
 					Find Vehicle
 					<div
 						v-if="vehicleSearchLoading"
-						class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+						class="animate-spin inline-block size-4 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
 						role="status"
 						aria-label="loading" />
 				</button>
@@ -31,7 +31,7 @@
 		</div>
 		<!-- Progress Bar -->
 		<div
-			class="my-5"
+			class="my-3"
 			v-if="
 				componentProps.optionalElementsRendered.includes('progressBar')
 			">
@@ -201,7 +201,7 @@
 					>Fuel Type</label
 				>
 				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					id="fuel-type"
 					required
 					v-model="fuelType">
@@ -230,7 +230,7 @@
 					>Fuel Price</label
 				>
 				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					id="fuel-price"
 					v-model="fuelAmount"
 					required>
@@ -374,13 +374,11 @@
 	const haveSpareTyre: Ref<boolean> = ref(true);
 	const tyreType: Ref<string> = ref("");
 	const { openToast } = useToast();
-	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
+	const { makeServiceRequest } = useServiceRequests();
 	const componentEmits = defineEmits<{
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();
 	const {
-		bindToPickUpLocation,
-		bindToDropOffLocation,
 		pickupLatitude,
 		pickupLongitude,
 		destinationLongitude,
@@ -421,50 +419,33 @@
 		}
 	});
 
-	async function handleServiceReqFormSubmission() {
+	const handleServiceReqFormSubmission = async () => {
 		formSubmissionLoading.value = true;
-		try {
-			await makeServiceRequest(
-				determineEndpointVar(),
-				userName.value,
-				userPhoneNumber.value,
-				userEmail.value,
-				componentProps.backendServiceTypeName,
-				vehicleRegistration.value,
-				vehicleMake.value,
-				vehicleModel.value,
-				1, // TODO: figure out what this category value here is for
-				arrivalDuration.value,
-				arrivalDistance.value,
-				serviceCost.value,
-				pickupPointName.value,
-				pickupLatitude.value,
-				pickupLongitude.value,
-				dropOffPointName.value,
-				destinationLongitude.value,
-				destinationLatitude.value,
-				requestRemarks.value,
-				vehicleClass.value,
-				fuelType.value,
-				fuelAmount.value,
-				tyreType.value,
-				haveSpareTyre.value
-			).then(() => {
-				openToast(
-					`${componentProps.clientServiceTypeName} request succesfully went through!`,
-					"success"
-				);
-			});
-		} catch (err) {
-			console.log("Service request not made. Reason: ", err);
-			openToast(
-				`${componentProps.clientServiceTypeName} request failed to go thorugh!`,
-				"danger"
-			);
-		} finally {
-			formSubmissionLoading.value = false;
-		}
-	}
+		await makeServiceRequest(
+			userName.value,
+			userPhoneNumber.value,
+			userEmail.value,
+			componentProps.backendServiceTypeName,
+			vehicleRegistration.value,
+			vehicleMake.value,
+			vehicleModel.value,
+			arrivalDuration.value,
+			arrivalDistance.value,
+			serviceCost.value,
+			pickupPointName.value,
+			pickupLatitude.value,
+			pickupLongitude.value,
+			dropOffPointName.value,
+			destinationLongitude.value,
+			destinationLatitude.value,
+			requestRemarks.value,
+			vehicleClass.value,
+			fuelType.value,
+			fuelAmount.value,
+			tyreType.value,
+			haveSpareTyre.value
+		).then(() => (formSubmissionLoading.value = false));
+	};
 
 	async function handleRegistrationInputEnterEvent(): Promise<void> {
 		if (vehicleRegistration.value !== "") {
@@ -480,22 +461,15 @@
 					async onResponse({ response }) {
 						if (response.status === 404) {
 							openToast(
-								"Vehicle registration not found. Please search again!",
+								"Registration not found. Search again!",
 								"warning"
 							);
 							vehicleRegistration.value = "";
 						} else {
-							openToast(
-								"Vehicle registration found. Necessary fields autohandled!",
-								"success"
-							);
+							openToast("Registration found.", "success");
 
 							// fill the needed fields
 							const registrationDetails = response._data;
-							console.log(
-								"Response data ENTER key: ",
-								registrationDetails
-							);
 							vehicleRegistration.value =
 								registrationDetails.membershipVehicle.registration;
 							userName.value =
@@ -538,26 +512,10 @@
 	function calculatePercentage(freeDistance: number): number {
 		return (freeDistance * 100) / 20;
 	}
-
-	onMounted(async () => {
-		await bindToPickUpLocation().then(() => bindToDropOffLocation());
-	});
 </script>
 
 <style lang="css">
 	.progressbar {
 		width: v-bind(currentPercentage.value) %;
-	}
-
-	.pac-container {
-		border-radius: 10px;
-		margin-top: 2px;
-		box-shadow: 10px;
-	}
-
-	.pac-item {
-		padding-top: 6px;
-		padding-bottom: 6px;
-		font-size: 12px;
 	}
 </style>

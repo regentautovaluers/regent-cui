@@ -15,7 +15,7 @@
 				<input
 					type="text"
 					id="full-name"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="Client Name as On Their National ID"
 					v-model="userName"
 					required />
@@ -31,7 +31,7 @@
 				<input
 					type="text"
 					id="phone"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g. 0704080056"
 					v-model="userPhoneNumber"
 					required />
@@ -48,9 +48,25 @@
 			<input
 				type="text"
 				id="client-email"
-				class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+				class="generic-input"
 				placeholder="Valid client's email"
 				v-model="userEmail"
+				required />
+		</div>
+
+		<!-- Vehicle Registration -->
+		<div class="w-full mt-3">
+			<label
+				for="vehicle-registration-number"
+				class="block font-medium mb-2 dark:text-white"
+				>Vehicle Registration Number</label
+			>
+			<input
+				type="text"
+				id="vehicle-registration-number"
+				class="generic-input"
+				placeholder="e.g.KCD 345G"
+				v-model="vehicleRegistration"
 				required />
 		</div>
 
@@ -58,22 +74,9 @@
 		<div
 			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0">
 			<!-- Reg Number -->
-			<div class="w-full lg:w-1/3">
-				<label
-					for="vehicle-registration-number"
-					class="block font-medium mb-2 dark:text-white"
-					>Vehicle Registration Number</label
-				>
-				<input
-					type="text"
-					id="vehicle-registration-number"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="e.g.KCD 345G"
-					v-model="vehicleRegistration"
-					required />
-			</div>
+
 			<!-- Vehicle Make -->
-			<div class="w-full lg:w-1/3">
+			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-make"
 					class="block font-medium mb-2 dark:text-white"
@@ -82,14 +85,14 @@
 				<input
 					type="text"
 					id="vehicle-make"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g Toyota"
 					required
 					v-model="vehicleMake" />
 			</div>
 
 			<!-- Vehicle Model -->
-			<div class="w-full lg:w-1/3">
+			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-model"
 					class="block font-medium mb-2 dark:text-white"
@@ -98,7 +101,7 @@
 				<input
 					type="text"
 					id="vehicle-model"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g Corolla"
 					required
 					v-model="vehicleModel" />
@@ -183,6 +186,7 @@
 					class="block font-medium mb-2 dark:text-white"
 					>Vehicle Class</label
 				>
+				<!-- prettier ignore -->
 				<select
 					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 					id="fuel-type"
@@ -216,7 +220,7 @@
 					>Fuel Type</label
 				>
 				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					id="fuel-type"
 					v-model="fuelType"
 					required>
@@ -242,7 +246,7 @@
 				<input
 					type="text"
 					id="fuel-price"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g 1000"
 					required
 					v-model="fuelAmount" />
@@ -348,8 +352,7 @@
 		optionalElementsRendered: string[];
 	}>();
 	const formSubmissionLoading = ref(false);
-	const runtimeConfig = useRuntimeConfig();
-	const { makeServiceRequest, determineEndpointVar } = useServiceRequests();
+	const { makeServiceRequest } = useServiceRequests();
 	const vehicleRegistration: Ref<string> = ref("");
 	const vehicleMake: Ref<string> = ref("");
 	const vehicleModel: Ref<string> = ref("");
@@ -365,13 +368,10 @@
 	const fuelAmount: Ref<number | null> = ref(null);
 	const haveSpareTyre: Ref<boolean> = ref(true);
 	const tyreType: Ref<string> = ref("");
-	const { openToast } = useToast();
 	const componentEmits = defineEmits<{
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();
 	const {
-		bindToPickUpLocation,
-		bindToDropOffLocation,
 		pickupLatitude,
 		pickupLongitude,
 		destinationLongitude,
@@ -414,64 +414,29 @@
 
 	async function handleServiceReqFormSubmission() {
 		formSubmissionLoading.value = true;
-		try {
-			await makeServiceRequest(
-				determineEndpointVar(),
-				userName.value,
-				userPhoneNumber.value,
-				userEmail.value,
-				componentProps.backendServiceTypeName,
-				vehicleRegistration.value,
-				vehicleMake.value,
-				vehicleModel.value,
-				1, // TODO: figure out what this category value here is for
-				arrivalDuration.value,
-				arrivalDistance.value,
-				serviceCost.value,
-				pickupPointName.value,
-				pickupLatitude.value,
-				pickupLongitude.value,
-				dropOffPointName.value,
-				destinationLongitude.value,
-				destinationLatitude.value,
-				requestRemarks.value,
-				vehicleClass.value,
-				fuelType.value,
-				fuelAmount.value,
-				tyreType.value,
-				haveSpareTyre.value
-			).then(() => {
-				openToast(
-					`${componentProps.clientServiceTypeName} request succesfully went through!`,
-					"success"
-				);
-			});
-		} catch (err) {
-			console.log("Service request not made. Reason: ", err);
-			openToast(
-				`${componentProps.clientServiceTypeName} request failed to go thorugh!`,
-				"danger"
-			);
-		} finally {
-			formSubmissionLoading.value = false;
-		}
+		await makeServiceRequest(
+			userName.value,
+			userPhoneNumber.value,
+			userEmail.value,
+			componentProps.backendServiceTypeName,
+			vehicleRegistration.value,
+			vehicleMake.value,
+			vehicleModel.value,
+			arrivalDuration.value,
+			arrivalDistance.value,
+			serviceCost.value,
+			pickupPointName.value,
+			pickupLatitude.value,
+			pickupLongitude.value,
+			dropOffPointName.value,
+			destinationLongitude.value,
+			destinationLatitude.value,
+			requestRemarks.value,
+			vehicleClass.value,
+			fuelType.value,
+			fuelAmount.value,
+			tyreType.value,
+			haveSpareTyre.value
+		).then(() => (formSubmissionLoading.value = false));
 	}
-
-	onMounted(async () => {
-		await bindToPickUpLocation().then(() => bindToDropOffLocation());
-	});
 </script>
-
-<style lang="css">
-	.pac-container {
-		border-radius: 10px;
-		margin-top: 2px;
-		box-shadow: 10px;
-	}
-
-	.pac-item {
-		padding-top: 6px;
-		padding-bottom: 6px;
-		font-size: 12px;
-	}
-</style>

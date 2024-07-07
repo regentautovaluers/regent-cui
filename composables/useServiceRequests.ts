@@ -2,8 +2,22 @@ export default function () {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const route = useRoute();
-	async function makeServiceRequest(
-		endpointVarName: string,
+	const { openToast } = useToast();
+
+	const determineEndpointVar = (): string => {
+		if (route.name === "ava-towing") {
+			return "towingRequest";
+		} else if (route.name === "ava-jumpstarting") {
+			return "jumpstartingRequest";
+		} else if (route.name === "ava-fuel-delivery") {
+			return "fuelDeliveryRequest";
+		} else if (route.name === "ava-tyre-change") {
+			return "tyreChangeRequest";
+		}
+		return "";
+	};
+
+	const makeServiceRequest = async (
 		userName: string,
 		userPhoneNumber: string,
 		userEmail: string,
@@ -11,7 +25,6 @@ export default function () {
 		vehicleRegistration: string,
 		vehicleMake: string,
 		vehicleModel: string,
-		category: number,
 		arrivalDuration: number,
 		arrivalDistance: number,
 		serviceCost: number,
@@ -27,9 +40,9 @@ export default function () {
 		fuelAmount: number | null,
 		tyreType: string | null,
 		hasSpareTyre: boolean | null
-	) {
+	) => {
 		try {
-			await $fetch(`/api/v1/mobile/${endpointVarName}`, {
+			await $fetch(`/api/v1/mobile/${determineEndpointVar()}`, {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
 				method: "POST",
 				body: JSON.stringify({
@@ -73,28 +86,18 @@ export default function () {
 					if (response.status !== 201) {
 						throw new Error("Member details not updated.");
 					} else {
-						return;
+						openToast(
+							`${serviceType} request succesfully went through!`,
+							"success"
+						);
 					}
 				},
 			});
 		} catch (error) {
 			console.log("Service request error encountered. Reason: ", error);
-			throw new Error("Service request not made!");
+			openToast(`${serviceType} request failed to go thorugh!`, "danger");
 		}
-	}
-
-	function determineEndpointVar(): string {
-		if (route.name === "ava-towing") {
-			return "towingRequest";
-		} else if (route.name === "ava-jumpstarting") {
-			return "jumpstartingRequest";
-		} else if (route.name === "ava-fuel-delivery") {
-			return "fuelDeliveryRequest";
-		} else if (route.name === "ava-tyre-change") {
-			return "tyreChangeRequest";
-		}
-		return "";
-	}
+	};
 
 	return { makeServiceRequest, determineEndpointVar };
 }
