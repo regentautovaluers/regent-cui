@@ -40,7 +40,7 @@
 	}));
 	const chartOptions = ref({
 		responsive: true,
-		maintainAspectRatio: false,
+		maintainAspectRatio: true,
 		cutoutPercentage: 70,
 		legend: {
 			display: true,
