@@ -3,7 +3,7 @@
 		<div class="rounded-full relative size-fit">
 			<img
 				class="size-[160px] rounded-full shadow-lg object-cover"
-				:src="getPrincipal.profilePicture" />
+				:src="profilePicture" />
 			<div
 				v-if="formSubmissionLoading"
 				class="size-[160px] absolute bg-gray-300 bg-opacity-50 top-0 rounded-full flex items-center justify-center">
@@ -58,6 +58,7 @@
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const formSubmissionLoading = ref(false);
+	const profilePicture: Ref<string> = ref("");
 
 	const uploadProfilePicture = async () => {
 		const fileInput = document.getElementById(
@@ -113,4 +114,6 @@
 			}
 		}
 	};
+
+	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>

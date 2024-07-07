@@ -50,7 +50,7 @@
 				<div class="flex items-center space-x-4">
 					<img
 						class="size-[50px] rounded-full object-cover"
-						:src="getPrincipal.profilePicture"
+						:src="profilePicture"
 						alt="Profile Picture" />
 					<div class="flex flex-col">
 						<span class="font-bold tracking">{{
@@ -161,9 +161,9 @@
 
 	const route = useRoute();
 	const notificationCount: Ref<number> = ref(10);
-	const messageCount: Ref<number> = ref(10);
 	const currentRoute: Ref<string | null> = ref(null);
 	const { getPrincipal, logout } = useAuth();
+	const profilePicture: Ref<string> = ref("");
 
 	const computedCurrentRoute = computed((): string | null => {
 		if (route.name === "dashboard-home") {
@@ -185,6 +185,8 @@
 	): void => {
 		currentRoute.value = currentClickedRoute;
 	};
+
+	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
 
 <style scoped>

@@ -2,11 +2,11 @@
 	<div class="py-10 h-full responsive-view">
 		<!-- top card with link to add new member -->
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg mb-6">
+			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl mb-6">
 			<div class="flex space-x-2 items-center w-full md:w-fit">
 				<img
-					class="inline-block size-[60px] rounded-full"
-					src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+					class="object-cover size-[60px] rounded-full"
+					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
 					<span
@@ -28,13 +28,13 @@
 				>
 				<NuxtLink
 					:to="{ name: 'new-member' }"
-					class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-md w-full md:w-fit text-center"
+					class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-xl w-full md:w-fit text-center"
 					>ADD A NEW MEMBER</NuxtLink
 				>
 			</div>
 		</div>
 		<div
-			class="flex flex-col md:flex-row items-center justify-around py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg mb-6">
+			class="flex flex-col md:flex-row items-center justify-around py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl mb-6">
 			<div
 				v-for="(info, index) in subLinksInfo"
 				:key="index"
@@ -58,21 +58,29 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex items-center space-x-6 overflow-x-auto">
-			<AngularNavigationCardA
+		<div
+			class="flex items-center justify-between space-x-6 overflow-x-auto">
+			<NuxtLink
 				v-for="(route, index) in applicationRoutes[2].children?.slice(
 					0,
-					5
+					4
 				)"
 				:key="index"
-				:display-name="route.displayName"
-				:route-name="route.routeName"
-				:icon="route.icon" />
+				:to="{ name: route.routeName }"
+				class="flex space-x-3 hover:border-blue-500 items-center px-4 bg-white border-2 border-gray-200 shadow-sm rounded-xl h-20 w-1/4">
+				<img
+					:src="route.icon"
+					alt="Service Icon"
+					class="size-10" />
+				<span class="tracking-wide text-gray-500 text-lg">{{
+					route.displayName
+				}}</span>
+			</NuxtLink>
 		</div>
 		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
 			<!--left and analysis graph -->
 			<div class="md:w-[20%] space-y-6">
-				<div class="border shadow min-h-[26.5rem] rounded-lg">
+				<div class="border shadow min-h-[26.5rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">
 							Memberships Glance
@@ -85,7 +93,7 @@
 					</ClientOnly>
 				</div>
 				<div
-					class="border shadow min-h-[28rem] rounded-lg flex flex-col">
+					class="border shadow min-h-[28rem] rounded-xl flex flex-col">
 					<div class="flex items-center justify-between p-4 h-fit">
 						<h1 class="text-xl font-semibold">Recent Incidents</h1>
 						<NuxtLink
@@ -137,7 +145,7 @@
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 bg-gray-200 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							class="peer py-3 h-12 px-4 ps-11 border-gray-200 rounded-xl focus:border-blue-500 focus:border-2 disabled:opacity-50 disabled:pointer-events-none min-w-full"
 							placeholder="Search Name, Email or Phone Number"
 							v-model="searchFilterTerm" />
 						<div
@@ -155,7 +163,7 @@
 								<button
 									id="hs-dropdown-default"
 									type="button"
-									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 text-gray-800 shadow-sm"
+									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-xl border border-gray-200 text-gray-800 shadow-sm"
 									:class="
 										!searchMembershipCategory
 											? 'bg-white text-black'
@@ -200,12 +208,12 @@
 											type="radio"
 											name="membership-category"
 											:value="option.value"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 											v-model="searchMembershipCategory" />
 
 										<label
 											for="corp-cat"
-											class="text-gray-500 ms-2 dark:text-gray-400"
+											class="text-gray-500 ms-2"
 											>{{ option.text }}</label
 										>
 									</div>
@@ -238,7 +246,7 @@
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
 							<div
-								class="border rounded-lg shadow overflow-hidden">
+								class="border rounded-xl shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -346,6 +354,7 @@
 		layout: "in-app-layout",
 	});
 	const { getPrincipal } = useAuth();
+	const profilePicture: Ref<string> = ref("");
 	const {
 		computedPagedList,
 		searchFilterTerm,
@@ -383,12 +392,7 @@
 			link: "memberships-home",
 			text: "View All",
 		},
-		{
-			icon: "/icons/misc/roadside-comms-icon.svg",
-			title: "Communications",
-			data: "Lorem",
-			link: "memberships-home",
-			text: "View Chats",
-		},
 	];
+
+	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
