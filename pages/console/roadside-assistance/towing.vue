@@ -35,6 +35,15 @@
 						<h1 class="font-semibold text-lg">{{ marker.info }}</h1>
 					</div>
 				</InfoWindow>
+				<Polyline
+					v-if="computedPolyline.length > 0"
+					:options="{
+						path: computedPolyline,
+						geodesic: true,
+						strokeColor: '#FF0000',
+						strokeOpacity: 1.0,
+						strokeWeight: 2,
+					}" />
 			</GoogleMap>
 		</div>
 		<div class="p-2 lg:p-5">
@@ -78,6 +87,7 @@
 			</div>
 			<RequestServiceForRegMember
 				v-if="currentRegForm === 0"
+				:towing-distance="towingDistance"
 				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
 				:optional-elements-rendered="[
@@ -92,6 +102,7 @@
 				" />
 			<RequestServiceForUnregMember
 				v-else
+				:towing-distance="towingDistance"
 				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
 				:optional-elements-rendered="[
@@ -113,7 +124,7 @@
 		type informativeCoordsMarker,
 	} from "~/types/types";
 	import { useGeolocation } from "@vueuse/core";
-	import { GoogleMap, InfoWindow } from "vue3-google-map";
+	import { GoogleMap, InfoWindow, Polyline } from "vue3-google-map";
 
 	definePageMeta({
 		name: "ava-towing",
@@ -130,6 +141,7 @@
 	const mapRef: Ref<any> = ref(null);
 	const otherMarkers: Ref<informativeCoordsMarker[]> = ref([]);
 	const { coords } = useGeolocation();
+	const towingDistance: Ref<number> = ref(0);
 
 	watch([() => mapRef.value?.ready], ([ready]) => {
 		if (!ready) {
@@ -147,6 +159,46 @@
 					lng: center.value.lng,
 				});
 		}
+	});
+
+	const computedPolyline = computed(async () => {
+		if (otherMarkers.value.length < 2) return [];
+
+		const delimitingCoords: locationCoordsMarker[] = [
+			otherMarkers.value[0].coords,
+			otherMarkers.value[1].coords,
+		];
+
+		try {
+			// prettier ignore
+			await $fetch(
+				`https://maps.googleapis.com/maps/api/directions/json
+					?origin=${delimitingCoords[0].lat},${delimitingCoords[0].lng}
+					&destination=${delimitingCoords[1].lat},${delimitingCoords[1].lng}
+					&key=${googleMapsApiKey}`,
+				{
+					method: "GET",
+					onResponse({ response }) {
+						const data = response._data;
+						const route = data.routes[0];
+						const leg = route.legs[0];
+						const steps = leg.steps;
+
+						// list of intermediate co-ordinates
+						const coordinates = steps.map((step: any) => ({
+							lat: step.end_location.lat,
+							lng: step.end_location.lng,
+						}));
+
+						// set the towing distance
+						towingDistance.value = leg.distance.text.split(" ")[0];
+
+						// return the coords for the polyline
+						return coordinates;
+					},
+				}
+			);
+		} catch (error) {}
 	});
 
 	function reloadPage() {
