@@ -161,44 +161,49 @@
 		}
 	});
 
-	const computedPolyline = computed(async () => {
+	const computedPolyline = computed(() => {
 		if (otherMarkers.value.length < 2) return [];
 
 		const delimitingCoords: locationCoordsMarker[] = [
 			otherMarkers.value[0].coords,
 			otherMarkers.value[1].coords,
 		];
-
-		try {
-			// prettier ignore
-			await $fetch(
-				`https://maps.googleapis.com/maps/api/directions/json
+		let polyLineCoords: any[] = [];
+		const getPolyLineMeta = async () => {
+			try {
+				// prettier ignore
+				await $fetch(
+					`https://maps.googleapis.com/maps/api/directions/json
 					?origin=${delimitingCoords[0].lat},${delimitingCoords[0].lng}
 					&destination=${delimitingCoords[1].lat},${delimitingCoords[1].lng}
 					&key=${googleMapsApiKey}`,
-				{
-					method: "GET",
-					onResponse({ response }) {
-						const data = response._data;
-						const route = data.routes[0];
-						const leg = route.legs[0];
-						const steps = leg.steps;
+					{
+						method: "GET",
+						onResponse({ response }) {
+							const data = response._data;
+							const route = data.routes[0];
+							const leg = route.legs[0];
+							const steps = leg.steps;
 
-						// list of intermediate co-ordinates
-						const coordinates = steps.map((step: any) => ({
-							lat: step.end_location.lat,
-							lng: step.end_location.lng,
-						}));
+							// list of intermediate co-ordinates
+							polyLineCoords = steps.map((step: any) => ({
+								lat: step.end_location.lat,
+								lng: step.end_location.lng,
+							}));
 
-						// set the towing distance
-						towingDistance.value = leg.distance.text.split(" ")[0];
+							// set the towing distance
+							towingDistance.value =
+								leg.distance.text.split(" ")[0];
+						},
+					}
+				);
+			} catch (error) {
+				console.log("Failed to perform Geolocation");
+			}
+		};
 
-						// return the coords for the polyline
-						return coordinates;
-					},
-				}
-			);
-		} catch (error) {}
+		getPolyLineMeta();
+		return polyLineCoords;
 	});
 
 	function reloadPage() {
