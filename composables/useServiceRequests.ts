@@ -56,7 +56,6 @@ export default function () {
 					appRegistration: vehicleRegistration,
 					vehicle_make: vehicleMake,
 					vehicle_model: vehicleModel,
-					appCategory: category,
 					appDuration: arrivalDuration,
 					appDistance: arrivalDistance,
 					appCost: serviceCost,
@@ -84,7 +83,7 @@ export default function () {
 
 				async onResponse({ response }) {
 					if (response.status !== 201) {
-						throw new Error("Member details not updated.");
+						throw new Error("Request failed to go through!");
 					} else {
 						openToast(
 							`${serviceType} request succesfully went through!`,
