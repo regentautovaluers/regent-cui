@@ -46,7 +46,7 @@ export default defineNuxtConfig({
 			script: [],
 		},
 	},
-	plugins: ["~/plugins/preline.client.ts", "~/plugins/chart.ts"],
+	plugins: ["~/plugins/preline.client.ts", "~/plugins/chart.client.ts"],
 	runtimeConfig: {
 		public: {
 			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
