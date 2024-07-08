@@ -1,7 +1,33 @@
 <template>
 	<Doughnut
 		:data="chartData"
-		:options="chartOptions" />
+		:options="{
+			responsive: true,
+			// maintainAspectRatio: true,
+			// aspectRatio: 1,
+			plugins: {
+				legend: {
+					display: true,
+					position: 'bottom',
+					reverse: true,
+					align: 'center',
+					fullSize: true,
+					labels: {
+						boxWidth: 18,
+						boxHeight: 18,
+						borderRadius: 10,
+						useBorderRadius: true,
+						textAlign: 'center',
+						usePointStyle: true,
+						pointStyle: 'circle',
+						font: {
+							size: 14,
+							weight: 'bold',
+						},
+					},
+				},
+			},
+		}" />
 </template>
 
 <script setup lang="ts">
@@ -35,15 +61,11 @@
 					countTyreChange.value || 0,
 				],
 				spacing: 5,
+				hoverOffset: 15,
+				borderRadius: 6,
+				clip: false,
+				weight: 4,
 			},
 		],
 	}));
-	const chartOptions = ref({
-		responsive: true,
-		maintainAspectRatio: true,
-		cutoutPercentage: 70,
-		legend: {
-			display: true,
-		},
-	});
 </script>
