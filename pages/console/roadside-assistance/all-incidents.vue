@@ -49,9 +49,13 @@
 					<span class="text-gray-600 font-semibold">{{
 						info.title
 					}}</span>
-					<span class="text-gray-500 font-semibold">Lorem</span>
-					<NuxtLink class="text-blue-600 font-semibold">
-						{{ info.text }}
+					<span class="text-gray-500 font-semibold">{{
+						info.infoText
+					}}</span>
+					<NuxtLink
+						class="text-blue-600 font-semibold"
+						:to="{ name: info.link }">
+						{{ info.linkText }}
 					</NuxtLink>
 				</div>
 			</div>
@@ -228,7 +232,7 @@
 												)
 											"
 											:serviceType="
-												makeServiceTypeFriendly(
+												makeServiceUserFriendly(
 													data.service
 												)
 											"
@@ -268,8 +272,8 @@
 			</div>
 			<!--right analysis graphs -->
 			<div class="md:w-[20%] space-y-6 h-full">
-				<div class="border shadow min-h-[28rem] rounded-xl">
-					<h1 class="text-2xl font-semibold m-4">Data Chart</h1>
+				<div class="border shadow h-[24rem] rounded-xl">
+					<h1 class="text-2xl font-semibold m-4">Rescue Trends</h1>
 					<div class="flex justify-center flex-grow">
 						<IncidentsDonutChart
 							:total-fuel-delivery="countFuelDelivery"
@@ -326,7 +330,6 @@
 		searchServiceType,
 		totalPages,
 		fetchErrorOrEmpty,
-		makeServiceTypeFriendly,
 	} = useIncidents();
 	const profilePicture: Ref<string> = ref("");
 
@@ -334,20 +337,23 @@
 		{
 			icon: "/icons/misc/roadside-mostreq-icon.svg",
 			title: "Most Requested",
+			infoText: "Lorem",
 			link: "memberships-home",
-			text: "View Members",
+			linkText: "View Members",
 		},
 		{
 			icon: "/icons/misc/roadside-realttracking-icon.svg",
 			title: "Real-Time Tracking",
+			infoText: "Lorem",
 			link: "memberships-home",
-			text: "View Live Map",
+			linkText: "View Live Map",
 		},
 		{
 			icon: "/icons/misc/roadside-complord-icon.svg",
 			title: "Completed Orders",
+			infoText: "Lorem",
 			link: "memberships-home",
-			text: "View All",
+			linkText: "View All",
 		},
 	];
 
