@@ -10,7 +10,6 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "start": "nuxt start"
-
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.6",
@@ -20,7 +19,7 @@
     "@preline/overlay": "^2.0.2",
     "@types/google.maps": "^3.55.4",
     "@vueuse/core": "^10.9.0",
-    "chart.js": "^4.4.2",
+    "chart.js": "^4.4.3",
     "date-fns": "^3.6.0",
     "epic-spinners": "^2.0.0",
     "lodash": "^4.17.21",
@@ -33,7 +32,6 @@
     "vue": "^3.4.19",
     "vue-chartjs": "^5.3.1",
     "vue-router": "^4.3.0",
-    "vue3-apexcharts": "^1.5.2",
     "vue3-google-map": "^0.19.0"
   },
   "devDependencies": {
