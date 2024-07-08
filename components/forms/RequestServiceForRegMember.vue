@@ -320,11 +320,19 @@
 					'bottomStatistics'
 				)
 			">
-			<div
-				class="w-1/3 p-4 rounded-md border border-pink-500"
-				v-for="a in 3">
-				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
-				<h1 class="text-lg font-semibold text-gray-500">50Km</h1>
+			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
+				<h1 class="text-xl font-semibold text-pink-500">Distance</h1>
+				<h1 class="text-xl font-semibold text-gray-500">
+					{{ computedTowingDistance }}Km
+				</h1>
+			</div>
+			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
+				<h1 class="text-xl font-semibold text-pink-500">Free Tow</h1>
+				<h1 class="text-xl font-semibold text-gray-500">N/A</h1>
+			</div>
+			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
+				<h1 class="text-xl font-semibold text-pink-500">Cost</h1>
+				<h1 class="text-xl font-semibold text-gray-500">N/A</h1>
 			</div>
 		</div>
 
@@ -351,6 +359,7 @@
 		backendServiceTypeName: string;
 		clientServiceTypeName: string;
 		optionalElementsRendered: string[];
+		towingDistance: number;
 	}>();
 	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
@@ -378,7 +387,9 @@
 	const componentEmits = defineEmits<{
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();
-	const testCheckbox: Ref<string> = ref("");
+	const computedTowingDistance: ComputedRef<number> = computed(() => {
+		return componentProps.towingDistance;
+	});
 	const {
 		pickupLatitude,
 		pickupLongitude,
