@@ -80,7 +80,7 @@
 		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
 			<!--left and analysis graph -->
 			<div class="md:w-[20%] space-y-6">
-				<div class="border shadow min-h-[26.5rem] rounded-xl">
+				<div class="border shadow min-h-[24rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">
 							Memberships Glance
@@ -93,7 +93,7 @@
 					</ClientOnly>
 				</div>
 				<div
-					class="border shadow min-h-[28rem] rounded-xl flex flex-col">
+					class="border shadow min-h-[25rem] rounded-xl flex flex-col">
 					<div class="flex items-center justify-between p-4 h-fit">
 						<h1 class="text-xl font-semibold">Recent Incidents</h1>
 						<NuxtLink
@@ -104,7 +104,7 @@
 					</div>
 					<div class="flex-grow flex flex-col p-3">
 						<div
-							v-if="!recentIncidentsCol"
+							v-if="recentIncidentsCol.length === 0"
 							class="flex-grow flex flex-col justify-center items-center">
 							<img
 								src="/icons/misc/empty-or-error.svg"
@@ -132,7 +132,7 @@
 								)
 							"
 							:service-type="
-								makeServiceTypeFriendly(incident.service)
+								makeServiceUserFriendly(incident.service)
 							" />
 					</div>
 				</div>
@@ -368,7 +368,7 @@
 		fetchedPages,
 		totalNumber,
 	} = useGeneralMemberships();
-	const { recentIncidentsCol, makeServiceTypeFriendly } = useIncidents();
+	const { recentIncidentsCol } = useIncidents();
 
 	const subLinksInfo: any[] = [
 		{

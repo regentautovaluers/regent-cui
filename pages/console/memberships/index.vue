@@ -2,11 +2,11 @@
 	<div class="py-10 h-fit responsive-view">
 		<!-- top card with link to add new member -->
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg">
+			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl">
 			<div class="flex space-x-2 items-center w-full md:w-fit">
 				<img
 					class="size-[60px] rounded-full object-cover"
-					:src="getPrincipal.profilePicture"
+					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
 					<span
@@ -22,7 +22,7 @@
 			</div>
 			<NuxtLink
 				:to="{ name: 'new-member' }"
-				class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-md w-full md:w-fit text-center"
+				class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-xl w-full md:w-fit text-center"
 				>ADD A NEW MEMBER</NuxtLink
 			>
 		</div>
@@ -35,7 +35,7 @@
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 bg-gray-200 border-transparent rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							class="peer py-3 h-12 px-4 ps-11 border border-gray-500 rounded-xl focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
 							placeholder="Search Name, Email or Phone Number"
 							v-model="searchFilterTerm" />
 						<div
@@ -53,7 +53,7 @@
 								<button
 									id="hs-dropdown-default"
 									type="button"
-									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-lg border border-gray-200 text-gray-800 shadow-sm"
+									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-xl border border-gray-200 text-gray-800 shadow-sm"
 									:class="
 										!searchMembershipCategory
 											? 'bg-white text-black'
@@ -98,11 +98,11 @@
 											type="radio"
 											name="membership-category"
 											:value="option.value"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 											v-model="searchMembershipCategory" />
 										<label
 											for="corp-cat"
-											class="text-gray-500 ms-2 dark:text-gray-400"
+											class="text-gray-500 ms-2"
 											>{{ option.text }}</label
 										>
 									</div>
@@ -135,7 +135,7 @@
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
 							<div
-								class="border rounded-lg shadow overflow-hidden">
+								class="border rounded-xl shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -232,7 +232,7 @@
 			</div>
 			<!-- right ad and analysis graph -->
 			<div class="md:w-[20%] space-y-6">
-				<div class="border shadow min-h-96 rounded-lg">
+				<div class="border shadow min-h-96 rounded-xl">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">About</h1>
 						<!-- info switch -->
@@ -323,7 +323,7 @@
 						>
 					</div>
 				</div>
-				<div class="border shadow min-h-[25rem] rounded-lg">
+				<div class="border shadow min-h-[27rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">
 							Memberships Glance
@@ -347,6 +347,7 @@
 	});
 
 	const { getPrincipal } = useAuth();
+	const profilePicture: Ref<string> = ref("");
 	const {
 		computedPagedList,
 		searchFilterTerm,
@@ -375,4 +376,6 @@
 			externalLink: "https://www.google.com",
 		},
 	];
+
+	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
