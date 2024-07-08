@@ -1,11 +1,10 @@
 export default function () {
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
-	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
-	const fuelDeliveryIncidents: Ref<any[] | null> = ref(null);
-	const jumpstartingIncidents: Ref<any[] | null> = ref(null);
-	const towingIncidents: Ref<any[] | null> = ref(null);
-	const tyrechangeIncidents: Ref<any[] | null> = ref(null);
+	const fuelDeliveryIncidents: Ref<any[]> = ref([]);
+	const jumpstartingIncidents: Ref<any[]> = ref([]);
+	const towingIncidents: Ref<any[]> = ref([]);
+	const tyrechangeIncidents: Ref<any[]> = ref([]);
 	const searchFilterTerm: Ref<string | null> = ref("");
 	const searchServiceType: Ref<string | ""> = ref("");
 	const totalNumber: Ref<number> = ref(0);
@@ -84,6 +83,7 @@ export default function () {
 		}
 		return aggregateArray;
 	});
+
 	const determineMostRequestedService = computed(() => {
 		"Test Data";
 	});
@@ -102,65 +102,35 @@ export default function () {
 		}
 	}
 
-	function makeServiceTypeFriendly(rawType: string): string {
-		let friendlyType: string = "";
-		switch (rawType) {
-			case "towing":
-				friendlyType = "Towing";
-				break;
-			case "fueldelivery":
-				friendlyType = "Fuel Delivery";
-				break;
-			case "jumpstarting":
-				friendlyType = "Jumpstarting";
-				break;
-			case "tyre change":
-				friendlyType = "Tyre Change";
-		}
-
-		return friendlyType;
-	}
-
-	onMounted(async () => {
-		fetchErrorOrEmpty.value = true;
-		try {
-			await $fetch(
-				`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
-				{
-					baseURL: runtimeConfig.public.AVA_BASE_URL,
-					method: "GET",
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error("Failed to retrieve incidents!");
-						}
-						fuelDeliveryIncidents.value =
-							response._data.fueldelivery;
-						jumpstartingIncidents.value =
-							response._data.jumpstarting;
-						towingIncidents.value = response._data.towing;
-						tyrechangeIncidents.value = response._data.tyrechange;
-
-						if (
-							fuelDeliveryIncidents.value?.length > 0 ||
-							jumpstartingIncidents.value?.length > 0 ||
-							towingIncidents.value?.length > 0 ||
-							tyrechangeIncidents.value?.length > 0
-						) {
-							fetchErrorOrEmpty.value = false;
-						}
-
-						openToast(
-							"Successfully loaded your incidents",
-							"success"
-						);
-					},
+	const { pending: fetchErrorOrEmpty } = useFetch(
+		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
+		{
+			baseURL: runtimeConfig.public.AVA_BASE_URL,
+			method: "GET",
+			server: false,
+			lazy: true,
+			async onResponse({ response }) {
+				if (response.status !== 200) {
+					throw new Error("Failed to retrieve incidents!");
 				}
-			);
-		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Failed to load your members. Reload page!", "danger");
+				fuelDeliveryIncidents.value = response._data.fueldelivery;
+				jumpstartingIncidents.value = response._data.jumpstarting;
+				towingIncidents.value = response._data.towing;
+				tyrechangeIncidents.value = response._data.tyrechange;
+
+				if (
+					fuelDeliveryIncidents.value?.length > 0 ||
+					jumpstartingIncidents.value?.length > 0 ||
+					towingIncidents.value?.length > 0 ||
+					tyrechangeIncidents.value?.length > 0
+				) {
+					fetchErrorOrEmpty.value = false;
+				}
+
+				openToast("Successfully loaded your incidents", "success");
+			},
 		}
-	});
+	);
 
 	return {
 		nextPage,
@@ -177,6 +147,5 @@ export default function () {
 		totalPages,
 		fetchErrorOrEmpty,
 		recentIncidentsCol,
-		makeServiceTypeFriendly,
 	};
 }
