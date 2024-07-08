@@ -64,3 +64,22 @@ export const formatServerProvidedDateTime = (servDateTime: string): string => {
 		return "N/A";
 	}
 };
+
+export const makeServiceUserFriendly = (rawType: string): string => {
+	let friendlyType: string = "";
+	switch (rawType) {
+		case "towing":
+			friendlyType = "Towing";
+			break;
+		case "fueldelivery":
+			friendlyType = "Fuel Delivery";
+			break;
+		case "jumpstarting":
+			friendlyType = "Jumpstarting";
+			break;
+		case "tyrechange":
+			friendlyType = "Tyre Change";
+	}
+
+	return friendlyType;
+};
