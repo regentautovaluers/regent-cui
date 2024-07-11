@@ -284,24 +284,9 @@
 				</div>
 				<div class="border shadow min-h-[28rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">
+						<h1 class="text-xl font-semibold">
 							Road Rescue Trends
 						</h1>
-						<NuxtLink :to="{ name: '' }"></NuxtLink>
-					</div>
-					<div class="flex flex-col justify-center items-center p-2">
-						<div
-							class="bg-gray-300 p-5 rounded-full flex justify-center items-center">
-							<!-- <img
-								class="inline-block size-[66px]"
-								src="/icons/sidenav/memberships-icon.svg"
-								alt="Image Description" /> -->
-						</div>
-						<h1 class="text-xl font-semibold">Our Membership</h1>
-						<h2 class="font-semibold text-gray-600 text-lg">
-							Hello world
-						</h2>
-						<p class="text-sm mt-2 px-4">Hello world</p>
 					</div>
 				</div>
 			</div>

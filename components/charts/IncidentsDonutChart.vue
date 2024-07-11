@@ -80,7 +80,7 @@
 							0
 						);
 						const percentage = (value / total) * 100;
-						return percentage + "%";
+						return percentage.toFixed(0) + "%";
 					},
 				},
 			},
