@@ -37,7 +37,7 @@
 				</InfoWindow>
 				<Polyline
 					:options="{
-						path: [...computedPolylineCoords],
+						path: [...polylineCoords],
 						geodesic: true,
 						strokeColor: '#ec4899',
 						strokeOpacity: 1.0,
@@ -139,6 +139,7 @@
 	});
 	const mapRef: Ref<any> = ref(null);
 	const otherMarkers: Ref<informativeCoordsMarker[]> = ref([]);
+	const polylineCoords: Ref<any[]> = ref([]);
 	const { coords } = useGeolocation();
 	const towingDistance: Ref<number> = ref(0);
 
@@ -157,57 +158,57 @@
 		}
 	});
 
-	const computedPolylineCoords = computed(() => {
-		let polyLineCoords: any[] = [];
-		if (otherMarkers.value.length < 2) return polyLineCoords;
+	watch(otherMarkers.value, (newValue) => {
+		if (newValue.length > 1) {
+			const delimitingCoords: locationCoordsMarker[] = [
+				otherMarkers.value[0].coords,
+				otherMarkers.value[1].coords,
+			];
 
-		const delimitingCoords: locationCoordsMarker[] = [
-			otherMarkers.value[0].coords,
-			otherMarkers.value[1].coords,
-		];
+			const directionsService = new google.maps.DirectionsService();
+			const directionsRequest = {
+				origin: new google.maps.LatLng(
+					delimitingCoords[0].lat,
+					delimitingCoords[0].lng
+				),
+				destination: new google.maps.LatLng(
+					delimitingCoords[1].lat,
+					delimitingCoords[1].lng
+				),
+				travelMode: google.maps.TravelMode.DRIVING,
+			};
+			directionsService.route(directionsRequest, (result, status) => {
+				if (status === google.maps.DirectionsStatus.OK && result) {
+					const route = result.routes[0];
+					const leg = route.legs[0];
+					const steps = leg.steps;
 
-		const directionsService = new google.maps.DirectionsService();
-		const directionsRequest = {
-			origin: new google.maps.LatLng(
-				delimitingCoords[0].lat,
-				delimitingCoords[0].lng
-			),
-			destination: new google.maps.LatLng(
-				delimitingCoords[1].lat,
-				delimitingCoords[1].lng
-			),
-			travelMode: google.maps.TravelMode.DRIVING,
-		};
-		directionsService.route(directionsRequest, (result, status) => {
-			if (status === google.maps.DirectionsStatus.OK && result) {
-				const route = result.routes[0];
-				const leg = route.legs[0];
-				const steps = leg.steps;
+					// list of intermediate co-ordinates
+					polylineCoords.value = steps.map((step) => ({
+						lat: step.end_location.lat(),
+						lng: step.end_location.lng(),
+					}));
 
-				// list of intermediate co-ordinates
-				polyLineCoords = steps.map((step) => ({
-					lat: step.end_location.lat(),
-					lng: step.end_location.lng(),
-				}));
-
-				if (leg) {
-					// set the towing distance
-					towingDistance.value = Number(
-						leg.distance.text.split(" ")[0]
-					);
+					if (leg) {
+						// set the towing distance
+						towingDistance.value = Number(
+							leg.distance.text.split(" ")[0]
+						);
+					}
+				} else {
+					console.log("Failed to perform Geolocation");
 				}
-			} else {
-				console.log("Failed to perform Geolocation");
-			}
-		});
-		return polyLineCoords;
+			});
+		}
 	});
 
-	function reloadPage() {
+	const reloadPage = (): void => {
 		location.reload();
-	}
+	};
 
-	function insertIntoOtherMarkers(markerData: informativeCoordsMarker): void {
+	const insertIntoOtherMarkers = (
+		markerData: informativeCoordsMarker
+	): void => {
 		// If the array is empty, simply push the markerData object
 		if (otherMarkers.value.length === 0) {
 			otherMarkers.value.push(markerData);
@@ -232,7 +233,7 @@
 			lat: markerData.coords.lat,
 			lng: markerData.coords.lng,
 		});
-	}
+	};
 </script>
 
 <style scoped>
