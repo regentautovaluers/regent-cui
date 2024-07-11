@@ -27,6 +27,9 @@
 					},
 				},
 			},
+			// onHover(event, chartElement) {
+			// 	event.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+			// }
 		}" />
 </template>
 
@@ -57,6 +60,24 @@
 				borderRadius: 6,
 				clip: false,
 				weight: 4,
+				datalabels: {
+					display: true,
+					color: "white",
+					font: {
+						size: 18,
+						weight: "bold",
+					},
+					formatter: (value, ctx) => {
+						if (value === 0) return "";
+						const datapoints = ctx.chart.data.datasets[0].data;
+						const total = datapoints.reduce(
+							(total, datapoint) => total + datapoint,
+							0
+						);
+						const percentage = (value / total) * 100;
+						return percentage + "%";
+					},
+				},
 			},
 		],
 	}));
