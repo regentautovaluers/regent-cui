@@ -328,7 +328,9 @@
 			</div>
 			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
 				<h1 class="text-xl font-semibold text-pink-500">Free Tow</h1>
-				<h1 class="text-xl font-semibold text-gray-500">N/A</h1>
+				<h1 class="text-xl font-semibold text-gray-500">
+					{{ distanceLeftForTowing }}Km
+				</h1>
 			</div>
 			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
 				<h1 class="text-xl font-semibold text-pink-500">Cost</h1>
@@ -530,6 +532,6 @@
 
 <style lang="css">
 	.progressbar {
-		width: v-bind(currentPercentage.value) %;
+		width: v-bind(currentPercentage);
 	}
 </style>
