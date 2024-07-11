@@ -359,7 +359,7 @@
 		backendServiceTypeName: string;
 		clientServiceTypeName: string;
 		optionalElementsRendered: string[];
-		towingDistance: number;
+		towingDistance?: number;
 	}>();
 	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
@@ -387,9 +387,11 @@
 	const componentEmits = defineEmits<{
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();
-	const computedTowingDistance: ComputedRef<number> = computed(() => {
-		return componentProps.towingDistance;
-	});
+	const computedTowingDistance: ComputedRef<number | undefined> = computed(
+		() => {
+			return componentProps.towingDistance;
+		}
+	);
 	const {
 		pickupLatitude,
 		pickupLongitude,
@@ -478,7 +480,7 @@
 							);
 							vehicleRegistration.value = "";
 						} else {
-							openToast("Registration found.", "success");
+							openToast("Vehicle Details found.", "success");
 
 							// fill the needed fields
 							const registrationDetails = response._data;

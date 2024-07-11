@@ -323,7 +323,7 @@
 						>
 					</div>
 				</div>
-				<div class="border shadow min-h-[27rem] rounded-xl">
+				<div class="border shadow h-[24rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">
 							Memberships Glance

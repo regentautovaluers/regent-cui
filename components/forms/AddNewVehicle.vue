@@ -6,7 +6,7 @@
 		<ClientOnly>
 			<div class="w-full">
 				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					id="payment-status"
 					required
 					v-model="userVehicles.membershipTypeId">
@@ -38,7 +38,7 @@
 					<input
 						type="text"
 						id="vehicle-make"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="e.g Toyota"
 						required
 						v-model="userVehicles.make" />
@@ -54,7 +54,7 @@
 					<input
 						type="text"
 						id="vehicle-model"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="e.g Corolla"
 						required
 						v-model="userVehicles.model" />
@@ -71,7 +71,7 @@
 					<input
 						type="text"
 						id="full-name"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="e.g Red"
 						required
 						v-model="userVehicles.color" />
@@ -86,7 +86,7 @@
 					<input
 						type="text"
 						id="vehicle-registration-number"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="KCD 345G"
 						required
 						v-model="userVehicles.registration" />
@@ -102,7 +102,7 @@
 						>Payment Status</label
 					>
 					<select
-						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						id="payment-status"
 						required
 						v-model="userVehicles.payment_status">
@@ -123,7 +123,7 @@
 						>Membership Status</label
 					>
 					<select
-						class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						id="membership-status"
 						required
 						v-model="userVehicles.membership_status">
@@ -149,7 +149,7 @@
 					<input
 						type="date"
 						id="cover-period-starts"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="Enter Customer Name as Seen In Their National ID"
 						pattern="\d{4}-\d{2}-\d{2}"
 						required
@@ -166,7 +166,7 @@
 					<input
 						type="date"
 						id="cover-period-ends"
-						class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+						class="generic-input"
 						placeholder="Enter Customer Name as Seen In Their National ID"
 						pattern="\d{4}-\d{2}-\d{2}"
 						required
@@ -191,6 +191,7 @@
 	const route = useRoute();
 	const membershipId: string = route.query.id as string;
 	const formSubmissionLoading: Ref<boolean> = ref(false);
+	const { getPrincipal } = useAuth();
 
 	try {
 		await $fetch("/api/v1/control-unit/membershiptypes", {
@@ -212,6 +213,7 @@
 	}
 
 	const userVehicles = reactive({
+		corpName: getPrincipal.value.corpName,
 		membershipTypeId: 0,
 		registration: "",
 		make: "",
