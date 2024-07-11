@@ -219,6 +219,7 @@
 			@click="
 				() =>
 					userVehicles.push({
+						corpName: getPrincipal.corpName,
 						membershipTypeId: Number($route.query.membershipTypeId),
 						registration: '',
 						make: '',
