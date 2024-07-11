@@ -40,26 +40,30 @@
 					<div
 						class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 bg-[#f6f9f2] border text-sm text-gray-600 rounded-xl shadow-md h-[50rem] w-[27rem]"
 						role="tooltip">
-						<h1 class="text-xl font-semibold m-4">Notification Drawer</h1>
+						<h1 class="text-xl font-semibold m-4">
+							Notification Drawer
+						</h1>
 						<hr />
 					</div>
 				</div>
 
-				<!-- profile information chip -->
-				<div class="flex items-center space-x-4">
-					<img
-						class="size-[50px] rounded-full object-cover"
-						:src="profilePicture"
-						alt="Profile Picture" />
-					<div class="flex flex-col">
-						<span class="font-bold tracking">{{
-							getPrincipal.username
-						}}</span>
-						<span class="text-gray-500">{{
-							getPrincipal.corpName
-						}}</span>
-					</div>
-				</div>
+				<ClientOnly
+					><!-- profile information chip -->
+					<div class="flex items-center space-x-4">
+						<img
+							class="size-[50px] rounded-full object-cover"
+							:src="profilePicture"
+							alt="Profile Picture" />
+						<div class="flex flex-col">
+							<span class="font-bold tracking">{{
+								getPrincipal.username
+							}}</span>
+							<span class="text-gray-500">{{
+								getPrincipal.corpName
+							}}</span>
+						</div>
+					</div></ClientOnly
+				>
 			</div>
 			<!-- end of div with notifications, messages and profile information mentioned above -->
 		</nav>
@@ -118,8 +122,10 @@
 				</ul>
 			</div>
 			<div class="mt-5">
-				<!-- Sidebar advertisement -->
-				<SidenavAdvertCarousel />
+				<ClientOnly
+					><!-- Sidebar advertisement -->
+					<SidenavAdvertCarousel
+				/></ClientOnly>
 
 				<!-- Ending links -->
 				<ul class="space-y-1.5 flex flex-col flex-wrap pl-2">
