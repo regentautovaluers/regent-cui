@@ -278,6 +278,7 @@
 
 <script setup lang="ts">
 	type vehicleRegistrationDetails = {
+		corpName: string;
 		membershipTypeId: number;
 		registration: string;
 		make: string;
@@ -300,6 +301,7 @@
 	const formErrorMessage: Ref<null | string> = ref(null);
 	const userVehicles: Ref<vehicleRegistrationDetails[]> = ref([
 		{
+			corpName: getPrincipal.value.corpName,
 			membershipTypeId: Number(route.query.membershipTypeId),
 			registration: "",
 			make: "",

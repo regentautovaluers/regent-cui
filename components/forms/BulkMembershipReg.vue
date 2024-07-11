@@ -318,6 +318,7 @@
 		data.forEach((item: any, index: number) => {
 			if (index === 0) return;
 			processedFleetData.value.push({
+				corpName: getPrincipal.value.corpName,
 				full_name: toTitleCase(item[0]),
 				phone_number: `254${item[1]}`,
 				userEmail: item[2],
@@ -335,11 +336,8 @@
 				recordedBy: getPrincipal.value.userId,
 				category: "corporate",
 				fleetId: selectedFleetId.value,
-				bill: null
 			});
 		});
-
-		console.log("Processed fleet data: ", processedFleetData.value);
 	}
 
 	// Handle the file reading events

@@ -13,6 +13,7 @@ export type ApplicationRoute = {
 };
 
 export type bulkProcessedType = {
+	corpName: string;
 	full_name: string;
 	phone_number: string;
 	userEmail: string;
