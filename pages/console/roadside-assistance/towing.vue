@@ -36,13 +36,12 @@
 					</div>
 				</InfoWindow>
 				<Polyline
-					v-if="computedPolyline.length > 0"
 					:options="{
-						path: computedPolyline,
+						path: [...computedPolylineCoords],
 						geodesic: true,
-						strokeColor: '#FF0000',
+						strokeColor: '#ec4899',
 						strokeOpacity: 1.0,
-						strokeWeight: 2,
+						strokeWeight: 5,
 					}" />
 			</GoogleMap>
 		</div>
@@ -51,7 +50,7 @@
 				Request Towing
 			</h1>
 			<div
-				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500"
+				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4"
 				role="alert">
 				If the map adjacent to this form has not loaded, kindly click
 				<button @click="reloadPage">
@@ -135,8 +134,8 @@
 	const runtimeConfig = useRuntimeConfig();
 	const googleMapsApiKey = runtimeConfig.app.GOOGLE_MAPS_APIKEY;
 	const center: Ref<locationCoordsMarker> = ref({
-		lat: Number.NEGATIVE_INFINITY,
-		lng: Number.NEGATIVE_INFINITY,
+		lat: 0.0,
+		lng: 0.0,
 	});
 	const mapRef: Ref<any> = ref(null);
 	const otherMarkers: Ref<informativeCoordsMarker[]> = ref([]);
@@ -150,10 +149,7 @@
 			center.value.lat = coords.value.latitude;
 			center.value.lng = coords.value.longitude;
 
-			if (
-				center.value.lat !== Number.NEGATIVE_INFINITY &&
-				center.value.lng !== Number.NEGATIVE_INFINITY
-			)
+			if (center.value.lat !== 0.0 && center.value.lng !== 0.0)
 				mapRef.value?.map.panTo({
 					lat: center.value.lat,
 					lng: center.value.lng,
@@ -161,48 +157,49 @@
 		}
 	});
 
-	const computedPolyline = computed(() => {
-		if (otherMarkers.value.length < 2) return [];
+	const computedPolylineCoords = computed(() => {
+		let polyLineCoords: any[] = [];
+		if (otherMarkers.value.length < 2) return polyLineCoords;
 
 		const delimitingCoords: locationCoordsMarker[] = [
 			otherMarkers.value[0].coords,
 			otherMarkers.value[1].coords,
 		];
-		let polyLineCoords: any[] = [];
-		const getPolyLineMeta = async () => {
-			try {
-				// prettier ignore
-				await $fetch(
-					`https://maps.googleapis.com/maps/api/directions/json
-					?origin=${delimitingCoords[0].lat},${delimitingCoords[0].lng}
-					&destination=${delimitingCoords[1].lat},${delimitingCoords[1].lng}
-					&key=${googleMapsApiKey}`,
-					{
-						method: "GET",
-						onResponse({ response }) {
-							const data = response._data;
-							const route = data.routes[0];
-							const leg = route.legs[0];
-							const steps = leg.steps;
 
-							// list of intermediate co-ordinates
-							polyLineCoords = steps.map((step: any) => ({
-								lat: step.end_location.lat,
-								lng: step.end_location.lng,
-							}));
+		const directionsService = new google.maps.DirectionsService();
+		const directionsRequest = {
+			origin: new google.maps.LatLng(
+				delimitingCoords[0].lat,
+				delimitingCoords[0].lng
+			),
+			destination: new google.maps.LatLng(
+				delimitingCoords[1].lat,
+				delimitingCoords[1].lng
+			),
+			travelMode: google.maps.TravelMode.DRIVING,
+		};
+		directionsService.route(directionsRequest, (result, status) => {
+			if (status === google.maps.DirectionsStatus.OK && result) {
+				const route = result.routes[0];
+				const leg = route.legs[0];
+				const steps = leg.steps;
 
-							// set the towing distance
-							towingDistance.value =
-								leg.distance.text.split(" ")[0];
-						},
-					}
-				);
-			} catch (error) {
+				// list of intermediate co-ordinates
+				polyLineCoords = steps.map((step) => ({
+					lat: step.end_location.lat(),
+					lng: step.end_location.lng(),
+				}));
+
+				if (leg) {
+					// set the towing distance
+					towingDistance.value = Number(
+						leg.distance.text.split(" ")[0]
+					);
+				}
+			} else {
 				console.log("Failed to perform Geolocation");
 			}
-		};
-
-		getPolyLineMeta();
+		});
 		return polyLineCoords;
 	});
 

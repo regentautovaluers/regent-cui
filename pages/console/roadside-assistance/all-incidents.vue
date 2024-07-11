@@ -337,7 +337,7 @@
 		{
 			icon: "/icons/misc/roadside-mostreq-icon.svg",
 			title: "Most Requested",
-			infoText: "Lorem",
+			infoText: determineMostRequestedService.value,
 			link: "memberships-home",
 			linkText: "View Members",
 		},

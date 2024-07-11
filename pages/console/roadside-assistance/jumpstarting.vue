@@ -80,10 +80,7 @@
 				v-if="currentRegForm === 0"
 				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
-				:optional-elements-rendered="[
-					'bottomStatistics',
-					'vehicleClass',
-				]"
+				:optional-elements-rendered="['vehicleClass']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);
@@ -93,10 +90,7 @@
 				v-else
 				client-service-type-name="Jumpstarting"
 				backend-service-type-name="Jumpstart"
-				:optional-elements-rendered="[
-					'bottomStatistics',
-					'vehicleClass',
-				]"
+				:optional-elements-rendered="['vehicleClass']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);

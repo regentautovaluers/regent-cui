@@ -80,7 +80,7 @@
 				v-if="currentRegForm === 0"
 				client-service-type-name="Fuel Delivery"
 				backend-service-type-name="Fuel Delivery"
-				:optional-elements-rendered="['bottomStatistics', 'fuelData']"
+				:optional-elements-rendered="['fuelData']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);
@@ -90,7 +90,7 @@
 				v-else
 				client-service-type-name="Fuel Delivery"
 				backend-service-type-name="Fuel Delivery"
-				:optional-elements-rendered="['bottomStatistics', 'fuelData']"
+				:optional-elements-rendered="['fuelData']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);

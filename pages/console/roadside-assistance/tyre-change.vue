@@ -80,10 +80,7 @@
 				v-if="currentRegForm === 0"
 				client-service-type-name="Tyre Change"
 				backend-service-type-name="Tyre"
-				:optional-elements-rendered="[
-					'bottomStatistics',
-					'tyreMetadata',
-				]"
+				:optional-elements-rendered="['tyreMetadata']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);
@@ -93,10 +90,7 @@
 				v-else
 				client-service-type-name="Tyre Change"
 				backend-service-type-name="Tyre"
-				:optional-elements-rendered="[
-					'bottomStatistics',
-					'tyreMetadata',
-				]"
+				:optional-elements-rendered="['tyreMetadata']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);
