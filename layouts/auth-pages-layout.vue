@@ -1,6 +1,6 @@
 <template>
 	<main class="flex h-screen">
-		<div class="w-[60%] min-w-[60%] h-full hidden lg:flex">
+		<div class="w-[65%] h-full hidden lg:flex">
 			<div
 				data-hs-carousel='{
 					"loadingClasses": "opacity-0",
@@ -8,7 +8,7 @@
 				}'
 				class="relative size-full">
 				<div
-					class="hs-carousel relative overflow-hidden w-full min-h-96 bg-white rounded-lg h-full">
+					class="hs-carousel relative overflow-hidden w-full min-h-96 bg-white h-full">
 					<div
 						class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
 						<div
@@ -36,7 +36,7 @@
 			</div>
 			<!-- End Slider -->
 		</div>
-		<div class="flex-grow px-2 mt-10 lg:my-28 md:px-28">
+		<div class="flex-grow px-4 mt-10 lg:my-32 md:px-20">
 			<slot />
 		</div>
 	</main>
