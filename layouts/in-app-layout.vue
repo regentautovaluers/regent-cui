@@ -91,7 +91,9 @@
 						:route-name="applicationRoutes[0].routeName"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
-						" />
+						"
+						><HomeIcon
+					/></ChildlessParentRoute>
 
 					<!-- 'Vehicle Valuation' route -->
 					<ChildedParentRoute
@@ -100,7 +102,9 @@
 						:children="applicationRoutes[1].children as ApplicationChildRoute[]"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
-						" />
+						">
+						<ValuationIcon />
+					</ChildedParentRoute>
 
 					<!-- 'Roadside Assistance' route -->
 					<ChildedParentRoute
@@ -109,7 +113,9 @@
 						:children="applicationRoutes[2].children as ApplicationChildRoute[]"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
-						" />
+						">
+						<AssistanceIcon />
+					</ChildedParentRoute>
 
 					<!-- 'Memberships' route -->
 					<ChildedParentRoute
@@ -118,7 +124,9 @@
 						:children="applicationRoutes[4].children as ApplicationChildRoute[]"
 						@change-current-route-name="
 							handleChangeCurrentRouteName
-						" />
+						">
+						<MembershipsIcon />
+					</ChildedParentRoute>
 				</ul>
 			</div>
 			<div class="mt-5">
@@ -132,8 +140,9 @@
 					<!-- 'Logout Button' -->
 					<li>
 						<button
-							class="flex items-center gap-x-3.5 w-full py-4 rounded-s-xl px-2.5 bg-gray-100 transition duration-200 hover:bg-gray-200 font-semibold text-gray-500"
+							class="flex items-center gap-x-3.5 w-full py-4 rounded-s-xl px-2.5 bg-gray-100 transition duration-200 hover:bg-gray-200 hover:text-blue-600 font-semibold text-gray-500 group"
 							@click="logout">
+							<LogoutIcon />
 							<span>Logout</span>
 						</button>
 					</li>
