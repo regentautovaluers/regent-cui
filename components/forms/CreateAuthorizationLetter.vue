@@ -13,7 +13,7 @@
 				<input
 					type="text"
 					id="registration-number"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g KDH 908Y"
 					required />
 			</div>
@@ -27,7 +27,7 @@
 				<input
 					type="text"
 					id="customer-name"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g Janet Wangari Thuo"
 					required />
 			</div>
@@ -41,7 +41,7 @@
 				<input
 					type="text"
 					id="customer-phone"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g 254789261947"
 					required />
 			</div>
@@ -54,7 +54,7 @@
 				>Preferred Regent Branch</label
 			>
 			<select
-				class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+				class="generic-input"
 				id="fuel-type"
 				required>
 				<option value="Select a Preferred Regent Branch">
@@ -78,7 +78,7 @@
 			<textarea
 				id="comments-box"
 				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
-				rows="10"
+				rows="8"
 				placeholder="Provide optional comments for this request."></textarea>
 		</div>
 		<!-- data below the comments box -->
@@ -94,7 +94,7 @@
 				<input
 					type="text"
 					id="policy-number"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g MGL/07/080/00/489586/2020"
 					required />
 			</div>
@@ -108,7 +108,7 @@
 				<input
 					type="text"
 					id="officer-name"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g Esther Kasele"
 					required />
 			</div>
@@ -122,7 +122,7 @@
 				<input
 					type="text"
 					id="authorized-by"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none"
+					class="generic-input"
 					placeholder="e.g myName"
 					required />
 			</div>
