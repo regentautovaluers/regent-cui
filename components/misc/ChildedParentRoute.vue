@@ -4,11 +4,12 @@
 		id="account-accordion">
 		<button
 			type="button"
-			class="hs-accordion-toggle rounded-s-2xl hs-accordion-active:hover:bg-gray-100 w-full text-start flex items-center gap-x-3.5 py-4 px-2.5 font-semibold hover:bg-gray-100 text-gray-500"
-			:class="{
-				'bg-gray-100 border-r-[6px] border-r-blue-600 text-blue-600':
-					isActiveRoute,
-			}">
+			class="hs-accordion-toggle rounded-s-2xl hs-accordion-active:hover:bg-gray-100 w-full text-start flex items-center gap-x-3.5 py-4 px-2.5 font-semibold hover:bg-gray-100 hover:text-blue-600 group"
+			:class="
+				isActiveRoute
+					? 'bg-gray-100 border-r-[6px] border-r-blue-600 text-blue-600'
+					: 'text-gray-500'
+			">
 			<slot />
 			<nuxt-link
 				:to="{ name: componentProps.routeName }"
@@ -19,7 +20,7 @@
 			>
 
 			<svg
-				class="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+				class="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500"
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
 				height="24"
@@ -33,7 +34,7 @@
 			</svg>
 
 			<svg
-				class="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500 dark:text-gray-400"
+				class="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500"
 				width="16"
 				height="16"
 				viewBox="0 0 16 16"
