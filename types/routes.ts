@@ -17,11 +17,11 @@ const applicationRoutes: ApplicationRoute[] = [
 			// 	displayName: "All Valuations",
 			// 	routeName: "valuation-all-valuations",
 			// },
-			// {
-			// 	id: 2,
-			// 	displayName: "My Authorization Letters",
-			// 	routeName: "valuation-authorization-letter",
-			// },
+			{
+				id: 2,
+				displayName: "Authorization Letters",
+				routeName: "valuation-authorization-letter",
+			},
 			// {
 			// 	id: 3,
 			// 	displayName: "Reports",
