@@ -73,7 +73,7 @@
 			<label
 				for="user-branch"
 				class="font-bold text-gray-500"
-				>Your Branch</label
+				>User's Branch</label
 			>
 			<select
 				class="generic-input"
@@ -88,6 +88,14 @@
 					{{ branch.branchName + "-" + branch.branchLocation }}
 				</option>
 			</select>
+			<ActionTriggeredModal
+				modal-title="Add Branch"
+				:trigger-button-index="1"
+				trigger-button-text="Missing Branch?">
+				<template #activeElement>
+					<AddNewCorpBranch @refresh-branches="refreshBranches" />
+				</template>
+			</ActionTriggeredModal>
 		</div>
 		<div class="flex flex-col mt-3">
 			<label class="font-bold text-gray-500">Account Status</label>
@@ -244,25 +252,28 @@
 		}
 	};
 
-	await useFetch("/api/v1/auth/corp-branch/get-all", {
-		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: "GET",
-		headers: {
-			Accept: "application/json",
-		},
-		server: false,
-		lazy: true,
-		query: {
-			corpId: getPrincipal.value.corpId,
-		},
-		onResponse({ response }) {
-			if (response.status === 200) {
-				availableBranches.value = response._data.data;
-			}
-		},
+	const { refresh: refreshBranches } = useFetch(
+		"/api/v1/auth/corp-branch/get-all",
+		{
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+			},
+			server: false,
+			lazy: true,
+			query: {
+				corpId: getPrincipal.value.corpId,
+			},
+			onResponse({ response }) {
+				if (response.status === 200) {
+					availableBranches.value = response._data.data;
+				}
+			},
 
-		onRequestError() {
-			openToast("Failed to retrieve branches. Try again!", "danger");
-		},
-	});
+			onRequestError() {
+				openToast("Failed to retrieve branches. Try again!", "danger");
+			},
+		}
+	);
 </script>
