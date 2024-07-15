@@ -58,6 +58,27 @@
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
+			<label
+				for="user-branch"
+				class="font-bold text-gray-500"
+				>Your Branch</label
+			>
+			<select
+				class="generic-input"
+				id="user-branch"
+				required
+				v-model="companyBranch"
+				disabled>
+				<option value="">Select The User's Branch</option>
+				<option
+					v-for="(branch, index) in availableBranches"
+					:key="index"
+					:value="branch.branchId">
+					{{ branch.branchName + "-" + branch.branchLocation }}
+				</option>
+			</select>
+		</div>
+		<div class="flex flex-col mt-3">
 			<label class="font-bold text-gray-500">Role In Company</label>
 			<div class="flex flex-grow">
 				<input
@@ -70,25 +91,21 @@
 					v-model="companyRole" />
 			</div>
 		</div>
-		<div class="flex mt-3 items-center justify-center">
+		<div class="mt-3">
 			<button
-				v-if="!formSubmissionLoading"
 				type="submit"
-				class="form-submit">
-				Update Account Details
+				class="form-submit md:w-1/3 relative overflow-clip">
+				<LoadingIndicator
+					v-if="formSubmissionLoading"
+					inject-classes="absolute w-[100%] mt-0 -top-1" />
+				<span v-if="formSubmissionLoading">Processing...</span>
+				<span v-else>Update Account</span>
 			</button>
-			<looping-rhombuses-spinner
-				v-else
-				:animation-duration="2000"
-				:rhombus-size="20"
-				color="#2563eb" />
 		</div>
 	</form>
 </template>
 
 <script setup lang="ts">
-	import { LoopingRhombusesSpinner } from "epic-spinners";
-
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const formSubmissionLoading = ref(false);
@@ -102,7 +119,9 @@
 	const phoneNumber: Ref<string> = ref(getPrincipal.value.phonenumber);
 	const password: Ref<string> = ref("");
 	const companyRole: Ref<string> = ref(getPrincipal.value.roleInOrganization);
+	const companyBranch: Ref<string> = ref(getPrincipal.value.branchId);
 	const { openToast } = useToast();
+	const availableBranches: Ref<any[]> = ref([]);
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
@@ -118,7 +137,7 @@
 		return null;
 	});
 
-	async function updateMyAccount(): Promise<void> {
+	const updateMyAccount = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/v1/auth/corp-account/update-account-details", {
@@ -136,6 +155,7 @@
 					phoneNumber: phoneNumber.value,
 					newPassword: computedPassword.value,
 					roleInOrganization: companyRole.value,
+					branchId: companyBranch.value,
 					isAccountEnabled: true,
 				}),
 				onResponse({ response }) {
@@ -152,5 +172,27 @@
 		} finally {
 			formSubmissionLoading.value = false;
 		}
-	}
+	};
+
+	await useFetch("/api/v1/auth/corp-branch/get-all", {
+		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+		method: "GET",
+		headers: {
+			Accept: "application/json",
+		},
+		server: false,
+		lazy: true,
+		query: {
+			corpId: getPrincipal.value.corpId,
+		},
+		onResponse({ response }) {
+			if (response.status === 200) {
+				availableBranches.value = response._data.data;
+			}
+		},
+
+		onRequestError() {
+			openToast("Failed to retrieve branches. Try again!", "danger");
+		},
+	});
 </script>

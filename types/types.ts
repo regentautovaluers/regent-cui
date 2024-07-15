@@ -64,6 +64,7 @@ export type LoggedInPrincipal = {
 	roles: string[];
 	profilePicture: string;
 	corpId: string;
+	branchId: string;
 	corpName: string;
 	roleInOrganization: string;
 };

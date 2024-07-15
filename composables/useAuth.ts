@@ -19,6 +19,7 @@ const useAuth = () => {
 			roles: [],
 			profilePicture: "",
 			corpId: "",
+			branchId: "",
 			corpName: "",
 			roleInOrganization: "",
 		}
@@ -124,6 +125,7 @@ const useAuth = () => {
 					? "/images/profile-pic-placeholder.jpg"
 					: data.profilePicture,
 			corpId: data.corpId,
+			branchId: data.branchId,
 			corpName: data.corpName,
 			roleInOrganization: data.roleInOrganization,
 		};
@@ -145,6 +147,7 @@ const useAuth = () => {
 			roles: [],
 			profilePicture: "",
 			corpId: "",
+			branchId: "",
 			corpName: "",
 			roleInOrganization: "",
 		};

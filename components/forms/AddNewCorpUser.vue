@@ -58,6 +58,36 @@
 					v-model.trim="password" />
 			</div>
 		</div>
+
+		<!-- Corp Branch Field -->
+		<div class="flex flex-col mt-3">
+			<label
+				for="user-branch"
+				class="font-bold text-gray-500"
+				>User's Branch</label
+			>
+			<select
+				class="generic-input"
+				id="user-branch"
+				required
+				v-model="companyBranch">
+				<option value="">Select The User's Branch</option>
+				<option
+					v-for="(branch, index) in availableBranches"
+					:key="index"
+					:value="branch.branchId">
+					{{ branch.branchName + "-" + branch.branchLocation }}
+				</option>
+			</select>
+			<ActionTriggeredModal
+				modal-title="Add Branch"
+				:trigger-button-index="1"
+				trigger-button-text="Missing Branch?">
+				<template #activeElement>
+					<AddNewCorpBranch @refresh-branches="refreshBranches" />
+				</template>
+			</ActionTriggeredModal>
+		</div>
 		<div class="flex flex-col mt-3">
 			<label class="font-bold text-gray-500">Role In Company</label>
 			<div class="flex flex-grow">
@@ -73,8 +103,7 @@
 		<div class="flex flex-col mt-3">
 			<label class="font-bold text-gray-500">User Privilege</label>
 			<div class="flex flex-grow space-x-4">
-				<label
-					class="flex items-center py-4 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
+				<label class="generic-input flex items-center w-1/2">
 					<span class="text-gray-500"> Is A Normal User </span>
 					<input
 						type="radio"
@@ -84,8 +113,7 @@
 						checked
 						v-model="userRole" />
 				</label>
-				<label
-					class="flex items-center py-4 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
+				<label class="generic-input flex items-center w-1/2">
 					<span class="text-gray-500"> Is An Admin </span>
 					<input
 						type="radio"
@@ -96,35 +124,34 @@
 				</label>
 			</div>
 		</div>
-		<div class="flex w-full mt-4 lg:w-1/3 items-center justify-center">
+		<div class="mt-3">
 			<button
-				v-if="!formSubmissionLoading"
 				type="submit"
-				class="form-submit">
-				Create User Account
+				class="form-submit md:w-1/3 relative overflow-clip"
+				:disabled="formSubmissionLoading">
+				<LoadingIndicator
+					v-if="formSubmissionLoading"
+					inject-classes="absolute w-[100%] mt-0 -top-1" />
+				<span v-if="formSubmissionLoading">Processing...</span>
+				<span v-else>Create Account</span>
 			</button>
-			<looping-rhombuses-spinner
-				v-else
-				:animation-duration="2000"
-				:rhombus-size="20"
-				color="#2563eb" />
 		</div>
 	</form>
 </template>
 
 <script setup lang="ts">
-	import { LoopingRhombusesSpinner } from "epic-spinners";
-
 	const formSubmissionLoading = ref(false);
+	const { getPrincipal } = useAuth();
+	const availableBranches: Ref<any[]> = ref([]);
 	const firstName: Ref<string> = ref("");
 	const otherName: Ref<string> = ref("");
 	const email: Ref<string> = ref("");
 	const phoneNumber: Ref<string> = ref("");
 	const password: Ref<string> = ref("");
+	const companyBranch: Ref<string> = ref("");
 	const companyRole: Ref<string> = ref("");
 	const userRole: Ref<string> = ref("");
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 
 	watch(phoneNumber, (newNumber) => {
@@ -133,7 +160,17 @@
 		}
 	});
 
-	async function createUserAccount(): Promise<void> {
+	const cleanRefs = () => {
+		firstName.value = "";
+		otherName.value = "";
+		email.value = "";
+		phoneNumber.value = "";
+		password.value = "";
+		companyRole.value = "";
+		userRole.value = "";
+	};
+
+	const createUserAccount = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/v1/auth/corp-account/signup", {
@@ -160,14 +197,7 @@
 					} else {
 						throw new Error("Account creation failed. Try again!");
 					}
-
-					firstName.value = "";
-					otherName.value = "";
-					email.value = "";
-					phoneNumber.value = "";
-					password.value = "";
-					companyRole.value = "";
-					userRole.value = "";
+					cleanRefs();
 				},
 			});
 		} catch (error) {
@@ -176,5 +206,30 @@
 		} finally {
 			formSubmissionLoading.value = false;
 		}
-	}
+	};
+
+	const { refresh: refreshBranches } = useFetch(
+		"/api/v1/auth/corp-branch/get-all",
+		{
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+			},
+			server: false,
+			lazy: true,
+			query: {
+				corpId: getPrincipal.value.corpId,
+			},
+			onResponse({ response }) {
+				if (response.status === 200) {
+					availableBranches.value = response._data.data;
+				}
+			},
+
+			onRequestError() {
+				openToast("Failed to retrieve branches. Try again!", "danger");
+			},
+		}
+	);
 </script>

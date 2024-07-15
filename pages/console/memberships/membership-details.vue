@@ -17,7 +17,10 @@
 				</div>
 			</div>
 			<div class="py-2 flex justify-end">
-				<ActionTriggeredModal trigger-button-name="Add Vehicle">
+				<ActionTriggeredModal
+					modal-title="Add New Vehicle"
+					:trigger-button-index="0"
+					trigger-button-text="Add Vehicle">
 					<template #activeElement>
 						<AddNewVehicle />
 					</template>

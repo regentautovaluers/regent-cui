@@ -164,7 +164,7 @@
 				</div> -->
 			</div>
 		</div>
-		<h1 class="text-3xl font-bold mt-7 lg:mx-10">Explore More Services</h1>
+		<h1 class="text-3xl font-bold lg:mx-10">Explore More Services</h1>
 		<div
 			class="w-full flex justify-between space-x-4 lg:space-x-0 lg:px-10 whitespace-nowrap overflow-x-auto overflow-y-hidden"
 			style="

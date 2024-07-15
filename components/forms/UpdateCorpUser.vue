@@ -70,6 +70,26 @@
 			</div>
 		</div>
 		<div class="flex flex-col mt-3">
+			<label
+				for="user-branch"
+				class="font-bold text-gray-500"
+				>Your Branch</label
+			>
+			<select
+				class="generic-input"
+				id="user-branch"
+				required
+				v-model="companyBranch">
+				<option value="">Select The User's Branch</option>
+				<option
+					v-for="(branch, index) in availableBranches"
+					:key="index"
+					:value="branch.branchId">
+					{{ branch.branchName + "-" + branch.branchLocation }}
+				</option>
+			</select>
+		</div>
+		<div class="flex flex-col mt-3">
 			<label class="font-bold text-gray-500">Account Status</label>
 			<div class="flex flex-grow">
 				<select
@@ -108,34 +128,33 @@
 				</label>
 			</div>
 		</div>
-		<div class="flex mt-3 items-center justify-center">
+		<div class="mt-3">
 			<button
-				v-if="!formSubmissionLoading"
 				type="submit"
-				class="form-submit">
-				Update Account Details
+				class="form-submit md:w-1/3 relative overflow-clip">
+				<LoadingIndicator
+					v-if="formSubmissionLoading"
+					inject-classes="absolute w-[100%] mt-0 -top-1" />
+				<span v-if="formSubmissionLoading">Processing...</span>
+				<span v-else>Update Account</span>
 			</button>
-			<looping-rhombuses-spinner
-				v-else
-				:animation-duration="2000"
-				:rhombus-size="20"
-				color="#2563eb" />
 		</div>
 	</form>
 </template>
 
 <script setup lang="ts">
-	import { LoopingRhombusesSpinner } from "epic-spinners";
-
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
 	const formSubmissionLoading = ref(false);
+	const { getPrincipal } = useAuth();
+	const availableBranches: Ref<any[]> = ref([]);
 	const firstName: Ref<string> = ref("");
 	const otherName: Ref<string> = ref("");
 	const email: Ref<string> = ref("");
 	const phoneNumber: Ref<string> = ref("");
 	const password: Ref<string> = ref("");
 	const companyRole: Ref<string> = ref("");
+	const companyBranch: Ref<string> = ref("");
 	const userRole: Ref<string> = ref("");
 	const { openToast } = useToast();
 	const isAccountEnabled: Ref<boolean> = ref(true);
@@ -162,6 +181,7 @@
 				password.value = responseData.password;
 				companyRole.value = responseData.roleInOrganization;
 				userRole.value = responseData.userRoles[0].toLowerCase();
+				companyBranch.value = responseData.branchId;
 				isAccountEnabled.value = responseData.accountEnabled;
 			} else {
 				openToast(
@@ -186,7 +206,7 @@
 		return null;
 	});
 
-	async function updateUserAccount(): Promise<void> {
+	const updateUserAccount = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
 			await $fetch("/api/v1/auth/corp-account/update-account-details", {
@@ -206,6 +226,7 @@
 					roleInOrganization: companyRole.value,
 					isAccountEnabled: isAccountEnabled.value,
 					userRoles: [userRole.value],
+					corpBranchId: companyBranch.value,
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
@@ -221,5 +242,27 @@
 		} finally {
 			formSubmissionLoading.value = false;
 		}
-	}
+	};
+
+	await useFetch("/api/v1/auth/corp-branch/get-all", {
+		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+		method: "GET",
+		headers: {
+			Accept: "application/json",
+		},
+		server: false,
+		lazy: true,
+		query: {
+			corpId: getPrincipal.value.corpId,
+		},
+		onResponse({ response }) {
+			if (response.status === 200) {
+				availableBranches.value = response._data.data;
+			}
+		},
+
+		onRequestError() {
+			openToast("Failed to retrieve branches. Try again!", "danger");
+		},
+	});
 </script>
