@@ -28,7 +28,7 @@
     }
 
     .form-submit {
-        @apply py-3 px-4 w-full items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none;
+        @apply py-3 px-4 w-full items-center font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700;
     }
 }
 
