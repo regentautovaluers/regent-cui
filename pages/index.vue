@@ -64,16 +64,15 @@
 			</NuxtLink>
 			<div class="flex w-full items-center justify-center">
 				<button
-					v-if="!loginAttemptLoading"
 					type="submit"
-					class="form-submit">
-					Login
+					class="form-submit relative overflow-clip"
+					:disabled="loginAttemptLoading">
+					<LoadingIndicator
+						v-if="loginAttemptLoading"
+						inject-classes="absolute w-[100%] mt-0 -top-1" />
+					<span v-if="loginAttemptLoading">Processing...</span>
+					<span v-else>Login</span>
 				</button>
-				<looping-rhombuses-spinner
-					v-else
-					:animation-duration="2000"
-					:rhombus-size="20"
-					color="#2563eb" />
 			</div>
 		</div>
 	</form>
@@ -86,7 +85,6 @@
 </style>
 
 <script setup lang="ts">
-	import { LoopingRhombusesSpinner } from "epic-spinners";
 	definePageMeta({
 		name: "authentication-page",
 		layout: "auth-pages-layout",
