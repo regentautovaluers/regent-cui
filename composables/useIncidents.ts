@@ -52,33 +52,27 @@ export default function () {
 		// Return only the items for the current page
 		return filteredData.slice(startIndex, endIndex);
 	});
-	const countFuelDelivery = computed(
-		() => fuelDeliveryIncidents.value?.length
-	);
-	const countJumpstarting = computed(
-		() => jumpstartingIncidents.value?.length
-	);
-	const countTowing = computed(() => towingIncidents.value?.length);
-	const countTyreChange = computed(() => tyrechangeIncidents.value?.length);
+
+	const individualIncidentsCount = computed(() => [
+		fuelDeliveryIncidents.value.length,
+		jumpstartingIncidents.value.length,
+		towingIncidents.value.length,
+		tyrechangeIncidents.value.length,
+	]);
+
 	const recentIncidentsCol: ComputedRef<any[]> = computed(() => {
 		const aggregateArray: any[] = [];
 
-		if (
-			fuelDeliveryIncidents.value &&
-			fuelDeliveryIncidents.value.length > 0
-		) {
+		if (fuelDeliveryIncidents.value.length > 0) {
 			aggregateArray.push(fuelDeliveryIncidents.value[0]);
 		}
-		if (
-			jumpstartingIncidents.value &&
-			jumpstartingIncidents.value.length > 0
-		) {
+		if (jumpstartingIncidents.value.length > 0) {
 			aggregateArray.push(jumpstartingIncidents.value[0]);
 		}
-		if (towingIncidents.value && towingIncidents.value.length > 0) {
+		if (towingIncidents.value.length > 0) {
 			aggregateArray.push(towingIncidents.value[0]);
 		}
-		if (tyrechangeIncidents.value && tyrechangeIncidents.value.length > 0) {
+		if (tyrechangeIncidents.value.length > 0) {
 			aggregateArray.push(tyrechangeIncidents.value[0]);
 		}
 		return aggregateArray;
@@ -136,10 +130,7 @@ export default function () {
 		nextPage,
 		prevPage,
 		determineMostRequestedService,
-		countJumpstarting,
-		countFuelDelivery,
-		countTowing,
-		countTyreChange,
+		individualIncidentsCount,
 		compiledData,
 		currentPage,
 		searchFilterTerm,

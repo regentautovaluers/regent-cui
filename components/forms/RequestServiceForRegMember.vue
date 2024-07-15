@@ -168,7 +168,7 @@
 					>Vehicle Class</label
 				>
 				<select
-					class="py-3 px-4 pe-9 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="generic-input"
 					id="fuel-type"
 					required
 					v-model="vehicleClass">

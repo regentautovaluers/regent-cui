@@ -276,10 +276,10 @@
 					<h1 class="text-2xl font-semibold m-4">Rescue Trends</h1>
 					<div class="flex justify-center flex-grow">
 						<IncidentsDonutChart
-							:total-fuel-delivery="countFuelDelivery"
-							:total-jumpstarting="countJumpstarting"
-							:total-towing="countTowing"
-							:total-tyre-change="countTyreChange" />
+							:total-fuel-delivery="individualIncidentsCount[0]"
+							:total-jumpstarting="individualIncidentsCount[1]"
+							:total-towing="individualIncidentsCount[2]"
+							:total-tyre-change="individualIncidentsCount[3]" />
 					</div>
 				</div>
 				<div class="border shadow min-h-[28rem] rounded-xl">
@@ -305,10 +305,7 @@
 		nextPage,
 		prevPage,
 		determineMostRequestedService,
-		countJumpstarting,
-		countFuelDelivery,
-		countTowing,
-		countTyreChange,
+		individualIncidentsCount,
 		compiledData,
 		currentPage,
 		searchFilterTerm,
