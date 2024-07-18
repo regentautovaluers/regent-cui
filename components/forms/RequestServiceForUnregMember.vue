@@ -322,27 +322,28 @@
 					'bottomStatistics'
 				)
 			">
-			<div class="w-1/2 p-4 rounded-lg border border-pink-500">
-				<h1 class="text-xl font-semibold text-pink-500">Distance</h1>
-				<h1 class="text-xl font-semibold text-gray-500">
+			<div class="w-1/2 p-3 rounded-lg border border-pink-500">
+				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
+				<h1 class="text-lg font-semibold text-gray-500">
 					{{ computedTowingDistance }}Km
 				</h1>
 			</div>
-			<div class="w-1/2 p-4 rounded-lg border border-pink-500">
-				<h1 class="text-xl font-semibold text-pink-500">Cost</h1>
-				<h1 class="text-xl font-semibold text-gray-500">N/A</h1>
+			<div class="w-1/2 p-3 rounded-lg border border-pink-500">
+				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
+				<h1 class="text-lg font-semibold text-gray-500">N/A</h1>
 			</div>
 		</div>
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="py-3 px-4 w-full mt-7 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
-			<span v-if="!formSubmissionLoading">Submit Towing Request</span>
-			<div
+			class="form-submit relative overflow-clip mt-4 text-lg h-14">
+			<LoadingIndicator
 				v-if="formSubmissionLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-				role="status"
-				aria-label="loading" />
+				inject-classes="absolute w-[100%] mt-0 -top-1" />
+			<span v-if="formSubmissionLoading">Processing...</span>
+			<span v-else
+				>Submit {{ componentProps.clientServiceTypeName }} Request</span
+			>
 		</button>
 	</form>
 </template>

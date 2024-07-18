@@ -18,14 +18,13 @@
 					required />
 				<button
 					type="button"
-					@click="handleRegistrationInputEnterEvent"
-					class="py-3 w-1/4 text-lg inline-flex space-x-2 justify-between px-2 items-center h-[3.6rem] font-semibold rounded-xl border border-transparent bg-blue-600 text-white hover:bg-blue-700">
-					Find Vehicle
-					<div
+					@click="searchVehicleRegistration"
+					class="py-2 w-1/4 text-lg h-[3.2rem] font-semibold rounded-xl hover:bg-blue-700 form-submit relative overflow-clip">
+					<LoadingIndicator
 						v-if="vehicleSearchLoading"
-						class="animate-spin inline-block size-4 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-						role="status"
-						aria-label="loading" />
+						inject-classes="absolute w-[100%] mt-0 -top-1" />
+					<span v-if="vehicleSearchLoading">Processing...</span>
+					<span v-else>Find Vehicle</span>
 				</button>
 			</div>
 		</div>
@@ -320,36 +319,35 @@
 					'bottomStatistics'
 				)
 			">
-			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
-				<h1 class="text-xl font-semibold text-pink-500">Distance</h1>
-				<h1 class="text-xl font-semibold text-gray-500">
+			<div class="w-1/3 p-3 rounded-lg border border-pink-500">
+				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
+				<h1 class="text-lg font-semibold text-gray-500">
 					{{ computedTowingDistance }}Km
 				</h1>
 			</div>
-			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
-				<h1 class="text-xl font-semibold text-pink-500">Free Tow</h1>
-				<h1 class="text-xl font-semibold text-gray-500">
+			<div class="w-1/3 p-3 rounded-lg border border-pink-500">
+				<h1 class="text-lg font-semibold text-pink-500">Free Tow</h1>
+				<h1 class="text-lg font-semibold text-gray-500">
 					{{ distanceLeftForTowing }}Km
 				</h1>
 			</div>
-			<div class="w-1/3 p-4 rounded-lg border border-pink-500">
-				<h1 class="text-xl font-semibold text-pink-500">Cost</h1>
-				<h1 class="text-xl font-semibold text-gray-500">N/A</h1>
+			<div class="w-1/3 p-3 rounded-lg border border-pink-500">
+				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
+				<h1 class="text-lg font-semibold text-gray-500">N/A</h1>
 			</div>
 		</div>
 
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="py-3 px-4 w-full mt-7 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
-			<span v-if="!formSubmissionLoading"
+			class="form-submit relative overflow-clip mt-4 text-lg h-14">
+			<LoadingIndicator
+				v-if="formSubmissionLoading"
+				inject-classes="absolute w-[100%] mt-0 -top-1" />
+			<span v-if="formSubmissionLoading">Processing...</span>
+			<span v-else
 				>Submit {{ componentProps.clientServiceTypeName }} Request</span
 			>
-			<div
-				v-if="formSubmissionLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
-				role="status"
-				aria-label="loading" />
 		</button>
 	</form>
 </template>
@@ -463,9 +461,10 @@
 		).then(() => (formSubmissionLoading.value = false));
 	};
 
-	async function handleRegistrationInputEnterEvent(): Promise<void> {
+	const searchVehicleRegistration = async (): Promise<void> => {
 		if (vehicleRegistration.value !== "") {
 			vehicleSearchLoading.value = true;
+
 			try {
 				await $fetch("/api/v1/bookings", {
 					baseURL: runtimeConfig.public.AVA_BASE_URL,
@@ -523,7 +522,7 @@
 		} else {
 			openToast("Please provide a registration number!", "warning");
 		}
-	}
+	};
 
 	function calculatePercentage(freeDistance: number): number {
 		return (freeDistance * 100) / 20;
