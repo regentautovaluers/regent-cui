@@ -57,14 +57,14 @@
 				],
 				spacing: 5,
 				hoverOffset: 15,
-				borderRadius: 6,
+				borderRadius: 5,
 				clip: false,
 				weight: 4,
 				datalabels: {
 					display: true,
 					color: "white",
 					font: {
-						size: 18,
+						size: 16,
 						weight: "bold",
 					},
 					formatter: (value, ctx) => {
