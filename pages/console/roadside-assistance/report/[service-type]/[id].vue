@@ -1,5 +1,7 @@
 <template>
-	<div class="py-10 h-fit responsive-view">
+	<div
+		class="py-10 h-fit responsive-view"
+		id="report">
 		<!-- top section with general information about the report -->
 		<div class="rounded-lg border shadow-sm h-52 mx-16">
 			<!-- general trip details and download button -->
@@ -29,7 +31,9 @@
 					</div>
 				</div>
 				<button
-					class="bg-blue-600 hover:bg-blue-700 text-white font-semibold uppercase px-4 py-2 rounded-xl h-14">
+					class="bg-blue-600 hover:bg-blue-700 text-white font-semibold uppercase px-4 py-2 rounded-xl h-14 disabled:bg-gray-500"
+					@click="generatePdf"
+					disabled>
 					Download Report
 				</button>
 			</div>
@@ -408,6 +412,7 @@
 	});
 
 	const runtimeConfig = useRuntimeConfig();
+	const { $html2pdf } = useNuxtApp();
 	const googleMapsApiKey = runtimeConfig.app.GOOGLE_MAPS_APIKEY;
 	const { coords } = useGeolocation();
 	const mapRef: Ref<any> = ref(null);
@@ -493,6 +498,42 @@
 
 	const calculatePercentage = (freeDistance: number): number => {
 		return (freeDistance * 100) / 20;
+	};
+
+	const generatePdf = () => {
+		const element = document.getElementById("report")!;
+
+		// clone the element: https://stackoverflow.com/questions/60557116/html2pdf-wont-print-hidden-div-after-unhiding-it/60558415#60558415
+		const clonedElement = element.cloneNode(true) as HTMLElement;
+		clonedElement.classList.remove("hidden");
+		clonedElement.classList.add("block");
+		// need to append to the document, otherwise the downloading doesn't start
+		document.body.appendChild(clonedElement);
+
+		// https://www.npmjs.com/package/html2pdf.js/v/0.9.0#options
+		$html2pdf(clonedElement, {
+			margin: 1,
+			filename: "filename.pdf",
+			image: { type: "png", quality: 0.98 },
+			html2canvas: {
+				scale: 2,
+				scrollY: 0,
+				scrollX: 0,
+				windowWidth: 1024, // desktop width
+				windowHeight: 768, // desktop height
+			},
+			jsPDF: {
+				unit: "in",
+				format: "letter",
+				orientation: "landscape",
+				html2canvas: {
+					allowTaint: true,
+					useCORS: true,
+				},
+			},
+			enableLinks: true,
+		});
+		clonedElement.remove();
 	};
 </script>
 
