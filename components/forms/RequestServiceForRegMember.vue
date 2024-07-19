@@ -524,9 +524,9 @@
 		}
 	};
 
-	function calculatePercentage(freeDistance: number): number {
+	const calculatePercentage = (freeDistance: number): number => {
 		return (freeDistance * 100) / 20;
-	}
+	};
 </script>
 
 <style lang="css">
