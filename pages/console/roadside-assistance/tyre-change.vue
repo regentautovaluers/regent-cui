@@ -8,7 +8,10 @@
 				:api-key="googleMapsApiKey"
 				style="width: 100%; height: 100%"
 				:center="center"
-				:zoom="14">
+				:zoom="14"
+				:zoom-control="false"
+				:fullscreen-control="false"
+				:street-view-control="false">
 				<InfoWindow
 					v-if="
 						center.lat != Number.NEGATIVE_INFINITY &&
