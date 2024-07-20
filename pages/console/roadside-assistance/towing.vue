@@ -169,18 +169,27 @@
 					delimitingCoords[1].lng
 				),
 				travelMode: google.maps.TravelMode.DRIVING,
+				unitSystem: google.maps.UnitSystem.METRIC,
+				drivingOptions: {
+					departureTime: new Date(Date.now()),
+					trafficModel: "optimistic",
+				},
 			};
 			directionsService.route(directionsRequest, (result, status) => {
 				if (status === google.maps.DirectionsStatus.OK && result) {
+					console.log("result: ", result);
+
 					const route = result.routes[0];
 					const leg = route.legs[0];
 					const steps = leg.steps;
 
 					// list of intermediate co-ordinates
-					polylineCoords.value = steps.map((step) => ({
-						lat: step.end_location.lat(),
-						lng: step.end_location.lng(),
-					}));
+					polylineCoords.value = steps.flatMap((step) =>
+						step.path.map((latLng) => ({
+							lat: latLng.lat(),
+							lng: latLng.lng(),
+						}))
+					);
 
 					if (leg) {
 						// set the towing distance
