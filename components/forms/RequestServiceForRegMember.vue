@@ -31,9 +31,7 @@
 		<!-- Progress Bar -->
 		<div
 			class="my-3"
-			v-if="
-				componentProps.optionalElementsRendered.includes('progressBar')
-			">
+			v-if="props.optionalElementsRendered.includes('progressBar')">
 			<div
 				class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
 				role="progressbar"
@@ -89,10 +87,7 @@
 			</div>
 		</div>
 		<!-- tire metadata -->
-		<div
-			v-if="
-				componentProps.optionalElementsRendered.includes('tyreMetadata')
-			">
+		<div v-if="props.optionalElementsRendered.includes('tyreMetadata')">
 			<div class="space-y-2 my-4">
 				<div>
 					<input
@@ -157,9 +152,7 @@
 		<!-- vehicle class -->
 		<div
 			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3"
-			v-if="
-				componentProps.optionalElementsRendered.includes('vehicleClass')
-			">
+			v-if="props.optionalElementsRendered.includes('vehicleClass')">
 			<div class="w-full">
 				<label
 					for="fuel-type"
@@ -191,7 +184,7 @@
 		<!-- fuel type and cost -->
 		<div
 			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0"
-			v-if="componentProps.optionalElementsRendered.includes('fuelData')">
+			v-if="props.optionalElementsRendered.includes('fuelData')">
 			<!-- Fuel Type -->
 			<div class="w-full lg:w-1/2">
 				<label
@@ -272,11 +265,7 @@
 		<!-- drop off location -->
 		<div
 			class="mt-5"
-			v-if="
-				componentProps.optionalElementsRendered.includes(
-					'dropoffLocation'
-				)
-			">
+			v-if="props.optionalElementsRendered.includes('dropoffLocation')">
 			<label
 				for="dropoff-location"
 				class="block font-medium mb-2 dark:text-white"
@@ -312,26 +301,30 @@
 		</div>
 
 		<!-- statistics -->
-		<div
-			class="flex justify-between mt-8 space-x-4"
-			v-if="
-				componentProps.optionalElementsRendered.includes(
-					'bottomStatistics'
-				)
-			">
-			<div class="w-1/3 p-3 rounded-lg border border-pink-500">
+		<div class="flex justify-between mt-8 space-x-4">
+			<div
+				class="w-1/3 p-3 rounded-lg border border-pink-500"
+				v-if="props.clientServiceTypeName === 'Towing'">
 				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
 				<h1 class="text-lg font-semibold text-gray-500">
 					{{ computedTowingDistance }}Km
 				</h1>
 			</div>
-			<div class="w-1/3 p-3 rounded-lg border border-pink-500">
+			<div
+				class="w-1/3 p-3 rounded-lg border border-pink-500"
+				v-if="props.clientServiceTypeName === 'Towing'">
 				<h1 class="text-lg font-semibold text-pink-500">Free Tow</h1>
 				<h1 class="text-lg font-semibold text-gray-500">
 					{{ distanceLeftForTowing }}Km
 				</h1>
 			</div>
-			<div class="w-1/3 p-3 rounded-lg border border-pink-500">
+			<div
+				class="p-3 rounded-lg border border-pink-500"
+				:class="
+					props.clientServiceTypeName === 'Towing'
+						? 'w-1/3'
+						: 'w-full'
+				">
 				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
 				<h1 class="text-lg font-semibold text-gray-500">N/A</h1>
 			</div>
@@ -345,9 +338,7 @@
 				v-if="formSubmissionLoading"
 				inject-classes="absolute w-[100%] mt-0 -top-1" />
 			<span v-if="formSubmissionLoading">Processing...</span>
-			<span v-else
-				>Submit {{ componentProps.clientServiceTypeName }} Request</span
-			>
+			<span v-else>Submit {{ props.clientServiceTypeName }} Request</span>
 		</button>
 	</form>
 </template>
@@ -355,7 +346,7 @@
 <script setup lang="ts">
 	import { type informativeCoordsMarker } from "~/types/types";
 
-	const componentProps = defineProps<{
+	const props = defineProps<{
 		backendServiceTypeName: string;
 		clientServiceTypeName: string;
 		optionalElementsRendered: string[];
@@ -389,7 +380,7 @@
 	}>();
 	const computedTowingDistance: ComputedRef<number | undefined> = computed(
 		() => {
-			return componentProps.towingDistance;
+			return props.towingDistance;
 		}
 	);
 	const {
@@ -439,7 +430,7 @@
 			userName.value,
 			userPhoneNumber.value,
 			userEmail.value,
-			componentProps.backendServiceTypeName,
+			props.backendServiceTypeName,
 			vehicleRegistration.value,
 			vehicleMake.value,
 			vehicleModel.value,

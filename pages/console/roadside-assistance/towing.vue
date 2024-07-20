@@ -89,11 +89,7 @@
 				:towing-distance="towingDistance"
 				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
-				:optional-elements-rendered="[
-					'bottomStatistics',
-					'progressBar',
-					'dropoffLocation',
-				]"
+				:optional-elements-rendered="['progressBar', 'dropoffLocation']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);
@@ -104,10 +100,7 @@
 				:towing-distance="towingDistance"
 				client-service-type-name="Towing"
 				backend-service-type-name="Tow"
-				:optional-elements-rendered="[
-					'bottomStatistics',
-					'dropoffLocation',
-				]"
+				:optional-elements-rendered="['dropoffLocation']"
 				@append-info-marker="
 					(markerData: informativeCoordsMarker) => {
 						insertIntoOtherMarkers(markerData);
