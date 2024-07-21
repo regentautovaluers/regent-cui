@@ -35,15 +35,9 @@
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 border border-gray-500 rounded-xl focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							class="generic-input"
 							placeholder="Search Name, Email or Phone Number"
-							v-model="searchFilterTerm" />
-						<div
-							class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-							<img
-								src="/images/topnav/search-icon.svg"
-								alt="Search Icon" />
-						</div>
+							v-model.lazy="searchFilterTerm" />
 					</div>
 					<div class="flex items-center space-x-2">
 						<div class="flex flex-nowrap items-center space-x-3">
@@ -60,19 +54,7 @@
 											: 'bg-blue-600 text-white'
 									">
 									Membership Category
-									<svg
-										class="hs-dropdown-open:rotate-180 size-4"
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round">
-										<path d="m6 9 6 6 6-6" />
-									</svg>
+									<HsChevron />
 								</button>
 								<div
 									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 border after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 z-20"
@@ -109,19 +91,13 @@
 								</div>
 							</div>
 						</div>
+
 						<button
 							v-if="
 								searchFilterTerm !== '' ||
 								searchMembershipCategory !== ''
 							"
-							@click="
-								async () => {
-									searchFilterTerm = '';
-									searchMembershipCategory = '';
-									fetchedPages = [];
-									await manualLoadInitialData();
-								}
-							"
+							@click="clearFiltering"
 							title="Clear Filters"
 							class="bg-gray-300 text-center p-2 rounded-full size-10">
 							<Icon
@@ -176,7 +152,7 @@
 											v-else
 											v-for="(
 												member, index
-											) in computedPagedList"
+											) in membersList"
 											:key="index"
 											:clientName="member.full_name"
 											:membership-category="
@@ -202,22 +178,20 @@
 					>
 					<div class="space-x-1 flex items-center">
 						<button
-							v-for="(page, index) in fetchedPages"
-							:key="index"
-							@click="reducePage(page)"
+							@click="loadPreviousPage"
+							v-if="page > 0"
 							type="button"
-							class="p-2 size-10 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700">
-							{{ page + 1 }}
+							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+							<span v-if="!fetchingMoreData">Previous Page</span>
+							<div
+								v-if="fetchingMoreData"
+								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								role="status"
+								aria-label="loading" />
 						</button>
 						<button
-							v-if="fetchedPages.length < totalPages"
-							@click="
-								() => {
-									if (page + 1 < totalPages) {
-										page++;
-									}
-								}
-							"
+							@click="loadNextPage"
+							v-if="page < totalPages - 1"
 							type="button"
 							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
 							<span v-if="!fetchingMoreData">Next Page</span>
@@ -349,7 +323,7 @@
 	const { getPrincipal } = useAuth();
 	const profilePicture: Ref<string> = ref("");
 	const {
-		computedPagedList,
+		membersList,
 		searchFilterTerm,
 		searchMembershipCategory,
 		totalNumber,
@@ -357,9 +331,9 @@
 		fetchErrorOrEmpty,
 		fetchingMoreData,
 		page,
-		reducePage,
-		manualLoadInitialData,
-		fetchedPages,
+		clearFiltering,
+		loadNextPage,
+		loadPreviousPage,
 	} = useGeneralMemberships();
 	const currentTypeBlob: Ref<number> = ref(0);
 	const membershipTypesBlob: any[] = [
