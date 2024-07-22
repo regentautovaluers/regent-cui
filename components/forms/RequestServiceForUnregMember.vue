@@ -501,7 +501,7 @@
 			vehicleMake.value,
 			vehicleModel.value,
 			arrivalDuration.value,
-			arrivalDistance.value,
+			computedTowingDistance.value as number,
 			computedServiceCost.value,
 			pickupPointName.value,
 			pickupLatitude.value,
