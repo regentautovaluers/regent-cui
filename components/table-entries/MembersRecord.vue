@@ -26,15 +26,15 @@
 			class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
 			{{
 				!componentProps.clientPhone
-					? "Phone Number Not Provided"
-					: `+${componentProps.clientPhone}`
+					? "Phone N/A"
+					: `${componentProps.clientPhone}`
 			}}
 		</td>
 		<td
 			class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
 			{{
 				!componentProps.clientEmail
-					? "Email Not Provided"
+					? "Email N/A"
 					: componentProps.clientEmail
 			}}
 		</td>
@@ -65,10 +65,7 @@
 						aria-orientation="vertical"
 						aria-labelledby="options-menu">
 						<NuxtLink
-							v-if="
-								getPrincipal.userlevel === 'admin' ||
-								getPrincipal.userlevel === 'broker'
-							"
+							v-if="isPrincipalAdmin()"
 							:to="{
 								name: 'edit-member-details',
 								query: {
@@ -107,7 +104,7 @@
 		clientPhone: string;
 		clientEmail: string | null;
 	}>();
-	const { getPrincipal } = useAuth();
+	const { isPrincipalAdmin } = useAuth();
 	const isDropdownVisible = ref(false);
 	const dropdownContainer = ref(null);
 

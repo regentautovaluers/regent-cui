@@ -33,7 +33,6 @@ const useAuth = () => {
 	const getPrincipal: ComputedRef<LoggedInPrincipal> = computed(() => {
 		return authenticatedPrincipal.value;
 	});
-
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(
 		() => {
 			return authToken.value;
@@ -95,17 +94,9 @@ const useAuth = () => {
 	};
 
 	const isPrincipalAdmin = (): boolean => {
-		let isAdmin = false;
-
-		if (
-			authenticatedPrincipal.value.roles.includes(
-				"role_corp_admin".toUpperCase()
-			)
-		) {
-			isAdmin = true;
-		}
-
-		return isAdmin;
+		return authenticatedPrincipal.value.roles.includes(
+			"role_corp_admin".toUpperCase()
+		);
 	};
 
 	const updateProfilePicture = (picture: string) => {
