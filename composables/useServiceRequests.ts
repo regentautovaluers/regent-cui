@@ -216,11 +216,7 @@ export default function () {
 		services: any[],
 		searchKey: string
 	) => {
-		const foundService = services.find((service) => {
-			service.service_name = searchKey;
-			return service;
-		});
-		return foundService;
+		return services.find((service) => service.service_name === searchKey);
 	};
 
 	return {
