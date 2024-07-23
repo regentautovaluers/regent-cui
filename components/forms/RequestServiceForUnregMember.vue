@@ -1,7 +1,13 @@
 <template>
 	<form
 		class="py-12"
-		@submit.prevent="handleServiceReqFormSubmission">
+		@submit.prevent="
+			makeServiceRequest(
+				computedServiceCost,
+				props.backendServiceTypeName,
+				computedTowingDistance
+			)
+		">
 		<!-- client contacts -->
 		<div
 			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
@@ -375,33 +381,33 @@
 		optionalElementsRendered: string[];
 		towingDistance?: number;
 	}>();
-
-	const runtimeConfig = useRuntimeConfig();
-	const formSubmissionLoading = ref(false);
-	const { makeServiceRequest } = useServiceRequests();
-	const vehicleRegistration: Ref<string> = ref("");
-	const vehicleMake: Ref<string> = ref("");
-	const vehicleModel: Ref<string> = ref("");
-	const vehicleTypeIndex: Ref<number> = ref(0);
-	const userName: Ref<string> = ref("");
-	const userPhoneNumber: Ref<string> = ref("");
-	const userEmail: Ref<string> = ref("");
-	const arrivalDuration: Ref<number> = ref(10);
+	const emits = defineEmits<{
+		appendInfoMarker: [informativeCoordsMarker];
+	}>();
 
 	const {
-		pending: loadingVehicleTypes,
-		error: loadVehicleTypesError,
-		data: vehicleTypes,
-		refresh: refreshVehicleTypes,
-	} = useFetch("/api/v1/control-unit/vehicle-types", {
-		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: "GET",
-		headers: {
-			Accept: "application/json",
-		},
-		server: false,
-		lazy: true,
-	}) as any;
+		vehicleRegistration,
+		vehicleMake,
+		vehicleModel,
+		vehicleTypeIndex,
+		userName,
+		userPhoneNumber,
+		userEmail,
+		formSubmissionLoading,
+		loadingVehicleTypes,
+		vehicleTypes,
+		pickupLatitude,
+		pickupLongitude,
+		destinationLongitude,
+		destinationLatitude,
+		requestRemarks,
+		vehicleClass,
+		fuelType,
+		fuelAmount,
+		haveSpareTyre,
+		tyreType,
+		makeServiceRequest,
+	} = useServiceRequests();
 
 	const computedServiceCost: ComputedRef<number> = computed(() => {
 		const selectedVehicleType = vehicleTypes.value
@@ -418,45 +424,17 @@
 			return 0;
 		}
 	});
-	const requestRemarks: Ref<string | null> = ref(null);
-	const vehicleClass: Ref<string | null> = ref(null);
-	const fuelType: Ref<string | null> = ref(null);
-	const fuelAmount: Ref<number | null> = ref(null);
-	const haveSpareTyre: Ref<boolean> = ref(true);
-	const tyreType: Ref<string> = ref("");
-	const componentEmits = defineEmits<{
-		appendInfoMarker: [informativeCoordsMarker];
-	}>();
+
 	const computedTowingDistance: ComputedRef<number | undefined> = computed(
 		() => props.towingDistance
 	);
-	const {
-		pickupLatitude,
-		pickupLongitude,
-		destinationLongitude,
-		destinationLatitude,
-		pickupPointName,
-		dropOffPointName,
-	} = useLocationUtils();
-
-	const calculateTowingCharge = (
-		basePrice: number,
-		distance: number,
-		chargePerExtraKm: number
-	): number => {
-		if (distance < 10) {
-			return basePrice;
-		}
-
-		return basePrice + (distance - 10) * chargePerExtraKm;
-	};
 
 	watch([pickupLatitude, pickupLongitude], (newValues) => {
 		if (
 			newValues[0] !== Number.NEGATIVE_INFINITY &&
 			newValues[1] !== Number.NEGATIVE_INFINITY
 		) {
-			componentEmits("appendInfoMarker", {
+			emits("appendInfoMarker", {
 				id: 0,
 				info: "Client Is Here",
 				coords: {
@@ -474,7 +452,7 @@
 				newValues[0] !== Number.NEGATIVE_INFINITY &&
 				newValues[1] !== Number.NEGATIVE_INFINITY
 			) {
-				componentEmits("appendInfoMarker", {
+				emits("appendInfoMarker", {
 					id: 1,
 					info: "Destination Is Here",
 					coords: {
@@ -487,31 +465,15 @@
 		{ immediate: false }
 	);
 
-	async function handleServiceReqFormSubmission() {
-		formSubmissionLoading.value = true;
-		await makeServiceRequest(
-			userName.value,
-			userPhoneNumber.value,
-			userEmail.value,
-			props.backendServiceTypeName,
-			vehicleRegistration.value,
-			vehicleMake.value,
-			vehicleModel.value,
-			arrivalDuration.value,
-			computedTowingDistance.value as number,
-			computedServiceCost.value,
-			pickupPointName.value,
-			pickupLatitude.value,
-			pickupLongitude.value,
-			dropOffPointName.value,
-			destinationLongitude.value,
-			destinationLatitude.value,
-			requestRemarks.value,
-			vehicleClass.value,
-			fuelType.value,
-			fuelAmount.value,
-			tyreType.value,
-			haveSpareTyre.value
-		).then(() => (formSubmissionLoading.value = false));
-	}
+	const calculateTowingCharge = (
+		basePrice: number,
+		distance: number,
+		chargePerExtraKm: number
+	): number => {
+		if (distance < 10) {
+			return basePrice;
+		}
+
+		return basePrice + (distance - 10) * chargePerExtraKm;
+	};
 </script>

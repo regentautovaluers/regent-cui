@@ -1,11 +1,17 @@
 <template>
 	<form
 		class="py-12"
-		@submit.prevent="handleServiceReqFormSubmission">
+		@submit.prevent="
+			makeServiceRequest(
+				computedServiceCost,
+				props.backendServiceTypeName,
+				computedTowingDistance
+			)
+		">
 		<div class="w-full registration relative">
 			<label
 				for="registration-number"
-				class="block font-medium mb-2 dark:text-white"
+				class="block font-medium mb-2"
 				>Provide Vehicle Registration Number</label
 			>
 			<div class="flex items-center space-x-2">
@@ -15,16 +21,18 @@
 					class="generic-input"
 					placeholder="Provide the registration number to search"
 					v-model="vehicleRegistration"
-					required />
+					required
+					maxlength="8" />
 				<button
 					type="button"
 					@click="searchVehicleRegistration"
-					class="py-2 w-1/4 text-lg h-[3.2rem] font-semibold rounded-xl hover:bg-blue-700 form-submit relative overflow-clip">
+					class="py-2 w-1/4 text-lg h-[3.2rem] font-semibold rounded-xl hover:bg-blue-700 form-submit relative overflow-clip disabled:bg-gray-300"
+					:disabled="vehicleRegistration.length < 8">
 					<LoadingIndicator
 						v-if="vehicleSearchLoading"
 						inject-classes="absolute w-[100%] mt-0 -top-1" />
 					<span v-if="vehicleSearchLoading">Processing...</span>
-					<span v-else>Find Vehicle</span>
+					<span v-else>Search</span>
 				</button>
 			</div>
 		</div>
@@ -45,10 +53,48 @@
 			<div
 				class="flex items-center justify-between w-full text-end text-gray-500 antialiased mt-3">
 				<span> {{ vehicleRegistration }} </span>
-				<span>{{ distanceLeftForTowing }} KM FREE TOWING LEFT</span>
+				<span>{{ freeDistanceLeftForTowing }} KM FREE TOWING LEFT</span>
 			</div>
 		</div>
 		<!-- End Progress Bar -->
+
+		<!-- client contacts -->
+		<div
+			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
+			<!-- Full Name Field -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="full-name"
+					class="block font-medium mb-2"
+					>Full Name</label
+				>
+				<input
+					type="text"
+					id="full-name"
+					class="generic-input"
+					placeholder="Client Name"
+					v-model="userName"
+					required
+					disabled />
+			</div>
+
+			<!-- Phone Field -->
+			<div class="w-full lg:w-1/2">
+				<label
+					for="phone"
+					class="block font-medium mb-2"
+					>Phone</label
+				>
+				<input
+					type="text"
+					id="phone"
+					class="generic-input"
+					placeholder="e.g. 0704080056"
+					v-model="userPhoneNumber"
+					required
+					disabled />
+			</div>
+		</div>
 
 		<!-- Vehicle Make and Model -->
 		<div class="w-full flex space-x-4 mt-4">
@@ -56,7 +102,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-make"
-					class="block font-medium mb-2 dark:text-white"
+					class="block font-medium mb-2"
 					>Vehicle Make</label
 				>
 				<input
@@ -73,7 +119,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-model"
-					class="block font-medium mb-2 dark:text-white"
+					class="block font-medium mb-2"
 					>Vehicle Model</label
 				>
 				<input
@@ -93,7 +139,7 @@
 			v-if="props.clientServiceTypeName === 'Towing'">
 			<label
 				for="vehicle-type"
-				class="block font-medium dark:text-white"
+				class="block font-medium"
 				>Vehicle Type</label
 			>
 			<select
@@ -181,7 +227,7 @@
 			<div class="w-full">
 				<label
 					for="fuel-type"
-					class="block font-medium mb-2 dark:text-white"
+					class="block font-medium mb-2"
 					>Vehicle Class</label
 				>
 				<select
@@ -214,7 +260,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="fuel-type"
-					class="block font-medium mb-2 dark:text-white"
+					class="block font-medium mb-2"
 					>Fuel Type</label
 				>
 				<select
@@ -243,7 +289,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="fuel-price"
-					class="block font-medium mb-2 dark:text-white"
+					class="block font-medium mb-2"
 					>Fuel Price</label
 				>
 				<select
@@ -270,7 +316,7 @@
 		<div class="mt-5">
 			<label
 				for="client-location"
-				class="block font-medium mb-2 dark:text-white"
+				class="block font-medium mb-2"
 				>Client Location</label
 			>
 			<div class="relative">
@@ -293,7 +339,7 @@
 			v-if="props.optionalElementsRendered.includes('dropoffLocation')">
 			<label
 				for="dropoff-location"
-				class="block font-medium mb-2 dark:text-white"
+				class="block font-medium mb-2"
 				>Drop Off Location</label
 			>
 			<div class="relative">
@@ -314,7 +360,7 @@
 		<div class="my-5">
 			<label
 				for="comments-box"
-				class="block font-medium mb-2 dark:text-white"
+				class="block font-medium mb-2"
 				>Comments</label
 			>
 			<textarea
@@ -340,7 +386,7 @@
 				v-if="props.clientServiceTypeName === 'Towing'">
 				<h1 class="text-lg font-semibold text-pink-500">Free Tow</h1>
 				<h1 class="text-lg font-semibold text-gray-500">
-					{{ distanceLeftForTowing }}Km
+					{{ freeDistanceLeftForTowing }}Km
 				</h1>
 			</div>
 			<div
@@ -379,36 +425,36 @@
 		optionalElementsRendered: string[];
 		towingDistance?: number;
 	}>();
-	const { getPrincipal } = useAuth();
-	const runtimeConfig = useRuntimeConfig();
-	const vehicleSearchLoading: Ref<boolean> = ref(false);
-	const currentPercentage: Ref<number> = ref(0);
-	const distanceLeftForTowing: Ref<number> = ref(0);
-	const vehicleRegistration: Ref<string> = ref("");
-	const vehicleMake: Ref<string> = ref("");
-	const vehicleModel: Ref<string> = ref("");
-	const vehicleTypeIndex: Ref<number> = ref(0);
-	const userName: Ref<string> = ref("");
-	const userPhoneNumber: Ref<string> = ref("");
-	const userEmail: Ref<string | null> = ref(null);
-	const formSubmissionLoading = ref(false);
-	const arrivalDuration: Ref<number> = ref(10);
-	const arrivalDistance: Ref<number> = ref(20);
+	const emits = defineEmits<{
+		appendInfoMarker: [informativeCoordsMarker];
+	}>();
 
 	const {
-		pending: loadingVehicleTypes,
-		error: loadVehicleTypesError,
-		data: vehicleTypes,
-		refresh: refreshVehicleTypes,
-	} = useFetch("/api/v1/control-unit/vehicle-types", {
-		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: "GET",
-		headers: {
-			Accept: "application/json",
-		},
-		server: false,
-		lazy: true,
-	}) as any;
+		vehicleRegistration,
+		vehicleMake,
+		vehicleModel,
+		vehicleTypeIndex,
+		userName,
+		userPhoneNumber,
+		formSubmissionLoading,
+		vehicleSearchLoading,
+		loadingVehicleTypes,
+		currentPercentage,
+		freeDistanceLeftForTowing,
+		vehicleTypes,
+		pickupLatitude,
+		pickupLongitude,
+		destinationLongitude,
+		destinationLatitude,
+		requestRemarks,
+		vehicleClass,
+		fuelType,
+		fuelAmount,
+		haveSpareTyre,
+		tyreType,
+		makeServiceRequest,
+		searchVehicleRegistration,
+	} = useServiceRequests();
 
 	const computedServiceCost: ComputedRef<number> = computed(() => {
 		const selectedVehicleType = vehicleTypes.value
@@ -419,7 +465,7 @@
 				selectedVehicleType.towingRate.withinThreshHoldPrice,
 				computedTowingDistance.value,
 				selectedVehicleType.towingRate.overThreshHoldPriceMembers,
-				distanceLeftForTowing.value,
+				freeDistanceLeftForTowing.value,
 				selectedVehicleType.towingRate.threshHoldDistance
 			);
 			return towingCost;
@@ -427,37 +473,19 @@
 			return 0;
 		}
 	});
-	const requestRemarks: Ref<string | null> = ref(null);
-	const vehicleClass: Ref<string | null> = ref(null);
-	const fuelType: Ref<string | null> = ref(null);
-	const fuelAmount: Ref<number | null> = ref(null);
-	const haveSpareTyre: Ref<boolean> = ref(true);
-	const tyreType: Ref<string> = ref("");
-	const { openToast } = useToast();
-	const { makeServiceRequest } = useServiceRequests();
-	const componentEmits = defineEmits<{
-		appendInfoMarker: [informativeCoordsMarker];
-	}>();
+
 	const computedTowingDistance: ComputedRef<number | undefined> = computed(
 		() => {
 			return props.towingDistance;
 		}
 	);
-	const {
-		pickupLatitude,
-		pickupLongitude,
-		destinationLongitude,
-		destinationLatitude,
-		pickupPointName,
-		dropOffPointName,
-	} = useLocationUtils();
 
 	watch([pickupLatitude, pickupLongitude], (newValues) => {
 		if (
 			newValues[0] !== Number.NEGATIVE_INFINITY &&
 			newValues[1] !== Number.NEGATIVE_INFINITY
 		) {
-			componentEmits("appendInfoMarker", {
+			emits("appendInfoMarker", {
 				id: 0,
 				info: "Client Is Here",
 				coords: {
@@ -473,7 +501,7 @@
 			newValues[0] !== Number.NEGATIVE_INFINITY &&
 			newValues[1] !== Number.NEGATIVE_INFINITY
 		) {
-			componentEmits("appendInfoMarker", {
+			emits("appendInfoMarker", {
 				id: 1,
 				info: "Destination Is Here",
 				coords: {
@@ -483,101 +511,6 @@
 			});
 		}
 	});
-
-	const handleServiceReqFormSubmission = async () => {
-		formSubmissionLoading.value = true;
-		await makeServiceRequest(
-			userName.value,
-			userPhoneNumber.value,
-			userEmail.value,
-			props.backendServiceTypeName,
-			vehicleRegistration.value,
-			vehicleMake.value,
-			vehicleModel.value,
-			arrivalDuration.value,
-			computedTowingDistance.value as number,
-			computedServiceCost.value,
-			pickupPointName.value,
-			pickupLatitude.value,
-			pickupLongitude.value,
-			dropOffPointName.value,
-			destinationLongitude.value,
-			destinationLatitude.value,
-			requestRemarks.value,
-			vehicleClass.value,
-			fuelType.value,
-			fuelAmount.value,
-			tyreType.value,
-			haveSpareTyre.value
-		).then(() => (formSubmissionLoading.value = false));
-	};
-
-	const searchVehicleRegistration = async (): Promise<void> => {
-		if (vehicleRegistration.value !== "") {
-			vehicleSearchLoading.value = true;
-
-			try {
-				await $fetch("/api/v1/bookings", {
-					baseURL: runtimeConfig.public.AVA_BASE_URL,
-					method: "GET",
-					query: {
-						registration: vehicleRegistration.value,
-						corporateId: getPrincipal.value.corpId,
-					},
-					async onResponse({ response }) {
-						if (response.status === 404) {
-							openToast(
-								"Registration not found. Search again!",
-								"warning"
-							);
-							vehicleRegistration.value = "";
-						} else {
-							openToast("Vehicle Details found.", "success");
-
-							// fill the needed fields
-							const registrationDetails = response._data;
-							vehicleRegistration.value =
-								registrationDetails.membershipVehicle.registration;
-							userName.value =
-								registrationDetails.membership.full_name;
-							userPhoneNumber.value =
-								registrationDetails.membership.phone_number;
-							userEmail.value =
-								registrationDetails.membership.userEmail;
-
-							vehicleMake.value =
-								registrationDetails.membershipVehicle.make;
-							vehicleModel.value =
-								registrationDetails.membershipVehicle.model;
-							distanceLeftForTowing.value =
-								registrationDetails.membershipVehicle
-									.available_free_distance === null
-									? 20
-									: Number(
-											registrationDetails
-												.membershipVehicle
-												.available_free_distance
-									  );
-							currentPercentage.value = calculatePercentage(
-								distanceLeftForTowing.value
-							);
-						}
-					},
-				});
-			} catch (error) {
-				console.log("An error occured: ", error);
-				openToast("Search failed. Please try again!", "danger");
-			} finally {
-				vehicleSearchLoading.value = false;
-			}
-		} else {
-			openToast("Please provide a registration number!", "warning");
-		}
-	};
-
-	const calculatePercentage = (freeDistance: number): number => {
-		return (freeDistance * 100) / 20;
-	};
 
 	const calculateTowingCharge = (
 		basePrice: number,

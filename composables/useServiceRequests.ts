@@ -3,81 +3,169 @@ export default function () {
 	const { getPrincipal } = useAuth();
 	const route = useRoute();
 	const { openToast } = useToast();
+	const formSubmissionLoading = ref(false);
+	const vehicleSearchLoading: Ref<boolean> = ref(false);
+
+	// fields related to the service request
+	const currentPercentage: Ref<number> = ref(0);
+	const freeDistanceLeftForTowing: Ref<number> = ref(0);
+	const vehicleRegistration: Ref<string> = ref("");
+	const vehicleMake: Ref<string> = ref("");
+	const vehicleModel: Ref<string> = ref("");
+	const vehicleTypeIndex: Ref<number> = ref(0);
+	const userName: Ref<string> = ref("");
+	const userPhoneNumber: Ref<string> = ref("");
+	const userEmail: Ref<string | null> = ref(null);
+	const requestRemarks: Ref<string | null> = ref(null);
+	const arrivalDuration: Ref<number> = ref(10);
+	const vehicleClass: Ref<string | null> = ref(null);
+	const fuelType: Ref<string | null> = ref(null);
+	const fuelAmount: Ref<number | null> = ref(null);
+	const haveSpareTyre: Ref<boolean> = ref(true);
+	const tyreType: Ref<string> = ref("");
+	const {
+		pickupLatitude,
+		pickupLongitude,
+		destinationLongitude,
+		destinationLatitude,
+		pickupPointName,
+		dropOffPointName,
+	} = useLocationUtils();
 
 	const determineEndpointVar = (): string => {
-		if (route.name === "ava-towing") {
-			return "towingRequest";
-		} else if (route.name === "ava-jumpstarting") {
-			return "jumpstartingRequest";
-		} else if (route.name === "ava-fuel-delivery") {
-			return "fuelDeliveryRequest";
-		} else if (route.name === "ava-tyre-change") {
-			return "tyreChangeRequest";
+		switch (route.name) {
+			case "ava-towing":
+				return "towingRequest";
+			case "ava-jumpstarting":
+				return "jumpstartingRequest";
+			case "ava-fuel-delivery":
+				return "fuelDeliveryRequest";
+			case "ava-tyre-change":
+				return "tyreChangeRequest";
+			default:
+				return "";
 		}
-		return "";
+	};
+
+	const {
+		pending: loadingVehicleTypes,
+		error: loadVehicleTypesError,
+		data: vehicleTypes,
+		refresh: refreshVehicleTypes,
+	} = useFetch("/api/v1/control-unit/vehicle-types", {
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: "GET",
+		headers: {
+			Accept: "application/json",
+		},
+		server: false,
+		lazy: true,
+	}) as any;
+
+	const searchVehicleRegistration = async (): Promise<void> => {
+		try {
+			vehicleSearchLoading.value = true;
+
+			await $fetch("/api/v1/bookings", {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: "GET",
+				query: {
+					registration: vehicleRegistration.value,
+					corporateId: getPrincipal.value.corpId,
+				},
+				async onResponse({ response }) {
+					if (response.status === 404) {
+						openToast(
+							"Registration not found. Search again!",
+							"warning"
+						);
+						vehicleRegistration.value = "";
+					} else {
+						openToast("Vehicle Details found.", "success");
+
+						// fill the needed fields
+						const registrationDetails = response._data;
+						vehicleRegistration.value =
+							registrationDetails.membershipVehicle.registration;
+						userName.value =
+							registrationDetails.membership.full_name;
+						userPhoneNumber.value =
+							registrationDetails.membership.phone_number;
+						userEmail.value =
+							registrationDetails.membership.userEmail;
+
+						vehicleMake.value =
+							registrationDetails.membershipVehicle.make;
+						vehicleModel.value =
+							registrationDetails.membershipVehicle.model;
+						freeDistanceLeftForTowing.value =
+							registrationDetails.membershipVehicle
+								.available_free_distance === null
+								? 20
+								: Number(
+										registrationDetails.membershipVehicle
+											.available_free_distance
+								  );
+						currentPercentage.value = calculatePercentage(
+							freeDistanceLeftForTowing.value
+						);
+					}
+				},
+			});
+		} catch (error) {
+			console.log("An error occured: ", error);
+			openToast("Search failed. Please try again!", "danger");
+		} finally {
+			vehicleSearchLoading.value = false;
+		}
 	};
 
 	const makeServiceRequest = async (
-		userName: string,
-		userPhoneNumber: string,
-		userEmail: string,
-		serviceType: string,
-		vehicleRegistration: string,
-		vehicleMake: string,
-		vehicleModel: string,
-		arrivalDuration: number,
-		arrivalDistance: number,
 		serviceCost: number,
-		pickupPoint: string,
-		pickupLatitude: number,
-		pickupLongitude: number,
-		destinationPoint: string,
-		destinationLongitude: number,
-		destinationLatitude: number,
-		requestRemarks: string | null,
-		vehicleClass: string | null,
-		fuelType: string | null,
-		fuelAmount: number | null,
-		tyreType: string | null,
-		hasSpareTyre: boolean | null
+		backendServiceName: string,
+		towingDistance?: number
 	) => {
 		try {
 			await $fetch(`/api/v1/mobile/${determineEndpointVar()}`, {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
 				method: "POST",
 				body: JSON.stringify({
-					appUserName: userName,
+					appUserName: userName.value,
 					corporate_client: getPrincipal.value.corpId,
-					appUserPhone: userPhoneNumber,
-					...(userEmail !== undefined
-						? { appUserEmail: userEmail }
+					appUserPhone: userPhoneNumber.value,
+					...(userEmail.value !== undefined
+						? { appUserEmail: userEmail.value }
 						: {}),
-					appServiceType: serviceType,
-					appRegistration: vehicleRegistration,
-					vehicle_make: vehicleMake,
-					vehicle_model: vehicleModel,
-					appDuration: arrivalDuration,
-					appDistance: arrivalDistance,
+					appServiceType: backendServiceName,
+					appRegistration: vehicleRegistration.value,
+					vehicle_make: vehicleMake.value,
+					vehicle_model: vehicleModel.value,
+					appDuration: arrivalDuration.value,
+					appDistance: towingDistance,
 					appCost: serviceCost,
-					appPickupPoint: pickupPoint,
-					appPickupLat: pickupLatitude,
-					appPickupLon: pickupLongitude,
-					appDestinationPoint: destinationPoint,
-					appDestinationLat: destinationLatitude,
-					appDestinationLon: destinationLongitude,
-					...(vehicleClass !== null
-						? { vehicleClass: vehicleClass }
+					appPickupPoint: pickupPointName.value,
+					appPickupLat: pickupLatitude.value,
+					appPickupLon: pickupLongitude.value,
+					appDestinationPoint: dropOffPointName.value,
+					appDestinationLat: destinationLatitude.value,
+					appDestinationLon: destinationLongitude.value,
+					...(vehicleClass.value !== null
+						? { vehicleClass: vehicleClass.value }
 						: {}),
-					...(requestRemarks !== null
-						? { appRemarks: requestRemarks }
+					...(requestRemarks.value !== null
+						? { appRemarks: requestRemarks.value }
 						: {}),
-					...(fuelType !== null ? { appFuelType: fuelType } : {}),
-					...(fuelAmount !== null
-						? { appFuelAmount: fuelAmount }
+					...(fuelType.value !== null
+						? { appFuelType: fuelType.value }
 						: {}),
-					...(tyreType !== null ? { tyreType: tyreType } : {}),
-					...(hasSpareTyre !== null
-						? { hasSpareTyre: hasSpareTyre }
+					...(fuelAmount.value !== null
+						? { appFuelAmount: fuelAmount.value }
+						: {}),
+					...(tyreType.value !== null
+						? { tyreType: tyreType.value }
+						: {}),
+					...(haveSpareTyre !== null
+						? { hasSpareTyre: haveSpareTyre.value }
 						: {}),
 				}),
 
@@ -86,7 +174,7 @@ export default function () {
 						throw new Error("Request failed to go through!");
 					} else {
 						openToast(
-							`${serviceType} request succesfully went through!`,
+							`${backendServiceName} request succesfully went through!`,
 							"success"
 						);
 					}
@@ -94,9 +182,45 @@ export default function () {
 			});
 		} catch (error) {
 			console.log("Service request error encountered. Reason: ", error);
-			openToast(`${serviceType} request failed to go thorugh!`, "danger");
+			openToast(
+				`${backendServiceName} request failed to go thorugh!`,
+				"danger"
+			);
 		}
 	};
 
-	return { makeServiceRequest, determineEndpointVar };
+	const calculatePercentage = (freeDistance: number): number => {
+		return (freeDistance * 100) / 20;
+	};
+
+	return {
+		vehicleRegistration,
+		vehicleMake,
+		vehicleModel,
+		vehicleTypeIndex,
+		userName,
+		userPhoneNumber,
+		userEmail,
+		formSubmissionLoading,
+		vehicleSearchLoading,
+		loadingVehicleTypes,
+		currentPercentage,
+		freeDistanceLeftForTowing,
+		vehicleTypes,
+		pickupLatitude,
+		pickupLongitude,
+		destinationLongitude,
+		destinationLatitude,
+		pickupPointName,
+		dropOffPointName,
+		requestRemarks,
+		arrivalDuration,
+		vehicleClass,
+		fuelType,
+		fuelAmount,
+		haveSpareTyre,
+		tyreType,
+		makeServiceRequest,
+		searchVehicleRegistration,
+	};
 }
