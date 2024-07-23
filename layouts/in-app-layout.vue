@@ -16,7 +16,7 @@
 						alt="Hamburger Menu Icon" />
 				</button>
 				<!-- End Navigation Toggle -->
-				<h1 class="text-2xl md:text-3xl font-semibold hidden md:flex">
+				<h1 class="text-2xl md:text-3xl font-semibold md:flex">
 					{{ currentRoute || computedCurrentRoute }}
 				</h1>
 			</div>
