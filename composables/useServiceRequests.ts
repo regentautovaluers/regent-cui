@@ -7,7 +7,6 @@ export default function () {
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
 
 	// fields related to the service request
-	const currentPercentage: Ref<number> = ref(0);
 	const freeDistanceLeftForTowing: Ref<number> = ref(0);
 	const vehicleRegistration: Ref<string> = ref("");
 	const vehicleMake: Ref<string> = ref("");
@@ -23,6 +22,29 @@ export default function () {
 	const fuelAmount: Ref<number | null> = ref(null);
 	const haveSpareTyre: Ref<boolean> = ref(true);
 	const tyreType: Ref<string> = ref("");
+	const staticServiceCost: ComputedRef<number> = computed(() => {
+		if (serviceCharges.value) {
+			switch (route.name) {
+				case "ava-jumpstarting":
+					return pickServiceToSourceCharge(
+						serviceCharges.value,
+						"Jumpstarting"
+					).charge;
+				case "ava-fuel-delivery":
+					return pickServiceToSourceCharge(
+						serviceCharges.value,
+						"Fuel Delivery"
+					).charge;
+				case "ava-tyre-change":
+					return pickServiceToSourceCharge(
+						serviceCharges.value,
+						"Tyre Change"
+					).charge;
+			}
+		} else {
+			return 0;
+		}
+	});
 	const {
 		pickupLatitude,
 		pickupLongitude,
@@ -31,22 +53,11 @@ export default function () {
 		pickupPointName,
 		dropOffPointName,
 	} = useLocationUtils();
+	const currentPercentage: ComputedRef<number> = computed(() => {
+		return (freeDistanceLeftForTowing.value * 100) / 20;
+	});
 
-	const determineEndpointVar = (): string => {
-		switch (route.name) {
-			case "ava-towing":
-				return "towingRequest";
-			case "ava-jumpstarting":
-				return "jumpstartingRequest";
-			case "ava-fuel-delivery":
-				return "fuelDeliveryRequest";
-			case "ava-tyre-change":
-				return "tyreChangeRequest";
-			default:
-				return "";
-		}
-	};
-
+	// load the towing price charges
 	const {
 		pending: loadingVehicleTypes,
 		error: loadVehicleTypesError,
@@ -62,6 +73,17 @@ export default function () {
 		lazy: true,
 	}) as any;
 
+	// load the charges for other services
+	const { data: serviceCharges } = useFetch("/api/v1/control-unit/services", {
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: "GET",
+		headers: {
+			Accept: "application/json",
+		},
+		server: false,
+		lazy: false,
+	}) as any;
+
 	const searchVehicleRegistration = async (): Promise<void> => {
 		try {
 			vehicleSearchLoading.value = true;
@@ -75,41 +97,27 @@ export default function () {
 				},
 				async onResponse({ response }) {
 					if (response.status === 404) {
-						openToast(
-							"Registration not found. Search again!",
-							"warning"
-						);
+						openToast("Registration not found!", "warning");
 						vehicleRegistration.value = "";
-					} else {
-						openToast("Vehicle Details found.", "success");
-
-						// fill the needed fields
-						const registrationDetails = response._data;
-						vehicleRegistration.value =
-							registrationDetails.membershipVehicle.registration;
-						userName.value =
-							registrationDetails.membership.full_name;
-						userPhoneNumber.value =
-							registrationDetails.membership.phone_number;
-						userEmail.value =
-							registrationDetails.membership.userEmail;
-
-						vehicleMake.value =
-							registrationDetails.membershipVehicle.make;
-						vehicleModel.value =
-							registrationDetails.membershipVehicle.model;
-						freeDistanceLeftForTowing.value =
-							registrationDetails.membershipVehicle
-								.available_free_distance === null
-								? 20
-								: Number(
-										registrationDetails.membershipVehicle
-											.available_free_distance
-								  );
-						currentPercentage.value = calculatePercentage(
-							freeDistanceLeftForTowing.value
-						);
+						return;
 					}
+
+					const registrationDetails = response._data;
+					vehicleRegistration.value =
+						registrationDetails.membershipVehicle.registration;
+					userName.value = registrationDetails.membership.full_name;
+					userPhoneNumber.value =
+						registrationDetails.membership.phone_number;
+					userEmail.value = registrationDetails.membership.userEmail;
+					vehicleMake.value =
+						registrationDetails.membershipVehicle.make;
+					vehicleModel.value =
+						registrationDetails.membershipVehicle.model;
+					freeDistanceLeftForTowing.value = registrationDetails
+						.membershipVehicle.available_free_distance
+						? 20
+						: (registrationDetails.membershipVehicle
+								.available_free_distance as number);
 				},
 			});
 		} catch (error) {
@@ -189,8 +197,30 @@ export default function () {
 		}
 	};
 
-	const calculatePercentage = (freeDistance: number): number => {
-		return (freeDistance * 100) / 20;
+	const determineEndpointVar = (): string => {
+		switch (route.name) {
+			case "ava-towing":
+				return "towingRequest";
+			case "ava-jumpstarting":
+				return "jumpstartingRequest";
+			case "ava-fuel-delivery":
+				return "fuelDeliveryRequest";
+			case "ava-tyre-change":
+				return "tyreChangeRequest";
+			default:
+				return "";
+		}
+	};
+
+	const pickServiceToSourceCharge: any = (
+		services: any[],
+		searchKey: string
+	) => {
+		const foundService = services.find((service) => {
+			service.service_name = searchKey;
+			return service;
+		});
+		return foundService;
 	};
 
 	return {
@@ -220,6 +250,7 @@ export default function () {
 		fuelAmount,
 		haveSpareTyre,
 		tyreType,
+		staticServiceCost,
 		makeServiceRequest,
 		searchVehicleRegistration,
 	};
