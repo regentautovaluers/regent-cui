@@ -86,7 +86,32 @@
 					v-model="vehicleModel" />
 			</div>
 		</div>
-		<!-- tire metadata -->
+
+		<!-- vehicle type as published by Regent -->
+		<div
+			class="w-full space-y-2 mt-4"
+			v-if="props.clientServiceTypeName === 'Towing'">
+			<label
+				for="vehicle-type"
+				class="block font-medium dark:text-white"
+				>Vehicle Type</label
+			>
+			<select
+				class="generic-input"
+				:class="loadingVehicleTypes ? 'animate-pulse opactiy-50' : null"
+				id="vehicle-type"
+				required
+				v-model.number="vehicleTypeIndex">
+				<option
+					v-for="(type, i) in vehicleTypes"
+					:key="i"
+					:value="i">
+					{{ type.description }}
+				</option>
+			</select>
+		</div>
+
+		<!-- tyre metadata -->
 		<div v-if="props.optionalElementsRendered.includes('tyreMetadata')">
 			<div class="space-y-2 my-4">
 				<div>
@@ -326,7 +351,9 @@
 						: 'w-full'
 				">
 				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
-				<h1 class="text-lg font-semibold text-gray-500">N/A</h1>
+				<h1 class="text-lg font-semibold text-gray-500">
+					{{ computedServiceCost }}Ksh
+				</h1>
 			</div>
 		</div>
 
@@ -360,13 +387,46 @@
 	const vehicleRegistration: Ref<string> = ref("");
 	const vehicleMake: Ref<string> = ref("");
 	const vehicleModel: Ref<string> = ref("");
+	const vehicleTypeIndex: Ref<number> = ref(0);
 	const userName: Ref<string> = ref("");
 	const userPhoneNumber: Ref<string> = ref("");
 	const userEmail: Ref<string | null> = ref(null);
 	const formSubmissionLoading = ref(false);
 	const arrivalDuration: Ref<number> = ref(10);
 	const arrivalDistance: Ref<number> = ref(20);
-	const serviceCost: Ref<number> = ref(1000);
+
+	const {
+		pending: loadingVehicleTypes,
+		error: loadVehicleTypesError,
+		data: vehicleTypes,
+		refresh: refreshVehicleTypes,
+	} = useFetch("/api/v1/control-unit/vehicle-types", {
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: "GET",
+		headers: {
+			Accept: "application/json",
+		},
+		server: false,
+		lazy: true,
+	}) as any;
+
+	const computedServiceCost: ComputedRef<number> = computed(() => {
+		const selectedVehicleType = vehicleTypes.value
+			? vehicleTypes.value[vehicleTypeIndex.value]
+			: null;
+		if (computedTowingDistance.value) {
+			const towingCost = calculateTowingCharge(
+				selectedVehicleType.towingRate.withinThreshHoldPrice,
+				computedTowingDistance.value,
+				selectedVehicleType.towingRate.overThreshHoldPriceMembers,
+				distanceLeftForTowing.value,
+				selectedVehicleType.towingRate.threshHoldDistance
+			);
+			return towingCost;
+		} else {
+			return 0;
+		}
+	});
 	const requestRemarks: Ref<string | null> = ref(null);
 	const vehicleClass: Ref<string | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
@@ -435,8 +495,8 @@
 			vehicleMake.value,
 			vehicleModel.value,
 			arrivalDuration.value,
-			arrivalDistance.value,
-			serviceCost.value,
+			computedTowingDistance.value as number,
+			computedServiceCost.value,
 			pickupPointName.value,
 			pickupLatitude.value,
 			pickupLongitude.value,
@@ -517,6 +577,32 @@
 
 	const calculatePercentage = (freeDistance: number): number => {
 		return (freeDistance * 100) / 20;
+	};
+
+	const calculateTowingCharge = (
+		basePrice: number,
+		distance: number,
+		chargePerExtraKm: number,
+		freeDistanceBenefit: number,
+		thresholdDistance: number
+	): number => {
+		if (freeDistanceBenefit <= 0) {
+			if (distance < thresholdDistance) {
+				return basePrice;
+			} else {
+				return (
+					basePrice +
+					(distance - thresholdDistance) * chargePerExtraKm
+				);
+			}
+		}
+
+		const distanceAboveBenefit = distance - freeDistanceBenefit;
+		if (distanceAboveBenefit >= 0) {
+			return 0 + distanceAboveBenefit * chargePerExtraKm;
+		} else {
+			return 0;
+		}
 	};
 </script>
 
