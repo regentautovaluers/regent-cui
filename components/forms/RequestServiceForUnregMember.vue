@@ -387,7 +387,6 @@
 	const userPhoneNumber: Ref<string> = ref("");
 	const userEmail: Ref<string> = ref("");
 	const arrivalDuration: Ref<number> = ref(10);
-	const arrivalDistance: Ref<number> = ref(20);
 
 	const {
 		pending: loadingVehicleTypes,
@@ -429,9 +428,7 @@
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();
 	const computedTowingDistance: ComputedRef<number | undefined> = computed(
-		() => {
-			return props.towingDistance;
-		}
+		() => props.towingDistance
 	);
 	const {
 		pickupLatitude,
@@ -445,13 +442,13 @@
 	const calculateTowingCharge = (
 		basePrice: number,
 		distance: number,
-		chargePerKm: number
+		chargePerExtraKm: number
 	): number => {
 		if (distance < 10) {
 			return basePrice;
 		}
 
-		return basePrice + (distance - 10) * chargePerKm;
+		return basePrice + (distance - 10) * chargePerExtraKm;
 	};
 
 	watch([pickupLatitude, pickupLongitude], (newValues) => {
