@@ -397,7 +397,20 @@
 						: 'w-full'
 				">
 				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
-				<h1 class="text-lg font-semibold text-gray-500">
+				<h1
+					class="text-lg font-semibold text-gray-500"
+					v-if="
+						[
+							'ava-jumpstarting',
+							'ava-fuel-delivery',
+							'ava-tyre-change',
+						].includes(route.name as string)
+					">
+					{{ staticServiceCost }}Ksh
+				</h1>
+				<h1
+					class="text-lg font-semibold text-gray-500"
+					v-else>
 					{{ computedServiceCost }}Ksh
 				</h1>
 			</div>
@@ -428,6 +441,7 @@
 	const emits = defineEmits<{
 		appendInfoMarker: [informativeCoordsMarker];
 	}>();
+	const route = useRoute();
 
 	const {
 		vehicleRegistration,
@@ -452,6 +466,7 @@
 		fuelAmount,
 		haveSpareTyre,
 		tyreType,
+		staticServiceCost,
 		makeServiceRequest,
 		searchVehicleRegistration,
 	} = useServiceRequests();
