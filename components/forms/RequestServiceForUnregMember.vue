@@ -330,8 +330,8 @@
 			<textarea
 				id="comments-box"
 				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
-				rows="2"
-				placeholder="Provide optional comments for this service request."
+				rows="6"
+				placeholder="Provide optional comments for this request."
 				v-model="requestRemarks"></textarea>
 		</div>
 

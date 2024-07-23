@@ -59,41 +59,39 @@
 		<!-- End Progress Bar -->
 
 		<!-- client contacts -->
-		<div
-			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
-			<!-- Full Name Field -->
-			<div class="w-full lg:w-1/2">
-				<label
-					for="full-name"
-					class="block font-medium mb-2"
-					>Full Name</label
-				>
-				<input
-					type="text"
-					id="full-name"
-					class="generic-input"
-					placeholder="Client Name"
-					v-model="userName"
-					required
-					disabled />
-			</div>
 
-			<!-- Phone Field -->
-			<div class="w-full lg:w-1/2">
-				<label
-					for="phone"
-					class="block font-medium mb-2"
-					>Phone</label
-				>
-				<input
-					type="text"
-					id="phone"
-					class="generic-input"
-					placeholder="e.g. 0704080056"
-					v-model="userPhoneNumber"
-					required
-					disabled />
-			</div>
+		<!-- Client Name Field -->
+		<div>
+			<label
+				for="client-name"
+				class="block font-medium mb-2"
+				>Client Name</label
+			>
+			<input
+				type="text"
+				id="client-name"
+				class="generic-input"
+				placeholder="Client Name"
+				v-model="userName"
+				required
+				disabled />
+		</div>
+
+		<!-- Phone Field -->
+		<div class="mt-4">
+			<label
+				for="phone"
+				class="block font-medium mb-2"
+				>Phone</label
+			>
+			<input
+				type="text"
+				id="phone"
+				class="generic-input"
+				placeholder="e.g. 0704080056"
+				v-model="userPhoneNumber"
+				required
+				disabled />
 		</div>
 
 		<!-- Vehicle Make and Model -->
@@ -366,8 +364,8 @@
 			<textarea
 				id="comments-box"
 				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
-				rows="2"
-				placeholder="Provide optional comments for this service request."
+				rows="6"
+				placeholder="Provide optional comments for this request."
 				v-model="requestRemarks"></textarea>
 		</div>
 
