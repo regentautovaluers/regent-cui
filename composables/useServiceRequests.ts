@@ -17,7 +17,7 @@ export default function () {
 	const userEmail: Ref<string | null> = ref(null);
 	const requestRemarks: Ref<string | null> = ref(null);
 	const arrivalDuration: Ref<number> = ref(10);
-	const vehicleClass: Ref<string | null> = ref(null);
+	const vehicleClass: Ref<number | null> = ref(null);
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
 	const haveSpareTyre: Ref<boolean> = ref(true);
@@ -158,7 +158,7 @@ export default function () {
 					appDestinationLat: destinationLatitude.value,
 					appDestinationLon: destinationLongitude.value,
 					...(vehicleClass.value !== null
-						? { vehicleClass: vehicleClass.value }
+						? { vehicleClass: `${vehicleClass.value}` }
 						: {}),
 					...(requestRemarks.value !== null
 						? { appRemarks: requestRemarks.value }

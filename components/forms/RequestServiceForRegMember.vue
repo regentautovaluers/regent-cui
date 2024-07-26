@@ -218,36 +218,28 @@
 			</div>
 		</div>
 
-		<!-- vehicle class -->
+		<!-- vehicle class as published by Regent -->
 		<div
-			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3"
+			class="w-full space-y-2 mt-4"
 			v-if="props.optionalElementsRendered.includes('vehicleClass')">
-			<div class="w-full">
-				<label
-					for="fuel-type"
-					class="block font-medium mb-2"
-					>Vehicle Class</label
-				>
-				<select
-					class="generic-input"
-					id="fuel-type"
-					required
-					v-model="vehicleClass">
-					<option
-						v-for="(vClass, index) in [
-							'sedan',
-							'suv',
-							'van',
-							'bus',
-							'truck',
-							'big truck',
-						]"
-						:key="index"
-						:value="vClass">
-						{{ capitalizeFirstLetterOfEachWord(vClass) }}
-					</option>
-				</select>
-			</div>
+			<label
+				for="vehicle-type"
+				class="block font-medium"
+				>Vehicle Class (Type)</label
+			>
+			<select
+				class="generic-input"
+				:class="loadingVehicleTypes ? 'animate-pulse opactiy-50' : null"
+				id="vehicle-type"
+				required
+				v-model.number="vehicleClass">
+				<option
+					v-for="(type, i) in vehicleTypes"
+					:key="i"
+					:value="type.id">
+					{{ type.description }}
+				</option>
+			</select>
 		</div>
 
 		<!-- fuel type and cost -->
