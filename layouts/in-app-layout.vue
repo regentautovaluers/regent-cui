@@ -1,12 +1,12 @@
 <template>
 	<main class="h-screen">
 		<nav
-			class="py-4 flex justify-between items-center px-3 md:pl-[330px] md:pr-[20px] sticky top-0 z-20 bg-white flex-wrap">
-			<div class="flex space-x-8 w-fit md:w-1/3">
+			class="py-4 flex justify-between items-center px-3 lg:pl-[340px] md:pr-[20px] sticky top-0 z-20 bg-white flex-wrap">
+			<div class="flex space-x-8 w-fit lg:w-1/3">
 				<!-- Navigation Toggle -->
 				<button
 					type="button"
-					class="text-gray-500 hover:text-gray-600 md:hidden"
+					class="lg:hidden"
 					data-hs-overlay="#docs-sidebar"
 					aria-controls="docs-sidebar"
 					aria-label="Toggle navigation">
@@ -16,7 +16,8 @@
 						alt="Hamburger Menu Icon" />
 				</button>
 				<!-- End Navigation Toggle -->
-				<h1 class="text-2xl md:text-3xl font-semibold md:flex">
+				<h1
+					class="text-2xl whitespace-nowrap md:text-3xl font-semibold">
 					{{ currentRoute || computedCurrentRoute }}
 				</h1>
 			</div>
@@ -55,7 +56,7 @@
 							:src="profilePicture"
 							alt="Profile Picture" />
 						<div class="flex flex-col">
-							<span class="font-bold tracking">{{
+							<span class="font-bold tracking whitespace-nowrap">{{
 								getPrincipal.username
 							}}</span>
 							<span class="text-gray-500">{{
