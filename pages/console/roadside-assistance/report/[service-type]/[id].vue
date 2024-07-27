@@ -364,39 +364,76 @@
 			</div>
 		</div>
 
-		<!-- post towing report summary -->
-		<div
-			class="grid grid-cols-2 gap-x-8 h-[30rem] rounded-lg shadow-sm mt-8 mx-16">
-			<!-- pre-towing pictures section -->
-			<div class="h-full flex flex-col space-y-4">
-				<div class="h-1/4 whitespace-nowrap">
-					<button
-						v-for="(image, index) in sampleImages"
-						:key="index"
-						class="h-full w-1/4 p-1"
-						:class="index !== sampleImages.length - 1 ? '' : 'pr-0'"
-						@click="activePreTowingImage = index">
-						<img
-							:src="image"
-							class="h-full max-h-full w-full overflow-clip rounded-md"
-							alt="Report Image" />
-					</button>
-				</div>
-				<div class="flex-grow relative">
+		<!-- Final section with ratings -->
+		<div class="mt-10 mx-16 flex space-x-8">
+			<div
+				class="w-1/2 border px-8 py-2 flex items-center h-32 space-x-4 rounded-lg">
+				<img
+					src="https://images.unsplash.com/photo-1721048166150-3b2bb2ca3431?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					alt="Responder Image"
+					class="rounded-full size-20 object-cover shadow-sm" />
+				<div class="flex-grow ml-5 h-fit">
+					<h1 class="font-semibold text-lg text-gray-700">
+						Vehicle Received By
+					</h1>
+					<h2 class="font-semibold text-gray-500">
+						Asap Rocky Omondi
+					</h2>
 					<img
-						:src="sampleImages[activePreTowingImage]"
-						alt="Report Image"
-						class="object-cover max-h-full rounded-md" />
-					<div
-						class="absolute bottom-0 bg-gray-700 w-full p-4 bg-opacity-80 overflow-clip">
-						<h1 class="text-white font-semibold">
-							Post-Towing Pictures (KCC 002G)
+						src="public/images/signature.png"
+						alt="Receriver Signature"
+						class="h-14" />
+				</div>
+				<div class="bg-blue-200 p-2 rounded-2xl">
+					<a href="#"><MessageIcon /></a>
+				</div>
+				<div class="bg-blue-200 p-2 rounded-2xl">
+					<a href="#"><MobileCallIcon /></a>
+				</div>
+			</div>
+			<div class="w-1/2 flex h-32 space-x-8 rounded-lg">
+				<div
+					class="w-1/2 flex items-center h-full px-8 py-2 border rounded-lg">
+					<LocationPin />
+					<div class="flex-grow ml-5 h-fit">
+						<h1 class="font-semibold text-lg text-gray-700">
+							Drop Off Location
 						</h1>
+						<h2 class="font-semibold text-gray-500">
+							Kilimani Mall, Nairobi
+						</h2>
+						<span class="text-blue-500 font-semibold"
+							>12.0.2024</span
+						>
+					</div>
+				</div>
+				<div
+					class="w-1/2 flex items-center h-full px-8 py-2 border rounded-lg">
+					<PersonIcon
+						width="3em"
+						height="3em" />
+					<div class="flex-grow ml-5 h-fit">
+						<h1 class="font-semibold text-lg text-gray-700">
+							Client Rating
+						</h1>
+						<h2 class="font-semibold text-gray-500">
+							Benjamin Ndung'o
+						</h2>
+						<div class="text-blue-500 font-semibold">
+							<!-- Rating -->
+							<div class="flex items-center space-x-1">
+								<OneStarIcon />
+								<OneStarIcon />
+								<OneStarIcon />
+								<ZeroStarIcon />
+								<ZeroStarIcon />
+								<span class="text-gray-500">(3.0)</span>
+							</div>
+							<!-- End Rating -->
+						</div>
 					</div>
 				</div>
 			</div>
-			<!-- Collected Data System -->
-			<div class="h-full border rounded-lg flex flex-col"></div>
 		</div>
 	</div>
 </template>
