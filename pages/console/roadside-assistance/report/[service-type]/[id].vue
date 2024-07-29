@@ -274,12 +274,82 @@
 
 		<!-- pre-towing report summary -->
 		<div
-			class="grid grid-cols-2 gap-x-8 h-[30rem] rounded-lg shadow-sm mt-8 mx-16">
-			<!-- Collected Data System -->
-			<div class="h-full border rounded-lg flex flex-col"></div>
+			class="grid grid-cols-2 gap-x-8 h-[30rem] max-h-[30rem] rounded-lg shadow-sm mt-8 mx-16">
+			<!-- Collected Data Section -->
+			<div class="h-full border rounded-lg py-4 px-8 overflow-y-scroll">
+				<h1 class="font-semibold text-xl mb-5">
+					Pre-Towing Report Summary
+				</h1>
+				<div class="flex items-start space-x-4">
+					<div
+						class="w-[12%] border border-yellow-500 rounded-md p-2 flex justify-center items-center">
+						<EngineIcon
+							:classes="['size-12']"
+							color="#eab308" />
+					</div>
+					<div>
+						<h1 class="underline text-lg font-semibold">
+							Engine Compartment
+						</h1>
+						<div
+							class="flex items-center space-x-4 py-1"
+							v-for="a in 1"
+							:index="a">
+							<div class="size-5 bg-gray-300 rounded-md" />
+							<span class="text-gray-500 font-semibold"
+								>Lorem Something Something Something</span
+							>
+						</div>
+					</div>
+				</div>
+				<div class="flex items-start space-x-4 mt-5">
+					<div
+						class="w-[12%] border border-pink-500 rounded-md p-2 flex justify-center items-center">
+						<VehicleIcon
+							:classes="['size-12']"
+							color="#ec4899" />
+					</div>
+					<div>
+						<h1 class="underline text-lg font-semibold">
+							Exterior Vehicle Condition
+						</h1>
+						<div
+							class="flex items-center space-x-4 py-1"
+							v-for="a in 8"
+							:index="a">
+							<div class="size-5 bg-gray-300 rounded-md" />
+							<span class="text-gray-500 font-semibold"
+								>Lorem Something Something Something</span
+							>
+						</div>
+					</div>
+				</div>
+				<div class="flex items-start space-x-4 mt-5">
+					<div
+						class="w-[12%] border border-green-500 rounded-md p-2 flex justify-center items-center">
+						<ExtrasIcon
+							:classes="['size-12']"
+							color="#22c55e" />
+					</div>
+					<div>
+						<h1 class="underline text-lg font-semibold">
+							Extra Vehicle Details
+						</h1>
+						<div
+							class="flex items-center space-x-4 py-1"
+							v-for="a in 6"
+							:index="a">
+							<div class="size-5 bg-gray-300 rounded-md" />
+							<span class="text-gray-500 font-semibold"
+								>Lorem Something Something Something</span
+							>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<!-- pre-towing pictures section -->
-			<div class="h-full flex flex-col space-y-4">
+			<div class="h-full flex flex-col space-y-4 max-w-max">
 				<div class="h-1/4 whitespace-nowrap">
 					<button
 						v-for="(image, index) in sampleImages"
@@ -383,12 +453,6 @@
 						src="public/images/signature.png"
 						alt="Receriver Signature"
 						class="h-14" />
-				</div>
-				<div class="bg-blue-200 p-2 rounded-2xl">
-					<a href="#"><MessageIcon /></a>
-				</div>
-				<div class="bg-blue-200 p-2 rounded-2xl">
-					<a href="#"><MobileCallIcon /></a>
 				</div>
 			</div>
 			<div class="w-1/2 flex h-32 space-x-8 rounded-lg">
