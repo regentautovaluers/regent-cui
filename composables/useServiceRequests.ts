@@ -170,6 +170,11 @@ export default function () {
 					appDestinationPoint: dropOffPointName.value,
 					appDestinationLat: destinationLatitude.value,
 					appDestinationLon: destinationLongitude.value,
+					...(vehicleTypeIndex.value !== null
+						? {
+								vehicleType: vehicleTypeIndex.value,
+						  }
+						: {}),
 					...(vehicleClass.value !== null
 						? { vehicleClass: `${vehicleClass.value}` }
 						: {}),
