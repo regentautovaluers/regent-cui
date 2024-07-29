@@ -8,6 +8,7 @@ export default function () {
 
 	// fields related to the service request
 	const freeDistanceLeftForTowing: Ref<number> = ref(0);
+	const isMemberUnderEA: Ref<boolean | null> = ref(null);
 	const vehicleRegistration: Ref<string> = ref("");
 	const vehicleMake: Ref<string> = ref("");
 	const vehicleModel: Ref<string> = ref("");
@@ -113,11 +114,23 @@ export default function () {
 						registrationDetails.membershipVehicle.make;
 					vehicleModel.value =
 						registrationDetails.membershipVehicle.model;
-					freeDistanceLeftForTowing.value = registrationDetails
-						.membershipVehicle.available_free_distance
-						? 20
-						: (registrationDetails.membershipVehicle
-								.available_free_distance as number);
+
+					// if there is a non-null free distance
+					if (
+						registrationDetails.membershipVehicle
+							.available_free_distance
+					) {
+						freeDistanceLeftForTowing.value = registrationDetails
+							.membershipVehicle
+							.available_free_distance as number;
+						// and that the request is for a member who is under roadside assistance
+						isMemberUnderEA.value = false;
+					} else {
+						freeDistanceLeftForTowing.value = 0;
+
+						// the request is for a member but is under emergency evacuation
+						isMemberUnderEA.value = true;
+					}
 				},
 			});
 		} catch (error) {
@@ -219,6 +232,44 @@ export default function () {
 		return services.find((service) => service.service_name === searchKey);
 	};
 
+	const calculateTowingChargeNonMember = (
+		basePrice: number,
+		distance: number,
+		chargePerExtraKm: number
+	): number => {
+		if (distance < 10) {
+			return basePrice;
+		}
+
+		return Math.ceil(basePrice + (distance - 10) * chargePerExtraKm);
+	};
+
+	const calculateTowingChargeMember = (
+		basePrice: number,
+		distance: number,
+		chargePerExtraKm: number,
+		freeDistanceBenefit: number,
+		thresholdDistance: number
+	): number => {
+		if (freeDistanceBenefit <= 0) {
+			if (distance < thresholdDistance) {
+				return basePrice;
+			} else {
+				return Math.ceil(
+					basePrice +
+						(distance - thresholdDistance) * chargePerExtraKm
+				);
+			}
+		}
+
+		const distanceAboveBenefit = distance - freeDistanceBenefit;
+		if (distanceAboveBenefit >= 0) {
+			return Math.ceil(0 + distanceAboveBenefit * chargePerExtraKm);
+		} else {
+			return 0;
+		}
+	};
+
 	return {
 		vehicleRegistration,
 		vehicleMake,
@@ -232,6 +283,7 @@ export default function () {
 		loadingVehicleTypes,
 		currentPercentage,
 		freeDistanceLeftForTowing,
+		isMemberUnderEA,
 		vehicleTypes,
 		pickupLatitude,
 		pickupLongitude,
@@ -249,5 +301,7 @@ export default function () {
 		staticServiceCost,
 		makeServiceRequest,
 		searchVehicleRegistration,
+		calculateTowingChargeMember,
+		calculateTowingChargeNonMember,
 	};
 }

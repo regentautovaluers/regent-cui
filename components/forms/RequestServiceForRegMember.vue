@@ -396,7 +396,7 @@
 							'ava-tyre-change',
 						].includes(route.name as string)
 					">
-					{{ staticServiceCost }}Ksh
+					0Ksh
 				</h1>
 				<h1
 					class="text-lg font-semibold text-gray-500"
@@ -445,6 +445,7 @@
 		loadingVehicleTypes,
 		currentPercentage,
 		freeDistanceLeftForTowing,
+		isMemberUnderEA,
 		vehicleTypes,
 		pickupLatitude,
 		pickupLongitude,
@@ -456,23 +457,50 @@
 		fuelAmount,
 		haveSpareTyre,
 		tyreType,
-		staticServiceCost,
 		makeServiceRequest,
 		searchVehicleRegistration,
+		calculateTowingChargeMember,
+		calculateTowingChargeNonMember,
 	} = useServiceRequests();
 
 	const computedServiceCost: ComputedRef<number> = computed(() => {
+		if (
+			[
+				"ava-jumpstarting",
+				"ava-fuel-delivery",
+				"ava-tyre-change",
+			].includes(route.name as string)
+		) {
+			return 0;
+		}
+
 		const selectedVehicleType = vehicleTypes.value
 			? vehicleTypes.value[vehicleTypeIndex.value]
 			: null;
-		if (computedTowingDistance.value) {
-			const towingCost = calculateTowingCharge(
+		if (
+			computedTowingDistance.value &&
+			selectedVehicleType &&
+			isMemberUnderEA.value === false
+		) {
+			const towingCost = calculateTowingChargeMember(
 				selectedVehicleType.towingRate.withinThreshHoldPrice,
 				computedTowingDistance.value,
 				selectedVehicleType.towingRate.overThreshHoldPriceMembers,
 				freeDistanceLeftForTowing.value,
 				selectedVehicleType.towingRate.threshHoldDistance
 			);
+			return towingCost;
+		} else if (
+			computedTowingDistance.value &&
+			selectedVehicleType &&
+			isMemberUnderEA.value === true
+		) {
+			const towingCost = calculateTowingChargeNonMember(
+				selectedVehicleType.towingRate.withinThreshHoldPrice,
+				computedTowingDistance.value,
+				selectedVehicleType.towingRate.overThreshHoldPriceNonMembers
+			);
+
 			return towingCost;
 		} else {
 			return 0;
@@ -516,32 +544,6 @@
 			});
 		}
 	});
-
-	const calculateTowingCharge = (
-		basePrice: number,
-		distance: number,
-		chargePerExtraKm: number,
-		freeDistanceBenefit: number,
-		thresholdDistance: number
-	): number => {
-		if (freeDistanceBenefit <= 0) {
-			if (distance < thresholdDistance) {
-				return basePrice;
-			} else {
-				return (
-					basePrice +
-					(distance - thresholdDistance) * chargePerExtraKm
-				);
-			}
-		}
-
-		const distanceAboveBenefit = distance - freeDistanceBenefit;
-		if (distanceAboveBenefit >= 0) {
-			return 0 + distanceAboveBenefit * chargePerExtraKm;
-		} else {
-			return 0;
-		}
-	};
 </script>
 
 <style lang="css">

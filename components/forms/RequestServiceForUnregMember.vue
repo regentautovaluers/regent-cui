@@ -414,6 +414,7 @@
 		tyreType,
 		staticServiceCost,
 		makeServiceRequest,
+		calculateTowingChargeNonMember,
 	} = useServiceRequests();
 
 	const computedServiceCost: ComputedRef<number> = computed(() => {
@@ -421,7 +422,7 @@
 			? vehicleTypes.value[vehicleTypeIndex.value]
 			: null;
 		if (computedTowingDistance.value) {
-			const towingCost = calculateTowingCharge(
+			const towingCost = calculateTowingChargeNonMember(
 				selectedVehicleType.towingRate.withinThreshHoldPrice,
 				computedTowingDistance.value,
 				selectedVehicleType.towingRate.overThreshHoldPriceNonMembers
@@ -471,16 +472,4 @@
 		},
 		{ immediate: false }
 	);
-
-	const calculateTowingCharge = (
-		basePrice: number,
-		distance: number,
-		chargePerExtraKm: number
-	): number => {
-		if (distance < 10) {
-			return basePrice;
-		}
-
-		return basePrice + (distance - 10) * chargePerExtraKm;
-	};
 </script>
