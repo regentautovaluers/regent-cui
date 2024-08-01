@@ -3,7 +3,13 @@
 		class="py-12"
 		@submit.prevent="
 			makeServiceRequest(
-				computedServiceCost,
+				[
+					'ava-jumpstarting',
+					'ava-fuel-delivery',
+					'ava-tyre-change',
+				].includes(route.name as string)
+					? staticServiceCost
+					: computedServiceCost,
 				props.backendServiceTypeName,
 				computedTowingDistance
 			)
@@ -38,7 +44,7 @@
 					type="text"
 					id="phone"
 					class="generic-input"
-					placeholder="e.g. 0704080056"
+					placeholder="e.g. 2547..."
 					v-model="userPhoneNumber"
 					required />
 			</div>
@@ -245,7 +251,6 @@
 						v-for="(fuelType, index) in [
 							'Diesel',
 							'Petrol',
-							'Kerosene',
 						]"
 						:key="index"
 						:value="fuelType">
@@ -450,6 +455,12 @@
 					lng: newValues[1],
 				},
 			});
+		}
+	});
+
+	watch(userPhoneNumber, (newNumber) => {
+		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
+			userPhoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
 		}
 	});
 

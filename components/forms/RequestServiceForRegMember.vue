@@ -3,7 +3,13 @@
 		class="py-12"
 		@submit.prevent="
 			makeServiceRequest(
-				computedServiceCost,
+				[
+					'ava-jumpstarting',
+					'ava-fuel-delivery',
+					'ava-tyre-change',
+				].includes(route.name as string)
+					? 0
+					: computedServiceCost,
 				props.backendServiceTypeName,
 				computedTowingDistance
 			)
@@ -267,7 +273,6 @@
 						v-for="(fuelType, index) in [
 							'Diesel',
 							'Petrol',
-							'Kerosene',
 						]"
 						:key="index"
 						:value="fuelType.toLowerCase()">
