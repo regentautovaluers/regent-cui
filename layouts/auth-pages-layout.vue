@@ -1,6 +1,6 @@
 <template>
 	<main class="flex h-screen">
-		<div class="w-[65%] h-full hidden lg:flex">
+		<div class="w-[60%] h-full hidden lg:flex">
 			<div
 				data-hs-carousel='{
 					"loadingClasses": "opacity-0",
