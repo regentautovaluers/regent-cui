@@ -54,6 +54,15 @@ export const formatServerProvidedDate = (servDate: string) => {
 	}
 };
 
+export const formatToDateTimePair = (
+	dateTimeString: string
+): [string, string] => {
+	const date = new Date(dateTimeString);
+	const dateString = format(date, "dd.MM.yyyy");
+	const timeString = format(date, "HH.mm");
+	return [dateString, timeString];
+};
+
 export const formatServerProvidedDateTime = (servDateTime: string): string => {
 	try {
 		// Parse the date string to a Date object
