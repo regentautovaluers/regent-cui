@@ -20,7 +20,6 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "date-fns": "^3.6.0",
     "epic-spinners": "^2.0.0",
-    "html2pdf.js": "^0.10.2",
     "lodash": "^4.17.21",
     "mosha-vue-toastify": "^1.0.23",
     "nuxt": "^3.10.3",
