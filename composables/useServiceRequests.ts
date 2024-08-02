@@ -170,6 +170,7 @@ export default function () {
 					appDestinationPoint: dropOffPointName.value,
 					appDestinationLat: destinationLatitude.value,
 					appDestinationLon: destinationLongitude.value,
+					currentFreeDistance: freeDistanceLeftForTowing.value,
 					...(vehicleTypeIndex.value !== null
 						? {
 								vehicleType: vehicleTypeIndex.value,
