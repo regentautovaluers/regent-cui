@@ -55,7 +55,10 @@
 					<span class="text-gray-500">{{
 						formatToDateTimePair(serviceReport.date_created)[0]
 					}}</span>
-					<span class="text-blue-600 font-semibold">11:20 - 13:56*</span>
+					<span class="text-blue-600 font-semibold"
+						>{{ formatToDateTimePair(serviceReport.date_created)[1] }} -
+						{{ formatToDateTimePair(serviceReport.completion_time)[1] }}</span
+					>
 				</div>
 				<div class="flex flex-col space-y-1">
 					<span class="font-semibold text-gray-600">Reason</span>
@@ -206,7 +209,7 @@
 
 			<!-- Bottom statistics -->
 			<div
-				class="absolute bottom-8 w-[80%] left-1/2 transform -translate-x-1/2 bg-white px-8 py-4 rounded-lg h-40 border shadow-sm flex items-center justify-between">
+				class="absolute bottom-8 w-[90%] left-1/2 transform -translate-x-1/2 bg-white px-8 py-4 rounded-lg h-40 border shadow-sm flex items-center justify-between">
 				<div class="w-1/3 h-full max-h-full flex items-center">
 					<img
 						src="/images/towing-image.jpg"
@@ -273,7 +276,9 @@
 						<div class="size-4 bg-pink-600 rounded-full" />
 						<div class="flex-grow flex justify-between items-center space-x-18 ml-1">
 							<h1 class="text-gray-500">Payment:</h1>
-							<span class="text-blue-500">{{ serviceReport.cost }} Ksh</span>
+							<span class="text-blue-500"
+								>{{ serviceReport.cost + serviceReport.extra_charges }} Ksh</span
+							>
 						</div>
 					</div>
 				</div>
@@ -451,7 +456,9 @@
 						<h2 class="font-semibold text-gray-500">
 							{{ serviceReport.dropoff_location }}
 						</h2>
-						<span class="text-blue-500 font-semibold">12.0.2024*</span>
+						<span class="text-blue-500 font-semibold">{{
+							formatToDateTimePair(serviceReport.vehicle_drop_off_time)[0]
+						}}</span>
 					</div>
 				</div>
 				<div class="w-1/2 flex items-center h-full px-8 py-2 border rounded-lg">
@@ -533,7 +540,7 @@
 		serviceReport.value.checklist.rear_image,
 		serviceReport.value.checklist.left_side_image,
 		serviceReport.value.checklist.right_side_image,
-		...serviceReport.value.checklist.impact_images,
+		...(serviceReport.value.checklist.impact_images ?? []),
 	]);
 
 	const activePreTowingImage: Ref<number> = ref(0);
@@ -554,19 +561,19 @@
 			},
 			{
 				label: 'Billable Distance',
-				value: '31.75Km',
+				value: `${serviceReport.value.billable_distance}Km`,
 			},
 			{
-				label: 'Subtotal',
+				label: 'Service Charge',
 				value: `Ksh ${serviceReport.value.cost}`,
 			},
 			{
 				label: 'Extra Charges',
-				value: 'Ksh 7,405',
+				value: `Ksh ${serviceReport.value.extra_charges}`,
 			},
 			{
 				label: 'Total',
-				value: `Ksh ${serviceReport.value.cost}`,
+				value: `Ksh ${serviceReport.value.cost + serviceReport.value.extra_charges}`,
 			},
 		];
 	});
@@ -587,7 +594,7 @@
 			},
 			{
 				label: 'Dropoff',
-				value: '14:20*',
+				value: `${formatToDateTimePair(serviceReport.value.vehicle_drop_off_time)[1]}`,
 			},
 		];
 	});
