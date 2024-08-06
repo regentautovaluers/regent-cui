@@ -180,7 +180,6 @@
 			};
 			directionsService.route(directionsRequest, (result, status) => {
 				if (status === google.maps.DirectionsStatus.OK && result) {
-					console.log("result: ", result);
 
 					const route = result.routes[0];
 					const leg = route.legs[0];
