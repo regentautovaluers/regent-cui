@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-	import { Doughnut } from "vue-chartjs";
+	import { Doughnut } from 'vue-chartjs';
 
 	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
@@ -45,10 +45,10 @@
 	const totalMemberships: Ref<number> = ref(0);
 
 	const chartData = computed(() => ({
-		labels: ["Paid", "Unpaid", "Active", "Inactive"],
+		labels: ['Paid', 'Unpaid', 'Active', 'Inactive'],
 		datasets: [
 			{
-				backgroundColor: ["#f87979", "#7d669e", "#53bbb4", "#f39c12"],
+				backgroundColor: ['#f87979', '#7d669e', '#53bbb4', '#f39c12'],
 				data: [
 					totalPaid.value || 0,
 					totalUnpaid.value || 0,
@@ -62,29 +62,26 @@
 				weight: 4,
 				datalabels: {
 					display: true,
-					color: "white",
+					color: 'white',
 					font: {
 						size: 16,
-						weight: "bold",
+						weight: 'bold',
 					},
 					formatter: (value, ctx) => {
-						if (value === 0) return "";
+						if (value === 0) return '';
 						const datapoints = ctx.chart.data.datasets[0].data;
-						const total = datapoints.reduce(
-							(total, datapoint) => total + datapoint,
-							0
-						);
+						const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
 						const percentage = (value / total) * 100;
-						return percentage.toFixed(1) + "%";
+						return percentage.toFixed(1) + '%';
 					},
 				},
 			},
 		],
 	}));
 
-	await useFetch("/api/v1/corp/reports/donut-graph-data", {
+	await useFetch('/api/v1/corp/reports/donut-graph-data', {
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: "GET",
+		method: 'GET',
 		query: {
 			corporateId: getPrincipal.value.corpId,
 		},

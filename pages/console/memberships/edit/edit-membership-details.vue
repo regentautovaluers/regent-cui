@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "edit-membership-details",
-		layout: "in-app-layout",
+		name: 'edit-membership-details',
+		layout: 'in-app-layout',
 	});
 </script>

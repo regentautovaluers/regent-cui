@@ -1,11 +1,8 @@
 <template>
 	<div class="py-10 h-fit responsive-view">
-		<h1 class="my-5 text-2xl antialiased font-semibold">
-			Emergency Rescue Members
-		</h1>
+		<h1 class="my-5 text-2xl antialiased font-semibold">Emergency Rescue Members</h1>
 		<!-- download as PDF section -->
-		<div
-			class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap"></div>
+		<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap"></div>
 		<!-- start of data table -->
 		<div class="flex flex-col">
 			<div class="-m-1.5 overflow-x-auto">
@@ -54,8 +51,7 @@
 									:vehicle-count="
 										member.membershipVehicleCounts.find(
 											(data: any) =>
-												data.membership_name ===
-												'Emergency Evacuation'
+												data.membership_name === 'Emergency Evacuation',
 										).vehicleCount
 									"
 									:member-id="member.id"
@@ -87,15 +83,10 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "emergency-members",
-		layout: "in-app-layout",
+		name: 'emergency-members',
+		layout: 'in-app-layout',
 	});
 
-	const {
-		membersList,
-		page,
-		totalPages,
-		fetchingMoreData,
-		fetchErrorOrEmpty,
-	} = await useFilteredMemberships();
+	const { membersList, page, totalPages, fetchingMoreData, fetchErrorOrEmpty } =
+		await useFilteredMemberships();
 </script>

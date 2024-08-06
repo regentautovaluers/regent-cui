@@ -124,50 +124,40 @@
 	const route = useRoute();
 	const router = useRouter();
 	const runtimeConfig = useRuntimeConfig();
-	const vehicleRegistration: Ref<string> = ref(
-		route.query.vehicleRegistration as string
-	);
+	const vehicleRegistration: Ref<string> = ref(route.query.vehicleRegistration as string);
 	const vehicleMake: Ref<string> = ref(route.query.vehicleMake as string);
 	const vehicleModel: Ref<string> = ref(route.query.vehicleModel as string);
 	const paymentStatus: Ref<string> = ref(route.query.paymentStatus as string);
-	const membershipStatus: Ref<string> = ref(
-		route.query.membershipStatus as string
-	);
+	const membershipStatus: Ref<string> = ref(route.query.membershipStatus as string);
 	const { openToast } = useToast();
 
 	async function updateMembershipDetails(): Promise<void> {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch(
-				`/api/v1/membershipVehicles/${route.query.membershipId}`,
-				{
-					baseURL: runtimeConfig.public.AVA_BASE_URL,
-					method: "PATCH",
-					body: JSON.stringify({
-						registration: vehicleRegistration.value,
-						make: vehicleMake.value,
-						model: vehicleModel.value,
-						payment_status: paymentStatus.value,
-						membership_status: membershipStatus.value,
-					}),
+			await $fetch(`/api/v1/membershipVehicles/${route.query.membershipId}`, {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: 'PATCH',
+				body: JSON.stringify({
+					registration: vehicleRegistration.value,
+					make: vehicleMake.value,
+					model: vehicleModel.value,
+					payment_status: paymentStatus.value,
+					membership_status: membershipStatus.value,
+				}),
 
-					async onResponse({ response }) {
-						if (response.status !== 200) {
-							throw new Error("Member details not updated.");
-						}
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error('Member details not updated.');
+					}
 
-						openToast(
-							"Membership details updated successfully",
-							"success"
-						);
+					openToast('Membership details updated successfully', 'success');
 
-						router.back();
-					},
-				}
-			);
+					router.back();
+				},
+			});
 		} catch (error) {
-			console.log("Error encountered. Reason: ", error);
-			openToast("Failed to update member details. Try again!", "danger");
+			console.log('Error encountered. Reason: ', error);
+			openToast('Failed to update member details. Try again!', 'danger');
 		} finally {
 			formSubmissionLoading.value = false;
 		}

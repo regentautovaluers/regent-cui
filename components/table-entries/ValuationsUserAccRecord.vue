@@ -5,18 +5,12 @@
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-xs text-gray-800 inline-flex flex-col space-y-1">
-			<span
-				class="bg-gray-200 text-gray-500 font-semibold px-2 rounded-full"
-				>{{
-					props.userEmail === null ? "Email N/A" : props.userEmail
-				}}</span
-			>
-			<span
-				class="bg-gray-200 text-gray-500 font-semibold px-2 rounded-full w-fit"
-				>{{
-					props.phoneNumber === null ? "Phone N/A" : props.phoneNumber
-				}}</span
-			>
+			<span class="bg-gray-200 text-gray-500 font-semibold px-2 rounded-full">{{
+				props.userEmail === null ? 'Email N/A' : props.userEmail
+			}}</span>
+			<span class="bg-gray-200 text-gray-500 font-semibold px-2 rounded-full w-fit">{{
+				props.phoneNumber === null ? 'Phone N/A' : props.phoneNumber
+			}}</span>
 		</td>
 		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
 			{{ determinePrivilege() }}
@@ -28,12 +22,8 @@
 			<span class="inline-flex items-center space-x-1">
 				<div
 					class="size-3 rounded-full"
-					:class="
-						props.isActive === true ? 'bg-green-500' : 'bg-red-600'
-					" />
-				<span>{{
-					props.isActive === true ? "Active" : "Inactive"
-				}}</span>
+					:class="props.isActive === true ? 'bg-green-500' : 'bg-red-600'" />
+				<span>{{ props.isActive === true ? 'Active' : 'Inactive' }}</span>
 			</span>
 		</td>
 		<td>
@@ -95,12 +85,12 @@
 	const dropdownContainer = ref(null);
 
 	const determinePrivilege = (): string => {
-		let privilege = "";
+		let privilege = '';
 
-		if (props.privilege.includes("ROLE_CORP_ADMIN")) {
-			privilege = "Admin User";
-		} else if (props.privilege.includes("ROLE_CORP_NORM")) {
-			privilege = "Normal User";
+		if (props.privilege.includes('ROLE_CORP_ADMIN')) {
+			privilege = 'Admin User';
+		} else if (props.privilege.includes('ROLE_CORP_NORM')) {
+			privilege = 'Normal User';
 		}
 
 		return privilege;

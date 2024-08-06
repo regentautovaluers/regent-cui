@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "valuation-home",
-		layout: "in-app-layout",
+		name: 'valuation-home',
+		layout: 'in-app-layout',
 	});
 </script>

@@ -82,20 +82,20 @@
 </template>
 
 <script setup lang="ts">
-	import { LoopingRhombusesSpinner } from "epic-spinners";
+	import { LoopingRhombusesSpinner } from 'epic-spinners';
 
-	const fleetName: Ref<string> = ref("");
-	const contactFullName: Ref<string> = ref("");
-	const contactPhoneNumber: Ref<string> = ref("");
-	const contactEmail: Ref<string> = ref("");
+	const fleetName: Ref<string> = ref('');
+	const contactFullName: Ref<string> = ref('');
+	const contactPhoneNumber: Ref<string> = ref('');
+	const contactEmail: Ref<string> = ref('');
 	const formSubmissionLoading = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
 	const { getPrincipal } = useAuth();
 
 	watch(contactPhoneNumber, (newNumber) => {
-		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
-			contactPhoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			contactPhoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
 	});
 
@@ -104,7 +104,7 @@
 		try {
 			await $fetch(`${runtimeConfig.public.AVA_BASE_URL}/api/v1/fleets`, {
 				// baseUrl: runtimeConfig.public.AVA_BASE_URL,
-				method: "POST",
+				method: 'POST',
 				body: JSON.stringify({
 					corporate: getPrincipal.value.corpId,
 					fleetname: fleetName.value,
@@ -115,19 +115,16 @@
 				}),
 
 				onResponse({ response }) {
-					console.log("Create fleet response body: ", response._data);
-					console.log(
-						"Create fleet response status: ",
-						response.status
-					);
+					console.log('Create fleet response body: ', response._data);
+					console.log('Create fleet response status: ', response.status);
 					if (response.status === 201) {
-						openToast("Fleet created successfully", "success");
+						openToast('Fleet created successfully', 'success');
 					}
 				},
 			});
 		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Request failed. Please try again!", "danger");
+			console.log('An error occured: ', error);
+			openToast('Request failed. Please try again!', 'danger');
 		} finally {
 			formSubmissionLoading.value = false;
 		}

@@ -6,32 +6,25 @@
 		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
 			{{ componentProps.customer }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
+		<td class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
 			{{ componentProps.policyNo }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
 			{{ componentProps.registrationNo }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
+		<td class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
 			{{ componentProps.authorizedBy }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-600">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-600">
 			{{ componentProps.date }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-gray-600">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-gray-600">
 			{{ componentProps.authRefNo }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-600">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-600">
 			{{ componentProps.phoneNo }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-start font-semibold text-gray-600">
+		<td class="px-6 py-6 whitespace-nowrap text-start font-semibold text-gray-600">
 			{{ componentProps.regentBranchEmail }}
 		</td>
 		<!-- <td>
@@ -106,10 +99,10 @@
 	}
 
 	onMounted(() => {
-		document.addEventListener("click", handleClickOutside);
+		document.addEventListener('click', handleClickOutside);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("click", handleClickOutside);
+		document.removeEventListener('click', handleClickOutside);
 	});
 </script>

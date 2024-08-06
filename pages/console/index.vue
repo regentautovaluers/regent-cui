@@ -3,8 +3,8 @@
 		<div>
 			<h1 class="text-2xl md:text-3xl font-semibold">Our Services</h1>
 			<h2 class="text-lg text-gray-500">
-				Welcome to our all-in-one vehicle services dashboard! Please
-				choose the service you need to get started on your journey.
+				Welcome to our all-in-one vehicle services dashboard! Please choose the service you
+				need to get started on your journey.
 			</h2>
 		</div>
 		<div class="my-20 flex items-center whitespace-nowrap space-x-10">
@@ -20,9 +20,7 @@
 						alt="Link Icon"
 						class="size-16" />
 				</div>
-				<span class="font-semibold text-gray-500">{{
-					link.linkText
-				}}</span></NuxtLink
+				<span class="font-semibold text-gray-500">{{ link.linkText }}</span></NuxtLink
 			>
 		</div>
 
@@ -87,16 +85,16 @@
 </template>
 
 <script setup lang="ts">
-	import { Swiper, SwiperSlide } from "swiper/vue";
-	import "swiper/css";
-	import "swiper/css/pagination";
-	import "swiper/css/navigation";
-	import { Pagination, Navigation } from "swiper/modules";
-	import type { SwiperModule } from "swiper/types";
+	import { Swiper, SwiperSlide } from 'swiper/vue';
+	import 'swiper/css';
+	import 'swiper/css/pagination';
+	import 'swiper/css/navigation';
+	import { Pagination, Navigation } from 'swiper/modules';
+	import type { SwiperModule } from 'swiper/types';
 
 	definePageMeta({
-		name: "dashboard-home",
-		layout: "in-app-layout",
+		name: 'dashboard-home',
+		layout: 'in-app-layout',
 	});
 
 	// const modules: SwiperModule[] = [Pagination, Navigation];
@@ -108,19 +106,19 @@
 	//
 	const availableMinifiedRoutes: any[] = [
 		{
-			imageLink: "/icons/home-dashboard-icons/vehicle-valuation.svg",
-			toName: "valuation-all-valuations",
-			linkText: "Vehicle Valuation",
+			imageLink: '/icons/home-dashboard-icons/vehicle-valuation.svg',
+			toName: 'valuation-all-valuations',
+			linkText: 'Vehicle Valuation',
 		},
 		{
-			imageLink: "/icons/home-dashboard-icons/roadside-assistance.svg",
-			toName: "ava-home",
-			linkText: "Roadside Assistance",
+			imageLink: '/icons/home-dashboard-icons/roadside-assistance.svg',
+			toName: 'ava-home',
+			linkText: 'Roadside Assistance',
 		},
 		{
-			imageLink: "/icons/home-dashboard-icons/memberships.svg",
-			toName: "memberships-home",
-			linkText: "Memberships",
+			imageLink: '/icons/home-dashboard-icons/memberships.svg',
+			toName: 'memberships-home',
+			linkText: 'Memberships',
 		},
 	];
 

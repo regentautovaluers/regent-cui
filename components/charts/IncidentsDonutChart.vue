@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-	import { Doughnut } from "vue-chartjs";
+	import { Doughnut } from 'vue-chartjs';
 
 	const componentProps = defineProps<{
 		totalFuelDelivery: number | undefined;
@@ -47,13 +47,13 @@
 		componentProps.totalFuelDelivery +
 			componentProps.totalJumpstarting +
 			componentProps.totalTowing +
-			componentProps.totalTyreChange
+			componentProps.totalTyreChange,
 	);
 	const chartData = computed(() => ({
-		labels: ["Fuel Delivery", "Jumpstarting", "Towing", "Tyre Change"],
+		labels: ['Fuel Delivery', 'Jumpstarting', 'Towing', 'Tyre Change'],
 		datasets: [
 			{
-				backgroundColor: ["#f87979", "#7d669e", "#53bbb4", "#f39c12"],
+				backgroundColor: ['#f87979', '#7d669e', '#53bbb4', '#f39c12'],
 				data: [
 					countFuelDelivery.value || 0,
 					countJumpstarting.value || 0,
@@ -67,20 +67,17 @@
 				weight: 4,
 				datalabels: {
 					display: true,
-					color: "white",
+					color: 'white',
 					font: {
 						size: 18,
-						weight: "bold",
+						weight: 'bold',
 					},
 					formatter: (value, ctx) => {
-						if (value === 0) return "";
+						if (value === 0) return '';
 						const datapoints = ctx.chart.data.datasets[0].data;
-						const total = datapoints.reduce(
-							(total, datapoint) => total + datapoint,
-							0
-						);
+						const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
 						const percentage = (value / total) * 100;
-						return percentage.toFixed(0) + "%";
+						return percentage.toFixed(0) + '%';
 					},
 				},
 			},

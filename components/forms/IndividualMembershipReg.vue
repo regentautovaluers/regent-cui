@@ -236,30 +236,20 @@
 				color="white"
 				size="38"
 				class="bg-blue-600 p-1 rounded-full" />
-			<span
-				class="underline decoration-2 decoration-inherit underline-offset-2"
+			<span class="underline decoration-2 decoration-inherit underline-offset-2"
 				>Add Another Vehicle</span
 			>
 		</button>
 		<div
 			class="flex flex-col md:flex-row space-y-3 md:space-y-0 items-center space-x-0 md:space-x-4 mt-4 w-full md:w-1/2">
-			<div
-				class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
-				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">
-					Vehicles Added
-				</h1>
+			<div class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
+				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Vehicles Added</h1>
 				<h2 class="text-lg text-gray-500">{{ userVehicles.length }}</h2>
 			</div>
-			<div
-				class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
-				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">
-					Total Price
-				</h1>
+			<div class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
+				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Total Price</h1>
 				<h2 class="text-lg text-gray-500">
-					{{
-						Number($route.query.registrationCost) *
-						userVehicles.length
-					}}
+					{{ Number($route.query.registrationCost) * userVehicles.length }}
 					/ year
 				</h2>
 			</div>
@@ -293,9 +283,9 @@
 
 	const route = useRoute();
 	const formSubmissionLoading = ref(false);
-	const clientFullName = ref("");
-	const clientPhoneNumber = ref("");
-	const clientEmail = ref("");
+	const clientFullName = ref('');
+	const clientPhoneNumber = ref('');
+	const clientEmail = ref('');
 	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
@@ -304,20 +294,20 @@
 		{
 			corpName: getPrincipal.value.corpName,
 			membershipTypeId: Number(route.query.membershipTypeId),
-			registration: "",
-			make: "",
-			model: "",
-			color: "",
-			payment_status: "",
-			membership_status: "",
-			start_date: "",
-			end_date: "",
+			registration: '',
+			make: '',
+			model: '',
+			color: '',
+			payment_status: '',
+			membership_status: '',
+			start_date: '',
+			end_date: '',
 		},
 	]);
 
 	watch(clientPhoneNumber, (newNumber) => {
-		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
-			clientPhoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			clientPhoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
 	});
 
@@ -326,15 +316,15 @@
 		let membershipId = 0;
 
 		try {
-			await $fetch("/api/v1/memberships", {
+			await $fetch('/api/v1/memberships', {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "POST",
+				method: 'POST',
 				body: JSON.stringify({
 					full_name: clientFullName.value,
 					phone_number: clientPhoneNumber.value,
 					userEmail: clientEmail.value,
 					corporateId: getPrincipal.value.corpId,
-					category: "individual",
+					category: 'individual',
 					recordedBy: getPrincipal.value.userId,
 				}),
 
@@ -344,16 +334,16 @@
 						membershipId = response._data.id;
 					} else if (response.status === 400) {
 						formErrorMessage.value = response._data.message;
-						openToast("Please check your data!", "warning");
+						openToast('Please check your data!', 'warning');
 						formSubmissionLoading.value = false;
 					} else {
-						throw new Error("Something went wrong");
+						throw new Error('Something went wrong');
 					}
 				},
 			}).then(async () => {
-				await $fetch("/api/v1/membershipVehicles", {
+				await $fetch('/api/v1/membershipVehicles', {
 					baseURL: runtimeConfig.public.AVA_BASE_URL,
-					method: "POST",
+					method: 'POST',
 					body: JSON.stringify({
 						membershipId: membershipId,
 						vehicles: userVehicles.value,
@@ -362,20 +352,17 @@
 					async onResponse({ response }) {
 						if (response.status === 201) {
 							formSubmissionLoading.value = false;
-							openToast(
-								"Membership creation successful",
-								"success"
-							);
+							openToast('Membership creation successful', 'success');
 						} else {
-							throw new Error("Something went wrong");
+							throw new Error('Something went wrong');
 						}
 					},
 				});
 			});
 		} catch (err) {
-			console.log("An error occured: ", err);
+			console.log('An error occured: ', err);
 			formSubmissionLoading.value = false;
-			openToast("Request failed. Please try again!", "danger");
+			openToast('Request failed. Please try again!', 'danger');
 		}
 	};
 </script>

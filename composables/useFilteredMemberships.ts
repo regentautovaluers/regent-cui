@@ -15,9 +15,9 @@ export default async function () {
 	onMounted(async () => {
 		fetchErrorOrEmpty.value = true;
 		try {
-			await $fetch("/api/v1/memberships", {
+			await $fetch('/api/v1/memberships', {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "GET",
+				method: 'GET',
 				query: {
 					corporateId: getPrincipal.value.corpId,
 					page: page.value,
@@ -25,9 +25,7 @@ export default async function () {
 				},
 				async onResponse({ response }) {
 					if (response.status !== 200) {
-						throw new Error(
-							"Failed to retrieve corporate's members"
-						);
+						throw new Error("Failed to retrieve corporate's members");
 					}
 
 					totalNumber.value = response._data.totalCount;
@@ -36,31 +34,25 @@ export default async function () {
 					// we add page 0 to the list of fetchedPages so that we dont fetch it again
 					fetchedPages.value.push(0);
 
-					filterMembersRecord(
-						response._data.memberships,
-						determineFilterFlag()
-					);
+					filterMembersRecord(response._data.memberships, determineFilterFlag());
 				},
 			});
 		} catch (error) {
-			console.log("An error occured: ", error);
+			console.log('An error occured: ', error);
 			fetchErrorOrEmpty.value = true;
-			openToast("Failed to load your members. Reload page!", "danger");
+			openToast('Failed to load your members. Reload page!', 'danger');
 		}
 	});
 
 	watch(
 		page,
 		async (newValue) => {
-			if (
-				!fetchedPages.value.includes(newValue) &&
-				newValue < totalPages.value
-			) {
+			if (!fetchedPages.value.includes(newValue) && newValue < totalPages.value) {
 				fetchingMoreData.value = true;
 				try {
-					await $fetch("/api/v1/memberships", {
+					await $fetch('/api/v1/memberships', {
 						baseURL: runtimeConfig.public.AVA_BASE_URL,
-						method: "GET",
+						method: 'GET',
 						query: {
 							corporateId: getPrincipal.value.corpId,
 							page: newValue,
@@ -68,41 +60,29 @@ export default async function () {
 						},
 						async onResponse({ response }) {
 							if (response.status !== 200) {
-								throw new Error(
-									"Failed to retrieve corporate's members"
-								);
+								throw new Error("Failed to retrieve corporate's members");
 							}
-							filterMembersRecord(
-								response._data.memberships,
-								determineFilterFlag()
-							);
+							filterMembersRecord(response._data.memberships, determineFilterFlag());
 						},
 					});
 				} catch (error) {
-					console.log("An error occured: ", error);
-					openToast(
-						"Failed to load more members. Reload page!",
-						"danger"
-					);
+					console.log('An error occured: ', error);
+					openToast('Failed to load more members. Reload page!', 'danger');
 				} finally {
 					fetchingMoreData.value = false;
 				}
 			}
 		},
-		{ immediate: true }
+		{ immediate: true },
 	);
 
 	function filterMembersRecord(records: object[], filterFlag: string): void {
 		// Filter the memberships array
-		const filteredMemberships: object[] = records.filter(
-			(membership: any) => {
-				return membership.membershipVehicleCounts.some(
-					(vehicleCount: any) => {
-						return vehicleCount.membership_name === filterFlag;
-					}
-				);
-			}
-		);
+		const filteredMemberships: object[] = records.filter((membership: any) => {
+			return membership.membershipVehicleCounts.some((vehicleCount: any) => {
+				return vehicleCount.membership_name === filterFlag;
+			});
+		});
 
 		if (filteredMemberships.length === 0) {
 			page.value += 1;
@@ -114,12 +94,12 @@ export default async function () {
 
 	function determineFilterFlag(): string {
 		const routeName = route.name;
-		let filterFlag: string = "";
+		let filterFlag: string = '';
 
-		if (routeName === "roadside-members") {
-			filterFlag = "Roadside Assistance";
-		} else if (routeName === "emergency-members") {
-			filterFlag = "Emergency Evacuation";
+		if (routeName === 'roadside-members') {
+			filterFlag = 'Roadside Assistance';
+		} else if (routeName === 'emergency-members') {
+			filterFlag = 'Emergency Evacuation';
 		}
 
 		return filterFlag;

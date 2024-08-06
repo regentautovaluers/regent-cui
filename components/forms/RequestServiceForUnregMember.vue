@@ -3,15 +3,13 @@
 		class="py-12"
 		@submit.prevent="
 			makeServiceRequest(
-				[
-					'ava-jumpstarting',
-					'ava-fuel-delivery',
-					'ava-tyre-change',
-				].includes(route.name as string)
+				['ava-jumpstarting', 'ava-fuel-delivery', 'ava-tyre-change'].includes(
+					route.name as string,
+				)
 					? staticServiceCost
 					: computedServiceCost,
 				props.backendServiceTypeName,
-				computedTowingDistance
+				computedTowingDistance,
 			)
 		">
 		<!-- client contacts -->
@@ -190,15 +188,11 @@
 					v-model="tyreType">
 					<option value="">Select a Tyre Type</option>
 					<option
-						v-for="(vType, index) in [
-							'tube',
-							'tubeless',
-							'unknown',
-						]"
+						v-for="(vType, index) in ['tube', 'tubeless', 'unknown']"
 						:key="index"
 						:value="vType">
 						{{
-							capitalizeFirstLetterOfEachWord(vType) === "Unknown"
+							capitalizeFirstLetterOfEachWord(vType) === 'Unknown'
 								? "I Don't Know"
 								: capitalizeFirstLetterOfEachWord(vType)
 						}}
@@ -248,10 +242,7 @@
 					v-model="fuelType"
 					required>
 					<option
-						v-for="(fuelType, index) in [
-							'Diesel',
-							'Petrol',
-						]"
+						v-for="(fuelType, index) in ['Diesel', 'Petrol']"
 						:key="index"
 						:value="fuelType">
 						{{ fuelType }}
@@ -338,26 +329,18 @@
 				class="w-1/2 p-3 rounded-lg border border-pink-500"
 				v-if="props.clientServiceTypeName === 'Towing'">
 				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
-				<h1 class="text-lg font-semibold text-gray-500">
-					{{ computedTowingDistance }}Km
-				</h1>
+				<h1 class="text-lg font-semibold text-gray-500">{{ computedTowingDistance }}Km</h1>
 			</div>
 			<div
 				class="p-3 rounded-lg border border-pink-500"
-				:class="
-					props.clientServiceTypeName === 'Towing'
-						? 'w-1/2'
-						: 'w-full'
-				">
+				:class="props.clientServiceTypeName === 'Towing' ? 'w-1/2' : 'w-full'">
 				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
 				<h1
 					class="text-lg font-semibold text-gray-500"
 					v-if="
-						[
-							'ava-jumpstarting',
-							'ava-fuel-delivery',
-							'ava-tyre-change',
-						].includes(route.name as string)
+						['ava-jumpstarting', 'ava-fuel-delivery', 'ava-tyre-change'].includes(
+							route.name as string,
+						)
 					">
 					{{ staticServiceCost }}Ksh
 				</h1>
@@ -383,7 +366,7 @@
 </template>
 
 <script setup lang="ts">
-	import { type informativeCoordsMarker } from "~/types/types";
+	import { type informativeCoordsMarker } from '~/types/types';
 
 	const props = defineProps<{
 		backendServiceTypeName: string;
@@ -430,7 +413,7 @@
 			const towingCost = calculateTowingChargeNonMember(
 				selectedVehicleType.towingRate.withinThreshHoldPrice,
 				computedTowingDistance.value,
-				selectedVehicleType.towingRate.overThreshHoldPriceNonMembers
+				selectedVehicleType.towingRate.overThreshHoldPriceNonMembers,
 			);
 			return towingCost || 0;
 		} else {
@@ -439,7 +422,7 @@
 	});
 
 	const computedTowingDistance: ComputedRef<number | undefined> = computed(
-		() => props.towingDistance
+		() => props.towingDistance,
 	);
 
 	watch([pickupLatitude, pickupLongitude], (newValues) => {
@@ -447,9 +430,9 @@
 			newValues[0] !== Number.NEGATIVE_INFINITY &&
 			newValues[1] !== Number.NEGATIVE_INFINITY
 		) {
-			emits("appendInfoMarker", {
+			emits('appendInfoMarker', {
 				id: 0,
-				info: "Client Is Here",
+				info: 'Client Is Here',
 				coords: {
 					lat: newValues[0],
 					lng: newValues[1],
@@ -459,8 +442,8 @@
 	});
 
 	watch(userPhoneNumber, (newNumber) => {
-		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
-			userPhoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			userPhoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
 	});
 
@@ -471,9 +454,9 @@
 				newValues[0] !== Number.NEGATIVE_INFINITY &&
 				newValues[1] !== Number.NEGATIVE_INFINITY
 			) {
-				emits("appendInfoMarker", {
+				emits('appendInfoMarker', {
 					id: 1,
-					info: "Destination Is Here",
+					info: 'Destination Is Here',
 					coords: {
 						lat: newValues[0],
 						lng: newValues[1],
@@ -481,6 +464,6 @@
 				});
 			}
 		},
-		{ immediate: false }
+		{ immediate: false },
 	);
 </script>

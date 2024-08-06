@@ -6,16 +6,14 @@
 					type="button"
 					class="py-3 px-4 mt-7 w-full lg:w-1/4 text-lg items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
 					@click="() => (showAddToFleetsForm = !showAddToFleetsForm)">
-					{{ showAddToFleetsForm ? "Hide Form" : "Create New Fleet" }}
+					{{ showAddToFleetsForm ? 'Hide Form' : 'Create New Fleet' }}
 				</button>
 			</div>
 			<div v-show="showAddToFleetsForm">
-				<h1 class="my-4 text-2xl antialiased font-semibold">
-					Add To Your Fleets
-				</h1>
+				<h1 class="my-4 text-2xl antialiased font-semibold">Add To Your Fleets</h1>
 				<p class="text-lg text-gray-500">
-					Note that each fleet you add will appear as one of your
-					corporate options for a bulk membership registration.
+					Note that each fleet you add will appear as one of your corporate options for a
+					bulk membership registration.
 				</p>
 				<CreateNewFleet />
 			</div>
@@ -25,9 +23,7 @@
 					v-show="showAddToFleetsForm" />
 			</div>
 
-			<h1 class="my-4 mt-6 text-2xl antialiased font-semibold">
-				Already Added Fleets
-			</h1>
+			<h1 class="my-4 mt-6 text-2xl antialiased font-semibold">Already Added Fleets</h1>
 			<!-- start of data table -->
 			<div class="flex flex-col">
 				<div class="-m-1.5 overflow-x-auto">
@@ -64,19 +60,14 @@
 									</tr>
 								</thead>
 								<tbody class="divide-y divide-gray-200">
-									<ErrorOrMissingData
-										v-if="fetchErrorOrEmpty" />
+									<ErrorOrMissingData v-if="fetchErrorOrEmpty" />
 									<FleetRecord
-										v-for="(
-											fleet, index
-										) in corporateFleets"
+										v-for="(fleet, index) in corporateFleets"
 										:key="index"
 										:fleet-name="fleet.fleetname"
 										:contact-name="fleet.contact_full_name"
 										:contact-email="fleet.contact_email"
-										:contact-phone="
-											fleet.contact_phone_number
-										"
+										:contact-phone="fleet.contact_phone_number"
 										:registered-members="fleet.memberCount"
 										:fleet-id="fleet.id" />
 								</tbody>
@@ -92,8 +83,8 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "manage-fleets",
-		layout: "in-app-layout",
+		name: 'manage-fleets',
+		layout: 'in-app-layout',
 	});
 
 	const { getPrincipal } = useAuth();
@@ -105,13 +96,13 @@
 
 	await useFetch(`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`, {
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: "GET",
+		method: 'GET',
 		server: false,
 		lazy: false,
 
 		onResponse({ response }) {
 			if (response.status !== 200) {
-				openToast("Failed to retrieve fleets. Try again!", "danger");
+				openToast('Failed to retrieve fleets. Try again!', 'danger');
 			}
 
 			corporateFleets.value = response._data;

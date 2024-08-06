@@ -5,8 +5,8 @@ export default function () {
 	const jumpstartingIncidents: Ref<any[]> = ref([]);
 	const towingIncidents: Ref<any[]> = ref([]);
 	const tyrechangeIncidents: Ref<any[]> = ref([]);
-	const searchFilterTerm: Ref<string | null> = ref("");
-	const searchServiceType: Ref<string | ""> = ref("");
+	const searchFilterTerm: Ref<string | null> = ref('');
+	const searchServiceType: Ref<string | ''> = ref('');
 	const totalNumber: Ref<number> = ref(0);
 	const currentPage: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
@@ -37,8 +37,7 @@ export default function () {
 			return (
 				termMatch ||
 				serviceTypeMatch ||
-				(searchFilterTerm.value === "" &&
-					searchServiceType.value === "")
+				(searchFilterTerm.value === '' && searchServiceType.value === '')
 			);
 		});
 
@@ -79,7 +78,7 @@ export default function () {
 	});
 
 	const determineMostRequestedService = computed(() => {
-		"Test Data";
+		'Test Data';
 	});
 
 	// Add a method to navigate to the next page
@@ -100,12 +99,12 @@ export default function () {
 		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
 		{
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: "GET",
+			method: 'GET',
 			server: false,
 			lazy: true,
 			async onResponse({ response }) {
 				if (response.status !== 200) {
-					throw new Error("Failed to retrieve incidents!");
+					throw new Error('Failed to retrieve incidents!');
 				}
 				fuelDeliveryIncidents.value = response._data.fueldelivery;
 				jumpstartingIncidents.value = response._data.jumpstarting;
@@ -121,9 +120,9 @@ export default function () {
 					fetchErrorOrEmpty.value = false;
 				}
 
-				openToast("Successfully loaded your incidents", "success");
+				openToast('Successfully loaded your incidents', 'success');
 			},
-		}
+		},
 	);
 
 	return {

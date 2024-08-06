@@ -13,9 +13,7 @@
 			<slot />
 			<nuxt-link
 				:to="{ name: componentProps.routeName }"
-				@click="
-					emit('changeCurrentRouteName', componentProps.displayName)
-				"
+				@click="emit('changeCurrentRouteName', componentProps.displayName)"
 				>{{ componentProps.displayName }}</nuxt-link
 			>
 
@@ -59,8 +57,7 @@
 					<!-- Icon -->
 					<div
 						class="relative last:after:hidden after:absolute after:top-0 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200">
-						<div
-							class="relative z-10 size-7 flex justify-center items-center">
+						<div class="relative z-10 size-7 flex justify-center items-center">
 							<div
 								class="h-6 w-3 rounded-full bg-white border-2 group-hover:border-blue-600"
 								:class="
@@ -75,19 +72,10 @@
 					<!-- Right Content -->
 					<div
 						class="grow px-2 pb-8 font-medium"
-						:class="
-							route.name === child.routeName
-								? 'text-blue-600'
-								: 'text-gray-500'
-						">
+						:class="route.name === child.routeName ? 'text-blue-600' : 'text-gray-500'">
 						<NuxtLink
 							:to="{ name: child.routeName }"
-							@click="
-								emit(
-									'changeCurrentRouteName',
-									componentProps.displayName
-								)
-							">
+							@click="emit('changeCurrentRouteName', componentProps.displayName)">
 							{{ child.displayName }}
 						</NuxtLink>
 					</div>
@@ -100,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { ApplicationChildRoute } from "~/types/types";
+	import type { ApplicationChildRoute } from '~/types/types';
 	export interface ComponentProps {
 		displayName: string;
 		routeName: string;
@@ -109,16 +97,14 @@
 
 	const componentProps = defineProps<ComponentProps>();
 	const route = useRoute();
-	const emit = defineEmits(["changeCurrentRouteName"]);
+	const emit = defineEmits(['changeCurrentRouteName']);
 
 	// Function to check if the current route is the active route
 	const isActiveRoute = computed(() => {
 		const currentRouteName = route.name;
 		return (
 			currentRouteName === componentProps.routeName ||
-			componentProps.children.some(
-				(child) => child.routeName === currentRouteName
-			)
+			componentProps.children.some((child) => child.routeName === currentRouteName)
 		);
 	});
 </script>

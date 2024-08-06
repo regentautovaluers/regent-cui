@@ -7,8 +7,8 @@ import {
 	CategoryScale,
 	LinearScale,
 	ArcElement,
-} from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
+} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 export default defineNuxtPlugin(() => {
 	Chart.register(
 		CategoryScale,
@@ -18,6 +18,6 @@ export default defineNuxtPlugin(() => {
 		Tooltip,
 		Legend,
 		ArcElement,
-		ChartDataLabels
+		ChartDataLabels,
 	);
 });

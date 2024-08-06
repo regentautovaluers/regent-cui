@@ -47,8 +47,7 @@
 									:bar-length="`w-[30%]`"
 									v-if="getUserAccountsLoading" />
 								<br />
-								<span
-									class="text-gray-500 text-lg font-semibold"
+								<span class="text-gray-500 text-lg font-semibold"
 									>Loading Your Data.</span
 								>
 							</td>
@@ -95,7 +94,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "valuation-manage-users",
+		name: 'valuation-manage-users',
 	});
 
 	const runtimeConfig = useRuntimeConfig();
@@ -104,12 +103,13 @@
 	const accountsList: Ref<any[]> = ref([]);
 	const currentPage: Ref<number> = ref(0);
 
-	const { pending: getUserAccountsLoading, error: queryErrorOrEmpty } =
-		useFetch("/api/v1/auth/corp-account/get-accounts", {
+	const { pending: getUserAccountsLoading, error: queryErrorOrEmpty } = useFetch(
+		'/api/v1/auth/corp-account/get-accounts',
+		{
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-			method: "GET",
+			method: 'GET',
 			headers: {
-				Accept: "application/json",
+				Accept: 'application/json',
 			},
 			query: {
 				corporateId: getPrincipal.value.corpId,
@@ -127,5 +127,6 @@
 					accountsList.value = response._data.data;
 				}
 			},
-		});
+		},
+	);
 </script>

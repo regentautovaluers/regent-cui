@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "ava-incident-report",
-		layout: "in-app-layout",
+		name: 'ava-incident-report',
+		layout: 'in-app-layout',
 	});
 </script>

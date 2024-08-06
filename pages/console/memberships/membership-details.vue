@@ -8,9 +8,7 @@
 					src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span class="text-blue-600 font-semibold"
-						>{{ clientFullName }}
-					</span>
+					<span class="text-blue-600 font-semibold">{{ clientFullName }} </span>
 					<span class="font-semibold text-gray-500"
 						>Has {{ numOfVehicles }} Registered Vehicles</span
 					>
@@ -83,44 +81,24 @@
 							</thead>
 							<tbody class="divide-y divide-gray-200">
 								<MembershipRecord
-									v-for="(
-										record, index
-									) in memberVehiclesList"
+									v-for="(record, index) in memberVehiclesList"
 									:key="index"
 									:membership-id="record.id"
 									:vehicle-registration="record.registration"
-									:start-date="
-										formatServerProvidedDate(
-											record.start_date
-										)
-									"
-									:end-date="
-										formatServerProvidedDate(
-											record.end_date
-										)
-									"
+									:start-date="formatServerProvidedDate(record.start_date)"
+									:end-date="formatServerProvidedDate(record.end_date)"
 									:vehicle-make="record.make"
 									:vehicle-model="record.model"
 									:membership-name="
 										capitalizeFirstLetterOfEachWord(
-											record.membershipType
-												.membership_name
+											record.membershipType.membership_name,
 										)
 									"
 									:membership-status="
-										capitalizeFirstLetter(
-											record.membership_status
-										)
+										capitalizeFirstLetter(record.membership_status)
 									"
-									:payment-status="
-										capitalizeFirstLetter(
-											record.payment_status
-										)
-									"
-									:client-name="
-										memberVehiclesList[0].membership
-											.full_name
-									" />
+									:payment-status="capitalizeFirstLetter(record.payment_status)"
+									:client-name="memberVehiclesList[0].membership.full_name" />
 							</tbody>
 						</table>
 					</div>
@@ -133,12 +111,12 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "membership-details",
-		layout: "in-app-layout",
+		name: 'membership-details',
+		layout: 'in-app-layout',
 	});
-	const clientFullName: Ref<string> = ref("");
-	const clientEmail: Ref<string> = ref("");
-	const clientPhoneNumber: Ref<string> = ref("");
+	const clientFullName: Ref<string> = ref('');
+	const clientEmail: Ref<string> = ref('');
+	const clientPhoneNumber: Ref<string> = ref('');
 	const numOfVehicles: Ref<number> = ref(0);
 	const runtimeConfig = useRuntimeConfig();
 	const { openToast } = useToast();
@@ -147,7 +125,7 @@
 
 	useFetch(`/api/v1/membershipVehicles/membership/${route.query.id}`, {
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: "GET",
+		method: 'GET',
 		server: false,
 		lazy: false,
 		onResponse({ response }) {
@@ -155,21 +133,15 @@
 				throw new Error("Failed to retrieve corporate's members");
 			}
 			memberVehiclesList.value = response._data;
-			clientFullName.value =
-				memberVehiclesList.value[0].membership.full_name;
-			clientEmail.value = !memberVehiclesList.value[0].membership
-				.userEmail
-				? "Email not provided"
+			clientFullName.value = memberVehiclesList.value[0].membership.full_name;
+			clientEmail.value = !memberVehiclesList.value[0].membership.userEmail
+				? 'Email not provided'
 				: memberVehiclesList.value[0].membership.userEmail;
-			clientPhoneNumber.value =
-				memberVehiclesList.value[0].membership.phone_number;
+			clientPhoneNumber.value = memberVehiclesList.value[0].membership.phone_number;
 			numOfVehicles.value = memberVehiclesList.value.length;
 		},
 		onRequestError() {
-			openToast(
-				"Failed to retrieve member vehicles. Please try again",
-				"error"
-			);
+			openToast('Failed to retrieve member vehicles. Please try again', 'error');
 		},
 	}) as any;
 </script>

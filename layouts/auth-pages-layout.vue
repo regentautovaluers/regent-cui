@@ -7,16 +7,14 @@
 					"isAutoPlay": true
 				}'
 				class="relative size-full">
-				<div
-					class="hs-carousel relative overflow-hidden w-full min-h-96 bg-white h-full">
+				<div class="hs-carousel relative overflow-hidden w-full min-h-96 bg-white h-full">
 					<div
 						class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
 						<div
 							class="hs-carousel-slide"
 							v-for="(advertisement, index) in advertisements"
 							:key="index">
-							<div
-								class="flex justify-center w-full h-full bg-gray-100">
+							<div class="flex justify-center w-full h-full bg-gray-100">
 								<img
 									:src="advertisement"
 									alt="Image Advertisement"
@@ -44,8 +42,8 @@
 
 <script setup lang="ts">
 	const advertisements = ref([
-		"/images/auth-img-parking-lot.webp",
-		"/images/auth-img-parking-lot.webp",
-		"/images/auth-img-parking-lot.webp",
+		'/images/auth-img-parking-lot.webp',
+		'/images/auth-img-parking-lot.webp',
+		'/images/auth-img-parking-lot.webp',
 	]);
 </script>

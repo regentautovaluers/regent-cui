@@ -2,7 +2,7 @@
 	<!-- Progress -->
 	<div class="w-full flex justify-center">
 		<div
-			class="flex h-2 rounded-lg  overflow-hidden"
+			class="flex h-2 rounded-lg overflow-hidden"
 			:class="componentProps.injectClasses"
 			role="progressbar"
 			aria-valuenow="25"
@@ -10,10 +10,7 @@
 			aria-valuemax="100">
 			<div
 				class="bg-gray-200"
-				style="
-					width: 80%;
-					animation: scroll 1.8s linear infinite;
-				"></div>
+				style="width: 80%; animation: scroll 1.8s linear infinite"></div>
 		</div>
 	</div>
 

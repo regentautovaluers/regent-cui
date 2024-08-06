@@ -1,8 +1,7 @@
 <template>
 	<form @submit.prevent="createAuthorizationLetterRequestHandler">
 		<h1 class="text-lg font-light">Create Your Authorization Letter</h1>
-		<div
-			class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 space-x-0 lg:space-x-4 mt-7">
+		<div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 space-x-0 lg:space-x-4 mt-7">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -82,8 +81,7 @@
 				placeholder="Provide optional comments for this request."></textarea>
 		</div>
 		<!-- data below the comments box -->
-		<div
-			class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 space-x-0 lg:space-x-4 mt-7">
+		<div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 space-x-0 lg:space-x-4 mt-7">
 			<!-- Policy Number -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -140,9 +138,7 @@
 						class="w-fit rounded-md border border-dashed border-black/75 p-2 file:mr-5 file:rounded-lg file:border-0 file:bg-blue-100 file:px-6 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:cursor-pointer hover:file:bg-amber-50 hover:file:text-amber-700" />
 				</label>
 			</div>
-			<span class="text-gray-500"
-				>.jpg, .png, .pdf, .doc, .docx, files accepted.</span
-			>
+			<span class="text-gray-500">.jpg, .png, .pdf, .doc, .docx, files accepted.</span>
 		</div>
 		<!-- submit button -->
 		<button

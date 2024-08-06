@@ -6,16 +6,14 @@
 		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
 			{{ componentProps.vehicleMake }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
+		<td class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
 			{{ componentProps.vehicleModel }}
 		</td>
 		<td
 			class="px-6 py-6 whitespace-nowrap text-ellipsis overflow-hidden text-end font-semibold text-pink-500">
 			{{ componentProps.bookingNo }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
 			{{ componentProps.valuationDate }}
 		</td>
 		<td

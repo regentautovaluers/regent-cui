@@ -1,6 +1,5 @@
 <template>
-	<div
-		class="flex items-center justify-between h-16 text-gray-500 hover:text-gray-600">
+	<div class="flex items-center justify-between h-16 text-gray-500 hover:text-gray-600">
 		<span class="flex flex-col">
 			<span class="font-semibold">{{ componentProps.regNo }}</span>
 			<span class="text-sm">{{ componentProps.dateTime }}</span>
@@ -70,10 +69,10 @@
 	}
 
 	onMounted(() => {
-		document.addEventListener("click", handleClickOutside);
+		document.addEventListener('click', handleClickOutside);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("click", handleClickOutside);
+		document.removeEventListener('click', handleClickOutside);
 	});
 </script>

@@ -74,7 +74,7 @@
 					v-for="(branch, index) in availableBranches"
 					:key="index"
 					:value="branch.branchId">
-					{{ branch.branchName + "-" + branch.branchLocation }}
+					{{ branch.branchName + '-' + branch.branchLocation }}
 				</option>
 			</select>
 		</div>
@@ -109,23 +109,19 @@
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const formSubmissionLoading = ref(false);
-	const firstName: Ref<string> = ref(
-		getPrincipal.value.username.split(" ")[0]
-	);
-	const otherName: Ref<string> = ref(
-		getPrincipal.value.username.split(" ")[1]
-	);
+	const firstName: Ref<string> = ref(getPrincipal.value.username.split(' ')[0]);
+	const otherName: Ref<string> = ref(getPrincipal.value.username.split(' ')[1]);
 	const email: Ref<string> = ref(getPrincipal.value.email);
 	const phoneNumber: Ref<string> = ref(getPrincipal.value.phonenumber);
-	const password: Ref<string> = ref("");
+	const password: Ref<string> = ref('');
 	const companyRole: Ref<string> = ref(getPrincipal.value.roleInOrganization);
 	const companyBranch: Ref<string> = ref(getPrincipal.value.branchId);
 	const { openToast } = useToast();
 	const availableBranches: Ref<any[]> = ref([]);
 
 	watch(phoneNumber, (newNumber) => {
-		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
-			phoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
 	});
 
@@ -140,12 +136,12 @@
 	const updateMyAccount = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/api/v1/auth/corp-account/update-account-details", {
+			await $fetch('/api/v1/auth/corp-account/update-account-details', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: "PUT",
+				method: 'PUT',
 				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
 					userId: getPrincipal.value.userId,
@@ -160,25 +156,25 @@
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
-						openToast("Account updated successfully!", "success");
+						openToast('Account updated successfully!', 'success');
 					} else {
-						throw new Error("Account updating failed. Try again!");
+						throw new Error('Account updating failed. Try again!');
 					}
 				},
 			});
 		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Account updating failed. Try again!", "danger");
+			console.log('An error occured: ', error);
+			openToast('Account updating failed. Try again!', 'danger');
 		} finally {
 			formSubmissionLoading.value = false;
 		}
 	};
 
-	await useFetch("/api/v1/auth/corp-branch/get-all", {
+	await useFetch('/api/v1/auth/corp-branch/get-all', {
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: "GET",
+		method: 'GET',
 		headers: {
-			Accept: "application/json",
+			Accept: 'application/json',
 		},
 		server: false,
 		lazy: true,
@@ -192,7 +188,7 @@
 		},
 
 		onRequestError() {
-			openToast("Failed to retrieve branches. Try again!", "danger");
+			openToast('Failed to retrieve branches. Try again!', 'danger');
 		},
 	});
 </script>

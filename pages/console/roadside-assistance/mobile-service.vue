@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "ava-mobile-service",
-		layout: "in-app-layout",
+		name: 'ava-mobile-service',
+		layout: 'in-app-layout',
 	});
 </script>

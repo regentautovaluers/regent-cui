@@ -3,8 +3,7 @@
 		<div class="bg-white w-full p-10 px-2 lg:px-10">
 			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
-				<div
-					class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+				<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
 					<button
 						@click="() => (currentView = 0)"
 						:class="[
@@ -35,8 +34,7 @@
 					class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div
-								class="border rounded-lg shadow overflow-hidden">
+							<div class="border rounded-lg shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -92,19 +90,14 @@
 									</thead>
 									<tbody class="divide-y divide-gray-200">
 										<td
-											v-if="
-												requestAuthorizationListLoading
-											"
+											v-if="requestAuthorizationListLoading"
 											class="text-center py-4"
 											colspan="100%">
 											<LoadingIndicator
 												:bar-length="`w-[30%]`"
-												v-if="
-													requestAuthorizationListLoading
-												" />
+												v-if="requestAuthorizationListLoading" />
 											<br />
-											<span
-												class="text-gray-500 text-lg font-semibold"
+											<span class="text-gray-500 text-lg font-semibold"
 												>Loading Your Data.</span
 											>
 										</td>
@@ -203,8 +196,8 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "valuation-authorization-letter",
-		layout: "in-app-layout",
+		name: 'valuation-authorization-letter',
+		layout: 'in-app-layout',
 	});
 
 	const currentView: Ref<number> = ref(0);

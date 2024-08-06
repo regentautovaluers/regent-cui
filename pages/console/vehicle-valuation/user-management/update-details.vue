@@ -4,6 +4,6 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "valuation-update-user-details",
+		name: 'valuation-update-user-details',
 	});
 </script>

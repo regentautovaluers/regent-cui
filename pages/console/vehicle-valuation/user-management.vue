@@ -8,9 +8,7 @@
 					:to="{ name: link.to }"
 					class="p-2 hover:bg-gray-100 rounded-lg whitespace-nowrap"
 					:class="
-						$route.name === link.to
-							? 'text-blue-600 font-semibold bg-gray-100'
-							: null
+						$route.name === link.to ? 'text-blue-600 font-semibold bg-gray-100' : null
 					"
 					:key="index"
 					>{{ link.text }}</NuxtLink
@@ -28,8 +26,8 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "valuation-user-management",
-		layout: "in-app-layout",
+		name: 'valuation-user-management',
+		layout: 'in-app-layout',
 	});
 
 	type InternalLink = {
@@ -41,18 +39,18 @@
 	const { isPrincipalAdmin } = useAuth();
 	const internalLinks: InternalLink[] = [
 		{
-			text: "My Account",
-			to: "valuation-my-account",
+			text: 'My Account',
+			to: 'valuation-my-account',
 			forAdminOnly: false,
 		},
 		{
-			text: "Manage All Users",
-			to: "valuation-manage-users",
+			text: 'Manage All Users',
+			to: 'valuation-manage-users',
 			forAdminOnly: true,
 		},
 		{
-			text: "Add New User",
-			to: "valuation-users-add-user",
+			text: 'Add New User',
+			to: 'valuation-users-add-user',
 			forAdminOnly: true,
 		},
 		// {

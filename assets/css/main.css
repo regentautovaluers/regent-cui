@@ -3,54 +3,54 @@
 @tailwind utilities;
 
 @layer components {
-    .responsive-view {
-        @apply px-3 lg:pl-[340px] md:pr-[20px] pt-36;
-    }
+	.responsive-view {
+		@apply px-3 lg:pl-[340px] md:pr-[20px] pt-36;
+	}
 
-    .active-parent-route { 
-        @apply bg-red-500;
-    }
+	.active-parent-route {
+		@apply bg-red-500;
+	}
 
-    .active-child-route {
-        @apply bg-green-500;
-    }
+	.active-child-route {
+		@apply bg-green-500;
+	}
 
-    .custom-dropdown {
-        @apply origin-center absolute z-20 p-1 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 -top-[170%] mb-10 -left-56;
-    }
+	.custom-dropdown {
+		@apply origin-center absolute z-20 p-1 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 -top-[170%] mb-10 -left-56;
+	}
 
-    .generic-input {
-        @apply p-3 block w-full border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none disabled:text-gray-500;
-    }
+	.generic-input {
+		@apply p-3 block w-full border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none disabled:text-gray-500;
+	}
 
-    .radio-inputs {
-        @apply flex cursor-pointer items-center rounded-xl border border-pink-200 bg-pink-100 py-4 px-3 text-pink-500 peer-checked:bg-pink-400 peer-checked:text-white h-16;
-    }
+	.radio-inputs {
+		@apply flex cursor-pointer items-center rounded-xl border border-pink-200 bg-pink-100 py-4 px-3 text-pink-500 peer-checked:bg-pink-400 peer-checked:text-white h-16;
+	}
 
-    .form-submit {
-        @apply py-3 px-4 w-full items-center font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700;
-    }
+	.form-submit {
+		@apply py-3 px-4 w-full items-center font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700;
+	}
 }
 
-.radio-buttons { 
-    @apply shrink-0 ms-auto border-gray-200 rounded-full text-blue-600 focus:ring-blue-500;
+.radio-buttons {
+	@apply shrink-0 ms-auto border-gray-200 rounded-full text-blue-600 focus:ring-blue-500;
 }
 
 @layer base {
-    th, tr {
-        @apply whitespace-nowrap
-    }
+	th,
+	tr {
+		@apply whitespace-nowrap;
+	}
 }
 
 .pac-container {
-    border-radius: 10px;
-    margin-top: 2px;
-    box-shadow: 10px;
+	border-radius: 10px;
+	margin-top: 2px;
+	box-shadow: 10px;
 }
 
 .pac-item {
-    padding-top: 6px;
-    padding-bottom: 6px;
-    font-size: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	font-size: 12px;
 }
-

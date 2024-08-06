@@ -85,7 +85,7 @@
 					v-for="(branch, index) in availableBranches"
 					:key="index"
 					:value="branch.branchId">
-					{{ branch.branchName + "-" + branch.branchLocation }}
+					{{ branch.branchName + '-' + branch.branchLocation }}
 				</option>
 			</select>
 			<ActionTriggeredModal
@@ -156,23 +156,23 @@
 	const formSubmissionLoading = ref(false);
 	const { getPrincipal } = useAuth();
 	const availableBranches: Ref<any[]> = ref([]);
-	const firstName: Ref<string> = ref("");
-	const otherName: Ref<string> = ref("");
-	const email: Ref<string> = ref("");
-	const phoneNumber: Ref<string> = ref("");
-	const password: Ref<string> = ref("");
-	const companyRole: Ref<string> = ref("");
-	const companyBranch: Ref<string> = ref("");
-	const userRole: Ref<string> = ref("");
+	const firstName: Ref<string> = ref('');
+	const otherName: Ref<string> = ref('');
+	const email: Ref<string> = ref('');
+	const phoneNumber: Ref<string> = ref('');
+	const password: Ref<string> = ref('');
+	const companyRole: Ref<string> = ref('');
+	const companyBranch: Ref<string> = ref('');
+	const userRole: Ref<string> = ref('');
 	const { openToast } = useToast();
 	const isAccountEnabled: Ref<boolean> = ref(true);
 
-	useFetch("/api/v1/auth/corp-account/get-account", {
-		key: "userDetails",
+	useFetch('/api/v1/auth/corp-account/get-account', {
+		key: 'userDetails',
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: "GET",
+		method: 'GET',
 		headers: {
-			Accept: "application/json",
+			Accept: 'application/json',
 		},
 		query: {
 			userId: route.query.userId,
@@ -182,8 +182,8 @@
 		onResponse({ response }) {
 			if (response.status === 200) {
 				const responseData = response._data.data;
-				firstName.value = responseData.username.split(" ")[0];
-				otherName.value = responseData.username.split(" ")[1];
+				firstName.value = responseData.username.split(' ')[0];
+				otherName.value = responseData.username.split(' ')[1];
 				email.value = responseData.email;
 				phoneNumber.value = responseData.phoneNumber;
 				password.value = responseData.password;
@@ -192,17 +192,14 @@
 				companyBranch.value = responseData.branchId;
 				isAccountEnabled.value = responseData.accountEnabled;
 			} else {
-				openToast(
-					"Failed to retrieve account details. Try again!",
-					"danger"
-				);
+				openToast('Failed to retrieve account details. Try again!', 'danger');
 			}
 		},
 	});
 
 	watch(phoneNumber, (newNumber) => {
-		if (newNumber.startsWith("0") || newNumber.startsWith("+254")) {
-			phoneNumber.value = newNumber.replace(/^(\+254|0)/, "254");
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
 	});
 
@@ -217,12 +214,12 @@
 	const updateUserAccount = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/api/v1/auth/corp-account/update-account-details", {
+			await $fetch('/api/v1/auth/corp-account/update-account-details', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: "PUT",
+				method: 'PUT',
 				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
 					userId: route.query.userId,
@@ -238,42 +235,39 @@
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
-						openToast("Account updated successfully!", "success");
+						openToast('Account updated successfully!', 'success');
 					} else {
-						throw new Error("Account updating failed. Try again!");
+						throw new Error('Account updating failed. Try again!');
 					}
 				},
 			});
 		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Account updating failed. Try again!", "danger");
+			console.log('An error occured: ', error);
+			openToast('Account updating failed. Try again!', 'danger');
 		} finally {
 			formSubmissionLoading.value = false;
 		}
 	};
 
-	const { refresh: refreshBranches } = useFetch(
-		"/api/v1/auth/corp-branch/get-all",
-		{
-			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-			method: "GET",
-			headers: {
-				Accept: "application/json",
-			},
-			server: false,
-			lazy: true,
-			query: {
-				corpId: getPrincipal.value.corpId,
-			},
-			onResponse({ response }) {
-				if (response.status === 200) {
-					availableBranches.value = response._data.data;
-				}
-			},
+	const { refresh: refreshBranches } = useFetch('/api/v1/auth/corp-branch/get-all', {
+		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+		},
+		server: false,
+		lazy: true,
+		query: {
+			corpId: getPrincipal.value.corpId,
+		},
+		onResponse({ response }) {
+			if (response.status === 200) {
+				availableBranches.value = response._data.data;
+			}
+		},
 
-			onRequestError() {
-				openToast("Failed to retrieve branches. Try again!", "danger");
-			},
-		}
-	);
+		onRequestError() {
+			openToast('Failed to retrieve branches. Try again!', 'danger');
+		},
+	});
 </script>

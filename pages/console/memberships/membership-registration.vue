@@ -3,8 +3,7 @@
 		<div class="bg-white w-full p-10 px-2 lg:px-10">
 			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
-				<div
-					class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+				<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
 					<button
 						@click="() => (currentRegForm = 0)"
 						:class="[
@@ -42,8 +41,8 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "membership-registration",
-		layout: "in-app-layout",
+		name: 'membership-registration',
+		layout: 'in-app-layout',
 	});
 
 	const currentRegForm = ref(0);

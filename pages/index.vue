@@ -79,15 +79,15 @@
 </template>
 
 <style scoped>
-	input[type="password"]::-ms-reveal {
+	input[type='password']::-ms-reveal {
 		display: none;
 	}
 </style>
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "authentication-page",
-		layout: "auth-pages-layout",
+		name: 'authentication-page',
+		layout: 'auth-pages-layout',
 	});
 
 	const displayPassword: Ref<boolean> = ref(false);

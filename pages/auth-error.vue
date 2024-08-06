@@ -15,9 +15,7 @@
 				class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
 				<div
 					class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-					<h3 class="font-bold text-gray-800 dark:text-white">
-						Modal title
-					</h3>
+					<h3 class="font-bold text-gray-800 dark:text-white">Modal title</h3>
 					<button
 						type="button"
 						class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
@@ -41,8 +39,8 @@
 				</div>
 				<div class="p-4 overflow-y-auto">
 					<p class="text-gray-800 dark:text-neutral-400">
-						This is a wider card with supporting text below as a
-						natural lead-in to additional content.
+						This is a wider card with supporting text below as a natural lead-in to
+						additional content.
 					</p>
 				</div>
 				<div
@@ -66,6 +64,6 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "auth-error",
+		name: 'auth-error',
 	});
 </script>

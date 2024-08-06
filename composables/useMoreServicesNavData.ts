@@ -1,12 +1,12 @@
-import type { moreServices } from "~/types/types";
+import type { moreServices } from '~/types/types';
 
 export default function () {
 	const moreServicesData: moreServices[] = [
 		{
-			icon: "/icons/sidenav/roadside-ass-icon.svg",
-			title: "Roadside Assistance",
-			description: "Prompt roadside support for your clients",
-			pageName: "ava-home",
+			icon: '/icons/sidenav/roadside-ass-icon.svg',
+			title: 'Roadside Assistance',
+			description: 'Prompt roadside support for your clients',
+			pageName: 'ava-home',
 		},
 		// {
 		// 	icon: "/icons/sidenav/acc-management-icon.svg",

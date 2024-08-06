@@ -2,15 +2,12 @@
 	<div class="py-10 bg-[#f6f9f2] responsive-view h-fit">
 		<div class="py-5 flex items-center justify-between">
 			<!-- Table switcher -->
-			<div
-				class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+			<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
 				<button
 					@click="() => (currentTable = 0)"
 					:class="[
 						'border-b-2',
-						currentTable === 0
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
+						currentTable === 0 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
 					]">
 					<span>Recently Complete</span>
 				</button>
@@ -18,9 +15,7 @@
 					@click="() => (currentTable = 1)"
 					:class="[
 						'border-b-2',
-						currentTable === 1
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
+						currentTable === 1 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
 					]">
 					<span>Pending Valuations</span>
 				</button>
@@ -50,10 +45,7 @@
 				<div>
 					<!-- button to disable filters -->
 					<button
-						v-if="
-							searchFilterTerm !== '' ||
-							searchByValuationDate !== ''
-						"
+						v-if="searchFilterTerm !== '' || searchByValuationDate !== ''"
 						@click="
 							() => {
 								searchFilterTerm = '';
@@ -125,41 +117,24 @@
 									</tr>
 								</thead>
 								<tbody class="divide-y divide-gray-200">
-									<ErrorOrMissingData
-										v-if="fetchCompleteErrorOrEmpty" />
+									<ErrorOrMissingData v-if="fetchCompleteErrorOrEmpty" />
 									<ValuationsRecord
-										v-for="(
-											record, index
-										) in computedCompleteValuations"
+										v-for="(record, index) in computedCompleteValuations"
 										:key="index"
 										:vehicle-id="record.vehicle_id"
-										:vehicle-reg-no="
-											record.vehicleRegNumber
-										"
-										:client-name="
-											toTitleCase(record.customer_name)
-										"
+										:vehicle-reg-no="record.vehicleRegNumber"
+										:client-name="toTitleCase(record.customer_name)"
 										:vehicle-make="
-											capitalizeFirstLetterOfEachWord(
-												record.vehicleMake
-											)
+											capitalizeFirstLetterOfEachWord(record.vehicleMake)
 										"
 										:vehicle-model="
-											capitalizeFirstLetterOfEachWord(
-												record.vehicleModel
-											)
+											capitalizeFirstLetterOfEachWord(record.vehicleModel)
 										"
 										:valuation-date="record.valuation_date"
 										:vehicle-value="
-											Number(
-												record.vehicleValue
-											).toLocaleString()
+											Number(record.vehicleValue).toLocaleString()
 										"
-										:note-value="
-											lowerCaseEachLetter(
-												record.note_value
-											)
-										"
+										:note-value="lowerCaseEachLetter(record.note_value)"
 										:booking-no="record.booking_no" />
 								</tbody>
 							</table>
@@ -226,41 +201,24 @@
 									</tr>
 								</thead>
 								<tbody class="divide-y divide-gray-200">
-									<ErrorOrMissingData
-										v-if="fetchPendingErrorOrEmpty" />
+									<ErrorOrMissingData v-if="fetchPendingErrorOrEmpty" />
 									<ValuationsRecord
-										v-for="(
-											record, index
-										) in computedPendingValuations"
+										v-for="(record, index) in computedPendingValuations"
 										:key="index"
 										:vehicle-id="record.vehicle_id"
-										:vehicle-reg-no="
-											record.vehicleRegNumber
-										"
-										:client-name="
-											toTitleCase(record.customer_name)
-										"
+										:vehicle-reg-no="record.vehicleRegNumber"
+										:client-name="toTitleCase(record.customer_name)"
 										:vehicle-make="
-											capitalizeFirstLetterOfEachWord(
-												record.vehicleMake
-											)
+											capitalizeFirstLetterOfEachWord(record.vehicleMake)
 										"
 										:vehicle-model="
-											capitalizeFirstLetterOfEachWord(
-												record.vehicleModel
-											)
+											capitalizeFirstLetterOfEachWord(record.vehicleModel)
 										"
 										:valuation-date="record.valuation_date"
 										:vehicle-value="
-											Number(
-												record.vehicleValue
-											).toLocaleString()
+											Number(record.vehicleValue).toLocaleString()
 										"
-										:note-value="
-											lowerCaseEachLetter(
-												record.note_value
-											)
-										"
+										:note-value="lowerCaseEachLetter(record.note_value)"
 										:booking-no="record.booking_no" />
 								</tbody>
 							</table>
@@ -270,8 +228,7 @@
 			</div>
 			<!-- end of data table -->
 		</div>
-		<div
-			class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+		<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
 			<span>Showing Page {{ currentPage + 1 }} of {{ totalPages }}</span>
 			<div
 				class="space-x-1"
@@ -303,9 +260,7 @@
 				class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
 				<div
 					class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-					<h3 class="font-bold text-gray-800 dark:text-white">
-						Search Results
-					</h3>
+					<h3 class="font-bold text-gray-800 dark:text-white">Search Results</h3>
 					<button
 						@click="
 							() => {
@@ -336,10 +291,8 @@
 					<!-- start of data table -->
 					<div class="flex flex-col">
 						<div class="-m-1.5 overflow-x-auto">
-							<div
-								class="p-1.5 min-w-full inline-block align-middle">
-								<div
-									class="border rounded-lg shadow overflow-hidden">
+							<div class="p-1.5 min-w-full inline-block align-middle">
+								<div class="border rounded-lg shadow overflow-hidden">
 									<table class="min-w-full divide-y">
 										<thead>
 											<tr>
@@ -380,43 +333,31 @@
 												colspan="100%">
 												<LoadingIndicator
 													:bar-length="`w-[30%]`"
-													v-if="
-														searchValuationLoading
-													" />
+													v-if="searchValuationLoading" />
 												<br />
-												<span
-													class="text-gray-500 text-lg font-semibold"
+												<span class="text-gray-500 text-lg font-semibold"
 													>Loading Your Data.</span
 												>
 											</td>
-											<ErrorOrMissingData
-												v-if="searchErrorOrEmpty" />
+											<ErrorOrMissingData v-if="searchErrorOrEmpty" />
 											<MinimizedValuationsDataRecord
-												v-for="(
-													record, index
-												) in valuationsFromSearch"
+												v-for="(record, index) in valuationsFromSearch"
 												:key="index"
 												:vehicle-id="record.vehicle_id"
-												:vehicle-reg-no="
-													record.vehicleRegNumber
-												"
+												:vehicle-reg-no="record.vehicleRegNumber"
 												:vehicle-make="
 													capitalizeFirstLetterOfEachWord(
-														record.vehicleMake
+														record.vehicleMake,
 													)
 												"
 												:vehicle-model="
 													capitalizeFirstLetterOfEachWord(
-														record.vehicleModel
+														record.vehicleModel,
 													)
 												"
-												:valuation-date="
-													record.valuation_date
-												"
+												:valuation-date="record.valuation_date"
 												:assessed-value="
-													Number(
-														record.assessed_value
-													).toLocaleString()
+													Number(record.assessed_value).toLocaleString()
 												" />
 										</tbody>
 									</table>
@@ -457,8 +398,8 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "valuation-all-valuations",
-		layout: "in-app-layout",
+		name: 'valuation-all-valuations',
+		layout: 'in-app-layout',
 	});
 
 	const currentTable: Ref<number> = ref(0);

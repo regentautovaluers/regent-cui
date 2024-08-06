@@ -9,12 +9,12 @@ export default function () {
 	// fields related to the service request
 	const freeDistanceLeftForTowing: Ref<number> = ref(0);
 	const isMemberUnderEA: Ref<boolean | null> = ref(null);
-	const vehicleRegistration: Ref<string> = ref("");
-	const vehicleMake: Ref<string> = ref("");
-	const vehicleModel: Ref<string> = ref("");
+	const vehicleRegistration: Ref<string> = ref('');
+	const vehicleMake: Ref<string> = ref('');
+	const vehicleModel: Ref<string> = ref('');
 	const vehicleTypeIndex: Ref<number> = ref(0);
-	const userName: Ref<string> = ref("");
-	const userPhoneNumber: Ref<string> = ref("");
+	const userName: Ref<string> = ref('');
+	const userPhoneNumber: Ref<string> = ref('');
 	const userEmail: Ref<string | null> = ref(null);
 	const requestRemarks: Ref<string | null> = ref(null);
 	const arrivalDuration: Ref<number> = ref(10);
@@ -22,25 +22,16 @@ export default function () {
 	const fuelType: Ref<string | null> = ref(null);
 	const fuelAmount: Ref<number | null> = ref(null);
 	const haveSpareTyre: Ref<boolean> = ref(true);
-	const tyreType: Ref<string> = ref("");
+	const tyreType: Ref<string> = ref('');
 	const staticServiceCost: ComputedRef<number> = computed(() => {
 		if (serviceCharges.value) {
 			switch (route.name) {
-				case "ava-jumpstarting":
-					return pickServiceToSourceCharge(
-						serviceCharges.value,
-						"Jumpstarting"
-					).charge;
-				case "ava-fuel-delivery":
-					return pickServiceToSourceCharge(
-						serviceCharges.value,
-						"Fuel Delivery"
-					).charge;
-				case "ava-tyre-change":
-					return pickServiceToSourceCharge(
-						serviceCharges.value,
-						"Tyre Change"
-					).charge;
+				case 'ava-jumpstarting':
+					return pickServiceToSourceCharge(serviceCharges.value, 'Jumpstarting').charge;
+				case 'ava-fuel-delivery':
+					return pickServiceToSourceCharge(serviceCharges.value, 'Fuel Delivery').charge;
+				case 'ava-tyre-change':
+					return pickServiceToSourceCharge(serviceCharges.value, 'Tyre Change').charge;
 			}
 		} else {
 			return 0;
@@ -64,22 +55,22 @@ export default function () {
 		error: loadVehicleTypesError,
 		data: vehicleTypes,
 		refresh: refreshVehicleTypes,
-	} = useFetch("/api/v1/control-unit/vehicle-types", {
+	} = useFetch('/api/v1/control-unit/vehicle-types', {
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: "GET",
+		method: 'GET',
 		headers: {
-			Accept: "application/json",
+			Accept: 'application/json',
 		},
 		server: false,
 		lazy: true,
 	}) as any;
 
 	// load the charges for other services
-	const { data: serviceCharges } = useFetch("/api/v1/control-unit/services", {
+	const { data: serviceCharges } = useFetch('/api/v1/control-unit/services', {
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: "GET",
+		method: 'GET',
 		headers: {
-			Accept: "application/json",
+			Accept: 'application/json',
 		},
 		server: false,
 		lazy: false,
@@ -89,39 +80,31 @@ export default function () {
 		try {
 			vehicleSearchLoading.value = true;
 
-			await $fetch("/api/v1/bookings", {
+			await $fetch('/api/v1/bookings', {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "GET",
+				method: 'GET',
 				query: {
 					registration: vehicleRegistration.value,
 					corporateId: getPrincipal.value.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status === 404) {
-						openToast("Registration not found!", "warning");
-						vehicleRegistration.value = "";
+						openToast('Registration not found!', 'warning');
+						vehicleRegistration.value = '';
 						return;
 					}
 
 					const registrationDetails = response._data;
-					vehicleRegistration.value =
-						registrationDetails.membershipVehicle.registration;
+					vehicleRegistration.value = registrationDetails.membershipVehicle.registration;
 					userName.value = registrationDetails.membership.full_name;
-					userPhoneNumber.value =
-						registrationDetails.membership.phone_number;
+					userPhoneNumber.value = registrationDetails.membership.phone_number;
 					userEmail.value = registrationDetails.membership.userEmail;
-					vehicleMake.value =
-						registrationDetails.membershipVehicle.make;
-					vehicleModel.value =
-						registrationDetails.membershipVehicle.model;
+					vehicleMake.value = registrationDetails.membershipVehicle.make;
+					vehicleModel.value = registrationDetails.membershipVehicle.model;
 
 					// if there is a non-null free distance
-					if (
-						registrationDetails.membershipVehicle
-							.available_free_distance
-					) {
-						freeDistanceLeftForTowing.value = registrationDetails
-							.membershipVehicle
+					if (registrationDetails.membershipVehicle.available_free_distance) {
+						freeDistanceLeftForTowing.value = registrationDetails.membershipVehicle
 							.available_free_distance as number;
 						// and that the request is for a member who is under roadside assistance
 						isMemberUnderEA.value = false;
@@ -134,8 +117,8 @@ export default function () {
 				},
 			});
 		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Search failed. Please try again!", "danger");
+			console.log('An error occured: ', error);
+			openToast('Search failed. Please try again!', 'danger');
 		} finally {
 			vehicleSearchLoading.value = false;
 		}
@@ -144,19 +127,17 @@ export default function () {
 	const makeServiceRequest = async (
 		serviceCost: number,
 		backendServiceName: string,
-		towingDistance?: number
+		towingDistance?: number,
 	) => {
 		try {
 			await $fetch(`/api/v1/mobile/${determineEndpointVar()}`, {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "POST",
+				method: 'POST',
 				body: JSON.stringify({
 					appUserName: userName.value,
 					corporate_client: getPrincipal.value.corpId,
 					appUserPhone: userPhoneNumber.value,
-					...(userEmail.value !== undefined
-						? { appUserEmail: userEmail.value }
-						: {}),
+					...(userEmail.value !== undefined ? { appUserEmail: userEmail.value } : {}),
 					appServiceType: backendServiceName,
 					appRegistration: vehicleRegistration.value,
 					vehicle_make: vehicleMake.value,
@@ -174,74 +155,58 @@ export default function () {
 					...(vehicleTypeIndex.value !== null
 						? {
 								vehicleType: vehicleTypeIndex.value,
-						  }
+							}
 						: {}),
 					...(vehicleClass.value !== null
 						? { vehicleClass: `${vehicleClass.value}` }
 						: {}),
-					...(requestRemarks.value !== null
-						? { appRemarks: requestRemarks.value }
-						: {}),
-					...(fuelType.value !== null
-						? { appFuelType: fuelType.value }
-						: {}),
-					...(fuelAmount.value !== null
-						? { appFuelAmount: fuelAmount.value }
-						: {}),
-					...(tyreType.value !== null
-						? { tyreType: tyreType.value }
-						: {}),
-					...(haveSpareTyre !== null
-						? { hasSpareTyre: haveSpareTyre.value }
-						: {}),
+					...(requestRemarks.value !== null ? { appRemarks: requestRemarks.value } : {}),
+					...(fuelType.value !== null ? { appFuelType: fuelType.value } : {}),
+					...(fuelAmount.value !== null ? { appFuelAmount: fuelAmount.value } : {}),
+					...(tyreType.value !== null ? { tyreType: tyreType.value } : {}),
+					...(haveSpareTyre !== null ? { hasSpareTyre: haveSpareTyre.value } : {}),
 				}),
 
 				async onResponse({ response }) {
 					if (response.status !== 201) {
-						throw new Error("Request failed to go through!");
+						throw new Error('Request failed to go through!');
 					} else {
 						openToast(
 							`${backendServiceName} request succesfully went through!`,
-							"success"
+							'success',
 						);
 					}
 				},
 			});
 		} catch (error) {
-			console.log("Service request error encountered. Reason: ", error);
-			openToast(
-				`${backendServiceName} request failed to go thorugh!`,
-				"danger"
-			);
+			console.log('Service request error encountered. Reason: ', error);
+			openToast(`${backendServiceName} request failed to go thorugh!`, 'danger');
 		}
 	};
 
 	const determineEndpointVar = (): string => {
 		switch (route.name) {
-			case "ava-towing":
-				return "towingRequest";
-			case "ava-jumpstarting":
-				return "jumpstartingRequest";
-			case "ava-fuel-delivery":
-				return "fuelDeliveryRequest";
-			case "ava-tyre-change":
-				return "tyreChangeRequest";
+			case 'ava-towing':
+				return 'towingRequest';
+			case 'ava-jumpstarting':
+				return 'jumpstartingRequest';
+			case 'ava-fuel-delivery':
+				return 'fuelDeliveryRequest';
+			case 'ava-tyre-change':
+				return 'tyreChangeRequest';
 			default:
-				return "";
+				return '';
 		}
 	};
 
-	const pickServiceToSourceCharge: any = (
-		services: any[],
-		searchKey: string
-	) => {
+	const pickServiceToSourceCharge: any = (services: any[], searchKey: string) => {
 		return services.find((service) => service.service_name === searchKey);
 	};
 
 	const calculateTowingChargeNonMember = (
 		basePrice: number,
 		distance: number,
-		chargePerExtraKm: number
+		chargePerExtraKm: number,
 	): number => {
 		if (distance < 10) {
 			return basePrice;
@@ -255,16 +220,13 @@ export default function () {
 		distance: number,
 		chargePerExtraKm: number,
 		freeDistanceBenefit: number,
-		thresholdDistance: number
+		thresholdDistance: number,
 	): number => {
 		if (freeDistanceBenefit <= 0) {
 			if (distance < thresholdDistance) {
 				return basePrice;
 			} else {
-				return Math.ceil(
-					basePrice +
-						(distance - thresholdDistance) * chargePerExtraKm
-				);
+				return Math.ceil(basePrice + (distance - thresholdDistance) * chargePerExtraKm);
 			}
 		}
 

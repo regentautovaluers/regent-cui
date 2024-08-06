@@ -194,44 +194,41 @@
 	const { getPrincipal } = useAuth();
 
 	try {
-		await $fetch("/api/v1/control-unit/membershiptypes", {
+		await $fetch('/api/v1/control-unit/membershiptypes', {
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: "GET",
+			method: 'GET',
 			async onResponse({ response }) {
 				if (response.status !== 200) {
-					throw new Error("Failed to retrieve membership types");
+					throw new Error('Failed to retrieve membership types');
 				}
 				membershipTypes.value = response._data;
 			},
 		});
 	} catch (error) {
-		console.log("An error occured: ", error);
-		openToast(
-			"Failed to load available memberships. Reload page!",
-			"danger"
-		);
+		console.log('An error occured: ', error);
+		openToast('Failed to load available memberships. Reload page!', 'danger');
 	}
 
 	const userVehicles = reactive({
 		corpName: getPrincipal.value.corpName,
 		membershipTypeId: 0,
-		registration: "",
-		make: "",
-		model: "",
-		color: "",
-		payment_status: "",
-		membership_status: "",
-		start_date: "",
-		end_date: "",
+		registration: '',
+		make: '',
+		model: '',
+		color: '',
+		payment_status: '',
+		membership_status: '',
+		start_date: '',
+		end_date: '',
 	});
 
 	async function addVehicleToMember(): Promise<void> {
 		formSubmissionLoading.value = true;
 
 		try {
-			await $fetch("/api/v1/membershipVehicles", {
+			await $fetch('/api/v1/membershipVehicles', {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "POST",
+				method: 'POST',
 				body: JSON.stringify({
 					membershipId: membershipId,
 					vehicles: [userVehicles],
@@ -240,16 +237,16 @@
 				async onResponse({ response }) {
 					if (response.status === 201) {
 						formSubmissionLoading.value = false;
-						openToast("Vehicle added successfully", "success");
+						openToast('Vehicle added successfully', 'success');
 					} else {
-						throw new Error("Something went wrong");
+						throw new Error('Something went wrong');
 					}
 				},
 			});
 		} catch (err) {
-			console.log("An error occured: ", err);
+			console.log('An error occured: ', err);
 			formSubmissionLoading.value = false;
-			openToast("Failed. Please try again!", "danger");
+			openToast('Failed. Please try again!', 'danger');
 		}
 	}
 </script>

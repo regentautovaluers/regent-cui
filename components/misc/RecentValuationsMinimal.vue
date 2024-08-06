@@ -1,22 +1,17 @@
 <template>
-	<div
-		class="size-60 rounded-xl shadow-md border flex flex-col items-center justify-center">
+	<div class="size-60 rounded-xl shadow-md border flex flex-col items-center justify-center">
 		<div class="rounded-full p-2 size-28 bg-red-500">
 			<!-- <img
 				src=""
 				alt="Vehicle Image" /> -->
 		</div>
 
-		<span class="font-semibold text-center">{{
-			componentProps.clientName
-		}}</span>
+		<span class="font-semibold text-center">{{ componentProps.clientName }}</span>
 		<span class="font-semibold text-gray-500 text-center">{{
 			componentProps.vehicleMake
 		}}</span>
 		<div class="mt-2 flex w-full items-center justify-center space-x-3">
-			<span class="font-semibold text-pink-500">{{
-				componentProps.vehicleRegNo
-			}}</span>
+			<span class="font-semibold text-pink-500">{{ componentProps.vehicleRegNo }}</span>
 			<NuxtLink
 				:to="{
 					name: 'valuation-view-report',

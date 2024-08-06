@@ -44,24 +44,24 @@
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const { openToast } = useToast();
-	const branchName: Ref<string> = ref("");
-	const branchLocation: Ref<string> = ref("");
-	const emits = defineEmits(["refresh-branches"]);
+	const branchName: Ref<string> = ref('');
+	const branchLocation: Ref<string> = ref('');
+	const emits = defineEmits(['refresh-branches']);
 
 	const cleanRefs = () => {
-		branchName.value = "";
-		branchLocation.value = "";
+		branchName.value = '';
+		branchLocation.value = '';
 	};
 
 	const createUserAccount = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/api/v1/auth/corp-branch/add", {
+			await $fetch('/api/v1/auth/corp-branch/add', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: "POST",
+				method: 'POST',
 				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
 					branchName: branchName.value,
@@ -71,17 +71,17 @@
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
-						openToast("Branch added successfully!", "success");
-						emits("refresh-branches");
+						openToast('Branch added successfully!', 'success');
+						emits('refresh-branches');
 					} else {
-						throw new Error("Branch creation failed. Try again!");
+						throw new Error('Branch creation failed. Try again!');
 					}
 					cleanRefs();
 				},
 			});
 		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Branch creation failed. Try again!", "danger");
+			console.log('An error occured: ', error);
+			openToast('Branch creation failed. Try again!', 'danger');
 		} finally {
 			formSubmissionLoading.value = false;
 		}

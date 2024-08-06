@@ -6,8 +6,7 @@
 				alt="Membership Types Image"
 				class="w-full h-[45rem] object-cover rounded-md" />
 			<div class="absolute top-20 w-full text-center">
-				<h1
-					class="text-6xl py-3 italic font-semibold text-white antialiased">
+				<h1 class="text-6xl py-3 italic font-semibold text-white antialiased">
 					Membership Types
 				</h1>
 				<div
@@ -25,9 +24,7 @@
 						</template>
 						<template #benefitsAndPricing>
 							<h1 class="group-hover:text-white">
-								<span class="text-3xl">{{
-									membership.membership_rate
-								}}</span>
+								<span class="text-3xl">{{ membership.membership_rate }}</span>
 								/ Year
 							</h1>
 							<p class="group-hover:text-white">
@@ -36,10 +33,8 @@
 							<ul class="space-y-2 group-hover:text-white">
 								<li
 									class="flex space-x-3 items-center"
-									v-for="(
-										benefit, index
-									) in cleanupMembershipBenefits(
-										membership.benefits
+									v-for="(benefit, index) in cleanupMembershipBenefits(
+										membership.benefits,
 									)"
 									:key="index">
 									<svg
@@ -66,9 +61,7 @@
 									query: {
 										registrationType: 'roadside-assistance',
 										// TODO: Ensure the registration cost is dynamically calculated
-										registrationCost: Number(
-											membership.membership_rate
-										),
+										registrationCost: Number(membership.membership_rate),
 										membershipTypeId: membership.id,
 										freeDistance: membership.free_distance,
 									},
@@ -98,8 +91,8 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "new-member",
-		layout: "in-app-layout",
+		name: 'new-member',
+		layout: 'in-app-layout',
 	});
 
 	const { openToast } = useToast();
@@ -108,30 +101,23 @@
 	const cleanupMembershipBenefits = (inputString: string) => {
 		let array = JSON.parse(inputString);
 		let cleanedArray = array.map((item: string) => {
-			let cleanedItem = item.replace(/\\/g, "");
-			cleanedItem =
-				cleanedItem.charAt(0).toUpperCase() + cleanedItem.slice(1);
+			let cleanedItem = item.replace(/\\/g, '');
+			cleanedItem = cleanedItem.charAt(0).toUpperCase() + cleanedItem.slice(1);
 			return cleanedItem;
 		});
 
 		return cleanedArray;
 	};
 
-	const { data: membershipTypes } = useFetch(
-		"/api/v1/control-unit/membershiptypes",
-		{
-			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: "GET",
-			server: false,
-			lazy: false,
-			async onResponse({ response }) {
-				if (response.status !== 200) {
-					openToast(
-						"Failed to load  membership types. Reload page!",
-						"danger"
-					);
-				}
-			},
-		}
-	) as any;
+	const { data: membershipTypes } = useFetch('/api/v1/control-unit/membershiptypes', {
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: 'GET',
+		server: false,
+		lazy: false,
+		async onResponse({ response }) {
+			if (response.status !== 200) {
+				openToast('Failed to load  membership types. Reload page!', 'danger');
+			}
+		},
+	}) as any;
 </script>

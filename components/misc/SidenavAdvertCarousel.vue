@@ -6,8 +6,7 @@
             "isAutoPlay": true
         }'
 		class="relative px-2 my-2">
-		<div
-			class="hs-carousel relative overflow-hidden w-full h-[340px] bg-white rounded-lg">
+		<div class="hs-carousel relative overflow-hidden w-full h-[340px] bg-white rounded-lg">
 			<div
 				class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
 				<div
@@ -36,8 +35,8 @@
 
 <script setup lang="ts">
 	const advertisements = ref([
-		"https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.40%20PM.jpeg",
-		"https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.39%20PM.jpeg",
-		"https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.38%20PM%20(2).jpeg",
+		'https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.40%20PM.jpeg',
+		'https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.39%20PM.jpeg',
+		'https://stickernova.fra1.cdn.digitaloceanspaces.com/regent-ava/WhatsApp%20Image%202024-04-18%20at%203.10.38%20PM%20(2).jpeg',
 	]);
 </script>

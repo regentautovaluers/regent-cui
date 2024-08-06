@@ -1,6 +1,5 @@
 <template>
-	<div
-		class="py-10 responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
+	<div class="py-10 responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
 		<div
 			class="h-96 lg:h-full w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
 			<GoogleMap
@@ -39,14 +38,11 @@
 			</GoogleMap>
 		</div>
 		<div class="p-2 lg:p-5">
-			<h1 class="mb-4 text-3xl antialiased font-semibold">
-				Request Tyre Change
-			</h1>
+			<h1 class="mb-4 text-3xl antialiased font-semibold">Request Tyre Change</h1>
 			<div
 				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500"
 				role="alert">
-				If the map adjacent to this form has not loaded properly, kindly
-				click
+				If the map adjacent to this form has not loaded properly, kindly click
 				<button @click="reloadPage">
 					<span class="font-semibold">Reload</span>
 				</button>
@@ -55,8 +51,7 @@
 			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
 				<!-- TODO: fix issue with the border-b class to get rid of white space due to space-x-4 -->
-				<div
-					class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+				<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
 					<button
 						@click="() => (currentRegForm = 0)"
 						:class="[
@@ -104,16 +99,13 @@
 </template>
 
 <script setup lang="ts">
-	import {
-		type locationCoordsMarker,
-		type informativeCoordsMarker,
-	} from "~/types/types";
-	import { useGeolocation } from "@vueuse/core";
-	import { GoogleMap, InfoWindow } from "vue3-google-map";
+	import { type locationCoordsMarker, type informativeCoordsMarker } from '~/types/types';
+	import { useGeolocation } from '@vueuse/core';
+	import { GoogleMap, InfoWindow } from 'vue3-google-map';
 
 	definePageMeta({
-		name: "ava-tyre-change",
-		layout: "in-app-layout",
+		name: 'ava-tyre-change',
+		layout: 'in-app-layout',
 	});
 	const currentRegForm: Ref<number> = ref(0);
 	const runtimeConfig = useRuntimeConfig();
@@ -133,7 +125,7 @@
 			center.value.lat = coords.value.latitude;
 			center.value.lng = coords.value.longitude;
 
-			console.log("You are at: ", JSON.stringify(center.value, null, 2));
+			console.log('You are at: ', JSON.stringify(center.value, null, 2));
 			if (
 				center.value.lat !== Number.NEGATIVE_INFINITY &&
 				center.value.lng !== Number.NEGATIVE_INFINITY
@@ -156,8 +148,7 @@
 		} else {
 			// Find the index of the existing marker with the same id
 			const existingMarkerIndex = otherMarkers.value.findIndex(
-				(infoMarker: informativeCoordsMarker) =>
-					infoMarker.id === markerData.id
+				(infoMarker: informativeCoordsMarker) => infoMarker.id === markerData.id,
 			);
 
 			// If an existing marker with the same id is found, replace it

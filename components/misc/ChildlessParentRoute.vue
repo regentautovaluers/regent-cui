@@ -23,5 +23,5 @@
 
 	const componentProps = defineProps<ComponentProps>();
 	const route = useRoute();
-	const emit = defineEmits(["changeCurrentRouteName"]);
+	const emit = defineEmits(['changeCurrentRouteName']);
 </script>

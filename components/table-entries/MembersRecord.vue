@@ -4,14 +4,9 @@
 			{{ componentProps.clientName }}
 		</td>
 		<td class="px-6 py-6 whitespace-nowrap text-blue-600 font-semibold">
-			{{
-				`${capitalizeFirstLetter(
-					componentProps.membershipCategory
-				)} Member`
-			}}
+			{{ `${capitalizeFirstLetter(componentProps.membershipCategory)} Member` }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
 			<NuxtLink
 				:to="{
 					name: 'membership-details',
@@ -22,21 +17,11 @@
 				>{{ componentProps.vehicleCount }}</NuxtLink
 			>
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
-			{{
-				!componentProps.clientPhone
-					? "Phone N/A"
-					: `${componentProps.clientPhone}`
-			}}
+		<td class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
+			{{ !componentProps.clientPhone ? 'Phone N/A' : `${componentProps.clientPhone}` }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
-			{{
-				!componentProps.clientEmail
-					? "Email N/A"
-					: componentProps.clientEmail
-			}}
+		<td class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
+			{{ !componentProps.clientEmail ? 'Email N/A' : componentProps.clientEmail }}
 		</td>
 		<td class="text-center">
 			<div
@@ -125,10 +110,10 @@
 	}
 
 	onMounted(() => {
-		document.addEventListener("click", handleClickOutside);
+		document.addEventListener('click', handleClickOutside);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("click", handleClickOutside);
+		document.removeEventListener('click', handleClickOutside);
 	});
 </script>

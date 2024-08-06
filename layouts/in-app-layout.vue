@@ -16,8 +16,7 @@
 						alt="Hamburger Menu Icon" />
 				</button>
 				<!-- End Navigation Toggle -->
-				<h1
-					class="text-2xl whitespace-nowrap md:text-3xl font-semibold">
+				<h1 class="text-2xl whitespace-nowrap md:text-3xl font-semibold">
 					{{ currentRoute || computedCurrentRoute }}
 				</h1>
 			</div>
@@ -26,8 +25,7 @@
 			<div
 				class="flex items-center space-x-3 w-full md:w-1/3 justify-between md:justify-end mt-2 md:mt-0">
 				<!-- notifications & messages -->
-				<div
-					class="flex space-x-3 mr-4 hs-tooltip [--trigger:click] [--placement:bottom]">
+				<div class="flex space-x-3 mr-4 hs-tooltip [--trigger:click] [--placement:bottom]">
 					<button
 						class="w-12 relative rounded-2xl h-12 bg-gray-300 justify-center items-center hs-tooltip-toggle flex size-10 text-sm font-semibold border border-gray-200 text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
 						<img
@@ -41,9 +39,7 @@
 					<div
 						class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 bg-[#f6f9f2] border text-sm text-gray-600 rounded-xl shadow-md h-[50rem] w-[27rem]"
 						role="tooltip">
-						<h1 class="text-xl font-semibold m-4">
-							Notification Drawer
-						</h1>
+						<h1 class="text-xl font-semibold m-4">Notification Drawer</h1>
 						<hr />
 					</div>
 				</div>
@@ -59,9 +55,7 @@
 							<span class="font-bold tracking whitespace-nowrap">{{
 								getPrincipal.username
 							}}</span>
-							<span class="text-gray-500">{{
-								getPrincipal.corpName
-							}}</span>
+							<span class="text-gray-500">{{ getPrincipal.corpName }}</span>
 						</div>
 					</div></ClientOnly
 				>
@@ -90,9 +84,7 @@
 					<ChildlessParentRoute
 						:display-name="applicationRoutes[0].displayName"
 						:route-name="applicationRoutes[0].routeName"
-						@change-current-route-name="
-							handleChangeCurrentRouteName
-						"
+						@change-current-route-name="handleChangeCurrentRouteName"
 						><HomeIcon
 					/></ChildlessParentRoute>
 
@@ -101,9 +93,7 @@
 						:display-name="applicationRoutes[1].displayName"
 						:route-name="applicationRoutes[1].routeName"
 						:children="applicationRoutes[1].children as ApplicationChildRoute[]"
-						@change-current-route-name="
-							handleChangeCurrentRouteName
-						">
+						@change-current-route-name="handleChangeCurrentRouteName">
 						<ValuationIcon />
 					</ChildedParentRoute>
 
@@ -112,9 +102,7 @@
 						:display-name="applicationRoutes[2].displayName"
 						:route-name="applicationRoutes[2].routeName"
 						:children="applicationRoutes[2].children as ApplicationChildRoute[]"
-						@change-current-route-name="
-							handleChangeCurrentRouteName
-						">
+						@change-current-route-name="handleChangeCurrentRouteName">
 						<AssistanceIcon />
 					</ChildedParentRoute>
 
@@ -123,9 +111,7 @@
 						:display-name="applicationRoutes[4].displayName"
 						:route-name="applicationRoutes[4].routeName"
 						:children="applicationRoutes[4].children as ApplicationChildRoute[]"
-						@change-current-route-name="
-							handleChangeCurrentRouteName
-						">
+						@change-current-route-name="handleChangeCurrentRouteName">
 						<MembershipsIcon />
 					</ChildedParentRoute>
 				</ul>
@@ -161,33 +147,29 @@
 </template>
 
 <script setup lang="ts">
-	import applicationRoutes from "~/types/routes";
-	import type { ApplicationChildRoute } from "~/types/types";
+	import applicationRoutes from '~/types/routes';
+	import type { ApplicationChildRoute } from '~/types/types';
 
 	const route = useRoute();
 	const notificationCount: Ref<number> = ref(0);
 	const currentRoute: Ref<string | null> = ref(null);
 	const { getPrincipal, logout } = useAuth();
-	const profilePicture: Ref<string> = ref("");
+	const profilePicture: Ref<string> = ref('');
 
 	const computedCurrentRoute = computed((): string | null => {
-		if (route.name === "dashboard-home") {
-			return "Home";
+		if (route.name === 'dashboard-home') {
+			return 'Home';
 		}
 
 		const currentRoutePath = route.path;
-		const currentRoutePathTokens = currentRoutePath.split("/");
+		const currentRoutePathTokens = currentRoutePath.split('/');
 
 		return currentRoutePathTokens.length > 2
-			? capitalizeFirstLetterOfEachWord(
-					currentRoutePathTokens[2].split("-").join(" ")
-			  )
+			? capitalizeFirstLetterOfEachWord(currentRoutePathTokens[2].split('-').join(' '))
 			: null;
 	});
 
-	const handleChangeCurrentRouteName = (
-		currentClickedRoute: string
-	): void => {
+	const handleChangeCurrentRouteName = (currentClickedRoute: string): void => {
 		currentRoute.value = currentClickedRoute;
 	};
 

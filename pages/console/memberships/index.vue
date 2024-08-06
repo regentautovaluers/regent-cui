@@ -9,8 +9,7 @@
 					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span
-						class="text-blue-600 font-semibold inline-flex items-center"
+					<span class="text-blue-600 font-semibold inline-flex items-center"
 						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
@@ -29,8 +28,7 @@
 		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
 			<div class="md:w-[80%]">
 				<!-- search & filter controls -->
-				<div
-					class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
+				<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
 					<!-- search box -->
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
@@ -93,10 +91,7 @@
 						</div>
 
 						<button
-							v-if="
-								searchFilterTerm !== '' ||
-								searchMembershipCategory !== ''
-							"
+							v-if="searchFilterTerm !== '' || searchMembershipCategory !== ''"
 							@click="clearFiltering"
 							title="Clear Filters"
 							class="bg-gray-300 text-center p-2 rounded-full size-10">
@@ -110,8 +105,7 @@
 				<div class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div
-								class="border rounded-xl shadow overflow-hidden">
+							<div class="border rounded-xl shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -146,21 +140,14 @@
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
-										<ErrorOrMissingData
-											v-if="fetchErrorOrEmpty" />
+										<ErrorOrMissingData v-if="fetchErrorOrEmpty" />
 										<MembersRecord
 											v-else
-											v-for="(
-												member, index
-											) in membersList"
+											v-for="(member, index) in membersList"
 											:key="index"
 											:clientName="member.full_name"
-											:membership-category="
-												member.category
-											"
-											:vehicle-count="
-												member.membershipVehicleCount
-											"
+											:membership-category="member.category"
+											:vehicle-count="member.membershipVehicleCount"
 											:member-id="member.id"
 											:client-phone="member.phone_number"
 											:client-email="member.userEmail" />
@@ -171,11 +158,8 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div
-					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
-					<span
-						>Showing {{ page + 1 }} of {{ totalPages }} pages.</span
-					>
+				<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+					<span>Showing {{ page + 1 }} of {{ totalPages }} pages.</span>
 					<div class="space-x-1 flex items-center">
 						<button
 							@click="loadPreviousPage"
@@ -210,8 +194,7 @@
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">About</h1>
 						<!-- info switch -->
-						<div
-							class="hs-dropdown relative inline-flex [--placement:bottom-right]">
+						<div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
 							<button
 								id="hs-dropdown-default"
 								type="button"
@@ -241,36 +224,29 @@
 							<div
 								class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 border"
 								aria-labelledby="hs-dropdown-default">
-								<div
-									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+								<div class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
 									<input
 										type="radio"
 										name="type-blob"
 										:value="0"
 										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 										v-model="currentTypeBlob" />
-									<label class="text-gray-500 ms-2"
-										>Roadside Assitance</label
-									>
+									<label class="text-gray-500 ms-2">Roadside Assitance</label>
 								</div>
-								<div
-									class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+								<div class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
 									<input
 										type="radio"
 										name="type-blob"
 										:value="1"
 										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 										v-model="currentTypeBlob" />
-									<label class="text-gray-500 ms-2"
-										>Emergency (E) Rescue</label
-									>
+									<label class="text-gray-500 ms-2">Emergency (E) Rescue</label>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="flex flex-col justify-center items-center p-2">
-						<div
-							class="bg-gray-300 p-5 rounded-full flex justify-center items-center">
+						<div class="bg-gray-300 p-5 rounded-full flex justify-center items-center">
 							<!-- <img
 								class="inline-block size-[66px]"
 								src="/icons/sidenav/memberships-icon.svg"
@@ -286,10 +262,7 @@
 					</div>
 					<div class="space-y-4 border-t p-4">
 						<a
-							:href="
-								membershipTypesBlob[currentTypeBlob]
-									.externalLink
-							"
+							:href="membershipTypesBlob[currentTypeBlob].externalLink"
 							target="_blank"
 							rel="noopener noreferrer"
 							class="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-2"
@@ -299,9 +272,7 @@
 				</div>
 				<div class="border shadow h-[24rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">
-							Memberships Glance
-						</h1>
+						<h1 class="text-2xl font-semibold">Memberships Glance</h1>
 					</div>
 					<ClientOnly>
 						<div class="flex justify-center">
@@ -316,12 +287,12 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "memberships-home",
-		layout: "in-app-layout",
+		name: 'memberships-home',
+		layout: 'in-app-layout',
 	});
 
 	const { getPrincipal } = useAuth();
-	const profilePicture: Ref<string> = ref("");
+	const profilePicture: Ref<string> = ref('');
 	const {
 		membersList,
 		searchFilterTerm,
@@ -338,16 +309,16 @@
 	const currentTypeBlob: Ref<number> = ref(0);
 	const membershipTypesBlob: any[] = [
 		{
-			name: "Roadside Assistance",
+			name: 'Roadside Assistance',
 			blobText:
-				"Our 24/7 road rescue service swiftly gets you back on track, whether it’s a flat tire or a breakdown. Trust our highway heroes to ensure a smooth ride, so you can continue your journey with peace of mind! We’re committed to minimizing disruptions and maximizing safety, so you never miss a beat on the road.",
-			externalLink: "https://www.google.com",
+				'Our 24/7 road rescue service swiftly gets you back on track, whether it’s a flat tire or a breakdown. Trust our highway heroes to ensure a smooth ride, so you can continue your journey with peace of mind! We’re committed to minimizing disruptions and maximizing safety, so you never miss a beat on the road.',
+			externalLink: 'https://www.google.com',
 		},
 		{
-			name: "Emergency Evacuation",
+			name: 'Emergency Evacuation',
 			blobText:
-				"Our emergency response service is your lifeline during critical moments. Whether it’s a remote wilderness rescue or a medical evacuation, our team combines the speed of air travel with the stability of ground support. Trust us to swiftly reach you in rugged terrains or bustling urban areas, ensuring your safety when every second counts.",
-			externalLink: "https://www.google.com",
+				'Our emergency response service is your lifeline during critical moments. Whether it’s a remote wilderness rescue or a medical evacuation, our team combines the speed of air travel with the stability of ground support. Trust us to swiftly reach you in rugged terrains or bustling urban areas, ensuring your safety when every second counts.',
+			externalLink: 'https://www.google.com',
 		},
 	];
 

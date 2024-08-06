@@ -8,12 +8,9 @@
 			{{ componentProps.alertHeading }}
 		</h1>
 		<slot name="alertMessage" />
-		<div
-			class="rounded-xl bg-yellow-400 bg-opacity-70 h-16 flex p-2 items-center">
+		<div class="rounded-xl bg-yellow-400 bg-opacity-70 h-16 flex p-2 items-center">
 			<div class="w-[15%]"></div>
-			<span class="text-center flex-grow">{{
-				componentProps.warningMessage
-			}}</span>
+			<span class="text-center flex-grow">{{ componentProps.warningMessage }}</span>
 		</div>
 
 		<div class="flex flex-col space-y-2">

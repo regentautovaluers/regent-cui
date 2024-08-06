@@ -9,8 +9,7 @@
 					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span
-						class="text-blue-600 font-semibold inline-flex items-center"
+					<span class="text-blue-600 font-semibold inline-flex items-center"
 						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
@@ -46,25 +45,17 @@
 						class="size-6" />
 				</div>
 				<div class="flex flex-col space-y-2">
-					<span class="text-gray-600 font-semibold">{{
-						info.title
-					}}</span>
-					<span class="text-gray-500 font-semibold">{{
-						info.data
-					}}</span>
+					<span class="text-gray-600 font-semibold">{{ info.title }}</span>
+					<span class="text-gray-500 font-semibold">{{ info.data }}</span>
 					<NuxtLink class="text-blue-600 font-semibold">
 						{{ info.text }}
 					</NuxtLink>
 				</div>
 			</div>
 		</div>
-		<div
-			class="flex items-center justify-between space-x-6 overflow-x-auto">
+		<div class="flex items-center justify-between space-x-6 overflow-x-auto">
 			<NuxtLink
-				v-for="(route, index) in applicationRoutes[2].children?.slice(
-					0,
-					4
-				)"
+				v-for="(route, index) in applicationRoutes[2].children?.slice(0, 4)"
 				:key="index"
 				:to="{ name: route.routeName }"
 				class="flex space-x-3 hover:border-blue-500 items-center px-4 bg-white border-2 border-gray-200 shadow-sm rounded-xl h-20 w-1/4">
@@ -72,9 +63,7 @@
 					:src="route.icon"
 					alt="Service Icon"
 					class="size-10" />
-				<span class="tracking-wide text-gray-500 text-lg">{{
-					route.displayName
-				}}</span>
+				<span class="tracking-wide text-gray-500 text-lg">{{ route.displayName }}</span>
 			</NuxtLink>
 		</div>
 		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
@@ -82,9 +71,7 @@
 			<div class="md:w-[20%] space-y-6">
 				<div class="border shadow min-h-[24rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">
-							Memberships Glance
-						</h1>
+						<h1 class="text-2xl font-semibold">Memberships Glance</h1>
 					</div>
 					<ClientOnly>
 						<div class="flex justify-center">
@@ -92,8 +79,7 @@
 						</div>
 					</ClientOnly>
 				</div>
-				<div
-					class="border shadow min-h-[25rem] rounded-xl flex flex-col">
+				<div class="border shadow min-h-[25rem] rounded-xl flex flex-col">
 					<div class="flex items-center justify-between p-4 h-fit">
 						<h1 class="text-xl font-semibold">Recent Incidents</h1>
 						<NuxtLink
@@ -111,8 +97,7 @@
 								alt="Data Not Found"
 								class="inline-block mb-4" />
 							<br />
-							<span
-								class="text-gray-500 text-lg font-semibold text-center"
+							<span class="text-gray-500 text-lg font-semibold text-center"
 								>Nothing to Show</span
 							>
 							<NuxtLink
@@ -126,21 +111,14 @@
 							v-for="(incident, index) in recentIncidentsCol"
 							:key="index"
 							:reg-no="incident.registration_no"
-							:date-time="
-								formatServerProvidedDateTime(
-									incident.date_created
-								)
-							"
-							:service-type="
-								makeServiceUserFriendly(incident.service)
-							" />
+							:date-time="formatServerProvidedDateTime(incident.date_created)"
+							:service-type="makeServiceUserFriendly(incident.service)" />
 					</div>
 				</div>
 			</div>
 			<div class="md:w-[80%]">
 				<!-- search & filter controls -->
-				<div
-					class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
+				<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
 					<!-- search box -->
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
@@ -203,10 +181,7 @@
 							</div>
 						</div>
 						<button
-							v-if="
-								searchFilterTerm !== '' ||
-								searchMembershipCategory !== ''
-							"
+							v-if="searchFilterTerm !== '' || searchMembershipCategory !== ''"
 							@click="clearFiltering"
 							title="Clear Filters"
 							class="bg-gray-300 inline-flex items-center justify-center p-2 rounded-full size-10">
@@ -220,8 +195,7 @@
 				<div class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div
-								class="border rounded-xl shadow overflow-hidden">
+							<div class="border rounded-xl shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -257,21 +231,14 @@
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
-										<ErrorOrMissingData
-											v-if="fetchErrorOrEmpty" />
+										<ErrorOrMissingData v-if="fetchErrorOrEmpty" />
 										<MembersRecord
 											v-else
-											v-for="(
-												member, index
-											) in membersList"
+											v-for="(member, index) in membersList"
 											:key="index"
 											:clientName="member.full_name"
-											:membership-category="
-												member.category
-											"
-											:vehicle-count="
-												member.membershipVehicleCount
-											"
+											:membership-category="member.category"
+											:vehicle-count="member.membershipVehicleCount"
 											:member-id="member.id"
 											:client-phone="member.phone_number"
 											:client-email="member.userEmail" />
@@ -282,11 +249,8 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div
-					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
-					<span
-						>Showing {{ page + 1 }} of {{ totalPages }} pages.</span
-					>
+				<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+					<span>Showing {{ page + 1 }} of {{ totalPages }} pages.</span>
 					<div class="space-x-1 flex items-center">
 						<button
 							@click="loadPreviousPage"
@@ -320,14 +284,14 @@
 </template>
 
 <script setup lang="ts">
-	import applicationRoutes from "~/types/routes";
+	import applicationRoutes from '~/types/routes';
 
 	definePageMeta({
-		name: "ava-home",
-		layout: "in-app-layout",
+		name: 'ava-home',
+		layout: 'in-app-layout',
 	});
 	const { getPrincipal } = useAuth();
-	const profilePicture: Ref<string> = ref("");
+	const profilePicture: Ref<string> = ref('');
 	const {
 		membersList,
 		searchFilterTerm,
@@ -345,25 +309,25 @@
 
 	const subLinksInfo: any[] = [
 		{
-			icon: "/icons/misc/roadside-registeredmems-icon.svg",
-			title: "Registered Members",
+			icon: '/icons/misc/roadside-registeredmems-icon.svg',
+			title: 'Registered Members',
 			data: totalNumber,
-			link: "memberships-home",
-			text: "View Members",
+			link: 'memberships-home',
+			text: 'View Members',
 		},
 		{
-			icon: "/icons/misc/roadside-realttracking-icon.svg",
-			title: "Real-Time Tracking",
-			data: "Lorem",
-			link: "memberships-home",
-			text: "View Live Map",
+			icon: '/icons/misc/roadside-realttracking-icon.svg',
+			title: 'Real-Time Tracking',
+			data: 'Lorem',
+			link: 'memberships-home',
+			text: 'View Live Map',
 		},
 		{
-			icon: "/icons/misc/roadside-complord-icon.svg",
-			title: "Completed Orders",
-			data: "Lorem",
-			link: "memberships-home",
-			text: "View All",
+			icon: '/icons/misc/roadside-complord-icon.svg',
+			title: 'Completed Orders',
+			data: 'Lorem',
+			link: 'memberships-home',
+			text: 'View All',
 		},
 	];
 

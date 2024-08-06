@@ -1,25 +1,23 @@
 <template>
 	<tr class="hover:shadow-lg">
 		<td class="px-6 py-6 whitespace-nowrap font-semibold text-pink-600">
-			{{ componentProps.regNo }}
+			{{ props.regNo }}
 		</td>
 		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
-			{{ componentProps.dateTime }}
+			{{ props.dateTime }}
 		</td>
 		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
-			{{ componentProps.clientName }}
+			{{ props.clientName }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
-			{{ componentProps.clientPhone }}
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+			{{ props.clientPhone }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
-			{{ componentProps.serviceType }}
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+			{{ props.serviceType }}
 		</td>
 		<td
 			class="px-6 py-6 whitespace-nowrap text-ellipsis overflow-hidden text-end font-semibold text-pink-500">
-			{{ componentProps.location }}
+			{{ props.location }}
 		</td>
 		<td>
 			<div
@@ -48,7 +46,13 @@
 						aria-orientation="vertical"
 						aria-labelledby="options-menu">
 						<NuxtLink
-							:to="{ name: 'ava-incident-report' }"
+							:to="{
+								name: 'roadside-assistance-reports',
+								params: {
+									service_type: props.serviceType.toLowerCase(),
+									id: props.requestId,
+								},
+							}"
 							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
 							View Report
 						</NuxtLink>
@@ -60,8 +64,9 @@
 </template>
 
 <script setup lang="ts">
-	const componentProps = defineProps<{
+	const props = defineProps<{
 		index: number;
+		requestId: number;
 		regNo: string;
 		dateTime: string;
 		clientName: string;
@@ -89,10 +94,10 @@
 	}
 
 	onMounted(() => {
-		document.addEventListener("click", handleClickOutside);
+		document.addEventListener('click', handleClickOutside);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("click", handleClickOutside);
+		document.removeEventListener('click', handleClickOutside);
 	});
 </script>

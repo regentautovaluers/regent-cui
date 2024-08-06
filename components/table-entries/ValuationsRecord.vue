@@ -9,12 +9,10 @@
 		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
 			{{ componentProps.vehicleMake }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
+		<td class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
 			{{ componentProps.vehicleModel }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
 			{{ componentProps.valuationDate }}
 		</td>
 		<td
@@ -105,10 +103,10 @@
 	}
 
 	onMounted(() => {
-		document.addEventListener("click", handleClickOutside);
+		document.addEventListener('click', handleClickOutside);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("click", handleClickOutside);
+		document.removeEventListener('click', handleClickOutside);
 	});
 </script>

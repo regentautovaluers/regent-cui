@@ -86,18 +86,15 @@
 		<h1 class="mt-5 text-2xl antialiased">Download Excel Template</h1>
 		<div class="flex flex-col">
 			<span class="text-lg text-gray-500"
-				>Kindly download our Excel template and complete all columns
-				exactly as provided. Kindly refrain from altering the column
-				structure or their sequence.</span
+				>Kindly download our Excel template and complete all columns exactly as provided.
+				Kindly refrain from altering the column structure or their sequence.</span
 			>
 			<a
 				href="https://drive.google.com/uc?export=download&id=17h3Nh3de8p4bQvxjgkEWnsfozGsIqG1p"
 				target="_top"
 				type="button"
 				class="py-3 px-4 w-full mt-3 h-16 items-center rounded-lg border-dashed border-[1.9px] text-white disabled:opacity-50 disabled:pointer-events-none inline-flex justify-between bg-pink-400 bg-opacity-50">
-				<span class="text-pink-500">
-					Click here to intiate excel template download
-				</span>
+				<span class="text-pink-500"> Click here to intiate excel template download </span>
 				<Icon
 					name="material-symbols-light:cloud-download"
 					class="text-pink-400"
@@ -109,8 +106,7 @@
 		<h1 class="mt-5 text-2xl antialiased">Upload Excel Document</h1>
 		<div class="flex flex-col">
 			<span class="text-lg text-gray-500"
-				>Please upload the completed document to proceed with your
-				submission.</span
+				>Please upload the completed document to proceed with your submission.</span
 			>
 
 			<div class="w-full">
@@ -139,11 +135,7 @@
 		<div class="mt-3">
 			<span
 				class="font-medium"
-				:class="
-					errorMessage.type === 'error'
-						? 'text-red-500'
-						: 'text-green-500'
-				"
+				:class="errorMessage.type === 'error' ? 'text-red-500' : 'text-green-500'"
 				v-if="errorMessage"
 				>{{ errorMessage.message }}</span
 			>
@@ -179,9 +171,9 @@
 </template>
 
 <script setup lang="ts">
-	import readXlsxFile from "read-excel-file";
-	import { type bulkProcessedType } from "~/types/types";
-	import { type excelUploadErrMess } from "~/types/types";
+	import readXlsxFile from 'read-excel-file';
+	import { type bulkProcessedType } from '~/types/types';
+	import { type excelUploadErrMess } from '~/types/types';
 
 	const formSubmissionLoading = ref(false);
 	const { getPrincipal } = useAuth();
@@ -190,12 +182,12 @@
 	const currentPercentage = ref(0);
 	const { openToast } = useToast();
 	const selectedFleetId: Ref<number> = ref(0);
-	const contactFullName: Ref<string> = ref("");
-	const contactPhoneNumber: Ref<string> = ref("");
-	const contactEmail: Ref<string> = ref("");
+	const contactFullName: Ref<string> = ref('');
+	const contactPhoneNumber: Ref<string> = ref('');
+	const contactEmail: Ref<string> = ref('');
 	const runtimeConfig = useRuntimeConfig();
 	const totalSize = ref(0);
-	const currentProgress = ref("0%");
+	const currentProgress = ref('0%');
 	const reader = new FileReader();
 	const errorMessage: Ref<excelUploadErrMess | null> = ref(null);
 
@@ -203,16 +195,16 @@
 		`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
 		{
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: "GET",
+			method: 'GET',
 			onRequestError() {
-				openToast("Failed to retrieve fleets! Reload page!", "danger");
+				openToast('Failed to retrieve fleets! Reload page!', 'danger');
 			},
-		}
+		},
 	) as any;
 
 	watch(selectedFleetId, (newFleetId) => {
 		const fleetDetails: any = availableFleets.value.find(
-			(fleet: any) => fleet.id === newFleetId
+			(fleet: any) => fleet.id === newFleetId,
 		);
 
 		contactFullName.value = fleetDetails.contact_full_name;
@@ -223,21 +215,21 @@
 	const registerBulkMember = async (): Promise<void> => {
 		formSubmissionLoading.value = true;
 		try {
-			await $fetch("/api/v1/memberships/bulk", {
+			await $fetch('/api/v1/memberships/bulk', {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "POST",
+				method: 'POST',
 				body: JSON.stringify(processedFleetData.value),
 				async onResponse({ response }) {
 					if (response.status !== 200) {
-						throw new Error("Failed to create bulk memberships");
+						throw new Error('Failed to create bulk memberships');
 					}
 
-					openToast("Memberships created successfully.", "success");
+					openToast('Memberships created successfully.', 'success');
 				},
 			});
 		} catch (error) {
-			console.log("An error occured: ", error);
-			openToast("Operation failed. Please try again!", "danger");
+			console.log('An error occured: ', error);
+			openToast('Operation failed. Please try again!', 'danger');
 		} finally {
 			formSubmissionLoading.value = false;
 		}
@@ -256,15 +248,15 @@
 			validateUploadedDataIntegrity(data);
 			pushFleetDataPostValidation(data);
 			const errorMss: excelUploadErrMess = {
-				message: "File validation passed successfully",
-				type: "success",
+				message: 'File validation passed successfully',
+				type: 'success',
 			};
 			errorMessage.value = errorMss;
 		} catch (err) {
-			console.log("An error has occured: ", err);
+			console.log('An error has occured: ', err);
 			const errorMss: excelUploadErrMess = {
 				message: err,
-				type: "error",
+				type: 'error',
 			};
 			errorMessage.value = errorMss;
 			processedFleetData.value = [];
@@ -277,40 +269,23 @@
 			if (index === 0) return;
 
 			// check for client name
-			if (item[0] === null)
-				throw new Error(
-					`Name of client on row ${index + 1} is missing`
-				);
+			if (item[0] === null) throw new Error(`Name of client on row ${index + 1} is missing`);
 
 			// check for client phone number
 			if (item[1] === null)
-				throw new Error(
-					`Phone of client number on row ${index + 1} is missing`
-				);
+				throw new Error(`Phone of client number on row ${index + 1} is missing`);
 
 			// check for vehicle registration
 			if (item[3] === null)
-				throw new Error(
-					`Vehicle of client registration on row ${
-						index + 1
-					} is missing`
-				);
+				throw new Error(`Vehicle of client registration on row ${index + 1} is missing`);
 
 			// check for start date
 			if (item[4] === null)
-				throw new Error(
-					`Start date of client insurance on row ${
-						index + 1
-					} is missing`
-				);
+				throw new Error(`Start date of client insurance on row ${index + 1} is missing`);
 
 			// check for end date
 			if (item[5] === null)
-				throw new Error(
-					`End date of client insurance on row ${
-						index + 1
-					} is missing`
-				);
+				throw new Error(`End date of client insurance on row ${index + 1} is missing`);
 		});
 	}
 
@@ -328,13 +303,13 @@
 				registration: item[3],
 				start_date: item[4],
 				end_date: item[5],
-				make: "N/A",
-				model: "N/A",
-				color: "N/A",
-				payment_status: "paid",
-				membership_status: "active",
+				make: 'N/A',
+				model: 'N/A',
+				color: 'N/A',
+				payment_status: 'paid',
+				membership_status: 'active',
 				recordedBy: getPrincipal.value.userId,
-				category: "corporate",
+				category: 'corporate',
 				fleetId: selectedFleetId.value,
 			});
 		});
@@ -342,24 +317,22 @@
 
 	// Handle the file reading events
 	function handleEvent(event: any) {
-		if (event.type === "progress") {
-			currentProgress.value = `${
-				(event.loaded / totalSize.value).toFixed(2) * 100
-			}%`;
+		if (event.type === 'progress') {
+			currentProgress.value = `${(event.loaded / totalSize.value).toFixed(2) * 100}%`;
 		}
-		if (event.type === "loadstart") {
+		if (event.type === 'loadstart') {
 			totalSize.value = event.total;
 		}
 	}
 
 	// Attach event listeners to the reader
 	function addListeners(reader: any) {
-		reader.addEventListener("loadstart", handleEvent);
-		reader.addEventListener("load", handleEvent);
-		reader.addEventListener("loadend", handleEvent);
-		reader.addEventListener("progress", handleEvent);
-		reader.addEventListener("error", handleEvent);
-		reader.addEventListener("abort", handleEvent);
+		reader.addEventListener('loadstart', handleEvent);
+		reader.addEventListener('load', handleEvent);
+		reader.addEventListener('loadend', handleEvent);
+		reader.addEventListener('progress', handleEvent);
+		reader.addEventListener('error', handleEvent);
+		reader.addEventListener('abort', handleEvent);
 	}
 </script>
 

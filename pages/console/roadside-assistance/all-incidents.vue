@@ -9,8 +9,7 @@
 					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span
-						class="text-blue-600 font-semibold inline-flex items-center"
+					<span class="text-blue-600 font-semibold inline-flex items-center"
 						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
@@ -34,7 +33,7 @@
 			</div>
 		</div>
 		<div
-			class="flex whitespace-nowrap overflow-x-scroll items-center justify-around py-5 px-6 border-2 border-gray-200 shadow-sm rounded-xl mb-6">
+			class="flex whitespace-nowrap items-center justify-around py-5 px-6 border-2 border-gray-200 shadow-sm rounded-xl mb-6">
 			<div
 				v-for="(info, index) in subLinksInfo"
 				:key="index"
@@ -46,12 +45,8 @@
 						class="size-7" />
 				</div>
 				<div class="flex flex-col space-y-2">
-					<span class="text-gray-600 font-semibold">{{
-						info.title
-					}}</span>
-					<span class="text-gray-500 font-semibold">{{
-						info.infoText
-					}}</span>
+					<span class="text-gray-600 font-semibold">{{ info.title }}</span>
+					<span class="text-gray-500 font-semibold">{{ info.infoText }}</span>
 					<NuxtLink
 						class="text-blue-600 font-semibold"
 						:to="{ name: info.link }">
@@ -64,8 +59,7 @@
 		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
 			<div class="md:w-[80%]">
 				<!-- search & filter controls -->
-				<div
-					class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
+				<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
 					<!-- search box -->
 					<div class="relative flex-grow mr-10 max-w-[35%]">
 						<input
@@ -95,8 +89,8 @@
 											: 'bg-blue-600 text-white'
 									">
 									{{
-										searchServiceType === ""
-											? "Service Type"
+										searchServiceType === ''
+											? 'Service Type'
 											: searchServiceType
 									}}
 									<svg
@@ -143,19 +137,15 @@
 											:value="data.val"
 											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
 											v-model="searchServiceType" />
-										<label
-											class="text-gray-500 ms-2 dark:text-gray-400"
-											>{{ data.text }}</label
-										>
+										<label class="text-gray-500 ms-2 dark:text-gray-400">{{
+											data.text
+										}}</label>
 									</div>
 								</div>
 							</div>
 						</div>
 						<button
-							v-if="
-								searchFilterTerm !== '' ||
-								searchServiceType !== ''
-							"
+							v-if="searchFilterTerm !== '' || searchServiceType !== ''"
 							@click="
 								() => {
 									searchFilterTerm = '';
@@ -175,8 +165,7 @@
 				<div class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
 						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div
-								class="border rounded-xl shadow overflow-hidden">
+							<div class="border rounded-xl shadow overflow-hidden">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -216,26 +205,18 @@
 										</tr>
 									</thead>
 									<tbody class="divide-y divide-gray-200">
-										<ErrorOrMissingData
-											v-if="fetchErrorOrEmpty" />
+										<ErrorOrMissingData v-if="fetchErrorOrEmpty" />
 										<IncidentsRecord
-											v-for="(
-												data, index
-											) in compiledData"
+											v-for="(data, index) in compiledData"
 											:index="index"
+											:request-id="data.id"
 											:reg-no="data.registration_no"
 											:client-name="data.user_name"
 											:client-phone="data.user_phone"
 											:date-time="
-												formatServerProvidedDateTime(
-													data.date_created
-												)
+												formatServerProvidedDateTime(data.date_created)
 											"
-											:serviceType="
-												makeServiceUserFriendly(
-													data.service
-												)
-											"
+											:serviceType="makeServiceUserFriendly(data.service)"
 											:location="data.pickup_location"
 											:key="index" />
 									</tbody>
@@ -245,12 +226,8 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div
-					class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
-					<span
-						>Showing Page {{ currentPage + 1 }} of
-						{{ totalPages }}</span
-					>
+				<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+					<span>Showing Page {{ currentPage + 1 }} of {{ totalPages }}</span>
 					<div
 						class="space-x-1"
 						v-if="totalPages > 1">
@@ -284,9 +261,7 @@
 				</div>
 				<div class="border shadow min-h-[28rem] rounded-xl">
 					<div class="flex items-center justify-between p-4">
-						<h1 class="text-xl font-semibold">
-							Road Rescue Trends
-						</h1>
+						<h1 class="text-xl font-semibold">Road Rescue Trends</h1>
 					</div>
 				</div>
 			</div>
@@ -296,8 +271,8 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "ava-all-incidents",
-		layout: "in-app-layout",
+		name: 'ava-all-incidents',
+		layout: 'in-app-layout',
 	});
 
 	const { getPrincipal } = useAuth();
@@ -313,29 +288,29 @@
 		totalPages,
 		fetchErrorOrEmpty,
 	} = useIncidents();
-	const profilePicture: Ref<string> = ref("");
+	const profilePicture: Ref<string> = ref('');
 
 	const subLinksInfo: any[] = [
 		{
-			icon: "/icons/misc/roadside-mostreq-icon.svg",
-			title: "Most Requested",
+			icon: '/icons/misc/roadside-mostreq-icon.svg',
+			title: 'Most Requested',
 			infoText: determineMostRequestedService.value,
-			link: "memberships-home",
-			linkText: "View Members",
+			link: 'memberships-home',
+			linkText: 'View Members',
 		},
 		{
-			icon: "/icons/misc/roadside-realttracking-icon.svg",
-			title: "Real-Time Tracking",
-			infoText: "Lorem",
-			link: "memberships-home",
-			linkText: "View Live Map",
+			icon: '/icons/misc/roadside-realttracking-icon.svg',
+			title: 'Real-Time Tracking',
+			infoText: 'Lorem',
+			link: 'memberships-home',
+			linkText: 'View Live Map',
 		},
 		{
-			icon: "/icons/misc/roadside-complord-icon.svg",
-			title: "Completed Orders",
-			infoText: "Lorem",
-			link: "memberships-home",
-			linkText: "View All",
+			icon: '/icons/misc/roadside-complord-icon.svg',
+			title: 'Completed Orders',
+			infoText: 'Lorem',
+			link: 'memberships-home',
+			linkText: 'View All',
 		},
 	];
 

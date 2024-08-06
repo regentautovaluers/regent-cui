@@ -9,24 +9,19 @@
 		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
 			{{ componentProps.endDate }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
 			{{ componentProps.vehicleMake }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
 			{{ componentProps.vehicleModel }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
 			{{ componentProps.membershipName }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
 			{{ componentProps.membershipStatus }}
 		</td>
-		<td
-			class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
+		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
 			{{ componentProps.paymentStatus }}
 		</td>
 		<td class="text-center">
@@ -64,12 +59,10 @@
 								name: 'edit-membership-details',
 								query: {
 									membershipId: componentProps.membershipId,
-									vehicleRegistration:
-										componentProps.vehicleRegistration,
+									vehicleRegistration: componentProps.vehicleRegistration,
 									vehicleMake: componentProps.vehicleMake,
 									vehicleModel: componentProps.vehicleModel,
-									membershipStatus:
-										componentProps.membershipStatus,
+									membershipStatus: componentProps.membershipStatus,
 									paymentStatus: componentProps.paymentStatus,
 									clientName: clientName,
 								},
@@ -111,7 +104,7 @@
 	const runtimeConfig = useRuntimeConfig();
 	const router = useRouter();
 	const { openToast } = useToast();
-	const emit = defineEmits(["provideClientDetails"]);
+	const emit = defineEmits(['provideClientDetails']);
 	const { getPrincipal } = useAuth();
 	const isDropdownVisible = ref(false);
 	const dropdownContainer = ref(null);
@@ -133,11 +126,11 @@
 	}
 
 	onMounted(() => {
-		document.addEventListener("click", handleClickOutside);
+		document.addEventListener('click', handleClickOutside);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("click", handleClickOutside);
+		document.removeEventListener('click', handleClickOutside);
 	});
 
 	async function deleteMembershipRecord(membershipId: number) {
@@ -145,23 +138,20 @@
 		try {
 			await $fetch(`/api/v1/membershipVehicles/${membershipId}`, {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: "DELETE",
+				method: 'DELETE',
 				async onResponse({ response }) {
 					if (response.status !== 204) {
-						throw new Error("Membership details not deleted.");
+						throw new Error('Membership details not deleted.');
 					}
 
-					openToast(
-						"Member details deleted successfully.",
-						"success"
-					);
+					openToast('Member details deleted successfully.', 'success');
 
 					router.back();
 				},
 			});
 		} catch (error) {
-			console.log("Error encountered. Reason: ", error);
-			openToast("Failed to delete member details. Try again!", "danger");
+			console.log('Error encountered. Reason: ', error);
+			openToast('Failed to delete member details. Try again!', 'danger');
 		} finally {
 			deleteMembershipLoading.value = false;
 		}

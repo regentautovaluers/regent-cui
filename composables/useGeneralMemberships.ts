@@ -8,54 +8,48 @@ export default function () {
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const fetchErrorOrEmpty: Ref<boolean> = ref(false);
-	const searchFilterTerm: Ref<string> = ref("");
-	const searchMembershipCategory: Ref<string> = ref("");
+	const searchFilterTerm: Ref<string> = ref('');
+	const searchMembershipCategory: Ref<string> = ref('');
 
 	const computedRequestURI: ComputedRef<string> = computed(() => {
 		let baseURI = `/api/v1/memberships?corporateId=${getPrincipal.value.corpId}&page=${page.value}&size=${size.value}`;
-		if (searchFilterTerm.value !== "") {
+		if (searchFilterTerm.value !== '') {
 			baseURI += `&searchTerm=${searchFilterTerm.value}`;
 		}
-		if (searchMembershipCategory.value !== "") {
+		if (searchMembershipCategory.value !== '') {
 			baseURI += `&category=${searchMembershipCategory.value}`;
 		}
 		return baseURI;
 	});
 
-	const { pending: fetchingMoreData, execute: refreshMembers } = useFetch(
-		computedRequestURI,
-		{
-			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: "GET",
-			server: false,
-			lazy: false,
+	const { pending: fetchingMoreData, execute: refreshMembers } = useFetch(computedRequestURI, {
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: 'GET',
+		server: false,
+		lazy: false,
 
-			onResponse({ response }) {
-				if (response.status !== 200) {
-					throw new Error("Failed to retrieve corporate's members");
-				}
-				membersList.value = response._data.memberships;
-				totalNumber.value = response._data.totalCount;
-				totalPages.value = response._data.totalPages;
+		onResponse({ response }) {
+			if (response.status !== 200) {
+				throw new Error("Failed to retrieve corporate's members");
+			}
+			membersList.value = response._data.memberships;
+			totalNumber.value = response._data.totalCount;
+			totalPages.value = response._data.totalPages;
 
-				if (membersList.value.length > 0) {
-					fetchErrorOrEmpty.value = false;
-				}
-			},
-			onRequestError({ error }) {
-				console.log("An error occured: ", error);
-				fetchErrorOrEmpty.value = true;
-				openToast(
-					"Failed to load your members. Reload page!",
-					"danger"
-				);
-			},
-		}
-	);
+			if (membersList.value.length > 0) {
+				fetchErrorOrEmpty.value = false;
+			}
+		},
+		onRequestError({ error }) {
+			console.log('An error occured: ', error);
+			fetchErrorOrEmpty.value = true;
+			openToast('Failed to load your members. Reload page!', 'danger');
+		},
+	});
 
 	const clearFiltering = () => {
-		searchFilterTerm.value = "";
-		searchMembershipCategory.value = "";
+		searchFilterTerm.value = '';
+		searchMembershipCategory.value = '';
 		page.value = 0;
 	};
 

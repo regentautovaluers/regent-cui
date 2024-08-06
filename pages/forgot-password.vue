@@ -13,8 +13,7 @@
 			warning-message="Please contact your administrator to effect the change in a safe way.">
 			<template #alertMessage>
 				<p class="text-center">
-					Attempting to change your password while you're not logged
-					in is not permitted.
+					Attempting to change your password while you're not logged in is not permitted.
 				</p>
 			</template>
 			<template #actionControls>
@@ -33,7 +32,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "forgot-password",
-		layout: "auth-pages-layout",
+		name: 'forgot-password',
+		layout: 'auth-pages-layout',
 	});
 </script>

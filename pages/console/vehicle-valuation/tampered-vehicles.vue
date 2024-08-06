@@ -1,11 +1,9 @@
-<template>
-	
-</template>
+<template></template>
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "valuation-tampered-vehicles",
-		layout: "in-app-layout",
+		name: 'valuation-tampered-vehicles',
+		layout: 'in-app-layout',
 	});
 
 	// const searchFilterTerm: Ref<string | null> = ref(null);
