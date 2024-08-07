@@ -46,8 +46,21 @@
 						aria-orientation="vertical"
 						aria-labelledby="options-menu">
 						<NuxtLink
+							v-if="props.serviceType.toLowerCase() === 'towing'"
 							:to="{
 								name: 'roadside-assistance-reports',
+								params: {
+									service_type: props.serviceType.toLowerCase(),
+									id: props.requestId,
+								},
+							}"
+							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							View Report
+						</NuxtLink>
+						<NuxtLink
+							v-else
+							:to="{
+								name: 'roadside-assistance-minimal-reports',
 								params: {
 									service_type: props.serviceType.toLowerCase(),
 									id: props.requestId,

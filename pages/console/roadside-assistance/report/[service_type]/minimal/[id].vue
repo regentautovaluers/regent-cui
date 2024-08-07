@@ -281,7 +281,7 @@
 				Accept: 'application/json',
 			},
 			server: true,
-			lazy: false,
+			lazy: true,
 		},
 	) as any;
 

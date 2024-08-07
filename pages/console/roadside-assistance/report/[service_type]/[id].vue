@@ -517,7 +517,7 @@
 				Accept: 'application/json',
 			},
 			server: true,
-			lazy: false,
+			lazy: true,
 		},
 	) as any;
 
@@ -652,45 +652,40 @@
 	};
 
 	onMounted(async () => {
-		if (route.params.service_type === 'towing') {
-			setTimeout(() => {
-				const directionsService = new google.maps.DirectionsService();
-				const directionsRequest = {
-					origin: new google.maps.LatLng(
-						coordinates.value[0].lat,
-						coordinates.value[0].lng,
-					),
-					destination: new google.maps.LatLng(
-						coordinates.value[1].lat,
-						coordinates.value[1].lng,
-					),
-					travelMode: google.maps.TravelMode.DRIVING,
-					unitSystem: google.maps.UnitSystem.METRIC,
-					drivingOptions: {
-						departureTime: new Date(Date.now()),
-						trafficModel: 'optimistic',
-					},
-				};
+		setTimeout(() => {
+			const directionsService = new google.maps.DirectionsService();
+			const directionsRequest = {
+				origin: new google.maps.LatLng(coordinates.value[0].lat, coordinates.value[0].lng),
+				destination: new google.maps.LatLng(
+					coordinates.value[1].lat,
+					coordinates.value[1].lng,
+				),
+				travelMode: google.maps.TravelMode.DRIVING,
+				unitSystem: google.maps.UnitSystem.METRIC,
+				drivingOptions: {
+					departureTime: new Date(Date.now()),
+					trafficModel: 'optimistic',
+				},
+			};
 
-				directionsService.route(directionsRequest, (result, status) => {
-					if (status === google.maps.DirectionsStatus.OK && result) {
-						const route = result.routes[0];
-						const leg = route.legs[0];
-						const steps = leg.steps;
+			directionsService.route(directionsRequest, (result, status) => {
+				if (status === google.maps.DirectionsStatus.OK && result) {
+					const route = result.routes[0];
+					const leg = route.legs[0];
+					const steps = leg.steps;
 
-						// list of intermediate co-ordinates
-						polylineCoords.value = steps.flatMap((step) =>
-							step.path.map((latLng) => ({
-								lat: latLng.lat(),
-								lng: latLng.lng(),
-							})),
-						);
-					} else {
-						console.log('Failed to perform Geolocation');
-					}
-				});
-			}, 1500);
-		}
+					// list of intermediate co-ordinates
+					polylineCoords.value = steps.flatMap((step) =>
+						step.path.map((latLng) => ({
+							lat: latLng.lat(),
+							lng: latLng.lng(),
+						})),
+					);
+				} else {
+					console.log('Failed to perform Geolocation');
+				}
+			});
+		}, 1500);
 	});
 </script>
 
