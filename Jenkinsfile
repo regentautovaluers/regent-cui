@@ -9,7 +9,7 @@ pipeline {
         SERVER_IP = '64.225.109.172'
         SSH_USERNAME = 'root'
         SSH_CREDENTIALS_ID = 'your-ssh-credentials-id'
-        GOOGLE_MAPS_APIKEY = 'AIzaSyB8XLhNAJQbKA5N3PRyYNpnbUtgF36lyNQ'
+        GOOGLE_MAPS_APIKEY = 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY'
         VALUATION_BASE_URL = 'http://64.226.89.245:8100'
         AVA_BASE_URL = 'http://64.225.109.172:4000'
     }
