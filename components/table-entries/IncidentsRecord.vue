@@ -62,7 +62,7 @@
 							:to="{
 								name: 'roadside-assistance-minimal-reports',
 								params: {
-									service_type: props.serviceType.toLowerCase(),
+									service_type: props.serviceType.toLowerCase().replaceAll(' ', ''),
 									id: props.requestId,
 								},
 							}"
