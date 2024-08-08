@@ -302,7 +302,7 @@
 				available_free_distance: route.query.freeDistance,
 				registration: item[3],
 				start_date: item[4],
-				end_date: item[5],
+				end_date: item[5].replaceAll("/", "_"),
 				make: 'N/A',
 				model: 'N/A',
 				color: 'N/A',
@@ -313,6 +313,8 @@
 				fleetId: selectedFleetId.value,
 			});
 		});
+
+		console.log("Processed fleet data: ", processedFleetData.value);
 	}
 
 	// Handle the file reading events
