@@ -277,15 +277,15 @@
 
 			// check for vehicle registration
 			if (item[3] === null)
-				throw new Error(`Vehicle of client registration on row ${index + 1} is missing`);
+				throw new Error(`Vehicle of client on row ${index + 1} is missing`);
 
 			// check for start date
 			if (item[4] === null)
-				throw new Error(`Start date of client insurance on row ${index + 1} is missing`);
+				throw new Error(`Start date of client on row ${index + 1} is missing`);
 
 			// check for end date
 			if (item[5] === null)
-				throw new Error(`End date of client insurance on row ${index + 1} is missing`);
+				throw new Error(`End date of client on row ${index + 1} is missing`);
 		});
 	}
 
@@ -302,7 +302,7 @@
 				available_free_distance: route.query.freeDistance,
 				registration: item[3],
 				start_date: item[4],
-				end_date: item[5].replaceAll("/", "_"),
+				end_date: item[5],
 				make: 'N/A',
 				model: 'N/A',
 				color: 'N/A',
@@ -314,7 +314,7 @@
 			});
 		});
 
-		console.log("Processed fleet data: ", processedFleetData.value);
+		console.log('Processed fleet data: ', processedFleetData.value);
 	}
 
 	// Handle the file reading events
@@ -340,6 +340,6 @@
 
 <style>
 	.progressbar {
-		width: v-bind(currentPercentage.value) %;
+		width: v-bind(currentPercentage);
 	}
 </style>
