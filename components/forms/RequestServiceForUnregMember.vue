@@ -14,12 +14,12 @@
 		">
 		<!-- client contacts -->
 		<div
-			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
+			class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/2">
 				<label
 					for="full-name"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Full Name</label
 				>
 				<input
@@ -35,7 +35,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="phone"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Phone</label
 				>
 				<input
@@ -49,10 +49,10 @@
 		</div>
 
 		<!-- Client Email -->
-		<div class="w-full mt-3">
+		<div class="mt-3 w-full">
 			<label
 				for="client-email"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Client Email</label
 			>
 			<input
@@ -65,10 +65,10 @@
 		</div>
 
 		<!-- Vehicle Registration -->
-		<div class="w-full mt-3">
+		<div class="mt-3 w-full">
 			<label
 				for="vehicle-registration-number"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Vehicle Registration Number</label
 			>
 			<input
@@ -82,14 +82,14 @@
 
 		<!-- vehicle registration, make, model -->
 		<div
-			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0">
+			class="my-5 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 			<!-- Reg Number -->
 
 			<!-- Vehicle Make -->
 			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-make"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Vehicle Make</label
 				>
 				<input
@@ -105,7 +105,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-model"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Vehicle Model</label
 				>
 				<input
@@ -120,7 +120,7 @@
 
 		<!-- vehicle type as published by Regent -->
 		<div
-			class="w-full space-y-2 mt-4"
+			class="mt-4 w-full space-y-2"
 			v-if="props.clientServiceTypeName === 'Towing'">
 			<label
 				for="vehicle-type"
@@ -129,7 +129,7 @@
 			>
 			<select
 				class="generic-input"
-				:class="loadingVehicleTypes ? 'animate-pulse opactiy-50' : null"
+				:class="loadingVehicleTypes ? 'opactiy-50 animate-pulse' : null"
 				id="vehicle-type"
 				required
 				v-model.number="vehicleTypeIndex">
@@ -144,13 +144,13 @@
 
 		<!-- tire metadata -->
 		<div v-if="props.optionalElementsRendered.includes('tyreMetadata')">
-			<div class="space-y-2 my-4">
+			<div class="my-4 space-y-2">
 				<div>
 					<input
 						id="button1"
 						type="radio"
 						name="radio-vertical-group"
-						class="hidden peer"
+						class="peer hidden"
 						:value="true"
 						v-model="haveSpareTyre"
 						selected />
@@ -165,7 +165,7 @@
 						id="button2"
 						type="radio"
 						name="radio-vertical-group"
-						class="hidden peer"
+						class="peer hidden"
 						:value="false"
 						v-model="haveSpareTyre" />
 					<label
@@ -175,10 +175,10 @@
 					</label>
 				</div>
 			</div>
-			<div class="w-full flex flex-col mt-4">
+			<div class="mt-4 flex w-full flex-col">
 				<label
 					for="fuel-type"
-					class="font-medium whitespace-nowrap mb-2"
+					class="mb-2 whitespace-nowrap font-medium"
 					>Tyre Type</label
 				>
 				<select
@@ -203,7 +203,7 @@
 
 		<!-- vehicle class as published by Regent -->
 		<div
-			class="w-full space-y-2 mt-4"
+			class="mt-4 w-full space-y-2"
 			v-if="props.optionalElementsRendered.includes('vehicleClass')">
 			<label
 				for="vehicle-type"
@@ -212,7 +212,7 @@
 			>
 			<select
 				class="generic-input"
-				:class="loadingVehicleTypes ? 'animate-pulse opactiy-50' : null"
+				:class="loadingVehicleTypes ? 'opactiy-50 animate-pulse' : null"
 				id="vehicle-type"
 				required
 				v-model.number="vehicleClass">
@@ -227,11 +227,11 @@
 
 		<!-- fuel type and cost -->
 		<div
-			class="flex my-5 flex-col justify-between space-x-0"
+			class="my-5 flex flex-col justify-between space-x-0"
 			v-if="props.optionalElementsRendered.includes('fuelData')">
 			<label
 				for="fuel-type"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Fuel Type</label
 			>
 			<select
@@ -252,14 +252,14 @@
 		<div class="mt-5">
 			<label
 				for="client-location"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Client Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
 					id="client-location"
-					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
+					class="w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent py-5 ps-10 focus:border-x-transparent focus:border-b-blue-500 focus:border-t-transparent focus:ring-0"
 					placeholder="Type an address to search"
 					required />
 				<img
@@ -274,14 +274,14 @@
 			v-if="props.optionalElementsRendered.includes('dropoffLocation')">
 			<label
 				for="dropoff-location"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Drop Off Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
 					id="dropoff-location"
-					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
+					class="w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent py-5 ps-10 focus:border-x-transparent focus:border-b-blue-500 focus:border-t-transparent focus:ring-0"
 					placeholder="Type an address to search"
 					required />
 				<img
@@ -294,27 +294,27 @@
 		<div class="my-5">
 			<label
 				for="comments-box"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Comments</label
 			>
 			<textarea
 				id="comments-box"
-				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
+				class="block w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
 				rows="6"
 				placeholder="Provide optional comments for this request."
 				v-model="requestRemarks"></textarea>
 		</div>
 
 		<!-- statistics -->
-		<div class="flex justify-between mt-8 space-x-4">
+		<div class="mt-8 flex justify-between space-x-4">
 			<div
-				class="w-1/2 p-3 rounded-lg border border-pink-500"
+				class="w-1/2 rounded-lg border border-pink-500 p-3"
 				v-if="props.clientServiceTypeName === 'Towing'">
 				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
 				<h1 class="text-lg font-semibold text-gray-500">{{ computedTowingDistance }}Km</h1>
 			</div>
 			<div
-				class="p-3 rounded-lg border border-pink-500"
+				class="rounded-lg border border-pink-500 p-3"
 				:class="props.clientServiceTypeName === 'Towing' ? 'w-1/2' : 'w-full'">
 				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
 				<h1
@@ -337,7 +337,7 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="form-submit relative overflow-clip mt-4 text-lg h-14">
+			class="form-submit relative mt-4 h-14 overflow-clip text-lg">
 			<LoadingIndicator
 				v-if="formSubmissionLoading"
 				inject-classes="absolute w-[100%] mt-0 -top-1" />

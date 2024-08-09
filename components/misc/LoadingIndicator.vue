@@ -1,8 +1,8 @@
 <template>
 	<!-- Progress -->
-	<div class="w-full flex justify-center">
+	<div class="flex w-full justify-center">
 		<div
-			class="flex h-2 rounded-lg overflow-hidden"
+			class="flex h-2 overflow-hidden rounded-lg"
 			:class="componentProps.injectClasses"
 			role="progressbar"
 			aria-valuenow="25"

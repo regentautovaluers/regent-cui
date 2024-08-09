@@ -1,9 +1,9 @@
 <template>
-	<div class="py-10 responsive-view h-fit">
-		<div class="bg-white w-full p-10 px-2 lg:px-10">
+	<div class="responsive-view h-fit py-10">
+		<div class="w-full bg-white p-10 px-2 lg:px-10">
 			<div
-				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
-				<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+				class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
+				<div class="border-b-1 w- space-x-4 text-sm md:text-base lg:w-fit lg:text-lg">
 					<button
 						@click="() => (currentView = 0)"
 						:class="[
@@ -33,8 +33,8 @@
 					v-else-if="currentView === 1"
 					class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
-						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div class="border rounded-lg shadow overflow-hidden">
+						<div class="inline-block min-w-full p-1.5 align-middle">
+							<div class="overflow-hidden rounded-lg border shadow">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -91,13 +91,13 @@
 									<tbody class="divide-y divide-gray-200">
 										<td
 											v-if="requestAuthorizationListLoading"
-											class="text-center py-4"
+											class="py-4 text-center"
 											colspan="100%">
 											<LoadingIndicator
 												:bar-length="`w-[30%]`"
 												v-if="requestAuthorizationListLoading" />
 											<br />
-											<span class="text-gray-500 text-lg font-semibold"
+											<span class="text-lg font-semibold text-gray-500"
 												>Loading Your Data.</span
 											>
 										</td>
@@ -159,7 +159,7 @@
 		</div>
 		<h1 class="text-3xl font-bold lg:mx-10">Explore More Services</h1>
 		<div
-			class="w-full flex justify-between space-x-4 lg:space-x-0 lg:px-10 whitespace-nowrap overflow-x-auto overflow-y-hidden"
+			class="flex w-full justify-between space-x-4 overflow-x-auto overflow-y-hidden whitespace-nowrap lg:space-x-0 lg:px-10"
 			style="
 				::-webkit-scrollbar-thumb {
 					border-radius: 10px;
@@ -178,14 +178,14 @@
 			">
 			<NuxtLink
 				v-for="(service, index) in moreServicesData"
-				class="flex flex-col whitespace-normal p-6 rounded-2xl hover:shadow-lg hover:bg-white h-64 w-72 min-w-72 max-w-72 transition-transform hover:scale-105 border"
+				class="flex h-64 w-72 min-w-72 max-w-72 flex-col whitespace-normal rounded-2xl border p-6 transition-transform hover:scale-105 hover:bg-white hover:shadow-lg"
 				:key="index"
 				:to="{ name: service.pageName }"
 				><img
 					:src="service.icon"
 					alt="Service Icon Link"
 					class="w-16" />
-				<h1 class="text-2xl font-bold mt-3">
+				<h1 class="mt-3 text-2xl font-bold">
 					{{ service.title }}
 				</h1>
 				<p class="text-lg">{{ service.description }}</p></NuxtLink

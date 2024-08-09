@@ -1,20 +1,20 @@
 <template>
 	<main class="flex h-screen">
-		<div class="w-[65%] h-full hidden lg:flex">
+		<div class="hidden h-full w-[65%] lg:flex">
 			<div
 				data-hs-carousel='{
 					"loadingClasses": "opacity-0",
 					"isAutoPlay": true
 				}'
 				class="relative size-full">
-				<div class="hs-carousel relative overflow-hidden w-full min-h-96 bg-white h-full">
+				<div class="hs-carousel relative h-full min-h-96 w-full overflow-hidden bg-white">
 					<div
-						class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
+						class="hs-carousel-body absolute bottom-0 start-0 top-0 flex flex-nowrap opacity-0 transition-transform duration-700">
 						<div
 							class="hs-carousel-slide"
 							v-for="(advertisement, index) in advertisements"
 							:key="index">
-							<div class="flex justify-center w-full h-full bg-gray-100">
+							<div class="flex h-full w-full justify-center bg-gray-100">
 								<img
 									:src="advertisement"
 									alt="Image Advertisement"
@@ -24,21 +24,21 @@
 					</div>
 				</div>
 				<div
-					class="hs-carousel-pagination flex justify-center absolute bottom-3 start-0 end-0 space-x-2">
+					class="hs-carousel-pagination absolute bottom-3 end-0 start-0 flex justify-center space-x-2">
 					<span
 						v-for="index in advertisements"
 						:key="index"
-						class="hs-carousel-active:bg-pink-600 size-3 border border-gray-400 rounded-full cursor-pointer" />
+						class="size-3 cursor-pointer rounded-full border border-gray-400 hs-carousel-active:bg-pink-600" />
 				</div>
 			</div>
 			<!-- End Slider -->
 		</div>
-		<div class="flex-grow flex flex-col justify-between px-4 md:px-20">
+		<div class="flex flex-grow flex-col justify-between px-4 md:px-20">
 			<slot />
-			<div class="text-center text-sm mb-4">
+			<div class="mb-4 text-center text-sm">
 				<span
 					>Copyright &copy 2024. All Rights Reserved.
-					<span class="text-pink-500 font-semibold">Regent Auto Valuers</span></span
+					<span class="font-semibold text-pink-500">Regent Auto Valuers</span></span
 				>
 			</div>
 		</div>

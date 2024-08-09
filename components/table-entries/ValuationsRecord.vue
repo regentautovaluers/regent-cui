@@ -1,30 +1,30 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-6 whitespace-nowrap font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-pink-600">
 			{{ componentProps.vehicleRegNo }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ componentProps.clientName }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ componentProps.vehicleMake }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
+		<td class="whitespace-nowrap px-6 py-6 text-start font-semibold text-blue-500">
 			{{ componentProps.vehicleModel }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-green-500">
 			{{ componentProps.valuationDate }}
 		</td>
 		<td
-			class="px-6 py-6 whitespace-nowrap text-ellipsis overflow-hidden text-center font-semibold text-pink-500">
+			class="overflow-hidden text-ellipsis whitespace-nowrap px-6 py-6 text-center font-semibold text-pink-500">
 			{{ componentProps.vehicleValue }}
 		</td>
 		<td
-			class="px-6 py-6 whitespace-nowrap text-ellipsis overflow-hidden text-start font-semibold text-pink-500">
+			class="overflow-hidden text-ellipsis whitespace-nowrap px-6 py-6 text-start font-semibold text-pink-500">
 			{{ componentProps.noteValue }}
 		</td>
 		<td
-			class="px-6 py-6 whitespace-nowrap text-ellipsis overflow-hidden text-end font-semibold text-pink-500">
+			class="overflow-hidden text-ellipsis whitespace-nowrap px-6 py-6 text-end font-semibold text-pink-500">
 			{{ componentProps.bookingNo }}
 		</td>
 		<td>
@@ -61,7 +61,7 @@
 									id: componentProps.vehicleId,
 								},
 							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 							View Report
 						</NuxtLink>
 					</div>

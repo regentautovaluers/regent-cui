@@ -12,7 +12,7 @@
 					v-model.trim="branchName" />
 			</div>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label class="font-bold text-gray-500">Branch Location</label>
 			<div class="flex flex-grow">
 				<input
@@ -24,7 +24,7 @@
 					v-model.trim="branchLocation" />
 			</div>
 		</div>
-		<div class="flex w-full mt-4 lg:w-1/3 items-center justify-center">
+		<div class="mt-4 flex w-full items-center justify-center lg:w-1/3">
 			<button
 				type="submit"
 				class="form-submit relative overflow-clip"

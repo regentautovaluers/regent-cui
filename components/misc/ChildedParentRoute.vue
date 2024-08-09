@@ -4,10 +4,10 @@
 		id="account-accordion">
 		<button
 			type="button"
-			class="hs-accordion-toggle rounded-s-2xl hs-accordion-active:hover:bg-gray-100 w-full text-start flex items-center gap-x-3.5 py-4 px-2.5 font-semibold hover:bg-gray-100 hover:text-blue-600 group"
+			class="hs-accordion-toggle group flex w-full items-center gap-x-3.5 rounded-s-2xl px-2.5 py-4 text-start font-semibold hover:bg-gray-100 hover:text-blue-600 hs-accordion-active:hover:bg-gray-100"
 			:class="
 				isActiveRoute
-					? 'bg-gray-100 border-r-[6px] border-r-blue-600 text-blue-600'
+					? 'border-r-[6px] border-r-blue-600 bg-gray-100 text-blue-600'
 					: 'text-gray-500'
 			">
 			<slot />
@@ -18,7 +18,7 @@
 			>
 
 			<svg
-				class="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500"
+				class="ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 hs-accordion-active:block"
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
 				height="24"
@@ -32,7 +32,7 @@
 			</svg>
 
 			<svg
-				class="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500"
+				class="ms-auto block size-4 text-gray-600 group-hover:text-gray-500 hs-accordion-active:hidden"
 				width="16"
 				height="16"
 				viewBox="0 0 16 16"
@@ -47,17 +47,17 @@
 		</button>
 		<div
 			id="account-accordion"
-			class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden">
-			<div class="pt-2 ps-2">
+			class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300">
+			<div class="ps-2 pt-2">
 				<!-- Item -->
 				<div
 					v-for="child in componentProps.children"
 					:key="child.id"
-					class="flex gap-x-1 relative group rounded-lg">
+					class="group relative flex gap-x-1 rounded-lg">
 					<!-- Icon -->
 					<div
-						class="relative last:after:hidden after:absolute after:top-0 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-300">
-						<div class="relative z-10 size-7 flex justify-center items-center">
+						class="relative after:absolute after:bottom-0 after:start-3.5 after:top-0 after:w-px after:-translate-x-[0.5px] after:bg-gray-300 last:after:hidden">
+						<div class="relative z-10 flex size-7 items-center justify-center">
 							<div
 								class="h-6 w-3 rounded-full border-2 group-hover:border-blue-600"
 								:class="
@@ -74,7 +74,7 @@
 						class="grow px-2 pb-8 font-medium"
 						:class="
 							route.name === child.routeName
-								? 'text-blue-600 font-semibold'
+								? 'font-semibold text-blue-600'
 								: 'text-gray-500'
 						">
 						<NuxtLink

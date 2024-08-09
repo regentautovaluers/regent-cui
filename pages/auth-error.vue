@@ -1,28 +1,28 @@
 <template>
 	<button
 		type="button"
-		class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+		class="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
 		data-hs-overlay="#hs-vertically-centered-modal">
 		Vertically centered modal
 	</button>
 
 	<div
 		id="hs-vertically-centered-modal"
-		class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+		class="hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden">
 		<div
-			class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+			class="m-3 mt-0 flex min-h-[calc(100%-3.5rem)] items-center opacity-0 transition-all ease-out hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 sm:mx-auto sm:w-full sm:max-w-lg">
 			<div
-				class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+				class="pointer-events-auto flex w-full flex-col rounded-xl border bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800 dark:shadow-neutral-700/70">
 				<div
-					class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+					class="flex items-center justify-between border-b px-4 py-3 dark:border-neutral-700">
 					<h3 class="font-bold text-gray-800 dark:text-white">Modal title</h3>
 					<button
 						type="button"
-						class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
+						class="flex size-7 items-center justify-center rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700"
 						data-hs-overlay="#hs-vertically-centered-modal">
 						<span class="sr-only">Close</span>
 						<svg
-							class="flex-shrink-0 size-4"
+							class="size-4 flex-shrink-0"
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -37,23 +37,23 @@
 						</svg>
 					</button>
 				</div>
-				<div class="p-4 overflow-y-auto">
+				<div class="overflow-y-auto p-4">
 					<p class="text-gray-800 dark:text-neutral-400">
 						This is a wider card with supporting text below as a natural lead-in to
 						additional content.
 					</p>
 				</div>
 				<div
-					class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+					class="flex items-center justify-end gap-x-2 border-t px-4 py-3 dark:border-neutral-700">
 					<button
 						type="button"
-						class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+						class="inline-flex items-center gap-x-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
 						data-hs-overlay="#hs-vertically-centered-modal">
 						Close
 					</button>
 					<button
 						type="button"
-						class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+						class="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
 						Save changes
 					</button>
 				</div>

@@ -2,10 +2,10 @@
 	<li>
 		<NuxtLink
 			:to="{ name: componentProps.routeName }"
-			class="flex items-center gap-x-2 py-4 rounded-s-xl px-2.5 hover:bg-gray-100 hover:text-blue-600 font-semibold group"
+			class="group flex items-center gap-x-2 rounded-s-xl px-2.5 py-4 font-semibold hover:bg-gray-100 hover:text-blue-600"
 			:class="
 				route.name === routeName
-					? 'bg-gray-100 border-r-[6px] border-r-blue-600 text-blue-600'
+					? 'border-r-[6px] border-r-blue-600 bg-gray-100 text-blue-600'
 					: 'text-gray-500'
 			"
 			@click="emit('changeCurrentRouteName', componentProps.displayName)">

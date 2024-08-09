@@ -1,15 +1,15 @@
 <template>
-	<div class="w-full flex flex-col items-center py-2">
-		<div class="rounded-full relative size-fit">
+	<div class="flex w-full flex-col items-center py-2">
+		<div class="relative size-fit rounded-full">
 			<img
-				class="size-[160px] rounded-full shadow-lg object-cover"
+				class="size-[160px] rounded-full object-cover shadow-lg"
 				:src="profilePicture" />
 			<div
 				v-if="formSubmissionLoading"
-				class="size-[160px] absolute bg-gray-300 bg-opacity-50 top-0 rounded-full flex items-center justify-center">
+				class="absolute top-0 flex size-[160px] items-center justify-center rounded-full bg-gray-300 bg-opacity-50">
 				<!-- loading spinner -->
 				<div
-					class="animate-spin inline-block size-6 border-[3px] border-current border-t-transparent text-white rounded-full"
+					class="inline-block size-6 animate-spin rounded-full border-[3px] border-current border-t-transparent text-white"
 					role="status"
 					aria-label="loading">
 					<span class="sr-only">Loading...</span>
@@ -17,17 +17,17 @@
 			</div>
 		</div>
 		<ClientOnly>
-			<h1 class="font-bold tracking text-lg">
+			<h1 class="tracking text-lg font-bold">
 				{{ getPrincipal.username }}
 			</h1>
-			<h2 class="text-gray-500 font-semibold">
+			<h2 class="font-semibold text-gray-500">
 				{{ getPrincipal.email }}
 			</h2>
-			<h3 class="text-gray-500 font-bold">{{ getPrincipal.corpName }}</h3>
+			<h3 class="font-bold text-gray-500">{{ getPrincipal.corpName }}</h3>
 		</ClientOnly>
 		<form
 			@submit.prevent="uploadProfilePicture"
-			class="mt-1 w-full flex justify-center">
+			class="mt-1 flex w-full justify-center">
 			<!-- prettier-ignore -->
 			<label
 				for="profile-picture"

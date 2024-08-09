@@ -1,16 +1,16 @@
 <template>
-	<div class="py-10 bg-[#f6f9f2] responsive-view h-full">
-		<div class="bg-white relative">
+	<div class="responsive-view h-full bg-[#f6f9f2] py-10">
+		<div class="relative bg-white">
 			<img
 				src="/images/membership-types-img.jpg"
 				alt="Membership Types Image"
-				class="w-full h-[45rem] object-cover rounded-md" />
+				class="h-[45rem] w-full rounded-md object-cover" />
 			<div class="absolute top-20 w-full text-center">
-				<h1 class="text-6xl py-3 italic font-semibold text-white antialiased">
+				<h1 class="py-3 text-6xl font-semibold italic text-white antialiased">
 					Membership Types
 				</h1>
 				<div
-					class="mt-44 flex flex-col lg:flex-row items-center justify-center space-x-0 lg:space-x-10 space-y-10 lg:space-y-0">
+					class="mt-44 flex flex-col items-center justify-center space-x-0 space-y-10 lg:flex-row lg:space-x-10 lg:space-y-0">
 					<MembershipTypesCard
 						v-for="(membership, index) in membershipTypes"
 						:key="index">
@@ -32,13 +32,13 @@
 							</p>
 							<ul class="space-y-2 group-hover:text-white">
 								<li
-									class="flex space-x-3 items-center"
+									class="flex items-center space-x-3"
 									v-for="(benefit, index) in cleanupMembershipBenefits(
 										membership.benefits,
 									)"
 									:key="index">
 									<svg
-										class="flex-shrink-0 size-4 mt-0.5 group-hover:text-white text-black"
+										class="mt-0.5 size-4 flex-shrink-0 text-black group-hover:text-white"
 										xmlns="http://www.w3.org/2000/svg"
 										width="24"
 										height="24"
@@ -66,7 +66,7 @@
 										freeDistance: membership.free_distance,
 									},
 								}"
-								class="w-fit p-4 rounded-md inline-flex space-x-2 items-center bg-black group-hover:bg-white group-hover:text-black text-white mt-2">
+								class="mt-2 inline-flex w-fit items-center space-x-2 rounded-md bg-black p-4 text-white group-hover:bg-white group-hover:text-black">
 								<span
 									><svg
 										xmlns="http://www.w3.org/2000/svg"

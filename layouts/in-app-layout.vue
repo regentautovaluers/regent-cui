@@ -1,8 +1,8 @@
 <template>
 	<main class="h-screen">
 		<nav
-			class="py-4 flex justify-between items-center px-3 lg:pl-[340px] md:pr-[20px] sticky top-0 z-20 bg-white flex-wrap">
-			<div class="flex space-x-8 w-fit lg:w-1/3">
+			class="sticky top-0 z-20 flex flex-wrap items-center justify-between bg-white px-3 py-4 md:pr-[20px] lg:pl-[340px]">
+			<div class="flex w-fit space-x-8 lg:w-1/3">
 				<!-- Navigation Toggle -->
 				<button
 					type="button"
@@ -16,30 +16,30 @@
 						alt="Hamburger Menu Icon" />
 				</button>
 				<!-- End Navigation Toggle -->
-				<h1 class="text-2xl whitespace-nowrap md:text-3xl font-semibold">
+				<h1 class="whitespace-nowrap text-2xl font-semibold md:text-3xl">
 					{{ currentRoute || computedCurrentRoute }}
 				</h1>
 			</div>
 
 			<!-- div with notifications, messages and profile information -->
 			<div
-				class="flex items-center space-x-3 w-full md:w-1/3 justify-between md:justify-end mt-2 md:mt-0">
+				class="mt-2 flex w-full items-center justify-between space-x-3 md:mt-0 md:w-1/3 md:justify-end">
 				<!-- notifications & messages -->
-				<div class="flex space-x-3 mr-4 hs-tooltip [--trigger:click] [--placement:bottom]">
+				<div class="hs-tooltip mr-4 flex space-x-3 [--placement:bottom] [--trigger:click]">
 					<button
-						class="w-12 relative rounded-2xl h-12 bg-gray-300 justify-center items-center hs-tooltip-toggle flex size-10 text-sm font-semibold border border-gray-200 text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+						class="hs-tooltip-toggle relative flex size-10 h-12 w-12 items-center justify-center rounded-2xl border border-gray-200 bg-gray-300 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50">
 						<img
 							src="/images/topnav/notification-icon.svg"
 							alt="Chat Icon" />
 						<span
-							class="inline-flex justify-center items-center p-2 absolute size-7 -top-2 -right-3 rounded-full text-xs font-medium bg-pink-600 text-white"
+							class="absolute -right-3 -top-2 inline-flex size-7 items-center justify-center rounded-full bg-pink-600 p-2 text-xs font-medium text-white"
 							>{{ notificationCount }}</span
 						>
 					</button>
 					<div
-						class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 bg-[#f6f9f2] border text-sm text-gray-600 rounded-xl shadow-md h-[50rem] w-[27rem]"
+						class="hs-tooltip-content invisible absolute z-20 inline-block h-[50rem] w-[27rem] rounded-xl border bg-[#f6f9f2] text-sm text-gray-600 opacity-0 shadow-md transition-opacity hs-tooltip-shown:visible hs-tooltip-shown:opacity-100"
 						role="tooltip">
-						<h1 class="text-xl font-semibold m-4">Notification Drawer</h1>
+						<h1 class="m-4 text-xl font-semibold">Notification Drawer</h1>
 						<hr />
 					</div>
 				</div>
@@ -52,7 +52,7 @@
 							:src="profilePicture"
 							alt="Profile Picture" />
 						<div class="flex flex-col">
-							<span class="font-bold tracking whitespace-nowrap">{{
+							<span class="tracking whitespace-nowrap font-bold">{{
 								getPrincipal.username
 							}}</span>
 							<span class="text-gray-500">{{ getPrincipal.corpName }}</span>
@@ -64,8 +64,8 @@
 		</nav>
 		<div
 			id="docs-sidebar"
-			class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-80 bg-white border-e border-gray-200 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0">
-			<div class="py-4 sticky z-20 top-0 bg-white">
+			class="hs-overlay fixed bottom-0 start-0 top-0 z-[60] hidden w-80 -translate-x-full transform overflow-y-auto border-e border-gray-200 bg-white pb-10 transition-all duration-300 hs-overlay-open:translate-x-0 lg:bottom-0 lg:end-auto lg:block lg:translate-x-0">
+			<div class="sticky top-0 z-20 bg-white py-4">
 				<NuxtLink
 					:to="{ name: 'dashboard-home' }"
 					aria-label="Brand"
@@ -76,7 +76,7 @@
 				/></NuxtLink>
 			</div>
 			<div
-				class="hs-accordion-group w-full flex flex-col flex-wrap pl-2"
+				class="hs-accordion-group flex w-full flex-col flex-wrap pl-2"
 				data-hs-accordion-always-open>
 				<ul class="space-y-1.5">
 					<!-- 'Home' route -->
@@ -132,18 +132,18 @@
 				/></ClientOnly>
 
 				<!-- Ending links -->
-				<ul class="space-y-1.5 flex flex-col flex-wrap pl-2">
+				<ul class="flex flex-col flex-wrap space-y-1.5 pl-2">
 					<!-- 'Logout Button' -->
 					<li>
 						<button
-							class="flex items-center gap-x-3.5 w-full py-4 rounded-s-xl px-2.5 bg-gray-100 transition duration-200 hover:bg-gray-200 hover:text-blue-600 font-semibold text-gray-500 group"
+							class="group flex w-full items-center gap-x-3.5 rounded-s-xl bg-gray-100 px-2.5 py-4 font-semibold text-gray-500 transition duration-200 hover:bg-gray-200 hover:text-blue-600"
 							@click="logout">
 							<LogoutIcon />
 							<span>Logout</span>
 						</button>
 					</li>
 				</ul>
-				<div class="text-gray-500 text-sm flex flex-col px-6 mt-5">
+				<div class="mt-5 flex flex-col px-6 text-sm text-gray-500">
 					<span class="font-semibold">Regent Valuers Limited</span>
 					<span>&copy; 2024 All Rights Reserved</span>
 				</div>

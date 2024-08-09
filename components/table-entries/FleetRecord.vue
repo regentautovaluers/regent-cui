@@ -1,18 +1,18 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-4 whitespace-nowrap font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-4 font-semibold text-pink-600">
 			{{ componentProps.fleetName }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-4 font-semibold text-gray-600">
 			{{ componentProps.contactName }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-600 text-center font-semibold">
+		<td class="whitespace-nowrap px-6 py-4 text-center font-semibold text-gray-600">
 			{{ componentProps.contactEmail }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="whitespace-nowrap px-6 py-4 text-center font-semibold text-blue-500">
 			{{ componentProps.contactPhone }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-center font-semibold text-pink-500">
+		<td class="whitespace-nowrap px-6 py-4 text-center font-semibold text-pink-500">
 			<NuxtLink
 				:to="{
 					// name: 'membership-details',

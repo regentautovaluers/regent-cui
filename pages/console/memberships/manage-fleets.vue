@@ -1,16 +1,16 @@
 <template>
-	<div class="py-5 bg-[#f6f9f2] responsive-view h-full">
-		<div class="bg-white w-full p-10 px-2 lg:px-10">
+	<div class="responsive-view h-full bg-[#f6f9f2] py-5">
+		<div class="w-full bg-white p-10 px-2 lg:px-10">
 			<div class="flex items-center justify-end py-4">
 				<button
 					type="button"
-					class="py-3 px-4 mt-7 w-full lg:w-1/4 text-lg items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+					class="mt-7 w-full items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-lg font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50 lg:w-1/4"
 					@click="() => (showAddToFleetsForm = !showAddToFleetsForm)">
 					{{ showAddToFleetsForm ? 'Hide Form' : 'Create New Fleet' }}
 				</button>
 			</div>
 			<div v-show="showAddToFleetsForm">
-				<h1 class="my-4 text-2xl antialiased font-semibold">Add To Your Fleets</h1>
+				<h1 class="my-4 text-2xl font-semibold antialiased">Add To Your Fleets</h1>
 				<p class="text-lg text-gray-500">
 					Note that each fleet you add will appear as one of your corporate options for a
 					bulk membership registration.
@@ -23,12 +23,12 @@
 					v-show="showAddToFleetsForm" />
 			</div>
 
-			<h1 class="my-4 mt-6 text-2xl antialiased font-semibold">Already Added Fleets</h1>
+			<h1 class="my-4 mt-6 text-2xl font-semibold antialiased">Already Added Fleets</h1>
 			<!-- start of data table -->
 			<div class="flex flex-col">
 				<div class="-m-1.5 overflow-x-auto">
-					<div class="p-1.5 min-w-full inline-block align-middle">
-						<div class="border rounded-lg shadow overflow-hidden">
+					<div class="inline-block min-w-full p-1.5 align-middle">
+						<div class="overflow-hidden rounded-lg border shadow">
 							<table class="min-w-full divide-y">
 								<thead>
 									<tr>

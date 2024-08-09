@@ -1,14 +1,14 @@
 <template>
-	<main class="w-screen h-screen flex flex-col justify-center items-center">
+	<main class="flex h-screen w-screen flex-col items-center justify-center">
 		<img
 			src="/icons/misc/page-not-found.svg"
 			alt="Not Found Icon"
 			class="size-96" />
 
-		<h1 class="text-3xl font-bold mt-2">Page Not Found.</h1>
+		<h1 class="mt-2 text-3xl font-bold">Page Not Found.</h1>
 		<NuxtLink
 			:to="{ name: 'authentication-page' }"
-			class="text-blue-500 underline underline-offset-2 mt-2"
+			class="mt-2 text-blue-500 underline underline-offset-2"
 			>Take Me Home</NuxtLink
 		>
 	</main>

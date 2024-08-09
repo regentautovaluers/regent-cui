@@ -1,12 +1,12 @@
 <template>
 	<form @submit.prevent="createAuthorizationLetterRequestHandler">
 		<h1 class="text-lg font-light">Create Your Authorization Letter</h1>
-		<div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 space-x-0 lg:space-x-4 mt-7">
+		<div class="mt-7 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="registration-number"
-					class="block font-medium mb-2 text-lg"
+					class="mb-2 block text-lg font-medium"
 					>Registration Number</label
 				>
 				<input
@@ -20,7 +20,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="customer-name"
-					class="block font-medium mb-2 text-lg"
+					class="mb-2 block text-lg font-medium"
 					>Customer Name</label
 				>
 				<input
@@ -34,7 +34,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="customer-phone"
-					class="block font-medium mb-2 text-lg"
+					class="mb-2 block text-lg font-medium"
 					>Customer Phone Number</label
 				>
 				<input
@@ -46,10 +46,10 @@
 			</div>
 		</div>
 		<!-- Preffered Regent Branch -->
-		<div class="w-full flex flex-col mt-7">
+		<div class="mt-7 flex w-full flex-col">
 			<label
 				for="fuel-type"
-				class="font-medium whitespace-nowrap mb-2 text-lg"
+				class="mb-2 whitespace-nowrap text-lg font-medium"
 				>Preferred Regent Branch</label
 			>
 			<select
@@ -71,22 +71,22 @@
 		<div class="mt-7">
 			<label
 				for="comments-box"
-				class="block font-medium mb-2 text-lg"
+				class="mb-2 block text-lg font-medium"
 				>Comments</label
 			>
 			<textarea
 				id="comments-box"
-				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
+				class="block w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
 				rows="8"
 				placeholder="Provide optional comments for this request."></textarea>
 		</div>
 		<!-- data below the comments box -->
-		<div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 space-x-0 lg:space-x-4 mt-7">
+		<div class="mt-7 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
 			<!-- Policy Number -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="policy-number"
-					class="block font-medium mb-2 text-lg"
+					class="mb-2 block text-lg font-medium"
 					>Policy Number</label
 				>
 				<input
@@ -100,7 +100,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="officer-name"
-					class="block font-medium mb-2 text-lg"
+					class="mb-2 block text-lg font-medium"
 					>Agency / Broker / Bank Officer</label
 				>
 				<input
@@ -114,7 +114,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="authorized-by"
-					class="block font-medium mb-2 text-lg"
+					class="mb-2 block text-lg font-medium"
 					>Authorized By</label
 				>
 				<input
@@ -143,11 +143,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="py-3 px-4 mt-7 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+			class="mt-7 h-16 items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-lg font-semibold text-white hover:bg-blue-700">
 			<span v-if="!formSubmissionLoading">Submit Request</span>
 			<div
 				v-if="formSubmissionLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+				class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 				role="status"
 				aria-label="loading" />
 		</button>

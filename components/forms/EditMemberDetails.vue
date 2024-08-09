@@ -1,18 +1,18 @@
 <template>
 	<form @submit.prevent="updateMemberDetails">
 		<div
-			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
+			class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 			<!-- Phone Field -->
 			<div class="w-full lg:w-1/2">
 				<label
 					for="phone"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Phone</label
 				>
 				<input
 					type="text"
 					id="phone"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="block h-[4.5rem] w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
 					placeholder="+254704080056"
 					v-model="clientPhone" />
 			</div>
@@ -21,13 +21,13 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="email"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Email</label
 				>
 				<input
 					type="email"
 					id="phone"
-					class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+					class="block h-[4.5rem] w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
 					placeholder="youremail@co.ke"
 					v-model="clientEmail" />
 			</div>
@@ -37,13 +37,13 @@
 		<div class="w-full">
 			<label
 				for="full-name"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Full Name</label
 			>
 			<input
 				type="text"
 				id="full-name"
-				class="py-3 px-4 h-[4.5rem] block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+				class="block h-[4.5rem] w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
 				placeholder="Client Name as On Their National ID"
 				v-model="clientName" />
 		</div>
@@ -51,11 +51,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+			class="mt-7 h-16 w-full items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-lg font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50 lg:w-1/2">
 			<span v-if="!formSubmissionLoading">Update Member Details</span>
 			<div
 				v-if="formSubmissionLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+				class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 				role="status"
 				aria-label="loading" />
 		</button>

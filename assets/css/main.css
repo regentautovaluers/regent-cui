@@ -4,7 +4,7 @@
 
 @layer components {
 	.responsive-view {
-		@apply px-3 lg:pl-[340px] md:pr-[20px];
+		@apply px-3 md:pr-[20px] lg:pl-[340px];
 	}
 
 	.active-parent-route {
@@ -16,24 +16,24 @@
 	}
 
 	.custom-dropdown {
-		@apply origin-center absolute z-20 p-1 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 -top-[170%] mb-10 -left-56;
+		@apply absolute -left-56 -top-[170%] z-20 mb-10 mt-2 w-56 origin-center rounded-md bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5;
 	}
 
 	.generic-input {
-		@apply p-3 block w-full border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-200 disabled:pointer-events-none disabled:text-gray-500;
+		@apply block w-full rounded-xl border border-gray-200 p-3 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:bg-gray-200 disabled:text-gray-500;
 	}
 
 	.radio-inputs {
-		@apply flex cursor-pointer items-center rounded-xl border border-pink-200 bg-pink-100 py-4 px-3 text-pink-500 peer-checked:bg-pink-400 peer-checked:text-white h-16;
+		@apply flex h-16 cursor-pointer items-center rounded-xl border border-pink-200 bg-pink-100 px-3 py-4 text-pink-500 peer-checked:bg-pink-400 peer-checked:text-white;
 	}
 
 	.form-submit {
-		@apply py-3 px-4 w-full items-center font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700;
+		@apply w-full items-center rounded-lg border border-transparent bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700;
 	}
 }
 
 .radio-buttons {
-	@apply shrink-0 ms-auto border-gray-200 rounded-full text-blue-600 focus:ring-blue-500;
+	@apply ms-auto shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500;
 }
 
 @layer base {
@@ -44,7 +44,7 @@
 }
 
 .homepage-quicklinks {
-	@apply p-3 transition-all duration-300 ease-in-out bg-blue-600 hover:bg-blue-700 size-24 rounded-[2rem] flex items-center justify-center shadow-lg hover:scale-105;
+	@apply flex size-24 items-center justify-center rounded-[2rem] bg-blue-600 p-3 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700;
 }
 
 .pac-container {

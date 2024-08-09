@@ -1,20 +1,20 @@
 <template>
-	<div class="py-10 h-fit responsive-view">
+	<div class="responsive-view h-fit py-10">
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-lg">
-			<div class="flex space-x-2 items-center w-full md:w-fit">
+			class="flex flex-col items-center justify-between space-y-2 rounded-lg border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
+			<div class="flex w-full items-center space-x-2 md:w-fit">
 				<img
 					class="inline-block size-[60px] rounded-full"
 					src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span class="text-blue-600 font-semibold">{{ clientFullName }} </span>
+					<span class="font-semibold text-blue-600">{{ clientFullName }} </span>
 					<span class="font-semibold text-gray-500"
 						>Has {{ numOfVehicles }} Registered Vehicles</span
 					>
 				</div>
 			</div>
-			<div class="py-2 flex justify-end">
+			<div class="flex justify-end py-2">
 				<ActionTriggeredModal
 					modal-title="Add New Vehicle"
 					:trigger-button-index="0"
@@ -27,10 +27,10 @@
 		</div>
 
 		<!-- start of data table -->
-		<div class="flex flex-col mt-5">
+		<div class="mt-5 flex flex-col">
 			<div class="-m-1.5 overflow-x-auto">
-				<div class="p-1.5 min-w-full inline-block align-middle">
-					<div class="border rounded-lg shadow overflow-hidden">
+				<div class="inline-block min-w-full p-1.5 align-middle">
+					<div class="overflow-hidden rounded-lg border shadow">
 						<table class="min-w-full divide-y">
 							<thead>
 								<tr>

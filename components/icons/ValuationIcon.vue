@@ -4,7 +4,7 @@
 		width="2em"
 		height="2em"
 		viewBox="0 0 24 24"
-		class="flex-shrink-0 size-8 transition duration-75 group-hover:text-blue-600">
+		class="size-8 flex-shrink-0 transition duration-75 group-hover:text-blue-600">
 		<g
 			fill="currentColor"
 			fill-rule="evenodd"

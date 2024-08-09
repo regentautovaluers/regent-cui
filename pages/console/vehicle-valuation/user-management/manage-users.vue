@@ -2,8 +2,8 @@
 	<!-- start of completed valuations data table -->
 	<div class="flex flex-col">
 		<div class="-m-1.5 overflow-x-auto">
-			<div class="p-1.5 min-w-full inline-block align-middle">
-				<div class="border rounded-lg shadow overflow-hidden">
+			<div class="inline-block min-w-full p-1.5 align-middle">
+				<div class="overflow-hidden rounded-lg border shadow">
 					<table class="min-w-full divide-y">
 						<thead>
 							<tr>
@@ -41,13 +41,13 @@
 						<tbody class="divide-y divide-gray-200">
 							<td
 								v-if="getUserAccountsLoading"
-								class="text-center py-4"
+								class="py-4 text-center"
 								colspan="100%">
 								<LoadingIndicator
 									:bar-length="`w-[30%]`"
 									v-if="getUserAccountsLoading" />
 								<br />
-								<span class="text-gray-500 text-lg font-semibold"
+								<span class="text-lg font-semibold text-gray-500"
 									>Loading Your Data.</span
 								>
 							</td>

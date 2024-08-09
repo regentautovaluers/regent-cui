@@ -1,6 +1,6 @@
 <template>
 	<svg
-		class="shrink-0 size-5 text-gray-300"
+		class="size-5 shrink-0 text-gray-300"
 		xmlns="http://www.w3.org/2000/svg"
 		width="16"
 		height="16"

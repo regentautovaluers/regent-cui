@@ -1,6 +1,6 @@
 <template>
 	<svg
-		class="hs-dropdown-open:rotate-180 size-4"
+		class="size-4 hs-dropdown-open:rotate-180"
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
 		height="24"

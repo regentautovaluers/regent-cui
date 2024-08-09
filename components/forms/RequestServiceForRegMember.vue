@@ -12,10 +12,10 @@
 				computedTowingDistance,
 			)
 		">
-		<div class="w-full registration relative">
+		<div class="registration relative w-full">
 			<label
 				for="registration-number"
-				class="block font-medium mb-2"
+				class="mb-2 block font-medium"
 				>Provide Vehicle Registration Number</label
 			>
 			<div class="flex items-center space-x-2">
@@ -30,7 +30,7 @@
 				<button
 					type="button"
 					@click="searchVehicleRegistration"
-					class="py-2 w-1/4 text-lg h-[3.2rem] font-semibold rounded-xl hover:bg-blue-700 form-submit relative overflow-clip disabled:bg-gray-300"
+					class="form-submit relative h-[3.2rem] w-1/4 overflow-clip rounded-xl py-2 text-lg font-semibold hover:bg-blue-700 disabled:bg-gray-300"
 					:disabled="vehicleRegistration.length < 8">
 					<LoadingIndicator
 						v-if="vehicleSearchLoading"
@@ -45,17 +45,17 @@
 			class="my-3"
 			v-if="props.optionalElementsRendered.includes('progressBar')">
 			<div
-				class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
+				class="flex h-3 w-full overflow-hidden rounded-full bg-gray-200"
 				role="progressbar"
 				aria-valuenow="1"
 				aria-valuemin="0"
 				aria-valuemax="100">
 				<div
-					class="flex flex-col justify-center rounded-full overflow-hidden bg-pink-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
+					class="flex flex-col justify-center overflow-hidden whitespace-nowrap rounded-full bg-pink-600 text-center text-xs text-white transition duration-500"
 					:style="{ width: `${currentPercentage}%` }" />
 			</div>
 			<div
-				class="flex items-center justify-between w-full text-end text-gray-500 antialiased mt-3">
+				class="mt-3 flex w-full items-center justify-between text-end text-gray-500 antialiased">
 				<span> {{ vehicleRegistration }} </span>
 				<span>{{ freeDistanceLeftForTowing }} KM FREE TOWING LEFT</span>
 			</div>
@@ -68,7 +68,7 @@
 		<div class="mt-4">
 			<label
 				for="client-name"
-				class="block font-medium mb-2"
+				class="mb-2 block font-medium"
 				>Client Name</label
 			>
 			<input
@@ -85,7 +85,7 @@
 		<div class="mt-4">
 			<label
 				for="phone"
-				class="block font-medium mb-2"
+				class="mb-2 block font-medium"
 				>Phone</label
 			>
 			<input
@@ -99,12 +99,12 @@
 		</div>
 
 		<!-- Vehicle Make and Model -->
-		<div class="w-full flex space-x-4 mt-4">
+		<div class="mt-4 flex w-full space-x-4">
 			<!-- Vehicle Make -->
 			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-make"
-					class="block font-medium mb-2"
+					class="mb-2 block font-medium"
 					>Vehicle Make</label
 				>
 				<input
@@ -121,7 +121,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="vehicle-model"
-					class="block font-medium mb-2"
+					class="mb-2 block font-medium"
 					>Vehicle Model</label
 				>
 				<input
@@ -137,7 +137,7 @@
 
 		<!-- vehicle type as published by Regent -->
 		<div
-			class="w-full space-y-2 mt-4"
+			class="mt-4 w-full space-y-2"
 			v-if="props.clientServiceTypeName === 'Towing'">
 			<label
 				for="vehicle-type"
@@ -146,7 +146,7 @@
 			>
 			<select
 				class="generic-input"
-				:class="loadingVehicleTypes ? 'animate-pulse opactiy-50' : null"
+				:class="loadingVehicleTypes ? 'opactiy-50 animate-pulse' : null"
 				id="vehicle-type"
 				required
 				v-model.number="vehicleTypeIndex">
@@ -161,13 +161,13 @@
 
 		<!-- tyre metadata -->
 		<div v-if="props.optionalElementsRendered.includes('tyreMetadata')">
-			<div class="space-y-2 my-4">
+			<div class="my-4 space-y-2">
 				<div>
 					<input
 						id="button1"
 						type="radio"
 						name="radio-vertical-group"
-						class="hidden peer"
+						class="peer hidden"
 						:value="true"
 						v-model="haveSpareTyre"
 						selected />
@@ -182,7 +182,7 @@
 						id="button2"
 						type="radio"
 						name="radio-vertical-group"
-						class="hidden peer"
+						class="peer hidden"
 						:value="false"
 						v-model="haveSpareTyre" />
 					<label
@@ -192,10 +192,10 @@
 					</label>
 				</div>
 			</div>
-			<div class="w-full flex flex-col mt-4">
+			<div class="mt-4 flex w-full flex-col">
 				<label
 					for="fuel-type"
-					class="font-medium whitespace-nowrap mb-2"
+					class="mb-2 whitespace-nowrap font-medium"
 					>Tyre Type</label
 				>
 				<select
@@ -220,7 +220,7 @@
 
 		<!-- vehicle class as published by Regent -->
 		<div
-			class="w-full space-y-2 mt-4"
+			class="mt-4 w-full space-y-2"
 			v-if="props.optionalElementsRendered.includes('vehicleClass')">
 			<label
 				for="vehicle-type"
@@ -229,7 +229,7 @@
 			>
 			<select
 				class="generic-input"
-				:class="loadingVehicleTypes ? 'animate-pulse opactiy-50' : null"
+				:class="loadingVehicleTypes ? 'opactiy-50 animate-pulse' : null"
 				id="vehicle-type"
 				required
 				v-model.number="vehicleClass">
@@ -245,11 +245,11 @@
 		<!-- fuel type and cost -->
 
 		<div
-			class="flex my-5 flex-col justify-between space-x-0"
+			class="my-5 flex flex-col justify-between space-x-0"
 			v-if="props.optionalElementsRendered.includes('fuelData')">
 			<label
 				for="fuel-type"
-				class="block font-medium mb-2 dark:text-white"
+				class="mb-2 block font-medium dark:text-white"
 				>Fuel Type</label
 			>
 			<select
@@ -270,14 +270,14 @@
 		<div class="mt-5">
 			<label
 				for="client-location"
-				class="block font-medium mb-2"
+				class="mb-2 block font-medium"
 				>Client Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
 					id="client-location"
-					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
+					class="w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent py-5 ps-10 focus:border-x-transparent focus:border-b-blue-500 focus:border-t-transparent focus:ring-0"
 					placeholder="Type an address to search"
 					required />
 				<img
@@ -293,14 +293,14 @@
 			v-if="props.optionalElementsRendered.includes('dropoffLocation')">
 			<label
 				for="dropoff-location"
-				class="block font-medium mb-2"
+				class="mb-2 block font-medium"
 				>Drop Off Location</label
 			>
 			<div class="relative">
 				<input
 					type="text"
 					id="dropoff-location"
-					class="py-5 ps-10 w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:border-b-blue-500 focus:ring-0"
+					class="w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent py-5 ps-10 focus:border-x-transparent focus:border-b-blue-500 focus:border-t-transparent focus:ring-0"
 					placeholder="Type an address to search"
 					required />
 				<img
@@ -314,27 +314,27 @@
 		<div class="my-5">
 			<label
 				for="comments-box"
-				class="block font-medium mb-2"
+				class="mb-2 block font-medium"
 				>Comments</label
 			>
 			<textarea
 				id="comments-box"
-				class="py-3 px-4 block w-full border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500"
+				class="block w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
 				rows="6"
 				placeholder="Provide optional comments for this request."
 				v-model="requestRemarks"></textarea>
 		</div>
 
 		<!-- statistics -->
-		<div class="flex justify-between mt-8 space-x-4">
+		<div class="mt-8 flex justify-between space-x-4">
 			<div
-				class="w-1/3 p-3 rounded-lg border border-pink-500"
+				class="w-1/3 rounded-lg border border-pink-500 p-3"
 				v-if="props.clientServiceTypeName === 'Towing'">
 				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
 				<h1 class="text-lg font-semibold text-gray-500">{{ computedTowingDistance }}Km</h1>
 			</div>
 			<div
-				class="w-1/3 p-3 rounded-lg border border-pink-500"
+				class="w-1/3 rounded-lg border border-pink-500 p-3"
 				v-if="props.clientServiceTypeName === 'Towing'">
 				<h1 class="text-lg font-semibold text-pink-500">Free Tow</h1>
 				<h1 class="text-lg font-semibold text-gray-500">
@@ -342,7 +342,7 @@
 				</h1>
 			</div>
 			<div
-				class="p-3 rounded-lg border border-pink-500"
+				class="rounded-lg border border-pink-500 p-3"
 				:class="props.clientServiceTypeName === 'Towing' ? 'w-1/3' : 'w-full'">
 				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
 				<h1
@@ -365,7 +365,7 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="form-submit relative overflow-clip mt-4 text-lg h-14">
+			class="form-submit relative mt-4 h-14 overflow-clip text-lg">
 			<LoadingIndicator
 				v-if="formSubmissionLoading"
 				inject-classes="absolute w-[100%] mt-0 -top-1" />

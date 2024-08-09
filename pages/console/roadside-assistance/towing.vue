@@ -1,7 +1,7 @@
 <template>
 	<div class="responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
 		<div
-			class="h-96 lg:h-[95.5%] w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
+			class="h-96 w-full overflow-clip rounded-md border border-gray-500 border-opacity-50 lg:h-[95.5%]">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -20,8 +20,8 @@
 						position: center,
 						minWidth: 240,
 					}">
-					<div class="bg-blue-600 rounded-lg p-2 text-white">
-						<h1 class="font-semibold text-lg">Your Current Location</h1>
+					<div class="rounded-lg bg-blue-600 p-2 text-white">
+						<h1 class="text-lg font-semibold">Your Current Location</h1>
 					</div>
 				</InfoWindow>
 				<InfoWindow
@@ -31,8 +31,8 @@
 						position: marker.coords,
 						minWidth: 240,
 					}">
-					<div class="bg-blue-600 rounded-lg p-2 text-white">
-						<h1 class="font-semibold text-lg">{{ marker.info }}</h1>
+					<div class="rounded-lg bg-blue-600 p-2 text-white">
+						<h1 class="text-lg font-semibold">{{ marker.info }}</h1>
 					</div>
 				</InfoWindow>
 				<Polyline
@@ -46,11 +46,11 @@
 			</GoogleMap>
 		</div>
 		<div class="p-2 lg:p-5">
-			<h1 class="mb-4 text-3xl antialiased font-semibold">Request Towing</h1>
+			<h1 class="mb-4 text-3xl font-semibold antialiased">Request Towing</h1>
 			<MapIssuesWarning />
 			<div
-				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
-				<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+				class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
+				<div class="border-b-1 w- space-x-4 text-sm md:text-base lg:w-fit lg:text-lg">
 					<button
 						@click="() => (currentRegForm = 0)"
 						:class="[

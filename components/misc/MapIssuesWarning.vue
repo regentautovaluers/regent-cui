@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4"
+		class="my-4 rounded-lg border border-yellow-200 bg-yellow-100 p-4 text-sm text-yellow-800"
 		role="alert">
 		If the map adjacent to this form has not loaded, kindly click
 		<button @click="reloadPage">

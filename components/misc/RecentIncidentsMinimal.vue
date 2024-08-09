@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center justify-between h-16 text-gray-500 hover:text-gray-600">
+	<div class="flex h-16 items-center justify-between text-gray-500 hover:text-gray-600">
 		<span class="flex flex-col">
 			<span class="font-semibold">{{ componentProps.regNo }}</span>
 			<span class="text-sm">{{ componentProps.dateTime }}</span>
@@ -34,7 +34,7 @@
 						:to="{
 							name: 'ava-incident-report',
 						}"
-						class="flex items-center text-sm gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+						class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 						View Report
 					</NuxtLink>
 				</div>

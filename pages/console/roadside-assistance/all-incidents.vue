@@ -1,15 +1,15 @@
 <template>
-	<div class="py-10 h-full responsive-view">
+	<div class="responsive-view h-full py-10">
 		<!-- top card with link to add new member -->
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl mb-6">
-			<div class="flex space-x-2 items-center w-full md:w-fit">
+			class="mb-6 flex flex-col items-center justify-between space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
+			<div class="flex w-full items-center space-x-2 md:w-fit">
 				<img
-					class="object-cover size-[60px] rounded-full"
+					class="size-[60px] rounded-full object-cover"
 					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span class="text-blue-600 font-semibold inline-flex items-center"
+					<span class="inline-flex items-center font-semibold text-blue-600"
 						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
@@ -22,18 +22,18 @@
 			<div class="space-x-6">
 				<NuxtLink
 					:to="{ name: 'memberships-home' }"
-					class="text-blue-600 underline underline-offset-2 font-semibold"
+					class="font-semibold text-blue-600 underline underline-offset-2"
 					>View All Members</NuxtLink
 				>
 				<NuxtLink
 					:to="{ name: 'new-member' }"
-					class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-xl w-full md:w-fit text-center"
+					class="w-full rounded-xl bg-blue-600 p-4 text-center text-sm font-semibold text-white md:w-fit"
 					>ADD A NEW MEMBER</NuxtLink
 				>
 			</div>
 		</div>
 		<div
-			class="flex whitespace-nowrap items-center justify-around py-5 px-6 border-2 border-gray-200 shadow-sm rounded-xl mb-6">
+			class="mb-6 flex items-center justify-around whitespace-nowrap rounded-xl border-2 border-gray-200 px-6 py-5 shadow-sm">
 			<div
 				v-for="(info, index) in subLinksInfo"
 				:key="index"
@@ -45,10 +45,10 @@
 						class="size-7" />
 				</div>
 				<div class="flex flex-col space-y-2">
-					<span class="text-gray-600 font-semibold">{{ info.title }}</span>
-					<span class="text-gray-500 font-semibold">{{ info.infoText }}</span>
+					<span class="font-semibold text-gray-600">{{ info.title }}</span>
+					<span class="font-semibold text-gray-500">{{ info.infoText }}</span>
 					<NuxtLink
-						class="text-blue-600 font-semibold"
+						class="font-semibold text-blue-600"
 						:to="{ name: info.link }">
 						{{ info.linkText }}
 					</NuxtLink>
@@ -56,19 +56,19 @@
 			</div>
 		</div>
 
-		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
+		<div class="mt-6 flex flex-col md:flex-row md:space-x-6">
 			<div class="md:w-[80%]">
 				<!-- search & filter controls -->
-				<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
+				<div class="mb-6 flex flex-nowrap items-center justify-between overflow-x-auto">
 					<!-- search box -->
-					<div class="relative flex-grow mr-10 max-w-[35%]">
+					<div class="relative mr-10 max-w-[35%] flex-grow">
 						<input
 							type="text"
-							class="peer py-3 h-12 px-4 ps-11 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none min-w-full"
+							class="peer h-12 min-w-full rounded-xl border-gray-200 px-4 py-3 ps-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
 							placeholder="Search Name, Email, Phone or Registration"
 							v-model="searchFilterTerm" />
 						<div
-							class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+							class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2 peer-disabled:pointer-events-none peer-disabled:opacity-50">
 							<img
 								src="/images/topnav/search-icon.svg"
 								alt="Search Icon" />
@@ -82,7 +82,7 @@
 								<button
 									id="hs-dropdown-default"
 									type="button"
-									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-xl border border-gray-200 text-gray-800 shadow-sm"
+									class="hs-dropdown-toggle inline-flex h-12 items-center gap-x-2 rounded-xl border border-gray-200 px-4 py-3 font-medium text-gray-800 shadow-sm"
 									:class="
 										searchServiceType === ''
 											? 'bg-white text-black'
@@ -94,7 +94,7 @@
 											: searchServiceType
 									}}
 									<svg
-										class="hs-dropdown-open:rotate-180 size-4"
+										class="size-4 hs-dropdown-open:rotate-180"
 										xmlns="http://www.w3.org/2000/svg"
 										width="24"
 										height="24"
@@ -108,10 +108,10 @@
 									</svg>
 								</button>
 								<div
-									class="hs-dropdown-menu z-40 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2"
+									class="hs-dropdown-menu duration z-40 mt-2 hidden min-w-60 space-y-2 rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
 									aria-labelledby="hs-dropdown-default">
 									<div
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center"
+										class="flex items-center rounded-lg p-2 hover:bg-gray-200"
 										v-for="(data, index) in [
 											{
 												val: 'towing',
@@ -135,9 +135,9 @@
 											type="radio"
 											name="membership-category"
 											:value="data.val"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+											class="mt-0.5 shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
 											v-model="searchServiceType" />
-										<label class="text-gray-500 ms-2 dark:text-gray-400">{{
+										<label class="ms-2 text-gray-500 dark:text-gray-400">{{
 											data.text
 										}}</label>
 									</div>
@@ -154,7 +154,7 @@
 								}
 							"
 							title="Clear Filters"
-							class="bg-gray-300 inline-flex items-center justify-center p-2 rounded-full size-10">
+							class="inline-flex size-10 items-center justify-center rounded-full bg-gray-300 p-2">
 							<Icon
 								name="material-symbols:close"
 								class="text-lg" />
@@ -164,8 +164,8 @@
 				<!-- start of data table -->
 				<div class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
-						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div class="border rounded-xl shadow overflow-hidden">
+						<div class="inline-block min-w-full p-1.5 align-middle">
+							<div class="overflow-hidden rounded-xl border shadow">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -226,21 +226,21 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+				<div class="mt-2 flex w-full items-center justify-between rounded-sm py-2">
 					<span>Showing Page {{ currentPage + 1 }} of {{ totalPages }}</span>
 					<div
 						class="space-x-1"
 						v-if="totalPages > 1">
 						<button
 							@click="prevPage"
-							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							class="rounded-md border bg-blue-600 p-2 text-center text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-gray-500"
 							:disabled="currentPage === 0">
 							Previous
 						</button>
 
 						<button
 							@click="nextPage"
-							class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+							class="rounded-md border bg-blue-600 p-2 text-center text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-gray-500"
 							:disabled="currentPage === totalPages - 1">
 							Next
 						</button>
@@ -248,10 +248,10 @@
 				</div>
 			</div>
 			<!--right analysis graphs -->
-			<div class="md:w-[20%] space-y-6 h-full">
-				<div class="border shadow h-[24rem] rounded-xl">
-					<h1 class="text-2xl font-semibold m-4">Rescue Trends</h1>
-					<div class="flex justify-center flex-grow">
+			<div class="h-full space-y-6 md:w-[20%]">
+				<div class="h-[24rem] rounded-xl border shadow">
+					<h1 class="m-4 text-2xl font-semibold">Rescue Trends</h1>
+					<div class="flex flex-grow justify-center">
 						<IncidentsDonutChart
 							:total-fuel-delivery="individualIncidentsCount[0]"
 							:total-jumpstarting="individualIncidentsCount[1]"
@@ -259,7 +259,7 @@
 							:total-tyre-change="individualIncidentsCount[3]" />
 					</div>
 				</div>
-				<div class="border shadow min-h-[28rem] rounded-xl">
+				<div class="min-h-[28rem] rounded-xl border shadow">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-xl font-semibold">Road Rescue Trends</h1>
 					</div>

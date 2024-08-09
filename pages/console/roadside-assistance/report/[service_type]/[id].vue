@@ -1,25 +1,25 @@
 <template>
-	<div class="py-10 responsive-view">
+	<div class="responsive-view py-10">
 		<!-- top section with general information about the report -->
-		<div class="rounded-lg border shadow-sm h-52 mx-2 lg:mx-16">
+		<div class="mx-2 h-52 rounded-lg border shadow-sm lg:mx-16">
 			<!-- general trip details and download button -->
-			<div class="flex items-center justify-between py-3 px-8">
+			<div class="flex items-center justify-between px-8 py-3">
 				<div class="flex">
 					<img
 						:src="serviceReport.checklist.front_image"
 						alt="Responder Image"
-						class="rounded-2xl size-20 object-cover shadow-sm" />
-					<div class="flex-grow space-y-1 ml-5">
+						class="size-20 rounded-2xl object-cover shadow-sm" />
+					<div class="ml-5 flex-grow space-y-1">
 						<h1 class="font-semibold text-blue-600">
 							{{ serviceReport.registration_no }}
 						</h1>
 						<div class="w-fit space-x-2">
-							<span class="text-gray-500 font-semibold"
+							<span class="font-semibold text-gray-500"
 								>{{ serviceReport.vehicle_make }}
 								{{ serviceReport.vehicle_model }}</span
 							>
-							<span class="text-gray-700 font-semibold">&middot;</span>
-							<span class="text-gray-500 font-semibold">{{
+							<span class="font-semibold text-gray-700">&middot;</span>
+							<span class="font-semibold text-gray-500">{{
 								serviceReport.checklist.color
 							}}</span>
 						</div>
@@ -29,24 +29,24 @@
 					</div>
 				</div>
 				<button
-					class="bg-blue-600 hover:bg-blue-700 text-white font-semibold uppercase px-4 py-2 rounded-xl h-14 disabled:bg-gray-300"
+					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold uppercase text-white hover:bg-blue-700 disabled:bg-gray-300"
 					disabled>
 					Download Report
 				</button>
 			</div>
 			<hr />
-			<div class="flex items-start justify-between py-3 px-8">
+			<div class="flex items-start justify-between px-8 py-3">
 				<div class="flex flex-col space-y-1">
 					<span class="font-semibold text-gray-600">Vehicle Owner</span>
 					<span class="text-gray-500">{{ serviceReport.user_name }}</span>
-					<span class="text-blue-600 font-semibold">{{ serviceReport.user_phone }}</span>
+					<span class="font-semibold text-blue-600">{{ serviceReport.user_phone }}</span>
 				</div>
 				<div class="flex flex-col space-y-1">
 					<span class="font-semibold text-gray-600">Dispatcher</span>
 					<span class="text-gray-500">{{
 						serviceReport.control_handler.full_names
 					}}</span>
-					<span class="text-blue-600 font-semibold">{{
+					<span class="font-semibold text-blue-600">{{
 						serviceReport.control_handler.phonenumber
 					}}</span>
 				</div>
@@ -55,7 +55,7 @@
 					<span class="text-gray-500">{{
 						formatToDateTimePair(serviceReport.date_created)[0]
 					}}</span>
-					<span class="text-blue-600 font-semibold"
+					<span class="font-semibold text-blue-600"
 						>{{ formatToDateTimePair(serviceReport.date_created)[1] }} -
 						{{ formatToDateTimePair(serviceReport.completion_time)[1] }}</span
 					>
@@ -70,13 +70,13 @@
 		</div>
 
 		<!-- responder details, trip detals and cost breakdown -->
-		<div class="grid grid-cols-2 gap-x-8 h-[28rem] rounded-lg shadow-sm mt-8 mx-2 lg:mx-16">
-			<div class="h-full rounded-lg flex flex-col space-y-8">
-				<div class="border rounded-lg shadow-sm h-[22%] flex items-center space-x-4 px-8">
+		<div class="mx-2 mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm lg:mx-16">
+			<div class="flex h-full flex-col space-y-8 rounded-lg">
+				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
 					<img
 						src="https://images.unsplash.com/photo-1721048166150-3b2bb2ca3431?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 						alt="Responder Image"
-						class="rounded-full size-20 object-cover shadow-sm" />
+						class="size-20 rounded-full object-cover shadow-sm" />
 					<div class="flex-grow space-y-1">
 						<h1 class="font-semibold text-gray-700">Responder</h1>
 						<h2 class="font-semibold text-gray-500">
@@ -84,28 +84,28 @@
 						</h2>
 						<div class="w-fit space-x-2">
 							<span
-								class="text-blue-600 font-semibold bg-gray-200 rounded-xl px-2 p-1 text-sm">
+								class="rounded-xl bg-gray-200 p-1 px-2 text-sm font-semibold text-blue-600">
 								{{ serviceReport.driver_vehicle_registration_snapshot }}
 							</span>
-							<span class="text-gray-700 font-semibold">&middot;</span>
-							<span class="text-gray-500 font-semibold"
+							<span class="font-semibold text-gray-700">&middot;</span>
+							<span class="font-semibold text-gray-500"
 								>{{ serviceReport.driver_vehicle_make_snapshot }}
 								{{ serviceReport.driver_vehicle_model_snapshot }}</span
 							>
 						</div>
 					</div>
 				</div>
-				<div class="flex-grow border rounded-lg py-4 px-8 shadow-sm">
-					<h1 class="font-semibold text-xl mb-2">Trip Details</h1>
+				<div class="flex-grow rounded-lg border px-8 py-4 shadow-sm">
+					<h1 class="mb-2 text-xl font-semibold">Trip Details</h1>
 					<h1 class="font-semibold text-gray-500">
 						As logged by our system on
 						{{ formatToDateTimePair(serviceReport.dispatch_time)[0] }}
 					</h1>
-					<div class="flex items-center space-x-4 mt-8">
+					<div class="mt-8 flex items-center space-x-4">
 						<div
 							v-for="(detail, index) in tripDetailsFields"
 							:key="index"
-							class="rounded-md border bg-gray-100 w-1/4 p-3">
+							class="w-1/4 rounded-md border bg-gray-100 p-3">
 							<h1 class="font-semibold text-gray-700">
 								{{ detail.label }}
 							</h1>
@@ -115,11 +115,11 @@
 					<div class="mt-8 space-y-6">
 						<div class="flex items-center space-x-4">
 							<div
-								class="size-12 flex items-center justify-center bg-blue-600 rounded-full">
+								class="flex size-12 items-center justify-center rounded-full bg-blue-600">
 								<PickupLocationIcon :classes="['size-7']" />
 							</div>
 							<div class="flex-grow">
-								<span class="text-gray-700 font-semibold">{{
+								<span class="font-semibold text-gray-700">{{
 									serviceReport.pickup_location
 								}}</span>
 								<h1 class="text-gray-500">Incident Location</h1>
@@ -127,11 +127,11 @@
 						</div>
 						<div class="flex items-center space-x-4">
 							<div
-								class="size-12 flex items-center justify-center bg-pink-600 rounded-full">
+								class="flex size-12 items-center justify-center rounded-full bg-pink-600">
 								<DropOffLocationIcon :classes="['size-7']" />
 							</div>
 							<div class="flex-grow">
-								<span class="text-gray-700 font-semibold">{{
+								<span class="font-semibold text-gray-700">{{
 									serviceReport.dropoff_location
 								}}</span>
 								<h1 class="text-gray-500">Towing Destination</h1>
@@ -140,38 +140,38 @@
 					</div>
 				</div>
 			</div>
-			<div class="h-full border rounded-lg py-4 px-8 shadow-sm">
-				<h1 class="font-semibold text-xl mb-8">Cost Breakdown</h1>
-				<span class="text-gray-500 font-semibold">
+			<div class="h-full rounded-lg border px-8 py-4 shadow-sm">
+				<h1 class="mb-8 text-xl font-semibold">Cost Breakdown</h1>
+				<span class="font-semibold text-gray-500">
 					{{ serviceReport.registration_no }} had
 					{{ serviceReport.current_free_distance }} Km of free towing remaining</span
 				>
 				<div
-					class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden mt-3"
+					class="mt-3 flex h-3 w-full overflow-hidden rounded-full bg-gray-200"
 					role="progressbar"
 					aria-valuenow="1"
 					aria-valuemin="0"
 					aria-valuemax="100">
 					<div
-						class="flex flex-col justify-center rounded-full overflow-hidden bg-pink-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
+						class="flex flex-col justify-center overflow-hidden whitespace-nowrap rounded-full bg-pink-600 text-center text-xs text-white transition duration-500"
 						:style="{ width: `${currentPercentage}%` }" />
 				</div>
 				<div
 					v-for="(field, index) in costBreakdownFields"
 					:key="index"
-					class="py-3 my-2 flex items-center justify-between text-lg"
+					class="my-2 flex items-center justify-between py-3 text-lg"
 					:class="{
 						'border-b': index !== costBreakdownFields.length - 1,
 					}">
-					<span class="text-gray-500 font-semibold">{{ field.label }}: </span>
-					<span class="text-gray-700 font-semibold">{{ field.value }}</span>
+					<span class="font-semibold text-gray-500">{{ field.label }}: </span>
+					<span class="font-semibold text-gray-700">{{ field.value }}</span>
 				</div>
 			</div>
 		</div>
 
 		<!-- map section -->
 		<div
-			class="h-[42rem] border rounded-lg shadow-sm mt-24 mx-2 lg:mx-16 relative overflow-clip">
+			class="relative mx-2 mt-24 h-[42rem] overflow-clip rounded-lg border shadow-sm lg:mx-16">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -183,8 +183,8 @@
 						position: coordinates[0],
 						minWidth: 240,
 					}">
-					<div class="bg-pink-600 rounded-lg p-2 text-white">
-						<h1 class="font-semibold text-lg">Incident Location</h1>
+					<div class="rounded-lg bg-pink-600 p-2 text-white">
+						<h1 class="text-lg font-semibold">Incident Location</h1>
 					</div>
 				</InfoWindow>
 				<InfoWindow
@@ -193,8 +193,8 @@
 						position: coordinates[1],
 						minWidth: 240,
 					}">
-					<div class="bg-pink-600 rounded-lg p-2 text-white">
-						<h1 class="font-semibold text-lg">Towing Destination</h1>
+					<div class="rounded-lg bg-pink-600 p-2 text-white">
+						<h1 class="text-lg font-semibold">Towing Destination</h1>
 					</div>
 				</InfoWindow>
 				<Polyline
@@ -209,43 +209,43 @@
 
 			<!-- Bottom statistics -->
 			<div
-				class="absolute bottom-8 w-[90%] left-1/2 transform -translate-x-1/2 bg-white px-8 py-4 rounded-lg h-40 border shadow-sm flex items-center justify-between">
-				<div class="w-1/3 h-full max-h-full flex items-center">
+				class="absolute bottom-8 left-1/2 flex h-40 w-[90%] -translate-x-1/2 transform items-center justify-between rounded-lg border bg-white px-8 py-4 shadow-sm">
+				<div class="flex h-full max-h-full w-1/3 items-center">
 					<img
 						src="/images/towing-image.jpg"
 						alt="Service Image"
-						class="h-full w-[40%] object-cover rounded-lg" />
+						class="h-full w-[40%] rounded-lg object-cover" />
 
-					<div class="flex-grow space-y-1 ml-5">
+					<div class="ml-5 flex-grow space-y-1">
 						<h1 class="font-semibold text-gray-700">
 							{{ serviceReport.user_name }}
 						</h1>
-						<div class="w-fit space-x-2 flex items-center">
+						<div class="flex w-fit items-center space-x-2">
 							<span
-								class="text-blue-600 font-semibold bg-gray-200 rounded-xl px-2 p-1 text-sm">
+								class="rounded-xl bg-gray-200 p-1 px-2 text-sm font-semibold text-blue-600">
 								KDG 880D
 							</span>
-							<span class="text-gray-500 font-semibold"
+							<span class="font-semibold text-gray-500"
 								>{{ serviceReport.vehicle_make }}
 								{{ serviceReport.vehicle_model }}</span
 							>
 						</div>
-						<h2 class="font-semibold text-gray-700 whitespace-nowrap">
+						<h2 class="whitespace-nowrap font-semibold text-gray-700">
 							Tracking Id: {{ serviceReport.tracking_code }}
 						</h2>
-						<span class="text-gray-500 font-semibold">
+						<span class="font-semibold text-gray-500">
 							{{ formatToDateTimePair(serviceReport.date_created)[0] }}
 						</span>
 					</div>
 				</div>
-				<div class="w-1/3 h-full max-h-full space-y-6 flex flex-col justify-center">
+				<div class="flex h-full max-h-full w-1/3 flex-col justify-center space-y-6">
 					<div class="flex items-center space-x-4">
 						<div
-							class="size-12 flex items-center justify-center bg-blue-600 rounded-full">
+							class="flex size-12 items-center justify-center rounded-full bg-blue-600">
 							<PickupLocationIcon :classes="['size-7']" />
 						</div>
 						<div class="flex-grow">
-							<span class="text-gray-700 font-semibold">{{
+							<span class="font-semibold text-gray-700">{{
 								serviceReport.pickup_location
 							}}</span>
 							<h1 class="text-gray-500">Incident Location</h1>
@@ -253,28 +253,28 @@
 					</div>
 					<div class="flex items-center space-x-4">
 						<div
-							class="size-12 flex items-center justify-center bg-pink-600 rounded-full">
+							class="flex size-12 items-center justify-center rounded-full bg-pink-600">
 							<DropOffLocationIcon :classes="['size-7']" />
 						</div>
 						<div class="flex-grow">
-							<span class="text-gray-700 font-semibold">{{
+							<span class="font-semibold text-gray-700">{{
 								serviceReport.dropoff_location
 							}}</span>
 							<h1 class="text-gray-500">Towing Destination</h1>
 						</div>
 					</div>
 				</div>
-				<div class="h-full max-h-full space-y-4 flex flex-col justify-start">
+				<div class="flex h-full max-h-full flex-col justify-start space-y-4">
 					<div class="flex items-center">
-						<div class="size-4 bg-blue-600 rounded-full" />
-						<div class="flex-grow flex justify-between items-center space-x-8 ml-1">
+						<div class="size-4 rounded-full bg-blue-600" />
+						<div class="ml-1 flex flex-grow items-center justify-between space-x-8">
 							<h1 class="text-gray-500">Distance:</h1>
 							<span class="text-blue-500">{{ serviceReport.distance }}KM</span>
 						</div>
 					</div>
 					<div class="flex items-center">
-						<div class="size-4 bg-pink-600 rounded-full" />
-						<div class="flex-grow flex justify-between items-center space-x-18 ml-1">
+						<div class="size-4 rounded-full bg-pink-600" />
+						<div class="space-x-18 ml-1 flex flex-grow items-center justify-between">
 							<h1 class="text-gray-500">Payment:</h1>
 							<span class="text-blue-500"
 								>{{ serviceReport.cost + serviceReport.extra_charges }} Ksh</span
@@ -286,80 +286,80 @@
 		</div>
 
 		<!-- pre-towing report summary -->
-		<div class="grid grid-cols-2 gap-x-8 h-fit rounded-lg shadow-sm mt-8 mx-2 lg:mx-16">
+		<div class="mx-2 mt-8 grid h-fit grid-cols-2 gap-x-8 rounded-lg shadow-sm lg:mx-16">
 			<!-- Collected Data Section -->
-			<div class="h-[35rem] max-h-[35rem] border rounded-lg py-4 px-8 overflow-y-scroll">
-				<h1 class="font-semibold text-xl mb-5">Pre-Towing Report Summary</h1>
+			<div class="h-[35rem] max-h-[35rem] overflow-y-scroll rounded-lg border px-8 py-4">
+				<h1 class="mb-5 text-xl font-semibold">Pre-Towing Report Summary</h1>
 				<div class="flex items-start space-x-4">
 					<div
-						class="w-[12%] border border-yellow-500 rounded-md p-2 flex justify-center items-center">
+						class="flex w-[12%] items-center justify-center rounded-md border border-yellow-500 p-2">
 						<EngineIcon
 							:classes="['size-12']"
 							color="#eab308" />
 					</div>
 					<div>
-						<h1 class="underline text-lg font-semibold">Engine Compartment</h1>
+						<h1 class="text-lg font-semibold underline">Engine Compartment</h1>
 						<div
 							class="flex items-center space-x-4 py-1"
 							v-for="(detail, index) in computedChecklistEngineDetails"
 							:index="index">
-							<div class="size-5 min-h-5 min-w-5 bg-gray-300 rounded-md" />
-							<span class="text-gray-500 font-semibold">{{ detail }}</span>
+							<div class="size-5 min-h-5 min-w-5 rounded-md bg-gray-300" />
+							<span class="font-semibold text-gray-500">{{ detail }}</span>
 						</div>
 					</div>
 				</div>
-				<div class="flex items-start space-x-4 mt-5">
+				<div class="mt-5 flex items-start space-x-4">
 					<div
-						class="w-[12%] border border-pink-500 rounded-md p-2 flex justify-center items-center">
+						class="flex w-[12%] items-center justify-center rounded-md border border-pink-500 p-2">
 						<VehicleIcon
 							:classes="['size-12']"
 							color="#ec4899" />
 					</div>
 					<div>
-						<h1 class="underline text-lg font-semibold">Exterior Vehicle Condition</h1>
+						<h1 class="text-lg font-semibold underline">Exterior Vehicle Condition</h1>
 						<div
 							class="flex items-center space-x-4 py-1"
 							v-for="(detail, index) in computedChecklistExteriorDetails"
 							:index="index">
-							<div class="size-5 min-h-5 min-w-5 bg-gray-300 rounded-md" />
-							<span class="text-gray-500 font-semibold">{{ detail }}</span>
+							<div class="size-5 min-h-5 min-w-5 rounded-md bg-gray-300" />
+							<span class="font-semibold text-gray-500">{{ detail }}</span>
 						</div>
 					</div>
 				</div>
-				<div class="flex items-start space-x-4 mt-5">
+				<div class="mt-5 flex items-start space-x-4">
 					<div
-						class="w-[12%] border border-green-500 rounded-md p-2 flex justify-center items-center">
+						class="flex w-[12%] items-center justify-center rounded-md border border-green-500 p-2">
 						<ExtrasIcon
 							:classes="['size-12']"
 							color="#22c55e" />
 					</div>
 					<div>
-						<h1 class="underline text-lg font-semibold">Extra Vehicle Details</h1>
+						<h1 class="text-lg font-semibold underline">Extra Vehicle Details</h1>
 						<div
 							class="flex items-center space-x-4 py-1"
 							v-for="(detail, index) in computedChecklistExtraDetails"
 							:index="index">
-							<div class="size-5 min-h-5 min-w-5 bg-gray-300 rounded-md" />
-							<span class="text-gray-500 font-semibold">{{ detail }}</span>
+							<div class="size-5 min-h-5 min-w-5 rounded-md bg-gray-300" />
+							<span class="font-semibold text-gray-500">{{ detail }}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- pre-towing pictures section -->
-			<div class="h-[35rem] max-h-[35rem] rounded-lg relative">
-				<div class="mb-2 h-[80%] max-h-[80%] border rounded-md overflow-clip">
+			<div class="relative h-[35rem] max-h-[35rem] rounded-lg">
+				<div class="mb-2 h-[80%] max-h-[80%] overflow-clip rounded-md border">
 					<img
 						:src="serviceImages[activePreTowingImage]"
 						alt="Report Image"
-						class="w-full h-full object-contain" />
+						class="h-full w-full object-contain" />
 				</div>
-				<div class="flex overflow-auto h-[20%] space-x-2">
+				<div class="flex h-[20%] space-x-2 overflow-auto">
 					<button
-						class="rounded-lg bg-yellow-500 min-w-40 border"
+						class="min-w-40 rounded-lg border bg-yellow-500"
 						:class="
 							activePreTowingImage === index
-								? 'border-pink-600 border-2 overflow-clip'
+								? 'overflow-clip border-2 border-pink-600'
 								: ''
 						"
 						v-for="(image, index) in serviceImages"
@@ -371,8 +371,8 @@
 							alt="Report Image" />
 					</button>
 				</div>
-				<div class="absolute top-0 bg-gray-700 w-full p-4 bg-opacity-80 rounded-t-md">
-					<h1 class="text-white font-semibold">
+				<div class="absolute top-0 w-full rounded-t-md bg-gray-700 bg-opacity-80 p-4">
+					<h1 class="font-semibold text-white">
 						Pre-Towing Pictures
 						{{ serviceReport.registration_no }}
 					</h1>
@@ -381,55 +381,55 @@
 		</div>
 
 		<!-- vehicle spares data section -->
-		<div class="mt-10 mx-2 lg:mx-16 flex space-x-8">
-			<div class="w-1/4 border px-8 py-2 flex items-center h-20 space-x-4 rounded-lg">
+		<div class="mx-2 mt-10 flex space-x-8 lg:mx-16">
+			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
 				<BatteryIcon
 					:classes="['size-12']"
 					:color="'#2563eb'" />
 				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg text-gray-700 font-semibold">Car Battery</h1>
-					<span class="text-gray-500 font-semibold">{{
+					<h1 class="text-lg font-semibold text-gray-700">Car Battery</h1>
+					<span class="font-semibold text-gray-500">{{
 						serviceReport.checklist.battery === 'yes'
 							? 'Battery Present'
 							: 'Battery Not Present'
 					}}</span>
 				</div>
 			</div>
-			<div class="w-1/4 border px-8 py-2 flex items-center h-20 space-x-4 rounded-lg">
+			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
 				<FirstAidKitIcon
 					:classes="['size-12']"
 					:color="'#2563eb'" />
 				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg text-gray-700 font-semibold">First Aid Kit</h1>
-					<span class="text-gray-500 font-semibold">{{
+					<h1 class="text-lg font-semibold text-gray-700">First Aid Kit</h1>
+					<span class="font-semibold text-gray-500">{{
 						serviceReport.checklist.first_aid_kit === 'yes'
 							? 'Kit Present'
 							: 'Kit Not Present'
 					}}</span>
 				</div>
 			</div>
-			<div class="w-1/4 border px-8 py-2 flex items-center h-20 space-x-4 rounded-lg">
+			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
 				<ToolkitIcon
 					:classes="['size-12']"
 					:color="'#2563eb'" />
 				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg text-gray-700 font-semibold">Toolkit</h1>
+					<h1 class="text-lg font-semibold text-gray-700">Toolkit</h1>
 
 					<!-- TODO: Fix the wrapping issue here -->
-					<span class="text-gray-500 font-semibold">{{
+					<span class="font-semibold text-gray-500">{{
 						serviceReport.checklist.toolkit === 'yes'
 							? 'Toolkit Present'
 							: 'Toolkit Not Present'
 					}}</span>
 				</div>
 			</div>
-			<div class="w-1/4 border px-8 py-2 flex items-center h-20 space-x-4 rounded-lg">
+			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
 				<GaugeIcon
 					:classes="['size-12']"
 					:color="'#2563eb'" />
 				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg text-gray-700 font-semibold">Milage Pre-Tow</h1>
-					<span class="text-gray-500 font-semibold"
+					<h1 class="text-lg font-semibold text-gray-700">Milage Pre-Tow</h1>
+					<span class="font-semibold text-gray-500"
 						>{{ serviceReport.checklist.start_mileage }}Km</span
 					>
 				</div>
@@ -437,40 +437,40 @@
 		</div>
 
 		<!-- Final section with ratings -->
-		<div class="mt-10 mx-2 lg:mx-16 flex space-x-8">
-			<div class="w-1/3 border px-8 py-2 flex items-center h-32 space-x-4 rounded-lg">
+		<div class="mx-2 mt-10 flex space-x-8 lg:mx-16">
+			<div class="flex h-32 w-1/3 items-center space-x-4 rounded-lg border px-8 py-2">
 				<img
 					src="https://images.unsplash.com/photo-1721048166150-3b2bb2ca3431?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 					alt="Responder Image"
-					class="rounded-full size-20 object-cover shadow-sm" />
-				<div class="flex-grow ml-5 h-fit">
-					<h1 class="font-semibold text-lg text-gray-700">Vehicle Received By</h1>
+					class="size-20 rounded-full object-cover shadow-sm" />
+				<div class="ml-5 h-fit flex-grow">
+					<h1 class="text-lg font-semibold text-gray-700">Vehicle Received By</h1>
 					<h2 class="font-semibold text-gray-500">Asap Rocky Omondi</h2>
 				</div>
 			</div>
-			<div class="flex-grow flex h-32 space-x-8 rounded-lg">
-				<div class="w-1/2 flex items-center h-full px-8 py-2 border rounded-lg">
+			<div class="flex h-32 flex-grow space-x-8 rounded-lg">
+				<div class="flex h-full w-1/2 items-center rounded-lg border px-8 py-2">
 					<LocationPin />
-					<div class="flex-grow ml-5 h-fit">
-						<h1 class="font-semibold text-lg text-gray-700">Drop Off Location</h1>
+					<div class="ml-5 h-fit flex-grow">
+						<h1 class="text-lg font-semibold text-gray-700">Drop Off Location</h1>
 						<h2 class="font-semibold text-gray-500">
 							{{ serviceReport.dropoff_location }}
 						</h2>
-						<span class="text-blue-500 font-semibold">{{
+						<span class="font-semibold text-blue-500">{{
 							formatToDateTimePair(serviceReport.vehicle_drop_off_time)[0]
 						}}</span>
 					</div>
 				</div>
-				<div class="w-1/2 flex items-center h-full px-8 py-2 border rounded-lg">
+				<div class="flex h-full w-1/2 items-center rounded-lg border px-8 py-2">
 					<PersonIcon
 						width="3em"
 						height="3em" />
-					<div class="flex-grow ml-5 h-fit">
-						<h1 class="font-semibold text-lg text-gray-700">Client Rating</h1>
+					<div class="ml-5 h-fit flex-grow">
+						<h1 class="text-lg font-semibold text-gray-700">Client Rating</h1>
 						<h2 class="font-semibold text-gray-500">
 							{{ serviceReport.user_name }}
 						</h2>
-						<div class="text-blue-500 font-semibold">
+						<div class="font-semibold text-blue-500">
 							<!-- Rating -->
 							<div class="flex items-center space-x-1">
 								<OneStarIcon />

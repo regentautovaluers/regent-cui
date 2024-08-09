@@ -1,16 +1,16 @@
 <template>
 	<div
 		:class="[
-			'min-h-[50%] w-full rounded-xl p-6 flex flex-col justify-between bg-gray-200',
+			'flex min-h-[50%] w-full flex-col justify-between rounded-xl bg-gray-200 p-6',
 			width,
 		]">
-		<h1 class="text-center font-semibold text-2xl">
+		<h1 class="text-center text-2xl font-semibold">
 			{{ componentProps.alertHeading }}
 		</h1>
 		<slot name="alertMessage" />
-		<div class="rounded-xl bg-yellow-400 bg-opacity-70 h-16 flex p-2 items-center">
+		<div class="flex h-16 items-center rounded-xl bg-yellow-400 bg-opacity-70 p-2">
 			<div class="w-[15%]"></div>
-			<span class="text-center flex-grow">{{ componentProps.warningMessage }}</span>
+			<span class="flex-grow text-center">{{ componentProps.warningMessage }}</span>
 		</div>
 
 		<div class="flex flex-col space-y-2">

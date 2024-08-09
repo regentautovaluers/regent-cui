@@ -8,7 +8,7 @@
 		"devlocal": "npx nuxi dev --dotenv .env.local",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
-		"prettier": "npx prettier --write .",
+		"prettier": "npx prettier --plugin-search-dir . --write .",
 		"postinstall": "nuxt prepare",
 		"start": "nuxt start"
 	},
@@ -40,6 +40,7 @@
 		"postcss": "^8.4.35",
 		"preline": "^2.3.0",
 		"prettier": "^3.2.5",
+		"prettier-plugin-tailwindcss": "^0.6.6",
 		"read-excel-file": "^5.8.3",
 		"tailwindcss": "^3.4.4",
 		"vue-router": "^4.4.0",

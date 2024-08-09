@@ -1,8 +1,8 @@
 <template>
-	<div class="py-10 bg-[#f6f9f2] responsive-view h-fit">
-		<div class="py-5 flex items-center justify-between">
+	<div class="responsive-view h-fit bg-[#f6f9f2] py-10">
+		<div class="flex items-center justify-between py-5">
 			<!-- Table switcher -->
-			<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+			<div class="border-b-1 w- space-x-4 text-sm md:text-base lg:w-fit lg:text-lg">
 				<button
 					@click="() => (currentTable = 0)"
 					:class="[
@@ -20,21 +20,21 @@
 					<span>Pending Valuations</span>
 				</button>
 			</div>
-			<div class="flex-grow flex justify-end items-center">
+			<div class="flex flex-grow items-center justify-end">
 				<!-- search box -->
-				<div class="flex-grow flex relative max-w-[40%]">
+				<div class="relative flex max-w-[40%] flex-grow">
 					<form
 						class="w-full"
 						@submit.prevent="searchValuations">
 						<input
 							type="text"
 							required
-							class="peer py-3 h-12 px-4 bg-gray-200 border-transparent rounded-2xl focus:border-blue-500 focus:ring-blue-500 min-w-full"
+							class="peer h-12 min-w-full rounded-2xl border-transparent bg-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
 							placeholder="Search Registration Number Here"
 							v-model="searchFilterTerm" />
 						<button
 							type="submit"
-							class="absolute end-0 text-white inset-y-0 flex justify-center rounded-2xl w-14 bg-blue-500 p-2"
+							class="absolute inset-y-0 end-0 flex w-14 justify-center rounded-2xl bg-blue-500 p-2 text-white"
 							data-hs-overlay="#hs-valutionsearch-modal">
 							<img
 								src="/images/topnav/search-icon.svg"
@@ -52,7 +52,7 @@
 							}
 						"
 						title="Clear Filters"
-						class="bg-gray-300 text-center p-2 rounded-full size-10 ml-2">
+						class="ml-2 size-10 rounded-full bg-gray-300 p-2 text-center">
 						<Icon
 							name="material-symbols:close"
 							class="text-lg" />
@@ -66,8 +66,8 @@
 			<!-- start of completed valuations data table -->
 			<div class="flex flex-col bg-white">
 				<div class="-m-1.5 overflow-x-auto">
-					<div class="p-1.5 min-w-full inline-block align-middle">
-						<div class="border rounded-lg shadow overflow-hidden">
+					<div class="inline-block min-w-full p-1.5 align-middle">
+						<div class="overflow-hidden rounded-lg border shadow">
 							<table class="min-w-full divide-y">
 								<thead>
 									<tr>
@@ -150,8 +150,8 @@
 			<!-- start of data table -->
 			<div class="flex flex-col bg-white">
 				<div class="-m-1.5 overflow-x-auto">
-					<div class="p-1.5 min-w-full inline-block align-middle">
-						<div class="border rounded-lg shadow overflow-hidden">
+					<div class="inline-block min-w-full p-1.5 align-middle">
+						<div class="overflow-hidden rounded-lg border shadow">
 							<table class="min-w-full divide-y">
 								<thead>
 									<tr>
@@ -228,21 +228,21 @@
 			</div>
 			<!-- end of data table -->
 		</div>
-		<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+		<div class="mt-2 flex w-full items-center justify-between rounded-sm py-2">
 			<span>Showing Page {{ currentPage + 1 }} of {{ totalPages }}</span>
 			<div
 				class="space-x-1"
 				v-if="totalPages > 1">
 				<button
 					@click="prevPage"
-					class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+					class="rounded-md border bg-blue-600 p-2 text-center text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-gray-500"
 					:disabled="currentPage === 0">
 					Previous
 				</button>
 
 				<button
 					@click="nextPage"
-					class="p-2 text-center text-sm font-semibold rounded-md border bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-500"
+					class="rounded-md border bg-blue-600 p-2 text-center text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-gray-500"
 					:disabled="currentPage === totalPages - 1">
 					Next
 				</button>
@@ -253,13 +253,13 @@
 	<!-- search modal -->
 	<div
 		id="hs-valutionsearch-modal"
-		class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+		class="hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden">
 		<div
-			class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all lg:max-w-4xl lg:w-full m-3 lg:mx-auto">
+			class="m-3 mt-0 opacity-0 transition-all ease-out hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 lg:mx-auto lg:w-full lg:max-w-4xl">
 			<div
-				class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+				class="pointer-events-auto flex flex-col rounded-xl border bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800 dark:shadow-neutral-700/70">
 				<div
-					class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+					class="flex items-center justify-between border-b px-4 py-3 dark:border-neutral-700">
 					<h3 class="font-bold text-gray-800 dark:text-white">Search Results</h3>
 					<button
 						@click="
@@ -268,11 +268,11 @@
 							}
 						"
 						type="button"
-						class="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
+						class="flex size-7 items-center justify-center rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700"
 						data-hs-overlay="#hs-valutionsearch-modal">
 						<span class="sr-only">Close</span>
 						<svg
-							class="flex-shrink-0 size-4"
+							class="size-4 flex-shrink-0"
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -287,12 +287,12 @@
 						</svg>
 					</button>
 				</div>
-				<div class="p-4 overflow-y-auto">
+				<div class="overflow-y-auto p-4">
 					<!-- start of data table -->
 					<div class="flex flex-col">
 						<div class="-m-1.5 overflow-x-auto">
-							<div class="p-1.5 min-w-full inline-block align-middle">
-								<div class="border rounded-lg shadow overflow-hidden">
+							<div class="inline-block min-w-full p-1.5 align-middle">
+								<div class="overflow-hidden rounded-lg border shadow">
 									<table class="min-w-full divide-y">
 										<thead>
 											<tr>
@@ -329,13 +329,13 @@
 										<tbody class="divide-y divide-gray-200">
 											<td
 												v-if="searchValuationLoading"
-												class="text-center py-4"
+												class="py-4 text-center"
 												colspan="100%">
 												<LoadingIndicator
 													:bar-length="`w-[30%]`"
 													v-if="searchValuationLoading" />
 												<br />
-												<span class="text-gray-500 text-lg font-semibold"
+												<span class="text-lg font-semibold text-gray-500"
 													>Loading Your Data.</span
 												>
 											</td>

@@ -1,12 +1,12 @@
 <template>
 	<form @submit.prevent="registerBulkMember">
 		<div
-			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
+			class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 			<!-- Full Name Field -->
 			<div class="w-full">
 				<label
 					for="fleet-name"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Client Fleet</label
 				>
 				<div class="relative">
@@ -25,19 +25,19 @@
 					</select>
 					<div
 						v-if="retrievingFleetList"
-						class="absolute top-[38%] right-8 animate-spin inline-block size-5 border-[2px] border-gray-500 border-current border-t-transparent rounded-full"
+						class="absolute right-8 top-[38%] inline-block size-5 animate-spin rounded-full border-[2px] border-current border-gray-500 border-t-transparent"
 						role="status"
 						aria-label="loading" />
 				</div>
 			</div>
 		</div>
 		<div
-			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3 mt-7">
+			class="mt-7 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="contact-person-name"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Contact Person Name</label
 				>
 				<input
@@ -53,7 +53,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="contact-person-phone"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Contact Person Phone</label
 				>
 				<input
@@ -69,7 +69,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="contact-person-email"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Contact Person Email</label
 				>
 				<input
@@ -93,7 +93,7 @@
 				href="https://drive.google.com/uc?export=download&id=17h3Nh3de8p4bQvxjgkEWnsfozGsIqG1p"
 				target="_top"
 				type="button"
-				class="py-3 px-4 w-full mt-3 h-16 items-center rounded-lg border-dashed border-[1.9px] text-white disabled:opacity-50 disabled:pointer-events-none inline-flex justify-between bg-pink-400 bg-opacity-50">
+				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-400 bg-opacity-50 px-4 py-3 text-white disabled:pointer-events-none disabled:opacity-50">
 				<span class="text-pink-500"> Click here to intiate excel template download </span>
 				<Icon
 					name="material-symbols-light:cloud-download"
@@ -112,8 +112,8 @@
 			<div class="w-full">
 				<label
 					for="dropzone-file"
-					class="mt-3 flex flex-col items-center justify-between border-[1.9px] border-gray-400 border-dashed cursor-pointer h-16 rounded-lg py-3 px-4 bg-blue-400 bg-opacity-50">
-					<div class="flex items-center justify-between w-full">
+					class="mt-3 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
+					<div class="flex w-full items-center justify-between">
 						<span class="text-blue-500">
 							Click here to upload the completed Excel document
 						</span>
@@ -140,17 +140,17 @@
 				>{{ errorMessage.message }}</span
 			>
 			<div
-				class="flex w-full h-3 bg-gray-200 rounded-full overflow-hidden"
+				class="flex h-3 w-full overflow-hidden rounded-full bg-gray-200"
 				role="progressbar"
 				aria-valuenow="1"
 				aria-valuemin="0"
 				aria-valuemax="100">
 				<div
-					class="flex flex-col justify-center rounded-full overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition duration-500"
+					class="flex flex-col justify-center overflow-hidden whitespace-nowrap rounded-full bg-blue-600 text-center text-xs text-white transition duration-500"
 					:style="{ width: currentProgress }" />
 			</div>
 			<div
-				class="flex items-center justify-between w-full text-end text-lg text-gray-500 antialiased">
+				class="flex w-full items-center justify-between text-end text-lg text-gray-500 antialiased">
 				<span>PARSING PROGRESS</span>
 				<span>{{ currentProgress }}</span>
 			</div>
@@ -159,11 +159,11 @@
 		<button
 			type="submit"
 			:disabled="errorMessage !== null && errorMessage.type === 'error'"
-			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none disabled:bg-gray-500">
+			class="mt-7 h-16 w-full items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-lg font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:bg-gray-500 disabled:opacity-50 lg:w-1/2">
 			<span v-if="!formSubmissionLoading">Create Membership</span>
 			<div
 				v-if="formSubmissionLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+				class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 				role="status"
 				aria-label="loading" />
 		</button>

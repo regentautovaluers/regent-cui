@@ -1,15 +1,15 @@
 <template>
-	<div class="py-10 h-fit responsive-view">
+	<div class="responsive-view h-fit py-10">
 		<!-- top card with link to add new member -->
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl">
-			<div class="flex space-x-2 items-center w-full md:w-fit">
+			class="flex flex-col items-center justify-between space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
+			<div class="flex w-full items-center space-x-2 md:w-fit">
 				<img
 					class="size-[60px] rounded-full object-cover"
 					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span class="text-blue-600 font-semibold inline-flex items-center"
+					<span class="inline-flex items-center font-semibold text-blue-600"
 						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
@@ -21,16 +21,16 @@
 			</div>
 			<NuxtLink
 				:to="{ name: 'new-member' }"
-				class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-xl w-full md:w-fit text-center"
+				class="w-full rounded-xl bg-blue-600 p-4 text-center text-sm font-semibold text-white md:w-fit"
 				>ADD A NEW MEMBER</NuxtLink
 			>
 		</div>
-		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
+		<div class="mt-6 flex flex-col md:flex-row md:space-x-6">
 			<div class="md:w-[80%]">
 				<!-- search & filter controls -->
-				<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
+				<div class="mb-6 flex flex-nowrap items-center justify-between overflow-x-auto">
 					<!-- search box -->
-					<div class="relative flex-grow mr-10 max-w-[35%]">
+					<div class="relative mr-10 max-w-[35%] flex-grow">
 						<input
 							type="text"
 							class="generic-input"
@@ -45,7 +45,7 @@
 								<button
 									id="hs-dropdown-default"
 									type="button"
-									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-xl border border-gray-200 text-gray-800 shadow-sm"
+									class="hs-dropdown-toggle inline-flex h-12 items-center gap-x-2 rounded-xl border border-gray-200 px-4 py-3 font-medium text-gray-800 shadow-sm"
 									:class="
 										!searchMembershipCategory
 											? 'bg-white text-black'
@@ -55,7 +55,7 @@
 									<HsChevron />
 								</button>
 								<div
-									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 border after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 z-20"
+									class="hs-dropdown-menu duration z-20 mt-2 hidden min-w-60 space-y-2 rounded-lg border bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
 									aria-labelledby="hs-dropdown-default">
 									<div
 										v-for="(option, index) in [
@@ -71,7 +71,7 @@
 											},
 										]"
 										:key="index"
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+										class="flex items-center rounded-lg p-2 hover:bg-gray-200">
 										<!-- prettier-ignore -->
 										<input
 											:id="option.id"
@@ -82,7 +82,7 @@
 											v-model="searchMembershipCategory" />
 										<label
 											for="corp-cat"
-											class="text-gray-500 ms-2"
+											class="ms-2 text-gray-500"
 											>{{ option.text }}</label
 										>
 									</div>
@@ -94,7 +94,7 @@
 							v-if="searchFilterTerm !== '' || searchMembershipCategory !== ''"
 							@click="clearFiltering"
 							title="Clear Filters"
-							class="bg-gray-300 text-center p-2 rounded-full size-10">
+							class="size-10 rounded-full bg-gray-300 p-2 text-center">
 							<Icon
 								name="material-symbols:close"
 								class="text-lg" />
@@ -104,8 +104,8 @@
 				<!-- start of data table -->
 				<div class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
-						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div class="border rounded-xl shadow overflow-hidden">
+						<div class="inline-block min-w-full p-1.5 align-middle">
+							<div class="overflow-hidden rounded-xl border shadow">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -158,18 +158,18 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+				<div class="mt-2 flex w-full items-center justify-between rounded-sm py-2">
 					<span>Showing {{ page + 1 }} of {{ totalPages }} pages.</span>
-					<div class="space-x-1 flex items-center">
+					<div class="flex items-center space-x-1">
 						<button
 							@click="loadPreviousPage"
 							v-if="page > 0"
 							type="button"
-							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
 							<span v-if="!fetchingMoreData">Previous Page</span>
 							<div
 								v-if="fetchingMoreData"
-								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 								role="status"
 								aria-label="loading" />
 						</button>
@@ -177,11 +177,11 @@
 							@click="loadNextPage"
 							v-if="page < totalPages - 1"
 							type="button"
-							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
 							<span v-if="!fetchingMoreData">Next Page</span>
 							<div
 								v-if="fetchingMoreData"
-								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 								role="status"
 								aria-label="loading" />
 						</button>
@@ -189,8 +189,8 @@
 				</div>
 			</div>
 			<!-- right ad and analysis graph -->
-			<div class="md:w-[20%] space-y-6">
-				<div class="border shadow min-h-96 rounded-xl">
+			<div class="space-y-6 md:w-[20%]">
+				<div class="min-h-96 rounded-xl border shadow">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">About</h1>
 						<!-- info switch -->
@@ -222,41 +222,41 @@
 								</svg>
 							</button>
 							<div
-								class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 border"
+								class="hs-dropdown-menu duration mt-2 hidden min-w-60 space-y-2 rounded-lg border bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100 dark:bg-gray-800"
 								aria-labelledby="hs-dropdown-default">
-								<div class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+								<div class="flex items-center rounded-lg p-2 hover:bg-gray-200">
 									<input
 										type="radio"
 										name="type-blob"
 										:value="0"
-										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+										class="mt-0.5 shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
 										v-model="currentTypeBlob" />
-									<label class="text-gray-500 ms-2">Roadside Assitance</label>
+									<label class="ms-2 text-gray-500">Roadside Assitance</label>
 								</div>
-								<div class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+								<div class="flex items-center rounded-lg p-2 hover:bg-gray-200">
 									<input
 										type="radio"
 										name="type-blob"
 										:value="1"
-										class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+										class="mt-0.5 shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
 										v-model="currentTypeBlob" />
-									<label class="text-gray-500 ms-2">Emergency (E) Rescue</label>
+									<label class="ms-2 text-gray-500">Emergency (E) Rescue</label>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="flex flex-col justify-center items-center p-2">
-						<div class="bg-gray-300 p-5 rounded-full flex justify-center items-center">
+					<div class="flex flex-col items-center justify-center p-2">
+						<div class="flex items-center justify-center rounded-full bg-gray-300 p-5">
 							<!-- <img
 								class="inline-block size-[66px]"
 								src="/icons/sidenav/memberships-icon.svg"
 								alt="Image Description" /> -->
 						</div>
 						<h1 class="text-xl font-semibold">Our Membership</h1>
-						<h2 class="font-semibold text-gray-600 text-lg">
+						<h2 class="text-lg font-semibold text-gray-600">
 							{{ membershipTypesBlob[currentTypeBlob].name }}
 						</h2>
-						<p class="text-sm mt-2 px-4 text-gray-600">
+						<p class="mt-2 px-4 text-sm text-gray-600">
 							{{ membershipTypesBlob[currentTypeBlob].blobText }}
 						</p>
 					</div>
@@ -270,7 +270,7 @@
 						>
 					</div>
 				</div>
-				<div class="border shadow h-[24rem] rounded-xl">
+				<div class="h-[24rem] rounded-xl border shadow">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">Memberships Glance</h1>
 					</div>

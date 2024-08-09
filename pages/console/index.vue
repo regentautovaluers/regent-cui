@@ -1,14 +1,14 @@
 <template>
-	<div class="py-10 responsive-view h-fit">
+	<div class="responsive-view h-fit py-10">
 		<div>
-			<h1 class="text-2xl md:text-3xl font-semibold">Our Services</h1>
+			<h1 class="text-2xl font-semibold md:text-3xl">Our Services</h1>
 			<h2 class="text-lg text-gray-500 lg:w-1/2">
 				Welcome to our all-in-one vehicle services dashboard! Please choose the service you
 				need to get started on your journey.
 			</h2>
 		</div>
 		<div
-			class="mt-10 flex items-center whitespace-nowrap space-x-10 py-4 overflow-x-auto"
+			class="mt-10 flex items-center space-x-10 overflow-x-auto whitespace-nowrap py-4"
 			style="
 				::-webkit-scrollbar-thumb {
 					border-radius: 10px;
@@ -54,22 +54,4 @@
 		name: 'dashboard-home',
 		layout: 'in-app-layout',
 	});
-
-	const availableMinifiedRoutes: any[] = [
-		{
-			imageLink: '/icons/home-dashboard-icons/vehicle-valuation.svg',
-			toName: 'valuation-all-valuations',
-			linkText: 'Vehicle Valuation',
-		},
-		{
-			imageLink: '/icons/home-dashboard-icons/roadside-assistance.svg',
-			toName: 'ava-home',
-			linkText: 'Roadside Assistance',
-		},
-		{
-			imageLink: '/icons/home-dashboard-icons/memberships.svg',
-			toName: 'memberships-home',
-			linkText: 'Memberships',
-		},
-	];
 </script>

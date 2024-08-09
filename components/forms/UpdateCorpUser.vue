@@ -1,8 +1,8 @@
 <template>
 	<form
-		class="rounded-2xl shadow px-6 py-6 border"
+		class="rounded-2xl border px-6 py-6 shadow"
 		@submit.prevent="updateUserAccount">
-		<h1 class="font-semibold text-lg my-b">Update User</h1>
+		<h1 class="my-b text-lg font-semibold">Update User</h1>
 		<div class="flex flex-col">
 			<label class="font-bold text-gray-500">Full Name</label>
 			<div class="flex w-full space-x-4">
@@ -22,7 +22,7 @@
 					v-model="otherName" />
 			</div>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label class="font-bold text-gray-500">Email</label>
 			<div class="flex flex-grow">
 				<input
@@ -34,7 +34,7 @@
 					v-model="email" />
 			</div>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label class="font-bold text-gray-500">Phone Number</label>
 			<div class="flex flex-grow">
 				<input
@@ -46,7 +46,7 @@
 					v-model="phoneNumber" />
 			</div>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label class="font-bold text-gray-500">New Password</label>
 			<div class="flex flex-grow">
 				<input
@@ -57,7 +57,7 @@
 					v-model="password" />
 			</div>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label class="font-bold text-gray-500">Role In Company</label>
 			<div class="flex flex-grow">
 				<input
@@ -69,7 +69,7 @@
 					v-model="companyRole" />
 			</div>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label
 				for="user-branch"
 				class="font-bold text-gray-500"
@@ -97,7 +97,7 @@
 				</template>
 			</ActionTriggeredModal>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label class="font-bold text-gray-500">Account Status</label>
 			<div class="flex flex-grow">
 				<select
@@ -110,11 +110,11 @@
 				</select>
 			</div>
 		</div>
-		<div class="flex flex-col mt-3">
+		<div class="mt-3 flex flex-col">
 			<label class="font-bold text-gray-500">User Privilege</label>
 			<div class="flex flex-grow space-x-4">
 				<label
-					class="flex items-center py-3 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
+					class="flex w-1/2 items-center rounded-lg border border-gray-200 bg-white px-4 py-3 focus:border-blue-500 focus:ring-blue-500">
 					<span class="text-gray-500">Is A Normal User</span>
 					<input
 						type="radio"
@@ -125,7 +125,7 @@
 						v-model="userRole" />
 				</label>
 				<label
-					class="flex items-center py-3 px-4 w-1/2 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500">
+					class="flex w-1/2 items-center rounded-lg border border-gray-200 bg-white px-4 py-3 focus:border-blue-500 focus:ring-blue-500">
 					<span class="text-gray-500">Is An Admin</span>
 					<input
 						type="radio"
@@ -139,7 +139,7 @@
 		<div class="mt-3">
 			<button
 				type="submit"
-				class="form-submit md:w-1/3 relative overflow-clip">
+				class="form-submit relative overflow-clip md:w-1/3">
 				<LoadingIndicator
 					v-if="formSubmissionLoading"
 					inject-classes="absolute w-[100%] mt-0 -top-1" />

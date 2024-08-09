@@ -1,15 +1,15 @@
 <template>
-	<div class="py-10 h-full responsive-view">
+	<div class="responsive-view h-full py-10">
 		<!-- top card with link to add new member -->
 		<div
-			class="flex flex-col md:flex-row items-center justify-between py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl mb-6">
-			<div class="flex space-x-2 items-center w-full md:w-fit">
+			class="mb-6 flex flex-col items-center justify-between space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
+			<div class="flex w-full items-center space-x-2 md:w-fit">
 				<img
-					class="object-cover size-[60px] rounded-full"
+					class="size-[60px] rounded-full object-cover"
 					:src="profilePicture"
 					alt="User Image" />
 				<div class="flex flex-col">
-					<span class="text-blue-600 font-semibold inline-flex items-center"
+					<span class="inline-flex items-center font-semibold text-blue-600"
 						>Hi, {{ getPrincipal.username }}
 						<img
 							src="/icons/misc/hand-wave.svg"
@@ -22,18 +22,18 @@
 			<div class="space-x-6">
 				<NuxtLink
 					:to="{ name: 'ava-all-incidents' }"
-					class="text-blue-600 underline underline-offset-2 font-semibold"
+					class="font-semibold text-blue-600 underline underline-offset-2"
 					>View All Incidents</NuxtLink
 				>
 				<NuxtLink
 					:to="{ name: 'new-member' }"
-					class="bg-blue-600 text-white font-semibold text-sm p-4 rounded-xl w-full md:w-fit text-center"
+					class="w-full rounded-xl bg-blue-600 p-4 text-center text-sm font-semibold text-white md:w-fit"
 					>ADD A NEW MEMBER</NuxtLink
 				>
 			</div>
 		</div>
 		<div
-			class="flex flex-col md:flex-row items-center justify-around py-5 px-3 md:px-6 border-2 border-gray-200 shadow-sm space-y-2 md:space-y-0 rounded-xl mb-6">
+			class="mb-6 flex flex-col items-center justify-around space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
 			<div
 				v-for="(info, index) in subLinksInfo"
 				:key="index"
@@ -45,9 +45,9 @@
 						class="size-6" />
 				</div>
 				<div class="flex flex-col space-y-2">
-					<span class="text-gray-600 font-semibold">{{ info.title }}</span>
-					<span class="text-gray-500 font-semibold">{{ info.data }}</span>
-					<NuxtLink class="text-blue-600 font-semibold">
+					<span class="font-semibold text-gray-600">{{ info.title }}</span>
+					<span class="font-semibold text-gray-500">{{ info.data }}</span>
+					<NuxtLink class="font-semibold text-blue-600">
 						{{ info.text }}
 					</NuxtLink>
 				</div>
@@ -58,18 +58,18 @@
 				v-for="(route, index) in applicationRoutes[2].children?.slice(0, 4)"
 				:key="index"
 				:to="{ name: route.routeName }"
-				class="flex space-x-3 hover:border-blue-500 items-center px-4 bg-white border-2 border-gray-200 shadow-sm rounded-xl h-20 w-1/4">
+				class="flex h-20 w-1/4 items-center space-x-3 rounded-xl border-2 border-gray-200 bg-white px-4 shadow-sm hover:border-blue-500">
 				<img
 					:src="route.icon"
 					alt="Service Icon"
 					class="size-10" />
-				<span class="tracking-wide text-gray-500 text-lg">{{ route.displayName }}</span>
+				<span class="text-lg tracking-wide text-gray-500">{{ route.displayName }}</span>
 			</NuxtLink>
 		</div>
-		<div class="mt-6 flex md:space-x-6 flex-col md:flex-row">
+		<div class="mt-6 flex flex-col md:flex-row md:space-x-6">
 			<!--left and analysis graph -->
-			<div class="md:w-[20%] space-y-6">
-				<div class="border shadow min-h-[24rem] rounded-xl">
+			<div class="space-y-6 md:w-[20%]">
+				<div class="min-h-[24rem] rounded-xl border shadow">
 					<div class="flex items-center justify-between p-4">
 						<h1 class="text-2xl font-semibold">Memberships Glance</h1>
 					</div>
@@ -79,8 +79,8 @@
 						</div>
 					</ClientOnly>
 				</div>
-				<div class="border shadow min-h-[25rem] rounded-xl flex flex-col">
-					<div class="flex items-center justify-between p-4 h-fit">
+				<div class="flex min-h-[25rem] flex-col rounded-xl border shadow">
+					<div class="flex h-fit items-center justify-between p-4">
 						<h1 class="text-xl font-semibold">Recent Incidents</h1>
 						<NuxtLink
 							:to="{ name: 'ava-all-incidents' }"
@@ -88,16 +88,16 @@
 							>View All</NuxtLink
 						>
 					</div>
-					<div class="flex-grow flex flex-col p-3">
+					<div class="flex flex-grow flex-col p-3">
 						<div
 							v-if="recentIncidentsCol.length === 0"
-							class="flex-grow flex flex-col justify-center items-center">
+							class="flex flex-grow flex-col items-center justify-center">
 							<img
 								src="/icons/misc/empty-or-error.svg"
 								alt="Data Not Found"
-								class="inline-block mb-4" />
+								class="mb-4 inline-block" />
 							<br />
-							<span class="text-gray-500 text-lg font-semibold text-center"
+							<span class="text-center text-lg font-semibold text-gray-500"
 								>Nothing to Show</span
 							>
 							<NuxtLink
@@ -118,9 +118,9 @@
 			</div>
 			<div class="md:w-[80%]">
 				<!-- search & filter controls -->
-				<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap">
+				<div class="mb-6 flex flex-nowrap items-center justify-between overflow-x-auto">
 					<!-- search box -->
-					<div class="relative flex-grow mr-10 max-w-[35%]">
+					<div class="relative mr-10 max-w-[35%] flex-grow">
 						<input
 							type="text"
 							class="generic-input"
@@ -135,7 +135,7 @@
 								<button
 									id="hs-dropdown-default"
 									type="button"
-									class="hs-dropdown-toggle py-3 px-4 inline-flex h-12 items-center gap-x-2 font-medium rounded-xl border border-gray-200 text-gray-800 shadow-sm"
+									class="hs-dropdown-toggle inline-flex h-12 items-center gap-x-2 rounded-xl border border-gray-200 px-4 py-3 font-medium text-gray-800 shadow-sm"
 									:class="
 										!searchMembershipCategory
 											? 'bg-white text-black'
@@ -145,7 +145,7 @@
 									<HsChevron />
 								</button>
 								<div
-									class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 border after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full space-y-2 z-20"
+									class="hs-dropdown-menu duration z-20 mt-2 hidden min-w-60 space-y-2 rounded-lg border bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
 									aria-labelledby="hs-dropdown-default">
 									<div
 										v-for="(option, index) in [
@@ -161,7 +161,7 @@
 											},
 										]"
 										:key="index"
-										class="flex hover:bg-gray-200 p-2 rounded-lg items-center">
+										class="flex items-center rounded-lg p-2 hover:bg-gray-200">
 										<!-- prettier-ignore -->
 										<input
 											:id="option.id"
@@ -173,7 +173,7 @@
 
 										<label
 											for="corp-cat"
-											class="text-gray-500 ms-2"
+											class="ms-2 text-gray-500"
 											>{{ option.text }}</label
 										>
 									</div>
@@ -184,7 +184,7 @@
 							v-if="searchFilterTerm !== '' || searchMembershipCategory !== ''"
 							@click="clearFiltering"
 							title="Clear Filters"
-							class="bg-gray-300 inline-flex items-center justify-center p-2 rounded-full size-10">
+							class="inline-flex size-10 items-center justify-center rounded-full bg-gray-300 p-2">
 							<Icon
 								name="material-symbols:close"
 								class="text-lg" />
@@ -194,8 +194,8 @@
 				<!-- start of data table -->
 				<div class="flex flex-col">
 					<div class="-m-1.5 overflow-x-auto">
-						<div class="p-1.5 min-w-full inline-block align-middle">
-							<div class="border rounded-xl shadow overflow-hidden">
+						<div class="inline-block min-w-full p-1.5 align-middle">
+							<div class="overflow-hidden rounded-xl border shadow">
 								<table class="min-w-full divide-y">
 									<thead>
 										<tr>
@@ -249,18 +249,18 @@
 					</div>
 				</div>
 				<!-- end of data table -->
-				<div class="mt-2 w-full rounded-sm flex justify-between items-center py-2">
+				<div class="mt-2 flex w-full items-center justify-between rounded-sm py-2">
 					<span>Showing {{ page + 1 }} of {{ totalPages }} pages.</span>
-					<div class="space-x-1 flex items-center">
+					<div class="flex items-center space-x-1">
 						<button
 							@click="loadPreviousPage"
 							v-if="page > 0"
 							type="button"
-							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
 							<span v-if="!fetchingMoreData">Previous Page</span>
 							<div
 								v-if="fetchingMoreData"
-								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 								role="status"
 								aria-label="loading" />
 						</button>
@@ -268,11 +268,11 @@
 							@click="loadNextPage"
 							v-if="page < totalPages - 1"
 							type="button"
-							class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
 							<span v-if="!fetchingMoreData">Next Page</span>
 							<div
 								v-if="fetchingMoreData"
-								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 								role="status"
 								aria-label="loading" />
 						</button>

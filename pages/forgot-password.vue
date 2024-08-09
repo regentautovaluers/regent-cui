@@ -18,11 +18,11 @@
 			</template>
 			<template #actionControls>
 				<button
-					class="py-2 px-2 text-center font-semibold rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+					class="rounded-full border border-transparent bg-blue-600 px-2 py-2 text-center font-semibold text-white hover:bg-blue-700">
 					Hello World
 				</button>
 				<button
-					class="py-2 px-2 text-center font-semibold rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+					class="rounded-full border border-transparent bg-blue-600 px-2 py-2 text-center font-semibold text-white hover:bg-blue-700">
 					Hello World
 				</button>
 			</template>

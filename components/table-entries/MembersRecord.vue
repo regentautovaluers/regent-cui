@@ -1,12 +1,12 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-6 whitespace-nowrap font-semibold text-gray-600">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ componentProps.clientName }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-blue-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-blue-600">
 			{{ `${capitalizeFirstLetter(componentProps.membershipCategory)} Member` }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-pink-500">
 			<NuxtLink
 				:to="{
 					name: 'membership-details',
@@ -17,10 +17,10 @@
 				>{{ componentProps.vehicleCount }}</NuxtLink
 			>
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
+		<td class="whitespace-nowrap px-6 py-6 text-end font-semibold text-gray-600">
 			{{ !componentProps.clientPhone ? 'Phone N/A' : `${componentProps.clientPhone}` }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
+		<td class="whitespace-nowrap px-6 py-6 text-end font-semibold text-gray-600">
 			{{ !componentProps.clientEmail ? 'Email N/A' : componentProps.clientEmail }}
 		</td>
 		<td class="text-center">
@@ -60,7 +60,7 @@
 									memberId: componentProps.memberId,
 								},
 							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 							Edit Details
 						</NuxtLink>
 						<NuxtLink
@@ -70,7 +70,7 @@
 									id: componentProps.memberId,
 								},
 							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 							View Vehicles
 						</NuxtLink>
 					</div>

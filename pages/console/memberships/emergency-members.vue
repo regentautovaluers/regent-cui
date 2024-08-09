@@ -1,13 +1,13 @@
 <template>
-	<div class="py-10 h-fit responsive-view">
-		<h1 class="my-5 text-2xl antialiased font-semibold">Emergency Rescue Members</h1>
+	<div class="responsive-view h-fit py-10">
+		<h1 class="my-5 text-2xl font-semibold antialiased">Emergency Rescue Members</h1>
 		<!-- download as PDF section -->
-		<div class="flex items-center justify-between mb-6 overflow-x-auto flex-nowrap"></div>
+		<div class="mb-6 flex flex-nowrap items-center justify-between overflow-x-auto"></div>
 		<!-- start of data table -->
 		<div class="flex flex-col">
 			<div class="-m-1.5 overflow-x-auto">
-				<div class="p-1.5 min-w-full inline-block align-middle">
-					<div class="border rounded-lg shadow overflow-hidden">
+				<div class="inline-block min-w-full p-1.5 align-middle">
+					<div class="overflow-hidden rounded-lg border shadow">
 						<table class="min-w-full divide-y">
 							<thead>
 								<tr>
@@ -64,16 +64,16 @@
 			</div>
 		</div>
 		<!-- end of data table -->
-		<div class="mt-2 w-full rounded-sm flex justify-end items-center py-2">
+		<div class="mt-2 flex w-full items-center justify-end rounded-sm py-2">
 			<button
 				v-if="page + 1 < totalPages"
 				type="button"
 				@click="page += 1"
-				class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+				class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
 				<span v-if="!fetchingMoreData">Load More</span>
 				<div
 					v-if="fetchingMoreData"
-					class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+					class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 					role="status"
 					aria-label="loading" />
 			</button>

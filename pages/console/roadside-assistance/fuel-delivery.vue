@@ -1,7 +1,7 @@
 <template>
 	<div class="responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
 		<div
-			class="h-96 lg:h-[94.8%] w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
+			class="h-96 w-full overflow-clip rounded-md border border-gray-500 border-opacity-50 lg:h-[94.8%]">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -20,8 +20,8 @@
 					:options="{
 						position: center,
 					}">
-					<div class="bg-purple-600 rounded-md p-2 text-white">
-						<h1 class="font-semibold text-lg">You Are Here</h1>
+					<div class="rounded-md bg-purple-600 p-2 text-white">
+						<h1 class="text-lg font-semibold">You Are Here</h1>
 					</div>
 				</InfoWindow>
 				<InfoWindow
@@ -31,16 +31,16 @@
 					:options="{
 						position: marker.coords,
 					}">
-					<div class="bg-purple-600 rounded-md p-2 text-white">
-						<h1 class="font-semibold text-lg">{{ marker.info }}</h1>
+					<div class="rounded-md bg-purple-600 p-2 text-white">
+						<h1 class="text-lg font-semibold">{{ marker.info }}</h1>
 					</div>
 				</InfoWindow>
 			</GoogleMap>
 		</div>
 		<div class="p-2 lg:p-5">
-			<h1 class="mb-4 text-3xl antialiased font-semibold">Request Fuel Delivery</h1>
+			<h1 class="mb-4 text-3xl font-semibold antialiased">Request Fuel Delivery</h1>
 			<div
-				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500"
+				class="my-4 rounded-lg border border-yellow-200 bg-yellow-100 p-4 text-sm text-yellow-800 dark:border-yellow-900 dark:bg-yellow-800/10 dark:text-yellow-500"
 				role="alert">
 				If the map adjacent to this form has not loaded properly, kindly click
 				<button @click="reloadPage">
@@ -49,9 +49,9 @@
 				to reload it before filling the form.
 			</div>
 			<div
-				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
+				class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
 				<!-- TODO: fix issue with the border-b class to get rid of white space due to space-x-4 -->
-				<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
+				<div class="border-b-1 w- space-x-4 text-sm md:text-base lg:w-fit lg:text-lg">
 					<button
 						@click="() => (currentRegForm = 0)"
 						:class="[

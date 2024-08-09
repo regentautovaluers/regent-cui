@@ -1,30 +1,30 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-6 whitespace-nowrap font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-pink-600">
 			{{ componentProps.broker }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ componentProps.customer }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-start font-semibold text-blue-500">
+		<td class="whitespace-nowrap px-6 py-6 text-start font-semibold text-blue-500">
 			{{ componentProps.policyNo }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-green-500">
 			{{ componentProps.registrationNo }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-end font-semibold text-gray-600">
+		<td class="whitespace-nowrap px-6 py-6 text-end font-semibold text-gray-600">
 			{{ componentProps.authorizedBy }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-pink-600">
 			{{ componentProps.date }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-gray-600">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-gray-600">
 			{{ componentProps.authRefNo }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-pink-600">
 			{{ componentProps.phoneNo }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-start font-semibold text-gray-600">
+		<td class="whitespace-nowrap px-6 py-6 text-start font-semibold text-gray-600">
 			{{ componentProps.regentBranchEmail }}
 		</td>
 		<!-- <td>

@@ -1,27 +1,27 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-6 whitespace-nowrap font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-pink-600">
 			{{ componentProps.vehicleRegistration }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ componentProps.startDate }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ componentProps.endDate }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-blue-500">
 			{{ componentProps.vehicleMake }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-blue-500">
 			{{ componentProps.vehicleModel }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-blue-500">
 			{{ componentProps.membershipName }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-green-500">
 			{{ componentProps.membershipStatus }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-pink-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-pink-500">
 			{{ componentProps.paymentStatus }}
 		</td>
 		<td class="text-center">
@@ -67,16 +67,16 @@
 									clientName: clientName,
 								},
 							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 							Edit Vehicle
 						</NuxtLink>
 						<button
-							class="w-full flex justify-between items-center gap-x-3.5 py-2 px-3 rounded-lg bg-red-500 hover:bg-red-600 focus:outline-none text-white"
+							class="flex w-full items-center justify-between gap-x-3.5 rounded-lg bg-red-500 px-3 py-2 text-white hover:bg-red-600 focus:outline-none"
 							@click="deleteMembershipRecord(membershipId)">
 							<span>Delete Vehicle</span>
 							<div
 								v-if="deleteMembershipLoading"
-								class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 								role="status"
 								aria-label="loading" />
 						</button>

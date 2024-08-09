@@ -5,7 +5,7 @@
 		<!-- end of hidden field -->
 		<label
 			for="fleet-name"
-			class="block font-medium mb-2 dark:text-white"
+			class="mb-2 block font-medium dark:text-white"
 			>Name of the Fleet</label
 		>
 		<input
@@ -16,12 +16,12 @@
 			required
 			v-model="fleetName" />
 		<div
-			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3 mt-7">
+			class="mt-7 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="contact-person-name"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Contact Person Name</label
 				>
 				<input
@@ -37,7 +37,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="contact-person-phone"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Contact Person Phone Number</label
 				>
 				<input
@@ -53,7 +53,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="contact-person-email"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Contact Person Email</label
 				>
 				<input
@@ -65,7 +65,7 @@
 					v-model="contactEmail" />
 			</div>
 		</div>
-		<div class="flex items-center justify-start mt-4">
+		<div class="mt-4 flex items-center justify-start">
 			<button
 				v-if="!formSubmissionLoading"
 				type="submit"

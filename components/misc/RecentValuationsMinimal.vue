@@ -1,13 +1,13 @@
 <template>
-	<div class="size-60 rounded-xl shadow-md border flex flex-col items-center justify-center">
-		<div class="rounded-full p-2 size-28 bg-red-500">
+	<div class="flex size-60 flex-col items-center justify-center rounded-xl border shadow-md">
+		<div class="size-28 rounded-full bg-red-500 p-2">
 			<!-- <img
 				src=""
 				alt="Vehicle Image" /> -->
 		</div>
 
-		<span class="font-semibold text-center">{{ componentProps.clientName }}</span>
-		<span class="font-semibold text-gray-500 text-center">{{
+		<span class="text-center font-semibold">{{ componentProps.clientName }}</span>
+		<span class="text-center font-semibold text-gray-500">{{
 			componentProps.vehicleMake
 		}}</span>
 		<div class="mt-2 flex w-full items-center justify-center space-x-3">

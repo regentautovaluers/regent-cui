@@ -5,15 +5,15 @@
             "loadingClasses": "opacity-0",
             "isAutoPlay": true
         }'
-		class="relative px-2 my-2">
-		<div class="hs-carousel relative overflow-hidden w-full h-[340px] bg-white rounded-lg">
+		class="relative my-2 px-2">
+		<div class="hs-carousel relative h-[340px] w-full overflow-hidden rounded-lg bg-white">
 			<div
-				class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
+				class="hs-carousel-body absolute bottom-0 start-0 top-0 flex flex-nowrap opacity-0 transition-transform duration-700">
 				<div
 					class="hs-carousel-slide"
 					v-for="(advertisement, index) in advertisements"
 					:key="index">
-					<div class="flex justify-center w-full h-full bg-gray-100">
+					<div class="flex h-full w-full justify-center bg-gray-100">
 						<img
 							:src="advertisement"
 							alt="Image Advertisement"
@@ -23,11 +23,11 @@
 			</div>
 		</div>
 		<div
-			class="hs-carousel-pagination flex justify-center absolute top-3 start-0 end-0 space-x-2">
+			class="hs-carousel-pagination absolute end-0 start-0 top-3 flex justify-center space-x-2">
 			<span
 				v-for="index in advertisements"
 				:key="index"
-				class="hs-carousel-active:bg-pink-600 size-3 border border-gray-400 rounded-full cursor-pointer" />
+				class="size-3 cursor-pointer rounded-full border border-gray-400 hs-carousel-active:bg-pink-600" />
 		</div>
 	</div>
 	<!-- End Slider -->

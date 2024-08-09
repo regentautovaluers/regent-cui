@@ -1,22 +1,22 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-6 whitespace-nowrap font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-pink-600">
 			{{ props.regNo }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ props.dateTime }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-6 font-semibold text-gray-600">
 			{{ props.clientName }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-blue-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-blue-500">
 			{{ props.clientPhone }}
 		</td>
-		<td class="px-6 py-6 whitespace-nowrap text-center font-semibold text-green-500">
+		<td class="whitespace-nowrap px-6 py-6 text-center font-semibold text-green-500">
 			{{ props.serviceType }}
 		</td>
 		<td
-			class="px-6 py-6 whitespace-nowrap text-ellipsis overflow-hidden text-end font-semibold text-pink-500">
+			class="overflow-hidden text-ellipsis whitespace-nowrap px-6 py-6 text-end font-semibold text-pink-500">
 			{{ props.location }}
 		</td>
 		<td>
@@ -54,7 +54,7 @@
 									id: props.requestId,
 								},
 							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 							View Report
 						</NuxtLink>
 						<NuxtLink
@@ -62,11 +62,13 @@
 							:to="{
 								name: 'roadside-assistance-minimal-reports',
 								params: {
-									service_type: props.serviceType.toLowerCase().replaceAll(' ', ''),
+									service_type: props.serviceType
+										.toLowerCase()
+										.replaceAll(' ', ''),
 									id: props.requestId,
 								},
 							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 							View Report
 						</NuxtLink>
 					</div>

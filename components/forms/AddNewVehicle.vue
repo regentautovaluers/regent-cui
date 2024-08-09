@@ -27,7 +27,7 @@
 				hidden
 				v-model="userVehicles.membershipTypeId" />
 			<div
-				class="flex flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0 mt-2">
+				class="mt-2 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 				<!-- Vehicle Make -->
 				<div class="w-full lg:w-1/2">
 					<label
@@ -60,7 +60,7 @@
 						v-model="userVehicles.model" />
 				</div>
 			</div>
-			<div class="flex items-center justify-between space-x-2 my-2">
+			<div class="my-2 flex items-center justify-between space-x-2">
 				<!--Vehicle Color Field -->
 				<div class="w-1/2">
 					<label
@@ -93,7 +93,7 @@
 				</div>
 			</div>
 
-			<div class="flex items-center justify-between mt-2 space-x-2">
+			<div class="mt-2 flex items-center justify-between space-x-2">
 				<!-- Payment Status Field -->
 				<div class="w-full">
 					<label
@@ -138,7 +138,7 @@
 				</div>
 			</div>
 			<!-- Cover Period -->
-			<div class="flex items-center justify-between space-x-3 mt-3">
+			<div class="mt-3 flex items-center justify-between space-x-3">
 				<!-- Starting date Field -->
 				<div class="w-1/2">
 					<label
@@ -174,10 +174,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="py-2 flex justify-end">
+		<div class="flex justify-end py-2">
 			<button
 				type="submit"
-				class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+				class="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
 				Add Vehicle
 			</button>
 		</div>

@@ -1,5 +1,5 @@
 <template>
-	<div class="py-10 h-full responsive-view">
+	<div class="responsive-view h-full py-10">
 		<h1>Welcome to your incident report</h1>
 	</div>
 </template>

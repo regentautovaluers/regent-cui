@@ -1,5 +1,5 @@
 <template>
-	<div class="h-[85%] flex flex-col justify-center items-start">
+	<div class="flex h-[85%] flex-col items-start justify-center">
 		<img
 			src="/images/regent-autovaluers-logo.svg"
 			alt="Regent Logo"
@@ -7,12 +7,12 @@
 		<form
 			class="mt-24 block w-full"
 			@submit.prevent="attemptLogin">
-			<div class="font-semibold space-y-1 text-3xl lg:text-4xl">
+			<div class="space-y-1 text-3xl font-semibold lg:text-4xl">
 				<span>Hello,</span>
 				<br />
 				<span>Welcome Back</span>
 			</div>
-			<div class="space-y-4 py-2 mt-4">
+			<div class="mt-4 space-y-4 py-2">
 				<input
 					type="text"
 					class="generic-input"
@@ -28,7 +28,7 @@
 						required />
 					<span
 						v-if="loginSuccess === null"
-						class="invisible peer-invalid:visible text-sm font-semibold text-gray-500">
+						class="invisible text-sm font-semibold text-gray-500 peer-invalid:visible">
 						Please provide your password
 					</span>
 					<span
@@ -43,15 +43,15 @@
 					</span>
 				</div>
 
-				<div class="flex justify-end py-2 items-center">
+				<div class="flex items-center justify-end py-2">
 					<input
 						type="checkbox"
-						class="shrink-0 size-5 mt-0.5 border-gray-200 rounded text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+						class="mt-0.5 size-5 shrink-0 rounded border-gray-200 text-blue-600 disabled:pointer-events-none disabled:opacity-50"
 						id="reveal-password"
 						v-model="displayPassword" />
 					<label
 						for="reveal-password"
-						class="text-gray-500 ms-3 dark:text-gray-400"
+						class="ms-3 text-gray-500 dark:text-gray-400"
 						>Reveal Password</label
 					>
 				</div>

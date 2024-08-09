@@ -1,24 +1,24 @@
 <template>
 	<tr class="hover:shadow-lg">
-		<td class="px-6 py-4 whitespace-nowrap font-semibold text-pink-600">
+		<td class="whitespace-nowrap px-6 py-4 font-semibold text-pink-600">
 			{{ props.username }}
 		</td>
 		<td
-			class="px-6 py-4 whitespace-nowrap text-xs text-gray-800 inline-flex flex-col space-y-1">
-			<span class="bg-gray-200 text-gray-500 font-semibold px-2 rounded-full">{{
+			class="inline-flex flex-col space-y-1 whitespace-nowrap px-6 py-4 text-xs text-gray-800">
+			<span class="rounded-full bg-gray-200 px-2 font-semibold text-gray-500">{{
 				props.userEmail === null ? 'Email N/A' : props.userEmail
 			}}</span>
-			<span class="bg-gray-200 text-gray-500 font-semibold px-2 rounded-full w-fit">{{
+			<span class="w-fit rounded-full bg-gray-200 px-2 font-semibold text-gray-500">{{
 				props.phoneNumber === null ? 'Phone N/A' : props.phoneNumber
 			}}</span>
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-4 font-semibold text-gray-600">
 			{{ determinePrivilege() }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-gray-600 font-semibold">
+		<td class="whitespace-nowrap px-6 py-4 font-semibold text-gray-600">
 			{{ props.corporateRole }}
 		</td>
-		<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+		<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-800">
 			<span class="inline-flex items-center space-x-1">
 				<div
 					class="size-3 rounded-full"
@@ -48,7 +48,7 @@
 					@click.stop
 					class="custom-dropdown -top-[80%]">
 					<div
-						class="py-1 space-y-1"
+						class="space-y-1 py-1"
 						role="menu"
 						aria-orientation="vertical"
 						aria-labelledby="options-menu">
@@ -59,7 +59,7 @@
 									userId: props.userId,
 								},
 							}"
-							class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+							class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none">
 							Update Details
 						</NuxtLink>
 					</div>

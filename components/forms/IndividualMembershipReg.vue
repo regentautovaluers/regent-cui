@@ -1,12 +1,12 @@
 <template>
 	<form @submit.prevent="registerIndividualMember">
 		<div
-			class="flex flex-col lg:flex-row items-center justify-between space-y-3 lg:space-y-0 space-x-0 lg:space-x-3">
+			class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="full-name"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Full Name</label
 				>
 				<input
@@ -22,7 +22,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="phone"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Phone</label
 				>
 				<input
@@ -38,7 +38,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="email"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Email</label
 				>
 				<input
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<p
-			class="text-sm text-red-500 font-semibold"
+			class="text-sm font-semibold text-red-500"
 			v-if="formErrorMessage">
 			{{ formErrorMessage }}
 		</p>
@@ -69,12 +69,12 @@
 				v-model="vehicle.membershipTypeId" />
 
 			<div
-				class="flex flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0">
+				class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
 				<!-- Reg Number -->
 				<div class="w-full lg:w-1/3">
 					<label
 						for="vehicle-registration-number"
-						class="block font-medium mb-2 dark:text-white"
+						class="mb-2 block font-medium dark:text-white"
 						>Vehicle Registration Number</label
 					>
 					<input
@@ -89,7 +89,7 @@
 				<div class="w-full lg:w-1/3">
 					<label
 						for="vehicle-make"
-						class="block font-medium mb-2 dark:text-white"
+						class="mb-2 block font-medium dark:text-white"
 						>Vehicle Make</label
 					>
 					<input
@@ -105,7 +105,7 @@
 				<div class="w-full lg:w-1/3">
 					<label
 						for="vehicle-model"
-						class="block font-medium mb-2 dark:text-white"
+						class="mb-2 block font-medium dark:text-white"
 						>Vehicle Model</label
 					>
 					<input
@@ -118,10 +118,10 @@
 				</div>
 			</div>
 			<!--Vehicle Color Field -->
-			<div class="w-full mt-4">
+			<div class="mt-4 w-full">
 				<label
 					for="full-name"
-					class="block font-medium mb-2 dark:text-white"
+					class="mb-2 block font-medium dark:text-white"
 					>Vehicle Color</label
 				>
 				<input
@@ -133,12 +133,12 @@
 					v-model="vehicle.color" />
 			</div>
 
-			<div class="flex items-center justify-between space-x-3 mt-4">
+			<div class="mt-4 flex items-center justify-between space-x-3">
 				<!-- Payment Status Field -->
 				<div class="w-1/2 md:w-1/3">
 					<label
 						for="payment-status"
-						class="block font-medium mb-2 dark:text-white"
+						class="mb-2 block font-medium dark:text-white"
 						>Payment Status</label
 					>
 					<select
@@ -159,7 +159,7 @@
 				<div class="w-1/2 md:w-2/3">
 					<label
 						for="membership-status"
-						class="block font-medium mb-2 dark:text-white"
+						class="mb-2 block font-medium dark:text-white"
 						>Membership Status</label
 					>
 					<select
@@ -178,12 +178,12 @@
 				</div>
 			</div>
 			<!-- Cover Period -->
-			<div class="flex items-center justify-between space-x-3 mt-7">
+			<div class="mt-7 flex items-center justify-between space-x-3">
 				<!-- Starting date Field -->
 				<div class="w-1/2">
 					<label
 						for="cover-period-starts"
-						class="block font-medium mb-2 dark:text-white"
+						class="mb-2 block font-medium dark:text-white"
 						>Cover Period Starts</label
 					>
 					<input
@@ -200,7 +200,7 @@
 				<div class="w-1/2">
 					<label
 						for="cover-period-ends"
-						class="block font-medium mb-2 dark:text-white"
+						class="mb-2 block font-medium dark:text-white"
 						>Cover Period Ends</label
 					>
 					<input
@@ -215,7 +215,7 @@
 			</div>
 		</div>
 		<button
-			class="inline-flex items-center space-x-2 my-7 text-blue-600"
+			class="my-7 inline-flex items-center space-x-2 text-blue-600"
 			@click="
 				() =>
 					userVehicles.push({
@@ -235,18 +235,18 @@
 				name="ic:baseline-add"
 				color="white"
 				size="38"
-				class="bg-blue-600 p-1 rounded-full" />
-			<span class="underline decoration-2 decoration-inherit underline-offset-2"
+				class="rounded-full bg-blue-600 p-1" />
+			<span class="underline decoration-inherit decoration-2 underline-offset-2"
 				>Add Another Vehicle</span
 			>
 		</button>
 		<div
-			class="flex flex-col md:flex-row space-y-3 md:space-y-0 items-center space-x-0 md:space-x-4 mt-4 w-full md:w-1/2">
-			<div class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
+			class="mt-4 flex w-full flex-col items-center space-x-0 space-y-3 md:w-1/2 md:flex-row md:space-x-4 md:space-y-0">
+			<div class="h-fit w-full rounded border border-blue-600 p-2 md:w-1/2">
 				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Vehicles Added</h1>
 				<h2 class="text-lg text-gray-500">{{ userVehicles.length }}</h2>
 			</div>
-			<div class="border border-blue-600 rounded p-2 h-fit w-full md:w-1/2">
+			<div class="h-fit w-full rounded border border-blue-600 p-2 md:w-1/2">
 				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Total Price</h1>
 				<h2 class="text-lg text-gray-500">
 					{{ Number($route.query.registrationCost) * userVehicles.length }}
@@ -256,11 +256,11 @@
 		</div>
 		<button
 			type="submit"
-			class="py-3 px-4 w-full mt-7 lg:w-1/2 text-lg h-16 items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+			class="mt-7 h-16 w-full items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-lg font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50 lg:w-1/2">
 			<span v-if="!formSubmissionLoading">Create Membership</span>
 			<div
 				v-if="formSubmissionLoading"
-				class="animate-spin inline-block size-5 border-[3px] border-white border-current border-t-transparent text-gray-800 rounded-full"
+				class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
 				role="status"
 				aria-label="loading" />
 		</button>
