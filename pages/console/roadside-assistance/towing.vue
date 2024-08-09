@@ -1,7 +1,7 @@
 <template>
-	<div class="py-10 responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
+	<div class="responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
 		<div
-			class="h-96 lg:h-full w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
+			class="h-96 lg:h-[95.5%] w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -47,15 +47,7 @@
 		</div>
 		<div class="p-2 lg:p-5">
 			<h1 class="mb-4 text-3xl antialiased font-semibold">Request Towing</h1>
-			<div
-				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4"
-				role="alert">
-				If the map adjacent to this form has not loaded, kindly click
-				<button @click="reloadPage">
-					<span class="font-semibold">Reload</span>
-				</button>
-				to reload it before filling the form.
-			</div>
+			<MapIssuesWarning />
 			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
 				<div class="text-sm md:text-base lg:text-lg border-b-1 space-x-4 w- lg:w-fit">
@@ -190,10 +182,6 @@
 			});
 		}
 	});
-
-	const reloadPage = (): void => {
-		location.reload();
-	};
 
 	const insertIntoOtherMarkers = (markerData: informativeCoordsMarker): void => {
 		// If the array is empty, simply push the markerData object

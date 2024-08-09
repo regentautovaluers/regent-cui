@@ -1,7 +1,7 @@
 <template>
-	<div class="py-10 responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
+	<div class="responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
 		<div
-			class="h-96 lg:h-full w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
+			class="h-96 lg:h-[94.8%] w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -39,15 +39,7 @@
 		</div>
 		<div class="p-2 lg:p-5">
 			<h1 class="mb-4 text-3xl antialiased font-semibold">Request Jumpstarting</h1>
-			<div
-				class="my-4 bg-yellow-100 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500"
-				role="alert">
-				If the map adjacent to this form has not loaded properly, kindly click
-				<button @click="reloadPage">
-					<span class="font-semibold">Reload</span>
-				</button>
-				to reload it before filling the form.
-			</div>
+			<MapIssuesWarning />
 			<div
 				class="flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between">
 				<!-- TODO: fix issue with the border-b class to get rid of white space due to space-x-4 -->
@@ -125,7 +117,6 @@
 			center.value.lat = coords.value.latitude;
 			center.value.lng = coords.value.longitude;
 
-			console.log('You are at: ', JSON.stringify(center.value, null, 2));
 			if (
 				center.value.lat !== Number.NEGATIVE_INFINITY &&
 				center.value.lng !== Number.NEGATIVE_INFINITY
@@ -136,10 +127,6 @@
 				});
 		}
 	});
-
-	function reloadPage() {
-		location.reload();
-	}
 
 	function insertIntoOtherMarkers(markerData: informativeCoordsMarker): void {
 		// If the array is empty, simply push the markerData object

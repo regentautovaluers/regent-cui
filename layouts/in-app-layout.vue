@@ -62,7 +62,6 @@
 			</div>
 			<!-- end of div with notifications, messages and profile information mentioned above -->
 		</nav>
-
 		<div
 			id="docs-sidebar"
 			class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-80 bg-white border-e border-gray-200 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0">
@@ -89,30 +88,40 @@
 					/></ChildlessParentRoute>
 
 					<!-- 'Vehicle Valuation' route -->
-					<ChildedParentRoute
+					<!-- <ChildedParentRoute
 						:display-name="applicationRoutes[1].displayName"
 						:route-name="applicationRoutes[1].routeName"
 						:children="applicationRoutes[1].children as ApplicationChildRoute[]"
 						@change-current-route-name="handleChangeCurrentRouteName">
 						<ValuationIcon />
-					</ChildedParentRoute>
+					</ChildedParentRoute> -->
 
 					<!-- 'Roadside Assistance' route -->
 					<ChildedParentRoute
 						:display-name="applicationRoutes[2].displayName"
 						:route-name="applicationRoutes[2].routeName"
-						:children="applicationRoutes[2].children as ApplicationChildRoute[]"
-						@change-current-route-name="handleChangeCurrentRouteName">
-						<AssistanceIcon />
+						:children="applicationRoutes[2].children"
+						@change-current-route-name="
+							(displayName: string) => {
+								handleChangeCurrentRouteName(displayName);
+							}
+						">
+						<AssistanceIcon
+							classes="flex-shrink-0 size-8 transition duration-75 group-hover:text-blue-600" />
 					</ChildedParentRoute>
 
 					<!-- 'Memberships' route -->
 					<ChildedParentRoute
 						:display-name="applicationRoutes[4].displayName"
 						:route-name="applicationRoutes[4].routeName"
-						:children="applicationRoutes[4].children as ApplicationChildRoute[]"
-						@change-current-route-name="handleChangeCurrentRouteName">
-						<MembershipsIcon />
+						:children="applicationRoutes[4].children"
+						@change-current-route-name="
+							(displayName: string) => {
+								handleChangeCurrentRouteName(displayName);
+							}
+						">
+						<MembershipsIcon
+							classes="flex-shrink-0 size-8 transition duration-75 group-hover:text-blue-600" />
 					</ChildedParentRoute>
 				</ul>
 			</div>
@@ -148,7 +157,6 @@
 
 <script setup lang="ts">
 	import applicationRoutes from '~/types/routes';
-	import type { ApplicationChildRoute } from '~/types/types';
 
 	const route = useRoute();
 	const notificationCount: Ref<number> = ref(0);

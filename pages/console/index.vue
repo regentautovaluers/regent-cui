@@ -2,108 +2,59 @@
 	<div class="py-10 responsive-view h-fit">
 		<div>
 			<h1 class="text-2xl md:text-3xl font-semibold">Our Services</h1>
-			<h2 class="text-lg text-gray-500">
+			<h2 class="text-lg text-gray-500 lg:w-1/2">
 				Welcome to our all-in-one vehicle services dashboard! Please choose the service you
 				need to get started on your journey.
 			</h2>
 		</div>
-		<div class="my-20 flex items-center whitespace-nowrap space-x-10">
+		<div
+			class="mt-10 flex items-center whitespace-nowrap space-x-10 py-4 overflow-x-auto"
+			style="
+				::-webkit-scrollbar-thumb {
+					border-radius: 10px;
+				}
+
+				/* Hide scrollbar for Chrome, Safari and Opera */
+				::-webkit-scrollbar {
+					display: none;
+				}
+
+				/* Hide scrollbar for IE, Edge and Firefox */
+				.no-scrollbar {
+					-ms-overflow-style: none; /* IE and Edge */
+					scrollbar-width: none; /* Firefox */
+				}
+			">
 			<NuxtLink
-				v-for="(link, index) in availableMinifiedRoutes"
-				:key="index"
-				:to="{ name: link.toName }"
-				class="inline-flex flex-col items-center space-y-2">
-				<div
-					class="p-3 bg-[#f6f9f2] border size-24 rounded-[2rem] flex items-center justify-center">
-					<img
-						:src="link.imageLink"
-						alt="Link Icon"
-						class="size-16" />
+				class="inline-flex flex-col items-center space-y-2"
+				:to="{ name: 'memberships-home' }">
+				<div class="homepage-quicklinks">
+					<MembershipsIcon
+						color="white"
+						classes="text-2xl" />
 				</div>
-				<span class="font-semibold text-gray-500">{{ link.linkText }}</span></NuxtLink
+				<span class="font-semibold text-gray-500">AVA Members</span></NuxtLink
+			>
+			<NuxtLink
+				class="inline-flex flex-col items-center space-y-2"
+				:to="{ name: 'ava-home' }">
+				<div class="homepage-quicklinks">
+					<AssistanceIcon
+						color="white"
+						classes="text-2xl" />
+				</div>
+				<span class="font-semibold text-gray-500">Roadside Assistance</span></NuxtLink
 			>
 		</div>
-
-		<!-- <div class="my-20 flex">
-			<div class="w-3/4 min-h-80 shadow-lg border rounded-xl p-4">
-				<div class="flex items-center justify-between">
-					<div>
-						<h1 class="text-xl md:text-2xl font-semibold">
-							Recent Vehicle Valuations
-						</h1>
-						<h2 class="text-lg text-gray-500">
-							Quick Overview of Your Most Recent Valuations
-						</h2>
-					</div>
-					<NuxtLink
-						:to="{ name: 'valuation-all-valuations' }"
-						class="p-4 bg-blue-600 text-white rounded-3xl font-semibold">
-						View More
-					</NuxtLink>
-				</div>
-				<div
-					class="flex flex-col items-center justify-center p-2"
-					v-if="fetchCompleteErrorOrEmpty">
-					<LoadingIndicator :bar-length="`w-[30%]`" />
-					<span class="text-gray-500 text-lg font-semibold"
-						>Loading Your Data.</span
-					>
-				</div>
-				<div class="p-2">
-					<swiper
-						ref="{swiperRef}"
-						:slidesPerView="4"
-						:centeredSlides="false"
-						:spaceBetween="1"
-						:navigation="true"
-						:modules="modules">
-						<swiper-slide
-							v-for="(
-								record, index
-							) in firstTenComputedValuations"
-							:key="index">
-							<RecentValuationsMinimal
-								:vehicle-id="record.vehicle_id"
-								:vehicle-reg-no="record.vehicleRegNumber"
-								:client-name="toTitleCase(record.customer_name)"
-								:vehicle-make="
-									capitalizeFirstLetterOfEachWord(
-										record.vehicleMake
-									)
-								"
-								:vehicle-model="
-									capitalizeFirstLetterOfEachWord(
-										record.vehicleModel
-									)
-								" />
-						</swiper-slide>
-					</swiper>
-				</div>
-			</div>
-		</div> -->
 	</div>
 </template>
 
 <script setup lang="ts">
-	import { Swiper, SwiperSlide } from 'swiper/vue';
-	import 'swiper/css';
-	import 'swiper/css/pagination';
-	import 'swiper/css/navigation';
-	import { Pagination, Navigation } from 'swiper/modules';
-	import type { SwiperModule } from 'swiper/types';
-
 	definePageMeta({
 		name: 'dashboard-home',
 		layout: 'in-app-layout',
 	});
 
-	// const modules: SwiperModule[] = [Pagination, Navigation];
-	// const {
-	// 	fetchRecentValuations,
-	// 	fetchCompleteErrorOrEmpty,
-	// 	firstTenComputedValuations,
-	// } = useValuations();
-	//
 	const availableMinifiedRoutes: any[] = [
 		{
 			imageLink: '/icons/home-dashboard-icons/vehicle-valuation.svg',
@@ -121,31 +72,4 @@
 			linkText: 'Memberships',
 		},
 	];
-
-	// onMounted(async () => await fetchRecentValuations());
 </script>
-
-<style>
-	.swiper {
-		width: fit-content;
-		height: fit-content;
-	}
-
-	.swiper {
-		width: 100%;
-		height: fit-content;
-	}
-
-	.append-buttons {
-		text-align: center;
-		margin-top: 20px;
-	}
-
-	.swiper-button-next,
-	.swiper-button-prev {
-		color: rgb(37 99 235); /* Change the color of the buttons */
-		background-color: white;
-
-		padding: 2px;
-	}
-</style>

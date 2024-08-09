@@ -1,81 +1,82 @@
 <template>
-	<div>
+	<div class="h-[85%] flex flex-col justify-center items-start">
 		<img
 			src="/images/regent-autovaluers-logo.svg"
 			alt="Regent Logo"
-			class="h-32" />
-	</div>
-	<form
-		class="mt-12"
-		@submit.prevent="attemptLogin">
-		<div class="flex flex-col font-semibold space-y-1 text-3xl lg:text-5xl">
-			<span class="tracking-wide">Hello,</span>
-			<span class="tracking-wide">Welcome Back</span>
-		</div>
-		<div class="space-y-4 py-2 mt-4">
-			<input
-				type="text"
-				class="generic-input"
-				placeholder="Enter your e-mail"
-				v-model="email"
-				required />
-			<div>
+			class="h-28" />
+		<form
+			class="mt-24 block w-full"
+			@submit.prevent="attemptLogin">
+			<div class="font-semibold space-y-1 text-3xl lg:text-4xl">
+				<span>Hello,</span>
+				<br />
+				<span>Welcome Back</span>
+			</div>
+			<div class="space-y-4 py-2 mt-4">
 				<input
-					:type="displayPassword ? 'text' : 'password'"
-					class="generic-input peer"
-					placeholder="Enter your password"
-					v-model="password"
+					type="text"
+					class="generic-input"
+					placeholder="Enter your e-mail"
+					v-model="email"
 					required />
-				<span
-					v-if="loginSuccess === null"
-					class="invisible peer-invalid:visible text-sm font-semibold text-gray-500">
-					Please provide your password
-				</span>
-				<span
-					v-else-if="loginSuccess === false"
-					class="text-sm font-semibold text-red-500">
-					{{ loginAttemptMessage }}
-				</span>
-				<span
-					v-else-if="loginSuccess === true"
-					class="text-sm font-semibold text-green-500">
-					{{ loginAttemptMessage }}
-				</span>
-			</div>
+				<div>
+					<input
+						:type="displayPassword ? 'text' : 'password'"
+						class="generic-input peer"
+						placeholder="Enter your password"
+						v-model="password"
+						required />
+					<span
+						v-if="loginSuccess === null"
+						class="invisible peer-invalid:visible text-sm font-semibold text-gray-500">
+						Please provide your password
+					</span>
+					<span
+						v-else-if="loginSuccess === false"
+						class="text-sm font-semibold text-red-500">
+						{{ loginAttemptMessage }}
+					</span>
+					<span
+						v-else-if="loginSuccess === true"
+						class="text-sm font-semibold text-green-500">
+						{{ loginAttemptMessage }}
+					</span>
+				</div>
 
-			<div class="flex justify-end py-2 items-center">
-				<input
-					type="checkbox"
-					class="shrink-0 size-5 mt-0.5 border-gray-200 rounded text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
-					id="reveal-password"
-					v-model="displayPassword" />
-				<label
-					for="reveal-password"
-					class="text-gray-500 ms-3 dark:text-gray-400"
-					>Reveal Password</label
-				>
+				<div class="flex justify-end py-2 items-center">
+					<input
+						type="checkbox"
+						class="shrink-0 size-5 mt-0.5 border-gray-200 rounded text-blue-600 disabled:opacity-50 disabled:pointer-events-none"
+						id="reveal-password"
+						v-model="displayPassword" />
+					<label
+						for="reveal-password"
+						class="text-gray-500 ms-3 dark:text-gray-400"
+						>Reveal Password</label
+					>
+				</div>
+				<NuxtLink
+					:to="{
+						name: 'forgot-password',
+					}"
+					class="font-semibold">
+					Forgot Password
+				</NuxtLink>
+				<div class="flex w-full items-center justify-center">
+					<button
+						type="submit"
+						class="form-submit relative overflow-clip"
+						:disabled="loginAttemptLoading">
+						<LoadingIndicator
+							v-if="loginAttemptLoading"
+							inject-classes="absolute w-[100%] mt-0 -top-1" />
+						<span v-if="loginAttemptLoading">Processing...</span>
+						<span v-else>Login</span>
+					</button>
+				</div>
 			</div>
-			<NuxtLink
-				:to="{
-					name: 'forgot-password',
-				}"
-				class="font-semibold">
-				Forgot Password
-			</NuxtLink>
-			<div class="flex w-full items-center justify-center">
-				<button
-					type="submit"
-					class="form-submit relative overflow-clip"
-					:disabled="loginAttemptLoading">
-					<LoadingIndicator
-						v-if="loginAttemptLoading"
-						inject-classes="absolute w-[100%] mt-0 -top-1" />
-					<span v-if="loginAttemptLoading">Processing...</span>
-					<span v-else>Login</span>
-				</button>
-			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </template>
 
 <style scoped>

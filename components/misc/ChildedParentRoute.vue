@@ -56,14 +56,14 @@
 					class="flex gap-x-1 relative group rounded-lg">
 					<!-- Icon -->
 					<div
-						class="relative last:after:hidden after:absolute after:top-0 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200">
+						class="relative last:after:hidden after:absolute after:top-0 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-300">
 						<div class="relative z-10 size-7 flex justify-center items-center">
 							<div
-								class="h-6 w-3 rounded-full bg-white border-2 group-hover:border-blue-600"
+								class="h-6 w-3 rounded-full border-2 group-hover:border-blue-600"
 								:class="
 									route.name === child.routeName
-										? 'border-blue-600'
-										: 'border-gray-300'
+										? 'border-blue-600 bg-blue-600'
+										: 'border-gray-300 bg-white'
 								" />
 						</div>
 					</div>
@@ -72,7 +72,11 @@
 					<!-- Right Content -->
 					<div
 						class="grow px-2 pb-8 font-medium"
-						:class="route.name === child.routeName ? 'text-blue-600' : 'text-gray-500'">
+						:class="
+							route.name === child.routeName
+								? 'text-blue-600 font-semibold'
+								: 'text-gray-500'
+						">
 						<NuxtLink
 							:to="{ name: child.routeName }"
 							@click="emit('changeCurrentRouteName', componentProps.displayName)">
@@ -92,7 +96,7 @@
 	export interface ComponentProps {
 		displayName: string;
 		routeName: string;
-		children: ApplicationChildRoute[];
+		children: ApplicationChildRoute[] | null;
 	}
 
 	const componentProps = defineProps<ComponentProps>();
@@ -104,7 +108,7 @@
 		const currentRouteName = route.name;
 		return (
 			currentRouteName === componentProps.routeName ||
-			componentProps.children.some((child) => child.routeName === currentRouteName)
+			componentProps.children?.some((child) => child.routeName === currentRouteName)
 		);
 	});
 </script>

@@ -1,7 +1,7 @@
 <template>
-	<div class="py-10 responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
+	<div class="responsive-view grid grid-cols-1 lg:grid-cols-[.5fr,.5fr]">
 		<div
-			class="h-96 lg:h-full w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
+			class="h-96 lg:h-[94.8%] w-full border border-gray-500 border-opacity-50 rounded-md overflow-clip">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"

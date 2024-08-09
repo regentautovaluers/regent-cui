@@ -1,6 +1,6 @@
 <template>
 	<main class="flex h-screen">
-		<div class="w-[60%] h-full hidden lg:flex">
+		<div class="w-[65%] h-full hidden lg:flex">
 			<div
 				data-hs-carousel='{
 					"loadingClasses": "opacity-0",
@@ -23,7 +23,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div
 					class="hs-carousel-pagination flex justify-center absolute bottom-3 start-0 end-0 space-x-2">
 					<span
@@ -34,8 +33,14 @@
 			</div>
 			<!-- End Slider -->
 		</div>
-		<div class="flex-grow px-4 mt-10 lg:my-32 md:px-20">
+		<div class="flex-grow flex flex-col justify-between px-4 md:px-20">
 			<slot />
+			<div class="text-center text-sm mb-4">
+				<span
+					>Copyright &copy 2024. All Rights Reserved.
+					<span class="text-pink-500 font-semibold">Regent Auto Valuers</span></span
+				>
+			</div>
 		</div>
 	</main>
 </template>

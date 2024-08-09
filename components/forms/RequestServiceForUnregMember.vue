@@ -227,43 +227,25 @@
 
 		<!-- fuel type and cost -->
 		<div
-			class="flex my-5 flex-col lg:flex-row items-center justify-between space-x-0 lg:space-x-3 space-y-3 lg:space-y-0"
+			class="flex my-5 flex-col justify-between space-x-0"
 			v-if="props.optionalElementsRendered.includes('fuelData')">
-			<!-- Fuel Type -->
-			<div class="w-full lg:w-1/2">
-				<label
-					for="fuel-type"
-					class="block font-medium mb-2 dark:text-white"
-					>Fuel Type</label
-				>
-				<select
-					class="generic-input"
-					id="fuel-type"
-					v-model="fuelType"
-					required>
-					<option
-						v-for="(fuelType, index) in ['Diesel', 'Petrol']"
-						:key="index"
-						:value="fuelType">
-						{{ fuelType }}
-					</option>
-				</select>
-			</div>
-			<!-- Vehicle Model -->
-			<div class="w-full lg:w-1/2">
-				<label
-					for="fuel-price"
-					class="block font-medium mb-2 dark:text-white"
-					>Fuel Price</label
-				>
-				<input
-					type="text"
-					id="fuel-price"
-					class="generic-input"
-					placeholder="e.g 1000"
-					required
-					v-model="fuelAmount" />
-			</div>
+			<label
+				for="fuel-type"
+				class="block font-medium mb-2 dark:text-white"
+				>Fuel Type</label
+			>
+			<select
+				class="generic-input"
+				id="fuel-type"
+				v-model="fuelType"
+				required>
+				<option
+					v-for="(fuelType, index) in ['Diesel', 'Petrol']"
+					:key="index"
+					:value="fuelType">
+					{{ fuelType }}
+				</option>
+			</select>
 		</div>
 
 		<!-- pickup location -->
