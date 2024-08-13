@@ -445,7 +445,7 @@
 					class="size-20 rounded-full object-cover shadow-sm" />
 				<div class="ml-5 h-fit flex-grow">
 					<h1 class="text-lg font-semibold text-gray-700">Vehicle Received By</h1>
-					<h2 class="font-semibold text-gray-500">Asap Rocky Omondi</h2>
+					<h2 class="font-semibold text-gray-500">{{ serviceReport.received_by }}</h2>
 				</div>
 			</div>
 			<div class="flex h-32 flex-grow space-x-8 rounded-lg">
@@ -470,15 +470,25 @@
 						<h2 class="font-semibold text-gray-500">
 							{{ serviceReport.user_name }}
 						</h2>
-						<div class="font-semibold text-blue-500">
+						<div class="font-semibold">
 							<!-- Rating -->
-							<div class="flex items-center space-x-1">
-								<OneStarIcon />
-								<OneStarIcon />
-								<OneStarIcon />
-								<ZeroStarIcon />
-								<ZeroStarIcon />
-								<span class="text-gray-500">(3.0)</span>
+							<div
+								v-if="!computedRateStars"
+								class="w-fit font-semibold">
+								<span>Not Rated Yet</span>
+							</div>
+							<div
+								v-else
+								class="flex w-fit items-center space-x-1">
+								<OneStarIcon
+									v-for="star in computedRateStars"
+									:key="star" />
+								<ZeroStarIcon
+									v-if="computedRateStars < 5"
+									v-for="star in 5 - computedRateStars"
+									:key="star" />
+
+								<span class="text-gray-500"> ({{ computedRateStars }} Stars)</span>
 							</div>
 							<!-- End Rating -->
 						</div>
@@ -534,6 +544,11 @@
 		];
 	});
 	const polylineCoords: Ref<locationCoordsMarker[]> = ref([]);
+	const activePreTowingImage: Ref<number> = ref(0);
+
+	const currentPercentage: ComputedRef<number> = computed(
+		() => (serviceReport.current_free_distance * 100) / 20,
+	);
 
 	const serviceImages: ComputedRef<any[]> = computed(() => [
 		serviceReport.value.checklist.front_image,
@@ -543,11 +558,16 @@
 		...(serviceReport.value.checklist.impact_images ?? []),
 	]);
 
-	const activePreTowingImage: Ref<number> = ref(0);
-
-	const currentPercentage: ComputedRef<number> = computed(
-		() => (serviceReport.current_free_distance * 100) / 20,
-	);
+	const computedRateStars: ComputedRef<number | null> = computed(() => {
+		const rawRate = serviceReport.value.driver_rating;
+		return rawRate && Number.isInteger(rawRate)
+			? Math.round(rawRate)
+			: rawRate && rawRate % 1 !== 0 && rawRate > rawRate - 0.5
+				? Math.ceil(rawRate)
+				: rawRate
+					? Math.round(rawRate)
+					: null;
+	});
 
 	const costBreakdownFields: ComputedRef<any[]> = computed(() => {
 		return [
