@@ -6,7 +6,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="full-name"
-					class="mb-2 block font-medium dark:text-white"
+					class="generic-input-label"
 					>Full Name</label
 				>
 				<input
@@ -22,7 +22,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="phone"
-					class="mb-2 block font-medium dark:text-white"
+					class="generic-input-label"
 					>Phone</label
 				>
 				<input
@@ -38,7 +38,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="email"
-					class="mb-2 block font-medium dark:text-white"
+					class="generic-input-label"
 					>Email</label
 				>
 				<input
@@ -74,7 +74,7 @@
 				<div class="w-full lg:w-1/3">
 					<label
 						for="vehicle-registration-number"
-						class="mb-2 block font-medium dark:text-white"
+						class="generic-input-label"
 						>Vehicle Registration Number</label
 					>
 					<input
@@ -89,7 +89,7 @@
 				<div class="w-full lg:w-1/3">
 					<label
 						for="vehicle-make"
-						class="mb-2 block font-medium dark:text-white"
+						class="generic-input-label"
 						>Vehicle Make</label
 					>
 					<input
@@ -105,7 +105,7 @@
 				<div class="w-full lg:w-1/3">
 					<label
 						for="vehicle-model"
-						class="mb-2 block font-medium dark:text-white"
+						class="generic-input-label"
 						>Vehicle Model</label
 					>
 					<input
@@ -121,7 +121,7 @@
 			<div class="mt-4 w-full">
 				<label
 					for="full-name"
-					class="mb-2 block font-medium dark:text-white"
+					class="generic-input-label"
 					>Vehicle Color</label
 				>
 				<input
@@ -138,7 +138,7 @@
 				<div class="w-1/2 md:w-1/3">
 					<label
 						for="payment-status"
-						class="mb-2 block font-medium dark:text-white"
+						class="generic-input-label"
 						>Payment Status</label
 					>
 					<select
@@ -159,7 +159,7 @@
 				<div class="w-1/2 md:w-2/3">
 					<label
 						for="membership-status"
-						class="mb-2 block font-medium dark:text-white"
+						class="generic-input-label"
 						>Membership Status</label
 					>
 					<select
@@ -183,7 +183,7 @@
 				<div class="w-1/2">
 					<label
 						for="cover-period-starts"
-						class="mb-2 block font-medium dark:text-white"
+						class="generic-input-label"
 						>Cover Period Starts</label
 					>
 					<input
@@ -200,7 +200,7 @@
 				<div class="w-1/2">
 					<label
 						for="cover-period-ends"
-						class="mb-2 block font-medium dark:text-white"
+						class="generic-input-label"
 						>Cover Period Ends</label
 					>
 					<input
@@ -231,11 +231,17 @@
 						end_date: '',
 					})
 			">
-			<Icon
-				name="ic:baseline-add"
-				color="white"
-				size="38"
-				class="rounded-full bg-blue-600 p-1" />
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="2em"
+				height="2em"
+				viewBox="0 0 24 24"
+				class="me-1 size-4"
+				fill="currentColor"
+				aria-hidden="true">
+				<path
+					d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1" />
+			</svg>
 			<span class="underline decoration-inherit decoration-2 underline-offset-2"
 				>Add Another Vehicle</span
 			>
@@ -287,7 +293,7 @@
 	const clientPhoneNumber = ref('');
 	const clientEmail = ref('');
 	const { getPrincipal } = useAuth();
-	const { openToast } = useToast();
+	// const { openToast } = useToast();
 	const runtimeConfig = useRuntimeConfig();
 	const formErrorMessage: Ref<null | string> = ref(null);
 	const userVehicles: Ref<vehicleRegistrationDetails[]> = ref([
@@ -334,7 +340,7 @@
 						membershipId = response._data.id;
 					} else if (response.status === 400) {
 						formErrorMessage.value = response._data.message;
-						openToast('Please check your data!', 'warning');
+						// openToast('Please check your data!', 'warning');
 						formSubmissionLoading.value = false;
 					} else {
 						throw new Error('Something went wrong');
@@ -352,7 +358,7 @@
 					async onResponse({ response }) {
 						if (response.status === 201) {
 							formSubmissionLoading.value = false;
-							openToast('Membership creation successful', 'success');
+							// openToast('Membership creation successful', 'success');
 						} else {
 							throw new Error('Something went wrong');
 						}
@@ -362,7 +368,7 @@
 		} catch (err) {
 			console.log('An error occured: ', err);
 			formSubmissionLoading.value = false;
-			openToast('Request failed. Please try again!', 'danger');
+			// openToast('Request failed. Please try again!', 'danger');
 		}
 	};
 </script>

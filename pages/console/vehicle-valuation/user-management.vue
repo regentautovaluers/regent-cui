@@ -1,70 +1,49 @@
 <template>
-	<div class="responsive-view h-fit py-10">
-		<h1 class="my-5 text-xl font-semibold md:text-3xl">Actions</h1>
-		<div class="flex space-x-4">
-			<div class="min-w-1/6 flex h-full w-[15%] flex-col space-y-1">
+	<div class="grid h-full flex-grow grid-cols-1 gap-4 lg:grid-cols-[.2fr,.8fr]">
+		<div class="flex flex-col">
+			<h1 class="mb-2 text-lg font-extrabold md:text-3xl">Actions</h1>
+			<div class="flex flex-grow flex-col space-y-2">
 				<NuxtLink
-					v-for="(link, index) in computedInternalLinks"
-					:to="{ name: link.to }"
-					class="whitespace-nowrap rounded-lg p-2 hover:bg-gray-100"
+					:to="{ name: 'vehicle-valuation-manage-user' }"
+					class="rounded-lg p-2 text-gray-500"
 					:class="
-						$route.name === link.to ? 'bg-gray-100 font-semibold text-blue-600' : null
+						doesRouteNameMatch('vehicle-valuation-manage-user')
+							? 'bg-gray-200 font-semibold'
+							: 'hover:bg-gray-200'
 					"
-					:key="index"
-					>{{ link.text }}</NuxtLink
+					>Manage Users</NuxtLink
+				>
+				<NuxtLink
+					:to="{ name: 'vehicle-valuation-add-user' }"
+					class="rounded-lg p-2 text-gray-500"
+					:class="
+						doesRouteNameMatch('vehicle-valuation-add-user')
+							? 'bg-gray-200 font-semibold'
+							: 'hover:bg-gray-200'
+					"
+					>Add New User</NuxtLink
+				>
+				<NuxtLink
+					:to="{ name: 'corp-branches' }"
+					class="rounded-lg p-2 text-gray-500"
+					:class="
+						doesRouteNameMatch('corp-branches')
+							? 'bg-gray-200 font-semibold'
+							: 'hover:bg-gray-200'
+					"
+					>Corporate Branches</NuxtLink
 				>
 			</div>
-			<div class="h-full w-[65%]">
-				<NuxtPage />
-			</div>
-			<div class="flex h-full flex-grow items-center justify-center">
-				<UpdateUserProfilePic />
-			</div>
 		</div>
+		<NuxtPage />
 	</div>
 </template>
 
 <script setup lang="ts">
 	definePageMeta({
 		name: 'valuation-user-management',
-		layout: 'in-app-layout',
+		layout: 'console-layout',
 	});
 
-	type InternalLink = {
-		text: string;
-		to: string;
-		forAdminOnly: boolean;
-	};
-
-	const { isPrincipalAdmin } = useAuth();
-	const internalLinks: InternalLink[] = [
-		{
-			text: 'My Account',
-			to: 'valuation-my-account',
-			forAdminOnly: false,
-		},
-		{
-			text: 'Manage All Users',
-			to: 'valuation-manage-users',
-			forAdminOnly: true,
-		},
-		{
-			text: 'Add New User',
-			to: 'valuation-users-add-user',
-			forAdminOnly: true,
-		},
-		// {
-		// 	text: 'Update Details',
-		// 	to: 'valuation-update-user-details',
-		// },
-	];
-
-	const computedInternalLinks: ComputedRef<InternalLink[]> = computed(() => {
-		return internalLinks.filter((link) => {
-			if (link.forAdminOnly) {
-				return isPrincipalAdmin();
-			}
-			return true;
-		});
-	});
+	const { doesRouteNameMatch } = useNavigationRoutes();
 </script>

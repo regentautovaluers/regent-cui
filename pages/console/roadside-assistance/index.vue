@@ -1,335 +1,316 @@
 <template>
-	<div class="responsive-view h-full py-10">
-		<!-- top card with link to add new member -->
-		<div
-			class="mb-6 flex flex-col items-center justify-between space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
-			<div class="flex w-full items-center space-x-2 md:w-fit">
+	<div class="flex h-full flex-col">
+		<!-- top information column -->
+		<div class="flex h-[6rem] items-center justify-between rounded-t-lg border p-4">
+			<div class="flex w-full items-center space-x-3 md:w-fit">
 				<img
-					class="size-[60px] rounded-full object-cover"
-					:src="profilePicture"
-					alt="User Image" />
-				<div class="flex flex-col">
-					<span class="inline-flex items-center font-semibold text-blue-600"
-						>Hi, {{ getPrincipal.username }}
-						<img
-							src="/icons/misc/hand-wave.svg"
-							alt="Hand Wave Icon"
-							class="ml-1"
-					/></span>
-					<span>Welcome to Your Roadside Assistance Dashboard</span>
+					class="h-12 min-h-12 w-12 min-w-12 rounded-full"
+					src="https://images.unsplash.com/photo-1723149500877-69d4a956ea97?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					alt="Rounded avatar" />
+				<div class="h-full flex-col overflow-hidden">
+					<h1 class="inline-flex items-center space-x-3">
+						<span class="font-semibold text-blue-600">Hi, John Doe</span>
+						<HandshakeIcon />
+					</h1>
+					<h2>Welcome to Your Roadside Assistance Dashboard.</h2>
 				</div>
 			</div>
-			<div class="space-x-6">
+			<div class="hidden space-x-3 md:flex md:items-center">
 				<NuxtLink
-					:to="{ name: 'ava-all-incidents' }"
-					class="font-semibold text-blue-600 underline underline-offset-2"
-					>View All Incidents</NuxtLink
-				>
+					:to="{ name: 'ra-all-incidents' }"
+					class="text-blue-600 underline underline-offset-2 hover:text-blue-700">
+					All Incidents
+				</NuxtLink>
 				<NuxtLink
-					:to="{ name: 'new-member' }"
-					class="w-full rounded-xl bg-blue-600 p-4 text-center text-sm font-semibold text-white md:w-fit"
-					>ADD A NEW MEMBER</NuxtLink
-				>
+					:to="{ name: 'ava-membership-types' }"
+					class="generic-nuxt-link">
+					Onboard Member
+				</NuxtLink>
 			</div>
 		</div>
-		<div
-			class="mb-6 flex flex-col items-center justify-around space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
+
+		<!-- statistics strip -->
+		<div class="flex h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
 			<div
-				v-for="(info, index) in subLinksInfo"
-				:key="index"
-				class="flex items-start space-x-2">
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="1em"
+					height="1em"
+					viewBox="0 0 24 24"
+					class="size-7">
+					<path
+						fill="currentColor"
+						d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4" />
+				</svg>
 				<div>
-					<img
-						:src="info.icon"
-						alt="Sublink Icon"
-						class="size-6" />
+					<h1 class="font-semibold">Registered Members</h1>
+					<h2>Lorem</h2>
+					<NuxtLink
+						:to="{ name: 'ra-all-incidents' }"
+						class="text-blue-600 hover:text-blue-700">
+						View Members
+					</NuxtLink>
 				</div>
-				<div class="flex flex-col space-y-2">
-					<span class="font-semibold text-gray-600">{{ info.title }}</span>
-					<span class="font-semibold text-gray-500">{{ info.data }}</span>
-					<NuxtLink class="font-semibold text-blue-600">
-						{{ info.text }}
+			</div>
+			<div
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="1em"
+					height="1em"
+					viewBox="0 0 24 24"
+					class="size-7">
+					<g
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-miterlimit="10"
+						stroke-width="1.5">
+						<path
+							d="M21.5 12h-2.111M12 2.5v2.111M2.5 12h2.111M12 21.5v-2.111m0 0A7.389 7.389 0 1 0 12 4.61a7.389 7.389 0 0 0 0 14.778Z" />
+						<path d="M12 16.222a4.222 4.222 0 1 0 0-8.444a4.222 4.222 0 0 0 0 8.444Z" />
+					</g>
+				</svg>
+				<div>
+					<h1 class="font-semibold">Ongoing Requests</h1>
+					<h2>Lorem</h2>
+					<NuxtLink
+						:to="{ name: 'ra-all-incidents' }"
+						class="text-blue-600 hover:text-blue-700">
+						View Ongoing
+					</NuxtLink>
+				</div>
+			</div>
+			<div
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="1em"
+					height="1em"
+					viewBox="0 0 24 24"
+					class="size-7">
+					<path
+						fill="currentColor"
+						d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+				</svg>
+				<div>
+					<h1 class="font-semibold">Completed Requests</h1>
+					<h2>Lorem</h2>
+					<NuxtLink
+						:to="{ name: 'ra-all-incidents' }"
+						class="text-blue-600 hover:text-blue-700">
+						View Completed
 					</NuxtLink>
 				</div>
 			</div>
 		</div>
-		<div class="flex items-center justify-between space-x-6 overflow-x-auto">
+
+		<!-- Requests quick links -->
+		<div class="mt-4 flex h-fit items-center justify-between space-x-3 overflow-auto">
 			<NuxtLink
-				v-for="(route, index) in applicationRoutes[2].children?.slice(0, 4)"
-				:key="index"
-				:to="{ name: route.routeName }"
-				class="flex h-20 w-1/4 items-center space-x-3 rounded-xl border-2 border-gray-200 bg-white px-4 shadow-sm hover:border-blue-500">
-				<img
-					:src="route.icon"
-					alt="Service Icon"
-					class="size-10" />
-				<span class="text-lg tracking-wide text-gray-500">{{ route.displayName }}</span>
-			</NuxtLink>
+				:to="{ name: 'ra-fueldelivery-request' }"
+				class="ava-services-quicklinks group">
+				<FuelDeliveryServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Fuel Delivery</span></NuxtLink
+			>
+			<NuxtLink
+				:to="{ name: 'ra-jumpstarting-request' }"
+				class="ava-services-quicklinks">
+				<JumpstartingServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Jumpstarting</span></NuxtLink
+			>
+			<NuxtLink
+				:to="{ name: 'ra-jumpstarting-request' }"
+				class="ava-services-quicklinks">
+				<TyrechangeServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Tyrechange</span></NuxtLink
+			>
+			<NuxtLink
+				:to="{ name: 'ra-jumpstarting-request' }"
+				class="ava-services-quicklinks">
+				<TowingServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Towing</span></NuxtLink
+			>
 		</div>
-		<div class="mt-6 flex flex-col md:flex-row md:space-x-6">
-			<!--left and analysis graph -->
-			<div class="space-y-6 md:w-[20%]">
-				<div class="min-h-[24rem] rounded-xl border shadow">
-					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">Memberships Glance</h1>
-					</div>
-					<ClientOnly>
-						<div class="flex justify-center">
-							<MembershipsDonutChart />
-						</div>
-					</ClientOnly>
+
+		<!-- Side information -->
+		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.2fr,.8fr]">
+			<!-- side-information including chart -->
+			<div
+				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
+				<div
+					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
+					<h1>Hello world</h1>
 				</div>
-				<div class="flex min-h-[25rem] flex-col rounded-xl border shadow">
-					<div class="flex h-fit items-center justify-between p-4">
-						<h1 class="text-xl font-semibold">Recent Incidents</h1>
-						<NuxtLink
-							:to="{ name: 'ava-all-incidents' }"
-							class="text-blue-500 underline underline-offset-2 hover:text-blue-600"
-							>View All</NuxtLink
-						>
-					</div>
-					<div class="flex flex-grow flex-col p-3">
-						<div
-							v-if="recentIncidentsCol.length === 0"
-							class="flex flex-grow flex-col items-center justify-center">
-							<img
-								src="/icons/misc/empty-or-error.svg"
-								alt="Data Not Found"
-								class="mb-4 inline-block" />
-							<br />
-							<span class="text-center text-lg font-semibold text-gray-500"
-								>Nothing to Show</span
-							>
-							<NuxtLink
-								:to="{ name: 'ava-towing' }"
-								class="text-blue-500 underline underline-offset-2 hover:text-blue-600"
-								>Make a towing request</NuxtLink
-							>
-						</div>
-						<RecentIncidentsMinimal
-							v-else
-							v-for="(incident, index) in recentIncidentsCol"
-							:key="index"
-							:reg-no="incident.registration_no"
-							:date-time="formatServerProvidedDateTime(incident.date_created)"
-							:service-type="makeServiceUserFriendly(incident.service)" />
-					</div>
+				<div
+					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
+					<h1>Hello world again</h1>
 				</div>
 			</div>
-			<div class="md:w-[80%]">
-				<!-- search & filter controls -->
-				<div class="mb-6 flex flex-nowrap items-center justify-between overflow-x-auto">
-					<!-- search box -->
-					<div class="relative mr-10 max-w-[35%] flex-grow">
-						<input
-							type="text"
-							class="generic-input"
-							placeholder="Search Name, Email or Phone Number"
-							v-model.lazy="searchFilterTerm" />
-					</div>
-					<div class="flex items-center space-x-2">
-						<div class="flex flex-nowrap items-center space-x-3">
-							<!-- filter by Membership type -->
-							<div
-								class="hs-dropdown relative inline-flex [--placement:bottom-right]">
-								<button
-									id="hs-dropdown-default"
-									type="button"
-									class="hs-dropdown-toggle inline-flex h-12 items-center gap-x-2 rounded-xl border border-gray-200 px-4 py-3 font-medium text-gray-800 shadow-sm"
-									:class="
-										!searchMembershipCategory
-											? 'bg-white text-black'
-											: 'bg-blue-600 text-white'
-									">
-									Membership Category
-									<HsChevron />
-								</button>
-								<div
-									class="hs-dropdown-menu duration z-20 mt-2 hidden min-w-60 space-y-2 rounded-lg border bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
-									aria-labelledby="hs-dropdown-default">
-									<div
-										v-for="(option, index) in [
-											{
-												text: 'Corporate Members',
-												id: 'corp-cat',
-												value: 'corporate',
-											},
-											{
-												text: 'Individual Members',
-												id: 'indiv-cat',
-												value: 'individual',
-											},
-										]"
-										:key="index"
-										class="flex items-center rounded-lg p-2 hover:bg-gray-200">
-										<!-- prettier-ignore -->
-										<input
-											:id="option.id"
-											type="radio"
-											name="membership-category"
-											:value="option.value"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-											v-model="searchMembershipCategory" />
+			<!-- members listing -->
+			<div>
+				<!-- div to show when there are no members -->
+				<!-- <div
+					class="flex h-full flex-col items-center justify-center rounded-lg border shadow-sm space-y-4">
+					<BirdieNotFoundIcon />
+					<h1 class="font-semibold text-gray-500">Oops! Seems like you have no members!</h1>
+					<NuxtLink
+						:to="{ name: 'ava-membership-types' }"
+						class="generic-nuxt-link">
+						Onboard AVA Member
+					</NuxtLink>
+				</div> -->
 
-										<label
-											for="corp-cat"
-											class="ms-2 text-gray-500"
-											>{{ option.text }}</label
-										>
-									</div>
-								</div>
-							</div>
-						</div>
-						<button
-							v-if="searchFilterTerm !== '' || searchMembershipCategory !== ''"
-							@click="clearFiltering"
-							title="Clear Filters"
-							class="inline-flex size-10 items-center justify-center rounded-full bg-gray-300 p-2">
-							<Icon
-								name="material-symbols:close"
-								class="text-lg" />
-						</button>
+				<!-- div to show when there are members -->
+				<div class="flex h-full flex-col justify-between">
+					<!-- search & filter controls -->
+					<div class="flex h-fit items-center justify-between">
+						<form class="relative h-fit w-full md:w-[45%] lg:w-[30%]">
+							<input
+								type="text"
+								class="generic-input"
+								placeholder="Search Name, Email or Phone" />
+							<button
+								type="submit"
+								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+								<SearchIcon />
+							</button>
+						</form>
 					</div>
-				</div>
-				<!-- start of data table -->
-				<div class="flex flex-col">
-					<div class="-m-1.5 overflow-x-auto">
-						<div class="inline-block min-w-full p-1.5 align-middle">
-							<div class="overflow-hidden rounded-xl border shadow">
-								<table class="min-w-full divide-y">
-									<thead>
-										<tr>
-											<th
-												scope="col"
-												class="px-6 py-3 text-start font-bold text-gray-500">
-												Client Name
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-start font-bold text-gray-500">
-												Membership Category
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-center font-bold text-gray-500">
-												Vehicles
-											</th>
 
-											<th
-												scope="col"
-												class="px-6 py-3 text-end font-bold text-gray-500">
-												Client Phone
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-end font-bold text-gray-500">
-												Client Email
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-end" />
-										</tr>
-									</thead>
-									<tbody class="divide-y divide-gray-200">
-										<ErrorOrMissingData v-if="fetchErrorOrEmpty" />
-										<MembersRecord
-											v-else
-											v-for="(member, index) in membersList"
-											:key="index"
-											:clientName="member.full_name"
-											:membership-category="member.category"
-											:vehicle-count="member.membershipVehicleCount"
-											:member-id="member.id"
-											:client-phone="member.phone_number"
-											:client-email="member.userEmail" />
-									</tbody>
-								</table>
-							</div>
+					<!-- the table itself -->
+					<div class="my-4 flex-grow">
+						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+							<table class="w-full text-left text-sm text-gray-500">
+								<thead class="bg-gray-100 text-xs uppercase text-gray-700">
+									<tr>
+										<th
+											scope="col"
+											class="table-headers">
+											Client Name
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Membership Category
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Vehicles
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Client Phone
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Email
+										</th>
+										<th
+											scope="col"
+											class="table-headers" />
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										class="border-b bg-white hover:bg-gray-100"
+										v-for="a in 10"
+										:key="a">
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-medium text-gray-900">
+											Apple MacBook Pro 17"
+										</td>
+										<td class="p-6">Silver</td>
+										<td class="p-6">Laptop</td>
+										<td class="p-6">$2999</td>
+										<td class="p-6">$2999</td>
+										<td class="flex items-center justify-end p-6">
+											<button
+												:id="'dropdownTopButton' + a"
+												:data-dropdown-toggle="'dropdownTop' + a"
+												data-dropdown-placement="top"
+												type="button">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="1em"
+													height="1em"
+													viewBox="0 0 16 16"
+													class="size-6">
+													<MenuKebabIcon />
+												</svg>
+											</button>
+											<!-- Dropdown menu -->
+											<div
+												:id="'dropdownTop' + a"
+												class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+												<ul
+													class="py-2 text-sm text-gray-500"
+													aria-labelledby="dropdownTopButton">
+													<li>
+														<button
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button"
+															data-modal-target="edit-member-details-modal"
+															data-modal-toggle="edit-member-details-modal">
+															Edit Details
+														</button>
+													</li>
+													<li>
+														<button
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button"
+															data-modal-target="view-member-vehicles-modal"
+															data-modal-toggle="view-member-vehicles-modal">
+															View Vehicles
+														</button>
+													</li>
+												</ul>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
-				</div>
-				<!-- end of data table -->
-				<div class="mt-2 flex w-full items-center justify-between rounded-sm py-2">
-					<span>Showing {{ page + 1 }} of {{ totalPages }} pages.</span>
-					<div class="flex items-center space-x-1">
-						<button
-							@click="loadPreviousPage"
-							v-if="page > 0"
-							type="button"
-							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-							<span v-if="!fetchingMoreData">Previous Page</span>
-							<div
-								v-if="fetchingMoreData"
-								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
-								role="status"
-								aria-label="loading" />
-						</button>
-						<button
-							@click="loadNextPage"
-							v-if="page < totalPages - 1"
-							type="button"
-							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-							<span v-if="!fetchingMoreData">Next Page</span>
-							<div
-								v-if="fetchingMoreData"
-								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
-								role="status"
-								aria-label="loading" />
-						</button>
+
+					<!-- page controls -->
+					<div class="flex h-12 items-center justify-between">
+						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
+							Showing X of Y pages.
+						</h1>
+						<div class="h-full space-x-2 md:space-x-4">
+							<button class="table-page-buttons">Previous</button>
+							<button class="table-page-buttons">Next</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!-- Edit Member details modal -->
+	<EditMemberDetailsModal />
+
+	<!-- Add member vehicles -->
+	<ViewMemberVehiclesModal />
 </template>
 
 <script setup lang="ts">
-	import applicationRoutes from '~/types/routes';
-
 	definePageMeta({
-		name: 'ava-home',
-		layout: 'in-app-layout',
+		name: 'ra-home',
+		layout: 'console-layout',
 	});
-	const { getPrincipal } = useAuth();
-	const profilePicture: Ref<string> = ref('');
-	const {
-		membersList,
-		searchFilterTerm,
-		searchMembershipCategory,
-		totalNumber,
-		totalPages,
-		fetchErrorOrEmpty,
-		fetchingMoreData,
-		page,
-		clearFiltering,
-		loadNextPage,
-		loadPreviousPage,
-	} = useGeneralMemberships();
-	const { recentIncidentsCol } = useIncidents();
-
-	const subLinksInfo: any[] = [
-		{
-			icon: '/icons/misc/roadside-registeredmems-icon.svg',
-			title: 'Registered Members',
-			data: totalNumber,
-			link: 'memberships-home',
-			text: 'View Members',
-		},
-		{
-			icon: '/icons/misc/roadside-realttracking-icon.svg',
-			title: 'Real-Time Tracking',
-			data: 'Lorem',
-			link: 'memberships-home',
-			text: 'View Live Map',
-		},
-		{
-			icon: '/icons/misc/roadside-complord-icon.svg',
-			title: 'Completed Orders',
-			data: 'Lorem',
-			link: 'memberships-home',
-			text: 'View All',
-		},
-	];
-
-	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>

@@ -1,14 +1,14 @@
 <template>
-	<div class="responsive-view h-fit py-10">
-		<div>
-			<h1 class="text-2xl font-semibold md:text-3xl">Our Services</h1>
-			<h2 class="text-lg text-gray-500 lg:w-1/2">
+	<div class="h-full">
+		<div class="space-y-3 py-2 text-center md:text-start">
+			<h1 class="text-xl font-extrabold md:text-3xl">Our Services</h1>
+			<p class="text-base md:max-w-[80%] md:text-lg lg:max-w-[70%] xl:max-w-[65%]">
 				Welcome to our all-in-one vehicle services dashboard! Please choose the service you
 				need to get started on your journey.
-			</h2>
+			</p>
 		</div>
 		<div
-			class="mt-10 flex items-center space-x-10 overflow-x-auto whitespace-nowrap py-4"
+			class="mt-4 flex items-center space-x-8 overflow-x-auto whitespace-nowrap py-2"
 			style="
 				::-webkit-scrollbar-thumb {
 					border-radius: 10px;
@@ -27,23 +27,39 @@
 			">
 			<NuxtLink
 				class="inline-flex flex-col items-center space-y-2"
-				:to="{ name: 'memberships-home' }">
+				:to="{ name: navigationRoutes[3].routeName }">
 				<div class="homepage-quicklinks">
-					<MembershipsIcon
+					<VehicleValuationIcon
 						color="white"
-						classes="text-2xl" />
+						classes="text-xl" />
 				</div>
-				<span class="font-semibold text-gray-500">AVA Members</span></NuxtLink
+				<span class="font-semibold text-gray-500">{{
+					navigationRoutes[3].screenName
+				}}</span></NuxtLink
 			>
 			<NuxtLink
 				class="inline-flex flex-col items-center space-y-2"
-				:to="{ name: 'ava-home' }">
+				:to="{ name: navigationRoutes[1].routeName }">
+				<div class="homepage-quicklinks">
+					<MembershipsIcon
+						color="white"
+						classes="text-xl" />
+				</div>
+				<span class="font-semibold text-gray-500">{{
+					navigationRoutes[1].screenName
+				}}</span></NuxtLink
+			>
+			<NuxtLink
+				class="inline-flex flex-col items-center space-y-2"
+				:to="{ name: navigationRoutes[2].routeName }">
 				<div class="homepage-quicklinks">
 					<AssistanceIcon
 						color="white"
-						classes="text-2xl" />
+						classes="text-xl" />
 				</div>
-				<span class="font-semibold text-gray-500">Roadside Assistance</span></NuxtLink
+				<span class="font-semibold text-gray-500">{{
+					navigationRoutes[2].screenName
+				}}</span></NuxtLink
 			>
 		</div>
 	</div>
@@ -51,7 +67,9 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'dashboard-home',
-		layout: 'in-app-layout',
+		name: 'mobivaluer-home',
+		layout: 'console-layout',
 	});
+
+	const { navigationRoutes } = useNavigationRoutes();
 </script>
