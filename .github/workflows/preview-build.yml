@@ -1,0 +1,19 @@
+name: regent mobivaluer preview build
+on:
+    push:
+        branches: preview-build
+
+jobs:
+    build:
+        runs-on: ubuntu-22.04
+        steps:
+            - name: checkout
+              uses: actions/checkout@v3
+
+            - name: use nodejs
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '20.x'
+
+            - name: Build
+              run: npm install && npm run build
