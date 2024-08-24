@@ -1,7 +1,10 @@
 import { cleanFleets, getFleets, setFleets } from '~/stores/fleets-store';
 import readXlsxFile from 'read-excel-file';
-import { type BulkProcessedMembershipType } from '~/types';
-import { type ExcelProcesssingErrorMessage } from '~/types';
+import {
+	type BulkProcessedMembershipType,
+	type ExcelProcesssingErrorMessage,
+	type IndividuaProcessedMembershipType,
+} from '~/types';
 
 export const useFleets = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -179,7 +182,7 @@ export const useBulkMemberRegistration = () => {
 				phone_number: `254${item[1]}`,
 				userEmail: item[2],
 				corporateId: getPrincipal.value.corpId,
-				membershipTypeId: Number(route.query.membershipTypeId),
+				membershipTypeId: Number(route.query.membershipType_id),
 				available_free_distance: route.query.freeDistance,
 				registration: item[3],
 				start_date: item[4],
@@ -251,5 +254,117 @@ export const useBulkMemberRegistration = () => {
 		registerBulkMembershipsLoading,
 		parseUploadedExcelFile,
 		registerMembersInBulk,
+	};
+};
+
+export const useIndividualMembershipRegistration = () => {
+	const route = useRoute();
+	const runtimeConfig = useRuntimeConfig();
+	const { getPrincipal } = useAuth();
+	const clientFullName = ref('');
+	const clientPhoneNumber = ref('');
+	const clientEmail = ref('');
+	const formErrorMessage: Ref<null | string> = ref(null);
+	const registerIndividualMemberLoading = ref(false);
+	const memberVehicles: Ref<IndividuaProcessedMembershipType[]> = ref([
+		{
+			corpName: getPrincipal.value.corpName,
+			membershipTypeId: Number(route.query.membershipType_id),
+			registration: '',
+			make: '',
+			model: '',
+			color: '',
+			payment_status: '',
+			membership_status: '',
+			start_date: '',
+			end_date: '',
+		},
+	]);
+
+	watch(clientPhoneNumber, (newNumber) => {
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			clientPhoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
+		}
+	});
+	
+	const addNewVehicle = (): void => {
+		memberVehicles.value.push({
+			corpName: getPrincipal.value.corpName,
+			membershipTypeId: Number(route.query.membershipType_id),
+			registration: '',
+			make: '',
+			model: '',
+			color: '',
+			payment_status: '',
+			membership_status: '',
+			start_date: '',
+			end_date: '',
+		});
+	}
+
+	const registerIndividualMember = async (): Promise<void> => {
+		registerIndividualMemberLoading.value = true;
+		let membershipId = 0;
+
+		try {
+			await $fetch('/api/v1/memberships', {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: 'POST',
+				body: JSON.stringify({
+					full_name: clientFullName.value,
+					phone_number: clientPhoneNumber.value,
+					userEmail: clientEmail.value,
+					corporateId: getPrincipal.value.corpId,
+					category: 'individual',
+					recordedBy: getPrincipal.value.userId,
+				}),
+
+				async onResponse({ response }) {
+					console.log(response._data);
+					if (response.status === 201) {
+						membershipId = response._data.id;
+					} else if (response.status === 400) {
+						formErrorMessage.value = response._data.message;
+						// openToast('Please check your data!', 'warning');
+						registerIndividualMemberLoading.value = false;
+					} else {
+						throw new Error('Something went wrong');
+					}
+				},
+			}).then(async () => {
+				await $fetch('/api/v1/membershipVehicles', {
+					baseURL: runtimeConfig.public.AVA_BASE_URL,
+					method: 'POST',
+					body: JSON.stringify({
+						membershipId: membershipId,
+						vehicles: memberVehicles.value,
+					}),
+
+					async onResponse({ response }) {
+						if (response.status === 201) {
+							registerIndividualMemberLoading.value = false;
+							// openToast('Membership creation successful', 'success');
+						} else {
+							throw new Error('Something went wrong');
+						}
+					},
+				});
+			});
+		} catch (err) {
+			console.log('An error occured: ', err);
+			registerIndividualMemberLoading.value = false;
+			// openToast('Request failed. Please try again!', 'danger');
+		}
+	};
+
+	return {
+		clientFullName,
+		clientPhoneNumber,
+		clientEmail,
+		formErrorMessage,
+		registerIndividualMemberLoading,
+		memberVehicles,
+		registerIndividualMember,
+		addNewVehicle,
 	};
 };
