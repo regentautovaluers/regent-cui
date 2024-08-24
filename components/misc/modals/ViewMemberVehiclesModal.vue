@@ -33,17 +33,78 @@
 					</button>
 				</div>
 				<!-- Modal body -->
-				<div class="space-y-4 p-4 md:p-5">
-					<div class="flex h-fit space-x-3 overflow-x-auto py-2">
+				<div class="relative p-3 py-2 md:p-4">
+					<div
+						class="flex h-fit space-x-3 overflow-x-auto"
+						ref="scrollEl">
 						<MemberVehiclesCard
 							v-for="a in 5"
 							:kay="a" />
 					</div>
+
+					<!-- left button -->
+					<button
+						type="button"
+						class="group absolute start-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+						@click="x -= 352"
+						:class="arrivedState.left ? 'hidden' : 'flex'">
+						<span
+							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+							<svg
+								class="h-4 w-4 text-white rtl:rotate-180"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 6 10">
+								<path
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M5 1 1 5l4 4" />
+							</svg>
+							<span class="sr-only">Scroll Left</span>
+						</span>
+					</button>
+
+					<!-- right button -->
+					<button
+						type="button"
+						class="group absolute end-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+						:class="arrivedState.right ? 'hidden' : 'flex'"
+						@click="x += 352">
+						<span
+							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+							<svg
+								class="h-4 w-4 text-white rtl:rotate-180"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 6 10">
+								<path
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="m1 9 4-4-4-4" />
+							</svg>
+							<span class="sr-only">Scroll Right</span>
+						</span>
+					</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
+
+<script setup lang="ts">
+	import { useScroll } from '@vueuse/core';
+	const scrollEl = ref<HTMLElement | null>(null);
+
+	const { x, arrivedState } = useScroll(scrollEl, {
+		behavior: 'smooth',
+	});
+</script>
 
 <style scoped>
 	::-webkit-scrollbar-thumb {
