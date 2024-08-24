@@ -145,40 +145,42 @@
 		<!-- tyre metadata -->
 		<div v-if="renderElementForService('ra-tyrechange-request')">
 			<div class="my-4 space-y-2">
-				<div>
+				<div
+					class="flex h-14 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
 					<input
-						id="button1"
+						id="has-spare-tyre"
 						type="radio"
-						name="radio-vertical-group"
-						class="peer hidden"
 						:value="true"
 						v-model="haveSpareTyre"
-						selected />
+						name="bordered-radio"
+						class="size-6 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
 					<label
-						for="button1"
-						class="radio-inputs">
-						Client Has a Spare Tyre
-					</label>
+						for="has-spare-tyre"
+						class="ms-2 w-full py-4 font-medium text-gray-600"
+						>Client Has Spare Tyre</label
+					>
 				</div>
-				<div>
+				<div
+					class="flex h-14 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
 					<input
-						id="button2"
+						checked
+						id="has-no-spare-tyre"
 						type="radio"
-						name="radio-vertical-group"
-						class="peer hidden"
 						:value="false"
-						v-model="haveSpareTyre" />
+						v-model="haveSpareTyre"
+						name="bordered-radio"
+						class="size-6 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
 					<label
-						for="button2"
-						class="radio-inputs">
-						Client Does Not Have a Spare Tyre
-					</label>
+						for="has-no-spare-tyre"
+						class="ms-2 w-full py-4 font-medium text-gray-600"
+						>Client Has No Spare Tyre</label
+					>
 				</div>
 			</div>
 			<div class="mt-4 flex w-full flex-col">
 				<label
 					for="fuel-type"
-					class="mb-2 whitespace-nowrap font-medium"
+					class="generic-input-label"
 					>Tyre Type</label
 				>
 				<select
@@ -207,7 +209,7 @@
 			v-if="renderElementForService('ra-jumpstarting-request')">
 			<label
 				for="vehicle-type"
-				class="block font-medium"
+				class="generic-input-label"
 				>Vehicle Class (Type)</label
 			>
 			<select
@@ -323,9 +325,9 @@
 			class="generic-form-submit mt-3">
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
-				v-if="formSubmissionLoading" />
+				v-if="makeRequestLoading" />
 			{{
-				formSubmissionLoading
+				makeRequestLoading
 					? $t('request_processing')
 					: `Make ${props.roadsideAssistanceName} Request`
 			}}
@@ -356,7 +358,7 @@
 		userName,
 		userPhoneNumber,
 		userEmail,
-		formSubmissionLoading,
+		makeRequestLoading,
 		loadingVehicleTypes,
 		vehicleTypes,
 		requestRemarks,

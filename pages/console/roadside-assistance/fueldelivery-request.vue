@@ -35,7 +35,7 @@
 			</GoogleMap>
 		</div>
 		<div>
-			<h1 class="mb-4 text-3xl font-semibold antialiased">Request Towing</h1>
+			<h1 class="mb-4 text-3xl font-semibold">Request Fuel Delivery</h1>
 			<div
 				class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
 				<div class="border-b-1 space-x-4 font-semibold text-gray-500 lg:w-fit lg:text-lg">

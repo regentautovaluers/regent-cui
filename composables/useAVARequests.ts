@@ -23,7 +23,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 	const { getPrincipal } = useAuth();
 	const route = useRoute();
 	// const { openToast } = useToast();
-	const formSubmissionLoading = ref(false);
+	const makeRequestLoading = ref(false);
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
 
 	// fields related to the service request
@@ -226,6 +226,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		towingDistance?: number,
 	) => {
 		try {
+			makeRequestLoading.value = true;
 			await $fetch(`/api/v1/mobile/${determineEndpointVar()}`, {
 				baseURL: runtimeConfig.public.AVA_BASE_URL,
 				method: 'POST',
@@ -277,6 +278,8 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		} catch (error) {
 			console.log('Service request error encountered. Reason: ', error);
 			// openToast(`${backendServiceName} request failed to go thorugh!`, 'danger');
+		} finally {
+			makeRequestLoading.value = false;
 		}
 	};
 
@@ -346,7 +349,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		userName,
 		userPhoneNumber,
 		userEmail,
-		formSubmissionLoading,
+		makeRequestLoading,
 		vehicleSearchLoading,
 		loadingVehicleTypes,
 		currentPercentage,
