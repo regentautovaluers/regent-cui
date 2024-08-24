@@ -1,3 +1,5 @@
+import { type TransitionType, type Position } from 'mosha-vue-toastify';
+
 export interface NavigationRoute {
 	id: number;
 	screenName: string;
@@ -69,4 +71,14 @@ export type IndividuaProcessedMembershipType = {
 	membership_status: string;
 	start_date: string;
 	end_date: string;
+};
+
+export type ToastConfigOptions = {
+	timeout?: number;
+	type: string;
+	showCloseButton: boolean;
+	transition?: TransitionType;
+	hideProgressBar?: boolean;
+	showIcon?: boolean;
+	position?: Position;
 };
