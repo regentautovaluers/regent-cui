@@ -4,11 +4,13 @@
 			<div class="flex items-center space-x-3">
 				<img
 					class="h-12 min-h-12 w-12 min-w-12 rounded-full"
-					src="https://images.unsplash.com/photo-1723149500877-69d4a956ea97?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					:src="profilePicture"
 					alt="Rounded avatar" />
 				<div class="h-full flex-col overflow-hidden md:flex">
 					<h1 class="inline-flex items-center space-x-3">
-						<span class="font-semibold text-blue-600">Hi, John Doe</span>
+						<span class="font-semibold text-blue-600"
+							>Hi, {{ getPrincipal.username }}</span
+						>
 						<HandshakeIcon />
 					</h1>
 					<h2>You Have 110 Registered Members.</h2>
@@ -254,4 +256,8 @@
 	});
 
 	const activeDescriptionIndex: Ref<number> = ref(0);
+	const profilePicture: Ref<string> = ref('');
+	const { getPrincipal } = useAuth();
+
+	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
