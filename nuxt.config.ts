@@ -22,6 +22,31 @@ export default defineNuxtConfig({
 			autoprefixer: {},
 		},
 	},
+	app: {
+		head: {
+			title: 'Regent Mobivaluer',
+			meta: [
+				{
+					name: 'viewport',
+					content: 'width=device-width, initial-scale=1',
+				},
+			],
+			link: [
+				{
+					rel: 'apple-touch-icon',
+					href: '/favicon/apple-touch-icon.png',
+					sizes: '180x180',
+					type: 'image/png',
+				},
+				{
+					rel: 'icon',
+					href: '/favicon/favicon-32x32.png',
+					type: 'image/png',
+				},
+			],
+			script: [],
+		},
+	},
 	runtimeConfig: {
 		public: {
 			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
