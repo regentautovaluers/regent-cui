@@ -47,9 +47,9 @@
 						type="button"
 						class="group absolute start-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
 						@click="x -= 352"
-						:class="arrivedState.left ? 'hidden' : 'flex'">
+						:class="arrivedState.left ? 'disabled' : null">
 						<span
-							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 outline-none ring-white group-focus:ring-4">
 							<svg
 								class="h-4 w-4 text-white rtl:rotate-180"
 								aria-hidden="true"
@@ -71,10 +71,10 @@
 					<button
 						type="button"
 						class="group absolute end-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-						:class="arrivedState.right ? 'hidden' : 'flex'"
+						:class="arrivedState.right ? 'disabled' : null"
 						@click="x += 352">
 						<span
-							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+							class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 outline-none ring-white group-focus:ring-4">
 							<svg
 								class="h-4 w-4 text-white rtl:rotate-180"
 								aria-hidden="true"
