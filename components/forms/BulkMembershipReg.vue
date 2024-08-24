@@ -186,7 +186,7 @@
 					:style="{ width: currentProgress }" />
 			</div>
 			<div class="flex w-full items-center justify-between text-end text-lg text-gray-500">
-				<span class="font-semibold uppercase">Parsing Progress</span>
+				<span class="uppercase">Parsing Progress</span>
 				<span>{{ currentProgress }}</span>
 			</div>
 		</div>
@@ -198,7 +198,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="registerBulkMembershipsLoading" />
-			{{ registerBulkMembershipsLoading ? $t('request_processing') : 'Create Fleet' }}
+			{{ registerBulkMembershipsLoading ? $t('request_processing') : 'Onboard Members' }}
 		</button>
 	</form>
 
