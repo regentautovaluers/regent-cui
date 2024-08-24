@@ -57,3 +57,16 @@ export type ExcelProcesssingErrorMessage = {
 	message: string | unknown;
 	type: string;
 };
+
+export type IndividuaProcessedMembershipType = {
+	corpName: string;
+	membershipTypeId: number;
+	registration: string;
+	make: string;
+	model: string;
+	color: string;
+	payment_status: string;
+	membership_status: string;
+	start_date: string;
+	end_date: string;
+};
