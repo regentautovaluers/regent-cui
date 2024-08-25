@@ -55,5 +55,5 @@
 	const branchName: Ref<string> = ref(props.branchName);
 	const branchLocation: Ref<string> = ref(props.branchLocation);
 
-	const { editCorporateBranchLoading, editCorporateBranch } = useUseCorporateBranch();
+	const { editCorporateBranchLoading, editCorporateBranch } = useCorporateBranch();
 </script>

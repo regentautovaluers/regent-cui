@@ -31,11 +31,9 @@ export const useFleets = () => {
 				}
 			},
 			onResponse({ response }) {
-				if (response.status === 201) {
-					// openToast('Fleet created successfully', 'success');
+				if (response.status === 200) {
+					setFleets(response._data);
 				}
-
-				setFleets(response._data);
 			},
 		},
 	) as any;
@@ -62,7 +60,13 @@ export const useFleets = () => {
 
 				onResponse({ response }) {
 					if (response.status === 201) {
-						// openToast('Fleet created successfully', 'success');
+						useToast('Fleet Created Successfully!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: true,
+							hideProgressBar: false,
+							transition: 'slide',
+						});
 						refeshFleets();
 					}
 
@@ -71,7 +75,13 @@ export const useFleets = () => {
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
-			// openToast('Request failed. Please try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		} finally {
 			createFleetLoading.value = false;
 		}
@@ -99,7 +109,6 @@ export const useBulkMemberRegistration = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
 	const { getPrincipal } = useAuth();
-	const currentPercentage = ref(0);
 	const processedFleetData: Ref<BulkProcessedMembershipType[]> = ref([]);
 	const selectedFleetId: Ref<number> = ref(0);
 	const contactFullName: Ref<string> = ref('');
@@ -197,9 +206,6 @@ export const useBulkMemberRegistration = () => {
 				fleetId: selectedFleetId.value,
 			});
 		});
-
-		// TODO: delete later
-		console.log('Processed fleet data: ', processedFleetData.value);
 	};
 
 	const addListeners = (reader: any) => {
@@ -232,12 +238,24 @@ export const useBulkMemberRegistration = () => {
 						throw new Error('Failed to create bulk memberships');
 					}
 
-					// openToast('Memberships created successfully.', 'success');
+					useToast('Memberships Created Successfully!', {
+						type: 'success',
+						showIcon: true,
+						showCloseButton: true,
+						hideProgressBar: false,
+						transition: 'slide',
+					});
 				},
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
-			// openToast('Operation failed. Please try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		} finally {
 			registerBulkMembershipsLoading.value = false;
 		}
@@ -286,7 +304,7 @@ export const useIndividualMembershipRegistration = () => {
 			clientPhoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
 	});
-	
+
 	const addNewVehicle = (): void => {
 		memberVehicles.value.push({
 			corpName: getPrincipal.value.corpName,
@@ -300,7 +318,7 @@ export const useIndividualMembershipRegistration = () => {
 			start_date: '',
 			end_date: '',
 		});
-	}
+	};
 
 	const registerIndividualMember = async (): Promise<void> => {
 		registerIndividualMemberLoading.value = true;
@@ -325,7 +343,13 @@ export const useIndividualMembershipRegistration = () => {
 						membershipId = response._data.id;
 					} else if (response.status === 400) {
 						formErrorMessage.value = response._data.message;
-						// openToast('Please check your data!', 'warning');
+						useToast('Check Data Conflict!', {
+							type: 'warning',
+							showIcon: true,
+							showCloseButton: true,
+							hideProgressBar: false,
+							transition: 'slide',
+						});
 						registerIndividualMemberLoading.value = false;
 					} else {
 						throw new Error('Something went wrong');
@@ -343,7 +367,13 @@ export const useIndividualMembershipRegistration = () => {
 					async onResponse({ response }) {
 						if (response.status === 201) {
 							registerIndividualMemberLoading.value = false;
-							// openToast('Membership creation successful', 'success');
+							useToast('Membership Created Successfully!', {
+								type: 'success',
+								showIcon: true,
+								showCloseButton: true,
+								hideProgressBar: false,
+								transition: 'slide',
+							});
 						} else {
 							throw new Error('Something went wrong');
 						}
@@ -353,7 +383,13 @@ export const useIndividualMembershipRegistration = () => {
 		} catch (err) {
 			console.log('An error occured: ', err);
 			registerIndividualMemberLoading.value = false;
-			// openToast('Request failed. Please try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		}
 	};
 

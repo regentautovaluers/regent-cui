@@ -58,28 +58,37 @@ const useAuth = () => {
 				onResponse({ response }) {
 					switch (response.status) {
 						case 401: {
-							// loginSuccess.value = false;
-							// loginAttemptMessage.value = 'Invalid credentials. Try again!';
-							// break;
+							useToast('Invalid Credentials', {
+								type: 'warning',
+								showIcon: true,
+								showCloseButton: false,
+								hideProgressBar: true,
+							});
+							break;
 						}
 
 						case 200: {
-							// loginSuccess.value = true;
-							// loginAttemptMessage.value = 'Success. Will redirect you shortly!';
+							useToast('Login Successful', {
+								type: 'success',
+								showIcon: true,
+								showCloseButton: false,
+								hideProgressBar: true,
+							});
 
 							setCredentialsInBrowserStorage(response._data.data);
 							navigateTo({ name: 'mobivaluer-home' });
 						}
 					}
 				},
-
-				onRequestError({ error }) {
-					// loginSuccess.value = false;
-					// loginAttemptMessage.value = 'Something went wrong! Try again!';
-				},
 			});
 		} catch (er) {
 			console.log('Error encountered. Reason: ', er);
+			useToast('Error. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
 		} finally {
 			loginAttemptLoading.value = false;
 		}
@@ -118,7 +127,12 @@ const useAuth = () => {
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
-						// openToast('Account updated successfully!', 'success');
+						useToast('Update Successful!', {
+							type: 'success',
+							showIcon: false,
+							showCloseButton: false,
+							hideProgressBar: true,
+						});
 					} else {
 						throw new Error('Account updating failed. Try again!');
 					}
@@ -126,7 +140,12 @@ const useAuth = () => {
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
-			// openToast('Account updating failed. Try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: false,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
 		} finally {
 			updateCorporateAccountLoading.value = false;
 		}
@@ -166,7 +185,12 @@ const useAuth = () => {
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
-						// openToast('Account creation successfull!', 'success');
+						useToast('Account Creation Successful!', {
+							type: 'success',
+							showIcon: false,
+							showCloseButton: false,
+							hideProgressBar: true,
+						});
 					} else {
 						throw new Error('Account creation failed. Try again!');
 					}
@@ -175,7 +199,12 @@ const useAuth = () => {
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
-			// openToast('Account creation failed. Try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: false,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
 		} finally {
 			addNewAccountLoading.value = false;
 		}
@@ -212,7 +241,12 @@ const useAuth = () => {
 						if (response.status === 200) {
 							const serverResponse = response._data.data;
 							authenticatedPrincipal.value.profilePicture = serverResponse;
-							// openToast('Success! Effect takes place on next login.', 'success');
+							useToast('Profile Picture Updated Successfully!', {
+								type: 'success',
+								showIcon: false,
+								showCloseButton: false,
+								hideProgressBar: true,
+							});
 						} else {
 							throw new Error('Account updating failed. Try again!');
 						}
@@ -220,7 +254,12 @@ const useAuth = () => {
 				});
 			} catch (error) {
 				console.log('An error occured: ', error);
-				// openToast('Failed to upload profile picture. Try again!', 'danger');
+				useToast('Failed. Try Again!', {
+					type: 'danger',
+					showIcon: false,
+					showCloseButton: false,
+					hideProgressBar: true,
+				});
 			} finally {
 				updateProfilePictureLoading.value = false;
 			}
@@ -270,6 +309,12 @@ const useAuth = () => {
 		// unset the auth token and csrf token
 		authToken.value = '';
 		csrfToken.value = '';
+		useToast('Logout Successful!', {
+			type: 'success',
+			showIcon: false,
+			showCloseButton: false,
+			hideProgressBar: true,
+		});
 
 		// redirect to the login page
 		navigateTo({ name: 'exterior-home' });

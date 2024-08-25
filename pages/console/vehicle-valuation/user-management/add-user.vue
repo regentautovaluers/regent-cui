@@ -162,8 +162,6 @@
 	const companyRole: Ref<string> = ref('');
 	const userRole: Ref<string> = ref('');
 	const runtimeConfig = useRuntimeConfig();
-	// const { openToast } = useToast();
-
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
 			phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');

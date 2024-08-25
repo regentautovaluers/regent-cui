@@ -49,5 +49,5 @@
 	const branchName: Ref<string> = ref('');
 	const branchLocation: Ref<string> = ref('');
 
-	const { addCorporateBranchLoading, addCorporateBranch } = useUseCorporateBranch();
+	const { addCorporateBranchLoading, addCorporateBranch } = useCorporateBranch();
 </script>

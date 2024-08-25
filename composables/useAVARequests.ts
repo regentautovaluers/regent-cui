@@ -22,7 +22,6 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const route = useRoute();
-	// const { openToast } = useToast();
 	const makeRequestLoading = ref(false);
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
 
@@ -185,7 +184,13 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				},
 				async onResponse({ response }) {
 					if (response.status === 404) {
-						// openToast('Registration not found!', 'warning');
+						useToast('Not Found. Try Again!', {
+							type: 'warning',
+							showIcon: true,
+							showCloseButton: true,
+							hideProgressBar: false,
+							transition: 'slide',
+						});
 						vehicleRegistration.value = '';
 						return;
 					}
@@ -214,7 +219,13 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
-			// openToast('Search failed. Please try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		} finally {
 			vehicleSearchLoading.value = false;
 		}
@@ -268,16 +279,25 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 					if (response.status !== 201) {
 						throw new Error('Request failed to go through!');
 					} else {
-						// openToast(
-						// 	`${backendServiceName} request succesfully went through!`,
-						// 	'success',
-						// );
+						useToast('Request Made Successfully!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: true,
+							hideProgressBar: false,
+							transition: 'slide',
+						});
 					}
 				},
 			});
 		} catch (error) {
 			console.log('Service request error encountered. Reason: ', error);
-			// openToast(`${backendServiceName} request failed to go thorugh!`, 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		} finally {
 			makeRequestLoading.value = false;
 		}

@@ -238,7 +238,6 @@
 
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
-	// const { openToast } = useToast();
 	const usersList: Ref<any[]> = ref([]);
 	const currentPage: Ref<number> = ref(0);
 	const selectedIndexToEdit: Ref<any> = ref(-1);

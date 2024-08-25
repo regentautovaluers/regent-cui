@@ -81,7 +81,7 @@
 			</div>
 		</div>
 		<!-- Corp Branch Field -->
-		<div class="mt-3">
+		<div class="relative mt-3">
 			<label
 				for="user-branch"
 				class="font-bold text-gray-500"
@@ -94,12 +94,15 @@
 				v-model="corporateBranch">
 				<option value="">Select The User's Branch</option>
 				<option
-					v-for="(branch, index) in availableBranches"
+					v-for="(branch, index) in corporateBranches"
 					:key="index"
 					:value="branch.branchId">
 					{{ branch.branchName + '-' + branch.branchLocation }}
 				</option>
 			</select>
+			<FormSubmissionLoader
+				classes="mr-2 absolute right-0 top-[52%] right-6 size-5 animate-spin text-gray-500"
+				v-if="fetchStatus === 'pending'" />
 		</div>
 		<div class="mt-3">
 			<label class="font-bold text-gray-500">User Privilege</label>
@@ -164,6 +167,7 @@
 	});
 
 	const { updateMyAccountDetails, updateCorporateAccountLoading } = useAuth();
+	const { corporateBranches, fetchStatus } = useCorporateBranch();
 	const firstName: Ref<string> = ref(props.username.split(' ')[0]);
 	const lastName: Ref<string> = ref(props.username.split(' ')[1]);
 	const email: Ref<string> = ref(props.email);
@@ -172,36 +176,10 @@
 	const userRole: Ref<string> = ref(props.userRole.toLowerCase());
 	const isAccountEnabled: Ref<boolean> = ref(props.isAccountEnabled);
 	const corporateBranch: Ref<string> = ref(props.branchId);
-	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
-	const availableBranches: Ref<any[]> = ref([]);
-	// const password: Ref<string> = ref('');
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
 			phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
-	});
-
-	const { refresh: refreshBranches } = useFetch('/api/v1/auth/corp-branch/get-all', {
-		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
-		},
-		server: false,
-		lazy: true,
-		query: {
-			corpId: getPrincipal.value.corpId,
-		},
-		onResponse({ response }) {
-			if (response.status === 200) {
-				availableBranches.value = response._data.data;
-			}
-		},
-
-		onRequestError() {
-			// openToast('Failed to retrieve branches. Try again!', 'danger');
-		},
 	});
 </script>

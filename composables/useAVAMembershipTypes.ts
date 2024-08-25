@@ -16,11 +16,9 @@ const useAVAMembershipTypes = () => {
 			}
 		},
 		onResponse({ response }) {
-			if (response.status !== 200) {
-				// openToast('Failed to load  membership types. Reload page!', 'danger');
+			if (response.status === 200) {
+				setMembershipTypes(response._data);
 			}
-
-			setMembershipTypes(response._data);
 		},
 	}) as any;
 

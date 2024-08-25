@@ -4,7 +4,7 @@ import {
 	setCorporateBranches,
 } from '~/stores/corporate-branches-store';
 
-export const useUseCorporateBranch = () => {
+export const useCorporateBranch = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const controller = new AbortController();
@@ -66,7 +66,13 @@ export const useUseCorporateBranch = () => {
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
-						// openToast('Account updated successfully!', 'success');
+						useToast('Branch Added Successfully!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: true,
+							hideProgressBar: false,
+							transition: 'slide',
+						});
 					} else {
 						throw new Error('Adding corporate branch failed. Try again!');
 					}
@@ -74,7 +80,13 @@ export const useUseCorporateBranch = () => {
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
-			// openToast('Account updating failed. Try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		} finally {
 			addCorporateBranchLoading.value = false;
 		}
@@ -102,7 +114,13 @@ export const useUseCorporateBranch = () => {
 				}),
 				onResponse({ response }) {
 					if (response.status === 200) {
-						// openToast('Account updated successfully!', 'success');
+						useToast('Updating Successful!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: true,
+							hideProgressBar: false,
+							transition: 'slide',
+						});
 						reloadCorporateBranches();
 					} else {
 						throw new Error('Adding corporate branch failed. Try again!');
@@ -111,7 +129,13 @@ export const useUseCorporateBranch = () => {
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
-			// openToast('Account updating failed. Try again!', 'danger');
+			useToast('Failed! Try Again', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		} finally {
 			editCorporateBranchLoading.value = false;
 		}

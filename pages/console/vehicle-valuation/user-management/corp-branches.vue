@@ -181,5 +181,5 @@
 	const isEditCorpBranchModalOpen: Ref<boolean> = ref(false);
 	const isAddCorpBranchModalOpen: Ref<boolean> = ref(false);
 	const { corporateBranches, fetchStatus, fetchError, reloadCorporateBranches } =
-		useUseCorporateBranch();
+		useCorporateBranch();
 </script>

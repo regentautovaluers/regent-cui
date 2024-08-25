@@ -82,12 +82,24 @@
 						throw new Error('Member details not updated.');
 					}
 
-					// openToast('Member details updated successfully', 'success');
+					useToast('Details Updated Successfully!', {
+						type: '"success',
+						showIcon: true,
+						showCloseButton: true,
+						hideProgressBar: false,
+						transition: 'slide',
+					});
 				},
 			});
 		} catch (error) {
 			console.log('Error encountered. Reason: ', error);
-			// openToast('Failed to update member details. Try again!', 'danger');
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: false,
+				transition: 'slide',
+			});
 		} finally {
 			formSubmissionLoading.value = false;
 		}

@@ -214,14 +214,12 @@
 
 <script setup lang="ts">
 	const isAddFleetModalOpen: Ref<boolean> = ref(false);
-	const currentPercentage = ref(0);
 	const { getFleets, retrievingFleetList, reloadFleets } = useFleets();
 	const {
 		selectedFleetId,
 		contactFullName,
 		contactPhoneNumber,
 		contactEmail,
-		totalSize,
 		currentProgress,
 		errorMessage,
 		registerBulkMembershipsLoading,
@@ -229,9 +227,3 @@
 		registerMembersInBulk,
 	} = useBulkMemberRegistration();
 </script>
-
-<style>
-	.progressbar {
-		width: v-bind(currentPercentage);
-	}
-</style>
