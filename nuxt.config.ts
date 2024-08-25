@@ -4,7 +4,7 @@ export default defineNuxtConfig({
 	devtools: { enabled: true },
 	ssr: true,
 	build: {
-		transpile: ['@googlemaps/js-api-loader'],
+		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
 	},
 	devServer: {
 		port: 8000,
