@@ -160,6 +160,19 @@
 															View Vehicles
 														</button>
 													</li>
+													<li>
+														<button
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button"
+															@click="
+																() => {
+																	selectedIndexToEdit = index;
+																	isAddVehiclesModalOpen = true;
+																}
+															">
+															Add Vehicles
+														</button>
+													</li>
 												</ul>
 											</div>
 										</td>
@@ -272,6 +285,20 @@
 			:member-name="membersList[selectedIndexToEdit].full_name"
 			:member-email="membersList[selectedIndexToEdit].userEmail"
 			:member-phone="membersList[selectedIndexToEdit].phone_number" />
+	</ParentModal>
+
+	<!-- Add Vehicles -->
+	<ParentModal
+		v-if="isAddVehiclesModalOpen"
+		modalId="add-member-vehicles"
+		modalTitle="Add Vehicles"
+		@close-modal="
+			() => {
+				isAddVehiclesModalOpen = false;
+				selectedIndexToEdit = -1;
+			}
+		">
+		<AddMemberVehicle :membership-id="membersList[selectedIndexToEdit].id" />
 	</ParentModal>
 
 	<!-- View Member Vehicles modal -->
@@ -393,6 +420,7 @@
 	const isGetVehiclesModalOpen: Ref<boolean> = ref(false);
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const isEditMemberDetailsModalOpen: Ref<boolean> = ref(false);
+	const isAddVehiclesModalOpen: Ref<boolean> = ref(false);
 	const {
 		currentPage,
 		membersList,
