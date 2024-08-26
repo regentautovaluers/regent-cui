@@ -188,7 +188,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 							type: 'warning',
 							showIcon: true,
 							showCloseButton: true,
-							hideProgressBar: false,
+							hideProgressBar: true,
 							transition: 'slide',
 						});
 						vehicleRegistration.value = '';
@@ -223,7 +223,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		} finally {
@@ -283,7 +283,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 							type: 'success',
 							showIcon: true,
 							showCloseButton: true,
-							hideProgressBar: false,
+							hideProgressBar: true,
 							transition: 'slide',
 						});
 					}
@@ -295,7 +295,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		} finally {

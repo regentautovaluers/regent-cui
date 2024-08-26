@@ -70,7 +70,7 @@ export const useCorporateBranch = () => {
 							type: 'success',
 							showIcon: true,
 							showCloseButton: true,
-							hideProgressBar: false,
+							hideProgressBar: true,
 							transition: 'slide',
 						});
 					} else {
@@ -84,7 +84,7 @@ export const useCorporateBranch = () => {
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		} finally {
@@ -118,7 +118,7 @@ export const useCorporateBranch = () => {
 							type: 'success',
 							showIcon: true,
 							showCloseButton: true,
-							hideProgressBar: false,
+							hideProgressBar: true,
 							transition: 'slide',
 						});
 						reloadCorporateBranches();
@@ -133,7 +133,7 @@ export const useCorporateBranch = () => {
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		} finally {

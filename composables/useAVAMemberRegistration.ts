@@ -64,7 +64,7 @@ export const useFleets = () => {
 							type: 'success',
 							showIcon: true,
 							showCloseButton: true,
-							hideProgressBar: false,
+							hideProgressBar: true,
 							transition: 'slide',
 						});
 						refeshFleets();
@@ -79,7 +79,7 @@ export const useFleets = () => {
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		} finally {
@@ -242,7 +242,7 @@ export const useBulkMemberRegistration = () => {
 						type: 'success',
 						showIcon: true,
 						showCloseButton: true,
-						hideProgressBar: false,
+						hideProgressBar: true,
 						transition: 'slide',
 					});
 				},
@@ -253,7 +253,7 @@ export const useBulkMemberRegistration = () => {
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		} finally {
@@ -347,7 +347,7 @@ export const useIndividualMembershipRegistration = () => {
 							type: 'warning',
 							showIcon: true,
 							showCloseButton: true,
-							hideProgressBar: false,
+							hideProgressBar: true,
 							transition: 'slide',
 						});
 						registerIndividualMemberLoading.value = false;
@@ -371,7 +371,7 @@ export const useIndividualMembershipRegistration = () => {
 								type: 'success',
 								showIcon: true,
 								showCloseButton: true,
-								hideProgressBar: false,
+								hideProgressBar: true,
 								transition: 'slide',
 							});
 						} else {
@@ -387,7 +387,7 @@ export const useIndividualMembershipRegistration = () => {
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		}
