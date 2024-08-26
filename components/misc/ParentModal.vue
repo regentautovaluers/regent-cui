@@ -29,7 +29,9 @@
 					</button>
 				</div>
 				<!-- Modal body -->
-				<div class="p-4 md:p-5">
+				<div
+					class="p-4 md:p-5"
+					:class="props.class">
 					<slot />
 				</div>
 			</div>
@@ -41,6 +43,7 @@
 	const props = defineProps({
 		modalId: { required: true, type: String || Number },
 		modalTitle: { required: true, type: String },
+		class: { required: false, type: String },
 	});
 	const emits = defineEmits(['close-modal']);
 </script>
