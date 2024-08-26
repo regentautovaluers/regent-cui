@@ -5,22 +5,27 @@ const useAVAMembershipTypes = () => {
 	const controller = new AbortController();
 	const signal = controller.signal;
 
-	useFetch('/api/v1/control-unit/membershiptypes', {
-		baseURL: runtimeConfig.public.AVA_BASE_URL,
-		method: 'GET',
-		signal,
-		onRequest() {
-			if (getMembershipTypes.value.length > 0) {
-				// abort the fetch request if data exists
-				controller.abort('Membership types data exists! Aborting request');
-			}
+	const { status: fetchmembershipTypesStatus } = useFetch(
+		'/api/v1/control-unit/membershiptypes',
+		{
+			baseURL: runtimeConfig.public.AVA_BASE_URL,
+			method: 'GET',
+			server: false,
+			lazy: false,
+			signal,
+			onRequest() {
+				if (getMembershipTypes.value.length > 0) {
+					// abort the fetch request if data exists
+					controller.abort('Membership types data exists! Aborting request');
+				}
+			},
+			onResponse({ response }) {
+				if (response.status === 200) {
+					setMembershipTypes(response._data);
+				}
+			},
 		},
-		onResponse({ response }) {
-			if (response.status === 200) {
-				setMembershipTypes(response._data);
-			}
-		},
-	}) as any;
+	) as any;
 
 	const cleanupMembershipBenefits = (inputString: string): any[] => {
 		let array = JSON.parse(inputString);
@@ -34,6 +39,7 @@ const useAVAMembershipTypes = () => {
 	};
 
 	return {
+		fetchmembershipTypesStatus,
 		getMembershipTypes,
 		cleanupMembershipBenefits,
 	};
