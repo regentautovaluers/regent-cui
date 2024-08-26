@@ -76,4 +76,10 @@
 	const clientName: Ref<string> = ref(props.memberName);
 
 	const { updateMemberDetails, updateMemberDetailsLoading } = useAVAMemberships();
+
+	watch(clientPhone, (newNumber) => {
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			clientPhone.value = newNumber.replace(/^(\+254|0)/, '254');
+		}
+	});
 </script>
