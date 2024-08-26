@@ -12,6 +12,7 @@ export const useAVAMemberships = () => {
 	// member vehicles list
 	const fetchMemberVehiclesLoading: Ref<boolean> = ref(false);
 	const memberVehicles: Ref<any[]> = ref([]);
+	const updateMemberDetailsLoading: Ref<boolean> = ref(false);
 
 	const { status: fetchMembershipsStatus, execute: refreshMembers } = useFetch(
 		'/api/v1/memberships',
@@ -29,7 +30,14 @@ export const useAVAMemberships = () => {
 
 			onResponse({ response }) {
 				if (response.status !== 200) {
-					throw new Error("Failed to retrieve corporate's members");
+					useToast('Failed to Fetch Members!', {
+						type: 'danger',
+						showIcon: true,
+						showCloseButton: true,
+						hideProgressBar: true,
+						transition: 'slide',
+					});
+					return;
 				}
 				membersList.value = response._data.memberships;
 				totalNumber.value = response._data.totalCount;
@@ -57,11 +65,55 @@ export const useAVAMemberships = () => {
 				type: 'danger',
 				showIcon: true,
 				showCloseButton: true,
-				hideProgressBar: false,
+				hideProgressBar: true,
 				transition: 'slide',
 			});
 		} finally {
 			fetchMemberVehiclesLoading.value = false;
+		}
+	};
+
+	const updateMemberDetails = async (
+		memberId: number,
+		clientName: string,
+		clientPhone: string,
+		clientEmail: string,
+	) => {
+		updateMemberDetailsLoading.value = true;
+		try {
+			await $fetch(`api/v1/memberships/${memberId}`, {
+				baseURL: runtimeConfig.public.AVA_BASE_URL,
+				method: 'PATCH',
+				body: JSON.stringify({
+					full_name: clientName,
+					phone_number: clientPhone,
+					userEmail: clientEmail,
+				}),
+
+				async onResponse({ response }) {
+					if (response.status !== 200) {
+						throw new Error('Member details not updated.');
+					}
+					useToast('Update Successful!', {
+						type: 'success',
+						showIcon: true,
+						showCloseButton: true,
+						hideProgressBar: true,
+						transition: 'slide',
+					});
+				},
+			});
+		} catch (error) {
+			console.log('Error encountered. Reason: ', error);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: true,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
+		} finally {
+			updateMemberDetailsLoading.value = false;
 		}
 	};
 
@@ -72,8 +124,10 @@ export const useAVAMemberships = () => {
 		totalPages,
 		fetchMembershipsStatus,
 		fetchMemberVehiclesLoading,
+		updateMemberDetailsLoading,
 		memberVehicles,
 		getMemberVehicles,
+		updateMemberDetails,
 		refreshMembers,
 	};
 };

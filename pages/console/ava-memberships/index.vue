@@ -58,7 +58,7 @@
 					<div class="my-4 flex-grow">
 						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 							<table class="w-full text-left text-gray-500">
-								<thead class="bg-gray-100 text-xs uppercase text-gray-700">
+								<thead class="bg-gray-100 text-sm uppercase text-gray-700">
 									<tr>
 										<th
 											scope="col"
@@ -138,8 +138,12 @@
 														<button
 															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 															type="button"
-															data-modal-target="edit-member-details-modal"
-															data-modal-toggle="edit-member-details-modal">
+															@click="
+																() => {
+																	selectedIndexToEdit = index;
+																	isEditMemberDetailsModalOpen = true;
+																}
+															">
 															Edit Details
 														</button>
 													</li>
@@ -253,7 +257,22 @@
 	</div>
 
 	<!-- Edit Member details modal -->
-	<EditMemberDetailsModal />
+	<ParentModal
+		v-if="isEditMemberDetailsModalOpen"
+		modalId="edit-member-details"
+		modalTitle="Edit Member Details"
+		@close-modal="
+			() => {
+				isEditMemberDetailsModalOpen = false;
+				selectedIndexToEdit = -1;
+			}
+		">
+		<EditAVAMemberDetails
+			:member-id="membersList[selectedIndexToEdit].id"
+			:member-name="membersList[selectedIndexToEdit].full_name"
+			:member-email="membersList[selectedIndexToEdit].userEmail"
+			:member-phone="membersList[selectedIndexToEdit].phone_number" />
+	</ParentModal>
 
 	<!-- View Member Vehicles modal -->
 	<ParentModal
@@ -372,6 +391,8 @@
 	const profilePicture: Ref<string> = ref('');
 	const { getPrincipal } = useAuth();
 	const isGetVehiclesModalOpen: Ref<boolean> = ref(false);
+	const selectedIndexToEdit: Ref<any> = ref(-1);
+	const isEditMemberDetailsModalOpen: Ref<boolean> = ref(false);
 	const {
 		currentPage,
 		membersList,
