@@ -1,14 +1,12 @@
 <template>
-	<form
-		action=""
-		@submit.prevent="addMemberVehicles(props.membershipId, [userVehicles])">
+	<form @submit.prevent="addMemberVehicles(props.membershipId, [userVehicles])">
 		<label
 			class="generic-input-label"
 			for="membership-type"
 			>Select Membership Type</label
 		>
 
-		<div class="w-full">
+		<div class="relative">
 			<select
 				class="generic-input"
 				id="membership-type"
@@ -21,6 +19,9 @@
 					{{ type.membership_name }}
 				</option>
 			</select>
+			<FormSubmissionLoader
+				classes="mr-2 absolute right-0 top-[34%] right-6 size-5 animate-spin text-gray-500"
+				v-if="fetchmembershipTypesStatus === 'pending'" />
 		</div>
 		<div class="mt-2">
 			<!-- this field is hidden. it holds the data for membershipTypeId -->
