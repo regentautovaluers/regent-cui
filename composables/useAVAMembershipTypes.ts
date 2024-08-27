@@ -8,6 +8,7 @@ const useAVAMembershipTypes = () => {
 	const { status: fetchmembershipTypesStatus } = useFetch(
 		'/api/v1/control-unit/membershiptypes',
 		{
+			key: 'AVA-membership-types',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: 'GET',
 			server: false,
