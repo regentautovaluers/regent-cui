@@ -82,3 +82,10 @@ export type ToastConfigOptions = {
 	showIcon?: boolean;
 	position?: Position;
 };
+
+export type RoadsideAssistanceAnalytics = {
+	jumpstarting: number;
+	fueldelivery: number;
+	towing: number;
+	tyrechange: number;
+};
