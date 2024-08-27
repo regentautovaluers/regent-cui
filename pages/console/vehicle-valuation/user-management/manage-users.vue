@@ -258,7 +258,7 @@
 				size: 8,
 			},
 			server: false,
-			lazy: false,
+			lazy: true,
 			watch: [currentPage],
 			onResponse({ response }) {
 				if (response.status === 200) {

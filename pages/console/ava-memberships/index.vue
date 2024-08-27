@@ -23,9 +23,9 @@
 			</NuxtLink>
 		</div>
 		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.8fr,.2fr]">
-			<!-- TODO: Find a fix for the abort controller signal error -->
 			<!-- members listing -->
 			<div>
+				<!-- TODO: Find a fix for the abort controller signal error -->
 				<!-- div to show when there is a fetch error -->
 				<!-- <div
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
@@ -60,14 +60,18 @@
 					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit items-center justify-between">
-						<form class="relative h-fit w-full md:w-[45%] lg:w-[30%]">
+						<form
+							class="relative h-fit w-full md:w-[45%] lg:w-[30%]"
+							@submit.prevent="">
 							<input
 								type="text"
 								class="generic-input"
-								placeholder="Search Name, Email or Phone" />
+								placeholder="Search Name, Email or Phone"
+								disabled />
 							<button
 								type="submit"
-								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500"
+								disabled>
 								<SearchIcon />
 							</button>
 						</form>
@@ -491,7 +495,6 @@
 		fetchMemberVehiclesLoading,
 		memberVehicles,
 		getMemberVehicles,
-		refreshMembers,
 	} = useAVAMemberships();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));

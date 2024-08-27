@@ -12,7 +12,7 @@ const useAVAMembershipTypes = () => {
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: 'GET',
 			server: false,
-			lazy: false,
+			lazy: true,
 			signal,
 			onRequest() {
 				if (getMembershipTypes.value.length > 0) {

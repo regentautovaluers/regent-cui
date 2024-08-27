@@ -39,7 +39,7 @@ export const useAVAMemberships = () => {
 				size: size.value,
 			},
 			server: false,
-			lazy: false,
+			lazy: true,
 			signal,
 			onRequest() {
 				if (membersListSlice.value.length) {

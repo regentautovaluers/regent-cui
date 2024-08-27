@@ -90,7 +90,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 			Accept: 'application/json',
 		},
 		server: false,
-		lazy: false,
+		lazy: true,
 	}) as any;
 
 	const bindToDropOffLocation = async () => {
@@ -194,6 +194,14 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 						vehicleRegistration.value = '';
 						return;
 					}
+
+					useToast('Vehicle Found!', {
+						type: 'success',
+						showIcon: true,
+						showCloseButton: true,
+						hideProgressBar: true,
+						transition: 'slide',
+					});
 
 					const registrationDetails = response._data;
 					vehicleRegistration.value = registrationDetails.membershipVehicle.registration;

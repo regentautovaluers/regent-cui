@@ -27,7 +27,7 @@ export const useCorporateBranch = () => {
 			corpId: getPrincipal.value.corpId,
 		},
 		server: false,
-		lazy: false,
+		lazy: true,
 		signal,
 		onRequest() {
 			if (getCorporateBranches.value.length > 0) {
