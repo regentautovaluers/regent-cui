@@ -21,9 +21,9 @@
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no users!</h1>
 			<NuxtLink
-				:to="{ name: 'ava-membership-types' }"
+				:to="{ name: 'vehicle-valuation-add-user' }"
 				class="generic-nuxt-link">
-				Onboard AVA Member
+				Add User
 			</NuxtLink>
 		</div>
 
@@ -242,6 +242,8 @@
 	const currentPage: Ref<number> = ref(0);
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const isEditAccountModalOpen: Ref<boolean> = ref(false);
+
+	// TODO: Move this into the composable
 	const { status: fetchStatus, error: fetchError } = useFetch(
 		'/api/v1/auth/corp-account/get-accounts',
 		{

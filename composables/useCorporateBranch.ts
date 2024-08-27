@@ -11,9 +11,6 @@ export const useCorporateBranch = () => {
 	const signal = controller.signal;
 	const addCorporateBranchLoading: Ref<boolean> = ref(false);
 	const editCorporateBranchLoading: Ref<boolean> = ref(false);
-	const corporateBranches: ComputedRef<readonly any[]> = computed(
-		() => getCorporateBranches.value,
-	);
 
 	const {
 		status: fetchStatus,
@@ -29,6 +26,8 @@ export const useCorporateBranch = () => {
 		query: {
 			corpId: getPrincipal.value.corpId,
 		},
+		server: false,
+		lazy: false,
 		signal,
 		onRequest() {
 			if (getCorporateBranches.value.length > 0) {
@@ -142,7 +141,7 @@ export const useCorporateBranch = () => {
 	};
 
 	return {
-		corporateBranches,
+		getCorporateBranches,
 		fetchStatus,
 		fetchError,
 		addCorporateBranchLoading,

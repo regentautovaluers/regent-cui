@@ -78,7 +78,7 @@
 		</div>
 
 		<!-- Corp Branch Field -->
-		<div class="mt-3">
+		<div class="relative mt-3">
 			<label
 				for="user-branch"
 				class="font-bold text-gray-500"
@@ -91,12 +91,15 @@
 				v-model="corporateBranch">
 				<option value="">Select The User's Branch</option>
 				<option
-					v-for="(branch, index) in availableBranches"
+					v-for="(branch, index) in getCorporateBranches"
 					:key="index"
 					:value="branch.branchId">
 					{{ branch.branchName + '-' + branch.branchLocation }}
 				</option>
 			</select>
+			<FormSubmissionLoader
+				classes="mr-2 absolute right-0 top-[52%] right-7 size-5 animate-spin text-gray-500"
+				v-if="fetchStatus === 'pending'" />
 		</div>
 		<div class="mt-3">
 			<label class="font-bold text-gray-500">Role In Company</label>
@@ -134,6 +137,7 @@
 				</label>
 			</div>
 		</div>
+
 		<!-- submit button -->
 		<button
 			type="submit"
@@ -151,8 +155,6 @@
 		name: 'vehicle-valuation-add-user',
 	});
 
-	const { getPrincipal } = useAuth();
-	const availableBranches: Ref<any[]> = ref([]);
 	const firstName: Ref<string> = ref('');
 	const otherName: Ref<string> = ref('');
 	const email: Ref<string> = ref('');
@@ -161,7 +163,7 @@
 	const corporateBranch: Ref<string> = ref('');
 	const companyRole: Ref<string> = ref('');
 	const userRole: Ref<string> = ref('');
-	const runtimeConfig = useRuntimeConfig();
+
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
 			phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
@@ -179,22 +181,5 @@
 	};
 
 	const { addNewAccountLoading, addNewAccount } = useAuth();
-
-	const { refresh: refreshBranches } = useFetch('/api/v1/auth/corp-branch/get-all', {
-		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
-		},
-		server: false,
-		lazy: true,
-		query: {
-			corpId: getPrincipal.value.corpId,
-		},
-		onResponse({ response }) {
-			if (response.status === 200) {
-				availableBranches.value = response._data.data;
-			}
-		},
-	});
+	const { fetchStatus, getCorporateBranches } = useCorporateBranch();
 </script>

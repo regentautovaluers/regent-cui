@@ -23,13 +23,15 @@
 			</NuxtLink>
 		</div>
 		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.8fr,.2fr]">
+			<!-- TODO: Find a fix for the abort controller signal error -->
 			<!-- members listing -->
 			<div>
-				<!-- div to show when there are no members -->
+				<!-- div to show when there is a fetch error -->
 				<!-- <div
-					class="flex h-full flex-col items-center justify-center rounded-lg border shadow-sm space-y-4">
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+					v-if="fetchMembershipsStatus === 'error'">
 					<BirdieNotFoundIcon />
-					<h1 class="font-semibold text-gray-500">Oops! Seems like you have no members!</h1>
+					<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 					<NuxtLink
 						:to="{ name: 'ava-membership-types' }"
 						class="generic-nuxt-link">
@@ -37,8 +39,25 @@
 					</NuxtLink>
 				</div> -->
 
+				<!-- div to show when there are no members -->
+				<div
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+					v-if="fetchMembershipsStatus === 'success' && membersListSlice.length === 0">
+					<BirdieNotFoundIcon />
+					<h1 class="font-semibold text-gray-500">
+						Oops! Seems like you have no members!
+					</h1>
+					<NuxtLink
+						:to="{ name: 'ava-membership-types' }"
+						class="generic-nuxt-link">
+						Onboard AVA Member
+					</NuxtLink>
+				</div>
+
 				<!-- div to show when there are members -->
-				<div class="flex h-full flex-col justify-between">
+				<div
+					class="flex h-full flex-col justify-between"
+					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit items-center justify-between">
 						<form class="relative h-fit w-full md:w-[45%] lg:w-[30%]">
