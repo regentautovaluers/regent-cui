@@ -301,7 +301,6 @@
 						</div>
 					</div>
 					<div class="flex-grow">
-						<div class=""></div>
 						<h1 class="text-center text-2xl font-extrabold">Our Services</h1>
 						<h2 class="text-center text-lg font-extrabold text-gray-500">
 							{{ avaServices[activeDescriptionIndex].name }}
