@@ -5,11 +5,13 @@
 			<div class="flex w-full items-center space-x-3 md:w-fit">
 				<img
 					class="h-12 min-h-12 w-12 min-w-12 rounded-full"
-					src="https://images.unsplash.com/photo-1723149500877-69d4a956ea97?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					:src="profilePicture"
 					alt="Rounded avatar" />
 				<div class="h-full flex-col overflow-hidden">
 					<h1 class="inline-flex items-center space-x-3">
-						<span class="font-semibold text-blue-600">Hi, John Doe</span>
+						<span class="font-semibold text-blue-600"
+							>Hi, {{ getPrincipal.username }}</span
+						>
 						<HandshakeIcon />
 					</h1>
 					<h2>Welcome to Your Roadside Assistance Dashboard.</h2>
@@ -49,12 +51,7 @@
 				</svg>
 				<div>
 					<h1 class="font-semibold">Most Requested</h1>
-					<h2>Lorem</h2>
-					<NuxtLink
-						:to="{ name: 'ra-all-incidents' }"
-						class="text-blue-600 hover:text-blue-700">
-						View Members
-					</NuxtLink>
+					<h2>{{ computedMostRequested }}</h2>
 				</div>
 			</div>
 			<div
@@ -78,7 +75,7 @@
 				</svg>
 				<div>
 					<h1 class="font-semibold">Real-Time Tracking</h1>
-					<h2>Lorem</h2>
+					<h2>{{ 'pending' }}</h2>
 					<NuxtLink
 						:to="{ name: 'ra-all-incidents' }"
 						class="text-blue-600 hover:text-blue-700">
@@ -100,7 +97,7 @@
 				</svg>
 				<div>
 					<h1 class="font-semibold">Completed Requests</h1>
-					<h2>Lorem</h2>
+					<h2>{{ getTotalCompleted }}</h2>
 					<NuxtLink
 						:to="{ name: 'ra-all-incidents' }"
 						class="text-blue-600 hover:text-blue-700">
@@ -216,22 +213,22 @@
 													class="py-2 text-sm text-gray-500"
 													aria-labelledby="dropdownTopButton">
 													<li>
-														<button
+														<!-- <button
 															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 															type="button"
 															data-modal-target="edit-member-details-modal"
 															data-modal-toggle="edit-member-details-modal">
 															Edit Details
-														</button>
+														</button> -->
 													</li>
 													<li>
-														<button
+														<!-- <button
 															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 															type="button"
 															data-modal-target="view-member-vehicles-modal"
 															data-modal-toggle="view-member-vehicles-modal">
 															View Vehicles
-														</button>
+														</button> -->
 													</li>
 												</ul>
 											</div>
@@ -260,7 +257,9 @@
 				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<h1>Hello world</h1>
+					<div class="flex h-14 items-center justify-between px-3">
+						<h1 class="text-2xl font-extrabold">Distribution</h1>
+					</div>
 				</div>
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
@@ -272,8 +271,23 @@
 </template>
 
 <script setup lang="ts">
+	import { type RoadsideAssistanceAnalytics } from '~/types';
+
 	definePageMeta({
 		name: 'ra-all-incidents',
 		layout: 'console-layout',
 	});
+
+	const { getPrincipal } = useAuth();
+	const profilePicture: Ref<string> = ref('');
+	const {
+		fetchRAIncidentsAnalyticsStatus,
+		fetchRAIncidentsAnalyticsError,
+		computedAnalytics,
+		computedMostRequested,
+		getRAAnalytics,
+		getTotalCompleted,
+	} = useRAIncidentsAnalytics();
+
+	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
