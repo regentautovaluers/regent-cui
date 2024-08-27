@@ -1,11 +1,15 @@
 import { type IndividuaProcessedMembershipType } from '~/types';
+import { getAvaMembers, setAvaMembers, cleanAvaMembers } from '~/stores/ava-members-store';
 
 export const useAVAMemberships = () => {
+	// signal for managing memberships request
+	const controller = new AbortController();
+	const signal = controller.signal;
+
 	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
 	const currentPage: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
-	const membersList: Ref<any[]> = ref([]);
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 
@@ -15,7 +19,15 @@ export const useAVAMemberships = () => {
 	const updateMemberDetailsLoading: Ref<boolean> = ref(false);
 	const addMemberVehicleLoading: Ref<boolean> = ref(false);
 
-	const { status: fetchMembershipsStatus, execute: refreshMembers } = useFetch(
+	const membersListSlice: ComputedRef<any[]> = computed(() => {
+		const startIndex = currentPage.value * size.value;
+		const endIndex = (currentPage.value + 1) * size.value;
+		return getAvaMembers.value.slice(startIndex, endIndex).length
+			? getAvaMembers.value.slice(startIndex, endIndex)
+			: [];
+	});
+
+	const { status: fetchMembershipsStatus, refresh: refreshMembers } = useFetch(
 		'/api/v1/memberships',
 		{
 			key: 'AVA-memberships',
@@ -24,10 +36,17 @@ export const useAVAMemberships = () => {
 			query: {
 				corporateId: getPrincipal.value.corpId,
 				page: currentPage,
-				size: size,
+				size: size.value,
 			},
 			server: false,
 			lazy: false,
+			signal,
+			onRequest() {
+				if (membersListSlice.value.length) {
+					// abort the fetch request if data exists
+					controller.abort('Memberships data exists! Aborting request');
+				}
+			},
 
 			onResponse({ response }) {
 				if (response.status !== 200) {
@@ -40,7 +59,7 @@ export const useAVAMemberships = () => {
 					});
 					return;
 				}
-				membersList.value = response._data.memberships;
+				setAvaMembers(response._data.memberships);
 				totalNumber.value = response._data.totalCount;
 				totalPages.value = response._data.totalPages;
 			},
@@ -163,7 +182,7 @@ export const useAVAMemberships = () => {
 
 	return {
 		currentPage,
-		membersList,
+		membersListSlice,
 		totalNumber,
 		totalPages,
 		fetchMembershipsStatus,

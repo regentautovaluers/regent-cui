@@ -63,11 +63,6 @@
 										<th
 											scope="col"
 											class="table-headers">
-											Membership Number
-										</th>
-										<th
-											scope="col"
-											class="table-headers">
 											Client Name
 										</th>
 										<th
@@ -87,19 +82,19 @@
 										</th>
 										<th
 											scope="col"
+											class="table-headers">
+											Client Email
+										</th>
+										<th
+											scope="col"
 											class="table-headers" />
 									</tr>
 								</thead>
 								<tbody>
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
-										v-for="(member, index) in membersList"
+										v-for="(member, index) in membersListSlice"
 										:key="index">
-										<td
-											scope="row"
-											class="whitespace-nowrap p-6 font-medium text-gray-600">
-											{{ member.membership_number }}
-										</td>
 										<td
 											scope="row"
 											class="whitespace-nowrap p-6 font-semibold text-gray-600">
@@ -112,6 +107,11 @@
 											{{ member.membershipVehicleCount }}
 										</td>
 										<td class="p-6">{{ member.phone_number }}</td>
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-medium text-gray-600">
+											{{ member.userEmail ?? 'N/A' }}
+										</td>
 										<td class="flex items-center justify-end p-6">
 											<button
 												:id="'dropdownTopButton' + index"
@@ -177,6 +177,40 @@
 											</div>
 										</td>
 									</tr>
+									<!-- loading state -->
+									<tr
+										class="border-b bg-white hover:bg-gray-100"
+										v-if="fetchMembershipsStatus === 'pending'"
+										v-for="a in 10"
+										:key="a">
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-medium text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>username</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>useremail</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>one</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>domain role</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>accactive</span
+											>
+										</td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -185,11 +219,19 @@
 					<!-- page controls -->
 					<div class="flex h-12 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-							Showing {{ currentPage }} of {{ totalPages }} pages.
+							Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
 						</h1>
 						<div class="h-full space-x-2 md:space-x-4">
-							<button class="table-page-buttons">Previous</button>
-							<button class="table-page-buttons">Next</button>
+							<button
+								class="table-page-buttons"
+								@click="currentPage -= 1">
+								Previous
+							</button>
+							<button
+								class="table-page-buttons"
+								@click="currentPage += 1">
+								Next
+							</button>
 						</div>
 					</div>
 				</div>
@@ -281,10 +323,10 @@
 			}
 		">
 		<EditAVAMemberDetails
-			:member-id="membersList[selectedIndexToEdit].id"
-			:member-name="membersList[selectedIndexToEdit].full_name"
-			:member-email="membersList[selectedIndexToEdit].userEmail"
-			:member-phone="membersList[selectedIndexToEdit].phone_number" />
+			:member-id="membersListSlice[selectedIndexToEdit].id"
+			:member-name="membersListSlice[selectedIndexToEdit].full_name"
+			:member-email="membersListSlice[selectedIndexToEdit].userEmail"
+			:member-phone="membersListSlice[selectedIndexToEdit].phone_number" />
 	</ParentModal>
 
 	<!-- Add Vehicles -->
@@ -298,7 +340,7 @@
 				selectedIndexToEdit = -1;
 			}
 		">
-		<AddMemberVehicle :membership-id="membersList[selectedIndexToEdit].id" />
+		<AddMemberVehicle :membership-id="membersListSlice[selectedIndexToEdit].id" />
 	</ParentModal>
 
 	<!-- View Member Vehicles modal -->
@@ -423,7 +465,7 @@
 	const isAddVehiclesModalOpen: Ref<boolean> = ref(false);
 	const {
 		currentPage,
-		membersList,
+		membersListSlice,
 		totalNumber,
 		totalPages,
 		fetchMembershipsStatus,
