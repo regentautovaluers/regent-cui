@@ -22,6 +22,14 @@ const useRoadsideIncidents = () => {
 		() => getRoadsideIncidents.value.length || 0,
 	);
 
+	const ongoingIncidents: ComputedRef<number> = computed(
+		() =>
+			getRoadsideIncidents.value.filter(
+				(incident) =>
+					incident.service_status === 'ongoing' || incident.service_status === 'pending',
+			).length || 0,
+	);
+
 	const { status: fetchRoadsideIncidentsStatus } = useFetch(
 		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
 		{
@@ -53,6 +61,7 @@ const useRoadsideIncidents = () => {
 		currentPage,
 		getRoadsideIncidents,
 		totalIncidents,
+		ongoingIncidents,
 	};
 };
 

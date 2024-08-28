@@ -34,7 +34,7 @@
 		<!-- statistics strip -->
 		<div class="flex h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
 			<div
-				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="1em"
@@ -55,7 +55,7 @@
 				</div>
 			</div>
 			<div
-				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="1em"
@@ -84,7 +84,30 @@
 				</div>
 			</div>
 			<div
-				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
+				<!-- TODO: replace this icon with a clock icon -->
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="1em"
+					height="1em"
+					viewBox="0 0 24 24"
+					class="size-7">
+					<path
+						fill="currentColor"
+						d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+				</svg>
+				<div>
+					<h1 class="font-semibold">Ongoing Requests</h1>
+					<h2>{{ ongoingIncidents + ' Requests' }}</h2>
+					<NuxtLink
+						:to="{ name: 'ra-all-incidents' }"
+						class="text-blue-600 hover:text-blue-700">
+						View Ongoing
+					</NuxtLink>
+				</div>
+			</div>
+			<div
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="1em"
@@ -343,8 +366,13 @@
 		getRAAnalytics,
 		getTotalCompleted,
 	} = useRAIncidentsAnalytics();
-	const { fetchRoadsideIncidentsStatus, incidentsListSlice, currentPage, totalIncidents } =
-		useRoadsideIncidents();
+	const {
+		fetchRoadsideIncidentsStatus,
+		incidentsListSlice,
+		currentPage,
+		totalIncidents,
+		ongoingIncidents,
+	} = useRoadsideIncidents();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
