@@ -120,7 +120,7 @@
 				</svg>
 				<div>
 					<h1 class="font-semibold">Completed Requests</h1>
-					<h2>{{ getTotalCompleted }}</h2>
+					<h2>{{ getTotalCompleted + ' Requests' }}</h2>
 					<NuxtLink
 						:to="{ name: 'ra-all-incidents' }"
 						class="text-blue-600 hover:text-blue-700">
@@ -252,8 +252,47 @@
 												<ul
 													class="py-2 text-gray-500"
 													aria-labelledby="dropdownLeftButton">
-													<li>
+													<li
+														v-if="
+															incident.service_status === 'ongoing' ||
+															incident.service_status === 'pending'
+														">
+														<span
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100">
+															Report N/A
+														</span>
+													</li>
+													<li
+														v-if="
+															incident.service === 'towing' &&
+															incident.service_status === 'completed'
+														">
 														<NuxtLink
+															:to="{
+																name: 'ra-expanded-report',
+																params: {
+																	service_type: incident.service,
+																	id: incident.id,
+																},
+															}"
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button">
+															View Report
+														</NuxtLink>
+													</li>
+													<li
+														v-if="
+															incident.service !== 'towing' &&
+															incident.service_status === 'completed'
+														">
+														<NuxtLink
+															:to="{
+																name: 'ra-minimized-report',
+																params: {
+																	service_type: incident.service,
+																	id: incident.id,
+																},
+															}"
 															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 															type="button">
 															View Report
