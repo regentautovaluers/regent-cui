@@ -74,12 +74,12 @@
 					</g>
 				</svg>
 				<div>
-					<h1 class="font-semibold">Real-Time Tracking</h1>
-					<h2>{{ 'pending' }}</h2>
+					<h1 class="font-semibold">Incidents On Map</h1>
+					<h2>{{ 'pending...' }}</h2>
 					<NuxtLink
 						:to="{ name: 'ra-all-incidents' }"
 						class="text-blue-600 hover:text-blue-700">
-						View Requests
+						View Map
 					</NuxtLink>
 				</div>
 			</div>
@@ -143,13 +143,13 @@
 					<!-- the table itself -->
 					<div class="mb-4 flex-grow">
 						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-							<table class="w-full text-left text-sm text-gray-500">
-								<thead class="bg-gray-100 text-xs uppercase text-gray-700">
+							<table class="w-full text-left text-gray-500">
+								<thead class="bg-gray-100 text-sm uppercase text-gray-700">
 									<tr>
 										<th
 											scope="col"
 											class="table-headers">
-											Registration Number
+											Vehicle
 										</th>
 										<th
 											scope="col"
@@ -159,16 +159,21 @@
 										<th
 											scope="col"
 											class="table-headers">
-											Client Contacts
+											Client Phone
 										</th>
 										<th
 											scope="col"
 											class="table-headers">
-											Service Type
+											Type
 										</th>
 										<th
 											scope="col"
 											class="table-headers">
+											Status
+										</th>
+										<th
+											scope="col"
+											class="table-headers max-w-48">
 											Incident Location
 										</th>
 										<th
@@ -179,22 +184,34 @@
 								<tbody>
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
-										v-for="a in 10"
-										:key="a">
+										v-for="(incident, index) in roadsideIncidents.slice(0, 10)"
+										:key="index">
 										<td
 											scope="row"
-											class="whitespace-nowrap p-6 font-medium text-gray-900">
-											Apple MacBook Pro 17"
+											class="whitespace-nowrap p-6 font-semibold text-gray-600">
+											{{ incident.registration_no }}
 										</td>
-										<td class="p-6">Silver</td>
-										<td class="p-6">Laptop</td>
-										<td class="p-6">$2999</td>
-										<td class="p-6">$2999</td>
+										<td class="p-6">
+											{{
+												formatServerProvidedDateTime(incident.date_created)
+											}}
+										</td>
+										<td class="p-6 font-semibold text-pink-600">
+											{{ incident.user_phone }}
+										</td>
+										<td class="p-6 font-semibold text-blue-600">
+											{{ screenFormatRAServiceName(incident.service) }}
+										</td>
+										<td class="p-6">{{ incident.service_status }}</td>
+										<td
+											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
+											{{ incident.pickup_location }}
+										</td>
 										<td class="flex items-center justify-end p-6">
 											<button
-												:id="'dropdownTopButton' + a"
-												:data-dropdown-toggle="'dropdownTop' + a"
-												data-dropdown-placement="top"
+												:id="'dropdownLeftButton' + index"
+												:data-dropdown-toggle="'dropdownLeft' + index"
+												data-dropdown-placement="left"
 												type="button">
 												<svg
 													xmlns="http://www.w3.org/2000/svg"
@@ -207,31 +224,59 @@
 											</button>
 											<!-- Dropdown menu -->
 											<div
-												:id="'dropdownTop' + a"
+												:id="'dropdownLeft' + index"
 												class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
 												<ul
-													class="py-2 text-sm text-gray-500"
-													aria-labelledby="dropdownTopButton">
+													class="py-2 text-gray-500"
+													aria-labelledby="dropdownLeftButton">
 													<li>
-														<!-- <button
+														<NuxtLink
 															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
-															type="button"
-															data-modal-target="edit-member-details-modal"
-															data-modal-toggle="edit-member-details-modal">
-															Edit Details
-														</button> -->
-													</li>
-													<li>
-														<!-- <button
-															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
-															type="button"
-															data-modal-target="view-member-vehicles-modal"
-															data-modal-toggle="view-member-vehicles-modal">
-															View Vehicles
-														</button> -->
+															type="button">
+															View Report
+														</NuxtLink>
 													</li>
 												</ul>
 											</div>
+										</td>
+									</tr>
+
+									<!-- loading state -->
+									<tr
+										class="border-b bg-white hover:bg-gray-100"
+										v-if="fetchRoadsideIncidentsStatus === 'pending'"
+										v-for="a in 10">
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>demoreg</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>demodatetime</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>demophone</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>demoservice</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>demostatus</span
+											>
+										</td>
+										<td class="max-w-48 py-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>demolocation</span
+											>
 										</td>
 									</tr>
 								</tbody>
@@ -259,6 +304,9 @@
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
 					<div class="flex h-14 items-center justify-between px-3">
 						<h1 class="text-2xl font-extrabold">Distribution</h1>
+						<div>
+							<!-- <Doughnut id="incidents-distribution" /> -->
+						</div>
 					</div>
 				</div>
 				<div
@@ -271,8 +319,7 @@
 </template>
 
 <script setup lang="ts">
-	import { type RoadsideAssistanceAnalytics } from '~/types';
-
+	import { Doughnut } from 'vue-chartjs';
 	definePageMeta({
 		name: 'ra-all-incidents',
 		layout: 'console-layout',
@@ -288,6 +335,7 @@
 		getRAAnalytics,
 		getTotalCompleted,
 	} = useRAIncidentsAnalytics();
+	const { fetchRoadsideIncidentsStatus, roadsideIncidents } = useRoadsideIncidents();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
