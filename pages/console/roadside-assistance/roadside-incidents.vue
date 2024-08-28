@@ -75,9 +75,9 @@
 				</svg>
 				<div>
 					<h1 class="font-semibold">Incidents On Map</h1>
-					<h2>{{ 'pending...' }}</h2>
+					<h2>{{ totalIncidents + ' Total Incidents' }}</h2>
 					<NuxtLink
-						:to="{ name: 'ra-all-incidents' }"
+						:to="{ name: 'ra-visual-informer' }"
 						class="text-blue-600 hover:text-blue-700">
 						View Map
 					</NuxtLink>
@@ -184,7 +184,7 @@
 								<tbody>
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
-										v-for="(incident, index) in roadsideIncidents.slice(0, 10)"
+										v-for="(incident, index) in incidentsListSlice"
 										:key="index">
 										<td
 											scope="row"
@@ -287,11 +287,19 @@
 					<!-- page controls -->
 					<div class="flex h-12 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-							Showing X of Y pages.
+							Showing {{ currentPage + 1 }} of Y pages.
 						</h1>
 						<div class="h-full space-x-2 md:space-x-4">
-							<button class="table-page-buttons">Previous</button>
-							<button class="table-page-buttons">Next</button>
+							<button
+								class="table-page-buttons"
+								@click="currentPage -= 1">
+								Previous
+							</button>
+							<button
+								class="table-page-buttons"
+								@click="currentPage += 1">
+								Next
+							</button>
 						</div>
 					</div>
 				</div>
@@ -335,7 +343,8 @@
 		getRAAnalytics,
 		getTotalCompleted,
 	} = useRAIncidentsAnalytics();
-	const { fetchRoadsideIncidentsStatus, roadsideIncidents } = useRoadsideIncidents();
+	const { fetchRoadsideIncidentsStatus, incidentsListSlice, currentPage, totalIncidents } =
+		useRoadsideIncidents();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
