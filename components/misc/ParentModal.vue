@@ -1,7 +1,7 @@
 <template>
 	<!-- Main modal -->
 	<div
-		class="fixed left-0 right-0 top-0 z-50 flex h-screen max-h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/80">
+		class="fixed left-0 right-0 top-0 z-50 flex h-screen max-h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/80 backdrop-blur">
 		<div class="relative max-h-full w-full max-w-2xl p-4">
 			<!-- Modal content -->
 			<div class="relative rounded-lg bg-white shadow">
