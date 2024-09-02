@@ -48,7 +48,7 @@ export const useRAIncidentsAnalytics = () => {
 		return `${stringToTitleCase(mostRequestedKey)} (${mostRequestedValue})`;
 	});
 
-	const { status: fetchRAIncidentsAnalyticsStatus, error: fetchRAIncidentsAnalyticsError } =
+	const { status: fetchRAIncidentsAnalyticsStatus } =
 		useFetch(() => `/api/v1/corp/reports/corporate-requests/${getPrincipal.value.corpId}`, {
 			key: 'ra-incidents-analytics',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
@@ -75,7 +75,6 @@ export const useRAIncidentsAnalytics = () => {
 
 	return {
 		fetchRAIncidentsAnalyticsStatus,
-		fetchRAIncidentsAnalyticsError,
 		computedMostRequested,
 		raIncidentsDoughnutData,
 		getRAAnalytics,
