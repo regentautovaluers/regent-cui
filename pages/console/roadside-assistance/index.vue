@@ -159,22 +159,26 @@
 			<!-- members listing -->
 			<div>
 				<!-- TODO: Find a fix for the abort controller signal error -->
-				<!-- div to show when there are no members -->
-				<!-- <div
-					class="flex h-full flex-col items-center justify-center rounded-lg border shadow-sm space-y-4">
+				<!-- div to show when there is a fetch error -->
+				<div
+					v-if="fetchMembershipsStatus === 'error'"
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]">
 					<BirdieNotFoundIcon />
-					<h1 class="font-semibold text-gray-500">Oops! Seems like you have no members!</h1>
-					<NuxtLink
-						:to="{ name: 'ava-membership-types' }"
-						class="generic-nuxt-link">
-						Onboard AVA Member
-					</NuxtLink>
-				</div> -->
+					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+					<button
+						class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+						@click="refreshPage">
+						<span>Refresh</span>
+						<RefreshIcon classes="size-6" />
+					</button>
+				</div>
 
 				<!-- div to show when there are no members -->
 				<div
-					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-					v-if="fetchMembershipsStatus === 'success' && membersListSlice.length === 0">
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]"
+					v-else-if="
+						fetchMembershipsStatus === 'success' && membersListSlice.length === 0
+					">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">
 						Oops! Seems like you have no members!
@@ -187,7 +191,9 @@
 				</div>
 
 				<!-- div to show when there are members -->
-				<div class="flex h-full flex-col justify-between">
+				<div
+					class="flex h-full flex-col justify-between md:min-h-[50.5rem]"
+					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit items-center justify-between">
 						<form
