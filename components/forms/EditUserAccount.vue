@@ -94,14 +94,14 @@
 				v-model="corporateBranch">
 				<option value="">Select The User's Branch</option>
 				<option
-					v-for="(branch, index) in corporateBranches"
+					v-for="(branch, index) in getCorporateBranches"
 					:key="index"
 					:value="branch.branchId">
 					{{ branch.branchName + '-' + branch.branchLocation }}
 				</option>
 			</select>
 			<FormSubmissionLoader
-				classes="mr-2 absolute right-0 top-[52%] right-6 size-5 animate-spin text-gray-500"
+				classes="mr-2 absolute right-0 top-[52%] right-7 size-5 animate-spin text-gray-500"
 				v-if="fetchStatus === 'pending'" />
 		</div>
 		<div class="mt-3">
@@ -167,7 +167,7 @@
 	});
 
 	const { updateMyAccountDetails, updateCorporateAccountLoading } = useAuth();
-	const { corporateBranches, fetchStatus } = useCorporateBranch();
+	const { getCorporateBranches, fetchStatus } = useCorporateBranch();
 	const firstName: Ref<string> = ref(props.username.split(' ')[0]);
 	const lastName: Ref<string> = ref(props.username.split(' ')[1]);
 	const email: Ref<string> = ref(props.email);
