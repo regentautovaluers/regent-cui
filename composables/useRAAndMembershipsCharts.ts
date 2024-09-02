@@ -10,13 +10,33 @@ import { type RoadsideAssistanceAnalytics } from '~/types';
 export const useRAIncidentsAnalytics = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
+	const doughnutChartColors: readonly string[] = ['#09bc3c', '#fd5353', '#fdbf20', '#0063FF'];
 
-	const computedAnalytics: ComputedRef<RoadsideAssistanceAnalytics> = computed(
-		() => getRAAnalytics.value,
-	);
+	const raIncidentsDoughnutData: ComputedRef<{
+		data: number[];
+		legends: string[];
+		colors: string[];
+	}> = computed(() => {
+		const analyticsData: RoadsideAssistanceAnalytics = getRAAnalytics.value;
+		const legends: string[] = [];
+		const data: number[] = [];
+
+		Object.keys(analyticsData).forEach((key) => {
+			if (analyticsData[key] > 0) {
+				legends.push(stringToTitleCase(key));
+				data.push(analyticsData[key]);
+			}
+		});
+
+		return {
+			data: data,
+			legends: legends,
+			colors: doughnutChartColors.slice(0, legends.length),
+		};
+	});
 
 	const computedMostRequested: ComputedRef<string> = computed(() => {
-		const analyticsData = computedAnalytics.value;
+		const analyticsData: RoadsideAssistanceAnalytics = getRAAnalytics.value;
 		let mostRequestedKey = '';
 		let mostRequestedValue = 0;
 		Object.keys(analyticsData).forEach((key) => {
@@ -56,8 +76,8 @@ export const useRAIncidentsAnalytics = () => {
 	return {
 		fetchRAIncidentsAnalyticsStatus,
 		fetchRAIncidentsAnalyticsError,
-		computedAnalytics,
 		computedMostRequested,
+		raIncidentsDoughnutData,
 		getRAAnalytics,
 		getTotalCompleted,
 	};
