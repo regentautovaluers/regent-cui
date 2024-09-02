@@ -17,18 +17,11 @@
 					<h2>Welcome to Your Roadside Assistance Dashboard.</h2>
 				</div>
 			</div>
-			<div class="hidden space-x-3 md:flex md:items-center">
-				<NuxtLink
-					:to="{ name: 'ra-all-incidents' }"
-					class="text-blue-600 underline underline-offset-2 hover:text-blue-700">
-					All Incidents
-				</NuxtLink>
-				<NuxtLink
-					:to="{ name: 'ava-membership-types' }"
-					class="generic-nuxt-link">
-					Onboard Member
-				</NuxtLink>
-			</div>
+			<NuxtLink
+				:to="{ name: 'ava-membership-types' }"
+				class="generic-nuxt-link hidden md:flex">
+				Onboard Member
+			</NuxtLink>
 		</div>
 
 		<!-- statistics strip -->
@@ -134,37 +127,43 @@
 		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.8fr,.2fr]">
 			<!-- members listing -->
 			<div>
-				<!-- div to show when there are no members -->
-				<!-- <div
-					class="flex h-full flex-col items-center justify-center rounded-lg border shadow-sm space-y-4">
+				<!-- div to show when there is an eror -->
+				<div
+					v-if="fetchRoadsideIncidentsStatus === 'error'"
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]">
 					<BirdieNotFoundIcon />
-					<h1 class="font-semibold text-gray-500">Oops! Seems like you have no members!</h1>
+					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+					<button
+						class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+						@click="refreshPage">
+						<span>Refresh</span>
+						<RefreshIcon classes="size-6" />
+					</button>
+				</div>
+
+				<!-- div to show when there are no incidents -->
+				<div
+					v-else-if="
+						fetchRoadsideIncidentsStatus === 'success' && !incidentsListSlice.length
+					"
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]">
+					<BirdieNotFoundIcon />
+					<h1 class="font-semibold text-gray-500">
+						Oops! Seems like you have no members!
+					</h1>
 					<NuxtLink
 						:to="{ name: 'ava-membership-types' }"
 						class="generic-nuxt-link">
 						Onboard AVA Member
 					</NuxtLink>
-				</div> -->
+				</div>
 
-				<!-- div to show when there are members -->
-				<div class="flex h-full flex-col justify-between">
-					<!-- search & filter controls -->
-					<!-- <div class="flex h-fit items-center justify-between">
-						<form class="relative h-fit w-full md:w-[45%] lg:w-[30%]">
-							<input
-								type="text"
-								class="generic-input"
-								placeholder="Search Name, Email or Phone" />
-							<button
-								type="submit"
-								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
-								<SearchIcon />
-							</button>
-						</form>
-					</div> -->
-
+				<!-- div to show when there are incidents -->
+				<div
+					class="flex h-full flex-col justify-between"
+					v-else>
 					<!-- the table itself -->
-					<div class="mb-4 flex-grow">
+					<div class="mb-4 flex-grow md:min-h-[50.5rem]">
 						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 							<table class="w-full text-left text-gray-500">
 								<thead class="bg-gray-100 text-sm uppercase text-gray-700">
@@ -201,7 +200,7 @@
 										</th>
 										<th
 											scope="col"
-											class="table-headers" />
+											class="table-headers"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -372,16 +371,38 @@
 				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<div class="flex h-14 items-center justify-between px-3">
+					<div class="flex h-12 items-center justify-between px-3">
 						<h1 class="text-2xl font-extrabold">Distribution</h1>
-						<div>
-							<!-- <Doughnut id="incidents-distribution" /> -->
-						</div>
 					</div>
+					<div
+						class="flex h-full items-center justify-center"
+						v-if="
+							fetchRAIncidentsAnalyticsStatus === 'pending' &&
+							!raIncidentsDoughnutData.data.length
+						">
+						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="fetchRAIncidentsAnalyticsStatus === 'error'">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+						<button
+							class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+							@click="refreshPage">
+							<span>Refresh</span>
+							<RefreshIcon classes="size-6" />
+						</button>
+					</div>
+					<IncidentsDoughnutChart
+						v-else
+						:labels="raIncidentsDoughnutData.legends"
+						:colors="raIncidentsDoughnutData.colors"
+						:data="raIncidentsDoughnutData.data" />
 				</div>
 				<div
-					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<h1>Hello world again</h1>
+					class="xl:max-h-1/2 flex h-[25rem] flex-col items-center justify-center rounded-md border shadow-sm xl:h-1/2">
+					<h1>Under Construction</h1>
 				</div>
 			</div>
 		</div>
@@ -389,7 +410,6 @@
 </template>
 
 <script setup lang="ts">
-	import { Doughnut } from 'vue-chartjs';
 	definePageMeta({
 		name: 'ra-all-incidents',
 		layout: 'console-layout',
@@ -399,11 +419,10 @@
 	const profilePicture: Ref<string> = ref('');
 	const {
 		fetchRAIncidentsAnalyticsStatus,
-		fetchRAIncidentsAnalyticsError,
-		computedAnalytics,
 		computedMostRequested,
 		getRAAnalytics,
 		getTotalCompleted,
+		raIncidentsDoughnutData,
 	} = useRAIncidentsAnalytics();
 	const {
 		fetchRoadsideIncidentsStatus,
