@@ -238,14 +238,7 @@
 												:data-dropdown-toggle="'dropdownLeft' + index"
 												data-dropdown-placement="left"
 												type="button">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="1em"
-													height="1em"
-													viewBox="0 0 16 16"
-													class="size-6">
-													<MenuKebabIcon />
-												</svg>
+												<MenuKebabIcon />
 											</button>
 											<!-- Dropdown menu -->
 											<div
@@ -396,6 +389,15 @@
 							<span>Refresh</span>
 							<RefreshIcon classes="size-6" />
 						</button>
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="
+							fetchRAIncidentsAnalyticsStatus === 'success' &&
+							!raIncidentsDoughnutData.data.length
+						">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
 					</div>
 					<IncidentsDoughnutChart
 						v-else
