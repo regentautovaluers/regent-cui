@@ -30,6 +30,10 @@ const useRoadsideIncidents = () => {
 			).length || 0,
 	);
 
+	const topFiveIncidents: ComputedRef<any[]> = computed(() => {
+		return getRoadsideIncidents.value.slice(0, 5);
+	});
+
 	const { status: fetchRoadsideIncidentsStatus } = useFetch(
 		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
 		{
@@ -62,6 +66,7 @@ const useRoadsideIncidents = () => {
 		getRoadsideIncidents,
 		totalIncidents,
 		ongoingIncidents,
+		topFiveIncidents,
 	};
 };
 
