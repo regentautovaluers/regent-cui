@@ -78,16 +78,19 @@
 			</div>
 			<div
 				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
-				<!-- TODO: replace this icon with a clock icon -->
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="1em"
 					height="1em"
-					viewBox="0 0 24 24"
+					viewBox="0 0 32 32"
 					class="size-7">
 					<path
-						fill="currentColor"
-						d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M16 8v8l4 4m9-4c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13" />
 				</svg>
 				<div>
 					<h1 class="font-semibold">Ongoing Requests</h1>
@@ -160,10 +163,10 @@
 
 				<!-- div to show when there are incidents -->
 				<div
-					class="flex h-full flex-col justify-between"
+					class="flex h-full flex-col justify-between md:min-h-[50.5rem]"
 					v-else>
 					<!-- the table itself -->
-					<div class="mb-4 flex-grow md:min-h-[50.5rem]">
+					<div class="mb-4 flex-grow">
 						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 							<table class="w-full text-left text-gray-500">
 								<thead class="bg-gray-100 text-sm uppercase text-gray-700">
