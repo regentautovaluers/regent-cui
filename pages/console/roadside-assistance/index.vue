@@ -59,22 +59,19 @@
 					xmlns="http://www.w3.org/2000/svg"
 					width="1em"
 					height="1em"
-					viewBox="0 0 24 24"
+					viewBox="0 0 32 32"
 					class="size-7">
-					<g
+					<path
 						fill="none"
 						stroke="currentColor"
 						stroke-linecap="round"
-						stroke-miterlimit="10"
-						stroke-width="1.5">
-						<path
-							d="M21.5 12h-2.111M12 2.5v2.111M2.5 12h2.111M12 21.5v-2.111m0 0A7.389 7.389 0 1 0 12 4.61a7.389 7.389 0 0 0 0 14.778Z" />
-						<path d="M12 16.222a4.222 4.222 0 1 0 0-8.444a4.222 4.222 0 0 0 0 8.444Z" />
-					</g>
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M16 8v8l4 4m9-4c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13" />
 				</svg>
 				<div>
 					<h1 class="font-semibold">Ongoing Requests</h1>
-					<h2>Lorem</h2>
+					<h2>{{ ongoingIncidents + ' Requests' }}</h2>
 					<NuxtLink
 						:to="{ name: 'ra-all-incidents' }"
 						class="text-blue-600 hover:text-blue-700">
@@ -96,7 +93,7 @@
 				</svg>
 				<div>
 					<h1 class="font-semibold">Completed Requests</h1>
-					<h2>Lorem</h2>
+					<h2>{{ getTotalCompleted + ' Requests' }}</h2>
 					<NuxtLink
 						:to="{ name: 'ra-all-incidents' }"
 						class="text-blue-600 hover:text-blue-700">
@@ -148,12 +145,121 @@
 			<div
 				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 				<div
-					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<h1>Hello world</h1>
+					class="xl:max-h-1/2 flex h-[25rem] flex-col items-center justify-center rounded-md border shadow-sm xl:h-1/2">
+					<h1>under construction</h1>
 				</div>
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<h1>Hello world again</h1>
+					<div class="flex h-12 items-center justify-between px-3">
+						<h1 class="text-xl font-extrabold">Recent Incidents</h1>
+					</div>
+					<div
+						class="flex h-full items-center justify-center"
+						v-if="
+							fetchRoadsideIncidentsStatus === 'pending' && !topFiveIncidents.length
+						">
+						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="fetchRoadsideIncidentsStatus === 'error'">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+						<button
+							class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+							@click="refreshPage">
+							<span>Refresh</span>
+							<RefreshIcon classes="size-6" />
+						</button>
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="
+							fetchRoadsideIncidentsStatus === 'success' && !topFiveIncidents.length
+						">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
+					</div>
+					<div
+						v-else
+						v-for="(incident, index) in topFiveIncidents"
+						:key="index"
+						class="mb-2 grid min-h-[4.3rem] grid-cols-2 px-3 text-gray-500 hover:bg-gray-100">
+						<div class="flex flex-col justify-center">
+							<h1 class="font-semibold">{{ incident.registration_no }}</h1>
+							<span class="text-xs font-medium">{{
+								formatServerProvidedDateTime(incident.date_created)
+							}}</span>
+						</div>
+						<div class="flex items-center justify-between">
+							<div />
+							<span class="font-semibold">{{
+								screenFormatRAServiceName(incident.service)
+							}}</span>
+							<button
+								:id="'dropdownLeftRecentsButton' + index"
+								:data-dropdown-toggle="'dropdownLeftRecents' + index"
+								data-dropdown-placement="left"
+								type="button">
+								<MenuKebabIcon />
+							</button>
+							<!-- Dropdown menu -->
+							<div
+								:id="'dropdownLeftRecents' + index"
+								class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+								<ul
+									class="py-2 text-gray-500"
+									aria-labelledby="dropdownLeftRecentsButton">
+									<li
+										v-if="
+											incident.service_status === 'ongoing' ||
+											incident.service_status === 'pending'
+										">
+										<span
+											class="block w-full px-4 py-2 text-center hover:bg-gray-100">
+											Report N/A
+										</span>
+									</li>
+									<li
+										v-if="
+											incident.service === 'towing' &&
+											incident.service_status === 'completed'
+										">
+										<NuxtLink
+											:to="{
+												name: 'ra-expanded-report',
+												params: {
+													service_type: incident.service,
+													id: incident.id,
+												},
+											}"
+											class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+											type="button">
+											View Report
+										</NuxtLink>
+									</li>
+									<li
+										v-if="
+											incident.service !== 'towing' &&
+											incident.service_status === 'completed'
+										">
+										<NuxtLink
+											:to="{
+												name: 'ra-minimized-report',
+												params: {
+													service_type: incident.service,
+													id: incident.id,
+												},
+											}"
+											class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+											type="button">
+											View Report
+										</NuxtLink>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- members listing -->
@@ -558,6 +664,9 @@
 		memberVehicles,
 		getMemberVehicles,
 	} = useAVAMemberships();
+	const { ongoingIncidents, fetchRoadsideIncidentsStatus, topFiveIncidents } =
+		useRoadsideIncidents();
+	const { getTotalCompleted } = useRAIncidentsAnalytics();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
