@@ -180,15 +180,37 @@
 									id="roadside-assistance-dropdown"
 									class="ml-8 hidden space-y-2">
 									<ol class="relative border-s border-gray-400">
+										<li class="group mb-7 ms-4">
+											<div
+												class="absolute -start-2 mt-1.5 size-4 rounded-full border border-white bg-gray-400 group-hover:bg-blue-600"></div>
+											<NuxtLink
+												class="font-normal leading-none text-gray-500"
+												:to="{
+													name: navigationRoutes[2].childRoutes?.[0]
+														.routeName,
+												}"
+												>{{
+													navigationRoutes[2].childRoutes?.[0].screenName
+												}}</NuxtLink
+											>
+										</li>
 										<li
 											class="group mb-7 ms-4"
-											v-for="link in navigationRoutes[2].childRoutes"
+											v-for="link in navigationRoutes[2].childRoutes?.slice(
+												1,
+											)"
 											:key="link.id">
 											<div
 												class="absolute -start-2 mt-1.5 size-4 rounded-full border border-white bg-gray-400 group-hover:bg-blue-600"></div>
 											<NuxtLink
 												class="font-normal leading-none text-gray-500"
-												:to="{ name: link.routeName }"
+												:to="{
+													name: link.routeName,
+													query: {
+														client_lat: clientCoordinates.lat,
+														client_lng: clientCoordinates.lng,
+													},
+												}"
 												>{{ link.screenName }}</NuxtLink
 											>
 										</li>
@@ -268,8 +290,20 @@
 
 	// TODO: render this hack another way
 	const profilePicture: Ref<string> = ref('');
+	const { getClientLocation, clientCoordinates } = useClientGeolocation();
 
-	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
+	onMounted(async () => {
+		// set the profile picture
+		profilePicture.value = getPrincipal.value.profilePicture;
+
+		// get the client's location
+		try {
+			const clientCoords = await getClientLocation();
+			clientCoordinates.value = clientCoords;
+		} catch (error) {
+			console.error(error);
+		}
+	});
 </script>
 
 <style scoped>
