@@ -86,16 +86,20 @@
 
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
-	import { type MapCoordsMarker } from '~/types';
+	import { type LocationCoords, type MapCoordsMarker } from '~/types';
 
 	definePageMeta({
 		name: 'ra-tyrechange-request',
 		layout: 'console-layout',
 	});
 
-	const { clientCoordinates } = useClientGeolocation();
+	const route = useRoute();
 	const runtimeConfig = useRuntimeConfig();
 	const currentRegForm: Ref<number> = ref(0);
+	const clientCoordinates: Ref<LocationCoords> = ref({
+		lat: Number(route.query.client_lat),
+		lng: Number(route.query.client_lng),
+	});
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
