@@ -1,6 +1,6 @@
 <template>
 	<main class="flex h-screen">
-		<section class="hidden w-[60%] lg:flex">
+		<section class="hidden w-[65%] lg:flex">
 			<div
 				id="default-carousel"
 				class="relative h-full w-full"
@@ -9,53 +9,27 @@
 				<div class="relative h-full overflow-hidden rounded-lg">
 					<!-- Item 1 -->
 					<div
+						v-for="(slide, index) in slides"
+						:key="index"
 						class="hidden duration-700 ease-in-out"
 						data-carousel-item>
 						<img
-							src="/sample_img_1.jpg"
+							:src="slide"
 							class="size-full object-cover"
-							alt="..." />
-					</div>
-					<!-- Item 2 -->
-					<div
-						class="hidden duration-700 ease-in-out"
-						data-carousel-item>
-						<img
-							src="https://plus.unsplash.com/premium_photo-1718198497330-08b58f749d4b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-							class="size-full object-cover"
-							alt="..." />
-					</div>
-					<!-- Item 3 -->
-					<div
-						class="hidden duration-700 ease-in-out"
-						data-carousel-item>
-						<img
-							src="https://plus.unsplash.com/premium_photo-1718198497330-08b58f749d4b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-							class="size-full object-cover"
-							alt="..." />
+							alt="Landing Page Slide" />
 					</div>
 				</div>
 				<!-- Slider indicators -->
 				<div
 					class="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse">
 					<button
+						v-for="index in slides"
+						:key="index"
 						type="button"
 						class="h-3 w-3 rounded-full"
 						aria-current="true"
-						aria-label="Slide 1"
-						data-carousel-slide-to="0"></button>
-					<button
-						type="button"
-						class="h-3 w-3 rounded-full"
-						aria-current="false"
-						aria-label="Slide 2"
-						data-carousel-slide-to="1"></button>
-					<button
-						type="button"
-						class="h-3 w-3 rounded-full"
-						aria-current="false"
-						aria-label="Slide 3"
-						data-carousel-slide-to="2"></button>
+						:aria-label="'Slide ' + index"
+						:data-carousel-slide-to="index"></button>
 				</div>
 				<!-- Slider controls -->
 				<button
@@ -162,4 +136,9 @@
 
 <script setup lang="ts">
 	const { language, availableLanguages } = useSystemLocale();
+	const slides: readonly string[] = [
+		'/images/slides/landingpage/1_04092024.jpg',
+		'/images/slides/landingpage/2_04092024.jpg',
+		'/images/slides/landingpage/3_04092024.jpg',
+	];
 </script>
