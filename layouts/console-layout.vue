@@ -1,6 +1,6 @@
 <template>
 	<main class="flex h-screen flex-col">
-		<div class="flex max-h-20 min-h-20 items-center bg-white border-b sticky top-0 z-40">
+		<div class="sticky top-0 z-40 flex max-h-20 min-h-20 items-center border-b bg-white">
 			<div class="w-fit lg:w-[20rem]">
 				<button
 					data-drawer-target="system-sidebar"
@@ -24,7 +24,7 @@
 			</div>
 			<div class="flex h-full flex-grow items-center justify-between px-4">
 				<h1 class="text-lg font-extrabold md:text-3xl">{{ currentScreenName }}</h1>
-				<div class="flex w-fit max-w-52 items-center space-x-3 md:w-52">
+				<div class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3">
 					<img
 						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
 						:src="profilePicture"
