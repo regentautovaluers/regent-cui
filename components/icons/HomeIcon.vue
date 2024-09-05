@@ -4,9 +4,16 @@
 		width="2em"
 		height="2em"
 		viewBox="0 0 24 24"
-		class="size-8 flex-shrink-0 transition duration-75 group-hover:text-blue-600">
+		:class="props.classes">
 		<path
-			fill="currentColor"
+			:fill="props.color"
 			d="M4 19v-9q0-.475.213-.9t.587-.7l6-4.5q.525-.4 1.2-.4t1.2.4l6 4.5q.375.275.588.7T20 10v9q0 .825-.588 1.413T18 21h-3q-.425 0-.712-.288T14 20v-5q0-.425-.288-.712T13 14h-2q-.425 0-.712.288T10 15v5q0 .425-.288.713T9 21H6q-.825 0-1.412-.587T4 19" />
 	</svg>
 </template>
+
+<script setup lang="ts">
+	const props = defineProps({
+		classes: { required: false, type: String },
+		color: { required: false, type: String, default: 'currentColor' },
+	});
+</script>

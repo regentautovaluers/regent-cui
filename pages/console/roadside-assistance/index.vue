@@ -1,335 +1,672 @@
 <template>
-	<div class="responsive-view h-full py-10">
-		<!-- top card with link to add new member -->
-		<div
-			class="mb-6 flex flex-col items-center justify-between space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
-			<div class="flex w-full items-center space-x-2 md:w-fit">
+	<div class="flex h-full flex-col">
+		<!-- top information column -->
+		<div class="flex h-[6rem] items-center justify-between rounded-t-lg border p-4">
+			<div class="flex w-full items-center space-x-3 md:w-fit">
 				<img
-					class="size-[60px] rounded-full object-cover"
+					class="h-12 min-h-12 w-12 min-w-12 rounded-full"
 					:src="profilePicture"
-					alt="User Image" />
-				<div class="flex flex-col">
-					<span class="inline-flex items-center font-semibold text-blue-600"
-						>Hi, {{ getPrincipal.username }}
-						<img
-							src="/icons/misc/hand-wave.svg"
-							alt="Hand Wave Icon"
-							class="ml-1"
-					/></span>
-					<span>Welcome to Your Roadside Assistance Dashboard</span>
+					alt="Rounded avatar" />
+				<div class="h-full flex-col overflow-hidden">
+					<h1 class="inline-flex items-center space-x-3">
+						<span class="font-semibold text-blue-600">Hi, John Doe</span>
+						<HandshakeIcon />
+					</h1>
+					<h2>Welcome to Your Roadside Assistance Dashboard.</h2>
 				</div>
 			</div>
-			<div class="space-x-6">
+			<div class="hidden space-x-3 md:flex md:items-center">
 				<NuxtLink
-					:to="{ name: 'ava-all-incidents' }"
-					class="font-semibold text-blue-600 underline underline-offset-2"
-					>View All Incidents</NuxtLink
-				>
+					:to="{ name: 'ra-all-incidents' }"
+					class="text-blue-600 underline underline-offset-2 hover:text-blue-700">
+					All Incidents
+				</NuxtLink>
 				<NuxtLink
-					:to="{ name: 'new-member' }"
-					class="w-full rounded-xl bg-blue-600 p-4 text-center text-sm font-semibold text-white md:w-fit"
-					>ADD A NEW MEMBER</NuxtLink
-				>
+					:to="{ name: 'ava-membership-types' }"
+					class="generic-nuxt-link">
+					Onboard Member
+				</NuxtLink>
 			</div>
 		</div>
-		<div
-			class="mb-6 flex flex-col items-center justify-around space-y-2 rounded-xl border-2 border-gray-200 px-3 py-5 shadow-sm md:flex-row md:space-y-0 md:px-6">
+
+		<!-- statistics strip -->
+		<div class="flex h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
 			<div
-				v-for="(info, index) in subLinksInfo"
-				:key="index"
-				class="flex items-start space-x-2">
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="1em"
+					height="1em"
+					viewBox="0 0 24 24"
+					class="size-7">
+					<path
+						fill="currentColor"
+						d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4" />
+				</svg>
 				<div>
-					<img
-						:src="info.icon"
-						alt="Sublink Icon"
-						class="size-6" />
+					<h1 class="font-semibold">Registered Members</h1>
+					<h2>{{ totalNumber }}</h2>
+					<NuxtLink
+						:to="{ name: 'ra-all-incidents' }"
+						class="text-blue-600 hover:text-blue-700">
+						View Members
+					</NuxtLink>
 				</div>
-				<div class="flex flex-col space-y-2">
-					<span class="font-semibold text-gray-600">{{ info.title }}</span>
-					<span class="font-semibold text-gray-500">{{ info.data }}</span>
-					<NuxtLink class="font-semibold text-blue-600">
-						{{ info.text }}
+			</div>
+			<div
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="1em"
+					height="1em"
+					viewBox="0 0 32 32"
+					class="size-7">
+					<path
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M16 8v8l4 4m9-4c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13" />
+				</svg>
+				<div>
+					<h1 class="font-semibold">Ongoing Requests</h1>
+					<h2>{{ ongoingIncidents + ' Requests' }}</h2>
+					<NuxtLink
+						:to="{ name: 'ra-all-incidents' }"
+						class="text-blue-600 hover:text-blue-700">
+						View Ongoing
+					</NuxtLink>
+				</div>
+			</div>
+			<div
+				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/3 md:justify-center">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="1em"
+					height="1em"
+					viewBox="0 0 24 24"
+					class="size-7">
+					<path
+						fill="currentColor"
+						d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+				</svg>
+				<div>
+					<h1 class="font-semibold">Completed Requests</h1>
+					<h2>{{ getTotalCompleted + ' Requests' }}</h2>
+					<NuxtLink
+						:to="{ name: 'ra-all-incidents' }"
+						class="text-blue-600 hover:text-blue-700">
+						View Completed
 					</NuxtLink>
 				</div>
 			</div>
 		</div>
-		<div class="flex items-center justify-between space-x-6 overflow-x-auto">
+
+		<!-- Requests quick links -->
+		<div class="mt-4 flex h-fit items-center justify-between space-x-3 overflow-auto">
 			<NuxtLink
-				v-for="(route, index) in applicationRoutes[2].children?.slice(0, 4)"
-				:key="index"
-				:to="{ name: route.routeName }"
-				class="flex h-20 w-1/4 items-center space-x-3 rounded-xl border-2 border-gray-200 bg-white px-4 shadow-sm hover:border-blue-500">
-				<img
-					:src="route.icon"
-					alt="Service Icon"
-					class="size-10" />
-				<span class="text-lg tracking-wide text-gray-500">{{ route.displayName }}</span>
-			</NuxtLink>
+				:to="{ name: 'ra-fueldelivery-request' }"
+				class="ava-services-quicklinks group">
+				<FuelDeliveryServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Fuel Delivery</span></NuxtLink
+			>
+			<NuxtLink
+				:to="{ name: 'ra-jumpstarting-request' }"
+				class="ava-services-quicklinks">
+				<JumpstartingServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Jumpstarting</span></NuxtLink
+			>
+			<NuxtLink
+				:to="{ name: 'ra-jumpstarting-request' }"
+				class="ava-services-quicklinks">
+				<TyrechangeServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Tyrechange</span></NuxtLink
+			>
+			<NuxtLink
+				:to="{ name: 'ra-jumpstarting-request' }"
+				class="ava-services-quicklinks">
+				<TowingServiceIcon
+					color="#1c64f2"
+					:classes="['size-12']" />
+				<span class="text-lg">Towing</span></NuxtLink
+			>
 		</div>
-		<div class="mt-6 flex flex-col md:flex-row md:space-x-6">
-			<!--left and analysis graph -->
-			<div class="space-y-6 md:w-[20%]">
-				<div class="min-h-[24rem] rounded-xl border shadow">
-					<div class="flex items-center justify-between p-4">
-						<h1 class="text-2xl font-semibold">Memberships Glance</h1>
-					</div>
-					<ClientOnly>
-						<div class="flex justify-center">
-							<MembershipsDonutChart />
-						</div>
-					</ClientOnly>
+
+		<!-- Side information -->
+		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.2fr,.8fr]">
+			<!-- side-information including chart -->
+			<div
+				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
+				<div
+					class="xl:max-h-1/2 flex h-[25rem] flex-col items-center justify-center rounded-md border shadow-sm xl:h-1/2">
+					<h1>under construction</h1>
 				</div>
-				<div class="flex min-h-[25rem] flex-col rounded-xl border shadow">
-					<div class="flex h-fit items-center justify-between p-4">
-						<h1 class="text-xl font-semibold">Recent Incidents</h1>
-						<NuxtLink
-							:to="{ name: 'ava-all-incidents' }"
-							class="text-blue-500 underline underline-offset-2 hover:text-blue-600"
-							>View All</NuxtLink
-						>
+				<div
+					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
+					<div class="flex h-12 items-center justify-between px-3">
+						<h1 class="text-xl font-extrabold">Recent Incidents</h1>
 					</div>
-					<div class="flex flex-grow flex-col p-3">
-						<div
-							v-if="recentIncidentsCol.length === 0"
-							class="flex flex-grow flex-col items-center justify-center">
-							<img
-								src="/icons/misc/empty-or-error.svg"
-								alt="Data Not Found"
-								class="mb-4 inline-block" />
-							<br />
-							<span class="text-center text-lg font-semibold text-gray-500"
-								>Nothing to Show</span
-							>
-							<NuxtLink
-								:to="{ name: 'ava-towing' }"
-								class="text-blue-500 underline underline-offset-2 hover:text-blue-600"
-								>Make a towing request</NuxtLink
-							>
+					<div
+						class="flex h-full items-center justify-center"
+						v-if="
+							fetchRoadsideIncidentsStatus === 'pending' && !topFiveIncidents.length
+						">
+						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="fetchRoadsideIncidentsStatus === 'error'">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+						<button
+							class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+							@click="refreshPage">
+							<span>Refresh</span>
+							<RefreshIcon classes="size-6" />
+						</button>
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="
+							fetchRoadsideIncidentsStatus === 'success' && !topFiveIncidents.length
+						">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
+					</div>
+					<div
+						v-else
+						v-for="(incident, index) in topFiveIncidents"
+						:key="index"
+						class="mb-2 grid min-h-[4.3rem] grid-cols-2 px-3 text-gray-500 hover:bg-gray-100">
+						<div class="flex flex-col justify-center">
+							<h1 class="font-semibold">{{ incident.registration_no }}</h1>
+							<span class="text-xs font-medium">{{
+								formatServerProvidedDateTime(incident.date_created)
+							}}</span>
 						</div>
-						<RecentIncidentsMinimal
-							v-else
-							v-for="(incident, index) in recentIncidentsCol"
-							:key="index"
-							:reg-no="incident.registration_no"
-							:date-time="formatServerProvidedDateTime(incident.date_created)"
-							:service-type="makeServiceUserFriendly(incident.service)" />
+						<div class="flex items-center justify-between">
+							<div />
+							<span class="font-semibold">{{
+								screenFormatRAServiceName(incident.service)
+							}}</span>
+							<button
+								:id="'dropdownLeftRecentsButton' + index"
+								:data-dropdown-toggle="'dropdownLeftRecents' + index"
+								data-dropdown-placement="left"
+								type="button">
+								<MenuKebabIcon />
+							</button>
+							<!-- Dropdown menu -->
+							<div
+								:id="'dropdownLeftRecents' + index"
+								class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+								<ul
+									class="py-2 text-gray-500"
+									aria-labelledby="dropdownLeftRecentsButton">
+									<li
+										v-if="
+											incident.service_status === 'ongoing' ||
+											incident.service_status === 'pending'
+										">
+										<span
+											class="block w-full px-4 py-2 text-center hover:bg-gray-100">
+											Report N/A
+										</span>
+									</li>
+									<li
+										v-if="
+											incident.service === 'towing' &&
+											incident.service_status === 'completed'
+										">
+										<NuxtLink
+											:to="{
+												name: 'ra-expanded-report',
+												params: {
+													service_type: incident.service,
+													id: incident.id,
+												},
+											}"
+											class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+											type="button">
+											View Report
+										</NuxtLink>
+									</li>
+									<li
+										v-if="
+											incident.service !== 'towing' &&
+											incident.service_status === 'completed'
+										">
+										<NuxtLink
+											:to="{
+												name: 'ra-minimized-report',
+												params: {
+													service_type: incident.service,
+													id: incident.id,
+												},
+											}"
+											class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+											type="button">
+											View Report
+										</NuxtLink>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="md:w-[80%]">
-				<!-- search & filter controls -->
-				<div class="mb-6 flex flex-nowrap items-center justify-between overflow-x-auto">
-					<!-- search box -->
-					<div class="relative mr-10 max-w-[35%] flex-grow">
-						<input
-							type="text"
-							class="generic-input"
-							placeholder="Search Name, Email or Phone Number"
-							v-model.lazy="searchFilterTerm" />
-					</div>
-					<div class="flex items-center space-x-2">
-						<div class="flex flex-nowrap items-center space-x-3">
-							<!-- filter by Membership type -->
-							<div
-								class="hs-dropdown relative inline-flex [--placement:bottom-right]">
-								<button
-									id="hs-dropdown-default"
-									type="button"
-									class="hs-dropdown-toggle inline-flex h-12 items-center gap-x-2 rounded-xl border border-gray-200 px-4 py-3 font-medium text-gray-800 shadow-sm"
-									:class="
-										!searchMembershipCategory
-											? 'bg-white text-black'
-											: 'bg-blue-600 text-white'
-									">
-									Membership Category
-									<HsChevron />
-								</button>
-								<div
-									class="hs-dropdown-menu duration z-20 mt-2 hidden min-w-60 space-y-2 rounded-lg border bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
-									aria-labelledby="hs-dropdown-default">
-									<div
-										v-for="(option, index) in [
-											{
-												text: 'Corporate Members',
-												id: 'corp-cat',
-												value: 'corporate',
-											},
-											{
-												text: 'Individual Members',
-												id: 'indiv-cat',
-												value: 'individual',
-											},
-										]"
-										:key="index"
-										class="flex items-center rounded-lg p-2 hover:bg-gray-200">
-										<!-- prettier-ignore -->
-										<input
-											:id="option.id"
-											type="radio"
-											name="membership-category"
-											:value="option.value"
-											class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-											v-model="searchMembershipCategory" />
-
-										<label
-											for="corp-cat"
-											class="ms-2 text-gray-500"
-											>{{ option.text }}</label
-										>
-									</div>
-								</div>
-							</div>
-						</div>
-						<button
-							v-if="searchFilterTerm !== '' || searchMembershipCategory !== ''"
-							@click="clearFiltering"
-							title="Clear Filters"
-							class="inline-flex size-10 items-center justify-center rounded-full bg-gray-300 p-2">
-							<Icon
-								name="material-symbols:close"
-								class="text-lg" />
-						</button>
-					</div>
+			<!-- members listing -->
+			<div>
+				<!-- TODO: Find a fix for the abort controller signal error -->
+				<!-- div to show when there is a fetch error -->
+				<div
+					v-if="fetchMembershipsStatus === 'error'"
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]">
+					<BirdieNotFoundIcon />
+					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+					<button
+						class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+						@click="refreshPage">
+						<span>Refresh</span>
+						<RefreshIcon classes="size-6" />
+					</button>
 				</div>
-				<!-- start of data table -->
-				<div class="flex flex-col">
-					<div class="-m-1.5 overflow-x-auto">
-						<div class="inline-block min-w-full p-1.5 align-middle">
-							<div class="overflow-hidden rounded-xl border shadow">
-								<table class="min-w-full divide-y">
-									<thead>
-										<tr>
-											<th
-												scope="col"
-												class="px-6 py-3 text-start font-bold text-gray-500">
-												Client Name
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-start font-bold text-gray-500">
-												Membership Category
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-center font-bold text-gray-500">
-												Vehicles
-											</th>
 
-											<th
-												scope="col"
-												class="px-6 py-3 text-end font-bold text-gray-500">
-												Client Phone
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-end font-bold text-gray-500">
-												Client Email
-											</th>
-											<th
-												scope="col"
-												class="px-6 py-3 text-end" />
-										</tr>
-									</thead>
-									<tbody class="divide-y divide-gray-200">
-										<ErrorOrMissingData v-if="fetchErrorOrEmpty" />
-										<MembersRecord
-											v-else
-											v-for="(member, index) in membersList"
-											:key="index"
-											:clientName="member.full_name"
-											:membership-category="member.category"
-											:vehicle-count="member.membershipVehicleCount"
-											:member-id="member.id"
-											:client-phone="member.phone_number"
-											:client-email="member.userEmail" />
-									</tbody>
-								</table>
-							</div>
+				<!-- div to show when there are no members -->
+				<div
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]"
+					v-else-if="
+						fetchMembershipsStatus === 'success' && membersListSlice.length === 0
+					">
+					<BirdieNotFoundIcon />
+					<h1 class="font-semibold text-gray-500">
+						Oops! Seems like you have no members!
+					</h1>
+					<NuxtLink
+						:to="{ name: 'ava-membership-types' }"
+						class="generic-nuxt-link">
+						Onboard AVA Member
+					</NuxtLink>
+				</div>
+
+				<!-- div to show when there are members -->
+				<div
+					class="flex h-full flex-col justify-between md:min-h-[50.5rem]"
+					v-else>
+					<!-- search & filter controls -->
+					<div class="flex h-fit items-center justify-between">
+						<form
+							class="relative h-fit w-full md:w-[45%] lg:w-[30%]"
+							@submit.prevent="">
+							<input
+								type="text"
+								class="generic-input"
+								placeholder="Search Name, Email or Phone"
+								disabled />
+							<button
+								type="submit"
+								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500"
+								disabled>
+								<SearchIcon />
+							</button>
+						</form>
+					</div>
+
+					<!-- the table itself -->
+					<div class="my-4 flex-grow">
+						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+							<table class="w-full text-left text-gray-500">
+								<thead class="bg-gray-100 text-xs uppercase text-gray-700">
+									<tr>
+										<th
+											scope="col"
+											class="table-headers">
+											Client Name
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Category
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Vehicles
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Client Phone
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Client Email
+										</th>
+										<th
+											scope="col"
+											class="table-headers" />
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										class="border-b bg-white hover:bg-gray-100"
+										v-for="(member, index) in membersListSlice"
+										:key="index">
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-semibold text-gray-600">
+											{{ member.full_name }}
+										</td>
+										<td class="p-6 text-blue-600">
+											{{ stringToTitleCase(member.category) }}
+										</td>
+										<td class="p-6 font-semibold text-pink-600">
+											{{ member.membershipVehicleCount }}
+										</td>
+										<td class="p-6">{{ member.phone_number }}</td>
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-medium text-gray-600">
+											{{ member.userEmail ?? 'N/A' }}
+										</td>
+										<td class="flex items-center justify-end p-6">
+											<button
+												:id="'dropdownTopButton' + index"
+												:data-dropdown-toggle="'dropdownTop' + index"
+												data-dropdown-placement="top"
+												type="button">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="1em"
+													height="1em"
+													viewBox="0 0 16 16"
+													class="size-6">
+													<MenuKebabIcon />
+												</svg>
+											</button>
+											<!-- Dropdown menu -->
+											<div
+												:id="'dropdownTop' + index"
+												class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+												<ul
+													class="py-2 text-sm text-gray-500"
+													aria-labelledby="dropdownTopButton">
+													<li>
+														<button
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button"
+															@click="
+																() => {
+																	selectedIndexToEdit = index;
+																	isEditMemberDetailsModalOpen = true;
+																}
+															">
+															Edit Details
+														</button>
+													</li>
+													<li>
+														<button
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button"
+															@click="
+																() => {
+																	getMemberVehicles(member.id);
+																	isGetVehiclesModalOpen = true;
+																}
+															">
+															View Vehicles
+														</button>
+													</li>
+													<li>
+														<button
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button"
+															@click="
+																() => {
+																	selectedIndexToEdit = index;
+																	isAddVehiclesModalOpen = true;
+																}
+															">
+															Add Vehicles
+														</button>
+													</li>
+												</ul>
+											</div>
+										</td>
+									</tr>
+									<!-- loading state -->
+									<tr
+										class="border-b bg-white hover:bg-gray-100"
+										v-if="fetchMembershipsStatus === 'pending'"
+										v-for="a in 10"
+										:key="a">
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-medium text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>username</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>useremail</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>one</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>domain role</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>accactive</span
+											>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
-				</div>
-				<!-- end of data table -->
-				<div class="mt-2 flex w-full items-center justify-between rounded-sm py-2">
-					<span>Showing {{ page + 1 }} of {{ totalPages }} pages.</span>
-					<div class="flex items-center space-x-1">
-						<button
-							@click="loadPreviousPage"
-							v-if="page > 0"
-							type="button"
-							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-							<span v-if="!fetchingMoreData">Previous Page</span>
-							<div
-								v-if="fetchingMoreData"
-								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
-								role="status"
-								aria-label="loading" />
-						</button>
-						<button
-							@click="loadNextPage"
-							v-if="page < totalPages - 1"
-							type="button"
-							class="inline-flex items-center gap-x-2 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-							<span v-if="!fetchingMoreData">Next Page</span>
-							<div
-								v-if="fetchingMoreData"
-								class="inline-block size-5 animate-spin rounded-full border-[3px] border-current border-white border-t-transparent text-gray-800"
-								role="status"
-								aria-label="loading" />
-						</button>
+
+					<!-- page controls -->
+					<div class="flex h-12 items-center justify-between">
+						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
+							Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
+						</h1>
+						<div class="h-full space-x-2 md:space-x-4">
+							<button
+								class="table-page-buttons"
+								@click="currentPage -= 1">
+								Previous
+							</button>
+							<button
+								class="table-page-buttons"
+								@click="currentPage += 1">
+								Next
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!-- Edit Member details modal -->
+	<ParentModal
+		v-if="isEditMemberDetailsModalOpen"
+		modalId="edit-member-details"
+		modalTitle="Edit Member Details"
+		@close-modal="
+			() => {
+				isEditMemberDetailsModalOpen = false;
+				selectedIndexToEdit = -1;
+			}
+		">
+		<EditAVAMemberDetails
+			:member-id="membersListSlice[selectedIndexToEdit].id"
+			:member-name="membersListSlice[selectedIndexToEdit].full_name"
+			:member-email="membersListSlice[selectedIndexToEdit].userEmail"
+			:member-phone="membersListSlice[selectedIndexToEdit].phone_number" />
+	</ParentModal>
+
+	<!-- Add Vehicles -->
+	<ParentModal
+		v-if="isAddVehiclesModalOpen"
+		modalId="add-member-vehicles"
+		modalTitle="Add Vehicles"
+		@close-modal="
+			() => {
+				isAddVehiclesModalOpen = false;
+				selectedIndexToEdit = -1;
+			}
+		">
+		<AddMemberVehicle :membership-id="membersListSlice[selectedIndexToEdit].id" />
+	</ParentModal>
+
+	<!-- View Member Vehicles modal -->
+	<ParentModal
+		v-if="isGetVehiclesModalOpen"
+		modalId="member-vehicles"
+		modalTitle="Member Vehicles"
+		class="relative p-3 py-2 md:p-4"
+		@close-modal="
+			() => {
+				isGetVehiclesModalOpen = false;
+				memberVehicles = [];
+			}
+		">
+		<div
+			class="flex h-fit space-x-3 overflow-x-auto"
+			ref="scrollEl"
+			style="
+				::-webkit-scrollbar-thumb {
+					border-radius: 10px;
+				}
+
+				/* Hide scrollbar for Chrome, Safari and Opera */
+				::-webkit-scrollbar {
+					display: none;
+				}
+
+				/* Hide scrollbar for IE, Edge and Firefox */
+				.no-scrollbar {
+					-ms-overflow-style: none; /* IE and Edge */
+					scrollbar-width: none; /* Firefox */
+				}
+			">
+			<MemberVehiclesLoader
+				v-if="fetchMemberVehiclesLoading"
+				v-for="a in 2"
+				:key="a" />
+			<MemberVehiclesCard
+				v-else
+				v-for="(vehicle, index) in memberVehicles"
+				:key="index"
+				:membership-id="vehicle.id"
+				:reg-no="vehicle.registration"
+				:membership-type="stringToSentenceCase(vehicle.membershipType.membership_name)"
+				:date-registered="formatServerProvidedDate(vehicle.start_date)"
+				:expiration-date="formatServerProvidedDate(vehicle.end_date)"
+				:membership-status="stringToTitleCase(vehicle.membership_status)" />
+		</div>
+		<!-- left button -->
+		<button
+			type="button"
+			class="group absolute start-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+			@click="x -= 352"
+			:class="arrivedState.left ? 'disabled' : null"
+			v-if="memberVehicles.length > 1">
+			<span
+				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 outline-none ring-white group-focus:ring-4">
+				<svg
+					class="h-4 w-4 text-white rtl:rotate-180"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 6 10">
+					<path
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M5 1 1 5l4 4" />
+				</svg>
+				<span class="sr-only">Scroll Left</span>
+			</span>
+		</button>
+
+		<!-- right button -->
+		<button
+			type="button"
+			class="group absolute end-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+			:class="arrivedState.right ? 'disabled' : null"
+			@click="x += 352"
+			v-if="memberVehicles.length > 1">
+			<span
+				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 outline-none ring-white group-focus:ring-4">
+				<svg
+					class="h-4 w-4 text-white rtl:rotate-180"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 6 10">
+					<path
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="m1 9 4-4-4-4" />
+				</svg>
+				<span class="sr-only">Scroll Right</span>
+			</span>
+		</button>
+	</ParentModal>
 </template>
 
 <script setup lang="ts">
-	import applicationRoutes from '~/types/routes';
-
+	import { useScroll } from '@vueuse/core';
 	definePageMeta({
-		name: 'ava-home',
-		layout: 'in-app-layout',
+		name: 'ra-home',
+		layout: 'console-layout',
 	});
-	const { getPrincipal } = useAuth();
+
+	const scrollEl = ref<HTMLElement | null>(null);
+	const { x, arrivedState } = useScroll(scrollEl, {
+		behavior: 'smooth',
+	});
+
 	const profilePicture: Ref<string> = ref('');
+	const { getPrincipal } = useAuth();
+	const isGetVehiclesModalOpen: Ref<boolean> = ref(false);
+	const selectedIndexToEdit: Ref<any> = ref(-1);
+	const isEditMemberDetailsModalOpen: Ref<boolean> = ref(false);
+	const isAddVehiclesModalOpen: Ref<boolean> = ref(false);
 	const {
-		membersList,
-		searchFilterTerm,
-		searchMembershipCategory,
+		currentPage,
+		membersListSlice,
 		totalNumber,
 		totalPages,
-		fetchErrorOrEmpty,
-		fetchingMoreData,
-		page,
-		clearFiltering,
-		loadNextPage,
-		loadPreviousPage,
-	} = useGeneralMemberships();
-	const { recentIncidentsCol } = useIncidents();
-
-	const subLinksInfo: any[] = [
-		{
-			icon: '/icons/misc/roadside-registeredmems-icon.svg',
-			title: 'Registered Members',
-			data: totalNumber,
-			link: 'memberships-home',
-			text: 'View Members',
-		},
-		{
-			icon: '/icons/misc/roadside-realttracking-icon.svg',
-			title: 'Real-Time Tracking',
-			data: 'Lorem',
-			link: 'memberships-home',
-			text: 'View Live Map',
-		},
-		{
-			icon: '/icons/misc/roadside-complord-icon.svg',
-			title: 'Completed Orders',
-			data: 'Lorem',
-			link: 'memberships-home',
-			text: 'View All',
-		},
-	];
+		fetchMembershipsStatus,
+		fetchMemberVehiclesLoading,
+		memberVehicles,
+		getMemberVehicles,
+	} = useAVAMemberships();
+	const { ongoingIncidents, fetchRoadsideIncidentsStatus, topFiveIncidents } =
+		useRoadsideIncidents();
+	const { getTotalCompleted } = useRAIncidentsAnalytics();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>

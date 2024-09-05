@@ -1,0 +1,8 @@
+{
+	"greeting": "Hello",
+	"welcome_text": "Welcome Back",
+	"show_password": "Show Password",
+	"forgot_password": "Forgot Password",
+	"login": "Login",
+	"request_processing": "Processing"
+}

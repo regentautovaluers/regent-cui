@@ -1,25 +1,33 @@
 import { createToast, type ToastType } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css';
+import { type ToastConfigOptions } from '~/types';
 
-export default function () {
-	// types- default, info, warning, success, danger
-	function openToast(message: string, type: string, description?: string): void {
-		createToast(
-			{
-				title: message,
-				description: description,
-			},
-			{
-				timeout: 3000,
-				type: type as ToastType,
-				showCloseButton: false,
-				transition: 'bounce',
-				hideProgressBar: true,
-				showIcon: false,
-				position: 'top-center',
-			},
-		);
-	}
+const useToast = (
+	message: string,
+	{
+		timeout,
+		type,
+		showCloseButton,
+		transition,
+		hideProgressBar,
+		showIcon,
+		position,
+	}: ToastConfigOptions,
+) => {
+	createToast(
+		{
+			title: message,
+		},
+		{
+			timeout: timeout ?? 3000,
+			type: type as ToastType,
+			showCloseButton: showCloseButton ?? false,
+			transition: transition ?? 'slide',
+			hideProgressBar: hideProgressBar ?? true,
+			showIcon: showIcon ?? false,
+			position: position ?? 'top-center',
+		},
+	);
+};
 
-	return { openToast };
-}
+export default useToast;

@@ -3,37 +3,29 @@
 @tailwind utilities;
 
 @layer components {
-	.responsive-view {
-		@apply px-3 md:pr-[20px] lg:pl-[340px];
-	}
-
-	.active-parent-route {
-		@apply bg-red-500;
-	}
-
-	.active-child-route {
-		@apply bg-green-500;
-	}
-
-	.custom-dropdown {
-		@apply absolute -left-56 -top-[170%] z-20 mb-10 mt-2 w-56 origin-center rounded-md bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5;
-	}
-
 	.generic-input {
-		@apply block w-full rounded-xl border border-gray-200 p-3 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:bg-gray-200 disabled:text-gray-500;
+		@apply block h-14 w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
 	}
 
-	.radio-inputs {
-		@apply flex h-16 cursor-pointer items-center rounded-xl border border-pink-200 bg-pink-100 px-3 py-4 text-pink-500 peer-checked:bg-pink-400 peer-checked:text-white;
+	.generic-input-modified {
+		@apply w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent py-5 ps-10 text-gray-600 focus:border-x-transparent focus:border-b-blue-500 focus:border-t-transparent focus:ring-0;
 	}
 
-	.form-submit {
-		@apply w-full items-center rounded-lg border border-transparent bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700;
+	.generic-input-label {
+		@apply block font-semibold text-gray-600;
 	}
-}
 
-.radio-buttons {
-	@apply ms-auto shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500;
+	.generic-form-submit {
+		@apply mb-2 me-2 inline-flex h-14 w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-lg font-semibold text-white hover:bg-blue-700 disabled:bg-gray-200;
+	}
+
+	.generic-nuxt-link {
+		@apply inline-flex h-12 w-fit items-center justify-center rounded-lg bg-blue-600 px-3 py-2 font-semibold text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300;
+	}
+
+	.ava-services-quicklinks {
+		@apply inline-flex h-16 items-center space-x-2 whitespace-nowrap rounded-lg border px-3 text-gray-500 md:h-20 md:w-1/4;
+	}
 }
 
 @layer base {
@@ -41,10 +33,62 @@
 	tr {
 		@apply whitespace-nowrap;
 	}
+
+	/* p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply text-gray-500;
+	} */
 }
 
 .homepage-quicklinks {
-	@apply flex size-24 items-center justify-center rounded-[2rem] bg-blue-600 p-3 shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700;
+	@apply flex size-[90px] items-center justify-center rounded-[2rem] bg-blue-600 p-3 shadow-md transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700;
+}
+
+.table-page-buttons {
+	@apply h-3/4 w-20 rounded-lg border border-blue-600 text-center text-sm font-semibold text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white md:h-full md:w-32 md:text-base;
+}
+
+.table-headers {
+	@apply whitespace-nowrap px-6 py-3;
+}
+
+.myloc-box {
+	position: relative;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.myloc-box::after {
+	content: '';
+	position: absolute;
+	bottom: -20px;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 10px solid transparent;
+	border-top-color: #db2777;
+}
+
+.clientloc-box {
+	position: relative;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.clientloc-box::after {
+	content: '';
+	position: absolute;
+	bottom: -20px;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 10px solid transparent;
+	border-top-color: #db2777;
 }
 
 .pac-container {

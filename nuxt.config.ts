@@ -1,10 +1,11 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	compatibilityDate: '2024-04-03',
+	devtools: { enabled: true },
+	ssr: true,
 	build: {
 		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
 	},
-	ssr: true,
-	devtools: { enabled: true },
-	css: ['~/assets/css/main.css'],
 	devServer: {
 		port: 8000,
 	},
@@ -14,7 +15,7 @@ export default defineNuxtConfig({
 			pathPrefix: false,
 		},
 	],
-	modules: ['nuxt-icons', 'nuxt-icon'],
+	css: ['~/assets/css/main.css'],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -23,7 +24,7 @@ export default defineNuxtConfig({
 	},
 	app: {
 		head: {
-			title: 'Regent Auto Valuers',
+			title: 'Regent Mobivaluer',
 			meta: [
 				{
 					name: 'viewport',
@@ -46,14 +47,20 @@ export default defineNuxtConfig({
 			script: [],
 		},
 	},
-	plugins: ['~/plugins/preline.client.ts', '~/plugins/chart.client.ts'],
 	runtimeConfig: {
 		public: {
 			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 			AVA_BASE_URL: process.env.AVA_BASE_URL,
+			APP_VERSION: process.env.APP_VERSION,
+			COPYRIGHT_YEAR: process.env.COPYRIGHT_YEAR,
+			GOOGLE_MAPS_GEOFENCING_COUNTRY: process.env.GOOGLE_MAPS_GEOFENCING_COUNTRY,
 		},
 		app: {
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
 		},
+	},
+	modules: ['@nuxtjs/i18n', '@nuxtjs/harlem'],
+	i18n: {
+		vueI18n: './i18n.config.ts', // if you are using custom path, default
 	},
 });

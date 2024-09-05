@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="group flex h-[29rem] w-[35rem] rounded-lg border-2 border-blue-500 bg-white py-10 text-lg transition-colors duration-300 ease-linear hover:border-none hover:border-blue-700 hover:bg-blue-600">
+		class="group flex h-[27rem] w-[35rem] rounded-lg border-2 border-blue-500 bg-white py-10 text-lg transition-colors duration-300 ease-linear hover:border-none hover:border-blue-700 hover:bg-blue-600">
 		<slot name="membershipType" />
 		<div class="flex-grow pr-3 text-left">
 			<slot name="benefitsAndPricing" />

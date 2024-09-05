@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 	const props = defineProps({
-		classes: { required: false, type: Array<String> },
+		classes: { required: false, type: String },
 		color: { required: true, type: String },
 	});
 </script>

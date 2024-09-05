@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-	darkMode: 'class',
 	content: [
 		'./components/**/*.{js,vue,ts}',
 		'./layouts/**/*.vue',
@@ -8,10 +7,14 @@ export default {
 		'./plugins/**/*.{js,ts}',
 		'./app.vue',
 		'./error.vue',
-		'./node_modules/preline/preline.js',
+		'./node_modules/flowbite/**/*.{js,ts}',
 	],
 	theme: {
 		extend: {},
 	},
-	plugins: [require('preline/plugin'), require('@tailwindcss/forms')],
+	plugins: [
+		require('flowbite/plugin')({
+			charts: true,
+		}),
+	],
 };

@@ -1,14 +1,14 @@
-import type { CookieRef } from '#app';
 import { useStorage, type RemovableRef } from '@vueuse/core';
-import type { LoggedInPrincipal } from '~/types/types';
+import { type LoggedInPrincipal } from '~/types';
+import type { CookieRef } from '#app';
 
 const useAuth = () => {
 	const email: Ref<string> = ref('');
 	const password: Ref<string> = ref('');
 	const loginAttemptLoading: Ref<boolean> = ref(false);
-	const loginAttemptMessage: Ref<string> = ref('');
-	const loginSuccess: Ref<boolean | null> = ref(null);
-	const runtimeConfig = useRuntimeConfig();
+	const updateCorporateAccountLoading: Ref<boolean> = ref(false);
+	const updateProfilePictureLoading: Ref<boolean> = ref(false);
+	const addNewAccountLoading: Ref<boolean> = ref(false);
 	const authenticatedPrincipal: RemovableRef<LoggedInPrincipal> = useStorage(
 		'authenticated-principal',
 		{
@@ -26,11 +26,12 @@ const useAuth = () => {
 	);
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
 	const csrfToken: CookieRef<string | null | undefined> = useCookie('csrf-token');
-	const router = useRouter();
+	const runtimeConfig = useRuntimeConfig();
 
 	const getPrincipal: ComputedRef<LoggedInPrincipal> = computed(() => {
 		return authenticatedPrincipal.value;
 	});
+
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
 		return authToken.value;
 	});
@@ -57,30 +58,155 @@ const useAuth = () => {
 				onResponse({ response }) {
 					switch (response.status) {
 						case 401: {
-							loginSuccess.value = false;
-							loginAttemptMessage.value = 'Invalid credentials. Try again!';
+							useToast('Invalid Credentials', {
+								type: 'warning',
+								showIcon: true,
+								showCloseButton: false,
+								hideProgressBar: true,
+							});
 							break;
 						}
 
 						case 200: {
-							loginSuccess.value = true;
-							loginAttemptMessage.value = 'Success. Will redirect you shortly!';
+							useToast('Login Successful', {
+								type: 'success',
+								showIcon: true,
+								showCloseButton: false,
+								hideProgressBar: true,
+							});
 
 							setCredentialsInBrowserStorage(response._data.data);
-							router.push({ name: 'dashboard-home' });
+							navigateTo({ name: 'mobivaluer-home' });
 						}
 					}
-				},
-
-				onRequestError({ error }) {
-					loginSuccess.value = false;
-					loginAttemptMessage.value = 'Something went wrong! Try again!';
 				},
 			});
 		} catch (er) {
 			console.log('Error encountered. Reason: ', er);
+			useToast('Error. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
 		} finally {
 			loginAttemptLoading.value = false;
+		}
+	};
+
+	const updateMyAccountDetails = async (
+		userId: string,
+		firstName: string,
+		lastName: string,
+		email: string,
+		phoneNumber: string,
+		roleInOrganization: string,
+		isAccountEnabled: boolean,
+		corporateBranchId: string,
+		roles?: string[],
+	) => {
+		updateCorporateAccountLoading.value = true;
+		try {
+			await $fetch('/api/v1/auth/corp-account/update-account-details', {
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				method: 'PUT',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					userId: userId,
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					phoneNumber: phoneNumber,
+					roleInOrganization: roleInOrganization,
+					corpBranchId: corporateBranchId,
+					isAccountEnabled: isAccountEnabled,
+					userRoles: !roles ? null : roles,
+				}),
+				onResponse({ response }) {
+					if (response.status === 200) {
+						useToast('Update Successful!', {
+							type: 'success',
+							showIcon: false,
+							showCloseButton: false,
+							hideProgressBar: true,
+						});
+					} else {
+						throw new Error('Account updating failed. Try again!');
+					}
+				},
+			});
+		} catch (error) {
+			console.log('An error occured: ', error);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: false,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			updateCorporateAccountLoading.value = false;
+		}
+	};
+
+	const addNewAccount = async (
+		firstName: string,
+		lastName: string,
+		email: string,
+		phoneNumber: string,
+		password: string,
+		corporateBranchId: string,
+		roleInOrganization: string,
+		roles: string[],
+		cleanRefs: () => void,
+	) => {
+		addNewAccountLoading.value = true;
+		try {
+			await $fetch('/api/v1/auth/corp-account/signup', {
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					phoneNumber: phoneNumber,
+					password: password,
+					profilePicture: null,
+					corporateId: getPrincipal.value.corpId,
+					corpBranchId: corporateBranchId,
+					roleInOrganization: roleInOrganization,
+					userRoles: roles,
+				}),
+				onResponse({ response }) {
+					if (response.status === 200) {
+						useToast('Account Creation Successful!', {
+							type: 'success',
+							showIcon: false,
+							showCloseButton: false,
+							hideProgressBar: true,
+						});
+					} else {
+						throw new Error('Account creation failed. Try again!');
+					}
+					cleanRefs();
+				},
+			});
+		} catch (error) {
+			console.log('An error occured: ', error);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: false,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			addNewAccountLoading.value = false;
 		}
 	};
 
@@ -88,8 +214,56 @@ const useAuth = () => {
 		return authenticatedPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
 	};
 
-	const updateProfilePicture = (picture: string) => {
-		authenticatedPrincipal.value.profilePicture = picture;
+	const updateProfilePicture = async () => {
+		const fileInput = document.getElementById('profile-picture') as HTMLInputElement;
+		if (fileInput.files && fileInput.files.length > 0) {
+			const file = fileInput.files[0];
+			if (file.size > 2 * 1024 * 1024) {
+				alert('File size exceeds 2MB. Please select a smaller file.');
+				return;
+			}
+
+			const formData = new FormData();
+			formData.append('profilePicture', file);
+			formData.append('userId', getPrincipal.value.userId);
+			formData.append('corporateId', getPrincipal.value.corpId);
+			updateProfilePictureLoading.value = true;
+
+			try {
+				await $fetch('/api/v1/auth/corp-account/update-profile-picture', {
+					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+					method: 'PATCH',
+					headers: {
+						Accept: 'application/json',
+					},
+					body: formData,
+					onResponse({ response }) {
+						if (response.status === 200) {
+							const serverResponse = response._data.data;
+							authenticatedPrincipal.value.profilePicture = serverResponse;
+							useToast('Profile Picture Updated Successfully!', {
+								type: 'success',
+								showIcon: false,
+								showCloseButton: false,
+								hideProgressBar: true,
+							});
+						} else {
+							throw new Error('Account updating failed. Try again!');
+						}
+					},
+				});
+			} catch (error) {
+				console.log('An error occured: ', error);
+				useToast('Failed. Try Again!', {
+					type: 'danger',
+					showIcon: false,
+					showCloseButton: false,
+					hideProgressBar: true,
+				});
+			} finally {
+				updateProfilePictureLoading.value = false;
+			}
+		}
 	};
 
 	const setCredentialsInBrowserStorage = (data: any) => {
@@ -117,7 +291,7 @@ const useAuth = () => {
 		csrfToken.value = data.xsrfToken;
 	};
 
-	const logout = () => {
+	const attemptLogout = () => {
 		// unset the principal
 		authenticatedPrincipal.value = {
 			userId: '',
@@ -135,24 +309,33 @@ const useAuth = () => {
 		// unset the auth token and csrf token
 		authToken.value = '';
 		csrfToken.value = '';
+		useToast('Logout Successful!', {
+			type: 'success',
+			showIcon: false,
+			showCloseButton: false,
+			hideProgressBar: true,
+		});
 
 		// redirect to the login page
-		router.push({ name: 'authentication-page' });
+		navigateTo({ name: 'exterior-home' });
 	};
 
 	return {
 		email,
 		password,
 		loginAttemptLoading,
-		loginAttemptMessage,
-		loginSuccess,
+		updateCorporateAccountLoading,
+		updateProfilePictureLoading,
+		addNewAccountLoading,
 		getPrincipal,
 		getAuthToken,
 		getCsrfToken,
 		attemptLogin,
+		attemptLogout,
 		isPrincipalAdmin,
+		updateMyAccountDetails,
+		addNewAccount,
 		updateProfilePicture,
-		logout,
 	};
 };
 
