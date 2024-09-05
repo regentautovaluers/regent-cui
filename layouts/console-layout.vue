@@ -64,7 +64,7 @@
 						<li>
 							<NuxtLink
 								:to="{ name: navigationRoutes[0].routeName }"
-								class="group inline-flex w-full items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100">
+								class="group inline-flex w-full items-center rounded-lg p-2 hover:bg-gray-100">
 								<HomeIcon
 									classes="flex-shrink-0 size-7 transition duration-75 text-gray-500 group-hover:text-blue-600" />
 								<span
@@ -287,6 +287,7 @@
 	const { getPrincipal, attemptLogout } = useAuth();
 	const isSettingsModalOpen: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
+	const route = useRoute();
 
 	// TODO: render this hack another way
 	const profilePicture: Ref<string> = ref('');

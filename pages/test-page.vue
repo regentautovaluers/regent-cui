@@ -12,7 +12,7 @@
 			type: 'info',
 			showIcon: true,
 			showCloseButton: true,
-			hideProgressBar: false,
+			hideProgressBar: true,
 			transition: 'slide',
 		});
 	};
