@@ -54,7 +54,6 @@
 
 	const revealPassword: Ref<boolean> = ref(false);
 	const { email, password, loginAttemptLoading, attemptLogin } = useAuth();
-	const { coords, locatedAt, error } = useClientGeolocation();
 </script>
 
 <style scoped>

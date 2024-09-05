@@ -1,20 +1,35 @@
-import { useGeolocation } from '@vueuse/core';
 import { type LocationCoords, type MapCoordsMarker } from '~/types';
 import { Loader } from '@googlemaps/js-api-loader';
 
 export const useClientGeolocation = () => {
-	const { coords, locatedAt, error } = useGeolocation();
-	const route = useRoute();
-	const clientCoordinates: LocationCoords = reactive({
-		lat: Number(route.query.client_lat),
-		lng: Number(route.query.client_lng),
+	const clientCoordinates: Ref<LocationCoords> = ref({
+		lat: -1.2687138154575142,
+		lng: 36.80949408568131,
 	});
 
+	const getClientLocation = async () => {
+		return new Promise<LocationCoords>((resolve, reject) => {
+			if (!('geolocation' in navigator)) {
+				reject(new Error('Geolocation is not supported by your browser'));
+			}
+
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					resolve({
+						lat: position.coords.latitude,
+						lng: position.coords.longitude,
+					});
+				},
+				(error) => {
+					reject(error);
+				},
+			);
+		});
+	};
+
 	return {
-		coords,
-		locatedAt,
-		error,
 		clientCoordinates,
+		getClientLocation,
 	};
 };
 
