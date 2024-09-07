@@ -4,7 +4,7 @@
 		<!-- div to show when there is a fetch error -->
 		<div
 			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-			v-if="(fetchStatus === 'error' || fetchError) && getCorporateBranches.length === 0">
+			v-if="(fetchStatus === 'error' || fetchError) && corporateBranches.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 			<button
@@ -17,7 +17,7 @@
 		<!-- div to show when there are no users -->
 		<div
 			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-			v-else-if="fetchStatus === 'success' && getCorporateBranches.length === 0">
+			v-else-if="fetchStatus === 'success' && corporateBranches.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no branches!</h1>
 			<button
@@ -71,7 +71,7 @@
 							<!-- actual data -->
 							<tr
 								class="border-b bg-white hover:bg-gray-100"
-								v-for="(branch, index) in getCorporateBranches"
+								v-for="(branch, index) in corporateBranches"
 								:key="index">
 								<td
 									scope="row"
@@ -157,9 +157,9 @@
 			}
 		">
 		<EditCorporateBranch
-			:branch-id="getCorporateBranches[selectedIndexToEdit].branchId"
-			:branch-name="getCorporateBranches[selectedIndexToEdit].branchName"
-			:branch-location="getCorporateBranches[selectedIndexToEdit].branchLocation" />
+			:branch-id="corporateBranches[selectedIndexToEdit].branchId"
+			:branch-name="corporateBranches[selectedIndexToEdit].branchName"
+			:branch-location="corporateBranches[selectedIndexToEdit].branchLocation" />
 	</ParentModal>
 
 	<!-- Modal to add corporate branch -->
@@ -180,6 +180,6 @@
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const isEditCorpBranchModalOpen: Ref<boolean> = ref(false);
 	const isAddCorpBranchModalOpen: Ref<boolean> = ref(false);
-	const { getCorporateBranches, fetchStatus, fetchError, reloadCorporateBranches } =
+	const { corporateBranches, fetchStatus, fetchError, reloadCorporateBranches } =
 		useCorporateBranch();
 </script>

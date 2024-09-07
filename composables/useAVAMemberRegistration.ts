@@ -1,4 +1,3 @@
-import { cleanFleets, getFleets, setFleets } from '~/stores/fleets-store';
 import readXlsxFile from 'read-excel-file';
 import {
 	type BulkProcessedMembershipType,
@@ -14,29 +13,25 @@ export const useFleets = () => {
 	const contactPhoneNumber: Ref<string> = ref('');
 	const contactEmail: Ref<string> = ref('');
 	const createFleetLoading = ref(false);
-	const controller = new AbortController();
-	const signal = controller.signal;
+	const nuxtApp = useNuxtApp();
 
-	const { pending: retrievingFleetList, refresh: refeshFleets } = useFetch(
-		`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`,
-		{
-			key: 'fleets',
-			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: 'GET',
-			signal,
-			onRequest() {
-				if (getFleets.value.length > 0) {
-					// abort the fetch request if data exists
-					controller.abort('Branch data exists! Aborting request');
-				}
-			},
-			onResponse({ response }) {
-				if (response.status === 200) {
-					setFleets(response._data);
-				}
-			},
+	const {
+		data: corporateFleetData,
+		pending: retrievingFleetList,
+		refresh: refeshFleets,
+	} = useFetch(`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`, {
+		key: 'fleets',
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: 'GET',
+		onResponse({ response }) {
+			if (response.status === 200) {
+				return response._data;
+			}
 		},
-	) as any;
+		getCachedData(key) {
+			return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+		},
+	}) as any;
 
 	watch(contactPhoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
@@ -69,8 +64,6 @@ export const useFleets = () => {
 						});
 						refeshFleets();
 					}
-
-					setFleets(response._data);
 				},
 			});
 		} catch (error) {
@@ -88,7 +81,6 @@ export const useFleets = () => {
 	};
 
 	const reloadFleets = async () => {
-		cleanFleets();
 		refeshFleets();
 	};
 
@@ -97,7 +89,7 @@ export const useFleets = () => {
 		contactFullName,
 		contactPhoneNumber,
 		contactEmail,
-		getFleets,
+		corporateFleetData,
 		retrievingFleetList,
 		createFleetLoading,
 		createFleet,

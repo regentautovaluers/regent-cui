@@ -66,7 +66,7 @@
 				required>
 				<option :value="0">Select the Designated Fleet</option>
 				<option
-					v-for="(fleet, index) in getFleets"
+					v-for="(fleet, index) in corporateFleetData"
 					:key="index"
 					:value="fleet.id">
 					{{ fleet.fleetname }}
@@ -214,7 +214,7 @@
 
 <script setup lang="ts">
 	const isAddFleetModalOpen: Ref<boolean> = ref(false);
-	const { getFleets, retrievingFleetList, reloadFleets } = useFleets();
+	const { corporateFleetData, retrievingFleetList, reloadFleets } = useFleets();
 	const {
 		selectedFleetId,
 		contactFullName,

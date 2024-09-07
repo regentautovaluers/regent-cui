@@ -91,7 +91,7 @@
 				v-model="corporateBranch">
 				<option value="">Select The User's Branch</option>
 				<option
-					v-for="(branch, index) in getCorporateBranches"
+					v-for="(branch, index) in corporateBranches"
 					:key="index"
 					:value="branch.branchId">
 					{{ branch.branchName + '-' + branch.branchLocation }}
@@ -181,5 +181,5 @@
 	};
 
 	const { addNewAccountLoading, addNewAccount } = useAuth();
-	const { fetchStatus, getCorporateBranches } = useCorporateBranch();
+	const { fetchStatus, corporateBranches } = useCorporateBranch();
 </script>

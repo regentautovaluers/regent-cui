@@ -94,7 +94,7 @@
 				v-model="corporateBranch">
 				<option value="">Select The User's Branch</option>
 				<option
-					v-for="(branch, index) in getCorporateBranches"
+					v-for="(branch, index) in corporateBranches"
 					:key="index"
 					:value="branch.branchId">
 					{{ branch.branchName + '-' + branch.branchLocation }}
@@ -167,7 +167,7 @@
 	});
 
 	const { updateMyAccountDetails, updateCorporateAccountLoading } = useAuth();
-	const { getCorporateBranches, fetchStatus } = useCorporateBranch();
+	const { corporateBranches, fetchStatus } = useCorporateBranch();
 	const firstName: Ref<string> = ref(props.username.split(' ')[0]);
 	const lastName: Ref<string> = ref(props.username.split(' ')[1]);
 	const email: Ref<string> = ref(props.email);

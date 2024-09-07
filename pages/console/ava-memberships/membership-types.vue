@@ -9,7 +9,7 @@
 			<div
 				class="flex flex-col space-y-4 md:flex-row md:justify-center md:space-x-12 md:space-y-0">
 				<MembershipTypesCard
-					v-for="(membership, index) in getMembershipTypes"
+					v-for="(membership, index) in membershipTypes"
 					:key="index">
 					<template #membershipType>
 						<div class="w-1/2">
@@ -88,5 +88,5 @@
 		layout: 'console-layout',
 	});
 
-	const { getMembershipTypes, cleanupMembershipBenefits } = useAVAMembershipTypes();
+	const { membershipTypes, cleanupMembershipBenefits } = useAVAMembershipTypes();
 </script>

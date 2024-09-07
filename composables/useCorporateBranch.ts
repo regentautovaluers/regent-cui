@@ -1,18 +1,12 @@
-import {
-	getCorporateBranches,
-	cleanCorporateBranches,
-	setCorporateBranches,
-} from '~/stores/corporate-branches-store';
-
 export const useCorporateBranch = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
-	const controller = new AbortController();
-	const signal = controller.signal;
+	const nuxtApp = useNuxtApp();
 	const addCorporateBranchLoading: Ref<boolean> = ref(false);
 	const editCorporateBranchLoading: Ref<boolean> = ref(false);
 
 	const {
+		data: corporateBranches,
 		status: fetchStatus,
 		error: fetchError,
 		refresh: refreshBranches,
@@ -26,24 +20,17 @@ export const useCorporateBranch = () => {
 		query: {
 			corpId: getPrincipal.value.corpId,
 		},
-		server: true,
+		server: false,
 		lazy: true,
-		signal,
-		onRequest() {
-			if (getCorporateBranches.value.length > 0) {
-				// abort the fetch request if data exists
-				controller.abort('Branch data exists! Aborting request');
-			}
+		transform(data: any) {
+			return data.data;
 		},
-		onResponse({ response }) {
-			if (response.status === 200) {
-				setCorporateBranches(response._data.data);
-			}
+		getCachedData(key) {
+			return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
 		},
-	});
+	}) as any;
 
 	const reloadCorporateBranches = async () => {
-		cleanCorporateBranches();
 		refreshBranches();
 	};
 
@@ -141,15 +128,14 @@ export const useCorporateBranch = () => {
 	};
 
 	return {
-		getCorporateBranches,
 		fetchStatus,
 		fetchError,
 		addCorporateBranchLoading,
 		editCorporateBranchLoading,
+		corporateBranches,
 		addCorporateBranch,
 		editCorporateBranch,
 		refreshBranches,
-		cleanCorporateBranches,
 		reloadCorporateBranches,
 	};
 };
