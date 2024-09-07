@@ -26,7 +26,7 @@ export const useCorporateBranch = () => {
 		query: {
 			corpId: getPrincipal.value.corpId,
 		},
-		server: false,
+		server: true,
 		lazy: true,
 		signal,
 		onRequest() {

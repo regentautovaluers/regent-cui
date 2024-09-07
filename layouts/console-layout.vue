@@ -55,7 +55,7 @@
 							class="me-3 h-6 sm:h-7"
 							alt="Flowbite Logo" />
 						<span class="self-center whitespace-nowrap text-xl font-semibold"
-							>Flowbite</span
+							>Regent Valuers</span
 						>
 					</a>
 				</div>

@@ -152,12 +152,12 @@
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">
-						Oops! Seems like you have no members!
+						Oops! Seems like you have no incidents!
 					</h1>
 					<NuxtLink
-						:to="{ name: 'ava-membership-types' }"
+						:to="{ name: 'ra-towing-request' }"
 						class="generic-nuxt-link">
-						Onboard AVA Member
+						Make Towing Request
 					</NuxtLink>
 				</div>
 
