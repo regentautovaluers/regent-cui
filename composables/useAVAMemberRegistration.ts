@@ -28,8 +28,18 @@ export const useFleets = () => {
 				return response._data;
 			}
 		},
-		getCachedData(key) {
-			return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+		getCachedData: (key) => {
+			// Check if the data is already cached in the Nuxt payload
+			if (nuxtApp.isHydrating && nuxtApp.payload.data[key]) {
+				return nuxtApp.payload.data[key];
+			}
+
+			// Check if the data is already cached in the static data
+			if (nuxtApp.static.data[key]) {
+				return nuxtApp.static.data[key];
+			}
+
+			return null;
 		},
 	}) as any;
 

@@ -13,7 +13,7 @@
 				required
 				v-model="userVehicles.membershipTypeId">
 				<option
-					v-for="(type, index) in getMembershipTypes"
+					v-for="(type, index) in membershipTypes"
 					:key="index"
 					:value="type.id">
 					{{ type.membership_name }}
@@ -197,7 +197,7 @@
 		membershipId: { required: true, type: Number },
 	});
 	const { getPrincipal } = useAuth();
-	const { fetchmembershipTypesStatus, getMembershipTypes } = useAVAMembershipTypes();
+	const { fetchmembershipTypesStatus, membershipTypes } = useAVAMembershipTypes();
 	const { addMemberVehicleLoading, addMemberVehicles } = useAVAMemberships();
 
 	const userVehicles: IndividuaProcessedMembershipType = reactive({

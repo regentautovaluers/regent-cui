@@ -1,17 +1,13 @@
 import { type IndividuaProcessedMembershipType } from '~/types';
-import { getAvaMembers, setAvaMembers, cleanAvaMembers } from '~/stores/ava-members-store';
 
 export const useAVAMemberships = () => {
-	// signal for managing memberships request
-	const controller = new AbortController();
-	const signal = controller.signal;
-
 	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
 	const currentPage: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
+	const nuxtApp = useNuxtApp();
 
 	// member vehicles
 	const fetchMemberVehiclesLoading: Ref<boolean> = ref(false);
@@ -20,51 +16,35 @@ export const useAVAMemberships = () => {
 	const addMemberVehicleLoading: Ref<boolean> = ref(false);
 
 	const membersListSlice: ComputedRef<any[]> = computed(() => {
-		const startIndex = currentPage.value * size.value;
-		const endIndex = (currentPage.value + 1) * size.value;
-		return getAvaMembers.value.slice(startIndex, endIndex).length
-			? getAvaMembers.value.slice(startIndex, endIndex)
-			: [];
+		return corporateMemberships.value?.membersListSlice || [];
 	});
 
-	const { status: fetchMembershipsStatus, refresh: refreshMembers } = useFetch(
-		'/api/v1/memberships',
-		{
-			key: 'AVA-memberships',
-			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: 'GET',
-			query: {
-				corporateId: getPrincipal.value.corpId,
-				page: currentPage,
-				size: size.value,
-			},
-			server: false,
-			lazy: true,
-			signal,
-			onRequest() {
-				if (membersListSlice.value.length) {
-					// abort the fetch request if data exists
-					controller.abort('Memberships data exists! Aborting request');
-				}
-			},
-
-			onResponse({ response }) {
-				if (response.status !== 200) {
-					useToast('Failed to Fetch Members!', {
-						type: 'danger',
-						showIcon: true,
-						showCloseButton: true,
-						hideProgressBar: true,
-						transition: 'slide',
-					});
-					return;
-				}
-				setAvaMembers(response._data.memberships);
-				totalNumber.value = response._data.totalCount;
-				totalPages.value = response._data.totalPages;
-			},
+	const {
+		data: corporateMemberships,
+		status: fetchMembershipsStatus,
+		refresh: refreshMembers,
+	} = useFetch('/api/v1/memberships', {
+		key: 'AVA-memberships' + currentPage.value,
+		baseURL: runtimeConfig.public.AVA_BASE_URL,
+		method: 'GET',
+		query: {
+			corporateId: getPrincipal.value.corpId,
+			page: currentPage,
+			size: size.value,
 		},
-	);
+		server: false,
+		lazy: true,
+		transform: (responseData: any) => {
+			return {
+				membersListSlice: responseData.memberships,
+				totalNumber: responseData.totalCount,
+				totalPages: responseData.totalPages,
+			};
+		},
+		getCachedData(key) {
+			return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+		},
+	});
 
 	const getMemberVehicles = async (dbId: number) => {
 		try {
@@ -186,6 +166,7 @@ export const useAVAMemberships = () => {
 		totalNumber,
 		totalPages,
 		fetchMembershipsStatus,
+		corporateMemberships,
 		fetchMemberVehiclesLoading,
 		updateMemberDetailsLoading,
 		addMemberVehicleLoading,

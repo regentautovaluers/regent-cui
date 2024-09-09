@@ -22,10 +22,10 @@
 				Onboard Member
 			</NuxtLink>
 		</div>
+
 		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.8fr,.2fr]">
 			<!-- members listing -->
 			<div>
-				<!-- TODO: Find a fix for the abort controller signal error -->
 				<!-- div to show when there is a fetch error -->
 				<div
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]"
@@ -117,8 +117,44 @@
 									</tr>
 								</thead>
 								<tbody>
+									<!-- loading state -->
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
+										v-if="fetchMembershipsStatus === 'pending'"
+										v-for="a in 10"
+										:key="a">
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-medium text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>username</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>useremail</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>one</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>domain role</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>accactive</span
+											>
+										</td>
+									</tr>
+
+									<tr
+										class="border-b bg-white hover:bg-gray-100"
+										v-else
 										v-for="(member, index) in membersListSlice"
 										:key="index">
 										<td
@@ -201,40 +237,6 @@
 													</li>
 												</ul>
 											</div>
-										</td>
-									</tr>
-									<!-- loading state -->
-									<tr
-										class="border-b bg-white hover:bg-gray-100"
-										v-if="fetchMembershipsStatus === 'pending'"
-										v-for="a in 10"
-										:key="a">
-										<td
-											scope="row"
-											class="whitespace-nowrap p-6 font-medium text-gray-300">
-											<span class="animate-pulse rounded-lg bg-gray-300"
-												>username</span
-											>
-										</td>
-										<td class="p-6 text-gray-300">
-											<span class="animate-pulse rounded-lg bg-gray-300"
-												>useremail</span
-											>
-										</td>
-										<td class="p-6 text-gray-300">
-											<span class="animate-pulse rounded-lg bg-gray-300"
-												>one</span
-											>
-										</td>
-										<td class="p-6 text-gray-300">
-											<span class="animate-pulse rounded-lg bg-gray-300"
-												>domain role</span
-											>
-										</td>
-										<td class="p-6 text-gray-300">
-											<span class="animate-pulse rounded-lg bg-gray-300"
-												>accactive</span
-											>
 										</td>
 									</tr>
 								</tbody>
