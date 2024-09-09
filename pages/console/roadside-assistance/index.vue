@@ -106,7 +106,13 @@
 		<!-- Requests quick links -->
 		<div class="mt-4 flex h-fit items-center justify-between space-x-3 overflow-auto">
 			<NuxtLink
-				:to="{ name: 'ra-fueldelivery-request' }"
+				:to="{
+					name: 'ra-fueldelivery-request',
+					query: {
+						client_lat: clientCoordinates.lat,
+						client_lng: clientCoordinates.lng,
+					},
+				}"
 				class="ava-services-quicklinks group">
 				<FuelDeliveryServiceIcon
 					color="#1c64f2"
@@ -114,7 +120,13 @@
 				<span class="text-lg">Fuel Delivery</span></NuxtLink
 			>
 			<NuxtLink
-				:to="{ name: 'ra-jumpstarting-request' }"
+				:to="{
+					name: 'ra-jumpstarting-request',
+					query: {
+						client_lat: clientCoordinates.lat,
+						client_lng: clientCoordinates.lng,
+					},
+				}"
 				class="ava-services-quicklinks">
 				<JumpstartingServiceIcon
 					color="#1c64f2"
@@ -122,7 +134,13 @@
 				<span class="text-lg">Jumpstarting</span></NuxtLink
 			>
 			<NuxtLink
-				:to="{ name: 'ra-jumpstarting-request' }"
+				:to="{
+					name: 'ra-jumpstarting-request',
+					query: {
+						client_lat: clientCoordinates.lat,
+						client_lng: clientCoordinates.lng,
+					},
+				}"
 				class="ava-services-quicklinks">
 				<TyrechangeServiceIcon
 					color="#1c64f2"
@@ -130,7 +148,13 @@
 				<span class="text-lg">Tyrechange</span></NuxtLink
 			>
 			<NuxtLink
-				:to="{ name: 'ra-jumpstarting-request' }"
+				:to="{
+					name: 'ra-jumpstarting-request',
+					query: {
+						client_lat: clientCoordinates.lat,
+						client_lng: clientCoordinates.lng,
+					},
+				}"
 				class="ava-services-quicklinks">
 				<TowingServiceIcon
 					color="#1c64f2"
@@ -667,6 +691,7 @@
 	const { ongoingIncidents, fetchRoadsideIncidentsStatus, topFiveIncidents } =
 		useRoadsideIncidents();
 	const { getTotalCompleted } = useRAIncidentsAnalytics();
+	const { clientCoordinates } = useClientGeolocation();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
