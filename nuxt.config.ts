@@ -43,6 +43,15 @@ export default defineNuxtConfig({
 					href: '/favicon/favicon-32x32.png',
 					type: 'image/png',
 				},
+				{
+					rel: 'icon',
+					href: '/favicon/favicon-16x16.png',
+					type: 'image/png',
+				},
+				{
+					rel: 'manifest',
+					href: '/site.webmanifest',
+				},
 			],
 			script: [],
 		},
