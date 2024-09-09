@@ -80,7 +80,11 @@
 		</section>
 		<div class="flex flex-grow flex-col justify-between">
 			<div class="flex h-[15%] items-center px-4 md:h-1/4 md:px-16 xl:px-24">
-				<h1>Logo</h1>
+				<img
+					src="/images/app-logo.png"
+					class="me-3 size-20"
+					alt="Flowbite Logo" />
+				<h1 class="text-lg font-semibold md:text-3xl antialiased">Regent Valuers</h1>
 			</div>
 			<div class="flex-grow px-4 py-4 md:px-16 xl:px-24">
 				<slot />

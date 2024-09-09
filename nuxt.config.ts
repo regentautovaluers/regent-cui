@@ -24,7 +24,7 @@ export default defineNuxtConfig({
 	},
 	app: {
 		head: {
-			title: 'Regent Mobi Valuer',
+			title: 'Regent Valuers',
 			meta: [
 				{
 					name: 'viewport',

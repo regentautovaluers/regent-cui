@@ -47,17 +47,17 @@
 			aria-label="Sidebar">
 			<div class="flex h-full flex-col bg-white px-3">
 				<div class="sticky top-0 z-30 flex min-h-20 items-center border-b bg-white">
-					<a
-						href="https://flowbite.com/"
+					<NuxtLink
+						:to="{ name: 'mobivaluer-home' }"
 						class="flex items-center ps-2.5">
 						<img
-							src="https://flowbite.com/docs/images/logo.svg"
-							class="me-3 h-6 sm:h-7"
-							alt="Flowbite Logo" />
+							src="/images/app-logo.png"
+							class="me-3 h-10"
+							alt="Regent Logo" />
 						<span class="self-center whitespace-nowrap text-xl font-semibold"
 							>Regent Valuers</span
 						>
-					</a>
+					</NuxtLink>
 				</div>
 				<div class="flex-grow">
 					<ul class="mt-1 space-y-3 font-medium">
