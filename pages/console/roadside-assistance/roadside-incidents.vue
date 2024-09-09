@@ -163,7 +163,7 @@
 
 				<!-- div to show when there are incidents -->
 				<div
-					class="flex h-full flex-col justify-between md:min-h-[50.5rem]"
+					class="flex h-full flex-col justify-between rounded-lg border p-2 md:min-h-[58rem]"
 					v-else>
 					<!-- the table itself -->
 					<div class="mb-4 flex-grow">
@@ -380,6 +380,15 @@
 					</div>
 					<div
 						class="flex h-full flex-col items-center justify-center"
+						v-else-if="
+							fetchRAIncidentsAnalyticsStatus === 'success' &&
+							!raIncidentsDoughnutData.data.length
+						">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
 						v-else-if="fetchRAIncidentsAnalyticsStatus === 'error'">
 						<BirdieNotFoundIcon />
 						<h1 class="mb-1 font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -390,15 +399,7 @@
 							<RefreshIcon classes="size-6" />
 						</button>
 					</div>
-					<div
-						class="flex h-full flex-col items-center justify-center"
-						v-else-if="
-							fetchRAIncidentsAnalyticsStatus === 'success' &&
-							!raIncidentsDoughnutData.data.length
-						">
-						<BirdieNotFoundIcon />
-						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
-					</div>
+
 					<IncidentsDoughnutChart
 						v-else
 						:labels="raIncidentsDoughnutData.legends"

@@ -5,8 +5,12 @@ export const useAVAMemberships = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const currentPage: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
-	const totalNumber: Ref<number> = ref(0);
-	const totalPages: Ref<number> = ref(0);
+	const totalNumber: ComputedRef<number> = computed(
+		() => corporateMemberships.value?.totalNumber ?? 0,
+	);
+	const totalPages: ComputedRef<number> = computed(
+		() => corporateMemberships.value?.totalPages ?? 0,
+	);
 	const nuxtApp = useNuxtApp();
 
 	// member vehicles
@@ -41,8 +45,18 @@ export const useAVAMemberships = () => {
 				totalPages: responseData.totalPages,
 			};
 		},
-		getCachedData(key) {
-			return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+		getCachedData: (key) => {
+			// Check if the data is already cached in the Nuxt payload
+			if (nuxtApp.isHydrating && nuxtApp.payload.data[key]) {
+				return nuxtApp.payload.data[key];
+			}
+
+			// Check if the data is already cached in the static data
+			if (nuxtApp.static.data[key]) {
+				return nuxtApp.static.data[key];
+			}
+
+			return null;
 		},
 	});
 

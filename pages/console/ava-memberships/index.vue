@@ -59,7 +59,7 @@
 
 				<!-- div to show when there are members -->
 				<div
-					class="flex h-full flex-col justify-between md:min-h-[50.5rem]"
+					class="flex h-full flex-col justify-between md:min-h-[58rem] border rounded-lg p-2"
 					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit items-center justify-between">

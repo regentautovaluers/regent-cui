@@ -23,7 +23,7 @@
 					<FormSubmissionLoader
 						classes="mr-2 size-6 animate-spin text-white"
 						v-if="vehicleSearchLoading" />
-					{{ vehicleSearchLoading ? $t('request_processing') : 'Search' }}
+					<span v-else>Search</span>
 				</button>
 			</div>
 		</div>
