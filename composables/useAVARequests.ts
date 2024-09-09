@@ -1,35 +1,33 @@
 import { type LocationCoords, type MapCoordsMarker } from '~/types';
 import { Loader } from '@googlemaps/js-api-loader';
+import { useGeolocation } from '@vueuse/core';
 
 export const useClientGeolocation = () => {
-	const clientCoordinates: Ref<LocationCoords> = ref({
-		lat: -1.2687138154575142,
-		lng: 36.80949408568131,
+	const { coords, error } = useGeolocation();
+	const clientCoordinates: ComputedRef<LocationCoords> = computed(() => {
+		if (error.value) {
+			useToast('Geolocation Error!', {
+				type: 'warning',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
+
+			return {
+				lat: -1.2687138154575142,
+				lng: 36.80949408568131,
+			};
+		}
+
+		return {
+			lat: coords.value?.latitude ?? -1.2687138154575142,
+			lng: coords.value?.longitude ?? 36.80949408568131,
+		};
 	});
-
-	const getClientLocation = async () => {
-		return new Promise<LocationCoords>((resolve, reject) => {
-			if (!('geolocation' in navigator)) {
-				reject(new Error('Geolocation is not supported by your browser'));
-			}
-
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					resolve({
-						lat: position.coords.latitude,
-						lng: position.coords.longitude,
-					});
-				},
-				(error) => {
-					reject(error);
-				},
-			);
-		});
-	};
 
 	return {
 		clientCoordinates,
-		getClientLocation,
 	};
 };
 

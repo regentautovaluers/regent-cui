@@ -291,19 +291,11 @@
 
 	// TODO: render this hack another way
 	const profilePicture: Ref<string> = ref('');
-	const { getClientLocation, clientCoordinates } = useClientGeolocation();
+	const { clientCoordinates } = useClientGeolocation();
 
 	onMounted(async () => {
 		// set the profile picture
 		profilePicture.value = getPrincipal.value.profilePicture;
-
-		// get the client's location
-		try {
-			const clientCoords = await getClientLocation();
-			clientCoordinates.value = clientCoords;
-		} catch (error) {
-			console.error(error);
-		}
 	});
 </script>
 
