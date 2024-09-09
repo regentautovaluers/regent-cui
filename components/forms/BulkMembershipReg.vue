@@ -83,7 +83,7 @@
 				<label
 					for="contact-person-name"
 					class="generic-input-label"
-					>Fleet Contact Person Name</label
+					>Contact Person Name</label
 				>
 				<input
 					type="text"
@@ -99,7 +99,7 @@
 				<label
 					for="contact-person-phone"
 					class="generic-input-label"
-					>Fleet Contact Person Phone</label
+					>Contact Person Phone</label
 				>
 				<input
 					type="text"
@@ -115,7 +115,7 @@
 				<label
 					for="contact-person-email"
 					class="generic-input-label"
-					>Fleet Contact Person Email</label
+					>Contact Person Email</label
 				>
 				<input
 					type="email"

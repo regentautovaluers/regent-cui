@@ -111,9 +111,12 @@ export const useBulkMemberRegistration = () => {
 	const reader = new FileReader();
 	const errorMessage: Ref<ExcelProcesssingErrorMessage | null> = ref(null);
 	const registerBulkMembershipsLoading = ref(false);
+	const { corporateFleetData } = useFleets();
 
 	watch(selectedFleetId, (newFleetId) => {
-		const fleetDetails: any = getFleets.value.find((fleet: any) => fleet.id === newFleetId);
+		const fleetDetails: any = corporateFleetData.value.find(
+			(fleet: any) => fleet.id === newFleetId,
+		);
 
 		contactFullName.value = fleetDetails.contact_full_name;
 		contactPhoneNumber.value = fleetDetails.contact_phone_number;

@@ -83,8 +83,6 @@
 		contactFullName,
 		contactPhoneNumber,
 		contactEmail,
-		getFleets,
-		retrievingFleetList,
 		createFleetLoading,
 		createFleet,
 	} = useFleets();
