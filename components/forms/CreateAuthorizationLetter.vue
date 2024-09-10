@@ -120,22 +120,22 @@
 					type="text"
 					id="authorized-by"
 					class="generic-input"
-					placeholder="e.g myName"
+					placeholder="e.g Jane Doe"
 					required />
 			</div>
 		</div>
 
 		<!-- file upload -->
 		<div class="mt-7 flex flex-col">
-			<label>
+			<label class="w-fit hover:cursor-pointer focus:ring-2">
 				<input
 					type="file"
 					name="fileToUpload"
 					accept=".jpg, .png, .pdf, .webp, .doc, .docx"
 					multiple
-					class="rounded-full" />
+					class=" rounded-full border" />
 			</label>
-			<span class="text-gray-500">.jpg, .png, .pdf, .doc, .docx, files accepted.</span>
+			<span class="text-gray-500">.jpg, .png, .webp, .pdf, .doc, .docx, files accepted.</span>
 		</div>
 
 		<!-- submit button -->
