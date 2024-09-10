@@ -249,8 +249,11 @@
 													aria-labelledby="dropdownLeftButton">
 													<li
 														v-if="
-															incident.service_status === 'ongoing' ||
-															incident.service_status === 'pending'
+															[
+																'on-going',
+																'pending',
+																'cancelled',
+															].includes(incident.service_status)
 														">
 														<span
 															class="block w-full px-4 py-2 text-center hover:bg-gray-100">
