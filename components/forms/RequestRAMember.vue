@@ -5,6 +5,11 @@
 			makeServiceRequest(computedServiceCost, props.backendRAName, computedTowingDistance)
 		">
 		<div class="registration relative w-full">
+			<label
+				for="registration-number"
+				class="generic-input-label"
+				>Vehicle Registration</label
+			>
 			<div class="flex items-center space-x-2">
 				<input
 					type="text"
@@ -12,18 +17,16 @@
 					class="generic-input"
 					placeholder="Search Vehicle Registration"
 					v-model="vehicleRegistration"
-					required
-					maxlength="8" />
+					required />
 
 				<button
 					type="button"
-					class="generic-form-submit mb-0 w-1/4"
-					:disabled="vehicleRegistration.length < 8"
+					class="generic-form-submit mb-0 w-[10%]"
 					@click.prevent="searchVehicleRegistration">
 					<FormSubmissionLoader
 						classes="mr-2 size-6 animate-spin text-white"
 						v-if="vehicleSearchLoading" />
-					<span v-else>Search</span>
+					<SearchIcon />
 				</button>
 			</div>
 		</div>

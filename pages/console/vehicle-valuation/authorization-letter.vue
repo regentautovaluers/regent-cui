@@ -9,7 +9,7 @@
 						'border-b-2',
 						activeView === 0 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
 					]">
-					<span>Create Authority Letter</span>
+					<span>Create Authorization Letter</span>
 				</button>
 				<button
 					@click="() => (activeView = 1)"
@@ -17,7 +17,7 @@
 						'border-b-2',
 						activeView === 1 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
 					]">
-					<span>View Authority Letters</span>
+					<span>View Authorization Letters</span>
 				</button>
 			</div>
 			<!-- <NuxtLink
