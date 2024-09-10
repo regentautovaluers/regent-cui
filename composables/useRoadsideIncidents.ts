@@ -26,7 +26,7 @@ const useRoadsideIncidents = () => {
 		() =>
 			getRoadsideIncidents.value.filter(
 				(incident) =>
-					incident.service_status === 'ongoing' || incident.service_status === 'pending',
+					incident.service_status === 'on-going' || incident.service_status === 'pending',
 			).length || 0,
 	);
 
