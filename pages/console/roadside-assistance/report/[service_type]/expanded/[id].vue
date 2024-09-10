@@ -5,10 +5,10 @@
 			<!-- general trip details and download button -->
 			<div class="flex items-center justify-between px-8 py-3">
 				<div class="flex">
-					<img
-						:src="serviceReport.checklist.front_image"
-						alt="Responder Image"
-						class="size-20 rounded-2xl object-cover shadow-sm" />
+					<div
+						class="flex size-20 items-center justify-center rounded-2xl bg-blue-500 text-2xl font-semibold text-white">
+						<span>{{ serviceReport.registration_no.split(' ')[0].toUpperCase() }}</span>
+					</div>
 					<div class="ml-5 flex-grow space-y-1">
 						<h1 class="font-semibold text-blue-600">
 							{{ serviceReport.registration_no }}
@@ -28,11 +28,18 @@
 						</h2>
 					</div>
 				</div>
-				<button
-					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold uppercase text-white hover:bg-blue-700 disabled:bg-gray-300"
-					disabled>
-					Download Report
-				</button>
+				<div class="flex items-center space-x-4">
+					<button
+						@click="openPrintMenu"
+						class="group inline-flex size-14 items-center justify-center rounded-lg bg-gray-300">
+						<PrintIcon />
+					</button>
+					<button
+						class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold uppercase text-white hover:bg-blue-700 disabled:bg-gray-300"
+						disabled>
+						Download Report
+					</button>
+				</div>
 			</div>
 			<hr />
 			<div class="flex items-start justify-between px-8 py-3">
@@ -73,10 +80,14 @@
 		<div class="mx-2 mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<div class="flex h-full flex-col space-y-8 rounded-lg">
 				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
-					<img
-						src="https://images.unsplash.com/photo-1721048166150-3b2bb2ca3431?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						alt="Responder Image"
-						class="size-20 rounded-full object-cover shadow-sm" />
+					<div
+						class="flex size-20 items-center justify-center rounded-2xl bg-blue-500 text-2xl font-semibold text-white">
+						<span>{{
+							serviceReport.driver_vehicle_registration_snapshot
+								.split(' ')[0]
+								.toUpperCase()
+						}}</span>
+					</div>
 					<div class="flex-grow space-y-1">
 						<h1 class="font-semibold text-gray-700">Responder</h1>
 						<h2 class="font-semibold text-gray-500">
@@ -176,7 +187,7 @@
 				:api-key="googleMapsApiKey"
 				style="width: 100%; height: 100%"
 				:center="{ lat: coordinates[0].lat, lng: coordinates[0].lng }"
-				:zoom="13">
+				:zoom="12">
 				<InfoWindow
 					:options="{
 						position: coordinates[0],
@@ -222,7 +233,7 @@
 						<div class="flex w-fit items-center space-x-2">
 							<span
 								class="rounded-xl bg-gray-200 p-1 px-2 text-sm font-semibold text-blue-600">
-								KDG 880D
+								{{ serviceReport.registration_no }}
 							</span>
 							<span class="font-semibold text-gray-500"
 								>{{ serviceReport.vehicle_make }}
@@ -247,7 +258,7 @@
 							<span class="font-semibold text-gray-700">{{
 								serviceReport.pickup_location
 							}}</span>
-							<h1 class="text-gray-500">Incident Location</h1>
+							<h1 class="text-gray-500">Pickup Point</h1>
 						</div>
 					</div>
 					<div class="flex items-center space-x-4">
@@ -259,7 +270,7 @@
 							<span class="font-semibold text-gray-700">{{
 								serviceReport.dropoff_location
 							}}</span>
-							<h1 class="text-gray-500">Towing Destination</h1>
+							<h1 class="text-gray-500">Destination</h1>
 						</div>
 					</div>
 				</div>
@@ -285,11 +296,11 @@
 		</div>
 
 		<!-- pre-towing report summary -->
-		<div class="mx-2 mt-8 grid h-fit grid-cols-2 gap-x-8 rounded-lg shadow-sm">
+		<div class="mt-8 grid h-fit grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<!-- Collected Data Section -->
-			<div class="h-[35rem] max-h-[35rem] overflow-y-scroll rounded-lg border px-8 py-4">
+			<div class="h-[46rem] max-h-[46rem] px-2">
 				<h1 class="mb-5 text-xl font-semibold">Pre-Towing Report Summary</h1>
-				<div class="flex items-start space-x-4">
+				<div class="flex items-start space-x-4 rounded-lg border p-2">
 					<div
 						class="flex w-[12%] items-center justify-center rounded-md border border-yellow-500 p-2">
 						<EngineIcon
@@ -307,7 +318,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="mt-5 flex items-start space-x-4">
+				<div class="mt-5 flex items-start space-x-4 rounded-lg border p-2">
 					<div
 						class="flex w-[12%] items-center justify-center rounded-md border border-pink-500 p-2">
 						<VehicleIcon
@@ -325,7 +336,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="mt-5 flex items-start space-x-4">
+				<div class="mt-5 flex items-start space-x-4 rounded-lg border p-2">
 					<div
 						class="flex w-[12%] items-center justify-center rounded-md border border-green-500 p-2">
 						<ExtrasIcon
@@ -346,7 +357,7 @@
 			</div>
 
 			<!-- pre-towing pictures section -->
-			<div class="relative h-[35rem] max-h-[35rem] rounded-lg">
+			<div class="relative h-[45.5rem] max-h-[45.5rem] rounded-lg">
 				<div class="mb-2 h-[80%] max-h-[80%] overflow-clip rounded-md border">
 					<img
 						:src="serviceImages[activePreTowingImage]"
@@ -355,7 +366,7 @@
 				</div>
 				<div class="flex h-[20%] space-x-2 overflow-auto">
 					<button
-						class="min-w-40 rounded-lg border bg-yellow-500"
+						class="min-w-40 rounded-lg border bg-gray-300"
 						:class="
 							activePreTowingImage === index
 								? 'overflow-clip border-2 border-pink-600'
@@ -430,18 +441,15 @@
 		</div>
 
 		<!-- Final section with ratings -->
-		<div class="mx-2 mt-10 flex space-x-8">
-			<div class="flex h-32 w-1/3 items-center space-x-4 rounded-lg border px-8 py-2">
-				<img
-					src="https://images.unsplash.com/photo-1721048166150-3b2bb2ca3431?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-					alt="Responder Image"
-					class="size-20 rounded-full object-cover shadow-sm" />
-				<div class="ml-5 h-fit flex-grow">
-					<h1 class="text-lg font-semibold text-gray-700">Vehicle Received By</h1>
-					<h2 class="font-semibold text-gray-500">{{ serviceReport.received_by ?? 'N/A' }}</h2>
-				</div>
+		<div class="mx-2 mt-8 flex space-x-8">
+			<div
+				class="flex h-24 w-1/3 flex-col items-start justify-center rounded-lg border px-8 py-2">
+				<h1 class="text-lg font-semibold text-gray-700">Vehicle Received By</h1>
+				<h2 class="font-semibold text-gray-500">
+					{{ serviceReport.received_by ?? 'N/A' }}
+				</h2>
 			</div>
-			<div class="flex h-32 flex-grow space-x-8 rounded-lg">
+			<div class="flex h-24 flex-grow space-x-8 rounded-lg">
 				<div class="flex h-full w-1/2 items-center rounded-lg border px-8 py-2">
 					<LocationPin />
 					<div class="ml-5 h-fit flex-grow">
@@ -539,7 +547,7 @@
 	});
 
 	const currentPercentage: ComputedRef<number> = computed(
-		() => (serviceReport.current_free_distance * 100) / 20,
+		() => (serviceReport.value.current_free_distance * 100) / 20,
 	);
 
 	const serviceImages: ComputedRef<any[]> = computed(() => [
@@ -661,6 +669,10 @@
 						: 'no ' + stringToTitleCase(item.name.replaceAll('_', ' '))
 				}`,
 		);
+	};
+
+	const openPrintMenu = () => {
+		window.print();
 	};
 
 	onMounted(async () => {

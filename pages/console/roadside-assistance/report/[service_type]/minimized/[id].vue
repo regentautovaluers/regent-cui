@@ -69,10 +69,14 @@
 		<div class="mx-2 mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<div class="flex h-full flex-col space-y-8 rounded-lg">
 				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
-					<img
-						src="https://images.unsplash.com/photo-1721048166150-3b2bb2ca3431?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						alt="Responder Image"
-						class="size-20 rounded-full object-cover shadow-sm" />
+					<div
+						class="flex size-20 items-center justify-center rounded-2xl bg-blue-500 text-2xl font-semibold text-white">
+						<span>{{
+							serviceReport.driver_vehicle_registration_snapshot
+								.split(' ')[0]
+								.toUpperCase()
+						}}</span>
+					</div>
 					<div class="flex-grow space-y-1">
 						<h1 class="font-semibold text-gray-700">Responder</h1>
 						<h2 class="font-semibold text-gray-500">
