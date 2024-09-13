@@ -24,11 +24,18 @@
 						</h2>
 					</div>
 				</div>
-				<button
-					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold uppercase text-white hover:bg-blue-700 disabled:bg-gray-300"
-					disabled>
-					Download Report
-				</button>
+				<div class="flex items-center space-x-4">
+					<button
+						@click="openPrintMenu"
+						class="group inline-flex size-14 items-center justify-center rounded-lg bg-gray-300">
+						<PrintIcon />
+					</button>
+					<button
+						class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold uppercase text-white hover:bg-blue-700 disabled:bg-gray-300"
+						disabled>
+						Download Report
+					</button>
+				</div>
 			</div>
 			<hr />
 			<div class="flex items-start justify-between px-8 py-3">
@@ -342,6 +349,10 @@
 			},
 		];
 	});
+
+	const openPrintMenu = () => {
+		window.print();
+	};
 
 	const computedRateStars: ComputedRef<number | null> = computed(() => {
 		const rawRate = serviceReport.value.driver_rating;

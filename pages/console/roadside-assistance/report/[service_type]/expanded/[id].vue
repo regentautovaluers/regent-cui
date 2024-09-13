@@ -550,13 +550,17 @@
 		() => (serviceReport.value.current_free_distance * 100) / 20,
 	);
 
-	const serviceImages: ComputedRef<any[]> = computed(() => [
-		serviceReport.value.checklist.front_image,
-		serviceReport.value.checklist.rear_image,
-		serviceReport.value.checklist.left_side_image,
-		serviceReport.value.checklist.right_side_image,
-		...(serviceReport.value.checklist.impact_images ?? []),
-	]);
+	const serviceImages: ComputedRef<any[]> = computed(() => {
+		return [
+			serviceReport.value.checklist.front_image,
+			serviceReport.value.checklist.rear_image,
+			serviceReport.value.checklist.left_side_image,
+			serviceReport.value.checklist.right_side_image,
+			...(serviceReport.value.checklist.impact_images ?? []),
+		].filter((image) => {
+			image !== null;
+		});
+	});
 
 	const computedRateStars: ComputedRef<number | null> = computed(() => {
 		const rawRate = serviceReport.value.driver_rating;
@@ -712,3 +716,18 @@
 		}, 1500);
 	});
 </script>
+
+<style scoped lang="css">
+	@media print {
+		@page {
+			margin-left: 0.5in;
+			margin-right: 0.5in;
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		#top-nav {
+			display: none !important;
+		}
+	}
+</style>
