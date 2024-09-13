@@ -320,6 +320,14 @@ const useAuth = () => {
 		navigateTo({ name: 'exterior-home' });
 	};
 
+	const displayCookieConsent = (): boolean => {
+		if (!authToken.value || !csrfToken.value || !authenticatedPrincipal.value) {
+			return true;
+		}
+
+		return false;
+	};
+
 	return {
 		email,
 		password,
@@ -336,6 +344,7 @@ const useAuth = () => {
 		updateMyAccountDetails,
 		addNewAccount,
 		updateProfilePicture,
+		displayCookieConsent,
 	};
 };
 

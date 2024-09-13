@@ -712,21 +712,3 @@
 		}, 1500);
 	});
 </script>
-
-<style lang="css" scoped>
-	.progressbar {
-		width: v-bind(currentPercentage);
-	}
-
-	@media print {
-		@page {
-			margin: 0;
-		}
-		body {
-			margin: 1.6cm;
-		}
-		footer {
-			display: none;
-		}
-	}
-</style>

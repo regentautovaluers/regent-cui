@@ -1,5 +1,5 @@
 <template>
-	<main class="flex h-screen">
+	<main class="relative flex h-screen">
 		<section class="hidden w-[65%] lg:flex">
 			<div
 				id="default-carousel"
@@ -84,7 +84,7 @@
 					src="/images/app-logo.png"
 					class="me-3 size-20"
 					alt="Flowbite Logo" />
-				<h1 class="text-lg font-semibold md:text-3xl antialiased">Regent Valuers</h1>
+				<h1 class="text-lg font-semibold antialiased md:text-3xl">Regent Valuers</h1>
 			</div>
 			<div class="flex-grow px-4 py-4 md:px-16 xl:px-24">
 				<slot />
@@ -135,11 +135,25 @@
 				</h6>
 			</div>
 		</div>
+
+		<!-- TODO: Add fixes for this cookie consent notice -->
+		<!-- <div
+			v-if="displayCookieConsent()"
+			class="absolute bottom-2 left-1/2 z-50 h-56 w-[90%] -translate-x-[50%] rounded-lg border-2 border-blue-600 bg-white p-3 md:w-[55%] lg:w-1/4">
+			<h1 class="py-2 text-xl font-semibold">Cookie Consent</h1>
+			<p class="text-gray-500">
+				Hi. Welcome to Regent Valuer's Corporate Dashboard. This site uses cookies to
+				maintain your sessions and track your activity across our services. Your cookies are
+				not shared with third parties and can be removed at any time. By authenticating with
+				this site, you agree to have us store cookies on your browser.
+			</p>
+		</div> -->
 	</main>
 </template>
 
 <script setup lang="ts">
 	const { language, availableLanguages } = useSystemLocale();
+	const { displayCookieConsent } = useAuth();
 	const slides: readonly string[] = [
 		'/images/slides/landingpage/1_04092024.jpg',
 		'/images/slides/landingpage/2_04092024.jpg',

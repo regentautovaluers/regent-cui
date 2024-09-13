@@ -265,7 +265,6 @@
 				</div>
 			</div>
 		</aside>
-
 		<div class="flex-grow p-2 lg:ml-[20rem] lg:p-4">
 			<slot />
 		</div>

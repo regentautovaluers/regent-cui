@@ -347,7 +347,7 @@
 					<!-- page controls -->
 					<div class="flex h-12 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-							Showing {{ currentPage + 1 }} of Y pages.
+							Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
 						</h1>
 						<div class="h-full space-x-2 md:space-x-4">
 							<button
@@ -437,6 +437,7 @@
 		fetchRoadsideIncidentsStatus,
 		incidentsListSlice,
 		currentPage,
+		totalPages,
 		totalIncidents,
 		ongoingIncidents,
 	} = useRoadsideIncidents();
