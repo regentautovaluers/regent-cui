@@ -366,16 +366,17 @@
 	});
 </script>
 
-<style scoped>
+<style lang="css">
 	@media print {
+		#top-nav {
+			display: none !important;
+		}
+
 		@page {
-			margin: 0;
-		}
-		body {
-			margin: 1.6cm;
-		}
-		footer {
-			display: none;
+			margin-left: 0.3in;
+			margin-right: 0.3in;
+			margin-top: 0;
+			margin-bottom: 0;
 		}
 	}
 </style>

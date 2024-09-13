@@ -1,6 +1,6 @@
 <template>
 	<main class="flex h-screen flex-col">
-		<div class="sticky top-0 z-40 flex max-h-20 min-h-20 items-center border-b bg-white">
+		<div class="sticky top-0 z-40 flex max-h-20 min-h-20 items-center border-b bg-white" id="top-nav">
 			<div class="w-fit lg:w-[20rem]">
 				<button
 					data-drawer-target="system-sidebar"

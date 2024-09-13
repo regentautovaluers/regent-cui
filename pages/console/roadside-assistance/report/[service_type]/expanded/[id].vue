@@ -296,9 +296,7 @@
 		</div>
 
 		<!-- pre-towing report summary -->
-		<div
-			class="mt-8 grid h-fit gap-x-8 rounded-lg shadow-sm"
-			:class="serviceImages.length > 0 ? 'grid-cols-2' : 'grid-cols-1'">
+		<div class="mt-8 grid h-fit grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<!-- Collected Data Section -->
 			<div class="h-[46rem] max-h-[46rem] px-2">
 				<h1 class="mb-5 text-xl font-semibold">Pre-Towing Report Summary</h1>
@@ -359,9 +357,7 @@
 			</div>
 
 			<!-- pre-towing pictures section -->
-			<div
-				class="relative h-[45.5rem] max-h-[45.5rem] rounded-lg"
-				v-if="serviceImages.length > 0">
+			<div class="relative h-[45.5rem] max-h-[45.5rem] rounded-lg">
 				<div class="mb-2 h-[80%] max-h-[80%] overflow-clip rounded-md border">
 					<img
 						:src="serviceImages[activePreTowingImage]"
