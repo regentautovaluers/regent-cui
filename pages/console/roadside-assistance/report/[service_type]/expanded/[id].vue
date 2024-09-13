@@ -296,13 +296,15 @@
 		</div>
 
 		<!-- pre-towing report summary -->
-		<div class="mt-8 grid h-fit grid-cols-2 gap-x-8 rounded-lg shadow-sm">
+		<div
+			class="mt-8 grid h-fit gap-x-8 rounded-lg shadow-sm"
+			:class="serviceImages.length > 0 ? 'grid-cols-2' : 'grid-cols-1'">
 			<!-- Collected Data Section -->
 			<div class="h-[46rem] max-h-[46rem] px-2">
 				<h1 class="mb-5 text-xl font-semibold">Pre-Towing Report Summary</h1>
 				<div class="flex items-start space-x-4 rounded-lg border p-2">
 					<div
-						class="flex w-[12%] items-center justify-center rounded-md border border-yellow-500 p-2">
+						class="flex w-[7%] items-center justify-center rounded-md border border-yellow-500 p-2">
 						<EngineIcon
 							classes="size-12"
 							color="#eab308" />
@@ -357,7 +359,9 @@
 			</div>
 
 			<!-- pre-towing pictures section -->
-			<div class="relative h-[45.5rem] max-h-[45.5rem] rounded-lg">
+			<div
+				class="relative h-[45.5rem] max-h-[45.5rem] rounded-lg"
+				v-if="serviceImages.length > 0">
 				<div class="mb-2 h-[80%] max-h-[80%] overflow-clip rounded-md border">
 					<img
 						:src="serviceImages[activePreTowingImage]"
@@ -432,7 +436,7 @@
 					classes="size-12"
 					:color="'#2563eb'" />
 				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg font-semibold text-gray-700">Milage Pre-Tow</h1>
+					<h1 class="text-lg font-semibold text-gray-700">Milage</h1>
 					<span class="font-semibold text-gray-500"
 						>{{ serviceReport.checklist.start_mileage }}Km</span
 					>
@@ -551,15 +555,23 @@
 	);
 
 	const serviceImages: ComputedRef<any[]> = computed(() => {
+		// return [
+		// 	serviceReport.value.checklist.front_image,
+		// 	serviceReport.value.checklist.rear_image,
+		// 	serviceReport.value.checklist.left_side_image,
+		// 	serviceReport.value.checklist.right_side_image,
+		// 	...(serviceReport.value.checklist.impact_images ?? []),
+		// ].filter((image) => {
+		// 	image !== null;
+		// });
+
 		return [
 			serviceReport.value.checklist.front_image,
 			serviceReport.value.checklist.rear_image,
 			serviceReport.value.checklist.left_side_image,
 			serviceReport.value.checklist.right_side_image,
 			...(serviceReport.value.checklist.impact_images ?? []),
-		].filter((image) => {
-			image !== null;
-		});
+		];
 	});
 
 	const computedRateStars: ComputedRef<number | null> = computed(() => {
@@ -717,17 +729,17 @@
 	});
 </script>
 
-<style scoped lang="css">
+<style lang="css">
 	@media print {
-		@page {
-			margin-left: 0.5in;
-			margin-right: 0.5in;
-			margin-top: 0;
-			margin-bottom: 0;
-		}
-
 		#top-nav {
 			display: none !important;
+		}
+
+		@page {
+			margin-left: 0.3in;
+			margin-right: 0.3in;
+			margin-top: 0;
+			margin-bottom: 0;
 		}
 	}
 </style>
