@@ -22,6 +22,10 @@ const useRoadsideIncidents = () => {
 		() => getRoadsideIncidents.value.length || 0,
 	);
 
+	const totalPages: ComputedRef<number> = computed(() => {
+		return Math.ceil(totalIncidents.value / size.value);
+	});
+
 	const ongoingIncidents: ComputedRef<number> = computed(
 		() =>
 			getRoadsideIncidents.value.filter(
@@ -65,6 +69,7 @@ const useRoadsideIncidents = () => {
 		currentPage,
 		getRoadsideIncidents,
 		totalIncidents,
+		totalPages,
 		ongoingIncidents,
 		topFiveIncidents,
 	};
