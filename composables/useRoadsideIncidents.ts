@@ -1,8 +1,4 @@
-import {
-	setRoadsideIncidents,
-	getRoadsideIncidents,
-	cleanRoadsideIncidents,
-} from '~/stores/roadside-incidents-store';
+import { setRoadsideIncidents, getRoadsideIncidents } from '~/stores/roadside-incidents-store';
 
 const useRoadsideIncidents = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -24,6 +20,18 @@ const useRoadsideIncidents = () => {
 
 	const totalPages: ComputedRef<number> = computed(() => {
 		return Math.ceil(totalIncidents.value / size.value);
+	});
+
+	const mapPinsIncidents: ComputedRef<any[]> = computed(() => {
+		return getRoadsideIncidents.value.map((incident) => {
+			return {
+				service: incident.service,
+				username: incident.user_name,
+				registration: incident.registration_no,
+				lat: incident.pickup_cordinates.latitude,
+				lng: incident.pickup_cordinates.longitude,
+			};
+		});
 	});
 
 	const ongoingIncidents: ComputedRef<number> = computed(
@@ -72,6 +80,7 @@ const useRoadsideIncidents = () => {
 		totalPages,
 		ongoingIncidents,
 		topFiveIncidents,
+		mapPinsIncidents,
 	};
 };
 
