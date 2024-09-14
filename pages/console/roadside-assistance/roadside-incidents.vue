@@ -163,7 +163,7 @@
 
 				<!-- div to show when there are incidents -->
 				<div
-					class="flex h-full flex-col justify-between rounded-lg border p-2 md:min-h-[58rem]"
+					class="flex h-full flex-col justify-between rounded-lg border p-2 md:min-h-[54rem]"
 					v-else>
 					<!-- the table itself -->
 					<div class="mb-4 flex-grow">
