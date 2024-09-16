@@ -1,5 +1,4 @@
 <template>
-	requests: {{ mapPinsIncidents }}
 	<div class="relative h-full overflow-clip rounded-lg border shadow-md">
 		<!-- services switch -->
 		<div
