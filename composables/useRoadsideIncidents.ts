@@ -6,6 +6,10 @@ const useRoadsideIncidents = () => {
 	const currentPage: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
 
+	// for showing incidents on the map with pins
+	const activeService: Ref<string> = ref('towing');
+	const completionStatus: Ref<string> = ref('completed');
+
 	const incidentsListSlice: ComputedRef<any[]> = computed(() => {
 		const startIndex = currentPage.value * size.value;
 		const endIndex = (currentPage.value + 1) * size.value;
@@ -23,15 +27,31 @@ const useRoadsideIncidents = () => {
 	});
 
 	const mapPinsIncidents: ComputedRef<any[]> = computed(() => {
-		return getRoadsideIncidents.value.map((incident) => {
-			return {
-				service: incident.service,
-				username: incident.user_name,
-				registration: incident.registration_no,
-				lat: incident.pickup_cordinates.latitude,
-				lng: incident.pickup_cordinates.longitude,
-			};
-		});
+		return getRoadsideIncidents.value
+			.map((incident) => {
+				return {
+					service: incident.service,
+					username: incident.user_name,
+					registration: incident.registration_no,
+					lat: incident.pickup_cordinates.latitude,
+					lng: incident.pickup_cordinates.longitude,
+					service_status: incident.service_status,
+				};
+			})
+			.filter((m) => {
+				if (completionStatus.value === 'completed') {
+					return m.service_status === 'completed';
+				}
+
+				if (completionStatus.value === 'on-going') {
+					return ['on-going', 'pending'].includes(m.service_status);
+				}
+
+				if (completionStatus.value === 'cancelled') {
+					return m.service_status === 'cancelled';
+				}
+			})
+			.filter((m) => m.service === activeService.value);
 	});
 
 	const ongoingIncidents: ComputedRef<number> = computed(
@@ -81,6 +101,8 @@ const useRoadsideIncidents = () => {
 		ongoingIncidents,
 		topFiveIncidents,
 		mapPinsIncidents,
+		activeService,
+		completionStatus,
 	};
 };
 
