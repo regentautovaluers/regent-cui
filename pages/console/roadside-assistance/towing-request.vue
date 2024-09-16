@@ -4,7 +4,9 @@
 			<GoogleMap
 				ref="mapRef"
 				:api-key="runtimeConfig.app.GOOGLE_MAPS_APIKEY"
+				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
+				:map-type-control="false"
 				:center="clientCoordinates"
 				:zoom="13"
 				:zoom-control="true"
@@ -98,6 +100,7 @@
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker, Polyline } from 'vue3-google-map';
 	import { type LocationCoords, type MapCoordsMarker } from '~/types';
+	import { googleMapStyle } from '~/data';
 
 	definePageMeta({
 		name: 'ra-towing-request',
