@@ -1,11 +1,11 @@
 <template>
 	<form>
-		<div class="mt-7 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="registration-number"
-					class="generic-input-label"
+					class="generic-input-label after:ml-0.5 after:text-gray-500 after:content-['*']"
 					>Registration Number</label
 				>
 				<input
@@ -19,7 +19,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="customer-name"
-					class="generic-input-label"
+					class="generic-input-label after:ml-0.5 after:text-gray-500 after:content-['*']"
 					>Customer Name</label
 				>
 				<input
@@ -33,7 +33,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="customer-phone"
-					class="generic-input-label"
+					class="generic-input-label after:ml-0.5 after:text-gray-500 after:content-['*']"
 					>Customer Phone Number</label
 				>
 				<input
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<!-- Preffered Regent Branch -->
-		<div class="mt-7 flex w-full flex-col">
+		<div class="relative mt-5 flex w-full flex-col">
 			<label
 				for="fuel-type"
 				class="generic-input-label"
@@ -55,19 +55,24 @@
 				class="generic-input"
 				id="fuel-type"
 				required>
-				<option value="Select a Preferred Regent Branch">
-					Select a Preferred Regent Branch
+				<option
+					:value="null"
+					selected>
+					Send to Customer Care
 				</option>
 				<option
-					v-for="(branch, index) in ['nairobi', 'kilifi', 'mombasa']"
+					v-for="(branch, index) in regentBranches"
 					:key="index"
-					:value="branch">
-					<!-- {{ capitalizeFirstLetterOfEachWord(branch) }} -->
+					:value="branch.branchId">
+					{{ branch.branchName }}
 				</option>
 			</select>
+			<FormSubmissionLoader
+				classes="mr-2 absolute right-0 top-[52%] right-6 size-5 animate-spin text-gray-500"
+				v-if="fetchStatus === 'pending'" />
 		</div>
 		<!-- comments -->
-		<div class="mt-7">
+		<div class="mt-5">
 			<label
 				for="comments-box"
 				class="generic-input-label"
@@ -80,7 +85,7 @@
 				placeholder="Provide optional comments for this request."></textarea>
 		</div>
 		<!-- data below the comments box -->
-		<div class="mt-7 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
 			<!-- Policy Number -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -92,8 +97,7 @@
 					type="text"
 					id="policy-number"
 					class="generic-input"
-					placeholder="e.g MGL/07/080/00/489586/2020"
-					required />
+					placeholder="e.g MGL/07/080/00/489586/2020" />
 			</div>
 			<!-- Officer Name -->
 			<div class="w-full lg:w-1/3">
@@ -106,8 +110,7 @@
 					type="text"
 					id="officer-name"
 					class="generic-input"
-					placeholder="e.g Esther Kasele"
-					required />
+					placeholder="e.g Esther Kasele" />
 			</div>
 			<!-- Authorized By -->
 			<div class="w-full lg:w-1/3">
@@ -120,22 +123,114 @@
 					type="text"
 					id="authorized-by"
 					class="generic-input"
-					placeholder="e.g Jane Doe"
-					required />
+					placeholder="e.g Jane Doe" />
 			</div>
 		</div>
 
-		<!-- file upload -->
-		<div class="mt-7 flex flex-col">
-			<label class="w-fit hover:cursor-pointer focus:ring-2">
-				<input
-					type="file"
-					name="fileToUpload"
-					accept=".jpg, .png, .pdf, .webp, .doc, .docx"
-					multiple
-					class=" rounded-full border" />
-			</label>
-			<span class="text-gray-500">.jpg, .png, .webp, .pdf, .doc, .docx, files accepted.</span>
+		<div class="mt">
+			<!-- upload logbook -->
+			<h1 class="mt-2 text-lg antialiased">Logbook</h1>
+			<div class="flex flex-col">
+				<div>
+					<label
+						for="logbook-file"
+						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
+						<div class="flex w-full items-center justify-between text-blue-500">
+							<span> Click here to upload the vehicle&apos;s logbook </span>
+							<UploadIcon />
+						</div>
+						<input
+							id="logbook-file"
+							type="file"
+							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
+							class="hidden"
+							required />
+					</label>
+				</div>
+			</div>
+
+			<!-- upload KRA PIN -->
+			<h1 class="mt-2 text-lg antialiased">KRA PIN</h1>
+			<div class="flex flex-col">
+				<div>
+					<label
+						for="pin-file"
+						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
+						<div class="flex w-full items-center justify-between text-blue-500">
+							<span> Click here to upload the client&apos;s KRA PIN </span>
+							<UploadIcon />
+						</div>
+						<input
+							id="pin-file"
+							type="file"
+							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
+							class="hidden" />
+					</label>
+				</div>
+			</div>
+
+			<!-- upload ID -->
+			<h1 class="mt-2 text-lg antialiased">National ID</h1>
+			<div class="flex flex-col">
+				<div>
+					<label
+						for="nationalid-file"
+						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
+						<div class="flex w-full items-center justify-between text-blue-500">
+							<span> Click here to upload the client&apos;s National ID </span>
+							<UploadIcon />
+						</div>
+						<input
+							id="nationalid-file"
+							type="file"
+							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
+							class="hidden" />
+					</label>
+				</div>
+			</div>
+
+			<!-- upload KRA PIN -->
+			<h1 class="mt-2 text-lg antialiased">Certificate of Registration</h1>
+			<div class="flex flex-col">
+				<div>
+					<label
+						for="regcert-file"
+						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
+						<div class="flex w-full items-center justify-between text-blue-500">
+							<span>
+								Click here to upload the vehicle&apos;s certificate of
+								registration</span
+							>
+							<UploadIcon />
+						</div>
+						<input
+							id="regcert-file"
+							type="file"
+							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
+							class="hidden" />
+					</label>
+				</div>
+			</div>
+
+			<!-- upload Authority Letter -->
+			<h1 class="mt-2 text-lg antialiased">Authority Letter</h1>
+			<div class="flex flex-col">
+				<div>
+					<label
+						for="authletter-file"
+						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
+						<div class="flex w-full items-center justify-between text-blue-500">
+							<span> Click here to upload your authority letter</span>
+							<UploadIcon />
+						</div>
+						<input
+							id="authletter-file"
+							type="file"
+							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
+							class="hidden" />
+					</label>
+				</div>
+			</div>
 		</div>
 
 		<!-- submit button -->
@@ -152,4 +247,5 @@
 
 <script setup lang="ts">
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
+	const { regentBranches, fetchStatus, fetchError, refreshRegentBranches } = useRegentBranches();
 </script>

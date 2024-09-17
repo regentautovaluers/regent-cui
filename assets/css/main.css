@@ -4,7 +4,7 @@
 
 @layer components {
 	.generic-input {
-		@apply block h-14 w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
+		@apply block h-14 w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-gray-600 placeholder:text-gray-500 invalid:border-red-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
 	}
 
 	.generic-input-modified {
