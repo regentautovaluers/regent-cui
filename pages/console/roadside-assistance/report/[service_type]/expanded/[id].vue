@@ -185,9 +185,14 @@
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
+				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
+				:map-type-control="false"
 				:center="{ lat: coordinates[0].lat, lng: coordinates[0].lng }"
-				:zoom="12">
+				:zoom="12"
+				:zoom-control="true"
+				:fullscreen-control="false"
+				:street-view-control="false">
 				<InfoWindow
 					:options="{
 						position: coordinates[0],
@@ -503,6 +508,7 @@
 <script setup lang="ts">
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow } from 'vue3-google-map';
+	import { googleMapStyle } from '~/data';
 
 	definePageMeta({
 		name: 'ra-expanded-report',
