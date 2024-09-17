@@ -45,7 +45,38 @@
 			</div>
 		</div>
 		<!-- Preffered Regent Branch -->
-		<div class="relative mt-5 flex w-full flex-col">
+		<div
+			id="alert-additional-content-4"
+			class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
+			role="alert">
+			<div class="flex items-center">
+				<svg
+					class="me-2 h-4 w-4 flex-shrink-0"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="currentColor"
+					viewBox="0 0 20 20">
+					<path
+						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+				</svg>
+				<span class="sr-only">Info</span>
+				<h3 class="text-lg font-medium">Notice On Regent Branches</h3>
+			</div>
+			<div class="mb-4 mt-2">
+				If you fail to choose a preffered Regent Branch to direct your request for valuation
+				to, the request will be sent to Customer Care. If your preferred branch is not
+				showing up here, please 'Refresh List' or contact us for support.
+			</div>
+			<div class="flex">
+				<button
+					type="button"
+					class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300"
+					@click.prevent="refreshRegentBranches">
+					Refresh List
+				</button>
+			</div>
+		</div>
+		<div class="relative mt-2 flex w-full flex-col">
 			<label
 				for="fuel-type"
 				class="generic-input-label"
