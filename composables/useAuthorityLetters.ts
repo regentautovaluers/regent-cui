@@ -1,6 +1,10 @@
+import { data } from 'autoprefixer';
+
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
+	const nuxtApp = useNuxtApp();
+
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
 	const clientPhone: Ref<string> = ref('');
@@ -18,19 +22,43 @@ const useAuthorityLetters = () => {
 	const certUploaded: Ref<boolean> = ref(false);
 	const letterUploaded: Ref<boolean> = ref(false);
 
+	// for fetching corp authority letters
+	const page: Ref<number> = ref(0);
+	const pageSize: number = 10;
+
 	watch(clientPhone, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
 			clientPhone.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
 	});
 
+	const { status: fetchAuthorityLetterStatus, data: authorityLetters } = useFetch(
+		'/api/v1/authority-letter/corp/get-authority-letter',
+		{
+			key: 'authority-letters',
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			query: {
+				corpId: getPrincipal.value.corpId,
+				page: page.value,
+				size: pageSize,
+			},
+			server: false,
+			lazy: true,
+			transform(data: any) {
+				return data.data;
+			},
+		},
+	) as any;
+
 	const handleFileUpload = (file: File, prependString: string) => {
 		if (file) {
 			const ext = file.name.split('.').pop();
 			const renamedFile = `${prependString}-${file.name.replace(`.${ext}`, '')}.${ext}`;
 			const renamedFileBlob = new File([file], renamedFile, { type: file.type });
-
-			console.info('rename file: ', renamedFile);
 
 			uploadedDocuments.value.push({
 				name: renamedFile,
@@ -108,6 +136,8 @@ const useAuthorityLetters = () => {
 		natIdUploaded,
 		certUploaded,
 		letterUploaded,
+		fetchAuthorityLetterStatus,
+		authorityLetters,
 		createAuthorizationLetter,
 		handleFileUpload,
 	};
