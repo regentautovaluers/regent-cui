@@ -7,11 +7,12 @@
 			v-if="fetchStatus === 'error' || fetchError">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
-			<NuxtLink
-				:to="{ name: 'ava-membership-types' }"
-				class="generic-nuxt-link">
-				Onboard AVA Member
-			</NuxtLink>
+			<button
+				class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+				@click="refreshPage">
+				<span>Refresh</span>
+				<RefreshIcon classes="size-6" />
+			</button>
 		</div>
 
 		<!-- div to show when there are no users -->

@@ -55,8 +55,6 @@ export const useAVAMemberships = () => {
 			if (nuxtApp.static.data[key]) {
 				return nuxtApp.static.data[key];
 			}
-
-			return null;
 		},
 	});
 
