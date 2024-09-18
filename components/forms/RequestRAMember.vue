@@ -7,7 +7,7 @@
 		<div class="registration relative w-full">
 			<label
 				for="registration-number"
-				class="generic-input-label"
+				class="generic-input-label after:text-gray-600 after:content-['*']"
 				>Vehicle Registration</label
 			>
 			<div class="flex items-center space-x-2">
@@ -112,7 +112,7 @@
 			v-if="renderElementForService('ra-towing-request')">
 			<label
 				for="vehicle-type"
-				class="generic-input-label"
+				class="generic-input-label after:text-gray-600 after:content-['*']"
 				>Vehicle Type</label
 			>
 			<select

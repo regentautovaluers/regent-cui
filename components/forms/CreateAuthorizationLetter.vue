@@ -5,7 +5,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="registration-number"
-					class="generic-input-label after:ml-0.5 after:text-gray-500 after:content-['*']"
+					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
 					>Registration Number</label
 				>
 				<input
@@ -18,13 +18,13 @@
 			<!-- Customer Name -->
 			<div class="w-full lg:w-1/3">
 				<label
-					for="customer-name"
-					class="generic-input-label after:ml-0.5 after:text-gray-500 after:content-['*']"
-					>Customer Name</label
+					for="client-name"
+					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+					>Client Name</label
 				>
 				<input
 					type="text"
-					id="customer-name"
+					id="client-name"
 					class="generic-input"
 					placeholder="e.g Janet Wangari Thuo"
 					required />
@@ -32,13 +32,13 @@
 			<!-- Customer Phone Number -->
 			<div class="w-full lg:w-1/3">
 				<label
-					for="customer-phone"
-					class="generic-input-label after:ml-0.5 after:text-gray-500 after:content-['*']"
-					>Customer Phone Number</label
+					for="client-phone"
+					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+					>Client Phone Number</label
 				>
 				<input
 					type="text"
-					id="customer-phone"
+					id="client-phone"
 					class="generic-input"
 					placeholder="e.g 254789261947"
 					required />

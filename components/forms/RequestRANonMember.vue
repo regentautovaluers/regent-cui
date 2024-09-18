@@ -19,7 +19,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="full-name"
-					class="generic-input-label"
+					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
 					>Full Name</label
 				>
 				<input
@@ -35,7 +35,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="phone"
-					class="generic-input-label"
+					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
 					>Phone</label
 				>
 				<input
@@ -60,8 +60,7 @@
 				id="client-email"
 				class="generic-input"
 				placeholder="Valid client's email"
-				v-model="userEmail"
-				required />
+				v-model="userEmail" />
 		</div>
 
 		<!-- Vehicle Registration -->
@@ -76,8 +75,7 @@
 				id="vehicle-registration-number"
 				class="generic-input"
 				placeholder="e.g.KCD 345G"
-				v-model="vehicleRegistration"
-				required />
+				v-model="vehicleRegistration" />
 		</div>
 
 		<!-- vehicle registration, make, model -->
@@ -97,7 +95,6 @@
 					id="vehicle-make"
 					class="generic-input"
 					placeholder="e.g Toyota"
-					required
 					v-model="vehicleMake" />
 			</div>
 
@@ -113,7 +110,6 @@
 					id="vehicle-model"
 					class="generic-input"
 					placeholder="e.g Corolla"
-					required
 					v-model="vehicleModel" />
 			</div>
 		</div>
@@ -124,7 +120,7 @@
 			v-if="renderElementForService('ra-towing-request')">
 			<label
 				for="vehicle-type"
-				class="generic-input-label"
+				class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
 				>Vehicle Type</label
 			>
 			<select
