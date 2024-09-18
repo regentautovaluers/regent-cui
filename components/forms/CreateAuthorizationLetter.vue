@@ -172,7 +172,7 @@
 			<!-- Logbook -->
 			<label
 				for="vehicle-logbook"
-				class="w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-opacity-50 px-4 py-2 hover:border-gray-600"
+				class="auth-letter-file-input border-gray-400 bg-opacity-50"
 				:class="
 					logbookUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
 				">
@@ -184,7 +184,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload('logbook', e.target?.files[0], 'logbook');
+							handleFileUpload(e.target?.files[0], 'logbook');
 							logbookUploaded = true;
 						}
 					" />
@@ -193,8 +193,11 @@
 			<!-- KRA PIN -->
 			<label
 				for="kra-pin"
-				class="ml-3 w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600">
-				<span class="text-blue-500">KRA PIN</span>
+				class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
+				:class="
+					kraPinUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
+				">
+				<span>KRA PIN</span>
 				<input
 					id="kra-pin"
 					type="file"
@@ -202,7 +205,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload('pin', e.target?.files[0], 'pin');
+							handleFileUpload(e.target?.files[0], 'pin');
 							kraPinUploaded = true;
 						}
 					" />
@@ -211,8 +214,11 @@
 			<!-- National ID -->
 			<label
 				for="national-id"
-				class="ml-3 w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600">
-				<span class="text-blue-500">National ID</span>
+				class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
+				:class="
+					natIdUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
+				">
+				<span>National ID</span>
 				<input
 					id="national-id"
 					type="file"
@@ -220,7 +226,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload('natid', e.target?.files[0], 'natid');
+							handleFileUpload(e.target?.files[0], 'natid');
 							natIdUploaded = true;
 						}
 					" />
@@ -229,8 +235,9 @@
 			<!-- Certificate of Registration -->
 			<label
 				for="cert-of-registration"
-				class="ml-3 w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600">
-				<span class="text-blue-500">Certificate of Registration</span>
+				class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
+				:class="certUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'">
+				<span>Certificate of Registration</span>
 				<input
 					id="cert-of-registration"
 					type="file"
@@ -238,7 +245,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload('regcert', e.target?.files[0], 'regcert');
+							handleFileUpload(e.target?.files[0], 'regcert');
 							certUploaded = true;
 						}
 					" />
@@ -247,8 +254,11 @@
 			<!-- Authority Letter -->
 			<label
 				for="authority-letter"
-				class="w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600 md:ml-3">
-				<span class="text-blue-500">Authority Letter</span>
+				class="auth-letter-file-input border-gray-400 bg-opacity-50 md:ml-3"
+				:class="
+					letterUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
+				">
+				<span>Authority Letter</span>
 				<input
 					id="authority-letter"
 					type="file"
@@ -256,7 +266,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload('authletter', e.target?.files[0], 'authletter');
+							handleFileUpload(e.target?.files[0], 'authletter');
 							letterUploaded = true;
 						}
 					" />

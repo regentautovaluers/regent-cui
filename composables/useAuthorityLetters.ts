@@ -24,7 +24,7 @@ const useAuthorityLetters = () => {
 		}
 	});
 
-	const handleFileUpload = (doc: string, file: File, prependString: string) => {
+	const handleFileUpload = (file: File, prependString: string) => {
 		if (file) {
 			const ext = file.name.split('.').pop();
 			const renamedFile = `${prependString}-${file.name.replace(`.${ext}`, '')}.${ext}`;
@@ -104,10 +104,10 @@ const useAuthorityLetters = () => {
 		agencyName,
 		createAuthorizationLetterLoading,
 		logbookUploaded,
-        kraPinUploaded,
-        natIdUploaded,
-        certUploaded,
-        letterUploaded,
+		kraPinUploaded,
+		natIdUploaded,
+		certUploaded,
+		letterUploaded,
 		createAuthorizationLetter,
 		handleFileUpload,
 	};
