@@ -200,7 +200,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 						useToast('Not Found. Try Again!', {
 							type: 'warning',
 							showIcon: true,
-							showCloseButton: true,
+							showCloseButton: false,
 							hideProgressBar: true,
 							transition: 'slide',
 						});
@@ -211,7 +211,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 					useToast('Vehicle Found!', {
 						type: 'success',
 						showIcon: true,
-						showCloseButton: true,
+						showCloseButton: false,
 						hideProgressBar: true,
 						transition: 'slide',
 					});
@@ -243,7 +243,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});
@@ -303,7 +303,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 						useToast('Request Made Successfully!', {
 							type: 'success',
 							showIcon: true,
-							showCloseButton: true,
+							showCloseButton: false,
 							hideProgressBar: true,
 							transition: 'slide',
 						});
@@ -315,7 +315,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});

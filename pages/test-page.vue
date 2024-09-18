@@ -11,7 +11,7 @@
 		useToast('test message', {
 			type: 'info',
 			showIcon: true,
-			showCloseButton: true,
+			showCloseButton: false,
 			hideProgressBar: true,
 			transition: 'slide',
 		});

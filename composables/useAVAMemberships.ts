@@ -78,7 +78,7 @@ export const useAVAMemberships = () => {
 			useToast('Failed to Fetch Vehicles!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});
@@ -110,7 +110,7 @@ export const useAVAMemberships = () => {
 					useToast('Vehicle Added Sucessfully!', {
 						type: 'success',
 						showIcon: true,
-						showCloseButton: true,
+						showCloseButton: false,
 						hideProgressBar: true,
 						transition: 'slide',
 					});
@@ -121,7 +121,7 @@ export const useAVAMemberships = () => {
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});
@@ -154,7 +154,7 @@ export const useAVAMemberships = () => {
 					useToast('Update Successful!', {
 						type: 'success',
 						showIcon: true,
-						showCloseButton: true,
+						showCloseButton: false,
 						hideProgressBar: true,
 						transition: 'slide',
 					});
@@ -165,7 +165,7 @@ export const useAVAMemberships = () => {
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});

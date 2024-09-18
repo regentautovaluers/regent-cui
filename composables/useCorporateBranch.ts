@@ -55,7 +55,7 @@ export const useCorporateBranch = () => {
 						useToast('Branch Added Successfully!', {
 							type: 'success',
 							showIcon: true,
-							showCloseButton: true,
+							showCloseButton: false,
 							hideProgressBar: true,
 							transition: 'slide',
 						});
@@ -69,7 +69,7 @@ export const useCorporateBranch = () => {
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});
@@ -103,7 +103,7 @@ export const useCorporateBranch = () => {
 						useToast('Updating Successful!', {
 							type: 'success',
 							showIcon: true,
-							showCloseButton: true,
+							showCloseButton: false,
 							hideProgressBar: true,
 							transition: 'slide',
 						});
@@ -118,7 +118,7 @@ export const useCorporateBranch = () => {
 			useToast('Failed! Try Again', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});

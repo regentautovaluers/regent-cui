@@ -58,7 +58,7 @@ export const useFleets = () => {
 						useToast('Fleet Created Successfully!', {
 							type: 'success',
 							showIcon: true,
-							showCloseButton: true,
+							showCloseButton: false,
 							hideProgressBar: true,
 							transition: 'slide',
 						});
@@ -71,7 +71,7 @@ export const useFleets = () => {
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});
@@ -236,7 +236,7 @@ export const useBulkMemberRegistration = () => {
 					useToast('Memberships Created Successfully!', {
 						type: 'success',
 						showIcon: true,
-						showCloseButton: true,
+						showCloseButton: false,
 						hideProgressBar: true,
 						transition: 'slide',
 					});
@@ -247,7 +247,7 @@ export const useBulkMemberRegistration = () => {
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});
@@ -341,7 +341,7 @@ export const useIndividualMembershipRegistration = () => {
 						useToast('Check Data Conflict!', {
 							type: 'warning',
 							showIcon: true,
-							showCloseButton: true,
+							showCloseButton: false,
 							hideProgressBar: true,
 							transition: 'slide',
 						});
@@ -365,7 +365,7 @@ export const useIndividualMembershipRegistration = () => {
 							useToast('Membership Created Successfully!', {
 								type: 'success',
 								showIcon: true,
-								showCloseButton: true,
+								showCloseButton: false,
 								hideProgressBar: true,
 								transition: 'slide',
 							});
@@ -381,7 +381,7 @@ export const useIndividualMembershipRegistration = () => {
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
-				showCloseButton: true,
+				showCloseButton: false,
 				hideProgressBar: true,
 				transition: 'slide',
 			});
