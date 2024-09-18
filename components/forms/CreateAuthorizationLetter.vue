@@ -1,5 +1,5 @@
 <template>
-	<form>
+	<form @submit.prevent="createAuthorizationLetter">
 		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
@@ -13,7 +13,8 @@
 					id="registration-number"
 					class="generic-input"
 					placeholder="e.g KDH 908Y"
-					required />
+					required
+					v-model="registrationNumber" />
 			</div>
 			<!-- Customer Name -->
 			<div class="w-full lg:w-1/3">
@@ -27,7 +28,8 @@
 					id="client-name"
 					class="generic-input"
 					placeholder="e.g Janet Wangari Thuo"
-					required />
+					required
+					v-model="clientName" />
 			</div>
 			<!-- Customer Phone Number -->
 			<div class="w-full lg:w-1/3">
@@ -41,7 +43,8 @@
 					id="client-phone"
 					class="generic-input"
 					placeholder="e.g 254789261947"
-					required />
+					required
+					v-model="clientPhone" />
 			</div>
 		</div>
 		<!-- Preffered Regent Branch -->
@@ -85,9 +88,9 @@
 			<select
 				class="generic-input"
 				id="fuel-type"
-				required>
+				v-model="preferredBranch">
 				<option
-					:value="null"
+					:value="''"
 					selected>
 					Send to Customer Care
 				</option>
@@ -105,15 +108,16 @@
 		<!-- comments -->
 		<div class="mt-5">
 			<label
-				for="comments-box"
+				for="comments"
 				class="generic-input-label"
 				>Comments</label
 			>
 			<textarea
-				id="comments-box"
+				id="comments"
 				class="block w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
 				rows="8"
-				placeholder="Provide optional comments for this request."></textarea>
+				placeholder="Provide optional comments for this request."
+				v-model="comments"></textarea>
 		</div>
 		<!-- data below the comments box -->
 		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
@@ -128,7 +132,8 @@
 					type="text"
 					id="policy-number"
 					class="generic-input"
-					placeholder="e.g MGL/07/080/00/489586/2020" />
+					placeholder="e.g MGL/07/080/00/489586/2020"
+					v-model="policyNumber" />
 			</div>
 			<!-- Officer Name -->
 			<div class="w-full lg:w-1/3">
@@ -141,7 +146,8 @@
 					type="text"
 					id="officer-name"
 					class="generic-input"
-					placeholder="e.g Esther Kasele" />
+					placeholder="e.g Esther Kasele"
+					v-model="agencyName" />
 			</div>
 			<!-- Authorized By -->
 			<div class="w-full lg:w-1/3">
@@ -154,120 +160,113 @@
 					type="text"
 					id="authorized-by"
 					class="generic-input"
-					placeholder="e.g Jane Doe" />
+					disabled
+					:value="getPrincipal.username" />
 			</div>
 		</div>
 
-		<div class="mt">
-			<!-- upload logbook -->
-			<h1 class="mt-2 text-lg antialiased">Logbook</h1>
-			<div class="flex flex-col">
-				<div>
-					<label
-						for="logbook-file"
-						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
-						<div class="flex w-full items-center justify-between text-blue-500">
-							<span> Click here to upload the vehicle&apos;s logbook </span>
-							<UploadIcon />
-						</div>
-						<input
-							id="logbook-file"
-							type="file"
-							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
-							class="hidden"
-							required />
-					</label>
-				</div>
-			</div>
+		<!-- documents -->
+		<h1 class="my-2 text-lg font-semibold">Related Documents</h1>
 
-			<!-- upload KRA PIN -->
-			<h1 class="mt-2 text-lg antialiased">KRA PIN</h1>
-			<div class="flex flex-col">
-				<div>
-					<label
-						for="pin-file"
-						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
-						<div class="flex w-full items-center justify-between text-blue-500">
-							<span> Click here to upload the client&apos;s KRA PIN </span>
-							<UploadIcon />
-						</div>
-						<input
-							id="pin-file"
-							type="file"
-							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
-							class="hidden" />
-					</label>
-				</div>
-			</div>
+		<div class="flex flex-wrap items-center space-y-2 md:space-y-0">
+			<!-- Logbook -->
+			<label
+				for="vehicle-logbook"
+				class="w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-opacity-50 px-4 py-2 hover:border-gray-600"
+				:class="
+					logbookUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
+				">
+				<span>Vehicle Logbook</span>
+				<input
+					id="vehicle-logbook"
+					type="file"
+					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+					class="hidden"
+					@change.prevent="
+						(e) => {
+							handleFileUpload('logbook', e.target?.files[0], 'logbook');
+							logbookUploaded = true;
+						}
+					" />
+			</label>
 
-			<!-- upload ID -->
-			<h1 class="mt-2 text-lg antialiased">National ID</h1>
-			<div class="flex flex-col">
-				<div>
-					<label
-						for="nationalid-file"
-						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
-						<div class="flex w-full items-center justify-between text-blue-500">
-							<span> Click here to upload the client&apos;s National ID </span>
-							<UploadIcon />
-						</div>
-						<input
-							id="nationalid-file"
-							type="file"
-							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
-							class="hidden" />
-					</label>
-				</div>
-			</div>
+			<!-- KRA PIN -->
+			<label
+				for="kra-pin"
+				class="ml-3 w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600">
+				<span class="text-blue-500">KRA PIN</span>
+				<input
+					id="kra-pin"
+					type="file"
+					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+					class="hidden"
+					@change.prevent="
+						(e) => {
+							handleFileUpload('pin', e.target?.files[0], 'pin');
+							kraPinUploaded = true;
+						}
+					" />
+			</label>
 
-			<!-- upload KRA PIN -->
-			<h1 class="mt-2 text-lg antialiased">Certificate of Registration</h1>
-			<div class="flex flex-col">
-				<div>
-					<label
-						for="regcert-file"
-						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
-						<div class="flex w-full items-center justify-between text-blue-500">
-							<span>
-								Click here to upload the vehicle&apos;s certificate of
-								registration</span
-							>
-							<UploadIcon />
-						</div>
-						<input
-							id="regcert-file"
-							type="file"
-							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
-							class="hidden" />
-					</label>
-				</div>
-			</div>
+			<!-- National ID -->
+			<label
+				for="national-id"
+				class="ml-3 w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600">
+				<span class="text-blue-500">National ID</span>
+				<input
+					id="national-id"
+					type="file"
+					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+					class="hidden"
+					@change.prevent="
+						(e) => {
+							handleFileUpload('natid', e.target?.files[0], 'natid');
+							natIdUploaded = true;
+						}
+					" />
+			</label>
 
-			<!-- upload Authority Letter -->
-			<h1 class="mt-2 text-lg antialiased">Authority Letter</h1>
-			<div class="flex flex-col">
-				<div>
-					<label
-						for="authletter-file"
-						class="mt-1 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
-						<div class="flex w-full items-center justify-between text-blue-500">
-							<span> Click here to upload your authority letter</span>
-							<UploadIcon />
-						</div>
-						<input
-							id="authletter-file"
-							type="file"
-							accept=".jpg, .png, .pdf, .webp, .doc, .docx"
-							class="hidden" />
-					</label>
-				</div>
-			</div>
+			<!-- Certificate of Registration -->
+			<label
+				for="cert-of-registration"
+				class="ml-3 w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600">
+				<span class="text-blue-500">Certificate of Registration</span>
+				<input
+					id="cert-of-registration"
+					type="file"
+					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+					class="hidden"
+					@change.prevent="
+						(e) => {
+							handleFileUpload('regcert', e.target?.files[0], 'regcert');
+							certUploaded = true;
+						}
+					" />
+			</label>
+
+			<!-- Authority Letter -->
+			<label
+				for="authority-letter"
+				class="w-fit cursor-pointer rounded-full border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-2 hover:border-gray-600 md:ml-3">
+				<span class="text-blue-500">Authority Letter</span>
+				<input
+					id="authority-letter"
+					type="file"
+					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+					class="hidden"
+					@change.prevent="
+						(e) => {
+							handleFileUpload('authletter', e.target?.files[0], 'authletter');
+							letterUploaded = true;
+						}
+					" />
+			</label>
 		</div>
 
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-4 w-1/3">
+			class="generic-form-submit mt-4 w-full md:w-1/3">
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="createAuthorizationLetterLoading" />
@@ -277,6 +276,23 @@
 </template>
 
 <script setup lang="ts">
-	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const { regentBranches, fetchStatus, fetchError, refreshRegentBranches } = useRegentBranches();
+	const { getPrincipal } = useAuth();
+	const {
+		registrationNumber,
+		clientName,
+		clientPhone,
+		preferredBranch,
+		comments,
+		policyNumber,
+		agencyName,
+		createAuthorizationLetterLoading,
+		logbookUploaded,
+		kraPinUploaded,
+		natIdUploaded,
+		certUploaded,
+		letterUploaded,
+		createAuthorizationLetter,
+		handleFileUpload,
+	} = useAuthorityLetters();
 </script>
