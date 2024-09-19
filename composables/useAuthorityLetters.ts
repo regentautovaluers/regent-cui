@@ -118,7 +118,7 @@ const useAuthorityLetters = () => {
 				transition: 'slide',
 			});
 		} finally {
-			createAuthorizationLetterLoading.value = true;
+			createAuthorizationLetterLoading.value = false;
 		}
 	};
 
