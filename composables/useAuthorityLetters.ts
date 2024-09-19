@@ -91,7 +91,7 @@ const useAuthorityLetters = () => {
 			}
 
 			await $fetch(
-				`${runtimeConfig.public.VALUATION_BASE_URL}/api/v1/authority-letter/create-authority-letter`,
+				`${runtimeConfig.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`,
 				{
 					method: 'POST',
 					body: formData,
