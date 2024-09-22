@@ -12,6 +12,7 @@ pipeline {
         GOOGLE_MAPS_APIKEY = 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY'
         VALUATION_BASE_URL = 'http://64.226.89.245:8100'
         AVA_BASE_URL = 'http://64.225.109.172:4000'
+        RECIPIENT_EMAIL = 'martbikathi@gmail.com'
     }
 
     stages {
@@ -73,11 +74,24 @@ EOF
             }
         }
     }
-    post {
+   post {
         success {
+          emailext (
+    subject: "Jenkins Pipeline Success - AVA Control Room",
+    body: "The deployment of the control room container (Build: ${BUILD_NUMBER}) to DigitalOcean was successful.",
+    to: "${RECIPIENT_EMAIL}"
+)
+
             echo 'Deployment successful!'
         }
+
         failure {
+          emailext (
+    subject: "Jenkins Pipeline Failed - AVA Control Room",
+    body: "The deployment of the control room container (Build: ${BUILD_NUMBER}) to DigitalOcean failed. Please check the Jenkins logs.",
+    to: "${RECIPIENT_EMAIL}"
+)
+
             echo 'Deployment failed!'
         }
     }
