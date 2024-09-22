@@ -184,7 +184,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'logbook');
+							handleFileUpload(e.target?.files[0], 'Logbook');
 							logbookUploaded = true;
 						}
 					" />
@@ -205,7 +205,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'pin');
+							handleFileUpload(e.target?.files[0], 'KRA PIN');
 							kraPinUploaded = true;
 						}
 					" />
@@ -226,7 +226,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'natid');
+							handleFileUpload(e.target?.files[0], 'National ID');
 							natIdUploaded = true;
 						}
 					" />
@@ -245,7 +245,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'regcert');
+							handleFileUpload(e.target?.files[0], 'Certificate of Registration');
 							certUploaded = true;
 						}
 					" />
@@ -266,7 +266,7 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'authletter');
+							handleFileUpload(e.target?.files[0], 'Authority Letter');
 							letterUploaded = true;
 						}
 					" />

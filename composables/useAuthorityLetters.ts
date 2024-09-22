@@ -1,5 +1,3 @@
-import { data } from 'autoprefixer';
-
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
