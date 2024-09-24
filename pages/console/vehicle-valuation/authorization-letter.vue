@@ -1,31 +1,29 @@
 <template>
-	<div class="h-[88%]">
-		<div class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
-			<div
-				class="border-b-1 w- space-x-4 text-sm font-semibold text-gray-500 md:text-base lg:w-fit lg:text-lg">
-				<button
-					@click="() => (activeView = 0)"
-					:class="[
-						'border-b-2',
-						activeView === 0 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
-					]">
-					<span>Create Authorization Letter</span>
-				</button>
-				<button
-					@click="() => (activeView = 1)"
-					:class="[
-						'border-b-2',
-						activeView === 1 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
-					]">
-					<span>View Authorization Letters</span>
-				</button>
-			</div>
+	<div class="flex h-full flex-col">
+		<div
+			class="flex h-9 w-full items-center space-x-4 font-semibold text-gray-500 md:text-base lg:text-lg">
+			<button
+				@click="() => (activeView = 0)"
+				:class="[
+					'border-b-2',
+					activeView === 0 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
+				]">
+				<span>Create Authorization Letter</span>
+			</button>
+			<button
+				@click="() => (activeView = 1)"
+				:class="[
+					'border-b-2',
+					activeView === 1 ? 'border-b-blue-600 text-blue-600' : 'border-b-inherit',
+				]">
+				<span>View Authorization Letters</span>
+			</button>
 		</div>
-		<div class="mt-2 h-full">
+		<div class="flex-grow">
 			<CreateAuthorizationLetter v-if="activeView === 0" />
 			<div
 				v-if="activeView === 1"
-				class="h-full">
+				class="h-[56rem]">
 				<!-- div to show when there is a fetch error -->
 				<div
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
@@ -54,11 +52,11 @@
 
 				<!-- div to show when there are authority letters -->
 				<div
-					class="h-full"
+					class="flex h-full flex-col"
 					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit items-center justify-between">
-						<form class="relative h-fit w-full md:w-[45%] lg:w-[30%]">
+						<form class="relative h-fit w-full md:w-[45%] lg:w-[25%]">
 							<input
 								type="text"
 								class="generic-input"
@@ -71,7 +69,7 @@
 						</form>
 					</div>
 
-					<div class="my-4 flex-grow">
+					<div class="my-2 flex-grow">
 						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 							<table class="w-full text-left text-gray-500">
 								<thead class="bg-gray-100 text-sm uppercase text-gray-700">
@@ -109,6 +107,11 @@
 										</th>
 										<th
 											scope="col"
+											class="table-headers text-center">
+											Stage
+										</th>
+										<th
+											scope="col"
 											class="table-headers" />
 									</tr>
 								</thead>
@@ -135,6 +138,10 @@
 										<td
 											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
 											{{ letter.authorizedBy.username }}
+										</td>
+										<td
+											class="max-w-48 overflow-hidden text-ellipsis py-6 text-center font-semibold text-gray-600">
+											{{ 'N/A' }}
 										</td>
 										<td></td>
 									</tr>
@@ -177,22 +184,27 @@
 												>authorizedby</span
 											>
 										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
+												>bookingstage</span
+											>
+										</td>
 										<td></td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
-				</div>
 
-				<!-- page controls -->
-				<div class="flex h-12 items-center justify-between">
-					<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-						Showing {{ 1 }} of Y pages.
-					</h1>
-					<div class="h-full space-x-2 md:space-x-4">
-						<button class="table-page-buttons">Previous</button>
-						<button class="table-page-buttons">Next</button>
+					<!-- page controls -->
+					<div class="flex h-12 items-center justify-between">
+						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
+							Showing {{ 1 }} of Y pages.
+						</h1>
+						<div class="h-full space-x-2 md:space-x-4">
+							<button class="table-page-buttons">Previous</button>
+							<button class="table-page-buttons">Next</button>
+						</div>
 					</div>
 				</div>
 			</div>
