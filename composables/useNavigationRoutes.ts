@@ -91,6 +91,12 @@ const useNavigationRoutes = () => {
 					routeName: 'vehicle-valuation-authorization-letter',
 					renderRoute: true,
 				},
+				{
+					id: 2,
+					screenName: 'Tampered Vehicles',
+					routeName: 'vehicle-valuation-tampered-vehicles',
+					renderRoute: true,
+				},
 			],
 		},
 	];
