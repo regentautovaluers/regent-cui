@@ -145,9 +145,11 @@
 				<input
 					type="text"
 					id="officer-name"
-					class="generic-input"
+					class="generic-input disabled:bg-transparent"
 					placeholder="e.g Esther Kasele"
-					v-model="agencyName" />
+					v-model="agencyName"
+					required
+					@focus="isSearchCorpBrokersModalOpen = true" />
 			</div>
 			<!-- Authorized By -->
 			<div class="w-full lg:w-1/3">
@@ -283,6 +285,16 @@
 			{{ createAuthorizationLetterLoading ? $t('request_processing') : 'Submit Request' }}
 		</button>
 	</form>
+
+	<!-- Settings modal -->
+	<ParentModal
+		modal-id="search-corp-brokers"
+		modal-title="Search Corporate or Brokers"
+		class="h-96"
+		v-if="isSearchCorpBrokersModalOpen"
+		@close-modal="isSearchCorpBrokersModalOpen = false">
+		<SearchCorporateOrBroker />
+	</ParentModal>
 </template>
 
 <script setup lang="ts">
@@ -302,6 +314,7 @@
 		natIdUploaded,
 		certUploaded,
 		letterUploaded,
+		isSearchCorpBrokersModalOpen,
 		createAuthorizationLetter,
 		handleFileUpload,
 	} = useAuthorityLetters();

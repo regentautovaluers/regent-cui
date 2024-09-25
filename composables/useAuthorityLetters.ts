@@ -1,7 +1,6 @@
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
-	const nuxtApp = useNuxtApp();
 
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
@@ -23,6 +22,9 @@ const useAuthorityLetters = () => {
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
+
+	// extra information
+	const isSearchCorpBrokersModalOpen: Ref<boolean> = ref(false);
 
 	watch(clientPhone, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
@@ -136,6 +138,7 @@ const useAuthorityLetters = () => {
 		letterUploaded,
 		fetchAuthorityLetterStatus,
 		authorityLetters,
+		isSearchCorpBrokersModalOpen,
 		createAuthorizationLetter,
 		handleFileUpload,
 	};

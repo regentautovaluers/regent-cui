@@ -210,6 +210,16 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Settings modal -->
+	<ParentModal
+		modal-id="search-corp-brokers"
+		modal-title="Search Corporate or Brokers"
+		class="h-96"
+		v-if="isSearchCorpBrokersModalOpen"
+		@close-modal="isSearchCorpBrokersModalOpen = false">
+		<SearchCorporateOrBroker />
+	</ParentModal>
 </template>
 
 <script setup lang="ts">
@@ -219,5 +229,6 @@
 	});
 
 	const activeView = ref(0);
-	const { fetchAuthorityLetterStatus, authorityLetters } = useAuthorityLetters();
+	const { isSearchCorpBrokersModalOpen, fetchAuthorityLetterStatus, authorityLetters } =
+		useAuthorityLetters();
 </script>
