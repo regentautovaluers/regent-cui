@@ -214,8 +214,8 @@
 	<!-- Settings modal -->
 	<ParentModal
 		modal-id="search-corp-brokers"
-		modal-title="Search Corporate or Brokers"
-		class="h-96"
+		:modal-title="isPrincipalBroker() ? 'Search Brokers' : 'Search Corporate'"
+		class="h-[28rem]"
 		v-if="isSearchCorpBrokersModalOpen"
 		@close-modal="isSearchCorpBrokersModalOpen = false">
 		<SearchCorporateOrBroker />
@@ -231,4 +231,5 @@
 	const activeView = ref(0);
 	const { isSearchCorpBrokersModalOpen, fetchAuthorityLetterStatus, authorityLetters } =
 		useAuthorityLetters();
+	const { isPrincipalBroker } = useAuth();
 </script>

@@ -3,11 +3,15 @@ import { type LoggedInPrincipal } from '~/types';
 import type { CookieRef } from '#app';
 
 const useAuth = () => {
+	const runtimeConfig = useRuntimeConfig();
 	const email: Ref<string> = ref('');
 	const password: Ref<string> = ref('');
+	const corpOrBrokerSearchTerm: Ref<string> = ref('');
 	const loginAttemptLoading: Ref<boolean> = ref(false);
 	const updateCorporateAccountLoading: Ref<boolean> = ref(false);
 	const updateProfilePictureLoading: Ref<boolean> = ref(false);
+	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
+	const searchCorpOrBrokerResults: Ref<any[]> = ref([]);
 	const addNewAccountLoading: Ref<boolean> = ref(false);
 	const authenticatedPrincipal: RemovableRef<LoggedInPrincipal> = useStorage(
 		'authenticated-principal',
@@ -22,11 +26,11 @@ const useAuth = () => {
 			branchId: '',
 			corpName: '',
 			roleInOrganization: '',
+			isBroker: false,
 		},
 	);
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
 	const csrfToken: CookieRef<string | null | undefined> = useCookie('csrf-token');
-	const runtimeConfig = useRuntimeConfig();
 
 	const getPrincipal: ComputedRef<LoggedInPrincipal> = computed(() => {
 		return authenticatedPrincipal.value;
@@ -38,6 +42,10 @@ const useAuth = () => {
 
 	const getCsrfToken: ComputedRef<string | null | undefined> = computed(() => {
 		return csrfToken.value;
+	});
+
+	const searchBrokerOrCorpURI: ComputedRef<string> = computed(() => {
+		return `/api/v1/auth/corp-org/search-corp?searchKey=${corpOrBrokerSearchTerm.value}&isBroker=${isPrincipalBroker() ? true : false}`;
 	});
 
 	const attemptLogin = async () => {
@@ -266,6 +274,38 @@ const useAuth = () => {
 		}
 	};
 
+	const searchCorporateOrBroker = async () => {
+		searchCorpOrBrokerLoading.value = true;
+
+		try {
+			await $fetch(searchBrokerOrCorpURI.value, {
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+				},
+				onResponse({ response }) {
+					if (response.status === 200) {
+						const serverResponse = response._data.data;
+						searchCorpOrBrokerResults.value = serverResponse;
+					} else {
+						throw new Error('Search failed. Try again!');
+					}
+				},
+			});
+		} catch (error) {
+			console.log('An error occured: ', error);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: false,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			searchCorpOrBrokerLoading.value = false;
+		}
+	};
+
 	const setCredentialsInBrowserStorage = (data: any) => {
 		// set the principal
 		const principal: LoggedInPrincipal = {
@@ -276,12 +316,13 @@ const useAuth = () => {
 			roles: data.userRoles,
 			profilePicture:
 				data.profilePicture === null
-					? '/images/profile-pic-placeholder.jpg'
+					? '/images/profile-pic-placeholder.png'
 					: data.profilePicture,
 			corpId: data.corpId,
 			branchId: data.branchId,
 			corpName: data.corpName,
 			roleInOrganization: data.roleInOrganization,
+			isBroker: data.isBroker,
 		};
 
 		authenticatedPrincipal.value = principal;
@@ -304,6 +345,7 @@ const useAuth = () => {
 			branchId: '',
 			corpName: '',
 			roleInOrganization: '',
+			isBroker: false,
 		};
 
 		// unset the auth token and csrf token
@@ -328,13 +370,20 @@ const useAuth = () => {
 		return false;
 	};
 
+	const isPrincipalBroker = (): boolean => {
+		return authenticatedPrincipal.value.isBroker;
+	};
+
 	return {
 		email,
 		password,
+		corpOrBrokerSearchTerm,
 		loginAttemptLoading,
 		updateCorporateAccountLoading,
 		updateProfilePictureLoading,
 		addNewAccountLoading,
+		searchCorpOrBrokerLoading,
+		searchCorpOrBrokerResults,
 		getPrincipal,
 		getAuthToken,
 		getCsrfToken,
@@ -345,6 +394,8 @@ const useAuth = () => {
 		addNewAccount,
 		updateProfilePicture,
 		displayCookieConsent,
+		isPrincipalBroker,
+		searchCorporateOrBroker,
 	};
 };
 

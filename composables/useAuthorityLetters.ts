@@ -122,6 +122,11 @@ const useAuthorityLetters = () => {
 		}
 	};
 
+	const assignAgency = (agencyId: string) => {
+		agencyName.value = agencyId;
+		isSearchCorpBrokersModalOpen.value = false;
+	};
+
 	return {
 		registrationNumber,
 		clientName,
@@ -141,6 +146,7 @@ const useAuthorityLetters = () => {
 		isSearchCorpBrokersModalOpen,
 		createAuthorizationLetter,
 		handleFileUpload,
+		assignAgency,
 	};
 };
 

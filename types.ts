@@ -22,6 +22,7 @@ export type LoggedInPrincipal = {
 	branchId: string;
 	corpName: string;
 	roleInOrganization: string;
+	isBroker: boolean;
 };
 
 export interface LocationCoords {
