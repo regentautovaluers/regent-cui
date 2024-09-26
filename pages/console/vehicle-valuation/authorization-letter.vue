@@ -20,7 +20,9 @@
 			</button>
 		</div>
 		<div class="flex-grow">
-			<CreateAuthorizationLetter v-if="activeView === 0" />
+			<CreateAuthorizationLetter
+				v-if="activeView === 0"
+				@open-search-agent-corp-modal="isSearchCorpBrokersModalOpen = true" />
 			<div
 				v-if="activeView === 1"
 				class="h-[56rem]">
@@ -214,11 +216,12 @@
 	<!-- Settings modal -->
 	<ParentModal
 		modal-id="search-corp-brokers"
-		:modal-title="isPrincipalBroker() ? 'Search Brokers' : 'Search Corporate'"
+		:modal-title="isPrincipalBroker() ? 'Search Corporate' : 'Search Brokers'"
 		class="h-[28rem]"
 		v-if="isSearchCorpBrokersModalOpen"
 		@close-modal="isSearchCorpBrokersModalOpen = false">
-		<SearchCorporateOrBroker />
+		<SearchCorporateOrBroker
+			@close-search-agent-corp-modal="isSearchCorpBrokersModalOpen = false" />
 	</ParentModal>
 </template>
 
@@ -229,7 +232,7 @@
 	});
 
 	const activeView = ref(0);
-	const { isSearchCorpBrokersModalOpen, fetchAuthorityLetterStatus, authorityLetters } =
-		useAuthorityLetters();
+	const isSearchCorpBrokersModalOpen: Ref<boolean> = ref(false);
+	const { fetchAuthorityLetterStatus, authorityLetters } = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
 </script>

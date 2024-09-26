@@ -1,3 +1,9 @@
+import { type SelectedCorpOrBroker } from '~/types';
+import {
+	setSelectedCorpOrBroker,
+	getSelectedCorpOrBroker,
+} from '~/stores/authority-letter-on-behalf-of-store';
+
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
@@ -8,7 +14,7 @@ const useAuthorityLetters = () => {
 	const preferredBranch: Ref<string> = ref('');
 	const comments: Ref<string> = ref('');
 	const policyNumber: Ref<string> = ref('');
-	const agencyName: Ref<string> = ref('');
+	const agencyOrCorp = computed(() => getSelectedCorpOrBroker.value);
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const uploadedDocuments: Ref<any[]> = ref([]);
 
@@ -22,9 +28,6 @@ const useAuthorityLetters = () => {
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-
-	// extra information
-	const isSearchCorpBrokersModalOpen: Ref<boolean> = ref(false);
 
 	watch(clientPhone, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
@@ -76,12 +79,21 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-			formData.append('regentBranch', preferredBranch.value);
-			formData.append('comments', comments.value);
-			formData.append('policyNumber', policyNumber.value);
-			formData.append('agencyName', agencyName.value);
+			formData.append('agencyName', agencyOrCorp.value.id);
 			formData.append('corpOrganization', getPrincipal.value.corpId);
 			formData.append('authorizedBy', getPrincipal.value.userId);
+
+			if (preferredBranch.value.length > 0) {
+				formData.append('regentBranch', preferredBranch.value);
+			}
+
+			if (policyNumber.value.length > 0) {
+				formData.append('policyNumber', policyNumber.value);
+			}
+
+			if (comments.value.length > 0) {
+				formData.append('comments', comments.value);
+			}
 
 			// handle appending the files
 			if (uploadedDocuments.value.length > 0) {
@@ -122,11 +134,6 @@ const useAuthorityLetters = () => {
 		}
 	};
 
-	const assignAgency = (agencyId: string) => {
-		agencyName.value = agencyId;
-		isSearchCorpBrokersModalOpen.value = false;
-	};
-
 	return {
 		registrationNumber,
 		clientName,
@@ -134,7 +141,7 @@ const useAuthorityLetters = () => {
 		preferredBranch,
 		comments,
 		policyNumber,
-		agencyName,
+		agencyOrCorp,
 		createAuthorizationLetterLoading,
 		logbookUploaded,
 		kraPinUploaded,
@@ -143,10 +150,10 @@ const useAuthorityLetters = () => {
 		letterUploaded,
 		fetchAuthorityLetterStatus,
 		authorityLetters,
-		isSearchCorpBrokersModalOpen,
 		createAuthorizationLetter,
 		handleFileUpload,
-		assignAgency,
+		setSelectedCorpOrBroker,
+		getSelectedCorpOrBroker,
 	};
 };
 

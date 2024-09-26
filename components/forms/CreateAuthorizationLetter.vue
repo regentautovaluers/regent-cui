@@ -1,4 +1,7 @@
 <template>
+	<!-- <h1 class="text-2xl">
+		Selected agency/ corp: {{ getSelectedCorpOrBroker }} and ref: {{ agencyOrCorp.name }}
+	</h1> -->
 	<form @submit.prevent="createAuthorizationLetter">
 		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
 			<!-- Registration Number -->
@@ -16,7 +19,7 @@
 					required
 					v-model="registrationNumber" />
 			</div>
-			<!-- Customer Name -->
+			<!-- Client Name -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="client-name"
@@ -31,7 +34,7 @@
 					required
 					v-model="clientName" />
 			</div>
-			<!-- Customer Phone Number -->
+			<!-- Client Phone Number -->
 			<div class="w-full lg:w-1/3">
 				<label
 					for="client-phone"
@@ -49,7 +52,6 @@
 		</div>
 		<!-- Preffered Regent Branch -->
 		<div
-			id="alert-additional-content-4"
 			class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
 			role="alert">
 			<div class="flex items-center">
@@ -81,13 +83,13 @@
 		</div>
 		<div class="relative mt-2 flex w-full flex-col">
 			<label
-				for="fuel-type"
+				for="preffered-branch"
 				class="generic-input-label"
 				>Preferred Regent Branch</label
 			>
 			<select
 				class="generic-input"
-				id="fuel-type"
+				id="preffered-branch"
 				v-model="preferredBranch">
 				<option
 					:value="''"
@@ -137,19 +139,16 @@
 			</div>
 			<!-- Officer Name -->
 			<div class="w-full lg:w-1/3">
-				<label
-					for="officer-name"
-					class="generic-input-label"
-					>Agency / Broker / Bank Officer</label
-				>
-				<input
-					type="text"
+				<label class="generic-input-label">{{
+					isPrincipalBroker() ? 'Select Corporate' : 'Select Broker / Agency'
+				}}</label>
+				<button
+					type="button"
 					id="officer-name"
-					class="generic-input disabled:bg-transparent"
-					placeholder="e.g Esther Kasele"
-					v-model="agencyName"
-					required
-					@focus="isSearchCorpBrokersModalOpen = true" />
+					class="generic-input text-start"
+					@click="emits('open-search-agent-corp-modal')">
+					{{ agencyOrCorp.name }}
+				</button>
 			</div>
 			<!-- Authorized By -->
 			<div class="w-full lg:w-1/3">
@@ -186,7 +185,10 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'Logbook');
+							handleFileUpload(
+								(e.target as HTMLInputElement)?.files?.[0] as File,
+								'Logbook',
+							);
 							logbookUploaded = true;
 						}
 					" />
@@ -207,7 +209,10 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'KRA PIN');
+							handleFileUpload(
+								(e.target as HTMLInputElement)?.files?.[0] as File,
+								'KRA PIN',
+							);
 							kraPinUploaded = true;
 						}
 					" />
@@ -228,7 +233,10 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'National ID');
+							handleFileUpload(
+								(e.target as HTMLInputElement)?.files?.[0] as File,
+								'National ID',
+							);
 							natIdUploaded = true;
 						}
 					" />
@@ -247,7 +255,10 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'Certificate of Registration');
+							handleFileUpload(
+								(e.target as HTMLInputElement)?.files?.[0] as File,
+								'Certificate of Registration',
+							);
 							certUploaded = true;
 						}
 					" />
@@ -268,7 +279,10 @@
 					class="hidden"
 					@change.prevent="
 						(e) => {
-							handleFileUpload(e.target?.files[0], 'Authority Letter');
+							handleFileUpload(
+								(e.target as HTMLInputElement)?.files?.[0] as File,
+								'Authority Letter',
+							);
 							letterUploaded = true;
 						}
 					" />
@@ -285,21 +299,12 @@
 			{{ createAuthorizationLetterLoading ? $t('request_processing') : 'Submit Request' }}
 		</button>
 	</form>
-
-	<!-- Settings modal -->
-	<ParentModal
-		modal-id="search-corp-brokers"
-		modal-title="Search Corporate or Brokers"
-		class="h-96"
-		v-if="isSearchCorpBrokersModalOpen"
-		@close-modal="isSearchCorpBrokersModalOpen = false">
-		<SearchCorporateOrBroker />
-	</ParentModal>
 </template>
 
 <script setup lang="ts">
 	const { regentBranches, fetchStatus, fetchError, refreshRegentBranches } = useRegentBranches();
 	const { getPrincipal } = useAuth();
+	const emits = defineEmits(['open-search-agent-corp-modal']);
 	const {
 		registrationNumber,
 		clientName,
@@ -307,15 +312,16 @@
 		preferredBranch,
 		comments,
 		policyNumber,
-		agencyName,
+		agencyOrCorp,
 		createAuthorizationLetterLoading,
 		logbookUploaded,
 		kraPinUploaded,
 		natIdUploaded,
 		certUploaded,
 		letterUploaded,
-		isSearchCorpBrokersModalOpen,
 		createAuthorizationLetter,
 		handleFileUpload,
+		getSelectedCorpOrBroker,
 	} = useAuthorityLetters();
+	const { isPrincipalBroker } = useAuth();
 </script>

@@ -90,3 +90,8 @@ export type RoadsideAssistanceAnalytics = {
 	towing: number;
 	tyrechange: number;
 };
+
+export type SelectedCorpOrBroker = {
+	name: string;
+	id: string;
+};
