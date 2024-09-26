@@ -79,7 +79,7 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-			formData.append('agencyName', agencyOrCorp.value.id);
+
 			formData.append('corpOrganization', getPrincipal.value.corpId);
 			formData.append('authorizedBy', getPrincipal.value.userId);
 
@@ -100,6 +100,10 @@ const useAuthorityLetters = () => {
 				for (const file of uploadedDocuments.value) {
 					formData.append('files', file.blob);
 				}
+			}
+
+			if (agencyOrCorp.value.name.length > 0) {
+				formData.append('agencyName', agencyOrCorp.value.id);
 			}
 
 			await $fetch(
