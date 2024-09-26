@@ -11,7 +11,7 @@ const useAuth = () => {
 	const updateCorporateAccountLoading: Ref<boolean> = ref(false);
 	const updateProfilePictureLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
-	const searchCorpOrBrokerResults: Ref<any[]> = ref([]);
+	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
 	const addNewAccountLoading: Ref<boolean> = ref(false);
 	const authenticatedPrincipal: RemovableRef<LoggedInPrincipal> = useStorage(
 		'authenticated-principal',
@@ -45,7 +45,7 @@ const useAuth = () => {
 	});
 
 	const searchBrokerOrCorpURI: ComputedRef<string> = computed(() => {
-		return `/api/v1/auth/corp-org/search-corp?searchKey=${corpOrBrokerSearchTerm.value}&isBroker=${isPrincipalBroker() ? true : false}`;
+		return `/api/v1/auth/corp-org/search-corp?searchKey=${corpOrBrokerSearchTerm.value}&isBroker=${isPrincipalBroker() ? false : true}`;
 	});
 
 	const attemptLogin = async () => {
@@ -275,6 +275,7 @@ const useAuth = () => {
 	};
 
 	const searchCorporateOrBroker = async () => {
+		searchCorpOrBrokerResults.value = null;
 		searchCorpOrBrokerLoading.value = true;
 
 		try {
