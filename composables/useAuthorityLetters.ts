@@ -29,6 +29,9 @@ const useAuthorityLetters = () => {
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
 
+	// for exporting authority letters
+	const exportAuthorityLettersLoading: Ref<boolean> = ref(false);
+
 	watch(clientPhone, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
 			clientPhone.value = newNumber.replace(/^(\+254|0)/, '254');
@@ -138,6 +141,45 @@ const useAuthorityLetters = () => {
 		}
 	};
 
+	const exportAuthorityLetter = async (startDate: string, endDate: string) => {
+		try {
+			exportAuthorityLettersLoading.value = true;
+			await $fetch(
+				`${runtimeConfig.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/export`,
+				{
+					method: 'GET',
+					query: {
+						corpId: getPrincipal.value.corpId,
+						startDate: startDate,
+						endDate: endDate,
+					},
+					onResponse({ response }) {
+						if (response.status === 404) {
+							useToast('Found No Letters!', {
+								type: 'warning',
+								showIcon: true,
+								showCloseButton: false,
+								hideProgressBar: true,
+								transition: 'slide',
+							});
+						}
+					},
+				},
+			);
+		} catch (err) {
+			console.log('Failed to export Excel document', err);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
+		} finally {
+			exportAuthorityLettersLoading.value = false;
+		}
+	};
+
 	return {
 		registrationNumber,
 		clientName,
@@ -147,6 +189,7 @@ const useAuthorityLetters = () => {
 		policyNumber,
 		agencyOrCorp,
 		createAuthorizationLetterLoading,
+		exportAuthorityLettersLoading,
 		logbookUploaded,
 		kraPinUploaded,
 		natIdUploaded,
@@ -157,6 +200,7 @@ const useAuthorityLetters = () => {
 		createAuthorizationLetter,
 		handleFileUpload,
 		setSelectedCorpOrBroker,
+		exportAuthorityLetter,
 		getSelectedCorpOrBroker,
 	};
 };

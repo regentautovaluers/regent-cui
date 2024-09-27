@@ -62,13 +62,19 @@
 							<input
 								type="text"
 								class="generic-input"
-								placeholder="Search Name, Email or Phone" />
+								placeholder="Search Registration" />
 							<button
 								type="submit"
 								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 								<SearchIcon />
 							</button>
 						</form>
+						<button
+							type="button"
+							class="h-14 w-fit items-center justify-center rounded-lg bg-blue-600 px-2 font-semibold text-white hover:bg-blue-700"
+							@click="isExportExcelModalOpen = true">
+							Export to Excel
+						</button>
 					</div>
 
 					<div class="my-2 flex-grow">
@@ -109,6 +115,11 @@
 										</th>
 										<th
 											scope="col"
+											class="table-headers">
+											Created On
+										</th>
+										<th
+											scope="col"
 											class="table-headers text-center">
 											Stage
 										</th>
@@ -134,13 +145,17 @@
 											{{ letter.clientPhone }}
 										</td>
 										<td class="p-6 font-semibold text-blue-600">
-											{{ letter.policyNumber }}
+											{{ letter.policyNumber ?? 'N/A' }}
 										</td>
-										<td class="p-6">{{ letter.agencyName }}</td>
+										<td class="p-6">{{ letter.agencyName ?? 'N/A' }}</td>
 										<td
 											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
 											{{ letter.authorizedBy.username }}
 										</td>
+										<td class="p-6 font-semibold">
+											{{ letter.createdOn.split(' ')[0] }}
+										</td>
+
 										<td
 											class="max-w-48 overflow-hidden text-ellipsis py-6 text-center font-semibold text-gray-600">
 											{{ 'N/A' }}
@@ -188,6 +203,11 @@
 										</td>
 										<td class="p-6 text-gray-300">
 											<span class="animate-pulse rounded-lg bg-gray-300"
+												>created today</span
+											>
+										</td>
+										<td class="p-6 text-gray-300">
+											<span class="animate-pulse rounded-lg bg-gray-300"
 												>bookingstage</span
 											>
 										</td>
@@ -213,7 +233,7 @@
 		</div>
 	</div>
 
-	<!-- Settings modal -->
+	<!-- Search Corp or Broker modal -->
 	<ParentModal
 		modal-id="search-corp-brokers"
 		:modal-title="isPrincipalBroker() ? 'Search Corporate' : 'Search Brokers'"
@@ -222,6 +242,16 @@
 		@close-modal="isSearchCorpBrokersModalOpen = false">
 		<SearchCorporateOrBroker
 			@close-search-agent-corp-modal="isSearchCorpBrokersModalOpen = false" />
+	</ParentModal>
+
+	<!-- Search Corp or Broker modal -->
+	<ParentModal
+		modal-id="search-corp-brokers"
+		modal-title="Export to Excel"
+		class="h-[18rem]"
+		v-if="isExportExcelModalOpen"
+		@close-modal="isExportExcelModalOpen = false">
+		<ExportAuthorityLetter />
 	</ParentModal>
 </template>
 
@@ -233,6 +263,7 @@
 
 	const activeView = ref(0);
 	const isSearchCorpBrokersModalOpen: Ref<boolean> = ref(false);
+	const isExportExcelModalOpen: Ref<boolean> = ref(false);
 	const { fetchAuthorityLetterStatus, authorityLetters } = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
 </script>
