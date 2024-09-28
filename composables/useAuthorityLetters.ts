@@ -163,6 +163,27 @@ const useAuthorityLetters = () => {
 								transition: 'slide',
 							});
 						}
+
+						if (response.status === 200) {
+							useToast('Success! Downloading Shortly!', {
+								type: 'success',
+								showIcon: true,
+								showCloseButton: false,
+								hideProgressBar: true,
+								transition: 'slide',
+							});
+
+							const url = window.URL.createObjectURL(new Blob([response._data]));
+							const link = document.createElement('a');
+							link.href = url;
+							link.setAttribute(
+								'download',
+								`authority-letters-${getPrincipal.value.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xlsx`,
+							);
+							document.body.appendChild(link);
+							link.click();
+							link.remove();
+						}
 					},
 				},
 			);
