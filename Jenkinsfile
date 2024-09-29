@@ -6,6 +6,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials-id' 
         DOCKER_IMAGE = 'bensongathu/avaluation-corporate-portal'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
+        PREVIOUS_BUILD_TAG = "${env.BUILD_NUMBER.toInteger() - 1}" 
         SERVER_IP = '64.225.109.172'
         SSH_USERNAME = 'root'
         SSH_CREDENTIALS_ID = 'your-ssh-credentials-id'
@@ -49,7 +50,7 @@ pipeline {
                             docker rm valuation-portal || true
             
                             echo "Removing existing image..."
-                            docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true
+                            docker rmi ${DOCKER_IMAGE}:${PREVIOUS_BUILD_TAG} || echo "Previous image not found"
                             
                             echo "Pulling new image..."
                             docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
