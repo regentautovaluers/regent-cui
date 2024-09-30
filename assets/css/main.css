@@ -12,7 +12,7 @@
 	}
 
 	.generic-input-label {
-		@apply block font-semibold text-gray-600;
+		@apply block font-bold text-gray-600;
 	}
 
 	.generic-input-required-label {
@@ -42,15 +42,23 @@
 		@apply whitespace-nowrap;
 	}
 
-	/* p,
+	p,
 	h1,
 	h2,
 	h3,
 	h4,
 	h5,
-	h6 {
-		@apply text-gray-500;
-	} */
+	h6,
+	tr,
+	th,
+	span,
+	label,
+	input {
+		font-family: 'Rubik', sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		font-style: normal;
+	}
 }
 
 .homepage-quicklinks {

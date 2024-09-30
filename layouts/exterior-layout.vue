@@ -84,7 +84,7 @@
 					src="/images/app-logo.png"
 					class="me-3 size-20"
 					alt="Flowbite Logo" />
-				<h1 class="text-lg font-semibold antialiased md:text-3xl">Regent Valuers</h1>
+				<h1 class="text-lg font-bold antialiased md:text-3xl">Regent Valuers</h1>
 			</div>
 			<div class="flex-grow px-4 py-4 md:px-16 xl:px-24">
 				<slot />
@@ -153,7 +153,6 @@
 
 <script setup lang="ts">
 	const { language, availableLanguages } = useSystemLocale();
-	const { displayCookieConsent } = useAuth();
 	const slides: readonly string[] = [
 		'/images/slides/landingpage/1_04092024.jpg',
 		'/images/slides/landingpage/2_04092024.jpg',

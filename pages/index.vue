@@ -1,8 +1,8 @@
 <template>
 	<form @submit.prevent="attemptLogin">
-		<div class="mb-16 text-3xl font-extrabold md:text-4xl lg:text-5xl">
-			<h1>{{ $t('greeting') }},</h1>
-			<h2 class="whitespace-nowrap">{{ $t('welcome_text') }}</h2>
+		<div class="mb-16 text-3xl md:text-4xl lg:text-5xl">
+			<h1 class="font-bold">{{ $t('greeting') }},</h1>
+			<h2 class="whitespace-nowrap font-bold">{{ $t('welcome_text') }}</h2>
 		</div>
 		<div class="space-y-4">
 			<input

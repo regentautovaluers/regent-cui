@@ -68,7 +68,7 @@ export default defineNuxtConfig({
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
 		},
 	},
-	modules: ['@nuxtjs/i18n', '@nuxtjs/harlem'],
+	modules: ['@nuxtjs/i18n', '@nuxtjs/harlem', '@nuxt/fonts'],
 	i18n: {
 		vueI18n: './i18n.config.ts', // if you are using custom path, default
 	},

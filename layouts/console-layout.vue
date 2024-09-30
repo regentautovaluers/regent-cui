@@ -1,6 +1,8 @@
 <template>
 	<main class="flex h-screen flex-col">
-		<div class="sticky top-0 z-40 flex max-h-20 min-h-20 items-center border-b bg-white" id="top-nav">
+		<div
+			class="sticky top-0 z-40 flex max-h-20 min-h-20 items-center border-b bg-white"
+			id="top-nav">
 			<div class="w-fit lg:w-[20rem]">
 				<button
 					data-drawer-target="system-sidebar"
@@ -23,7 +25,7 @@
 				</button>
 			</div>
 			<div class="flex h-full flex-grow items-center justify-between px-4">
-				<h1 class="text-lg font-extrabold md:text-3xl">{{ currentScreenName }}</h1>
+				<h1 class="text-lg font-bold md:text-3xl">{{ currentScreenName }}</h1>
 				<div class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3">
 					<img
 						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
@@ -54,9 +56,7 @@
 							src="/images/app-logo.png"
 							class="me-3 h-10"
 							alt="Regent Logo" />
-						<span class="self-center whitespace-nowrap text-xl font-semibold"
-							>Regent Valuers</span
-						>
+						<span class="whitespace-nowrap text-2xl font-bold">Regent Valuers</span>
 					</NuxtLink>
 				</div>
 				<div class="flex-grow">
