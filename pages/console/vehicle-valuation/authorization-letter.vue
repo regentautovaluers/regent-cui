@@ -129,40 +129,6 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr
-										class="border-b bg-white hover:bg-gray-100"
-										v-for="(letter, index) in authorityLetters"
-										:key="index">
-										<td
-											scope="row"
-											class="whitespace-nowrap p-6 font-semibold text-gray-600">
-											{{ letter.registrationNumber }}
-										</td>
-										<td class="p-6">
-											{{ letter.clientName }}
-										</td>
-										<td class="p-6 font-semibold text-pink-600">
-											{{ letter.clientPhone }}
-										</td>
-										<td class="p-6 font-semibold text-blue-600">
-											{{ letter.policyNumber ?? 'N/A' }}
-										</td>
-										<td class="p-6">{{ letter.agencyName ?? 'N/A' }}</td>
-										<td
-											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
-											{{ letter.authorizedBy.username }}
-										</td>
-										<td class="p-6 font-semibold">
-											{{ letter.createdOn.split(' ')[0] }}
-										</td>
-
-										<td
-											class="max-w-48 overflow-hidden text-ellipsis py-6 text-center font-semibold text-gray-600">
-											{{ 'N/A' }}
-										</td>
-										<td></td>
-									</tr>
-
 									<!-- loading state -->
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
@@ -213,6 +179,40 @@
 										</td>
 										<td></td>
 									</tr>
+									<tr
+										class="border-b bg-white hover:bg-gray-100"
+										v-else
+										v-for="(letter, index) in authorityLetters"
+										:key="index">
+										<td
+											scope="row"
+											class="whitespace-nowrap p-6 font-semibold text-gray-600">
+											{{ letter.registrationNumber }}
+										</td>
+										<td class="p-6">
+											{{ letter.clientName }}
+										</td>
+										<td class="p-6 font-semibold text-pink-600">
+											{{ letter.clientPhone }}
+										</td>
+										<td class="p-6 font-semibold text-blue-600">
+											{{ letter.policyNumber ?? 'N/A' }}
+										</td>
+										<td class="p-6">{{ letter.agencyName ?? 'N/A' }}</td>
+										<td
+											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
+											{{ letter.authorizedBy.username }}
+										</td>
+										<td class="p-6 font-semibold">
+											{{ letter.createdOn.split(' ')[0] }}
+										</td>
+
+										<td
+											class="max-w-48 overflow-hidden text-ellipsis py-6 text-center font-semibold text-gray-600">
+											{{ 'N/A' }}
+										</td>
+										<td></td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -221,11 +221,19 @@
 					<!-- page controls -->
 					<div class="flex h-12 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-							Showing {{ 1 }} of Y pages.
+							Showing {{ page + 1 }} of Y pages.
 						</h1>
 						<div class="h-full space-x-2 md:space-x-4">
-							<button class="table-page-buttons">Previous</button>
-							<button class="table-page-buttons">Next</button>
+							<button
+								class="table-page-buttons"
+								@click="page -= 1">
+								Previous
+							</button>
+							<button
+								class="table-page-buttons"
+								@click="page += 1">
+								Next
+							</button>
 						</div>
 					</div>
 				</div>
@@ -264,6 +272,6 @@
 	const activeView = ref(0);
 	const isSearchCorpBrokersModalOpen: Ref<boolean> = ref(false);
 	const isExportExcelModalOpen: Ref<boolean> = ref(false);
-	const { fetchAuthorityLetterStatus, authorityLetters } = useAuthorityLetters();
+	const { page, fetchAuthorityLetterStatus, authorityLetters } = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
 </script>

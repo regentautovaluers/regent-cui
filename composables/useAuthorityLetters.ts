@@ -49,7 +49,7 @@ const useAuthorityLetters = () => {
 			},
 			query: {
 				corpId: getPrincipal.value.corpId,
-				page: page.value,
+				page: page,
 				size: pageSize,
 			},
 			server: false,
@@ -200,6 +200,7 @@ const useAuthorityLetters = () => {
 	};
 
 	return {
+		page,
 		registrationNumber,
 		clientName,
 		clientPhone,
