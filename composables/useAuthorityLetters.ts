@@ -82,8 +82,6 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-
-			formData.append('corpOrganization', getPrincipal.value.corpId);
 			formData.append('authorizedBy', getPrincipal.value.userId);
 
 			if (preferredBranch.value.length > 0) {
