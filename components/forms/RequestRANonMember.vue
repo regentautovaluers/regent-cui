@@ -19,7 +19,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="full-name"
-					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+					class="generic-input-label generic-input-required-label"
 					>Full Name</label
 				>
 				<input
@@ -35,7 +35,7 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="phone"
-					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+					class="generic-input-label generic-input-required-label"
 					>Phone</label
 				>
 				<input
@@ -120,7 +120,7 @@
 			v-if="renderElementForService('ra-towing-request')">
 			<label
 				for="vehicle-type"
-				class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+				class="generic-input-label generic-input-required-label"
 				>Vehicle Type</label
 			>
 			<select

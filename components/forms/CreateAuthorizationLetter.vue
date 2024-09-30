@@ -8,7 +8,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="registration-number"
-					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+					class="generic-input-label generic-input-required-label"
 					>Registration Number</label
 				>
 				<input
@@ -23,7 +23,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="client-name"
-					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+					class="generic-input-label generic-input-required-label"
 					>Client Name</label
 				>
 				<input
@@ -38,7 +38,7 @@
 			<div class="w-full lg:w-1/3">
 				<label
 					for="client-phone"
-					class="generic-input-label after:ml-0.5 after:text-gray-600 after:content-['*']"
+					class="generic-input-label generic-input-required-label"
 					>Client Phone Number</label
 				>
 				<input

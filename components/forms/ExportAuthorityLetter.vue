@@ -1,11 +1,16 @@
 <template>
+	<InformationChip>
+		<p class="text-sm font-semibold text-gray-500">
+			Select the dates between which you want to export your letters.
+		</p>
+	</InformationChip>
 	<form
 		class="space-y-2"
 		@submit.prevent="exportAuthorityLetter(startDate, endDate)">
 		<div>
 			<label
 				for="letter-start-date"
-				class="generic-input-label"
+				class="generic-input-label generic-input-required-label"
 				>Start Date</label
 			>
 			<input
@@ -22,7 +27,7 @@
 		<div>
 			<label
 				for="letter-end-date"
-				class="generic-input-label"
+				class="generic-input-label generic-input-required-label"
 				>End Date</label
 			>
 			<input
