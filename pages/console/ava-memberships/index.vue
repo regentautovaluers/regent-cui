@@ -59,7 +59,7 @@
 
 				<!-- div to show when there are members -->
 				<div
-					class="flex h-full flex-col justify-between md:min-h-[58rem] border rounded-lg p-2"
+					class="flex h-full flex-col justify-between rounded-lg border p-2 md:min-h-[58rem]"
 					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit items-center justify-between">
@@ -104,12 +104,7 @@
 										<th
 											scope="col"
 											class="table-headers">
-											Client Phone
-										</th>
-										<th
-											scope="col"
-											class="table-headers">
-											Client Email
+											Client Contacts
 										</th>
 										<th
 											scope="col"
@@ -145,13 +140,7 @@
 												>domain role</span
 											>
 										</td>
-										<td class="p-6 text-gray-300">
-											<span class="animate-pulse rounded-lg bg-gray-300"
-												>accactive</span
-											>
-										</td>
 									</tr>
-
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
 										v-else
@@ -159,22 +148,23 @@
 										:key="index">
 										<td
 											scope="row"
-											class="whitespace-nowrap p-6 font-semibold text-gray-600">
+											class="whitespace-nowrap p-4 font-semibold text-gray-600">
 											{{ member.full_name }}
 										</td>
-										<td class="p-6 text-blue-600">
+										<td class="p-4 text-blue-600">
 											{{ stringToTitleCase(member.category) }}
 										</td>
-										<td class="p-6 font-semibold text-pink-600">
+										<td class="p-4 font-semibold text-pink-600">
 											{{ member.membershipVehicleCount }}
 										</td>
-										<td class="p-6">{{ member.phone_number }}</td>
-										<td
-											scope="row"
-											class="whitespace-nowrap p-6 font-medium text-gray-600">
-											{{ member.userEmail ?? 'N/A' }}
+										<td class="inline-flex flex-col p-4">
+											<span>{{ member.userEmail ?? 'N/A' }}</span>
+											<span
+												class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+												>{{ member.phone_number }}</span
+											>
 										</td>
-										<td class="flex items-center justify-end p-6">
+										<td class="py-4 pr-2 text-end">
 											<button
 												:id="'dropdownTopButton' + index"
 												:data-dropdown-toggle="'dropdownTop' + index"
@@ -252,12 +242,14 @@
 						<div class="h-full space-x-2 md:space-x-4">
 							<button
 								class="table-page-buttons"
-								@click="currentPage -= 1">
+								@click="currentPage -= 1"
+								:disabled="currentPage === 0 || totalPages == 1">
 								Previous
 							</button>
 							<button
 								class="table-page-buttons"
-								@click="currentPage += 1">
+								@click="currentPage += 1"
+								:disabled="currentPage === totalPages - 1 || totalPages == 1">
 								Next
 							</button>
 						</div>
