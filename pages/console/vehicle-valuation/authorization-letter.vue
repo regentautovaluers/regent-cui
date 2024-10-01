@@ -25,7 +25,7 @@
 				@open-search-agent-corp-modal="isSearchCorpBrokersModalOpen = true" />
 			<div
 				v-if="activeView === 1"
-				class="h-[56rem]">
+				class="h-[58.5rem]">
 				<!-- div to show when there is a fetch error -->
 				<div
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
@@ -91,12 +91,7 @@
 										<th
 											scope="col"
 											class="table-headers">
-											Client Name
-										</th>
-										<th
-											scope="col"
-											class="table-headers">
-											Client Phone
+											Client Details
 										</th>
 										<th
 											scope="col"
@@ -186,29 +181,27 @@
 										:key="index">
 										<td
 											scope="row"
-											class="whitespace-nowrap p-6 font-semibold text-gray-600">
+											class="whitespace-nowrap p-4 font-semibold text-gray-600">
 											{{ letter.registrationNumber }}
 										</td>
-										<td class="p-6">
-											{{ letter.clientName }}
+										<td class="inline-flex flex-col p-4">
+											<span>{{ letter.clientName }}</span>
+											<span class="text-sm text-pink-600 bg-pink-200 w-fit px-1 rounded-lg">{{ letter.clientPhone }}</span>
 										</td>
-										<td class="p-6 font-semibold text-pink-600">
-											{{ letter.clientPhone }}
-										</td>
-										<td class="p-6 font-semibold text-blue-600">
+										<td class="p-4 font-semibold text-blue-600">
 											{{ letter.policyNumber ?? 'N/A' }}
 										</td>
-										<td class="p-6">{{ letter.agencyName ?? 'N/A' }}</td>
+										<td class="p-4">{{ letter.agencyName ?? 'N/A' }}</td>
 										<td
 											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
 											{{ letter.authorizedBy.username }}
 										</td>
-										<td class="p-6 font-semibold">
+										<td class="p-4 font-semibold">
 											{{ letter.createdOn.split(' ')[0] }}
 										</td>
 
 										<td
-											class="max-w-48 overflow-hidden text-ellipsis py-6 text-center font-semibold text-gray-600">
+											class="max-w-48 overflow-hidden text-ellipsis py-4 text-center font-semibold text-gray-600">
 											{{
 												!letter.assessmentStage
 													? 'N/A'
@@ -225,7 +218,7 @@
 					</div>
 
 					<!-- page controls -->
-					<div class="flex h-12 items-center justify-between">
+					<div class="flex h-16 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 							Showing {{ page + 1 }} of Y pages.
 						</h1>
