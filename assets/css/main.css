@@ -53,7 +53,8 @@
 	th,
 	span,
 	label,
-	input {
+	input,
+	a {
 		font-family: 'Rubik', sans-serif;
 		font-optical-sizing: auto;
 		font-weight: 400;
