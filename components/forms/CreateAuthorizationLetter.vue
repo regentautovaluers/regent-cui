@@ -68,9 +68,11 @@
 				<h3 class="text-lg font-medium">Notice On Regent Branches</h3>
 			</div>
 			<div class="mb-4 mt-2">
-				If you fail to choose a preffered Regent Branch to direct your request for valuation
-				to, the request will be sent to Customer Care. If your preferred branch is not
-				showing up here, please 'Refresh List' or contact us for support.
+				<p>
+					If you fail to choose a preffered Regent Branch to direct your request for
+					valuation to, the request will be sent to Customer Care. If your preferred
+					branch is not showing up here, please 'Refresh List' or contact us for support.
+				</p>
 			</div>
 			<div class="flex">
 				<button

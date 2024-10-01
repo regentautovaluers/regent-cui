@@ -17,10 +17,12 @@
 			<h3 class="text-lg font-medium">Notice On Client Fleets</h3>
 		</div>
 		<div class="mb-4 mt-2">
-			You must have a fleet before you can add members. The members you upload using this form
-			will be linked to that fleet. If you have no fleet, click the 'Add Fleet' button below
-			to add to your fleets. If your fleet is not showing up here, please 'Refresh List' or
-			contact us for support.
+			<p>
+				You must have a fleet before you can add members. The members you upload using this
+				form will be linked to that fleet. If you have no fleet, click the 'Add Fleet'
+				button below to add to your fleets. If your fleet is not showing up here, please
+				'Refresh List' or contact us for support.
+			</p>
 		</div>
 		<div class="flex">
 			<button

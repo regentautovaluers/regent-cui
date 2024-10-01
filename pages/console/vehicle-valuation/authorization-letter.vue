@@ -186,7 +186,10 @@
 										</td>
 										<td class="inline-flex flex-col p-4">
 											<span>{{ letter.clientName }}</span>
-											<span class="text-sm text-pink-600 bg-pink-200 w-fit px-1 rounded-lg">{{ letter.clientPhone }}</span>
+											<span
+												class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+												>{{ letter.clientPhone }}</span
+											>
 										</td>
 										<td class="p-4 font-semibold text-blue-600">
 											{{ letter.policyNumber ?? 'N/A' }}
@@ -263,8 +266,6 @@
 </template>
 
 <script setup lang="ts">
-	import type { ValuationStages } from '~/types';
-
 	definePageMeta({
 		name: 'vehicle-valuation-authorization-letter',
 		layout: 'console-layout',

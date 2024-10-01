@@ -6,7 +6,7 @@ import {
 
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getPrincipal, isPrincipalBroker } = useAuth();
 
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
@@ -87,6 +87,21 @@ const useAuthorityLetters = () => {
 	};
 
 	const createAuthorizationLetter = async () => {
+		// if the logged in user is a broker anf they have not
+		// filled the agencyOrCorpName show a warning toast and exit
+		// the function
+		if (isPrincipalBroker() && agencyOrCorp.value.name.length === 0) {
+			useToast('Corporate is Required!', {
+				type: 'warning',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'bounce',
+			});
+
+			return;
+		}
+
 		createAuthorizationLetterLoading.value = true;
 
 		try {

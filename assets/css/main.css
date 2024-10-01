@@ -54,7 +54,13 @@
 	span,
 	label,
 	input,
-	a {
+	a,
+	select,
+	option,
+	button,
+	ul,
+	li,
+	textarea {
 		font-family: 'Rubik', sans-serif;
 		font-optical-sizing: auto;
 		font-weight: 400;
