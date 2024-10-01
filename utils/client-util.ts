@@ -83,3 +83,16 @@ export const screenFormatRAServiceName = (rawType: string): string => {
 export const refreshPage = () => {
 	location.reload();
 };
+
+export const determineValuationStage = (stage: ValuationStages): string => {
+	enum ValuationStages {
+		AWAITING_ASSESSMENT = 'Ongoing',
+		VALUER_DRAFT = 'Ongoing',
+		PENDING = 'Ongoing',
+		AWAITING_MANAGER_APPROVAL = 'Ongoing',
+		AWAITING_QC_APPROVAL = 'Ongoing',
+		INVOICING = 'Completed',
+	}
+
+	return ValuationStages[stage];
+};

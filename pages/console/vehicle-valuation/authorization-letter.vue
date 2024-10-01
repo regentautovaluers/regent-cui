@@ -72,7 +72,7 @@
 						<button
 							type="button"
 							class="h-14 w-fit items-center justify-center rounded-lg bg-blue-600 px-2 font-semibold text-white hover:bg-blue-700"
-							@click="isExportExcelModalOpen = true">
+							@click.prevent="isExportExcelModalOpen = true">
 							Export to Excel
 						</button>
 					</div>
@@ -209,7 +209,13 @@
 
 										<td
 											class="max-w-48 overflow-hidden text-ellipsis py-6 text-center font-semibold text-gray-600">
-											{{ 'N/A' }}
+											{{
+												!letter.assessmentStage
+													? 'N/A'
+													: determineValuationStage(
+															letter.assessmentStage,
+														)
+											}}
 										</td>
 										<td></td>
 									</tr>
@@ -264,6 +270,8 @@
 </template>
 
 <script setup lang="ts">
+	import type { ValuationStages } from '~/types';
+
 	definePageMeta({
 		name: 'vehicle-valuation-authorization-letter',
 		layout: 'console-layout',

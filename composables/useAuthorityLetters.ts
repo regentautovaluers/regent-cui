@@ -55,7 +55,20 @@ const useAuthorityLetters = () => {
 			server: false,
 			lazy: true,
 			transform(data: any) {
-				return data.data;
+				return data.data.map((data: any) => {
+					return {
+						registrationNumber: data.registrationNumber,
+						clientName: data.clientName,
+						clientPhone: data.clientPhone,
+						policyNumber: data.policyNumber,
+						agencyName: data.agencyName,
+						authorizedBy: {
+							username: data.authorizedBy.username,
+						},
+						createdOn: data.createdOn,
+						assessmentStage: data.assessmentStage,
+					};
+				});
 			},
 		},
 	) as any;
