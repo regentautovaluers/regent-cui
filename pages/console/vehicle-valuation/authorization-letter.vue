@@ -221,19 +221,21 @@
 					</div>
 
 					<!-- page controls -->
-					<div class="flex h-16 items-center justify-between">
+					<div class="flex h-12 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-							Showing {{ page + 1 }} of Y pages.
+							Showing {{ page + 1 }} of {{ totalPages }} pages.
 						</h1>
 						<div class="h-full space-x-2 md:space-x-4">
 							<button
 								class="table-page-buttons"
-								@click="page -= 1">
+								@click="page -= 1"
+								:disabled="page === 0 || totalPages == 1">
 								Previous
 							</button>
 							<button
 								class="table-page-buttons"
-								@click="page += 1">
+								@click="page += 1"
+								:disabled="page === totalPages - 1 || totalPages == 1">
 								Next
 							</button>
 						</div>
@@ -274,6 +276,7 @@
 	const activeView = ref(0);
 	const isSearchCorpBrokersModalOpen: Ref<boolean> = ref(false);
 	const isExportExcelModalOpen: Ref<boolean> = ref(false);
-	const { page, fetchAuthorityLetterStatus, authorityLetters } = useAuthorityLetters();
+	const { page, totalPages, fetchAuthorityLetterStatus, authorityLetters } =
+		useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
 </script>

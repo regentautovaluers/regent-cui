@@ -28,6 +28,8 @@ const useAuthorityLetters = () => {
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
+	const authorityLetters: Ref<any[]> = ref([]);
+	const totalPages: Ref<number> = ref(0);
 
 	// for exporting authority letters
 	const exportAuthorityLettersLoading: Ref<boolean> = ref(false);
@@ -38,7 +40,7 @@ const useAuthorityLetters = () => {
 		}
 	});
 
-	const { status: fetchAuthorityLetterStatus, data: authorityLetters } = useFetch(
+	const { status: fetchAuthorityLetterStatus } = useFetch(
 		'/api/v1/authority-letter/corp/get-authority-letter',
 		{
 			key: 'authority-letters',
@@ -54,8 +56,11 @@ const useAuthorityLetters = () => {
 			},
 			server: false,
 			lazy: true,
-			transform(data: any) {
-				return data.data.map((data: any) => {
+			onResponse({ response }) {
+				const data = response._data.data;
+				const extras = response._data.extras;
+				totalPages.value = extras.totalPages;
+				authorityLetters.value = data.map((data: any) => {
 					return {
 						registrationNumber: data.registrationNumber,
 						clientName: data.clientName,
@@ -229,6 +234,7 @@ const useAuthorityLetters = () => {
 
 	return {
 		page,
+		totalPages,
 		registrationNumber,
 		clientName,
 		clientPhone,
