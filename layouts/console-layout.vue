@@ -3,7 +3,7 @@
 		<div
 			class="sticky top-0 z-40 flex max-h-20 min-h-20 items-center border-b bg-white"
 			id="top-nav">
-			<div class="w-fit lg:w-[20rem]">
+			<div class="w-fit lg:w-[19rem]">
 				<button
 					data-drawer-target="system-sidebar"
 					data-drawer-toggle="system-sidebar"
@@ -45,9 +45,9 @@
 
 		<aside
 			id="system-sidebar"
-			class="fixed left-0 top-0 z-40 h-screen w-[20rem] -translate-x-full overflow-y-auto bg-white shadow-md transition-transform xl:translate-x-0"
+			class="fixed left-0 top-0 z-40 h-screen w-[19rem] -translate-x-full overflow-y-auto bg-white shadow-md transition-transform xl:translate-x-0"
 			aria-label="Sidebar">
-			<div class="flex h-full flex-col bg-white px-3">
+			<div class="flex h-full flex-col bg-white px-2">
 				<div class="sticky top-0 z-30 flex min-h-20 items-center border-b bg-white">
 					<NuxtLink
 						:to="{ name: 'mobivaluer-home' }"
@@ -265,7 +265,7 @@
 				</div>
 			</div>
 		</aside>
-		<div class="flex-grow p-2 lg:ml-[20rem]">
+		<div class="flex-grow p-2 lg:ml-[19rem]">
 			<slot />
 		</div>
 	</main>

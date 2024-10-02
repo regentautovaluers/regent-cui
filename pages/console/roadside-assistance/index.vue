@@ -433,7 +433,7 @@
 											{{ member.membershipVehicleCount }}
 										</td>
 										<td class="inline-flex flex-col p-4">
-											<span>{{ member.userEmail ?? 'N/A' }}</span>
+											<span>{{ member.userEmail ?? 'Email N/A' }}</span>
 											<span
 												class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
 												>{{ member.phone_number }}</span

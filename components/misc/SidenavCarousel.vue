@@ -4,7 +4,7 @@
 		class="relative my-6 w-full rounded-lg border"
 		data-carousel="slide">
 		<!-- Carousel wrapper -->
-		<div class="relative h-96 overflow-hidden rounded-lg">
+		<div class="relative h-[23rem] overflow-hidden rounded-lg">
 			<!-- Item 1 -->
 			<div
 				class="hidden duration-700 ease-in-out"
