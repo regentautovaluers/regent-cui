@@ -30,6 +30,7 @@ const useAuthorityLetters = () => {
 	const pageSize: number = 10;
 	const authorityLetters: Ref<any[]> = ref([]);
 	const totalPages: Ref<number> = ref(0);
+	const searchRegNo: Ref<string> = ref('');
 
 	// for exporting authority letters
 	const exportAuthorityLettersLoading: Ref<boolean> = ref(false);
@@ -40,19 +41,22 @@ const useAuthorityLetters = () => {
 		}
 	});
 
-	const { status: fetchAuthorityLetterStatus } = useFetch(
-		'/api/v1/authority-letter/corp/get-authority-letter',
+	const { status: fetchAuthorityLetterStatus, execute: executeGetAuthorityLetters } = useFetch(
+		() => {
+			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+
+			if (searchRegNo.value !== '') {
+				requestURL = requestURL + `&regNo=${searchRegNo.value}`;
+			}
+
+			return requestURL;
+		},
 		{
 			key: 'authority-letters',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
 			headers: {
 				Accept: 'application/json',
-			},
-			query: {
-				corpId: getPrincipal.value.corpId,
-				page: page,
-				size: pageSize,
 			},
 			server: false,
 			lazy: true,
@@ -232,9 +236,16 @@ const useAuthorityLetters = () => {
 		}
 	};
 
+	const handleSearchTriggered = (searchSlug: string) => {
+		page.value = 0;
+		authorityLetters.value = [];
+		searchRegNo.value = searchSlug;
+	};
+
 	return {
 		page,
 		totalPages,
+		searchRegNo,
 		registrationNumber,
 		clientName,
 		clientPhone,
@@ -255,6 +266,8 @@ const useAuthorityLetters = () => {
 		handleFileUpload,
 		setSelectedCorpOrBroker,
 		exportAuthorityLetter,
+		handleSearchTriggered,
+		executeGetAuthorityLetters,
 		getSelectedCorpOrBroker,
 	};
 };

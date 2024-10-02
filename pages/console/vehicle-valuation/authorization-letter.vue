@@ -25,7 +25,7 @@
 				@open-search-agent-corp-modal="isSearchCorpBrokersModalOpen = true" />
 			<div
 				v-if="activeView === 1"
-				class="h-[58.5rem]">
+				class="h-[58.5rem] min-h-[58.5rem]">
 				<!-- div to show when there is a fetch error -->
 				<div
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
@@ -57,23 +57,35 @@
 					class="flex h-full flex-col"
 					v-else>
 					<!-- search & filter controls -->
-					<div class="flex h-fit items-center justify-between">
-						<form class="relative h-fit w-full md:w-[45%] lg:w-[25%]">
-							<input
-								type="text"
-								class="generic-input"
-								placeholder="Search Registration" />
+					<div class="flex h-fit flex-col space-y-2">
+						<div class="flex justify-between">
+							<form
+								class="relative h-fit w-full md:w-[45%] lg:w-[25%]"
+								@submit.prevent="handleSearchTriggered(searchPhrase)">
+								<input
+									type="text"
+									class="generic-input"
+									placeholder="Search Registration"
+									required
+									v-model="searchPhrase" />
+								<button
+									type="submit"
+									class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+									<SearchIcon />
+								</button>
+							</form>
 							<button
-								type="submit"
-								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
-								<SearchIcon />
+								type="button"
+								class="h-14 w-fit items-center justify-center rounded-lg bg-blue-600 px-2 font-semibold text-white hover:bg-blue-700"
+								@click.prevent="isExportExcelModalOpen = true">
+								Export to Excel
 							</button>
-						</form>
+						</div>
 						<button
-							type="button"
-							class="h-14 w-fit items-center justify-center rounded-lg bg-blue-600 px-2 font-semibold text-white hover:bg-blue-700"
-							@click.prevent="isExportExcelModalOpen = true">
-							Export to Excel
+							v-if="searchRegNo !== ''"
+							@click="searchRegNo = ''"
+							class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
+							Clear Filters
 						</button>
 					</div>
 
@@ -274,9 +286,16 @@
 	});
 
 	const activeView = ref(0);
+	const searchPhrase: Ref<string> = ref('');
 	const isSearchCorpBrokersModalOpen: Ref<boolean> = ref(false);
 	const isExportExcelModalOpen: Ref<boolean> = ref(false);
-	const { page, totalPages, fetchAuthorityLetterStatus, authorityLetters } =
-		useAuthorityLetters();
+	const {
+		page,
+		totalPages,
+		fetchAuthorityLetterStatus,
+		authorityLetters,
+		searchRegNo,
+		handleSearchTriggered,
+	} = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
 </script>
