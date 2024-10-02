@@ -307,7 +307,7 @@
 				<div
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]"
 					v-else-if="
-						fetchMembershipsStatus === 'success' && membersListSlice.length === 0
+						fetchMembershipsStatus === 'success' && corporateMemberships.length === 0
 					">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">
@@ -325,22 +325,34 @@
 					class="flex h-full flex-col justify-between md:min-h-[50.5rem]"
 					v-else>
 					<!-- search & filter controls -->
-					<div class="flex h-fit items-center justify-between">
-						<form
-							class="relative h-fit w-full md:w-[45%] lg:w-[30%]"
-							@submit.prevent="">
-							<input
-								type="text"
-								class="generic-input"
-								placeholder="Search Name, Email or Phone"
-								disabled />
-							<button
-								type="submit"
-								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500"
-								disabled>
-								<SearchIcon />
-							</button>
-						</form>
+					<div class="flex h-fit flex-col space-y-2">
+						<div class="flex justify-between">
+							<form
+								class="relative h-fit w-full md:w-[45%] lg:w-[30%]"
+								@submit.prevent="handleSearchTriggered(searchPhrase)">
+								<input
+									type="text"
+									class="generic-input"
+									placeholder="Search Client Name"
+									v-model="searchPhrase" />
+								<button
+									type="submit"
+									class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+									<SearchIcon />
+								</button>
+							</form>
+						</div>
+						<button
+							v-if="searchTerm !== ''"
+							@click="
+								() => {
+									searchTerm = '';
+									searchPhrase = '';
+								}
+							"
+							class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
+							Clear Filters
+						</button>
 					</div>
 
 					<!-- the table itself -->
@@ -407,7 +419,7 @@
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
 										v-else
-										v-for="(member, index) in membersListSlice"
+										v-for="(member, index) in corporateMemberships"
 										:key="index">
 										<td
 											scope="row"
@@ -534,10 +546,10 @@
 			}
 		">
 		<EditAVAMemberDetails
-			:member-id="membersListSlice[selectedIndexToEdit].id"
-			:member-name="membersListSlice[selectedIndexToEdit].full_name"
-			:member-email="membersListSlice[selectedIndexToEdit].userEmail"
-			:member-phone="membersListSlice[selectedIndexToEdit].phone_number" />
+			:member-id="corporateMemberships[selectedIndexToEdit].id"
+			:member-name="corporateMemberships[selectedIndexToEdit].full_name"
+			:member-email="corporateMemberships[selectedIndexToEdit].userEmail"
+			:member-phone="corporateMemberships[selectedIndexToEdit].phone_number" />
 	</ParentModal>
 
 	<!-- Add Vehicles -->
@@ -551,7 +563,7 @@
 				selectedIndexToEdit = -1;
 			}
 		">
-		<AddMemberVehicle :membership-id="membersListSlice[selectedIndexToEdit].id" />
+		<AddMemberVehicle :membership-id="corporateMemberships[selectedIndexToEdit].id" />
 	</ParentModal>
 
 	<!-- View Member Vehicles modal -->
@@ -669,18 +681,21 @@
 	const profilePicture: Ref<string> = ref('');
 	const { getPrincipal } = useAuth();
 	const isGetVehiclesModalOpen: Ref<boolean> = ref(false);
+	const searchPhrase: Ref<string> = ref('');
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const isEditMemberDetailsModalOpen: Ref<boolean> = ref(false);
 	const isAddVehiclesModalOpen: Ref<boolean> = ref(false);
 	const {
 		currentPage,
-		membersListSlice,
+		corporateMemberships,
 		totalNumber,
 		totalPages,
+		searchTerm,
 		fetchMembershipsStatus,
 		fetchMemberVehiclesLoading,
 		memberVehicles,
 		getMemberVehicles,
+		handleSearchTriggered,
 	} = useAVAMemberships();
 	const { ongoingIncidents, fetchRoadsideIncidentsStatus, topFiveIncidents } =
 		useRoadsideIncidents();

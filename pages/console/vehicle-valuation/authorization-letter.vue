@@ -83,7 +83,12 @@
 						</div>
 						<button
 							v-if="searchRegNo !== ''"
-							@click="searchRegNo = ''"
+							@click="
+								() => {
+									searchRegNo = '';
+									searchPhrase = '';
+								}
+							"
 							class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
 							Clear Filters
 						</button>

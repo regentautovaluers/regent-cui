@@ -28,7 +28,7 @@
 			<div>
 				<!-- div to show when there is a fetch error -->
 				<div
-					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]"
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:h-[50.5rem] md:min-h-[50.5rem]"
 					v-if="fetchMembershipsStatus === 'error'">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -42,9 +42,9 @@
 
 				<!-- div to show when there are no members -->
 				<div
-					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]"
+					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:h-[50.5rem] md:min-h-[50.5rem]"
 					v-else-if="
-						fetchMembershipsStatus === 'success' && membersListSlice.length === 0
+						fetchMembershipsStatus === 'success' && corporateMemberships.length === 0
 					">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">
@@ -62,22 +62,35 @@
 					class="flex h-full flex-col justify-between rounded-lg border p-2 md:min-h-[58rem]"
 					v-else>
 					<!-- search & filter controls -->
-					<div class="flex h-fit items-center justify-between">
-						<form
-							class="relative h-fit w-full md:w-[45%] lg:w-[30%]"
-							@submit.prevent="">
-							<input
-								type="text"
-								class="generic-input"
-								placeholder="Search Name, Email or Phone"
-								disabled />
-							<button
-								type="submit"
-								class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500"
-								disabled>
-								<SearchIcon />
-							</button>
-						</form>
+					<div class="flex h-fit flex-col space-y-2">
+						<div class="flex justify-between">
+							<form
+								class="relative h-fit w-full md:w-[45%] lg:w-[30%]"
+								@submit.prevent="handleSearchTriggered(searchPhrase)">
+								<input
+									type="text"
+									class="generic-input"
+									placeholder="Search Client Name"
+									v-model="searchPhrase"
+									required />
+								<button
+									type="submit"
+									class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+									<SearchIcon />
+								</button>
+							</form>
+						</div>
+						<button
+							v-if="searchTerm !== ''"
+							@click="
+								() => {
+									searchTerm = '';
+									searchPhrase = '';
+								}
+							"
+							class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
+							Clear Filters
+						</button>
 					</div>
 
 					<!-- the table itself -->
@@ -144,7 +157,7 @@
 									<tr
 										class="border-b bg-white hover:bg-gray-100"
 										v-else
-										v-for="(member, index) in membersListSlice"
+										v-for="(member, index) in corporateMemberships"
 										:key="index">
 										<td
 											scope="row"
@@ -158,7 +171,7 @@
 											{{ member.membershipVehicleCount }}
 										</td>
 										<td class="inline-flex flex-col p-4">
-											<span>{{ member.userEmail ?? 'N/A' }}</span>
+											<span>{{ member.userEmail ?? 'Email N/A' }}</span>
 											<span
 												class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
 												>{{ member.phone_number }}</span
@@ -263,7 +276,7 @@
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
 					<div class="flex h-14 items-center justify-between px-3">
-						<h1 class="text-2xl font-extrabold">About</h1>
+						<h1 class="text-2xl font-bold">About</h1>
 						<button
 							id="ava-services-desc"
 							data-dropdown-toggle="ava-services-desc"
@@ -298,8 +311,8 @@
 						</div>
 					</div>
 					<div class="flex-grow">
-						<h1 class="text-center text-2xl font-extrabold">Our Services</h1>
-						<h2 class="text-center text-lg font-extrabold text-gray-500">
+						<h1 class="text-center text-2xl font-bold">Our Services</h1>
+						<h2 class="text-center text-lg font-bold text-gray-500">
 							{{ avaServices[activeDescriptionIndex].name }}
 						</h2>
 						<p class="mx-4 text-gray-500">
@@ -319,7 +332,7 @@
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
 					<div class="flex h-14 min-h-14 w-full items-center justify-between px-3">
-						<h1 class="text-2xl font-extrabold">Memberships</h1>
+						<h1 class="text-2xl font-bold">Memberships</h1>
 					</div>
 					<div
 						class="mx-0 flex-grow"
@@ -342,10 +355,10 @@
 			}
 		">
 		<EditAVAMemberDetails
-			:member-id="membersListSlice[selectedIndexToEdit].id"
-			:member-name="membersListSlice[selectedIndexToEdit].full_name"
-			:member-email="membersListSlice[selectedIndexToEdit].userEmail"
-			:member-phone="membersListSlice[selectedIndexToEdit].phone_number" />
+			:member-id="corporateMemberships[selectedIndexToEdit].id"
+			:member-name="corporateMemberships[selectedIndexToEdit].full_name"
+			:member-email="corporateMemberships[selectedIndexToEdit].userEmail"
+			:member-phone="corporateMemberships[selectedIndexToEdit].phone_number" />
 	</ParentModal>
 
 	<!-- Add Vehicles -->
@@ -359,7 +372,7 @@
 				selectedIndexToEdit = -1;
 			}
 		">
-		<AddMemberVehicle :membership-id="membersListSlice[selectedIndexToEdit].id" />
+		<AddMemberVehicle :membership-id="corporateMemberships[selectedIndexToEdit].id" />
 	</ParentModal>
 
 	<!-- View Member Vehicles modal -->
@@ -478,19 +491,22 @@
 	const activeDescriptionIndex: Ref<number> = ref(0);
 	const profilePicture: Ref<string> = ref('');
 	const { getPrincipal } = useAuth();
+	const searchPhrase: Ref<string> = ref('');
 	const isGetVehiclesModalOpen: Ref<boolean> = ref(false);
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const isEditMemberDetailsModalOpen: Ref<boolean> = ref(false);
 	const isAddVehiclesModalOpen: Ref<boolean> = ref(false);
 	const {
 		currentPage,
-		membersListSlice,
+		corporateMemberships,
 		totalNumber,
 		totalPages,
+		searchTerm,
 		fetchMembershipsStatus,
 		fetchMemberVehiclesLoading,
 		memberVehicles,
 		getMemberVehicles,
+		handleSearchTriggered,
 	} = useAVAMemberships();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
