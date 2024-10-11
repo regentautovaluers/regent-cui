@@ -62,10 +62,6 @@ const useRoadsideIncidents = () => {
 			).length || 0,
 	);
 
-	const topFiveIncidents: ComputedRef<any[]> = computed(() => {
-		return getRoadsideIncidents.value.slice(0, 5);
-	});
-
 	const { status: fetchRoadsideIncidentsStatus } = useFetch(
 		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
 		{
@@ -75,11 +71,6 @@ const useRoadsideIncidents = () => {
 			server: false,
 			lazy: true,
 			onResponse({ response }) {
-				if (response.status !== 200) {
-					// TODO: Replace this with a toast message
-					throw new Error('Failed to retrieve incidents!');
-				}
-
 				const roadsideIncidentsData = response._data;
 				setRoadsideIncidents([
 					...roadsideIncidentsData.towing,
@@ -99,7 +90,6 @@ const useRoadsideIncidents = () => {
 		totalIncidents,
 		totalPages,
 		ongoingIncidents,
-		topFiveIncidents,
 		mapPinsIncidents,
 		activeService,
 		completionStatus,
