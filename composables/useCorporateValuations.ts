@@ -1,7 +1,49 @@
-export const useCorporateValuations = () =>{
-    const activeView: Ref<string> = ref('complete');
+export const useCorporateValuations = () => {
+	const activeView: Ref<string> = ref('pending');
+	const runtimeConfig = useRuntimeConfig();
+	const { getPrincipal } = useAuth();
 
-    return {
+	// for fetching corp valuations
+	const page: Ref<number> = ref(0);
+	const pageSize: number = 10;
+	const corpValuations: Ref<any[]> = ref([]);
+	const totalPages: Ref<number> = ref(0);
+	const searchRegNo: Ref<string> = ref('');
+
+	const { status: fetchValuationsStatus, execute: executeFetchValuations } = useFetch(
+		() => {
+			let requestURL = `/api/v1/valuation/booking/get-all-by-corp?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+
+			if (searchRegNo.value !== '') {
+				requestURL = requestURL + `&registrationNumber=${searchRegNo.value}`;
+			}
+
+			return requestURL;
+		},
+		{
+			key: 'corporate-valuations',
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			server: false,
+			lazy: true,
+			onResponse({ response }) {
+				const data = response._data.data;
+				const extras = response._data.extras;
+				totalPages.value = extras.totalPages;
+				corpValuations.value = data;
+			},
+		},
+	) as any;
+
+	return {
 		activeView,
+		fetchValuationsStatus,
+		corpValuations,
+		totalPages,
+		page,
+		executeFetchValuations,
 	};
-}
+};
