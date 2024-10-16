@@ -129,3 +129,7 @@
 	padding-bottom: 6px;
 	font-size: 12px;
 }
+
+.sidebar-chevron-buttons {
+	@apply inline-flex flex-grow items-center justify-center rounded-full p-2 transition-colors duration-200 ease-in-out hover:bg-gray-300;
+}

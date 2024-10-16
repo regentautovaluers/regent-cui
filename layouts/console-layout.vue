@@ -88,7 +88,7 @@
 									</NuxtLink>
 									<button
 										type="button"
-										class="inline-flex flex-grow items-center justify-center"
+										class="sidebar-chevron-buttons"
 										aria-controls="vehicle-valuation-dropdown"
 										data-collapse-toggle="vehicle-valuation-dropdown">
 										<DropdownChevronIcon />
@@ -129,7 +129,7 @@
 									</NuxtLink>
 									<button
 										type="button"
-										class="inline-flex flex-grow items-center justify-center"
+										class="sidebar-chevron-buttons"
 										aria-controls="ava-members-dropdown"
 										data-collapse-toggle="ava-members-dropdown">
 										<DropdownChevronIcon />
@@ -170,7 +170,7 @@
 									</NuxtLink>
 									<button
 										type="button"
-										class="inline-flex flex-grow items-center justify-center"
+										class="sidebar-chevron-buttons"
 										aria-controls="roadside-assistance-dropdown"
 										data-collapse-toggle="roadside-assistance-dropdown">
 										<DropdownChevronIcon />

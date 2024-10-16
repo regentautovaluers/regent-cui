@@ -4,7 +4,7 @@
 		<div class="flex h-[6rem] items-center justify-between rounded-t-lg border p-4">
 			<div class="flex w-full items-center space-x-3 md:w-fit">
 				<img
-					class="h-12 min-h-12 w-12 min-w-12 rounded-full"
+					class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
 					:src="profilePicture"
 					alt="Rounded avatar" />
 				<div class="h-full flex-col overflow-hidden">

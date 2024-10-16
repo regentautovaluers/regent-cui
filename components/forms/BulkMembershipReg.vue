@@ -18,7 +18,7 @@
 		</div>
 		<div class="mb-4 mt-2">
 			<p>
-				You must have a fleet before you can add members. The members you upload using this
+				You must have a fleet before you can add members. The members you onboard using this
 				form will be linked to that fleet. If you have no fleet, click the 'Add Fleet'
 				button below to add to your fleets. If your fleet is not showing up here, please
 				'Refresh List' or contact us for support.
@@ -150,7 +150,7 @@
 		<h1 class="mt-5 text-xl antialiased">Upload Excel Document</h1>
 		<div class="flex flex-col">
 			<span class="text-gray-500"
-				>Please upload the completed document to proceed with your submission.</span
+				>Please upload the completed document to proceed with onboarding.</span
 			>
 			<div>
 				<label
