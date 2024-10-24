@@ -2,6 +2,7 @@ export const useCorporateValuations = () => {
 	const activeView: Ref<string> = ref('pending');
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
+	const { name: routeName } = useRoute();
 
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
@@ -13,6 +14,10 @@ export const useCorporateValuations = () => {
 	const { status: fetchValuationsStatus, execute: executeFetchValuations } = useFetch(
 		() => {
 			let requestURL = `/api/v1/valuation/booking/get-all-by-corp?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+
+			if (routeName == 'vehicle-valuation-tampered-vehicles') {
+				requestURL = requestURL + `&isVehicleTampered=true`;
+			}
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&registrationNumber=${searchRegNo.value}`;
@@ -30,10 +35,12 @@ export const useCorporateValuations = () => {
 			server: false,
 			lazy: true,
 			onResponse({ response }) {
-				const data = response._data.data;
-				const extras = response._data.extras;
-				totalPages.value = extras.totalPages;
-				corpValuations.value = data;
+				if (response.status === 200 && response._data.data !== null) {
+					const data = response._data.data;
+					corpValuations.value = data;
+					const extras = response._data.extras;
+					totalPages.value = extras.totalPages;
+				}
 			},
 		},
 	) as any;
