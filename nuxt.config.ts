@@ -15,6 +15,7 @@ export default defineNuxtConfig({
 			pathPrefix: false,
 		},
 	],
+	dirs: ['utils'],
 	css: ['~/assets/css/main.css'],
 	postcss: {
 		plugins: {

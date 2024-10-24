@@ -98,8 +98,8 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
-										Booking No.
+										class="table-headers text-start">
+										Progress
 									</th>
 									<th
 										scope="col"
@@ -110,6 +110,11 @@
 										scope="col"
 										class="table-headers">
 										Booking Date
+									</th>
+									<th
+										scope="col"
+										class="table-headers">
+										Regent Location
 									</th>
 									<th
 										scope="col"
@@ -146,6 +151,11 @@
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>useremail</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookedtoday</span
 										>
 									</td>
 									<td class="p-6 text-gray-300">
@@ -193,7 +203,7 @@
 										>
 									</td>
 									<td class="p-4 font-semibold text-blue-600">
-										{{ valuation.valuationId }}
+										{{ determineValuationStage(valuation.valuationStage) }}
 									</td>
 									<td class="inline-flex flex-col p-4">
 										<span>{{ valuation.vehicleMake ?? 'N/A' }}</span>
@@ -204,6 +214,9 @@
 									</td>
 									<td class="p-4 font-semibold text-blue-600">
 										{{ valuation.bookingDate.split('T')[0] }}
+									</td>
+									<td class="p-4 font-semibold text-gray-600">
+										{{ valuation.regentBranch.branchName }}
 									</td>
 									<td v-if="activeView == 'complete'"></td>
 									<td v-if="activeView == 'complete'"></td>

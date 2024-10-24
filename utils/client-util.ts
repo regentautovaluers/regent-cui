@@ -84,13 +84,14 @@ export const refreshPage = () => {
 	location.reload();
 };
 
-export const determineValuationStage = (stage: ValuationStages): string => {
+export const determineValuationStage = (stage: string): string => {
 	enum ValuationStages {
 		AWAITING_ASSESSMENT = 'Ongoing',
 		VALUER_DRAFT = 'Ongoing',
 		PENDING = 'Ongoing',
 		AWAITING_MANAGER_APPROVAL = 'Ongoing',
 		AWAITING_QC_APPROVAL = 'Ongoing',
+		COMPLETED = 'Completed',
 		INVOICING = 'Completed',
 	}
 
