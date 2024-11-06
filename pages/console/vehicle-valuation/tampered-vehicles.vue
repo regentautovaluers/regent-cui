@@ -104,7 +104,17 @@
 										class="table-headers">
 										Note Value
 									</th>
+									<th
+										scope="col"
+										class="table-headers">
+										Note(N/B)
+									</th>
 
+									<th
+										scope="col"
+										class="table-headers">
+										Remarks
+									</th>
 									<th
 										scope="col"
 										class="table-headers" />
@@ -196,6 +206,20 @@
 									</td>
 									<td></td>
 									<td></td>
+									<td>{{ valuation.inspectionFinal.inspectionNB }}</td>
+									<td
+										class="h-20 max-h-20 max-w-32 text-wrap bg-green-500 text-sm"
+										style="
+											overflow: hidden;
+											display: inline-flex;
+											-webkit-box-orient: vertical;
+											-webkit-line-clamp: 3;
+											line-clamp: 3;
+										">
+										{{ valuation.inspectionFinal.inspectionRemarks }} test extra
+										metadata that is supposed to cuase the text to wrap to a
+										certain point and then start to truncate.
+									</td>
 									<td></td>
 								</tr>
 							</tbody>
