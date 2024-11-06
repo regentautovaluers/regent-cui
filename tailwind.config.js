@@ -12,8 +12,8 @@ export default {
 	theme: {
 		extend: {
 			scale: {
-				'103': '1.03',
-			}
+				103: '1.03',
+			},
 		},
 	},
 	plugins: [
