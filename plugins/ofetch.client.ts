@@ -9,7 +9,7 @@ export default defineNuxtPlugin(() => {
 	globalThis.$fetch = ofetch.create({
 		async onRequest({ options }) {
 			let headers: Headers = {};
-			headers['Authorization'] = SecurityUtil.generateBase64Token(
+			headers['Ava-Basic-Auth'] = SecurityUtil.generateBase64Token(
 				'MOBIVALUER',
 				'LiV1tKgaqEtwPn7',
 			);
