@@ -61,6 +61,10 @@ export const formatServerProvidedDateTime = (servDateTime: string): string => {
 	}
 };
 
+export const formatExcelTemplateDate = (dateObj: Date): string => {
+	return format(dateObj, 'yyyy-MM-dd');
+};
+
 export const screenFormatRAServiceName = (rawType: string): string => {
 	let friendlyType: string = '';
 	switch (rawType) {

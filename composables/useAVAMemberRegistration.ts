@@ -189,8 +189,8 @@ export const useBulkMemberRegistration = () => {
 				membershipTypeId: Number(route.query.membershipType_id),
 				available_free_distance: route.query.freeDistance,
 				registration: item[3],
-				start_date: item[4],
-				end_date: item[5],
+				start_date: formatExcelTemplateDate(item[4]),
+				end_date: formatExcelTemplateDate(item[5]),
 				make: 'N/A',
 				model: 'N/A',
 				color: 'N/A',
@@ -201,6 +201,8 @@ export const useBulkMemberRegistration = () => {
 				fleetId: selectedFleetId.value,
 			});
 		});
+
+		console.info('Processed data: ', processedFleetData.value);
 	};
 
 	const addListeners = (reader: any) => {
@@ -333,7 +335,6 @@ export const useIndividualMembershipRegistration = () => {
 				}),
 
 				async onResponse({ response }) {
-					console.log(response._data);
 					if (response.status === 201) {
 						membershipId = response._data.id;
 					} else if (response.status === 400) {
