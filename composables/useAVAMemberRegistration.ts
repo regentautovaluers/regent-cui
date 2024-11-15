@@ -135,11 +135,6 @@ export const useBulkMemberRegistration = () => {
 			const data = await readXlsxFile(selectedFile);
 			validateXlsxDataIntegrity(data);
 			prepXlsxData(data);
-			const errorMss: ExcelProcesssingErrorMessage = {
-				message: 'File validation passed successfully',
-				type: 'success',
-			};
-			errorMessage.value = errorMss;
 		} catch (err) {
 			console.log('An error has occured: ', err);
 			const errorMss: ExcelProcesssingErrorMessage = {
@@ -178,31 +173,54 @@ export const useBulkMemberRegistration = () => {
 	};
 
 	const prepXlsxData = (data: Object[]): void => {
-		data.forEach((item: any, index: number) => {
-			if (index === 0) return;
-			processedFleetData.value.push({
-				corpName: getPrincipal.value.corpName,
-				full_name: stringToSentenceCase(item[0]),
-				phone_number: `254${item[1]}`,
-				userEmail: item[2],
-				corporateId: getPrincipal.value.corpId,
-				membershipTypeId: Number(route.query.membershipType_id),
-				available_free_distance: route.query.freeDistance,
-				registration: item[3],
-				start_date: formatExcelTemplateDate(item[4]),
-				end_date: formatExcelTemplateDate(item[5]),
-				make: 'N/A',
-				model: 'N/A',
-				color: 'N/A',
-				payment_status: 'paid',
-				membership_status: 'active',
-				recordedBy: getPrincipal.value.userId,
-				category: 'corporate',
-				fleetId: selectedFleetId.value,
+		try {
+			data.forEach((item: any, index: number) => {
+				if (index === 0) return;
+				processedFleetData.value.push({
+					corpName: getPrincipal.value.corpName,
+					full_name: stringToSentenceCase(item[0]),
+					phone_number: `254${item[1]}`,
+					userEmail: item[2],
+					corporateId: getPrincipal.value.corpId,
+					membershipTypeId: Number(route.query.membershipType_id),
+					available_free_distance: route.query.freeDistance,
+					registration: item[3],
+					start_date: formatExcelTemplateDate(item[4]),
+					end_date: formatExcelTemplateDate(item[5]),
+					make: 'N/A',
+					model: 'N/A',
+					color: 'N/A',
+					payment_status: 'paid',
+					membership_status: 'active',
+					recordedBy: getPrincipal.value.userId,
+					category: 'corporate',
+					fleetId: selectedFleetId.value,
+				});
 			});
-		});
 
-		console.info('Processed data: ', processedFleetData.value);
+			const errorMss: ExcelProcesssingErrorMessage = {
+				message: 'File validation passed successfully',
+				type: 'success',
+			};
+			errorMessage.value = errorMss;
+		} catch (error) {
+			processedFleetData.value = [];
+			currentProgress.value = '0%';
+			errorMessage.value = null;
+			const errorMss: ExcelProcesssingErrorMessage = {
+				message: 'Data parsing failed. Check your data!',
+				type: 'error',
+			};
+			errorMessage.value = errorMss;
+
+			useToast('Parsing failed!', {
+				type: 'warning',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
+		}
 	};
 
 	const addListeners = (reader: any) => {
