@@ -10,6 +10,7 @@ export const useAVAMemberships = () => {
 	const totalNumber: Ref<number> = ref(0);
 	const totalPages: Ref<number> = ref(0);
 	const nuxtApp = useNuxtApp();
+	const { name: routeName } = useRoute();
 
 	// member vehicles
 	const fetchMemberVehiclesLoading: Ref<boolean> = ref(false);
@@ -23,6 +24,12 @@ export const useAVAMemberships = () => {
 
 			if (searchTerm.value !== '') {
 				requestURL = requestURL + `&searchTerm=${searchTerm.value}`;
+			}
+
+			if (routeName == 'ava-ra-members') {
+				requestURL = requestURL + `&membershipType=1`;
+			} else if (routeName == 'ava-ee-members') {
+				requestURL = requestURL + `&membershipType=2`;
 			}
 
 			return requestURL;
