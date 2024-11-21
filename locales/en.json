@@ -4,5 +4,9 @@
 	"show_password": "Show Password",
 	"forgot_password": "Forgot Password",
 	"login": "Login",
-	"request_processing": "Processing"
+	"request_processing": "Processing",
+	"password_reset": "Password Reset",
+	"go_home": "Go Home",
+	"proceed": "Proceed",
+	"authentication_failed": "Authentication Failed"
 }
