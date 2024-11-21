@@ -1,6 +1,6 @@
 <template>
-	<main class="relative flex h-screen">
-		<section class="hidden w-[65%] lg:flex">
+	<main class="relative grid h-screen grid-cols-1 xl:grid-cols-[65%_35%]">
+		<section class="hidden xl:block">
 			<div
 				id="default-carousel"
 				class="relative h-full w-full"
@@ -78,8 +78,8 @@
 				</button>
 			</div>
 		</section>
-		<div class="flex flex-grow flex-col justify-between">
-			<div class="flex h-[15%] items-center px-4 md:h-1/4 md:px-16 xl:px-24">
+		<div class="flex flex-col justify-between">
+			<div class="flex h-[15%] items-center px-4 md:h-1/4 md:px-12 xl:px-20">
 				<img
 					src="/images/app-logo.png"
 					class="me-3 size-20"

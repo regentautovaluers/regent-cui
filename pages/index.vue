@@ -44,6 +44,13 @@
 			{{ loginAttemptLoading ? $t('request_processing') : $t('login') }}
 		</button>
 	</form>
+
+	<!-- link to forgot password -->
+	<NuxtLink
+		:to="{ name: 'exterior-forgot-password' }"
+		class="generic-quick-link text-sm md:text-base">
+		{{ $t('forgot_password') }}
+	</NuxtLink>
 </template>
 
 <script setup lang="ts">

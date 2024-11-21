@@ -15,6 +15,10 @@
 		@apply block font-bold text-gray-600;
 	}
 
+	.generic-quick-link {
+		@apply block w-fit font-bold text-blue-600 hover:text-blue-700;
+	}
+
 	.generic-input-required-label {
 		@apply after:ml-0.5 after:text-gray-600 after:content-['*'];
 	}
