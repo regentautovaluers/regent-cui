@@ -11,7 +11,11 @@ export const useCorporateValuations = () => {
 	const totalPages: Ref<number> = ref(0);
 	const searchRegNo: Ref<string> = ref('');
 
-	const { status: fetchValuationsStatus, execute: executeFetchValuations } = useFetch(
+	const {
+		status: fetchValuationsStatus,
+		execute: executeFetchValuations,
+		error: fetchValuationsError,
+	} = useFetch(
 		() => {
 			let requestURL = `/api/v1/valuation/booking/get-all-by-corp?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
 
@@ -38,7 +42,7 @@ export const useCorporateValuations = () => {
 				if (response.status === 200 && response._data.data !== null) {
 					const data = response._data.data;
 					corpValuations.value = data;
-					const extras = response._data.extras;
+					const extras = response._data.requestExtras;
 					totalPages.value = extras.totalPages;
 				}
 			},
@@ -48,6 +52,7 @@ export const useCorporateValuations = () => {
 	return {
 		activeView,
 		fetchValuationsStatus,
+		fetchValuationsError,
 		corpValuations,
 		totalPages,
 		page,

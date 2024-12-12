@@ -49,11 +49,12 @@
 			</div>
 		</div>
 
-		<div class="min-h-[53rem]">
+		<div class="h-full min-h-[53rem]">
 			<!-- div to show when there is a fetch error -->
 			<div
 				v-if="fetchValuationsStatus === 'error'"
-				class="mt-2 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
+				class="mt-2 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border bg-red-500 shadow-sm">
+				{{ fetchValuationsStatus }} {{ fetchValuationsError }}
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 				<button
@@ -316,6 +317,7 @@
 	const {
 		activeView,
 		fetchValuationsStatus,
+		fetchValuationsError,
 		corpValuations,
 		totalPages,
 		page,

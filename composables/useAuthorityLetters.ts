@@ -62,7 +62,7 @@ const useAuthorityLetters = () => {
 			lazy: true,
 			onResponse({ response }) {
 				const data = response._data.data;
-				const extras = response._data.extras;
+				const extras = response._data.requestExtras;
 				totalPages.value = extras.totalPages;
 				authorityLetters.value = data.map((data: any) => {
 					return {

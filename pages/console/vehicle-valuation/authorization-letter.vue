@@ -25,7 +25,7 @@
 				@open-search-agent-corp-modal="isSearchCorpBrokersModalOpen = true" />
 			<div
 				v-if="activeView === 1"
-				class="h-[58.5rem] min-h-[58.5rem]">
+				class="h-full min-h-[58.5rem]">
 				<!-- div to show when there is a fetch error -->
 				<div
 					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
