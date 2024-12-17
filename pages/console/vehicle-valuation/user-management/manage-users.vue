@@ -166,7 +166,7 @@
 							<tr
 								class="border-b bg-white hover:bg-gray-100"
 								v-if="fetchStatus === 'pending'"
-								v-for="a in 8"
+								v-for="a in 10"
 								:key="a">
 								<td
 									scope="row"
@@ -246,8 +246,9 @@
 
 	// TODO: Move this into the composable
 	const { status: fetchStatus, error: fetchError } = useFetch(
-		'/api/v1/auth/corp-account/get-accounts',
+		'/api/v1/auth/corporate-account/get-accounts',
 		{
+			key: 'Get-Corporate-Users',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
 			headers: {
@@ -256,7 +257,7 @@
 			query: {
 				corporateId: getPrincipal.value.corpId,
 				page: currentPage.value,
-				size: 8,
+				size: 10,
 			},
 			server: false,
 			lazy: true,

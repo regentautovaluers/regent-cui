@@ -7,7 +7,7 @@ export const useRegentBranches = () => {
 		status: fetchStatus,
 		error: fetchError,
 		refresh: refreshRegentBranches,
-	} = useFetch('/api/v1/auth/regent-branch/get-all', {
+	} = useFetch('/api/v1/regent-branch/get-all', {
 		key: 'corp-branches',
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 		method: 'GET',

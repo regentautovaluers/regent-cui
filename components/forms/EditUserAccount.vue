@@ -3,8 +3,7 @@
 		@submit.prevent="
 			updateMyAccountDetails(
 				props.userId,
-				firstName,
-				lastName,
+				username,
 				email,
 				phoneNumber,
 				roleInOrganization,
@@ -176,6 +175,10 @@
 	const userRole: Ref<string> = ref(props.userRole.toLowerCase());
 	const isAccountEnabled: Ref<boolean> = ref(props.isAccountEnabled);
 	const corporateBranch: Ref<string> = ref(props.branchId);
+
+	const username = computed(() => {
+		return `${firstName.value} ${lastName.value}`;
+	});
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {

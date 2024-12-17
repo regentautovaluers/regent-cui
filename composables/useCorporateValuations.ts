@@ -17,7 +17,7 @@ export const useCorporateValuations = () => {
 		error: fetchValuationsError,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/valuation/booking/get-all-by-corp?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/valuation/booking/get-all?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (routeName == 'vehicle-valuation-tampered-vehicles') {
 				requestURL = requestURL + `&isVehicleTampered=true`;

@@ -45,13 +45,13 @@ const useAuth = () => {
 	});
 
 	const searchBrokerOrCorpURI: ComputedRef<string> = computed(() => {
-		return `/api/v1/auth/corp-org/search-corp?searchKey=${corpOrBrokerSearchTerm.value}&isBroker=${isPrincipalBroker() ? false : true}`;
+		return `/api/v1/corporate-organization/get-all?searchKey=${corpOrBrokerSearchTerm.value}&isBroker=${isPrincipalBroker() ? false : true}`;
 	});
 
 	const attemptLogin = async () => {
 		loginAttemptLoading.value = true;
 		try {
-			await $fetch('/api/v1/auth/corp-account/login', {
+			await $fetch('/api/v1/auth/corporate-account/login', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
@@ -104,8 +104,7 @@ const useAuth = () => {
 
 	const updateMyAccountDetails = async (
 		userId: string,
-		firstName: string,
-		lastName: string,
+		username: string,
 		email: string,
 		phoneNumber: string,
 		roleInOrganization: string,
@@ -115,7 +114,7 @@ const useAuth = () => {
 	) => {
 		updateCorporateAccountLoading.value = true;
 		try {
-			await $fetch('/api/v1/auth/corp-account/update-account-details', {
+			await $fetch('/api/v1/auth/corporate-account/update-account-details', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'PUT',
 				headers: {
@@ -124,8 +123,7 @@ const useAuth = () => {
 				},
 				body: JSON.stringify({
 					userId: userId,
-					firstName: firstName,
-					lastName: lastName,
+					username: username,
 					email: email,
 					phoneNumber: phoneNumber,
 					roleInOrganization: roleInOrganization,
@@ -160,8 +158,7 @@ const useAuth = () => {
 	};
 
 	const addNewAccount = async (
-		firstName: string,
-		lastName: string,
+		username: string,
 		email: string,
 		phoneNumber: string,
 		password: string,
@@ -172,7 +169,7 @@ const useAuth = () => {
 	) => {
 		addNewAccountLoading.value = true;
 		try {
-			await $fetch('/api/v1/auth/corp-account/signup', {
+			await $fetch('/api/v1/auth/corporate-account/signup', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
@@ -180,8 +177,7 @@ const useAuth = () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					firstName: firstName,
-					lastName: lastName,
+					username: username,
 					email: email,
 					phoneNumber: phoneNumber,
 					password: password,
@@ -238,7 +234,7 @@ const useAuth = () => {
 			updateProfilePictureLoading.value = true;
 
 			try {
-				await $fetch('/api/v1/auth/corp-account/update-profile-picture', {
+				await $fetch('/api/v1/auth/corporate-account/update-profile-picture', {
 					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 					method: 'PATCH',
 					headers: {

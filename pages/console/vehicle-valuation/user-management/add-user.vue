@@ -3,8 +3,7 @@
 		class="h-fit rounded-lg border px-6 py-2 shadow-sm md:py-6"
 		@submit.prevent="
 			addNewAccount(
-				firstName,
-				otherName,
+				username,
 				email,
 				phoneNumber,
 				password,
@@ -163,6 +162,10 @@
 	const corporateBranch: Ref<string> = ref('');
 	const companyRole: Ref<string> = ref('');
 	const userRole: Ref<string> = ref('');
+
+	const username = computed(() => {
+		return `${firstName.value} ${otherName.value}`;
+	});
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
