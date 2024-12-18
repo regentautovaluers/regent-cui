@@ -10,7 +10,7 @@ export const useCorporateBranch = () => {
 		status: fetchStatus,
 		error: fetchError,
 		refresh: refreshBranches,
-	} = useFetch('/api/v1/auth/corp-branch/get-all', {
+	} = useFetch('/api/v1/corporate-branch/get-all', {
 		key: 'corp-branches',
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 		method: 'GET',
@@ -37,7 +37,7 @@ export const useCorporateBranch = () => {
 	const addCorporateBranch = async (branchName: string, branchLocation: string) => {
 		addCorporateBranchLoading.value = true;
 		try {
-			await $fetch('/api/v1/auth/corp-branch/add', {
+			await $fetch('/api/v1/corporate-branch/add', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
@@ -47,7 +47,6 @@ export const useCorporateBranch = () => {
 				body: JSON.stringify({
 					branchName: branchName,
 					branchLocation: branchLocation,
-					recordedBy: getPrincipal.value.userId,
 					corpId: getPrincipal.value.corpId,
 				}),
 				onResponse({ response }) {
@@ -85,7 +84,7 @@ export const useCorporateBranch = () => {
 	) => {
 		editCorporateBranchLoading.value = true;
 		try {
-			await $fetch('/api/v1/auth/corp-branch/update', {
+			await $fetch('/api/v1/corporate-branch/update', {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
@@ -95,7 +94,6 @@ export const useCorporateBranch = () => {
 				body: JSON.stringify({
 					branchName: branchName,
 					branchLocation: branchLocation,
-					updatedBy: getPrincipal.value.userId,
 					branchId: branchId,
 				}),
 				onResponse({ response }) {

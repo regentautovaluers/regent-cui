@@ -26,7 +26,8 @@
 			</div>
 			<div class="flex h-full flex-grow items-center justify-between px-4">
 				<h1 class="text-lg font-bold md:text-3xl">{{ currentScreenName }}</h1>
-				<div class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3">
+				<div
+					class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3 rounded-full bg-orange-200 p-1">
 					<img
 						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
 						:src="profilePicture"

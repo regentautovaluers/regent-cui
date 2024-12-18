@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<div class="min-h-[53rem]">
+		<div class="h-full min-h-[53rem]">
 			<!-- div to show when there is a fetch error -->
 			<div
 				v-if="fetchValuationsStatus === 'error'"
