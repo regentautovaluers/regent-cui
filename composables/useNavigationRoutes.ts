@@ -91,6 +91,12 @@ const useNavigationRoutes = () => {
 					routeName: 'vehicle-valuation-tampered-vehicles',
 					renderRoute: true,
 				},
+				{
+					id: 3,
+					screenName: 'Fleet Reports',
+					routeName: 'vehicle-valuation-fleet-reports',
+					renderRoute: true,
+				},
 			],
 		},
 	];
