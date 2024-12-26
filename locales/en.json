@@ -8,5 +8,7 @@
 	"password_reset": "Password Reset",
 	"go_home": "Go Home",
 	"proceed": "Proceed",
-	"authentication_failed": "Authentication Failed"
+	"authentication_failed": "Authentication Failed",
+	"remember_me": "Remember Me for 15 Days",
+	"two_factor_auth": "Two Factor Authentication"
 }

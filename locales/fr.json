@@ -8,5 +8,7 @@
 	"password_reset": "Réinitialiser le mot de passe",
 	"go_home": "Retour",
 	"proceed": "Procéder",
-	"authentication_failed": "Rentre chez toi"
+	"authentication_failed": "Rentre chez toi",
+	"remember_me": "Se souvenir de moi pendant 15 jours",
+	"two_factor_auth": "Authentification de deux facteurs"
 }
