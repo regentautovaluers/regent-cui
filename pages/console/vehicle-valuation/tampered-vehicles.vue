@@ -33,7 +33,6 @@
 				class="mt-2 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
-				{{ fetchValuationsStatus }}
 				<button
 					class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
 					@click="refreshPage">
