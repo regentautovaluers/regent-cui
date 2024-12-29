@@ -125,7 +125,7 @@
 									{{ fleet.endDate }}
 								</td>
 								<td class="p-6 text-center font-semibold">
-									{{ fleet.vehiclesIssued }}
+									{{ fleet.vehiclesIssued ?? 'N/A' }}
 								</td>
 								<td class="p-6 text-center">
 									{{
@@ -137,6 +137,7 @@
 								</td>
 								<td class="p-6 text-end">
 									<button
+										v-if="fleet.vehiclesIssued && fleet.vehiclesIssued > 0"
 										:id="'dropdownLeftButton' + index"
 										:data-dropdown-toggle="'dropdownLeft' + index"
 										data-dropdown-placement="left"
