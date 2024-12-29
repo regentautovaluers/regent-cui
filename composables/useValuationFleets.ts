@@ -2,18 +2,11 @@ export const useValuationFleets = () => {
 	const { getPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
 	const corpFleets: Ref<any[]> = ref([]);
-	const corpFleetsJobs: Ref<any[]> = ref([]);
-	const { params } = useRoute();
 
 	// for mworking with fleets
 	const fleetPage: Ref<number> = ref(0);
 	const fleetPageSize: number = 10;
 	const totalFleetPages: Ref<number> = ref(0);
-
-	// for working with fleet jobs
-	const fleetJobPage: Ref<number> = ref(0);
-	const fleetJobPageSize: number = 10;
-	const totalFleetJobPages: Ref<number> = ref(0);
 
 	const {
 		status: fetchFleetsStatus,
@@ -33,13 +26,33 @@ export const useValuationFleets = () => {
 			onResponse({ response }) {
 				if (response.status === 200 && response._data.data !== null) {
 					const data = response._data.data;
-					corpFleetsJobs.value = data;
+					corpFleets.value = data;
 					const extras = response._data.requestExtras;
-					totalFleetJobPages.value = extras.totalPages;
+					totalFleetPages.value = extras.totalPages;
 				}
 			},
 		},
 	) as any;
+
+	return {
+		fetchFleetsStatus,
+		executeFetchFleets,
+		fetchFleetsError,
+		corpFleets,
+		fleetPage,
+		totalFleetPages,
+	};
+};
+
+export const useValuationFleetJobs = () => {
+	const { params } = useRoute();
+	const runtimeConfig = useRuntimeConfig();
+
+	// for working with fleet jobs
+	const corpFleetsJobs: Ref<any[]> = ref([]);
+	const fleetJobPage: Ref<number> = ref(0);
+	const fleetJobPageSize: number = 10;
+	const totalFleetJobPages: Ref<number> = ref(0);
 
 	const {
 		status: fetchFleetsJobsStatus,
@@ -68,17 +81,11 @@ export const useValuationFleets = () => {
 	) as any;
 
 	return {
-		fetchFleetsStatus,
-		executeFetchFleets,
-		fetchFleetsError,
-		corpFleets,
-		fleetPage,
-		totalFleetPages,
-		fetchFleetsJobsStatus,
-		executeFetchJobsFleets,
-		fetchFleetsJobsError,
-		corpFleetsJobs,
 		fleetJobPage,
 		totalFleetJobPages,
+		fetchFleetsJobsStatus,
+		corpFleetsJobs,
+		executeFetchJobsFleets,
+		fetchFleetsJobsError,
 	};
 };
