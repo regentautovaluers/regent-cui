@@ -1,4 +1,3 @@
-import { type SelectedCorpOrBroker } from '~/types';
 import {
 	setSelectedCorpOrBroker,
 	getSelectedCorpOrBroker,
@@ -180,7 +179,7 @@ const useAuthorityLetters = () => {
 		try {
 			exportAuthorityLettersLoading.value = true;
 			await $fetch(
-				`${runtimeConfig.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/export-excel`,
+				`${runtimeConfig.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/export-report`,
 				{
 					method: 'GET',
 					query: {
