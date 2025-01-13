@@ -1,4 +1,5 @@
 import { parse, format } from 'date-fns';
+import { ValuationStages } from '~/types';
 
 export const stringToTitleCase = (sentence: string): string => {
 	const words = sentence.split(' ');
@@ -88,16 +89,35 @@ export const refreshPage = () => {
 	location.reload();
 };
 
-export const determineValuationStage = (stage: string): string => {
-	enum ValuationStages {
-		AWAITING_ASSESSMENT = 'Ongoing',
-		VALUER_DRAFT = 'Ongoing',
-		PENDING = 'Ongoing',
-		AWAITING_MANAGER_APPROVAL = 'Ongoing',
-		AWAITING_QC_APPROVAL = 'Ongoing',
-		COMPLETED = 'Completed',
-		INVOICING = 'Completed',
+export const determineValuationStage = (
+	stage: ValuationStages,
+): { status: string; step: string } | null => {
+	const stagesRepresentingOngoing: ValuationStages[] = [
+		ValuationStages.AWAITING_ASSESSMENT,
+		ValuationStages.VALUER_DRAFT,
+		ValuationStages.PENDING,
+		ValuationStages.AWAITING_MANAGER_APPROVAL,
+		ValuationStages.AWAITING_QC_APPROVAL,
+	];
+
+	const stagesRepresentingCompleted: ValuationStages[] = [
+		ValuationStages.INVOICING,
+		ValuationStages.COMPLETED,
+	];
+
+	if (stagesRepresentingOngoing.includes(stage)) {
+		return {
+			status: 'Ongoing',
+			step: (stage as number) + '/6',
+		};
 	}
 
-	return ValuationStages[stage];
+	if (stagesRepresentingCompleted.includes(stage)) {
+		return {
+			status: 'Completed',
+			step: '6/6',
+		};
+	}
+
+	return null;
 };

@@ -95,3 +95,13 @@ export type SelectedCorpOrBroker = {
 	name: string;
 	id: string;
 };
+
+export enum ValuationStages {
+	AWAITING_ASSESSMENT,
+	VALUER_DRAFT,
+	PENDING,
+	AWAITING_MANAGER_APPROVAL,
+	AWAITING_QC_APPROVAL,
+	COMPLETED,
+	INVOICING,
+}
