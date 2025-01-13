@@ -45,7 +45,7 @@ const useAuthorityLetters = () => {
 			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (searchRegNo.value !== '') {
-				requestURL = requestURL + `&regNo=${searchRegNo.value}`;
+				requestURL = requestURL + `&searchSlug=${searchRegNo.value}`;
 			}
 
 			return requestURL;
@@ -212,7 +212,7 @@ const useAuthorityLetters = () => {
 							link.href = url;
 							link.setAttribute(
 								'download',
-								`authority-letters-${getPrincipal.value.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xlsx`,
+								`authority-letters-${getPrincipal.value.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
 							);
 							document.body.appendChild(link);
 							link.click();

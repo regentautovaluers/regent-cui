@@ -203,7 +203,13 @@
 										>
 									</td>
 									<td class="p-4 font-semibold text-blue-600">
-										{{ determineValuationStage(valuation.valuationStage) }}
+										{{ !valuation.assessmentStage ? 'N/A' : `${
+										determineValuationStage( valuation.assessmentStage, ).status
+										}
+										<span
+											>${ determineValuationStage( valuation.assessmentStage,
+											).step }</span
+										>` }}
 									</td>
 									<td class="inline-flex flex-col p-4">
 										<span>{{ valuation.vehicleMake ?? 'N/A' }}</span>
