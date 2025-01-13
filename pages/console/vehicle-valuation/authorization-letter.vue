@@ -102,7 +102,7 @@
 										<th
 											scope="col"
 											class="table-headers">
-											Reg No.
+											Reg & Policy No.
 										</th>
 										<!-- Details will show client name and their contact -->
 										<th
@@ -113,27 +113,27 @@
 										<th
 											scope="col"
 											class="table-headers">
-											Policy Number
-										</th>
-										<th
-											scope="col"
-											class="table-headers">
 											Agency / Broker
 										</th>
 										<th
 											scope="col"
 											class="table-headers">
-											Authorized By
+											Authorized By & On
 										</th>
 										<th
 											scope="col"
 											class="table-headers">
-											Created On
+											Your Comment
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Feedback
 										</th>
 										<th
 											scope="col"
 											class="table-headers text-center">
-											Stage
+											Progress
 										</th>
 										<th
 											scope="col"
@@ -196,40 +196,48 @@
 										v-else
 										v-for="(letter, index) in authorityLetters"
 										:key="index">
-										<td
-											scope="row"
-											class="whitespace-nowrap p-4 font-semibold text-gray-600">
-											{{ letter.registrationNumber }}
+										<td class="p-4">
+											<span
+												class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+												>{{ letter.registrationNumber }}</span
+											>
+											<br />
+											<span class="text-sm">{{
+												letter.policyNumber ?? 'N/A'
+											}}</span>
 										</td>
 										<td class="inline-flex flex-col p-4">
 											<span>{{ letter.clientName }}</span>
 											<span
-												class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+												class="w-fit rounded-lg bg-blue-200 px-1 text-sm text-blue-600"
 												>{{ letter.clientPhone }}</span
 											>
 										</td>
-										<td class="p-4 font-semibold text-blue-600">
-											{{ letter.policyNumber ?? 'N/A' }}
-										</td>
 										<td class="p-4">{{ letter.agencyName ?? 'N/A' }}</td>
-										<td
-											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
-											{{ letter.authorizedBy.username }}
+										<td class="inline-flex flex-col p-4">
+											<span
+												class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+												>{{ letter.authorizedBy.username }}</span
+											>
+											<span>{{ letter.createdOn.split(' ')[0] }}</span>
 										</td>
-										<td class="p-4 font-semibold">
-											{{ letter.createdOn.split(' ')[0] }}
+										<td class="w-48 max-w-48 text-wrap px-2 text-sm">
+											{{ letter.comments ?? 'N/A' }}
+										</td>
+										<td class="w-48 max-w-48 text-wrap px-2 text-sm">
+											{{ letter.feedback ?? 'N/A' }}
+										</td>
+										<td
+											class="max-w-48 overflow-hidden text-ellipsis p-4 text-center font-semibold text-gray-600">
+											{{ !letter.assessmentStage ? 'N/A' : `${
+											determineValuationStage( letter.assessmentStage,
+											).status }
+											<span
+												>${ determineValuationStage( letter.assessmentStage,
+												).step }</span
+											>` }}
 										</td>
 
-										<td
-											class="max-w-48 overflow-hidden text-ellipsis py-4 text-center font-semibold text-gray-600">
-											{{
-												!letter.assessmentStage
-													? 'N/A'
-													: determineValuationStage(
-															letter.assessmentStage,
-														)
-											}}
-										</td>
 										<td></td>
 									</tr>
 								</tbody>
