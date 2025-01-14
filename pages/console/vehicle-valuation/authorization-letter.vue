@@ -229,13 +229,12 @@
 										</td>
 										<td
 											class="max-w-48 overflow-hidden text-ellipsis p-4 text-center font-semibold text-gray-600">
-											{{ !letter.assessmentStage ? 'N/A' : `${
-											determineValuationStage( letter.assessmentStage,
-											).status }
+											<!-- {{ !letter.assessmentStage ? 'N/A' : `${
+											determineValuationStage(letter.assessmentStage).status }
 											<span
 												>${ determineValuationStage( letter.assessmentStage,
 												).step }</span
-											>` }}
+											>` }} -->
 										</td>
 
 										<td></td>
