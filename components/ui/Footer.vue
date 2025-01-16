@@ -120,7 +120,7 @@
 			</div>
 			<div></div>
 		</div>
-		<div class="flex items-center justify-between bg-gray-500 px-14 py-6">
+		<div class="flex items-center justify-between bg-gray-700/80 px-14 py-6">
 			<p><span>&copy; 2025. Regent Auto Valuers. All rights reserved.</span></p>
 			<p class="inline-flex space-x-2">
 				<a href="#">Terms of Use</a><span>&VerticalBar;</span><a href="#">Privacy Policy</a>
