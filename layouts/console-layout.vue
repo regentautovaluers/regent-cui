@@ -5,12 +5,12 @@
 			id="top-nav">
 			<div class="w-fit lg:w-[19rem]">
 				<button
-					data-drawer-target="system-sidebar"
-					data-drawer-toggle="system-sidebar"
-					aria-controls="system-sidebar"
+					data-drawer-target="dashboard-menunav"
+					data-drawer-toggle="dashboard-menunav"
+					aria-controls="dashboard-menunav"
 					type="button"
-					class="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-					<span class="sr-only">Open sidebar</span>
+					class="ms-3 mt-2 inline-flex items-center rounded-full p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+					<span class="sr-only">Open Notification Pane</span>
 					<svg
 						class="h-6 w-6"
 						aria-hidden="true"
@@ -26,26 +26,92 @@
 			</div>
 			<div class="flex h-full flex-grow items-center justify-between px-4">
 				<h1 class="text-lg font-bold md:text-3xl">{{ currentScreenName }}</h1>
-				<div
-					class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3 rounded-full bg-orange-200 px-2 py-1">
-					<img
-						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
-						:src="profilePicture"
-						alt="User Avatar" />
-					<div class="hidden h-full flex-col overflow-hidden text-sm md:flex">
-						<h1 class="overflow-clip text-ellipsis whitespace-nowrap">
-							{{ getPrincipal.username }}
-						</h1>
-						<h2 class="overflow-clip text-ellipsis whitespace-nowrap">
-							{{ getPrincipal.corpName }}
-						</h2>
+				<div class="flex items-center space-x-2">
+					<button
+						class="rounded-lg p-2 text-gray-500 transition-all duration-150 ease-linear hover:bg-blue-600 hover:text-slate-100"
+						type="button"
+						data-drawer-target="dashboard-sidenotif-bar"
+						data-drawer-show="dashboard-sidenotif-bar"
+						data-drawer-placement="right"
+						data-drawer-backdrop="false"
+						aria-controls="dashboard-sidenotif-bar">
+						<!-- notification bell -->
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="30"
+							height="30"
+							viewBox="0 0 24 24"
+							class="text-inherit">
+							<g
+								fill="none"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								color="currentColor">
+								<path
+									d="M2.53 14.77c-.213 1.394.738 2.361 1.902 2.843c4.463 1.85 10.673 1.85 15.136 0c1.164-.482 2.115-1.45 1.902-2.843c-.13-.857-.777-1.57-1.256-2.267c-.627-.924-.689-1.931-.69-3.003C19.525 5.358 16.157 2 12 2S4.475 5.358 4.475 9.5c0 1.072-.062 2.08-.69 3.003c-.478.697-1.124 1.41-1.255 2.267" />
+								<path d="M8 19c.458 1.725 2.076 3 4 3c1.925 0 3.541-1.275 4-3" />
+							</g>
+						</svg>
+					</button>
+					<div
+						class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3 rounded-full bg-orange-200 px-2 py-1">
+						<img
+							class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
+							:src="profilePicture"
+							alt="User Avatar" />
+						<div class="hidden h-full flex-col overflow-hidden text-sm md:flex">
+							<h1 class="overflow-clip text-ellipsis whitespace-nowrap">
+								{{ getPrincipal.username }}
+							</h1>
+							<h2 class="overflow-clip text-ellipsis whitespace-nowrap">
+								{{ getPrincipal.corpName }}
+							</h2>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<!-- the notification bar on the right side -->
 		<aside
-			id="system-sidebar"
+			id="dashboard-sidenotif-bar"
+			class="fixed right-0 top-0 z-40 h-screen w-96 translate-x-full overflow-y-auto rounded-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+			tabindex="-1"
+			aria-labelledby="drawer-right-label">
+			<h5
+				id="drawer-right-label"
+				class="mb-4 inline-flex items-center text-base font-semibold text-gray-500">
+				Your Notifications
+			</h5>
+			<button
+				type="button"
+				data-drawer-hide="dashboard-sidenotif-bar"
+				aria-controls="dashboard-sidenotif-bar"
+				class="absolute end-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+				<svg
+					class="h-3 w-3"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 14 14">
+					<path
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+				</svg>
+				<span class="sr-only">Close menu</span>
+			</button>
+			<hr class="text-gray-500" />
+			<!-- notification content -->
+		</aside>
+
+		<!-- the navigation bar on the left side -->
+		<aside
+			id="dashboard-menunav"
 			class="fixed left-0 top-0 z-40 h-screen w-[17.5rem] -translate-x-full overflow-y-auto bg-white shadow-md transition-transform xl:translate-x-0"
 			aria-label="Sidebar">
 			<div class="flex h-full flex-col bg-white px-2">
@@ -266,9 +332,9 @@
 				</div>
 			</div>
 		</aside>
-		<div class="flex-grow p-2 lg:ml-[17.5rem]">
+		<section class="flex-grow p-2 lg:ml-[17.5rem]">
 			<slot />
-		</div>
+		</section>
 	</main>
 
 	<!-- Settings modal -->

@@ -313,10 +313,10 @@
 					<div class="flex-grow">
 						<h1 class="text-center text-2xl font-bold">Our Services</h1>
 						<h2 class="text-center text-lg font-bold text-gray-500">
-							{{ avaServices[activeDescriptionIndex].name }}
+							{{ regentServices[activeDescriptionIndex].name }}
 						</h2>
 						<p class="mx-4 text-gray-500">
-							{{ avaServices[activeDescriptionIndex].description }}
+							{{ regentServices[activeDescriptionIndex].description }}
 						</p>
 					</div>
 					<div class="flex h-14 items-center border-t pl-3">
@@ -476,7 +476,7 @@
 </template>
 
 <script setup lang="ts">
-	import { avaServices } from '~/data';
+	import { regentServices } from '~/data';
 	import { useScroll } from '@vueuse/core';
 
 	definePageMeta({
