@@ -12,7 +12,8 @@ export const regentServices = [
 		name: 'Emergency Evacuation',
 		description:
 			'Our emergency response service is your lifeline during critical moments. Whether it’s a remote wilderness rescue or a medical evacuation, our team combines the speed of air travel with the stability of ground support, ensuring your safety when every second counts.',
-		shortDescription: 'Our emergency response service is your lifeline during critical moments',
+		shortDescription:
+			'Our emergency response service is your lifeline during critical moments where every second counts.',
 	},
 	{
 		id: 3,
