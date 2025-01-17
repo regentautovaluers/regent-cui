@@ -25,7 +25,7 @@
 				</button>
 			</div>
 			<div class="flex h-full flex-grow items-center justify-between px-4">
-				<h1 class="text-lg font-bold md:text-3xl">{{ currentScreenName }}</h1>
+				<h1 class="text-lg font-semibold md:text-3xl">{{ currentScreenName }}</h1>
 				<div class="flex items-center space-x-2">
 					<!-- notification button -->
 					<button
@@ -145,9 +145,8 @@
 						class="flex items-center ps-2.5">
 						<img
 							src="/images/app-logo.png"
-							class="me-3 h-10"
+							class="me-3 h-12"
 							alt="Regent Logo" />
-						<span class="whitespace-nowrap text-2xl font-bold">Regent Valuers</span>
 					</NuxtLink>
 				</div>
 				<div class="flex-grow">
