@@ -137,3 +137,7 @@
 .sidebar-chevron-buttons {
 	@apply inline-flex flex-grow items-center justify-center rounded-full p-2 transition-colors duration-200 ease-in-out hover:bg-gray-300;
 }
+
+.ai-trigger-btns {
+	@apply rounded-full border border-gray-600 px-6 py-3 text-gray-600 outline-none;
+}

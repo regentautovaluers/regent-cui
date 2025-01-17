@@ -27,6 +27,7 @@
 			<div class="flex h-full flex-grow items-center justify-between px-4">
 				<h1 class="text-lg font-bold md:text-3xl">{{ currentScreenName }}</h1>
 				<div class="flex items-center space-x-2">
+					<!-- notification button -->
 					<button
 						class="rounded-lg p-2 text-gray-500 transition-all duration-150 ease-linear hover:bg-blue-600 hover:text-slate-100"
 						type="button"
@@ -55,6 +56,29 @@
 							</g>
 						</svg>
 					</button>
+
+					<!-- chat with AI button -->
+					<button
+						disabled
+						class="inline-flex h-12 items-center space-x-2 rounded-full bg-pink-200/50 px-4 py-1 text-pink-600">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24">
+							<path
+								fill="none"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z"
+								color="currentColor" />
+						</svg>
+						<span>Chat With AI</span>
+					</button>
+
+					<!-- user profile info -->
 					<div
 						class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3 rounded-full bg-orange-200 px-2 py-1">
 						<img
@@ -353,7 +377,6 @@
 	const { getPrincipal, attemptLogout } = useAuth();
 	const isSettingsModalOpen: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
-	const route = useRoute();
 
 	// TODO: render this hack another way
 	const profilePicture: Ref<string> = ref('');
