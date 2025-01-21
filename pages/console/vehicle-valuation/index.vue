@@ -222,7 +222,7 @@
 										{{ valuation.bookingDate.split('T')[0] }}
 									</td>
 									<td class="p-4 font-semibold text-gray-600">
-										{{ valuation.regentBranch.branchName }}
+										{{ valuation.regentBranch?.branchName }}
 									</td>
 									<td v-if="activeView == 'complete'"></td>
 									<td v-if="activeView == 'complete'"></td>

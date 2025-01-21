@@ -2,7 +2,7 @@
 	<main class="h-screen">
 		<!-- the navigation bar on the left side -->
 		<aside
-			class="fixed z-20 flex h-screen max-h-screen flex-col overflow-y-auto border-r-2 bg-white transition-all duration-100 ease-out"
+			class="fixed z-20 flex h-full max-h-full flex-col overflow-y-auto border-r-2 bg-white transition-all duration-100 ease-out"
 			:class="sidebarOpen ? 'w-[16rem] max-w-[16rem]' : 'w-16'">
 			<div
 				class="flex min-h-[80px] w-full max-w-[16rem] items-center justify-center border-b-[1px] bg-white text-center">
@@ -50,14 +50,14 @@
 					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<div class="flex size-full items-center justify-between">
 							<NuxtLink
-								:to="{ name: navigationRoutes[2].routeName }"
+								:to="{ name: navigationRoutes[3].routeName }"
 								class="inline-flex items-center"
 								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
 								<VehicleValuationIcon classes="size-6 text-inherit" />
 								<span
 									class="flex-grow font-semibold transition-all duration-200 ease-out"
 									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[2].screenName }}</span
+									>{{ navigationRoutes[3].screenName }}</span
 								></NuxtLink
 							>
 							<button
@@ -257,10 +257,10 @@
 
 		<!-- main UI -->
 		<div
-			class="min-h-screen"
+			class="h-full"
 			:class="sidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
 			<nav
-				class="sticky top-0 flex min-h-20 w-full items-center border-b bg-white"
+				class="sticky top-0 z-50 flex min-h-20 w-full items-center border-b bg-white"
 				:class="sidebarOpen && 'pl-12'"
 				id="top-nav">
 				<div class="flex h-full flex-grow items-center justify-between px-4">
@@ -338,7 +338,7 @@
 				</div>
 			</nav>
 
-			<div class="flex-grow p-2">
+			<div class="h-full p-2">
 				<slot />
 			</div>
 		</div>
@@ -393,7 +393,7 @@
 <script setup lang="ts">
 	const { navigationRoutes, currentScreenName } = useNavigationRoutes();
 	const { getPrincipal, attemptLogout } = useAuth();
-	const sidebarOpen: Ref<boolean> = ref(true);
+	const sidebarOpen: Ref<boolean> = ref(false);
 	const isSettingsModalOpen: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 
