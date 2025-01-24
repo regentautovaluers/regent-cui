@@ -114,7 +114,7 @@
 			<label
 				for="comments"
 				class="generic-input-label"
-				>Comments</label
+				>Extra Instructions</label
 			>
 			<textarea
 				id="comments"
