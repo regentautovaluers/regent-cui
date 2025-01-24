@@ -260,7 +260,7 @@
 			class="h-full"
 			:class="sidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
 			<nav
-				class="sticky top-0 z-50 flex min-h-20 w-full items-center border-b bg-white"
+				class="sticky top-0 z-30 flex min-h-20 w-full items-center border-b bg-white"
 				:class="sidebarOpen && 'pl-12'"
 				id="top-nav">
 				<div class="flex h-full flex-grow items-center justify-between px-4">
@@ -346,7 +346,7 @@
 		<!-- the notification bar on the right side -->
 		<aside
 			id="dashboard-sidenotif-bar"
-			class="fixed right-0 top-0 z-40 h-screen w-96 translate-x-full overflow-y-auto rounded-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+			class="fixed right-0 top-0 z-50 h-screen w-96 translate-x-full overflow-y-auto rounded-lg border-2 border-gray-500 bg-white p-4 transition-transform"
 			tabindex="-1"
 			aria-labelledby="drawer-right-label">
 			<h5

@@ -67,7 +67,7 @@ const useAuthorityLetters = () => {
 					return {
 						registrationNumber: data.registrationNumber,
 						clientName: data.clientName,
-						comment: data.comment,
+						comments: data.comments,
 						feedback: data.feedback,
 						clientPhone: data.clientPhone,
 						policyNumber: data.policyNumber,
