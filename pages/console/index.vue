@@ -48,7 +48,7 @@
 				</svg>
 				<span>Services</span>
 			</button>
-			<h1 class="text-3xl font-semibold">Popular Services</h1>
+			<h1 class="text-3xl font-semibold">Our Services</h1>
 		</div>
 		<div
 			class="mb-44 flex items-center justify-center space-x-8 overflow-x-auto whitespace-nowrap py-2">

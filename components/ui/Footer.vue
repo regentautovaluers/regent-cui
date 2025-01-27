@@ -118,7 +118,82 @@
 					<NuxtLink class="font-light">AVA</NuxtLink>
 				</div>
 			</div>
-			<div></div>
+			<div>
+				<img
+					src="/images/app-logo-white.png"
+					class="h-10" />
+				<div class="mt-5 flex flex-col space-y-2">
+					<p class="font-light">
+						Stay in Control On Every Journey with Regent By Your Side
+					</p>
+				</div>
+				<!-- location -->
+				<div class="mt-5 flex items-center space-x-4">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="22"
+						height="22"
+						viewBox="0 0 32 32">
+						<g
+							fill="none"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2">
+							<circle
+								cx="16"
+								cy="11"
+								r="4" />
+							<path d="M24 15c-3 7-8 15-8 15s-5-8-8-15s2-13 8-13s11 6 8 13" />
+						</g>
+					</svg>
+					<p class="font-light">TRV Plaza, Muthithi Road, 2nd Floor, RM 2B.</p>
+				</div>
+
+				<!-- email contact information -->
+				<div class="mt-5 flex items-center space-x-4">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="22"
+						height="22"
+						viewBox="0 0 24 24">
+						<path
+							fill="currentColor"
+							d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20zM20 8l-7.475 4.675q-.125.075-.262.113t-.263.037t-.262-.037t-.263-.113L4 8v10h16zm-8 3l8-5H4zM4 8v.25v-1.475v.025V6v.8v-.012V8.25zv10z" />
+					</svg>
+					<div class="h-fit">
+						<a
+							href="mailto:info@regentautovaluers.co.ke"
+							class="font-light"
+							>info@regentautovaluers.co.ke</a
+						>
+						<br />
+						<a
+							href="https://regentautovaluers.com/"
+							target="_blank"
+							class="font-light"
+							>www.regentautovaluers.com</a
+						>
+					</div>
+				</div>
+
+				<!-- phone information -->
+				<div class="mt-5 flex items-center space-x-4">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="22"
+						height="22"
+						viewBox="0 0 24 24">
+						<path
+							fill="currentColor"
+							d="M20 15.5c-1.2 0-2.5-.2-3.6-.6h-.3c-.3 0-.5.1-.7.3l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1c-.3-1.1-.5-2.4-.5-3.6c0-.5-.5-1-1-1H4c-.5 0-1 .5-1 1c0 9.4 7.6 17 17 17c.5 0 1-.5 1-1v-3.5c0-.5-.5-1-1-1M5 5h1.5c.1.9.3 1.8.5 2.6L5.8 8.8C5.4 7.6 5.1 6.3 5 5m14 14c-1.3-.1-2.6-.4-3.8-.8l1.2-1.2c.8.2 1.7.4 2.6.4z" />
+					</svg>
+					<div class="h-fit">
+						<p class="font-light">+254722608210</p>
+						<p class="font-light">+254111048333</p>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="flex items-center justify-between bg-gray-700/80 px-14 py-6">
 			<p><span>&copy; 2025. Regent Auto Valuers. All rights reserved.</span></p>
