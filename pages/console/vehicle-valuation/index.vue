@@ -114,7 +114,7 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Regent Location
+										Regent Branch
 									</th>
 									<th
 										scope="col"

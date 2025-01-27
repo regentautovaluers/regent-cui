@@ -21,7 +21,7 @@
 					class="flex items-center ps-2.5">
 					<img
 						src="/images/app-logo-small.png"
-						class="me-3 h-12"
+						class="me-3 h-10"
 						alt="Regent Logo" />
 				</NuxtLink>
 			</div>
@@ -33,7 +33,7 @@
 						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<NuxtLink
 							:to="{ name: navigationRoutes[0].routeName }"
-							class="inline-flex items-center"
+							class="inline-flex size-full items-center justify-center"
 							:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
 							<span>
 								<HomeIcon classes="size-6 text-inherit" />
@@ -51,7 +51,7 @@
 						<div class="flex size-full items-center justify-between">
 							<NuxtLink
 								:to="{ name: navigationRoutes[3].routeName }"
-								class="inline-flex items-center"
+								class="inline-flex size-full items-center justify-center"
 								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
 								<VehicleValuationIcon classes="size-6 text-inherit" />
 								<span
@@ -100,7 +100,7 @@
 						<div class="flex size-full items-center justify-between">
 							<NuxtLink
 								:to="{ name: navigationRoutes[1].routeName }"
-								class="inline-flex items-center"
+								class="inline-flex size-full items-center justify-center"
 								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
 								<MembershipsIcon classes="size-6 text-inherit" />
 								<span
@@ -143,7 +143,7 @@
 						<div class="flex size-full items-center justify-between">
 							<NuxtLink
 								:to="{ name: navigationRoutes[2].routeName }"
-								class="inline-flex items-center"
+								class="inline-flex size-full items-center justify-center"
 								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
 								<AssistanceIcon classes="size-6 text-inherit" />
 								<span
@@ -203,7 +203,7 @@
 					<li
 						class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
 						<button
-							class="inline-flex items-center"
+							class="inline-flex size-full items-center justify-center"
 							:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'"
 							@click="isSettingsModalOpen = true">
 							<span>
@@ -221,7 +221,7 @@
 					<li
 						class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
 						<button
-							class="inline-flex items-center"
+							class="inline-flex size-full items-center justify-center"
 							:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'"
 							@click="attemptLogout">
 							<span>
@@ -240,8 +240,8 @@
 			<div class="flex h-12 w-full items-center justify-center">
 				<button
 					@click="sidebarOpen = !sidebarOpen"
-					:class="sidebarOpen ? 'rotate-180' : ''"
-					class="inline-flex size-7 items-center justify-center rounded-full bg-gray-500 transition-transform duration-150 ease-in-out">
+					:class="sidebarOpen && 'rotate-180'"
+					class="inline-flex size-7 items-center justify-center rounded-full bg-blue-600 text-white transition-transform duration-150 ease-in-out">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
