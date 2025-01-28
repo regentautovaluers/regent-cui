@@ -1,12 +1,12 @@
 <template>
-	<main class="relative grid h-screen grid-cols-1 xl:grid-cols-[65%_35%]">
+	<main class="relative grid h-screen grid-cols-1 xl:grid-cols-[60%_40%]">
 		<section class="hidden xl:block">
 			<div
 				id="default-carousel"
 				class="relative h-full w-full"
 				data-carousel="slide">
 				<!-- Carousel wrapper -->
-				<div class="relative h-full overflow-hidden rounded-lg">
+				<div class="relative h-full overflow-hidden">
 					<!-- Item 1 -->
 					<div
 						v-for="(slide, index) in slides"

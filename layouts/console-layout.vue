@@ -26,8 +26,8 @@
 				</NuxtLink>
 			</div>
 			<!-- actual links -->
-			<div class="flex-grow px-1 py-2">
-				<ul class="space-y-2">
+			<div class="flex flex-grow flex-col justify-between px-1 py-2">
+				<ul class="space-y-3">
 					<!-- home page -->
 					<li
 						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
@@ -195,22 +195,49 @@
 							</li>
 						</ol>
 					</ul>
+				</ul>
+				<!-- Carousel -->
+				<SidenavCarousel v-if="sidebarOpen" />
 
-					<!-- Carousel -->
-					<SidenavCarousel v-if="sidebarOpen" />
+				<ul class="space-y-2">
+					<!-- chat with AVA button -->
+					<li
+						class="flex h-12 w-full items-center rounded-xl bg-pink-200/50 text-pink-600">
+						<button
+							class="inline-flex size-full items-center justify-start space-x-3"
+							:class="!sidebarOpen && 'w-19 justify-center'">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24">
+								<path
+									fill="none"
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.+-----394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z"
+									color="currentColor" />
+							</svg>
+							<span
+								class="transition-all duration-200 ease-out"
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								>Chat With AVA</span
+							>
+						</button>
+					</li>
 
 					<!-- settings -->
 					<li
 						class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
 						<button
-							class="inline-flex size-full items-center justify-center"
-							:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'"
+							class="inline-flex size-full items-center justify-start space-x-3"
+							:class="!sidebarOpen && 'w-19 justify-center'"
 							@click="isSettingsModalOpen = true">
-							<span>
-								<SettingsIcon classes="size-7 text-inherit" />
-							</span>
+							<SettingsIcon classes="size-7 text-inherit" />
 							<span
-								class="flex-grow text-lg font-semibold transition-all duration-200 ease-out"
+								class="transition-all duration-200 ease-out"
 								:class="sidebarOpen ? 'block' : 'hidden'"
 								>Settings</span
 							>
@@ -221,14 +248,12 @@
 					<li
 						class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
 						<button
-							class="inline-flex size-full items-center justify-center"
-							:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'"
+							class="inline-flex size-full items-center space-x-3"
+							:class="!sidebarOpen && 'w-19 justify-center'"
 							@click="attemptLogout">
-							<span>
-								<LogoutIcon classes="size-7 text-inherit" />
-							</span>
+							<LogoutIcon classes="size-7 text-inherit" />
 							<span
-								class="flex-grow text-lg font-semibold transition-all duration-200 ease-out"
+								class="transition-all duration-200 ease-out"
 								:class="sidebarOpen ? 'block' : 'hidden'"
 								>Logout</span
 							>
@@ -237,21 +262,9 @@
 				</ul>
 			</div>
 
-			<div class="flex h-12 w-full items-center justify-center">
-				<button
-					@click="sidebarOpen = !sidebarOpen"
-					:class="sidebarOpen && 'rotate-180'"
-					class="inline-flex size-7 items-center justify-center rounded-full bg-blue-600 text-white transition-transform duration-150 ease-in-out">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24">
-						<path
-							fill="currentColor"
-							d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01" />
-					</svg>
-				</button>
+			<div class="flex h-12 w-full flex-col items-center text-sm text-gray-600">
+				<h1 v-if="sidebarOpen">Regent Auto Valuers</h1>
+				<h2><span>&copy; 2025</span><span v-if="sidebarOpen">All Rights Reserved</span></h2>
 			</div>
 		</aside>
 
@@ -261,10 +274,25 @@
 			:class="sidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
 			<nav
 				class="sticky top-0 z-30 flex min-h-20 w-full items-center border-b bg-white"
-				:class="sidebarOpen && 'pl-12'"
 				id="top-nav">
 				<div class="flex h-full flex-grow items-center justify-between px-4">
-					<h1 class="text-lg font-semibold md:text-3xl">{{ currentScreenName }}</h1>
+					<div class="flex items-center space-x-3">
+						<button
+							@click="sidebarOpen = !sidebarOpen"
+							:class="!sidebarOpen && 'rotate-180'"
+							class="inline-flex size-7 items-center justify-center rounded-full text-gray-700 transition-transform duration-150 ease-in-out">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="30"
+								height="30"
+								viewBox="0 0 24 24">
+								<path
+									fill="currentColor"
+									d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h11q.425 0 .713.288T16 17t-.288.713T15 18zm14.9-1.7l-3.6-3.6q-.3-.3-.3-.7t.3-.7l3.6-3.6q.275-.275.7-.275t.7.275t.275.7t-.275.7L17.4 12l2.9 2.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275M4 13q-.425 0-.712-.288T3 12t.288-.712T4 11h8q.425 0 .713.288T13 12t-.288.713T12 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h11q.425 0 .713.288T16 7t-.288.713T15 8z" />
+							</svg>
+						</button>
+						<h1 class="text-lg font-semibold md:text-3xl">{{ currentScreenName }}</h1>
+					</div>
 					<div class="flex items-center space-x-2">
 						<!-- notification button -->
 						<button
@@ -295,27 +323,6 @@
 										d="M8 19c.458 1.725 2.076 3 4 3c1.925 0 3.541-1.275 4-3" />
 								</g>
 							</svg>
-						</button>
-
-						<!-- chat with AI button -->
-						<button
-							disabled
-							class="inline-flex h-12 items-center space-x-2 rounded-full bg-pink-200/50 px-4 py-1 text-pink-600">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24">
-								<path
-									fill="none"
-									stroke="currentColor"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="1.5"
-									d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z"
-									color="currentColor" />
-							</svg>
-							<span>Chat With AVA</span>
 						</button>
 
 						<!-- user profile info -->

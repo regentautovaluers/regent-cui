@@ -1,7 +1,7 @@
 <template>
 	<div class="flex min-h-full flex-col justify-between">
 		<div class="my-36 flex flex-col items-center">
-			<h1 class="text-xl text-gray-500">Hello {{ getPrincipal.username }}</h1>
+			<h1 class="text-xl text-gray-500 uppercase">Hello, {{ getPrincipal.username }}</h1>
 			<h2
 				class="my-3 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-7xl font-semibold text-transparent">
 				<span>Meet AVA,</span><br /><span>Our Smart AI Assistant</span>
@@ -22,7 +22,7 @@
 				<span>Under Development</span>
 			</button>
 			<p class="my-4 text-center text-lg text-gray-500">
-				Hi there! I am Carina, Regent's Smart AI Assistant. <br />
+				Hi there! I am AVA, Regent's Smart AI Assistant. <br />
 				How can I help you today?
 			</p>
 

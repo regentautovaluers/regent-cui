@@ -25,7 +25,7 @@
 		</div>
 
 		<!-- statistics strip -->
-		<div class="flex h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
+		<div class="flex min-h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
 			<div
 				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
 				<svg
@@ -127,7 +127,7 @@
 		</div>
 
 		<!-- Requests quick links -->
-		<div class="mt-4 flex h-fit items-center justify-between space-x-3 overflow-auto">
+		<div class="mt-4 flex h-fit min-h-20 items-center justify-between space-x-3 overflow-auto">
 			<NuxtLink
 				:to="{
 					name: 'ra-fueldelivery-request',
