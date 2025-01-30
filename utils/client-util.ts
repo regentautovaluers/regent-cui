@@ -89,9 +89,11 @@ export const refreshPage = () => {
 	location.reload();
 };
 
-export const determineValuationStage = (
-	stage: ValuationStages,
-): { status: string; step: string } | null => {
+export const determineValuationStage = (stage?: String): { status: string } | null => {
+	if (!stage) {
+		return null;
+	}
+
 	const stagesRepresentingOngoing: ValuationStages[] = [
 		ValuationStages.AWAITING_ASSESSMENT,
 		ValuationStages.VALUER_DRAFT,
@@ -104,18 +106,17 @@ export const determineValuationStage = (
 		ValuationStages.INVOICING,
 		ValuationStages.COMPLETED,
 	];
+	const stageAsEnum = ValuationStages[stage as keyof typeof ValuationStages];
 
-	if (stagesRepresentingOngoing.includes(stage)) {
+	if (stagesRepresentingOngoing.includes(stageAsEnum)) {
 		return {
 			status: 'Ongoing',
-			step: (stage as number) + '/6',
 		};
 	}
 
-	if (stagesRepresentingCompleted.includes(stage)) {
+	if (stagesRepresentingCompleted.includes(stageAsEnum)) {
 		return {
 			status: 'Completed',
-			step: '6/6',
 		};
 	}
 

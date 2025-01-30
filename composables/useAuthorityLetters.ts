@@ -65,6 +65,7 @@ const useAuthorityLetters = () => {
 				totalPages.value = extras.totalPages;
 				authorityLetters.value = data.map((data: any) => {
 					return {
+						letterId: data.letterId,
 						registrationNumber: data.registrationNumber,
 						clientName: data.clientName,
 						comments: data.comments,
@@ -77,6 +78,7 @@ const useAuthorityLetters = () => {
 						},
 						createdOn: data.createdOn,
 						assessmentStage: data.assessmentStage,
+						reportURL: data.reportURL,
 					};
 				});
 			},

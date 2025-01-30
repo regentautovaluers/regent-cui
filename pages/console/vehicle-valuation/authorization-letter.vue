@@ -228,16 +228,60 @@
 											{{ letter.feedback ?? 'N/A' }}
 										</td>
 										<td
-											class="max-w-48 overflow-hidden text-ellipsis p-4 text-center font-semibold text-gray-600">
-											<!-- {{ !letter.assessmentStage ? 'N/A' : `${
-											determineValuationStage(letter.assessmentStage).status }
-											<span
-												>${ determineValuationStage( letter.assessmentStage,
-												).step }</span
-											>` }} -->
+											class="max-w-48 overflow-hidden text-ellipsis p-4 text-center text-gray-600">
+											{{
+												!letter.assessmentStage
+													? 'N/A'
+													: determineValuationStage(
+															letter.assessmentStage,
+														).status
+											}}
 										</td>
-
-										<td></td>
+										<td>
+											<button
+												:id="'dropdownLeftButton' + index"
+												:data-dropdown-toggle="'dropdownLeft' + index"
+												data-dropdown-placement="left"
+												type="button">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="1em"
+													height="1em"
+													viewBox="0 0 16 16"
+													class="size-6">
+													<MenuKebabIcon />
+												</svg>
+											</button>
+											<!-- Dropdown menu -->
+											<div
+												:id="'dropdownLeft' + index"
+												class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+												<ul
+													class="py-2 text-sm text-gray-500"
+													aria-labelledby="dropdownLeftButton">
+													<li v-if="letter.reportURL == null">
+														<button
+															class="block w-full bg-gray-100 px-4 py-2 text-center"
+															type="button">
+															Report N/A
+														</button>
+													</li>
+													<li v-else>
+														<NuxtLink
+															:to="{
+																name: 'vehicle-valuation-report',
+																params: {
+																	valuation_id: letter.letterId,
+																},
+															}"
+															class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+															type="button">
+															View Report
+														</NuxtLink>
+													</li>
+												</ul>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
