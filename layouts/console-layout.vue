@@ -84,10 +84,6 @@
 									class="font-normal leading-none text-gray-500"
 									:to="{
 										name: link.routeName,
-										query: {
-											client_lat: clientCoordinates.lat,
-											client_lng: clientCoordinates.lng,
-										},
 									}"
 									>{{ link.screenName }}</NuxtLink
 								>
