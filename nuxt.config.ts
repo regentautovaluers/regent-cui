@@ -27,7 +27,7 @@ export default defineNuxtConfig({
 	},
 	app: {
 		head: {
-			title: 'Regent Valuers',
+			title: 'Regent Auto Valuers',
 			meta: [
 				{
 					name: 'viewport',
