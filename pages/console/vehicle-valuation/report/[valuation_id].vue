@@ -3,12 +3,13 @@
 		<div class="rounded-lg border-[.5px] shadow-md outline-none">
 			<div class="flex items-center justify-between p-10">
 				<div class="space-y-3">
-					<h2 class="text-gray-600">BK-JAN24-KA34-FDS900</h2>
-					<h1 class="text-4xl font-bold">KDG 188T</h1>
+					<h2 class="text-gray-600">{{ valuationReport.valuationId }}</h2>
+					<h1 class="text-4xl font-bold">{{ valuationReport.regNo }}</h1>
 				</div>
 				<div>
 					<a
-						href="#"
+						:href="valuationReport.reportURL"
+						target="_blank"
 						class="generic-form-submit text-base"
 						>Download Report</a
 					>
@@ -17,13 +18,15 @@
 			<hr class="border-[.5px]" />
 			<div class="flex h-fit items-center p-10">
 				<img
-					src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?q=80&w=3939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					:src="valuationReport.vehiclePhotos[0]"
 					alt="Vehicle Image"
-					class="h-52 w-64 rounded-md border shadow-sm" />
+					class="size-64 rounded-md border object-cover shadow-sm" />
 				<div class="flex h-52 flex-grow flex-col justify-end px-5">
-					<span class="text-2xl font-semibold">Christine Gathoni</span>
-					<span class="text-xl tracking-wide text-gray-600">Toyota Voxy ZRR80</span>
-					<span class="text-lg text-gray-500">Station Wagon Auto</span>
+					<span class="text-2xl font-semibold">{{ valuationReport.clientName }}</span>
+					<span class="text-xl tracking-wide text-gray-600">{{
+						valuationReport.vehicleMake
+					}}</span>
+					<span class="text-lg text-gray-500">{{ valuationReport.vehicleType }}</span>
 					<span class="text-lg text-gray-500">ABCD/1234/RTYU/XYZ</span>
 				</div>
 			</div>
@@ -47,38 +50,18 @@
 			</div>
 
 			<!-- kyc -->
-			<div class="grid grid-cols-4 gap-x-2 px-10 py-5">
+			<div class="grid grid-cols-3 gap-x-2 px-10 py-5">
 				<div class="col-span-4">
 					<h1 class="text-lg font-semibold text-gray-600">Client KYCs</h1>
 				</div>
-				<div class="rounded-lg bg-gray-100 p-3">
-					<h1 class="font-semibold text-gray-700">Authority Letter</h1>
+				<div
+					class="rounded-lg bg-gray-100 p-3"
+					v-for="(report, index) in valuationReport.kycDocuments"
+					:key="index">
+					<h1 class="font-semibold text-gray-700">{{ report.split(': ')[0] }}</h1>
 					<a
-						href="#"
-						class="text-sm text-blue-700"
-						>Download</a
-					>
-				</div>
-				<div class="rounded-lg bg-gray-100 p-3">
-					<h1 class="font-semibold text-gray-700">KRA PIN</h1>
-					<a
-						href="#"
-						class="text-sm text-blue-700"
-						>Download</a
-					>
-				</div>
-				<div class="rounded-lg bg-gray-100 p-3">
-					<h1 class="font-semibold text-gray-700">Registration Cert</h1>
-					<a
-						href="#"
-						class="text-sm text-blue-700"
-						>Download</a
-					>
-				</div>
-				<div class="rounded-lg bg-gray-100 p-3">
-					<h1 class="font-semibold text-gray-700">Vehicle Logbook</h1>
-					<a
-						href="#"
+						:href="report.split(': ')[1]"
+						target="_top"
 						class="text-sm text-blue-700"
 						>Download</a
 					>
@@ -213,17 +196,37 @@
 		<div class="col-span-2 flex h-[50rem] space-x-5 outline-none">
 			<div class="flex h-full max-h-full w-[15%] flex-col space-y-3 overflow-y-scroll">
 				<img
-					v-for="a in 10"
-					:key="a"
-					src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?q=80&w=3939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					v-for="(i, index) in valuationReport.vehiclePhotos"
+					:key="index"
+					:src="i"
 					alt="Vehicle Image"
-					class="h-72 max-h-72 w-full rounded-sm" />
+					class="h-48 max-h-48 w-full rounded-sm object-cover"
+					:class="activeImage === index && 'border-2 border-pink-600'"
+					@click="activeImage = index" />
 			</div>
-			<div class="h-full max-h-full flex-grow">
+			<div class="relative h-full max-h-full flex-grow border shadow-md">
+				<button
+					class="absolute right-2 top-2 flex size-12 items-center justify-center rounded-full bg-blue-600 text-white"
+					@click="imageStretched = !imageStretched"
+					title="Fit or Zoom">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="30"
+						height="30"
+						viewBox="0 0 24 24"
+						class="text-inherit">
+						<path
+							fill="currentColor"
+							fill-rule="evenodd"
+							d="M6 4.75c-.69 0-1.25.56-1.25 1.25v3a.75.75 0 0 1-1.5 0V6A2.75 2.75 0 0 1 6 3.25h3a.75.75 0 0 1 0 1.5zM14.25 4a.75.75 0 0 1 .75-.75h3A2.75 2.75 0 0 1 20.75 6v3a.75.75 0 0 1-1.5 0V6c0-.69-.56-1.25-1.25-1.25h-3a.75.75 0 0 1-.75-.75M4 14.25a.75.75 0 0 1 .75.75v3c0 .69.56 1.25 1.25 1.25h3a.75.75 0 0 1 0 1.5H6A2.75 2.75 0 0 1 3.25 18v-3a.75.75 0 0 1 .75-.75m16 0a.75.75 0 0 1 .75.75v3A2.75 2.75 0 0 1 18 20.75h-3a.75.75 0 0 1 0-1.5h3c.69 0 1.25-.56 1.25-1.25v-3a.75.75 0 0 1 .75-.75"
+							clip-rule="evenodd" />
+					</svg>
+				</button>
 				<img
-					src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?q=80&w=3939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					:src="valuationReport.vehiclePhotos[activeImage]"
 					alt="Vehicle Image"
-					class="size-full object-cover" />
+					class="size-full rounded-sm"
+					:class="imageStretched && 'object-cover'" />
 			</div>
 		</div>
 	</div>
@@ -234,4 +237,8 @@
 		name: 'vehicle-valuation-report',
 		layout: 'console-layout',
 	});
+
+	const { valuationReport } = useCorporateValuationReport();
+	const imageStretched: Ref<boolean> = ref(false);
+	const activeImage: Ref<number> = ref(0);
 </script>
