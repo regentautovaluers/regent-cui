@@ -1,5 +1,5 @@
 <template>
-	<div class="grid h-fit grid-cols-2 gap-10">
+	<div class="grid h-fit grid-cols-2 gap-10 pb-5">
 		<div class="rounded-lg border-[.5px] shadow-md outline-none">
 			<div class="flex items-center justify-between p-10">
 				<div class="space-y-3">
@@ -37,15 +37,18 @@
 				</div>
 				<div>
 					<h1 class="text-lg font-semibold">Chassis Number</h1>
-					<span class="text-gray-500">Test Name</span>
+					<span class="text-gray-500">{{ valuationReport.chassisNumber }}</span>
 				</div>
 				<div>
 					<h1 class="text-lg font-semibold">Engine Number</h1>
-					<span class="text-gray-500">Test Name</span>
+					<span class="text-gray-500">{{ valuationReport.engineNumber }}</span>
 				</div>
 				<div>
 					<h1 class="text-lg font-semibold">Mileage</h1>
-					<span class="text-gray-500">Test Name</span>
+					<span class="text-gray-500"
+						>{{ valuationReport.inspection.mileage.reading }}
+						{{ valuationReport.inspection.mileage.units }}</span
+					>
 				</div>
 			</div>
 
@@ -71,53 +74,41 @@
 		<div class="space-y-5 rounded-lg border-[.5px] p-10 shadow-md outline-none">
 			<div class="flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-4 max-w-4 rounded-full bg-blue-500"></div>
-				<div class="h-fit flex-grow">
+				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-blue-500"></div>
+				<div class="h-28 flex-grow">
 					<h1 class="text-2xl font-semibold">Tyre Condition</h1>
 					<p class="mt-3 text-gray-500">
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi laudantium
-						iure, eligendi illo doloribus similique! Tenetur numquam reprehenderit
-						laborum dolores nam, itaque cumque error nemo sapiente iure saepe hic
-						repellendus!
+						{{ valuationReport.inspection.tyreCondition }}
 					</p>
 				</div>
 			</div>
 			<div class="flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-4 max-w-4 rounded-full bg-green-500"></div>
-				<div class="h-fit flex-grow">
+				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-green-500"></div>
+				<div class="h-28 flex-grow">
 					<h1 class="text-2xl font-semibold">Extras</h1>
 					<p class="mt-3 text-gray-500">
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi laudantium
-						iure, eligendi illo doloribus similique! Tenetur numquam reprehenderit
-						laborum dolores nam, itaque cumque error nemo sapiente iure saepe hic
-						repellendus!
+						{{ valuationReport.inspection.vehicleExtras.join(', ') }}
 					</p>
 				</div>
 			</div>
 			<div class="flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-4 max-w-4 rounded-full bg-pink-500"></div>
-				<div class="h-fit flex-grow">
+				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-pink-500"></div>
+				<div class="h-28 flex-grow">
+					<h1 class="text-2xl font-semibold">Electrical Condition</h1>
+					<p class="mt-3 text-gray-500">
+						{{ valuationReport.inspection.electicalSectionComment }}
+					</p>
+				</div>
+			</div>
+			<div class="flex items-start space-x-4">
+				<!-- the pill -->
+				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-yellow-500"></div>
+				<div class="h-28 flex-grow">
 					<h1 class="text-2xl font-semibold">Mechanical Condition</h1>
 					<p class="mt-3 text-gray-500">
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi laudantium
-						iure, eligendi illo doloribus similique! Tenetur numquam reprehenderit
-						laborum dolores nam, itaque cumque error nemo sapiente iure saepe hic
-						repellendus!
-					</p>
-				</div>
-			</div>
-			<div class="flex items-start space-x-4">
-				<!-- the pill -->
-				<div class="h-10 max-h-10 w-4 max-w-4 rounded-full bg-yellow-500"></div>
-				<div class="h-fit flex-grow">
-					<h1 class="text-2xl font-semibold">Electrical</h1>
-					<p class="mt-3 text-gray-500">
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi laudantium
-						iure, eligendi illo doloribus similique! Tenetur numquam reprehenderit
-						laborum dolores nam, itaque cumque error nemo sapiente iure saepe hic
-						repellendus!
+						{{ valuationReport.inspection.mechanicalSectionComment }}
 					</p>
 				</div>
 			</div>
@@ -187,7 +178,7 @@
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Radio Value</h1>
+					<h1 class="text-lg font-semibold text-gray-600">Note Value</h1>
 					<span class="text-2xl font-semibold text-blue-700">1,700,000</span>
 				</div>
 			</div>
@@ -200,11 +191,16 @@
 					:key="index"
 					:src="i"
 					alt="Vehicle Image"
-					class="h-48 max-h-48 w-full rounded-sm object-cover"
+					class="h-48 max-h-48 w-full cursor-pointer rounded-sm object-cover"
 					:class="activeImage === index && 'border-2 border-pink-600'"
 					@click="activeImage = index" />
 			</div>
 			<div class="relative h-full max-h-full flex-grow border shadow-md">
+				<div
+					class="absolute bottom-0 flex h-16 w-full items-center space-x-2 bg-gray-500/50 px-4 text-xl text-white">
+					<span>Vehicle Pictures</span>
+					<span>({{ valuationReport.regNo }})</span>
+				</div>
 				<button
 					class="absolute right-2 top-2 flex size-12 items-center justify-center rounded-full bg-blue-600 text-white"
 					@click="imageStretched = !imageStretched"
@@ -239,6 +235,6 @@
 	});
 
 	const { valuationReport } = useCorporateValuationReport();
-	const imageStretched: Ref<boolean> = ref(false);
+	const imageStretched: Ref<boolean> = ref(true);
 	const activeImage: Ref<number> = ref(0);
 </script>

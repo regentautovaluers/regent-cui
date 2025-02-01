@@ -114,6 +114,8 @@ export const useCorporateValuationReport = () => {
 					vehicleMake: valuationBooking.vehicleMake,
 					vehicleType: valuationBooking.vehicleType,
 					kycDocuments: valuationBooking.uploadedDocuments,
+					engineNumber: reportData.engineAndWindscreenFinal.engineNumber,
+					chassisNumber: reportData.tyreAndChassisFinal.chassisNumber,
 					vehiclePhotos: collateInspectionPictures(
 						reportData.frontFinal.frontPhotos,
 						reportData.engineAndWindscreenFinal.enginePhotos,
@@ -127,6 +129,18 @@ export const useCorporateValuationReport = () => {
 						reportData.interiorFinal.upholsteryPhotos,
 						reportData.interiorFinal.odometerPhotos,
 					),
+					inspection: {
+						mechanicalSectionComment:
+							reportData.mechanicalAndElectricalFinal.mechanicalGeneratedComment,
+						electicalSectionComment:
+							reportData.mechanicalAndElectricalFinal.electricalGeneratedComment,
+						vehicleExtras: reportData.extras,
+						tyreCondition: reportData.tyreAndChassisFinal.tyreGeneratedComment,
+						mileage: {
+							reading: reportData.interiorFinal.odometerCurrentReading,
+							units: reportData.interiorFinal.odometerReadingUnits,
+						},
+					},
 				};
 			},
 		},
