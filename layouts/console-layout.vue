@@ -349,7 +349,7 @@
 		<!-- the notification bar on the right side -->
 		<aside
 			id="dashboard-sidenotif-bar"
-			class="fixed right-0 top-0 z-50 h-screen w-96 translate-x-full overflow-y-auto rounded-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+			class="fixed right-0 top-0 z-50 h-screen w-96 translate-x-full overflow-y-auto rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
 			tabindex="-1"
 			aria-labelledby="drawer-right-label">
 			<h5
