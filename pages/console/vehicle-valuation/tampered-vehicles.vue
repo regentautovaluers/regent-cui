@@ -96,22 +96,6 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Value
-									</th>
-									<th
-										scope="col"
-										class="table-headers">
-										Note Value
-									</th>
-									<th
-										scope="col"
-										class="table-headers">
-										Note(N/B)
-									</th>
-
-									<th
-										scope="col"
-										class="table-headers">
 										Remarks
 									</th>
 									<th
@@ -146,21 +130,6 @@
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>regenthq</span
-										>
-									</td>
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>domain role</span
-										>
-									</td>
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>agency</span
-										>
-									</td>
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>authorizedby</span
 										>
 									</td>
 									<td class="p-6 text-gray-300">
@@ -209,11 +178,8 @@
 									<td class="p-4 font-semibold text-gray-600">
 										{{ valuation.regentBranch.branchName }}
 									</td>
-									<td></td>
-									<td></td>
-									<td>{{ valuation.inspectionFinal.inspectionNB }}</td>
 									<td
-										class="h-20 max-h-20 max-w-32 text-wrap bg-green-500 text-sm"
+										class="h-20 max-h-20 max-w-64 text-wrap text-sm"
 										style="
 											overflow: hidden;
 											display: inline-flex;
@@ -221,9 +187,8 @@
 											-webkit-line-clamp: 3;
 											line-clamp: 3;
 										">
-										{{ valuation.inspectionFinal.inspectionRemarks }} test extra
-										metadata that is supposed to cuase the text to wrap to a
-										certain point and then start to truncate.
+										test extra metadata that is supposed to cuase the text to
+										wrap to a certain point and then start to truncate.
 									</td>
 									<td></td>
 								</tr>
