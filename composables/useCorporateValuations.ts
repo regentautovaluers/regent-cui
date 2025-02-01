@@ -1,8 +1,9 @@
 export const useCorporateValuations = () => {
-	const activeView: Ref<string> = ref('pending');
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
-	const { name: routeName } = useRoute();
+	const { name: routeName, params: routeParams } = useRoute();
+
+	const activeView: Ref<string> = ref('pending');
 
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
@@ -57,5 +58,81 @@ export const useCorporateValuations = () => {
 		totalPages,
 		page,
 		executeFetchValuations,
+	};
+};
+
+export const useCorporateValuationReport = () => {
+	const { params: routeParams } = useRoute();
+	const runtimeConfig = useRuntimeConfig();
+
+	const collateInspectionPictures = (
+		frontPhotos: string[],
+		enginePhotos: string[],
+		windscreenPhotos: string[],
+		rightPhotos: string[],
+		backPhotos: string[],
+		bootPhotos: [],
+		leftPhotos: any[],
+		chassisPhotos: string[],
+		tyrePhotos: string[],
+		upholsteryPhotos: string[],
+		odometerPhotos: [],
+	): string[] => {
+		return [
+			...frontPhotos,
+			...enginePhotos,
+			...windscreenPhotos,
+			...rightPhotos,
+			...backPhotos,
+			...bootPhotos,
+			...leftPhotos,
+			...chassisPhotos,
+			...tyrePhotos,
+			...upholsteryPhotos,
+			...odometerPhotos,
+		];
+	};
+
+	const { data: valuationReport } = useFetch(
+		`/api/v1/final/get-inspection-details?valuationId=${routeParams.valuation_id}`,
+		{
+			key: 'valuation-report',
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			server: true,
+			transform: (report: any) => {
+				const reportData = report.data;
+				const valuationBooking = reportData.valuationBooking;
+				return {
+					reportURL: valuationBooking.reportURL,
+					valuationId: valuationBooking.valuationId,
+					regNo: valuationBooking.regNo,
+					clientName: valuationBooking.clientName,
+					vehicleMake: valuationBooking.vehicleMake,
+					vehicleType: valuationBooking.vehicleType,
+					kycDocuments: valuationBooking.uploadedDocuments,
+					vehiclePhotos: collateInspectionPictures(
+						reportData.frontFinal.frontPhotos,
+						reportData.engineAndWindscreenFinal.enginePhotos,
+						reportData.engineAndWindscreenFinal.windscreenPhotos,
+						reportData.rightSideFinal.rightSidePhotos,
+						reportData.backSideFinal.backPhotos,
+						reportData.backSideFinal.bootPhotos,
+						reportData.leftSideFinal.leftSidePhotos,
+						reportData.tyreAndChassisFinal.chassisPhotos,
+						reportData.tyreAndChassisFinal.tyrePhotos,
+						reportData.interiorFinal.upholsteryPhotos,
+						reportData.interiorFinal.odometerPhotos,
+					),
+				};
+			},
+		},
+	) as any;
+
+	return {
+		valuationReport,
 	};
 };
