@@ -32,8 +32,8 @@
 			</div>
 			<div class="grid grid-cols-4 gap-x-2 p-10">
 				<div>
-					<h1 class="text-lg font-semibold">Client Name</h1>
-					<span class="text-gray-500">Test Name</span>
+					<h1 class="text-lg font-semibold">Insurer</h1>
+					<span class="text-gray-500">{{ valuationReport.insurer }}</span>
 				</div>
 				<div>
 					<h1 class="text-lg font-semibold">Chassis Number</h1>
@@ -126,60 +126,78 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-span-2 grid h-28 grid-cols-5 gap-x-10 rounded-lg">
+		<div class="col-span-2 grid grid-cols-4 gap-x-10 rounded-lg">
 			<div
-				class="flex h-full items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
+				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
 				<div
 					class="flex size-16 items-center justify-center rounded-full bg-blue-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
 					<h1 class="text-lg font-semibold text-gray-600">Assessed Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">1,700,000</span>
+					<span class="text-2xl font-semibold text-blue-700">{{
+						valuationReport.awardedValues.assessedValue == null
+							? 'N/A'
+							: Intl.NumberFormat('en-US', {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
+								}).format(valuationReport.awardedValues.assessedValue)
+					}}</span>
 				</div>
 			</div>
 			<div
-				class="flex h-full items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
-				<div
-					class="flex size-16 items-center justify-center rounded-full bg-yellow-500 text-white">
-					<WalletIcon classes="text-inherit" />
-				</div>
-				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Windscreen Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">1,700,000</span>
-				</div>
-			</div>
-			<div
-				class="flex h-full items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
+				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
 				<div
 					class="flex size-16 items-center justify-center rounded-full bg-green-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
 					<h1 class="text-lg font-semibold text-gray-600">Market Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">1,700,000</span>
+					<span class="text-2xl font-semibold text-blue-700">{{
+						valuationReport.awardedValues.marketValue == null
+							? 'N/A'
+							: Intl.NumberFormat('en-US', {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
+								}).format(valuationReport.awardedValues.marketValue)
+					}}</span>
 				</div>
 			</div>
+
 			<div
-				class="flex h-full items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
+				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
 				<div
 					class="flex size-16 items-center justify-center rounded-full bg-purple-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Forced Sale Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">1,700,000</span>
+					<h1 class="text-lg font-semibold text-gray-600">Forced Value</h1>
+					<span class="text-2xl font-semibold text-blue-700">{{
+						valuationReport.awardedValues.forcedValue == null
+							? 'N/A'
+							: Intl.NumberFormat('en-US', {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
+								}).format(valuationReport.awardedValues.forcedValue)
+					}}</span>
 				</div>
 			</div>
 			<div
-				class="flex h-full items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
+				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
 				<div
 					class="flex size-16 items-center justify-center rounded-full bg-red-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Note Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">1,700,000</span>
+					<h1 class="text-lg font-semibold text-gray-600">Windscreen Value</h1>
+					<span class="text-2xl font-semibold text-blue-700">{{
+						valuationReport.awardedValues.windscreenValue == null
+							? 'N/A'
+							: Intl.NumberFormat('en-US', {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
+								}).format(valuationReport.awardedValues.windscreenValue)
+					}}</span>
 				</div>
 			</div>
 		</div>
@@ -234,7 +252,96 @@
 		layout: 'console-layout',
 	});
 
-	const { valuationReport } = useCorporateValuationReport();
+	const { params: routeParams } = useRoute();
+	const runtimeConfig = useRuntimeConfig();
 	const imageStretched: Ref<boolean> = ref(true);
 	const activeImage: Ref<number> = ref(0);
+
+	const collateInspectionPictures = (
+		frontPhotos: string[],
+		enginePhotos: string[],
+		windscreenPhotos: string[],
+		rightPhotos: string[],
+		backPhotos: string[],
+		bootPhotos: [],
+		leftPhotos: any[],
+		chassisPhotos: string[],
+		tyrePhotos: string[],
+		upholsteryPhotos: string[],
+		odometerPhotos: [],
+	): string[] => {
+		return [
+			...frontPhotos,
+			...enginePhotos,
+			...windscreenPhotos,
+			...rightPhotos,
+			...backPhotos,
+			...bootPhotos,
+			...leftPhotos,
+			...chassisPhotos,
+			...tyrePhotos,
+			...upholsteryPhotos,
+			...odometerPhotos,
+		];
+	};
+
+	const { data: valuationReport } = (await useFetch(
+		`/api/v1/final/get-inspection-details?valuationId=${routeParams.valuation_id}`,
+		{
+			key: 'valuation-report',
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			server: true,
+			transform: (report: any) => {
+				const reportData = report.data;
+				const valuationBooking = reportData.valuationBooking;
+				return {
+					reportURL: valuationBooking.reportURL,
+					insurer: reportData.engineAndWindscreenFinal.insurerName,
+					valuationId: valuationBooking.valuationId,
+					regNo: valuationBooking.regNo,
+					clientName: valuationBooking.clientName,
+					vehicleMake: valuationBooking.vehicleMake,
+					vehicleType: valuationBooking.vehicleType,
+					kycDocuments: valuationBooking.uploadedDocuments,
+					engineNumber: reportData.engineAndWindscreenFinal.engineNumber,
+					chassisNumber: reportData.tyreAndChassisFinal.chassisNumber,
+					vehiclePhotos: collateInspectionPictures(
+						reportData.frontFinal.frontPhotos,
+						reportData.engineAndWindscreenFinal.enginePhotos,
+						reportData.engineAndWindscreenFinal.windscreenPhotos,
+						reportData.rightSideFinal.rightSidePhotos,
+						reportData.backSideFinal.backPhotos,
+						reportData.backSideFinal.bootPhotos,
+						reportData.leftSideFinal.leftSidePhotos,
+						reportData.tyreAndChassisFinal.chassisPhotos,
+						reportData.tyreAndChassisFinal.tyrePhotos,
+						reportData.interiorFinal.upholsteryPhotos,
+						reportData.interiorFinal.odometerPhotos,
+					),
+					inspection: {
+						mechanicalSectionComment:
+							reportData.mechanicalAndElectricalFinal.mechanicalGeneratedComment,
+						electicalSectionComment:
+							reportData.mechanicalAndElectricalFinal.electricalGeneratedComment,
+						vehicleExtras: reportData.extras,
+						tyreCondition: reportData.tyreAndChassisFinal.tyreGeneratedComment,
+						mileage: {
+							reading: reportData.interiorFinal.odometerCurrentReading,
+							units: reportData.interiorFinal.odometerReadingUnits,
+						},
+					},
+					awardedValues: {
+						assessedValue: valuationBooking.vehicleValue.assessedValue,
+						marketValue: valuationBooking.vehicleValue.marketValue,
+						forcedValue: valuationBooking.vehicleValue.forcedSaleValue,
+						windscreenValue: valuationBooking.vehicleValue.windscreenValue,
+					},
+				};
+			},
+		},
+	)) as any;
 </script>
