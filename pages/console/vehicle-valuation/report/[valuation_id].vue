@@ -116,12 +116,10 @@
 				<!-- the pill -->
 				<div class="h-10 max-h-10 w-4 max-w-4 rounded-full bg-red-500"></div>
 				<div class="h-fit flex-grow">
-					<h1 class="text-2xl font-semibold">Coachwork</h1>
+					<h1 class="text-2xl font-semibold">General Condition & Remedy</h1>
 					<p class="mt-3 text-gray-500">
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi laudantium
-						iure, eligendi illo doloribus similique! Tenetur numquam reprehenderit
-						laborum dolores nam, itaque cumque error nemo sapiente iure saepe hic
-						repellendus!
+						{{ valuationReport.inspection.generalCondition }}.
+						{{ valuationReport.inspection.remedy }}
 					</p>
 				</div>
 			</div>
@@ -333,6 +331,8 @@
 							reading: reportData.interiorFinal.odometerCurrentReading,
 							units: reportData.interiorFinal.odometerReadingUnits,
 						},
+						generalCondition: reportData.generalCondition,
+						remedy: reportData.remedy,
 					},
 					awardedValues: {
 						assessedValue: valuationBooking.vehicleValue.assessedValue,
