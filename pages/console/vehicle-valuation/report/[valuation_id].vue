@@ -71,7 +71,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="space-y-5 rounded-lg border-[.5px] p-10 shadow-md outline-none">
+		<div
+			class="max-h-[50rem] space-y-5 overflow-y-scroll rounded-lg border-[.5px] p-10 shadow-md outline-none">
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
 				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-blue-500"></div>
