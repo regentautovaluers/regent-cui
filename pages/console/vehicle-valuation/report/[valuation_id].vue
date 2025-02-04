@@ -53,7 +53,7 @@
 			</div>
 
 			<!-- kyc -->
-			<div class="grid grid-cols-3 gap-x-2 px-10 py-5">
+			<div class="grid grid-cols-3 gap-2 px-10 py-5">
 				<div class="col-span-4">
 					<h1 class="text-lg font-semibold text-gray-600">Client KYCs</h1>
 				</div>
@@ -72,50 +72,85 @@
 			</div>
 		</div>
 		<div class="space-y-5 rounded-lg border-[.5px] p-10 shadow-md outline-none">
-			<div class="flex items-start space-x-4">
+			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-blue-500"></div>
-				<div class="h-28 flex-grow">
-					<h1 class="text-2xl font-semibold">Tyre Condition</h1>
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-blue-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
+					<h1 class="text-2xl font-semibold">Front Section Condition</h1>
 					<p class="mt-3 text-gray-500">
-						{{ valuationReport.inspection.tyreCondition }}
+						{{ valuationReport.inspection.frontSectionComment }}
 					</p>
 				</div>
 			</div>
-			<div class="flex items-start space-x-4">
+			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-green-500"></div>
-				<div class="h-28 flex-grow">
-					<h1 class="text-2xl font-semibold">Extras</h1>
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-red-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
+					<h1 class="text-2xl font-semibold">Engine & Windscreen Condition</h1>
 					<p class="mt-3 text-gray-500">
-						{{ valuationReport.inspection.vehicleExtras.join(', ') }}
+						{{ valuationReport.inspection.engineSectionComment }}.
+						{{ valuationReport.inspection.windscreenSectionComment }}
 					</p>
 				</div>
 			</div>
-			<div class="flex items-start space-x-4">
+			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-pink-500"></div>
-				<div class="h-28 flex-grow">
-					<h1 class="text-2xl font-semibold">Electrical Condition</h1>
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-blue-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
+					<h1 class="text-2xl font-semibold">Left & Right Sides Condition</h1>
 					<p class="mt-3 text-gray-500">
-						{{ valuationReport.inspection.electicalSectionComment }}
+						{{ valuationReport.inspection.leftSideComment }}.
+						{{ valuationReport.inspection.rightSideComment }}
 					</p>
 				</div>
 			</div>
-			<div class="flex items-start space-x-4">
+			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 max-w-2 rounded-full bg-yellow-500"></div>
-				<div class="h-28 flex-grow">
-					<h1 class="text-2xl font-semibold">Mechanical Condition</h1>
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-green-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
+					<h1 class="text-2xl font-semibold">Rear Side & Boot Condition</h1>
 					<p class="mt-3 text-gray-500">
+						{{ valuationReport.inspection.backSideComment }}
+					</p>
+				</div>
+			</div>
+			<div class="mb-8 flex items-start space-x-4">
+				<!-- the pill -->
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-pink-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
+					<h1 class="text-2xl font-semibold">Tyre & Chassis Condition</h1>
+					<p class="mt-3 text-gray-500">
+						{{ valuationReport.inspection.tyreCondition }}.
+						{{ valuationReport.inspection.chassisCondition }}
+					</p>
+				</div>
+			</div>
+			<div class="mb-8 flex items-start space-x-4">
+				<!-- the pill -->
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-yellow-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
+					<h1 class="text-2xl font-semibold">Interior & Dashboard Condition</h1>
+					<p class="mt-3 text-gray-500">
+						{{ valuationReport.inspection.interiorComment }}.
+						{{ valuationReport.inspection.dashboardComment }}
+					</p>
+				</div>
+			</div>
+			<div class="mb-8 flex items-start space-x-4">
+				<!-- the pill -->
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-gray-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
+					<h1 class="text-2xl font-semibold">Mechanical & Electrical Condition</h1>
+					<p class="mt-3 text-gray-500">
+						{{ valuationReport.inspection.electicalSectionComment }}.
 						{{ valuationReport.inspection.mechanicalSectionComment }}
 					</p>
 				</div>
 			</div>
-			<div class="flex items-start space-x-4">
+			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-4 max-w-4 rounded-full bg-red-500"></div>
-				<div class="h-fit flex-grow">
+				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-violet-500"></div>
+				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">General Condition & Remedy</h1>
 					<p class="mt-3 text-gray-500">
 						{{ valuationReport.inspection.generalCondition }}.
@@ -321,12 +356,23 @@
 						reportData.interiorFinal.odometerPhotos,
 					),
 					inspection: {
+						frontSectionComment: reportData.frontFinal.generatedComment,
+						engineSectionComment:
+							reportData.engineAndWindscreenFinal.engineGeneratedComment,
+						windscreenSectionComment:
+							reportData.engineAndWindscreenFinal.windscreenGeneratedComment,
+						leftSideComment: reportData.leftSideFinal.generatedComment,
+						rightSideComment: reportData.rightSideFinal.generatedComment,
+						backSideComment: reportData.backSideFinal.generatedComment,
 						mechanicalSectionComment:
 							reportData.mechanicalAndElectricalFinal.mechanicalGeneratedComment,
 						electicalSectionComment:
 							reportData.mechanicalAndElectricalFinal.electricalGeneratedComment,
 						vehicleExtras: reportData.extras,
 						tyreCondition: reportData.tyreAndChassisFinal.tyreGeneratedComment,
+						chassisCondition: reportData.tyreAndChassisFinal.chassisGeneratedComment,
+						interiorComment: reportData.interiorFinal.interiorGeneratedComment,
+						dashboardComment: reportData.interiorFinal.dashboardGeneratedComment,
 						mileage: {
 							reading: reportData.interiorFinal.odometerCurrentReading,
 							units: reportData.interiorFinal.odometerReadingUnits,
