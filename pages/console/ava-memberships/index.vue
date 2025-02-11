@@ -1,9 +1,9 @@
 <template>
 	<div class="flex h-full flex-col">
-		<div class="flex h-[6rem] items-center justify-between rounded-lg border p-4 shadow-sm">
+		<div class="flex h-[7rem] items-center justify-between rounded-lg border p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
 				<img
-					class="h-12 min-h-12 w-12 min-w-12 rounded-full"
+					class="h-24 max-h-24 rounded-full"
 					:src="profilePicture"
 					alt="Rounded avatar" />
 				<div class="h-full flex-col overflow-hidden md:flex">
@@ -18,8 +18,8 @@
 			</div>
 			<NuxtLink
 				:to="{ name: 'ava-membership-types' }"
-				class="generic-nuxt-link hidden md:flex">
-				Onboard Member
+				class="generic-nuxt-link hidden text-sm font-normal uppercase md:flex">
+				Add a New Member
 			</NuxtLink>
 		</div>
 
@@ -28,7 +28,7 @@
 			<div>
 				<!-- div to show when there is a fetch error -->
 				<div
-					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:h-[50.5rem] md:min-h-[50.5rem]"
+					class="flex h-full min-h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
 					v-if="fetchMembershipsStatus === 'error'">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -42,7 +42,7 @@
 
 				<!-- div to show when there are no members -->
 				<div
-					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:h-[50.5rem] md:min-h-[50.5rem]"
+					class="flex h-full min-h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
 					v-else-if="
 						fetchMembershipsStatus === 'success' && corporateMemberships.length === 0
 					">
@@ -274,8 +274,8 @@
 			<div
 				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 				<div
-					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<div class="flex h-14 items-center justify-between px-3">
+					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border px-5 shadow-sm xl:h-1/2">
+					<div class="flex h-14 items-center justify-between">
 						<h1 class="text-2xl font-bold">About</h1>
 						<button
 							id="ava-services-desc"
@@ -311,11 +311,20 @@
 						</div>
 					</div>
 					<div class="flex-grow">
-						<h1 class="text-center text-2xl font-bold">Our Services</h1>
-						<h2 class="text-center text-lg font-bold text-gray-500">
-							{{ regentServices[activeDescriptionIndex].name }}
-						</h2>
-						<p class="mx-4 text-gray-500">
+						<div class="flex h-fit w-full items-center justify-center">
+							<button
+								class="inline-flex size-[6rem] items-center justify-center rounded-full bg-pink-500 text-white shadow-sm">
+								<MembershipsIcon classes="size-16 text-inherit" />
+							</button>
+						</div>
+						<div class="my-4 w-full text-center">
+							<h1 class="text-center text-3xl font-bold">Our Services</h1>
+							<h2 class="text-center font-bold text-gray-500">
+								{{ regentServices[activeDescriptionIndex].name }}
+							</h2>
+						</div>
+
+						<p class="text-sm text-gray-500">
 							{{ regentServices[activeDescriptionIndex].description }}
 						</p>
 					</div>

@@ -1,9 +1,9 @@
 export const useCorporateValuations = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
-	const { name: routeName, params: routeParams } = useRoute();
+	const { name: routeName } = useRoute();
 
-	const activeView: Ref<string> = ref('pending');
+	const activeView: Ref<'pending' | 'complete'> = ref('pending');
 
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
@@ -26,6 +26,13 @@ export const useCorporateValuations = () => {
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&registrationNumber=${searchRegNo.value}`;
+			}
+
+			// rendering completed or pending requests
+			if (activeView.value == 'complete') {
+				requestURL = requestURL + '&completed=true';
+			} else if (activeView.value == 'pending') {
+				requestURL = requestURL + '&completed=false';
 			}
 
 			return requestURL;

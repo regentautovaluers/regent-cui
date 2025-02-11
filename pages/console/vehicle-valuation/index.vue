@@ -88,7 +88,7 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Reg No.
+										Reg No. & BKNG Date
 									</th>
 									<!-- Details will show client name and their contact -->
 									<th
@@ -99,17 +99,12 @@
 									<th
 										scope="col"
 										class="table-headers text-start">
-										Progress
+										Stage
 									</th>
 									<th
 										scope="col"
 										class="table-headers">
-										Make & Model
-									</th>
-									<th
-										scope="col"
-										class="table-headers">
-										Booking Date
+										Inspctn Date & Type
 									</th>
 									<th
 										scope="col"
@@ -118,17 +113,19 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers"
-										v-if="activeView == 'complete'">
-										Value
+										class="table-headers">
+										Payment Details
 									</th>
 									<th
 										scope="col"
-										class="table-headers"
-										v-if="activeView == 'complete'">
-										Note Value
+										class="table-headers">
+										Assessed & Market Value
 									</th>
-
+									<th
+										scope="col"
+										class="table-headers">
+										Forced Value
+									</th>
 									<th
 										scope="col"
 										class="table-headers" />
@@ -185,53 +182,103 @@
 									</td>
 									<td></td>
 								</tr>
+
+								<!-- the actual data -->
 								<tr
 									class="border-b bg-white hover:bg-gray-100"
 									v-else
 									v-for="(valuation, index) in corpValuations"
 									:key="index">
-									<td
-										scope="row"
-										class="whitespace-nowrap p-4 font-semibold text-gray-600">
-										{{ valuation.regNo }}
-									</td>
-									<td class="inline-flex flex-col p-4">
-										<span>{{ valuation.clientName }}</span>
+									<td class="p-5">
 										<span
 											class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
-											>{{ valuation.clientPhone }}</span
+											>{{ valuation.regNo }}</span
 										>
+										<br />
+										<span>{{ valuation.bookingDate.split('T')[0] }}</span>
 									</td>
-									<td class="p-4 font-semibold text-blue-600">
-										{{ !valuation.assessmentStage ? 'N/A' : `${
-										determineValuationStage( valuation.assessmentStage, ).status
-										}
-										<span
-											>${ determineValuationStage( valuation.assessmentStage,
-											).step }</span
-										>` }}
-									</td>
-									<td class="inline-flex flex-col p-4">
-										<span>{{ valuation.vehicleMake ?? 'N/A' }}</span>
+									<td class="p-5">
 										<span
 											class="w-fit rounded-lg bg-blue-200 px-1 text-sm text-blue-600"
-											>{{ valuation.vehicleModel ?? 'N/A' }}</span
+											>{{ valuation.clientPhone }}</span
+										>
+										<br />
+										<span>{{ valuation.clientName }}</span>
+									</td>
+									<td class="p-5">
+										{{
+											!valuation.valuationStage
+												? 'N/A'
+												: determineValuationStage(valuation.valuationStage)
+														.status
+										}}
+									</td>
+									<td class="p-5">
+										<span class="w-fit">{{
+											valuation.inspectionDate == null
+												? 'Date N/A'
+												: valuation.inspectionDate.split('T')[0]
+										}}</span>
+										<br />
+										<span class="w-fit rounded-lg bg-gray-200 px-1">{{
+											valuation.isSpecial
+												? 'Special Report'
+												: 'Regular Report'
+										}}</span>
+									</td>
+									<td class="p-5">
+										{{ valuation.regentBranch.branchName }}
+									</td>
+									<td class="p-5">
+										<span class="w-fit">{{
+											valuation.chargedAmount == null
+												? 'Amount N/A'
+												: valuation.chargedAmount
+										}}</span>
+										<br />
+										<span
+											class="w-fit rounded-lg bg-yellow-200 px-1 text-yellow-600"
+											>{{ valuation.paymentMethod ?? 'Method N/A' }}</span
 										>
 									</td>
-									<td class="p-4 font-semibold text-blue-600">
-										{{ valuation.bookingDate.split('T')[0] }}
+									<td class="space-x-3 p-5 text-lg">
+										<span>{{
+											valuation.vehicleValue == null
+												? 'Assessed Value N/A'
+												: Intl.NumberFormat('en-US', {
+														minimumFractionDigits: 0,
+														maximumFractionDigits: 0,
+													}).format(valuation.vehicleValue.assessedValue)
+										}}</span>
+										<span class="text-2xl">&middot;</span>
+										<span>{{
+											valuation.vehicleValue == null
+												? 'Market Value N/A'
+												: Intl.NumberFormat('en-US', {
+														minimumFractionDigits: 0,
+														maximumFractionDigits: 0,
+													}).format(valuation.vehicleValue.marketValue)
+										}}</span>
 									</td>
-									<td class="p-4 font-semibold text-gray-600">
-										{{ valuation.regentBranch?.branchName }}
+									<td class="p-5 text-lg">
+										{{
+											valuation.vehicleValue == null
+												? 'Forced Value N/A'
+												: Intl.NumberFormat('en-US', {
+														minimumFractionDigits: 0,
+														maximumFractionDigits: 0,
+													}).format(
+														valuation.vehicleValue.forcedSaleValue,
+													)
+										}}
 									</td>
-									<td v-if="activeView == 'complete'"></td>
-									<td v-if="activeView == 'complete'"></td>
-									<td v-if="activeView == 'complete'">
+									<td>
 										<button
 											:id="'dropdownLeftButton' + index"
 											:data-dropdown-toggle="'dropdownLeft' + index"
 											data-dropdown-placement="left"
-											type="button">
+											type="button"
+											v-if="activeView == 'complete'">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
 												width="1em"
@@ -241,6 +288,7 @@
 												<MenuKebabIcon />
 											</svg>
 										</button>
+
 										<!-- Dropdown menu -->
 										<div
 											:id="'dropdownLeft' + index"
@@ -248,7 +296,13 @@
 											<ul
 												class="py-2 text-sm text-gray-500"
 												aria-labelledby="dropdownLeftButton">
-												<li v-if="valuation.reportURL == null">
+												<li
+													v-if="
+														valuation.reportURL == null ||
+														determineValuationStage(
+															valuation.valuationStage,
+														).status == 'Ongoing'
+													">
 													<button
 														class="block w-full bg-gray-100 px-4 py-2 text-center"
 														type="button">
@@ -260,13 +314,27 @@
 														:to="{
 															name: 'vehicle-valuation-report',
 															params: {
-																valuation_id: valuation.letterId,
+																valuation_id: valuation.valuationId,
 															},
 														}"
 														class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 														type="button">
 														View Report
 													</NuxtLink>
+												</li>
+												<li
+													v-if="
+														valuation.reportURL != null &&
+														determineValuationStage(
+															valuation.valuationStage,
+														).status == 'Completed'
+													">
+													<a
+														target="_self"
+														:href="valuation.reportURL"
+														class="block w-full px-4 py-2 text-center hover:bg-gray-100">
+														Download Report
+													</a>
 												</li>
 											</ul>
 										</div>

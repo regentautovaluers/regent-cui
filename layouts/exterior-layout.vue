@@ -88,8 +88,9 @@
 			<div class="flex-grow px-4 py-4 md:px-16 xl:px-24">
 				<slot />
 			</div>
-			<div class="flex flex-col items-center justify-center p-2 text-xs sm:text-sm">
-				<button
+			<div class="my-10 flex flex-col items-center justify-center p-2 text-xs sm:text-sm">
+				<!-- uncomment this if you want to add language switcher -->
+				<!-- <button
 					id="dropdownTopButton"
 					data-dropdown-toggle="dropdownTop"
 					data-dropdown-placement="top"
@@ -110,7 +111,7 @@
 							d="M9 5 5 1 1 5" />
 					</svg>
 				</button>
-				<!-- Dropdown menu -->
+				
 				<div
 					id="dropdownTop"
 					class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow">
@@ -127,7 +128,7 @@
 							</button>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 				<h6>
 					&copy; 2024. All Rights Reserved.
 					<span class="font-semibold text-pink-500">Regent Auto Valuers</span>

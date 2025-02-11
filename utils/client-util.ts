@@ -89,7 +89,9 @@ export const refreshPage = () => {
 	location.reload();
 };
 
-export const determineValuationStage = (stage?: String): { status: string } | null => {
+export const determineValuationStage = (
+	stage?: String,
+): { status: 'Completed' | 'Ongoing' } | null => {
 	if (!stage) {
 		return null;
 	}
