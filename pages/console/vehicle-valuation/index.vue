@@ -1,28 +1,26 @@
 <template>
 	<div class="flex h-full flex-col">
-		<div
-			class="flex h-fit items-center justify-between"
-			v-if="fetchValuationsStatus === 'success' && corpValuations.length > 0">
+		<div class="flex h-fit items-center justify-between">
 			<div class="space-x-4 font-semibold text-gray-500 md:text-base lg:text-lg">
-				<button
-					@click="() => (activeView = 'pending')"
-					:class="[
-						'border-b-2',
-						activeView === 'pending'
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
-					]">
-					<span>Pending</span>
-				</button>
 				<button
 					@click="() => (activeView = 'complete')"
 					:class="[
 						'border-b-2',
-						activeView == 'complete'
+						activeView === 'complete'
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',
 					]">
 					<span>Completed</span>
+				</button>
+				<button
+					@click="() => (activeView = 'pending')"
+					:class="[
+						'border-b-2',
+						activeView == 'pending'
+							? 'border-b-blue-600 text-blue-600'
+							: 'border-b-inherit',
+					]">
+					<span>Pending</span>
 				</button>
 			</div>
 
@@ -88,7 +86,7 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Reg No. & BKNG Date
+										Regent Brnch & Date
 									</th>
 									<!-- Details will show client name and their contact -->
 									<th
@@ -104,12 +102,12 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Inspctn Date & Type
+										Inspection Details
 									</th>
 									<th
 										scope="col"
 										class="table-headers">
-										Regent Branch
+										Vehicle Details
 									</th>
 									<th
 										scope="col"
@@ -191,8 +189,8 @@
 									:key="index">
 									<td class="p-5">
 										<span
-											class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
-											>{{ valuation.regNo }}</span
+											class="w-fit rounded-lg bg-pink-200 px-1 text-pink-600"
+											>{{ valuation.regentBranch.branchName }}</span
 										>
 										<br />
 										<span>{{ valuation.bookingDate.split('T')[0] }}</span>
@@ -226,14 +224,38 @@
 												: 'Regular Report'
 										}}</span>
 									</td>
-									<td class="p-5">
-										{{ valuation.regentBranch.branchName }}
-									</td>
+									<th
+										scope="row"
+										class="flex items-center whitespace-nowrap p-5 text-gray-900">
+										<img
+											class="h-12 w-12 rounded-lg"
+											:src="valuation.vehicleImage"
+											alt="Jese image"
+											v-if="valuation.vehicleImage" />
+										<div
+											v-else
+											class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-200 text-sm text-gray-500">
+											<span>{{ valuation.regNo.split(' ')[0] }}</span>
+										</div>
+
+										<div class="ps-2">
+											<div
+												class="w-fit rounded-full bg-blue-200 px-1 text-sm text-blue-600">
+												{{ valuation.regNo }}
+											</div>
+											<div class="font-normal text-gray-500">
+												{{ valuation.vehicleMake }}
+											</div>
+										</div>
+									</th>
 									<td class="p-5">
 										<span class="w-fit">{{
 											valuation.chargedAmount == null
 												? 'Amount N/A'
-												: valuation.chargedAmount
+												: Intl.NumberFormat('en-US', {
+														minimumFractionDigits: 0,
+														maximumFractionDigits: 0,
+													}).format(valuation.chargedAmount)
 										}}</span>
 										<br />
 										<span
@@ -241,10 +263,11 @@
 											>{{ valuation.paymentMethod ?? 'Method N/A' }}</span
 										>
 									</td>
-									<td class="space-x-3 p-5 text-lg">
+									<td class="space-x-3 p-5">
 										<span>{{
-											valuation.vehicleValue == null
-												? 'Assessed Value N/A'
+											!valuation.vehicleValue ||
+											!valuation.vehicleValue.assessedValue
+												? 'A/Val N/A'
 												: Intl.NumberFormat('en-US', {
 														minimumFractionDigits: 0,
 														maximumFractionDigits: 0,
@@ -252,18 +275,20 @@
 										}}</span>
 										<span class="text-2xl">&middot;</span>
 										<span>{{
-											valuation.vehicleValue == null
-												? 'Market Value N/A'
+											!valuation.vehicleValue ||
+											!valuation.vehicleValue.marketValue
+												? 'Mkt/Val N/A'
 												: Intl.NumberFormat('en-US', {
 														minimumFractionDigits: 0,
 														maximumFractionDigits: 0,
 													}).format(valuation.vehicleValue.marketValue)
 										}}</span>
 									</td>
-									<td class="p-5 text-lg">
+									<td class="p-5">
 										{{
-											valuation.vehicleValue == null
-												? 'Forced Value N/A'
+											!valuation.vehicleValue ||
+											!valuation.vehicleValue.forcedSaleValue
+												? 'Fcd/Val N/A'
 												: Intl.NumberFormat('en-US', {
 														minimumFractionDigits: 0,
 														maximumFractionDigits: 0,

@@ -3,7 +3,7 @@ export const useCorporateValuations = () => {
 	const { getPrincipal } = useAuth();
 	const { name: routeName } = useRoute();
 
-	const activeView: Ref<'pending' | 'complete'> = ref('pending');
+	const activeView: Ref<'pending' | 'complete'> = ref('complete');
 
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
@@ -29,10 +29,10 @@ export const useCorporateValuations = () => {
 			}
 
 			// rendering completed or pending requests
-			if (activeView.value == 'complete') {
-				requestURL = requestURL + '&completed=true';
-			} else if (activeView.value == 'pending') {
+			if (activeView.value == 'pending') {
 				requestURL = requestURL + '&completed=false';
+			} else {
+				requestURL = requestURL + '&completed=true';
 			}
 
 			return requestURL;
