@@ -115,25 +115,28 @@
 		<div class="mt-3">
 			<label class="font-bold text-gray-500">User Privilege</label>
 			<div class="flex flex-grow space-x-4">
-				<label class="generic-input flex w-1/2 items-center justify-between">
-					<span class="text-gray-500">Normal User</span>
-					<input
-						type="radio"
-						value="role_corp_norm"
-						class="radio-buttons"
-						id="normal"
-						checked
-						v-model="userRole" />
-				</label>
-				<label class="generic-input flex w-1/2 items-center justify-between">
-					<span class="text-gray-500">Admin User</span>
-					<input
-						type="radio"
-						value="role_corp_admin"
-						class="radio-buttons"
-						id="admin"
-						v-model="userRole" />
-				</label>
+				<div class="flex w-full items-center justify-between space-x-4">
+					<label class="generic-input flex w-1/2 items-center justify-between">
+						<span class="text-gray-500">Normal User</span>
+						<input
+							type="radio"
+							value="role_corp_norm"
+							class="radio-buttons"
+							id="normal"
+							name="user-type"
+							v-model="userRole" />
+					</label>
+					<label class="generic-input flex w-1/2 items-center justify-between">
+						<span class="text-gray-500">Admin User</span>
+						<input
+							type="radio"
+							value="role_corp_admin"
+							class="radio-buttons"
+							id="admin"
+							name="user-type"
+							v-model="userRole" />
+					</label>
+				</div>
 			</div>
 		</div>
 
@@ -161,7 +164,7 @@
 	const password: Ref<string> = ref('');
 	const corporateBranch: Ref<string> = ref('');
 	const companyRole: Ref<string> = ref('');
-	const userRole: Ref<string> = ref('');
+	const userRole: Ref<string> = ref('role_corp_norm');
 
 	const username = computed(() => {
 		return `${firstName.value} ${otherName.value}`;
