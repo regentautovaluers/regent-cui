@@ -5,6 +5,7 @@ const useRoadsideIncidents = () => {
 	const { getPrincipal } = useAuth();
 	const currentPage: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
+	const topRecentPerService: Ref<any[]> = ref([]);
 
 	// for showing incidents on the map with pins
 	const activeService: Ref<string> = ref('towing');
@@ -62,6 +63,20 @@ const useRoadsideIncidents = () => {
 			).length || 0,
 	);
 
+	const pickMostRecentPerService = (
+		towing: any[],
+		fuelDelivery: any[],
+		tyreChange: any[],
+		jumpstarting: any[],
+	): any[] => {
+		return [
+			...(towing.length ? [towing[0]] : []),
+			...(fuelDelivery.length ? [fuelDelivery[0]] : []),
+			...(tyreChange.length ? [tyreChange[0]] : []),
+			...(jumpstarting.length ? [jumpstarting[0]] : []),
+		];
+	};
+
 	const { status: fetchRoadsideIncidentsStatus } = useFetch(
 		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
 		{
@@ -78,6 +93,14 @@ const useRoadsideIncidents = () => {
 					...roadsideIncidentsData.tyrechange,
 					...roadsideIncidentsData.jumpstarting,
 				]);
+
+				// without waiting for another thread, select the most recent per service
+				topRecentPerService.value = pickMostRecentPerService(
+					roadsideIncidentsData.towing,
+					roadsideIncidentsData.fueldelivery,
+					roadsideIncidentsData.tyrechange,
+					roadsideIncidentsData.jumpstarting,
+				);
 			},
 		},
 	);
@@ -93,6 +116,7 @@ const useRoadsideIncidents = () => {
 		mapPinsIncidents,
 		activeService,
 		completionStatus,
+		topRecentPerService,
 	};
 };
 

@@ -127,7 +127,7 @@
 		</div>
 
 		<!-- Requests quick links -->
-		<div class="mt-4 flex h-fit min-h-20 items-center justify-between space-x-3 overflow-auto">
+		<div class="mt-4 flex min-h-24 items-center justify-between space-x-3 overflow-auto">
 			<NuxtLink
 				:to="{
 					name: 'ra-fueldelivery-request',
@@ -186,14 +186,166 @@
 			>
 		</div>
 
-		<!-- Side information -->
-		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.8fr,.2fr]">
+		<!-- actual -->
+		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.2fr,.8fr]">
+			<!-- side-information including chart -->
+			<div
+				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
+				<div
+					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
+					<h1 class="text-2xl font-extrabold">Distribution</h1>
+					<div
+						class="flex h-full items-center justify-center"
+						v-if="
+							fetchRAIncidentsAnalyticsStatus === 'pending' &&
+							!raIncidentsDoughnutData.data.length
+						">
+						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="
+							fetchRAIncidentsAnalyticsStatus === 'success' &&
+							!raIncidentsDoughnutData.data.length
+						">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="fetchRAIncidentsAnalyticsStatus === 'error'">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+						<button
+							class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+							@click="refreshPage">
+							<span>Refresh</span>
+							<RefreshIcon classes="size-6" />
+						</button>
+					</div>
+
+					<IncidentsDoughnutChart
+						v-else
+						:labels="raIncidentsDoughnutData.legends"
+						:colors="raIncidentsDoughnutData.colors"
+						:data="raIncidentsDoughnutData.data" />
+				</div>
+				<div
+					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
+					<h1 class="text-2xl font-extrabold">Top Recent Incidents</h1>
+					<div
+						class="flex h-full items-center justify-center"
+						v-if="
+							fetchRAIncidentsAnalyticsStatus === 'pending' &&
+							!raIncidentsDoughnutData.data.length
+						">
+						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="
+							fetchRAIncidentsAnalyticsStatus === 'success' &&
+							!raIncidentsDoughnutData.data.length
+						">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
+					</div>
+					<div
+						class="h-full"
+						v-else>
+						<div
+							class="mb-2 grid h-[5.2rem] grid-cols-[.5fr,.4fr,.1fr] items-center py-3"
+							v-for="(incident, index) in topRecentPerService"
+							:key="index">
+							<div>
+								<h1 class="font-bold text-gray-600">
+									{{ incident.registration_no }}
+								</h1>
+								<h2 class="text-sm font-semibold text-gray-400">
+									{{ formatServerProvidedDateTime(incident.date_created) }}
+								</h2>
+							</div>
+							<div>
+								<h1 class="font-bold text-gray-600">
+									{{ screenFormatRAServiceName(incident.service) }}
+								</h1>
+							</div>
+							<div>
+								<button
+									id="recentsDropdownLeftButton"
+									data-dropdown-toggle="recentsDropdownLeft"
+									data-dropdown-placement="left"
+									type="button">
+									<MenuKebabIcon />
+								</button>
+								<!-- Dropdown menu -->
+								<div
+									id="recentsDropdownLeft"
+									class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+									<ul
+										class="py-2 text-gray-500"
+										aria-labelledby="recentsDropdownLeftButton">
+										<li
+											v-if="
+												['on-going', 'pending', 'cancelled'].includes(
+													incident.service_status,
+												)
+											">
+											<span
+												class="block w-full px-4 py-2 text-center hover:bg-gray-100">
+												Report N/A
+											</span>
+										</li>
+										<li
+											v-if="
+												incident.service === 'towing' &&
+												incident.service_status === 'completed'
+											">
+											<NuxtLink
+												:to="{
+													name: 'ra-expanded-report',
+													params: {
+														service_type: incident.service,
+														id: incident.id,
+													},
+												}"
+												class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+												type="button">
+												View Report
+											</NuxtLink>
+										</li>
+										<li
+											v-if="
+												incident.service !== 'towing' &&
+												incident.service_status === 'completed'
+											">
+											<NuxtLink
+												:to="{
+													name: 'ra-minimized-report',
+													params: {
+														service_type: incident.service,
+														id: incident.id,
+													},
+												}"
+												class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+												type="button">
+												View Report
+											</NuxtLink>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<!-- members listing -->
 			<div>
-				<!-- div to show when there is an eror -->
+				<!-- div to show when there is an error -->
 				<div
 					v-if="fetchRoadsideIncidentsStatus === 'error'"
-					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]">
+					class="flex h-full flex-col items-center justify-center space-y-4 md:min-h-[50.5rem]">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
 					<button
@@ -209,7 +361,7 @@
 					v-else-if="
 						fetchRoadsideIncidentsStatus === 'success' && !incidentsListSlice.length
 					"
-					class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm md:min-h-[50.5rem]">
+					class="flex h-full flex-col items-center justify-center space-y-4 md:min-h-[50.5rem]">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">
 						Oops! Seems like you have no incidents!
@@ -223,7 +375,7 @@
 
 				<!-- div to show when there are incidents -->
 				<div
-					class="flex h-full flex-col justify-between rounded-lg border p-2 md:min-h-[54rem]"
+					class="flex h-full flex-col justify-between p-2 md:min-h-[54rem]"
 					v-else>
 					<!-- the table itself -->
 					<div class="mb-4 flex-grow">
@@ -425,56 +577,6 @@
 					</div>
 				</div>
 			</div>
-
-			<!-- side-information including chart -->
-			<div
-				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
-				<div
-					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<div class="flex h-12 items-center justify-between px-3">
-						<h1 class="text-2xl font-extrabold">Distribution</h1>
-					</div>
-					<div
-						class="flex h-full items-center justify-center"
-						v-if="
-							fetchRAIncidentsAnalyticsStatus === 'pending' &&
-							!raIncidentsDoughnutData.data.length
-						">
-						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
-					</div>
-					<div
-						class="flex h-full flex-col items-center justify-center"
-						v-else-if="
-							fetchRAIncidentsAnalyticsStatus === 'success' &&
-							!raIncidentsDoughnutData.data.length
-						">
-						<BirdieNotFoundIcon />
-						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
-					</div>
-					<div
-						class="flex h-full flex-col items-center justify-center"
-						v-else-if="fetchRAIncidentsAnalyticsStatus === 'error'">
-						<BirdieNotFoundIcon />
-						<h1 class="mb-1 font-semibold text-gray-500">Oops! Fetch Failed!</h1>
-						<button
-							class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
-							@click="refreshPage">
-							<span>Refresh</span>
-							<RefreshIcon classes="size-6" />
-						</button>
-					</div>
-
-					<IncidentsDoughnutChart
-						v-else
-						:labels="raIncidentsDoughnutData.legends"
-						:colors="raIncidentsDoughnutData.colors"
-						:data="raIncidentsDoughnutData.data" />
-				</div>
-				<div
-					class="xl:max-h-1/2 flex h-[25rem] flex-col items-center justify-center rounded-md border shadow-sm xl:h-1/2">
-					<h1>Under Construction</h1>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -501,6 +603,7 @@
 		totalPages,
 		totalIncidents,
 		ongoingIncidents,
+		topRecentPerService,
 	} = useRoadsideIncidents();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
