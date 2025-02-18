@@ -1,4 +1,4 @@
-export const { state, getter, mutation, action, ...store } = createStore('corporateBranches', {
+export const { state, getter, mutation, action, ...store } = createStore('ava-members-store', {
 	avaMembers: [] as any[],
 });
 
