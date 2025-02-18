@@ -4,7 +4,7 @@ import {
 	setTotalCompleted,
 	setRAAnalytics,
 	cleanRAAnalytics,
-} from '~/stores/ra-and-memberships-chart-store';
+} from '~/stores/roadside-assistance-store';
 import { type RoadsideAssistanceAnalytics } from '~/types';
 
 export const useRAIncidentsAnalytics = () => {
