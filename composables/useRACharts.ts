@@ -7,10 +7,37 @@ import {
 } from '~/stores/roadside-assistance-store';
 import { type RoadsideAssistanceAnalytics } from '~/types';
 
-export const useRAIncidentsAnalytics = () => {
+export const useRACharts = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const doughnutChartColors: readonly string[] = ['#09bc3c', '#fd5353', '#fdbf20', '#0063FF'];
+
+	const { status: fetchRAIncidentsAnalyticsStatus } = useFetch(
+		() => `/api/v1/corp/reports/corporate-requests/${getPrincipal.value.corpId}`,
+		{
+			key: 'ra-incidents-analytics',
+			baseURL: runtimeConfig.public.AVA_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			server: false,
+			lazy: true,
+			onResponse({ response }) {
+				if (response.status === 200) {
+					const analyticsData = response._data;
+					setRAAnalytics({
+						towing: analyticsData.towing,
+						tyrechange: analyticsData.tyrechange,
+						fueldelivery: analyticsData.fueldelivery,
+						jumpstarting: analyticsData.jumpstarting,
+					});
+
+					setTotalCompleted(analyticsData.totalCompleted);
+				}
+			},
+		},
+	);
 
 	const raIncidentsDoughnutData: ComputedRef<{
 		data: number[];
@@ -48,31 +75,6 @@ export const useRAIncidentsAnalytics = () => {
 		return `${stringToTitleCase(mostRequestedKey)} (${mostRequestedValue})`;
 	});
 
-	const { status: fetchRAIncidentsAnalyticsStatus } =
-		useFetch(() => `/api/v1/corp/reports/corporate-requests/${getPrincipal.value.corpId}`, {
-			key: 'ra-incidents-analytics',
-			baseURL: runtimeConfig.public.AVA_BASE_URL,
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-			},
-			server: false,
-			lazy: true,
-			onResponse({ response }) {
-				if (response.status === 200) {
-					const analyticsData = response._data;
-					setRAAnalytics({
-						towing: analyticsData.towing,
-						tyrechange: analyticsData.tyrechange,
-						fueldelivery: analyticsData.fueldelivery,
-						jumpstarting: analyticsData.jumpstarting,
-					});
-
-					setTotalCompleted(analyticsData.totalCompleted);
-				}
-			},
-		});
-
 	return {
 		fetchRAIncidentsAnalyticsStatus,
 		computedMostRequested,
@@ -81,5 +83,3 @@ export const useRAIncidentsAnalytics = () => {
 		getTotalCompleted,
 	};
 };
-
-export const useAVAMembershipsCharts = () => {};
