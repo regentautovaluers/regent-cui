@@ -2,7 +2,6 @@
 	<div>
 		<Doughnut
 			id="incidents-distribution"
-			v-if="raIncidentsDoughnutData"
 			:options="{
 				responsive: true,
 				maintainAspectRatio: false,
@@ -31,7 +30,9 @@
 			}"
 			:data="chartData" />
 	</div>
-	<div class="grid h-12 grid-cols-2 place-items-center overflow-clip">
+	<div
+		class="mt-3 flex flex-col items-center justify-center space-y-3"
+		v-if="props.data.length">
 		<div
 			v-for="(label, index) in props.labels"
 			:key="index"
@@ -55,8 +56,6 @@
 
 	const colors = computed(() => props.colors);
 	const data = computed(() => props.data);
-
-	const { raIncidentsDoughnutData } = useRACharts();
 
 	const chartData = reactive({
 		labels: [...props.labels],
