@@ -11,7 +11,7 @@
 					<div
 						v-for="(slide, index) in slides"
 						:key="index"
-						class="hidden duration-700 ease-in-out"
+						class="hidden duration-1000 ease-in-out"
 						data-carousel-item>
 						<img
 							:src="slide"
@@ -154,8 +154,11 @@
 <script setup lang="ts">
 	const { language, availableLanguages } = useSystemLocale();
 	const slides: readonly string[] = [
-		'/images/slides/landingpage/1_04092024.jpg',
-		'/images/slides/landingpage/2_04092024.jpg',
-		'/images/slides/landingpage/3_04092024.jpg',
+		'/images/slides/landingpage/1.jpg',
+		'/images/slides/landingpage/2.jpg',
+		'/images/slides/landingpage/3.jpg',
+		'/images/slides/landingpage/4.jpg',
+		'/images/slides/landingpage/5.jpg',
+		'/images/slides/landingpage/6.jpg',
 	];
 </script>
