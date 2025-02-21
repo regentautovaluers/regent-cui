@@ -96,7 +96,8 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers text-start">
+										class="table-headers text-start"
+										v-if="activeView === 'pending'">
 										Stage
 									</th>
 									<th
@@ -112,7 +113,7 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Payment Details
+										Payment
 									</th>
 									<th
 										scope="col"
@@ -197,13 +198,15 @@
 									</td>
 									<td class="p-5">
 										<span
-											class="w-fit rounded-lg bg-blue-200 px-1 text-sm text-blue-600"
+											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
 											>{{ valuation.clientPhone }}</span
 										>
 										<br />
 										<span>{{ valuation.clientName }}</span>
 									</td>
-									<td class="p-5">
+									<td
+										class="p-5"
+										v-if="activeView === 'pending'">
 										{{
 											!valuation.valuationStage
 												? 'N/A'
@@ -234,7 +237,7 @@
 											v-if="valuation.vehicleImage" />
 										<div
 											v-else
-											class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-200 text-sm text-gray-500">
+											class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
 											<span>{{ valuation.regNo.split(' ')[0] }}</span>
 										</div>
 
