@@ -2,8 +2,10 @@
 	<main class="h-screen">
 		<!-- the navigation bar on the left side -->
 		<aside
-			class="fixed z-20 flex h-full max-h-full flex-col overflow-y-auto border-r-2 bg-white transition-all duration-100 ease-out"
-			:class="sidebarOpen ? 'w-[16rem] max-w-[16rem]' : 'w-16'">
+			class="fixed z-50 flex h-full max-h-full flex-col overflow-y-auto border-r-2 bg-white transition-all duration-100 ease-out"
+			:class="sidebarOpen ? 'w-[16rem] max-w-[16rem]' : 'w-16'"
+			@mouseover="sidebarOpen = true"
+			@mouseleave="sidebarOpen = false">
 			<div
 				class="flex min-h-[80px] w-full max-w-[16rem] items-center justify-center border-b-[1px] bg-white text-center">
 				<NuxtLink
@@ -260,35 +262,19 @@
 
 			<div class="flex h-12 w-full flex-col items-center text-sm text-gray-600">
 				<h1 v-if="sidebarOpen">Regent Auto Valuers</h1>
-				<h2><span>&copy; 2025</span><span v-if="sidebarOpen">. All Rights Reserved</span></h2>
+				<h2>
+					<span>&copy; 2025</span><span v-if="sidebarOpen">. All Rights Reserved</span>
+				</h2>
 			</div>
 		</aside>
 
 		<!-- main UI -->
-		<div
-			class="h-full"
-			:class="sidebarOpen ? 'sidebar-open' : 'sidebar-closed'">
+		<div class="ml-16 h-full">
 			<nav
 				class="sticky top-0 z-30 flex min-h-20 w-full items-center border-b bg-white"
 				id="top-nav">
 				<div class="flex h-full flex-grow items-center justify-between px-4">
-					<div class="flex items-center space-x-3">
-						<button
-							@click="sidebarOpen = !sidebarOpen"
-							:class="!sidebarOpen && 'rotate-180'"
-							class="inline-flex size-7 items-center justify-center rounded-full text-gray-700 transition-transform duration-150 ease-in-out">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="30"
-								height="30"
-								viewBox="0 0 24 24">
-								<path
-									fill="currentColor"
-									d="M4 18q-.425 0-.712-.288T3 17t.288-.712T4 16h11q.425 0 .713.288T16 17t-.288.713T15 18zm14.9-1.7l-3.6-3.6q-.3-.3-.3-.7t.3-.7l3.6-3.6q.275-.275.7-.275t.7.275t.275.7t-.275.7L17.4 12l2.9 2.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275M4 13q-.425 0-.712-.288T3 12t.288-.712T4 11h8q.425 0 .713.288T13 12t-.288.713T12 13zm0-5q-.425 0-.712-.288T3 7t.288-.712T4 6h11q.425 0 .713.288T16 7t-.288.713T15 8z" />
-							</svg>
-						</button>
-						<h1 class="text-lg font-semibold md:text-3xl">{{ currentScreenName }}</h1>
-					</div>
+					<h1 class="text-lg font-semibold md:text-3xl">{{ currentScreenName }}</h1>
 					<div class="flex items-center space-x-2">
 						<!-- notification button -->
 						<button
@@ -424,13 +410,5 @@
 	.no-scrollbar {
 		-ms-overflow-style: none; /* IE and Edge */
 		scrollbar-width: none; /* Firefox */
-	}
-
-	.sidebar-open {
-		margin-left: 255px; /* or whatever width you want for the sidebar */
-	}
-
-	.sidebar-closed {
-		margin-left: 67px;
 	}
 </style>
