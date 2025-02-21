@@ -260,7 +260,7 @@
 
 			<div class="flex h-12 w-full flex-col items-center text-sm text-gray-600">
 				<h1 v-if="sidebarOpen">Regent Auto Valuers</h1>
-				<h2><span>&copy; 2025</span><span v-if="sidebarOpen">All Rights Reserved</span></h2>
+				<h2><span>&copy; 2025</span><span v-if="sidebarOpen">. All Rights Reserved</span></h2>
 			</div>
 		</aside>
 
