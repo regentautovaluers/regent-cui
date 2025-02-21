@@ -28,7 +28,7 @@
 			<div>
 				<!-- div to show when there is a fetch error -->
 				<div
-					class="flex h-full min-h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+					class="flex h-full min-h-full flex-col items-center justify-center space-y-4 shadow-sm"
 					v-if="fetchMembershipsStatus === 'error'">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -42,7 +42,7 @@
 
 				<!-- div to show when there are no members -->
 				<div
-					class="flex h-full min-h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+					class="flex h-full min-h-full flex-col items-center justify-center space-y-4 shadow-sm"
 					v-else-if="
 						fetchMembershipsStatus === 'success' && corporateMemberships.length === 0
 					">
@@ -59,7 +59,7 @@
 
 				<!-- div to show when there are members -->
 				<div
-					class="flex h-full flex-col justify-between rounded-lg border p-2 md:min-h-[58rem]"
+					class="flex h-full flex-col justify-between p-2 md:min-h-[58rem]"
 					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit flex-col space-y-2">
@@ -340,13 +340,43 @@
 				</div>
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<div class="flex h-14 min-h-14 w-full items-center justify-between px-3">
-						<h1 class="text-2xl font-bold">Memberships</h1>
+					<h1 class="text-2xl font-bold p-5">Memberships</h1>
+
+					<div
+						class="flex h-full items-center justify-center"
+						v-if="
+							fetchAvaMembersDistributionStatus === 'pending' &&
+							!computeActiveInactive.length
+						">
+						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
 					</div>
 					<div
-						class="mx-0 flex-grow"
-						id="donut-chart"></div>
-					<div class="h-14 min-h-14 border-t pl-3"></div>
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="
+							fetchAvaMembersDistributionStatus === 'success' &&
+							!computeActiveInactive.length
+						">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">No Data!</h1>
+					</div>
+					<div
+						class="flex h-full flex-col items-center justify-center"
+						v-else-if="fetchAvaMembersDistributionStatus === 'error'">
+						<BirdieNotFoundIcon />
+						<h1 class="mb-1 font-semibold text-gray-500">Oops! Fetch Failed!</h1>
+						<button
+							class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
+							@click="refreshPage">
+							<span>Refresh</span>
+							<RefreshIcon classes="size-6" />
+						</button>
+					</div>
+
+					<ActiveStatusAVAMembersDoughnutChart
+						v-else
+						:labels="['Active', 'Inactive']"
+						:colors="['#09bc3c', '#fd5353']"
+						:data="computeActiveInactive" />
 				</div>
 			</div>
 		</div>
@@ -517,6 +547,8 @@
 		getMemberVehicles,
 		handleSearchTriggered,
 	} = useAVAMemberships();
+
+	const { fetchAvaMembersDistributionStatus, computeActiveInactive } = useAVAMembershipsCharts();
 
 	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
