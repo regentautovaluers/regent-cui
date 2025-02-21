@@ -595,7 +595,7 @@
 		computedMostRequested,
 		getTotalCompleted,
 		raIncidentsDoughnutData,
-	} = useRAIncidentsAnalytics();
+	} = useRACharts();
 	const {
 		fetchRoadsideIncidentsStatus,
 		incidentsListSlice,
