@@ -12,6 +12,7 @@
 		"prettify": "npx prettier --write ."
 	},
 	"dependencies": {
+		"@botpress/chat": "^0.5.0",
 		"@googlemaps/js-api-loader": "^1.16.8",
 		"@nuxtjs/i18n": "^8.4.0",
 		"@types/google.maps": "^3.55.12",
