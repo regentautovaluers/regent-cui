@@ -27,7 +27,7 @@ export default defineNuxtConfig({
 	},
 	app: {
 		head: {
-			title: 'Regent Auto Valuers',
+			title: 'Regent Group',
 			meta: [
 				{
 					name: 'viewport',
@@ -69,6 +69,7 @@ export default defineNuxtConfig({
 		},
 		app: {
 			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
+			BOTPRESS_CLIENT_ID: process.env.BOTPRESS_CLIENT_ID,
 		},
 	},
 	modules: ['@nuxtjs/i18n', '@nuxtjs/harlem', '@nuxt/fonts'],
