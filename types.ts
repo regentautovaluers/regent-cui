@@ -105,3 +105,60 @@ export enum ValuationStages {
 	COMPLETED,
 	INVOICING,
 }
+
+// for handling the human-bot conversation
+export type MessageSource = 'Bot' | 'Human';
+
+export type ActionNode = {
+	type: 'ButtonNode';
+	label: string;
+	value: string;
+};
+
+export type TextNode = {
+	type: 'TextNode';
+	text: string;
+	source: string;
+};
+
+export type ActionGroupNode = {
+	type: 'ActionGroupNode';
+	buttonNodes: ActionNode[];
+};
+
+// types defining how botpress sends back data
+export type BotpressNodeArrangementType = 'bubble' | 'row' | 'column';
+
+export type BotpressTextBlock = {
+	type: 'string';
+	text: string;
+};
+
+export type BotpressActionGroupEntry = {
+	type: 'button';
+	variant: 'action';
+	text: string;
+	buttonValue: string;
+	groupId: string;
+};
+
+export type BotpressBlockType = {
+	type: BotpressNodeArrangementType;
+	blocks?: BotpressActionGroupEntry[]; // for example when there is a list to choose from
+	block?: BotpressTextBlock; // for example when you're simply supposed to render text on the screen
+};
+
+export type BotpressPayload = {
+	type: BotpressNodeArrangementType;
+	horizontalAlignment: 'left' | 'right';
+	blocks?: BotpressBlockType[];
+	block?: BotpressTextBlock;
+};
+
+export type BotpressResponse = {
+	id: string;
+	conversationId: string;
+	authorId: string;
+	sentOn: string;
+	payload: BotpressPayload;
+};

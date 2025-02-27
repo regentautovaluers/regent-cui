@@ -2,7 +2,7 @@
 	<main class="h-screen">
 		<!-- the navigation bar on the left side -->
 		<aside
-			class="fixed z-50 flex h-full max-h-full flex-col overflow-y-auto border-r-2 bg-white transition-all duration-100 ease-out"
+			class="fixed z-50 flex h-full max-h-full flex-col overflow-y-auto rounded-lg border-2 bg-white transition-all duration-100 ease-out"
 			:class="sidebarOpen ? 'w-[16rem] max-w-[16rem]' : 'w-16'"
 			@mouseover="sidebarOpen = true"
 			@mouseleave="sidebarOpen = false">
@@ -198,34 +198,6 @@
 				<SidenavCarousel v-if="sidebarOpen" />
 
 				<ul class="space-y-2">
-					<!-- chat with AVA button -->
-					<li
-						class="flex h-12 w-full items-center rounded-xl bg-pink-200/50 text-pink-600">
-						<button
-							class="inline-flex size-full items-center justify-start space-x-3"
-							:class="!sidebarOpen && 'w-19 justify-center'">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24">
-								<path
-									fill="none"
-									stroke="currentColor"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="1.5"
-									d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.+-----394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z"
-									color="currentColor" />
-							</svg>
-							<span
-								class="transition-all duration-200 ease-out"
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								>Chat With AVA</span
-							>
-						</button>
-					</li>
-
 					<!-- settings -->
 					<li
 						class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
@@ -307,6 +279,27 @@
 							</svg>
 						</button>
 
+						<!-- chat button -->
+						<button
+							class="rounded-lg p-2 text-pink-500 transition-all duration-150 ease-linear hover:bg-pink-600 hover:text-slate-100"
+							type="button"
+							data-drawer-target="dashboard-chat-window"
+							data-drawer-show="dashboard-chat-window"
+							data-drawer-placement="right"
+							data-drawer-backdrop="false"
+							aria-controls="dashboard-chat-window">
+							<!-- chat icon -->
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="30"
+								height="30"
+								viewBox="0 0 20 20">
+								<path
+									fill="currentColor"
+									d="M14.479 8c.179 0 .356.034.521.099V4.5A1.5 1.5 0 0 0 13.5 3h-3v-.5A.48.48 0 0 0 10 2c-.276 0-.5.23-.5.5V3h-3A1.5 1.5 0 0 0 5 4.5v4A1.5 1.5 0 0 0 6.5 10h6.294l.338-1.039l.004-.012A1.42 1.42 0 0 1 14.48 8M7 6.5a1 1 0 1 1 2 0a1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0a1 1 0 0 1-2 0M10 18c1.743 0 3.042-.226 4.005-.612a1.3 1.3 0 0 1 .117-.44a1.42 1.42 0 0 1-.964-.897l-.004-.012l-.351-1.08l-.035-.09a1.2 1.2 0 0 0-.257-.383l-.064-.06a1.2 1.2 0 0 0-.406-.232l-1.08-.35l-.011-.005a1.423 1.423 0 0 1-.545-2.336H5.309a1.81 1.81 0 0 0-1.809 1.81v.689h.005c.034.78.248 1.757 1.123 2.555C5.584 17.43 7.234 18 10 18m5.226-7.647l-.348-1.07a.423.423 0 0 0-.799 0l-.348 1.07a2.2 2.2 0 0 1-1.377 1.397l-1.071.348a.423.423 0 0 0 0 .798l1.071.348a2.2 2.2 0 0 1 1.399 1.403l.348 1.07a.423.423 0 0 0 .798 0l.349-1.07a2.2 2.2 0 0 1 1.398-1.397l1.072-.348a.424.424 0 0 0 0-.798l-.022-.005l-1.072-.349a2.2 2.2 0 0 1-1.398-1.397m3.791 6.612l.766.248l.015.004a.303.303 0 0 1 .147.46a.3.3 0 0 1-.147.11l-.765.248a1.58 1.58 0 0 0-1 .999l-.248.764a.302.302 0 0 1-.57 0l-.249-.764a1.58 1.58 0 0 0-.999-1.002l-.765-.249a.303.303 0 0 1-.146-.46a.3.3 0 0 1 .146-.11l.765-.248a1.58 1.58 0 0 0 .984-.998l.249-.765a.302.302 0 0 1 .57 0l.249.765a1.58 1.58 0 0 0 .999.998" />
+							</svg>
+						</button>
+
 						<!-- user profile info -->
 						<div
 							class="md:w-4max-w-48 flex w-fit max-w-48 items-center space-x-3 rounded-full bg-orange-200 px-2 py-1">
@@ -366,6 +359,117 @@
 			<hr class="text-gray-500" />
 			<!-- notification content -->
 		</aside>
+
+		<!-- the chat window on the right side -->
+		<aside
+			id="dashboard-chat-window"
+			class="fixed right-0 top-0 z-50 h-screen w-[32rem] translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+			tabindex="-1"
+			aria-labelledby="drawer-right-label">
+			<h5
+				id="drawer-right-label"
+				class="mb-4 inline-flex items-center text-base font-semibold text-gray-500">
+				Assistant Conversation
+			</h5>
+			<button
+				type="button"
+				id="download-conversation-button"
+				class="absolute end-12 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24">
+					<path
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M6 20h12M12 4v12m0 0l3.5-3.5M12 16l-3.5-3.5" />
+				</svg>
+				<span class="sr-only">Download Conversation</span>
+			</button>
+			<button
+				type="button"
+				data-drawer-hide="dashboard-chat-window"
+				aria-controls="dashboard-chat-window"
+				class="absolute end-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+				<svg
+					class="h-3 w-3"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 14 14">
+					<path
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+				</svg>
+				<span class="sr-only">Close menu</span>
+			</button>
+
+			<hr class="text-gray-500" />
+			<div class="flex h-full flex-col">
+				<div
+					class="flex flex-grow items-end justify-center overflow-y-scroll font-semibold text-gray-500"
+					v-if="getConversation.length == 0">
+					<p class="text-center text-sm">
+						No conversation history. To start one, say Hi! <br />Conversation is cleared
+						when you refresh your browser.
+						<br />
+						You can download a copy of your conversation in the top right corner.
+					</p>
+				</div>
+				<div
+					class="flex-grow overflow-y-scroll px-2"
+					v-else>
+					<!-- the chat content and interactive bot actions -->
+					<template
+						v-for="(item, index) in getConversation"
+						:key="index">
+						<TextNode
+							v-if="item.type === 'TextNode'"
+							:is-source-bot="item.source === 'Bot' ? true : false"
+							:text="item.text" />
+						<template v-else-if="item.type === 'ActionGroupNode'">
+							<ButtonNode
+								v-for="(button, index) in item.buttonNodes"
+								:key="index"
+								:label="button.label"
+								:value="button.value"
+								@option-selected="(option) => handleConvActionSelected(option)" />
+						</template>
+					</template>
+				</div>
+
+				<!-- response form -->
+				<form
+					class="relative mb-2 flex max-h-[10%] min-h-[10%] w-full items-center space-x-2"
+					@submit.prevent="handleConvFormSubmitted">
+					<input
+						type="text"
+						placeholder="Type here. Press ENTER to submit..."
+						class="generic-input h-[50%] w-full"
+						required
+						v-model.trim="userInput" />
+					<button
+						class="absolute end-2 my-2 inline-flex size-10 items-center justify-center rounded-lg bg-blue-600 text-slate-100">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M5.133 18.02q-.406.163-.77-.066T4 17.288v-3.942L9.846 12L4 10.654V6.712q0-.438.364-.666t.77-.067l12.512 5.269q.49.225.49.756q0 .53-.49.748z" />
+						</svg>
+					</button>
+				</form>
+			</div>
+		</aside>
 	</main>
 
 	<!-- Settings modal -->
@@ -378,17 +482,29 @@
 		<MyAccountSettings />
 	</ParentModal>
 </template>
-
 <script setup lang="ts">
 	const { navigationRoutes, currentScreenName } = useNavigationRoutes();
 	const { getPrincipal, attemptLogout } = useAuth();
 	const sidebarOpen: Ref<boolean> = ref(false);
 	const isSettingsModalOpen: Ref<boolean> = ref(false);
-	const runtimeConfig = useRuntimeConfig();
+	const userInput: Ref<string> = ref('');
+	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();
 
 	// TODO: render this hack another way
 	const profilePicture: Ref<string> = ref('');
 	const { clientCoordinates } = useClientGeolocation();
+
+	const handleConvFormSubmitted = () => {
+		sendBotpressMessage(userInput.value);
+		appendTextTypeNode(userInput.value, 'Human');
+		userInput.value = '';
+	};
+
+	const handleConvActionSelected = (message: string) => {
+		sendBotpressMessage(message);
+		appendTextTypeNode(message, 'Human');
+		userInput.value = '';
+	};
 
 	onMounted(async () => {
 		// set the profile picture
