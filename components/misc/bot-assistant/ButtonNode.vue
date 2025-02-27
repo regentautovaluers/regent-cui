@@ -1,5 +1,6 @@
 <template>
 	<button
+		type="button"
 		class="h-10 w-full whitespace-nowrap rounded-full border px-2 py-1 text-sm text-gray-500 outline-none ring-gray-500 hover:ring-2"
 		@click="emits('emit-click', props.value)">
 		{{ props.label }}
