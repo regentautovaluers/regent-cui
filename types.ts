@@ -105,3 +105,24 @@ export enum ValuationStages {
 	COMPLETED,
 	INVOICING,
 }
+
+// for handling the human-bot conversation
+export type MessageSource = "Bot" | "Human";
+
+export type ButtonNode = {
+	type: 'ButtonNode';
+	label: string;
+	value: string;
+	source: MessageSource | "Bot";
+};
+
+export type TextNode = {
+	type: 'TextNode';
+	text: string;
+	source: string;
+};
+
+export type ButtonGroupNode = {
+	type: 'ButtonGroupNode';
+	buttonNodes: ButtonNode[];
+};
