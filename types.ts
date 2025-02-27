@@ -107,13 +107,13 @@ export enum ValuationStages {
 }
 
 // for handling the human-bot conversation
-export type MessageSource = "Bot" | "Human";
+export type MessageSource = 'Bot' | 'Human';
 
 export type ButtonNode = {
 	type: 'ButtonNode';
 	label: string;
 	value: string;
-	source: MessageSource | "Bot";
+	source: MessageSource | 'Bot';
 };
 
 export type TextNode = {
@@ -125,4 +125,38 @@ export type TextNode = {
 export type ButtonGroupNode = {
 	type: 'ButtonGroupNode';
 	buttonNodes: ButtonNode[];
+};
+
+// types defining how botpress sends back data
+export type BotpressTextBlock = {
+	type: 'string';
+	text: string;
+};
+
+export type BotpressBlockListEntry = {
+	type: 'button';
+	variant: 'action';
+	text: string;
+	buttonValue: string;
+	groupId: string;
+};
+
+export type BotpressBlockType = {
+	type: 'bubble' | 'row' | 'column';
+	blocks?: BotpressBlockListEntry[]; // for example when there is a list to choose from
+	block?: BotpressTextBlock; // for example when you're simply supposed to render text on the screen
+};
+
+export type BotpressPayload = {
+	type: 'bubble' | 'row' | 'column';
+	horizontalAlignment: 'left' | 'right';
+	blocks: BotpressBlockType[];
+};
+
+export type BotpressResponse = {
+	id: string;
+	conversationId: string;
+	authorId: string;
+	sentOn: string;
+	payload: BotpressPayload;
 };
