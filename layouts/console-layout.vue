@@ -424,7 +424,7 @@
 					</p>
 				</div>
 				<div
-					class="flex-grow overflow-y-scroll"
+					class="flex-grow overflow-y-scroll px-2"
 					v-else>
 					<!-- the chat content and interactive bot actions -->
 					<template
@@ -434,25 +434,21 @@
 							v-if="item.type === 'TextNode'"
 							:is-source-bot="item.source === 'Bot' ? true : false"
 							:text="item.text" />
-
-						<ButtonNode
-							v-else-if="item.type === 'ButtonGroupNode'"
-							v-for="(button, index) in item.buttonNodes"
-							:key="index"
-							:label="button.label"
-							:value="button.value" />
+						<template v-else-if="item.type === 'ActionGroupNode'">
+							<ButtonNode
+								v-for="(button, index) in item.buttonNodes"
+								:key="index"
+								:label="button.label"
+								:value="button.value"
+								@option-selected="(option) => handleConvActionSelected(option)" />
+						</template>
 					</template>
 				</div>
 
 				<!-- response form -->
 				<form
 					class="relative mb-2 flex max-h-[10%] min-h-[10%] w-full items-center space-x-2"
-					@submit.prevent="
-						() => {
-							appendTextNode(userInput);
-							userInput = '';
-						}
-					">
+					@submit.prevent="handleConvFormSubmitted">
 					<input
 						type="text"
 						placeholder="Type here. Press ENTER to submit..."
@@ -492,19 +488,23 @@
 	const sidebarOpen: Ref<boolean> = ref(false);
 	const isSettingsModalOpen: Ref<boolean> = ref(false);
 	const userInput: Ref<string> = ref('');
-	const {
-		setConversationId,
-		getConversationId,
-		cleanConversationId,
-		getConversation,
-		setConversation,
-		cleanConversation,
-		appendTextNode,
-	} = useAssistantConversation();
+	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();
 
 	// TODO: render this hack another way
 	const profilePicture: Ref<string> = ref('');
 	const { clientCoordinates } = useClientGeolocation();
+
+	const handleConvFormSubmitted = () => {
+		sendBotpressMessage(userInput.value);
+		appendTextTypeNode(userInput.value, 'Human');
+		userInput.value = '';
+	};
+
+	const handleConvActionSelected = (message: string) => {
+		sendBotpressMessage(message);
+		appendTextTypeNode(message, 'Human');
+		userInput.value = '';
+	};
 
 	onMounted(async () => {
 		// set the profile picture

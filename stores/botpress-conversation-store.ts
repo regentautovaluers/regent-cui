@@ -1,4 +1,4 @@
-import { type ButtonGroupNode, type TextNode } from '~/types';
+import { type ActionGroupNode, type TextNode } from '~/types';
 
 export const { state, getter, mutation, action, ...store } = createStore('', {
 	conversationId: '' as string,
@@ -17,7 +17,7 @@ export const cleanConversationId = mutation('cleanConversationId', (state) => {
 
 export const setConversation = mutation(
 	'setConversation',
-	(state, conversation: ButtonGroupNode[] | TextNode) => {
+	(state, conversation: ActionGroupNode | TextNode) => {
 		state.conversation.push(conversation);
 	},
 );
