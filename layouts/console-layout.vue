@@ -363,7 +363,7 @@
 		<!-- the chat window on the right side -->
 		<aside
 			id="dashboard-chat-window"
-			class="fixed right-0 top-0 z-50 h-screen w-[28rem] translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+			class="fixed right-0 top-0 z-50 h-screen w-[32rem] translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
 			tabindex="-1"
 			aria-labelledby="drawer-right-label">
 			<h5
@@ -388,7 +388,7 @@
 						stroke-width="1.5"
 						d="M6 20h12M12 4v12m0 0l3.5-3.5M12 16l-3.5-3.5" />
 				</svg>
-				<span class="sr-only">Download Converastion</span>
+				<span class="sr-only">Download Conversation</span>
 			</button>
 			<button
 				type="button"
@@ -413,16 +413,52 @@
 
 			<hr class="text-gray-500" />
 			<div class="flex h-full flex-col">
-				<div class="flex-grow"></div>
+				<div
+					class="flex flex-grow items-end justify-center overflow-y-scroll font-semibold text-gray-500"
+					v-if="getConversation.length == 0">
+					<p class="text-center text-sm">
+						No conversation history. To start one, say Hi! <br />Conversation is cleared
+						when you refresh your browser.
+						<br />
+						You can download a copy of your conversation in the top right corner.
+					</p>
+				</div>
+				<div
+					class="flex-grow overflow-y-scroll"
+					v-else>
+					<!-- the chat content and interactive bot actions -->
+					<template
+						v-for="(item, index) in getConversation"
+						:key="index">
+						<TextNode
+							v-if="item.type === 'TextNode'"
+							:is-source-bot="item.source === 'Bot' ? true : false"
+							:text="item.text" />
+
+						<ButtonNode
+							v-else-if="item.type === 'ButtonGroupNode'"
+							v-for="(button, index) in item.buttonNodes"
+							:key="index"
+							:label="button.label"
+							:value="button.value" />
+					</template>
+				</div>
 
 				<!-- response form -->
 				<form
-					class="relative mb-2 flex h-[10%] w-full items-center space-x-2"
-					@submit.prevent="">
+					class="relative mb-2 flex max-h-[10%] min-h-[10%] w-full items-center space-x-2"
+					@submit.prevent="
+						() => {
+							appendTextNode(userInput);
+							userInput = '';
+						}
+					">
 					<input
 						type="text"
-						placeholder="Type a message..."
-						class="generic-input h-[50%] w-full" />
+						placeholder="Type here. Press ENTER to submit..."
+						class="generic-input h-[50%] w-full"
+						required
+						v-model.trim="userInput" />
 					<button
 						class="absolute end-2 my-2 inline-flex size-10 items-center justify-center rounded-lg bg-blue-600 text-slate-100">
 						<svg
@@ -450,13 +486,21 @@
 		<MyAccountSettings />
 	</ParentModal>
 </template>
-
 <script setup lang="ts">
 	const { navigationRoutes, currentScreenName } = useNavigationRoutes();
 	const { getPrincipal, attemptLogout } = useAuth();
 	const sidebarOpen: Ref<boolean> = ref(false);
 	const isSettingsModalOpen: Ref<boolean> = ref(false);
-	const runtimeConfig = useRuntimeConfig();
+	const userInput: Ref<string> = ref('');
+	const {
+		setConversationId,
+		getConversationId,
+		cleanConversationId,
+		getConversation,
+		setConversation,
+		cleanConversation,
+		appendTextNode,
+	} = useAssistantConversation();
 
 	// TODO: render this hack another way
 	const profilePicture: Ref<string> = ref('');
