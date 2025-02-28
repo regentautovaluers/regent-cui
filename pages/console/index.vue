@@ -1,6 +1,6 @@
 <template>
 	<div class="flex min-h-full flex-col justify-between">
-		<div class="my-36 flex flex-col items-center">
+		<div class="my-24 flex flex-col items-center">
 			<h1 class="text-xl uppercase text-gray-500">Hello, {{ getPrincipal.username }}</h1>
 			<h2
 				class="my-3 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-7xl font-semibold text-transparent">
@@ -9,7 +9,7 @@
 			<!-- TODO: Remove this button later -->
 			<button
 				disabled
-				class="inline-flex items-center space-x-2 rounded-full bg-yellow-200/30 px-4 py-1 text-yellow-600">
+				class="inline-flex items-center space-x-2 rounded-full bg-blue-200/30 px-4 py-1 text-blue-600">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"
@@ -17,9 +17,11 @@
 					viewBox="0 0 24 24">
 					<path
 						fill="currentColor"
-						d="M12.09 2.91C10.08.9 7.07.49 4.65 1.67l4.34 4.34l-3 3l-4.34-4.34C.48 7.1.89 10.09 2.9 12.1a6.51 6.51 0 0 0 6.89 1.48l9.82 9.82l3.71-3.71l-9.78-9.79c.92-2.34.44-5.1-1.45-6.99" />
+						fill-rule="evenodd"
+						d="M3.211 19.7Q3.773 21 5.12 21h13.76q1.348 0 1.909-1.3t-.37-2.367L15.465 11V5h1.668a.92.92 0 0 0 .69-.283A1 1 0 0 0 18.096 4a1 1 0 0 0-.273-.717a.92.92 0 0 0-.69-.283H6.867a.92.92 0 0 0-.69.283A1 1 0 0 0 5.905 4q0 .434.273.717a.92.92 0 0 0 .69.283h1.668v6L3.58 17.333q-.93 1.066-.369 2.367m4.457-4.423h8.664l-2.792-3.544V5h-3.08v6.733z"
+						clip-rule="evenodd" />
 				</svg>
-				<span>Under Development</span>
+				<span>Experimental</span>
 			</button>
 			<p class="my-4 text-center text-lg text-gray-500">
 				Hi there! I am AVA, Regent's Smart Virtual Assistant. <br />
@@ -77,8 +79,7 @@
 				:title="'Emergency Evacuation'"
 				:link="navigationRoutes[2].routeName"
 				:service-description="regentServices[1].shortDescription">
-				<!-- TODO: Render the proper iconography here -->
-				<AssistanceIcon
+				<EmergencyRescueIcon
 					color="white"
 					classes="text-lg" />
 			</ServicesQuickLinks>
