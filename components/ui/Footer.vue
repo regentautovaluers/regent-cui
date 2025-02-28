@@ -2,8 +2,36 @@
 	<footer class="text-slate-100">
 		<div class="relative grid min-h-96 grid-cols-4 gap-x-16 bg-black px-14 pt-20">
 			<div
-				class="absolute -top-20 left-20 min-h-32 w-[75%] translate-x-24 rounded-lg bg-blue-600 py-2 text-center">
-				<h1 class="text-3xl font-semibold">Our Partners</h1>
+				class="absolute -top-28 left-20 flex h-40 w-[75%] translate-x-24 flex-col rounded-lg bg-blue-600 text-center">
+				<h1 class="text-4xl font-semibold">Our Partners</h1>
+				<div
+					class="flex flex-grow items-center px-4 pb-2"
+					style="
+						::-webkit-scrollbar-thumb {
+							border-radius: 10px;
+						}
+
+						/* Hide scrollbar for Chrome, Safari and Opera */
+						::-webkit-scrollbar {
+							display: none;
+						}
+
+						/* Hide scrollbar for IE, Edge and Firefox */
+						.no-scrollbar {
+							-ms-overflow-style: none; /* IE and Edge */
+							scrollbar-width: none; /* Firefox */
+						}
+					">
+					<div
+						class="flex h-full w-64 items-center justify-center"
+						v-for="a in 8"
+						:key="a">
+						<img
+							:src="`/images/partners/${a}.png`"
+							alt="Partner Logo"
+							class="h-24" />
+					</div>
+				</div>
 			</div>
 			<div>
 				<h1 class="text-2xl font-bold">About Us.</h1>
@@ -102,7 +130,6 @@
 				<h1 class="text-2xl font-bold">Quick Links.</h1>
 				<div class="mt-5 flex flex-col space-y-2">
 					<NuxtLink class="font-light">Request Valuation</NuxtLink>
-					<NuxtLink class="font-light">Valuation Report</NuxtLink>
 					<NuxtLink class="font-light">Roadside Assistance</NuxtLink>
 					<NuxtLink class="font-light">Accident Management</NuxtLink>
 					<NuxtLink class="font-light">Emergency Evacuation</NuxtLink>
