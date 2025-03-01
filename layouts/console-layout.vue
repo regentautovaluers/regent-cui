@@ -2,7 +2,7 @@
 	<main class="h-screen">
 		<!-- the navigation bar on the left side -->
 		<aside
-			class="fixed z-50 flex h-full max-h-full flex-col overflow-y-auto rounded-lg border-2 bg-white transition-all duration-100 ease-out"
+			class="fixed z-50 flex h-full max-h-full flex-col overflow-y-auto border-r-2 bg-white transition-all duration-100 ease-out"
 			:class="sidebarOpen ? 'w-[16rem] max-w-[16rem]' : 'w-16'"
 			@mouseover="sidebarOpen = true"
 			@mouseleave="sidebarOpen = false">
