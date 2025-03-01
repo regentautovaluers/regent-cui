@@ -193,6 +193,102 @@
 							</li>
 						</ol>
 					</ul>
+
+					<!-- Emergency Evacuation -->
+					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<div class="flex size-full items-center justify-between">
+							<NuxtLink
+								:to="{ name: navigationRoutes[4].routeName }"
+								class="inline-flex size-full items-center justify-center"
+								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
+								<EmergencyRescueIcon classes="size-6 text-inherit" />
+								<span
+									class="flex-grow font-semibold transition-all duration-200 ease-out"
+									:class="sidebarOpen ? 'block' : 'hidden'"
+									>{{ navigationRoutes[4].screenName }}</span
+								></NuxtLink
+							>
+							<!-- <button
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								type="button"
+								aria-controls="roadside-assistance-dropdown"
+								data-collapse-toggle="roadside-assistance-dropdown">
+								<DropdownChevronIcon />
+							</button> -->
+						</div>
+					</li>
+
+					<!-- Accident Management -->
+					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<div class="flex size-full items-center justify-between">
+							<NuxtLink
+								:to="{ name: navigationRoutes[5].routeName }"
+								class="inline-flex size-full items-center justify-center"
+								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
+								<AccidentManagementIcon classes="size-6 text-inherit" />
+								<span
+									class="flex-grow font-semibold transition-all duration-200 ease-out"
+									:class="sidebarOpen ? 'block' : 'hidden'"
+									>{{ navigationRoutes[5].screenName }}</span
+								></NuxtLink
+							>
+							<!-- <button
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								type="button"
+								aria-controls="roadside-assistance-dropdown"
+								data-collapse-toggle="roadside-assistance-dropdown">
+								<DropdownChevronIcon />
+							</button> -->
+						</div>
+					</li>
+
+					<!-- Garage -->
+					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<div class="flex size-full items-center justify-between">
+							<NuxtLink
+								:to="{ name: navigationRoutes[6].routeName }"
+								class="inline-flex size-full items-center justify-center"
+								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
+								<GarageIcon classes="size-7 text-inherit" />
+								<span
+									class="flex-grow font-semibold transition-all duration-200 ease-out"
+									:class="sidebarOpen ? 'block' : 'hidden'"
+									>{{ navigationRoutes[6].screenName }}</span
+								></NuxtLink
+							>
+							<!-- <button
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								type="button"
+								aria-controls="roadside-assistance-dropdown"
+								data-collapse-toggle="roadside-assistance-dropdown">
+								<DropdownChevronIcon />
+							</button> -->
+						</div>
+					</li>
+
+					<!-- Parts -->
+					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<div class="flex size-full items-center justify-between">
+							<NuxtLink
+								:to="{ name: navigationRoutes[7].routeName }"
+								class="inline-flex size-full items-center justify-center"
+								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
+								<PartsIcon classes="size-8 text-inherit" />
+								<span
+									class="flex-grow font-semibold transition-all duration-200 ease-out"
+									:class="sidebarOpen ? 'block' : 'hidden'"
+									>{{ navigationRoutes[7].screenName }}</span
+								></NuxtLink
+							>
+							<!-- <button
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								type="button"
+								aria-controls="roadside-assistance-dropdown"
+								data-collapse-toggle="roadside-assistance-dropdown">
+								<DropdownChevronIcon />
+							</button> -->
+						</div>
+					</li>
 				</ul>
 				<!-- Carousel -->
 				<SidenavCarousel v-if="sidebarOpen" />

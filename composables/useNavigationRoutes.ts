@@ -99,6 +99,30 @@ const useNavigationRoutes = () => {
 				},
 			],
 		},
+		{
+			id: 4,
+			screenName: 'Emergency Evacuation',
+			routeName: 'emergency-evacuation-home',
+			renderRoute: true,
+		},
+		{
+			id: 5,
+			screenName: 'Accident Management',
+			routeName: 'accident-management-home',
+			renderRoute: true,
+		},
+		{
+			id: 6,
+			screenName: 'Garage',
+			routeName: 'garage-home',
+			renderRoute: true,
+		},
+		{
+			id: 7,
+			screenName: 'Parts',
+			routeName: 'parts-home',
+			renderRoute: true,
+		},
 	];
 	const currentScreenName: ComputedRef<string> = computed(() => {
 		const routeName: string = route.name as string;
