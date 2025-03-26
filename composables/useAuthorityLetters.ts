@@ -68,8 +68,10 @@ const useAuthorityLetters = () => {
 						letterId: data.letterId,
 						registrationNumber: data.registrationNumber,
 						clientName: data.clientName,
-						comments: data.comments,
-						feedback: data.feedback,
+						feedback:
+							data.feedbackTrail.length == 0
+								? null
+								: data.feedbackTrail[data.feedbackTrail.length - 1].feedback,
 						clientPhone: data.clientPhone,
 						policyNumber: data.policyNumber,
 						agencyName: data.agencyName,

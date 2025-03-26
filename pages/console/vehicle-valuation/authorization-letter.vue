@@ -123,11 +123,6 @@
 										<th
 											scope="col"
 											class="table-headers">
-											Your Comment
-										</th>
-										<th
-											scope="col"
-											class="table-headers">
 											Feedback
 										</th>
 										<th
@@ -167,11 +162,6 @@
 										<td class="p-6 text-gray-300">
 											<span class="animate-pulse rounded-lg bg-gray-300"
 												>domain role</span
-											>
-										</td>
-										<td class="p-6 text-gray-300">
-											<span class="animate-pulse rounded-lg bg-gray-300"
-												>agency</span
 											>
 										</td>
 										<td class="p-6 text-gray-300">
@@ -220,9 +210,6 @@
 												>{{ letter.authorizedBy.username }}</span
 											>
 											<span>{{ letter.createdOn.split(' ')[0] }}</span>
-										</td>
-										<td class="w-48 max-w-48 text-wrap px-2 text-sm">
-											{{ letter.comments ?? 'N/A' }}
 										</td>
 										<td class="w-48 max-w-48 text-wrap px-2 text-sm">
 											{{ letter.feedback ?? 'N/A' }}

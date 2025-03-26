@@ -96,7 +96,7 @@
 
 		<GoogleMap
 			ref="mapRef"
-			:api-key="runtimeConfig.app.GOOGLE_MAPS_APIKEY"
+			:api-key="runtimeConfig.GOOGLE_MAPS_APIKEY"
 			:styles="googleMapStyle"
 			style="width: 100%; height: 100%"
 			:map-type-control="false"

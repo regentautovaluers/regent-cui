@@ -29,7 +29,7 @@
 						<img
 							:src="`/images/partners/${a}.png`"
 							alt="Partner Logo"
-							class="h-24" />
+							class="h-20" />
 					</div>
 				</div>
 			</div>

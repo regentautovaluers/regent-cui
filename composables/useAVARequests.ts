@@ -108,7 +108,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 
 	const bindToDropOffLocation = async () => {
 		const loader = new Loader({
-			apiKey: runtimeConfig.app.GOOGLE_MAPS_APIKEY,
+			apiKey: runtimeConfig.GOOGLE_MAPS_APIKEY,
 			version: 'weekly',
 		});
 
@@ -146,7 +146,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 
 	const bindToPickUpLocation = async () => {
 		const loader = new Loader({
-			apiKey: runtimeConfig.app.GOOGLE_MAPS_APIKEY,
+			apiKey: runtimeConfig.GOOGLE_MAPS_APIKEY,
 			version: 'weekly',
 		});
 		const Places = await loader.importLibrary('places');
