@@ -1,6 +1,6 @@
 <template>
 	<div class="grid h-fit grid-cols-2 gap-10 pb-5">
-		<div class="rounded-lg border-[.5px] shadow-md outline-none">
+		<div class="min-h-[50.5rem] rounded-lg border-[.5px] shadow-md outline-none">
 			<div class="flex items-center justify-between p-10">
 				<div class="space-y-3">
 					<h2 class="text-gray-600">{{ valuationReport.valuationId }}</h2>
@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<hr class="border-[.5px]" />
-			<div class="flex h-fit items-center p-10">
+			<div class="flex h-fit items-center px-10 py-5">
 				<img
 					:src="valuationReport.vehiclePhotos[0]"
 					alt="Vehicle Image"
@@ -30,7 +30,7 @@
 					<span class="text-lg text-gray-500">ABCD/1234/RTYU/XYZ</span>
 				</div>
 			</div>
-			<div class="grid grid-cols-4 gap-x-2 p-10">
+			<div class="grid grid-cols-4 gap-x-2 px-10 py-5">
 				<div>
 					<h1 class="text-lg font-semibold">Insurer</h1>
 					<span class="text-gray-500">{{ valuationReport.insurer }}</span>
@@ -54,14 +54,14 @@
 
 			<!-- kyc -->
 			<div class="grid grid-cols-3 gap-2 px-10 py-5">
-				<div class="col-span-4">
-					<h1 class="text-lg font-semibold text-gray-600">Client KYCs</h1>
+				<div class="col-span-3">
+					<h1 class="font-semibold text-gray-600">Client KYCs</h1>
 				</div>
 				<div
-					class="rounded-lg bg-gray-100 p-3"
+					class="bg rounded-lg border-[1px] border-yellow-500 bg-yellow-100/50 p-3"
 					v-for="(report, index) in valuationReport.kycDocuments"
 					:key="index">
-					<h1 class="font-semibold text-gray-700">{{ report.split(': ')[0] }}</h1>
+					<h1 class="font-semibold text-yellow-700">{{ report.split(': ')[0] }}</h1>
 					<a
 						:href="report.split(': ')[1]"
 						target="_top"
@@ -72,7 +72,7 @@
 			</div>
 		</div>
 		<div
-			class="max-h-[50rem] space-y-5 overflow-y-scroll rounded-lg border-[.5px] p-10 shadow-md outline-none">
+			class="max-h-[50rem] min-h-[50.5rem] space-y-5 overflow-y-scroll rounded-lg border-[.5px] p-10 shadow-md outline-none">
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
 				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-blue-500"></div>
@@ -243,7 +243,7 @@
 					:key="index"
 					:src="i"
 					alt="Vehicle Image"
-					class="h-48 max-h-48 w-full cursor-pointer rounded-sm object-cover"
+					class="max-h-48 min-h-48 w-full cursor-pointer rounded-md object-cover"
 					:class="activeImage === index && 'border-2 border-pink-600'"
 					@click="activeImage = index" />
 			</div>
@@ -273,7 +273,7 @@
 				<img
 					:src="valuationReport.vehiclePhotos[activeImage]"
 					alt="Vehicle Image"
-					class="size-full rounded-sm"
+					class="size-full rounded-md"
 					:class="imageStretched && 'object-cover'" />
 			</div>
 		</div>
