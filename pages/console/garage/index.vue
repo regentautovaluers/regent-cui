@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'emergency-evacuation-home',
+		name: 'garage-home',
 		layout: 'console-layout',
 	});
 </script>

@@ -1,5 +1,7 @@
 <template>
-	<h1>Welcome to accident management home</h1>
+	<div class="h-full">
+		<CommingSoon />
+	</div>
 </template>
 
 <script lang="ts">
