@@ -337,9 +337,9 @@
 		</aside>
 
 		<!-- main UI -->
-		<div class="ml-16 h-full">
+		<div class="ml-16 h-screen">
 			<nav
-				class="sticky top-0 z-30 flex min-h-20 w-full items-center border-b bg-white"
+				class="sticky top-0 z-30 flex h-[7.35%] w-full items-center border-b bg-white"
 				id="top-nav">
 				<div class="flex h-full flex-grow items-center justify-between px-4">
 					<h1 class="text-lg font-semibold md:text-3xl">{{ currentScreenName }}</h1>
@@ -416,7 +416,7 @@
 				</div>
 			</nav>
 
-			<div class="h-full p-2">
+			<div class="h-[92.65%] min-h-[92.65%] p-2">
 				<slot />
 			</div>
 		</div>
