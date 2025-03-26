@@ -60,6 +60,9 @@ export default defineNuxtConfig({
 		},
 	},
 	runtimeConfig: {
+		// private properties
+		GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
+		BOTPRESS_CLIENT_ID: process.env.BOTPRESS_CLIENT_ID,
 		public: {
 			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 			AVA_BASE_URL: process.env.AVA_BASE_URL,
@@ -67,10 +70,7 @@ export default defineNuxtConfig({
 			COPYRIGHT_YEAR: process.env.COPYRIGHT_YEAR,
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: process.env.GOOGLE_MAPS_GEOFENCING_COUNTRY,
 		},
-		app: {
-			GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
-			BOTPRESS_CLIENT_ID: process.env.BOTPRESS_CLIENT_ID,
-		},
+		app: {},
 	},
 	modules: ['@nuxtjs/i18n', '@nuxtjs/harlem', '@nuxt/fonts'],
 	i18n: {
