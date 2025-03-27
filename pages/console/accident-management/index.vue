@@ -4,7 +4,7 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 	definePageMeta({
 		name: 'accident-management-home',
 		layout: 'console-layout',
