@@ -249,7 +249,7 @@
 				for="cert-of-registration"
 				class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
 				:class="certUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'">
-				<span>Certificate of Registration</span>
+				<span>Certificate of Incorporation</span>
 				<input
 					id="cert-of-registration"
 					type="file"
