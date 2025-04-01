@@ -66,7 +66,7 @@ EOT
                             cat .env
 
                             echo "Running new container..."
-                            docker run -d --restart always --name valuation-portal --env-file .env -p 3000:3000 --no-cache ${DOCKER_IMAGE}:${DOCKER_TAG}
+                            docker run -d --restart always --name valuation-portal --env-file .env -p 3000:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
 EOF
                         """
                     }
