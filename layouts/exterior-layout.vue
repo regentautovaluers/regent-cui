@@ -152,7 +152,6 @@
 </template>
 
 <script setup lang="ts">
-	const { language, availableLanguages } = useSystemLocale();
 	const slides: readonly string[] = [
 		'/images/slides/landingpage/1.jpg',
 		'/images/slides/landingpage/2.jpg',
