@@ -1,8 +1,8 @@
 <template>
 	<form @submit.prevent="attemptLogin">
 		<div class="mb-16 text-3xl md:text-4xl lg:text-5xl">
-			<h1 class="font-bold">{{ $t('greeting') }},</h1>
-			<h2 class="whitespace-nowrap font-bold">{{ $t('welcome_text') }}</h2>
+			<h1 class="font-bold">Hello,</h1>
+			<h2 class="whitespace-nowrap font-bold">Welcome Back</h2>
 		</div>
 		<div class="space-y-4">
 			<input
@@ -29,7 +29,7 @@
 				<label
 					for="remember-me"
 					class="generic-input-label text-sm md:text-base"
-					>{{ $t('show_password') }}</label
+					>Show Password</label
 				>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="loginAttemptLoading" />
-			{{ loginAttemptLoading ? $t('request_processing') : $t('login') }}
+			{{ loginAttemptLoading ? 'Processing' : 'Login' }}
 		</button>
 	</form>
 
@@ -49,7 +49,7 @@
 	<NuxtLink
 		:to="{ name: 'exterior-forgot-password' }"
 		class="generic-quick-link text-sm md:text-base">
-		{{ $t('forgot_password') }}
+		Forgot Password
 	</NuxtLink>
 </template>
 

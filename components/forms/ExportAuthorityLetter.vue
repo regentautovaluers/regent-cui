@@ -47,7 +47,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="exportAuthorityLettersLoading" />
-			{{ exportAuthorityLettersLoading ? $t('request_processing') : 'Export Data' }}
+			{{ exportAuthorityLettersLoading ? 'Processing' : 'Export Data' }}
 		</button>
 	</form>
 </template>

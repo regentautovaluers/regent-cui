@@ -324,11 +324,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="makeRequestLoading" />
-			{{
-				makeRequestLoading
-					? $t('request_processing')
-					: `Make ${props.roadsideAssistanceName} Request`
-			}}
+			{{ makeRequestLoading ? 'Processing' : `Make ${props.roadsideAssistanceName} Request` }}
 		</button>
 	</form>
 </template>

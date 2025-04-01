@@ -40,7 +40,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="editCorporateBranchLoading" />
-			{{ editCorporateBranchLoading ? $t('request_processing') : 'Update Branch' }}
+			{{ editCorporateBranchLoading ? 'Processing' : 'Update Branch' }}
 		</button>
 	</form>
 </template>

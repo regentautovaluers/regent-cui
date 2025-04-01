@@ -1,6 +1,6 @@
 <template>
 	<div class="mb-4 text-3xl md:text-4xl lg:text-5xl">
-		<h1 class="font-bold">{{ $t('authentication_failed') }}</h1>
+		<h1 class="font-bold">Authentication Failed</h1>
 	</div>
 	<div
 		id="alert-additional-content-4"
@@ -31,7 +31,7 @@
 	<NuxtLink
 		:to="{ name: 'exterior-home' }"
 		class="generic-quick-link text-sm md:text-base">
-		{{ $t('go_home') }}
+		Go Home
 	</NuxtLink>
 </template>
 

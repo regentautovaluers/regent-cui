@@ -72,7 +72,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="createFleetLoading" />
-			{{ createFleetLoading ? $t('request_processing') : 'Create Fleet' }}
+			{{ createFleetLoading ? 'Processing' : 'Create Fleet' }}
 		</button>
 	</form>
 </template>

@@ -40,7 +40,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="addCorporateBranchLoading" />
-			{{ addCorporateBranchLoading ? $t('request_processing') : 'Add Branch' }}
+			{{ addCorporateBranchLoading ? 'Processing' : 'Add Branch' }}
 		</button>
 	</form>
 </template>

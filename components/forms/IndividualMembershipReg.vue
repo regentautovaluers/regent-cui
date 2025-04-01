@@ -255,7 +255,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="registerIndividualMemberLoading" />
-			{{ registerIndividualMemberLoading ? $t('request_processing') : 'Onboard Member' }}
+			{{ registerIndividualMemberLoading ? 'Processing' : 'Onboard Member' }}
 		</button>
 	</form>
 </template>

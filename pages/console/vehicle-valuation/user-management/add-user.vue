@@ -147,7 +147,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="addNewAccountLoading" />
-			{{ addNewAccountLoading ? $t('request_processing') : 'Add New User' }}
+			{{ addNewAccountLoading ? 'Processing' : 'Add New User' }}
 		</button>
 	</form>
 </template>

@@ -185,7 +185,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="addMemberVehicleLoading" />
-			{{ addMemberVehicleLoading ? $t('request_processing') : 'Add Vehicle' }}
+			{{ addMemberVehicleLoading ? 'Processing' : 'Add Vehicle' }}
 		</button>
 	</form>
 </template>

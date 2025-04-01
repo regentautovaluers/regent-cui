@@ -319,7 +319,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="createAuthorizationLetterLoading" />
-			{{ createAuthorizationLetterLoading ? $t('request_processing') : 'Submit Request' }}
+			{{ createAuthorizationLetterLoading ? 'Processing' : 'Submit Request' }}
 		</button>
 	</form>
 </template>

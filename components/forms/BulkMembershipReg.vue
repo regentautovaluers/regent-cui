@@ -201,7 +201,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="registerBulkMembershipsLoading" />
-			{{ registerBulkMembershipsLoading ? $t('request_processing') : 'Onboard Members' }}
+			{{ registerBulkMembershipsLoading ? 'Processing' : 'Onboard Members' }}
 		</button>
 	</form>
 

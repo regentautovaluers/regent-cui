@@ -58,7 +58,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="updateMemberDetailsLoading" />
-			{{ updateMemberDetailsLoading ? $t('request_processing') : 'Update' }}
+			{{ updateMemberDetailsLoading ? 'Processing' : 'Update' }}
 		</button>
 	</form>
 </template>

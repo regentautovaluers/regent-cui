@@ -1,7 +1,7 @@
 <template>
 	<form @submit.prevent="">
 		<div class="mb-4 text-3xl md:text-4xl lg:text-5xl">
-			<h1 class="font-bold">{{ $t('password_reset') }}</h1>
+			<h1 class="font-bold">Password Reset</h1>
 		</div>
 		<div
 			id="alert-additional-content-4"
@@ -41,7 +41,7 @@
 			<FormSubmissionLoader
 				classes="mr-2 size-6 animate-spin text-white"
 				v-if="false" />
-			{{ false ? $t('request_processing') : $t('proceed') }}
+			{{ false ? 'Processing' : 'Proceed' }}
 		</button>
 	</form>
 
@@ -49,7 +49,7 @@
 	<NuxtLink
 		:to="{ name: 'exterior-home' }"
 		class="generic-quick-link text-sm md:text-base">
-		{{ $t('go_home') }}
+		Go Home
 	</NuxtLink>
 </template>
 
