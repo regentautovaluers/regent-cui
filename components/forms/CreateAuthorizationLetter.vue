@@ -169,126 +169,147 @@
 		</div>
 
 		<!-- documents -->
-		<h1 class="my-2 text-lg font-semibold">Related Documents</h1>
+		<h1 class="my-2 text-lg font-semibold">Upload Related Documents</h1>
+		<div class="flex h-[70px] w-fit items-center">
+			<div>
+				<h1 class="mb-2 text-center text-gray-600">Required</h1>
+				<!-- Logbook -->
+				<label
+					for="vehicle-logbook"
+					class="auth-letter-file-input border-gray-400 bg-opacity-50"
+					:class="
+						logbookUploaded
+							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+					">
+					<span>Vehicle Logbook</span>
+					<input
+						id="vehicle-logbook"
+						type="file"
+						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+						class="hidden"
+						required
+						@change.prevent="
+							(e) => {
+								handleFileUpload(
+									(e.target as HTMLInputElement)?.files?.[0] as File,
+									'Logbook',
+								);
+								logbookUploaded = true;
+							}
+						" />
+				</label>
 
-		<div class="flex flex-wrap items-center space-y-2 md:space-y-0">
-			<!-- Logbook -->
-			<label
-				for="vehicle-logbook"
-				class="auth-letter-file-input border-gray-400 bg-opacity-50"
-				:class="
-					logbookUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
-				">
-				<span>Vehicle Logbook</span>
-				<input
-					id="vehicle-logbook"
-					type="file"
-					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-					class="hidden"
-					@change.prevent="
-						(e) => {
-							handleFileUpload(
-								(e.target as HTMLInputElement)?.files?.[0] as File,
-								'Logbook',
-							);
-							logbookUploaded = true;
-						}
-					" />
-			</label>
+				<!-- Authority Letter -->
+				<label
+					for="authority-letter"
+					class="auth-letter-file-input border-gray-400 bg-opacity-50 md:ml-3"
+					:class="
+						letterUploaded
+							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+					">
+					<span>Authority Letter</span>
+					<input
+						id="authority-letter"
+						type="file"
+						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+						class="hidden"
+						required
+						@change.prevent="
+							(e) => {
+								handleFileUpload(
+									(e.target as HTMLInputElement)?.files?.[0] as File,
+									'Authority Letter',
+								);
+								letterUploaded = true;
+							}
+						" />
+				</label>
+			</div>
+			<div class="mx-4 flex h-full items-end justify-center px-4 py-2">
+				<span class="text-3xl text-gray-600">&middot;</span>
+			</div>
+			<div>
+				<h1 class="mb-2 text-center text-gray-600">Provide if available</h1>
+				<!-- KRA PIN -->
+				<label
+					for="kra-pin"
+					class="auth-letter-file-input border-gray-400 bg-opacity-50"
+					:class="
+						kraPinUploaded
+							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+					">
+					<span>KRA PIN</span>
+					<input
+						id="kra-pin"
+						type="file"
+						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+						class="hidden"
+						@change.prevent="
+							(e) => {
+								handleFileUpload(
+									(e.target as HTMLInputElement)?.files?.[0] as File,
+									'KRA PIN',
+								);
+								kraPinUploaded = true;
+							}
+						" />
+				</label>
 
-			<!-- KRA PIN -->
-			<label
-				for="kra-pin"
-				class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
-				:class="
-					kraPinUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
-				">
-				<span>KRA PIN</span>
-				<input
-					id="kra-pin"
-					type="file"
-					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-					class="hidden"
-					@change.prevent="
-						(e) => {
-							handleFileUpload(
-								(e.target as HTMLInputElement)?.files?.[0] as File,
-								'KRA PIN',
-							);
-							kraPinUploaded = true;
-						}
-					" />
-			</label>
+				<!-- National ID -->
+				<label
+					for="national-id"
+					class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
+					:class="
+						natIdUploaded
+							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+					">
+					<span>National ID</span>
+					<input
+						id="national-id"
+						type="file"
+						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+						class="hidden"
+						@change.prevent="
+							(e) => {
+								handleFileUpload(
+									(e.target as HTMLInputElement)?.files?.[0] as File,
+									'National ID',
+								);
+								natIdUploaded = true;
+							}
+						" />
+				</label>
 
-			<!-- National ID -->
-			<label
-				for="national-id"
-				class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
-				:class="
-					natIdUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
-				">
-				<span>National ID</span>
-				<input
-					id="national-id"
-					type="file"
-					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-					class="hidden"
-					@change.prevent="
-						(e) => {
-							handleFileUpload(
-								(e.target as HTMLInputElement)?.files?.[0] as File,
-								'National ID',
-							);
-							natIdUploaded = true;
-						}
-					" />
-			</label>
-
-			<!-- Certificate of Registration -->
-			<label
-				for="cert-of-registration"
-				class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
-				:class="certUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'">
-				<span>Certificate of Incorporation</span>
-				<input
-					id="cert-of-registration"
-					type="file"
-					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-					class="hidden"
-					@change.prevent="
-						(e) => {
-							handleFileUpload(
-								(e.target as HTMLInputElement)?.files?.[0] as File,
-								'Certificate of Registration',
-							);
-							certUploaded = true;
-						}
-					" />
-			</label>
-
-			<!-- Authority Letter -->
-			<label
-				for="authority-letter"
-				class="auth-letter-file-input border-gray-400 bg-opacity-50 md:ml-3"
-				:class="
-					letterUploaded ? 'bg-green-500 text-green-500' : 'bg-blue-400 text-blue-500'
-				">
-				<span>Authority Letter</span>
-				<input
-					id="authority-letter"
-					type="file"
-					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-					class="hidden"
-					@change.prevent="
-						(e) => {
-							handleFileUpload(
-								(e.target as HTMLInputElement)?.files?.[0] as File,
-								'Authority Letter',
-							);
-							letterUploaded = true;
-						}
-					" />
-			</label>
+				<!-- Certificate of Registration -->
+				<label
+					for="cert-of-registration"
+					class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
+					:class="
+						certUploaded
+							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+					">
+					<span>Certificate of Incorporation</span>
+					<input
+						id="cert-of-registration"
+						type="file"
+						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+						class="hidden"
+						@change.prevent="
+							(e) => {
+								handleFileUpload(
+									(e.target as HTMLInputElement)?.files?.[0] as File,
+									'Certificate of Registration',
+								);
+								certUploaded = true;
+							}
+						" />
+				</label>
+			</div>
 		</div>
 
 		<!-- submit button -->
