@@ -86,19 +86,13 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Regent Brnch & Date
+										Regent Branch & Date
 									</th>
 									<!-- Details will show client name and their contact -->
 									<th
 										scope="col"
 										class="table-headers">
 										Client Details
-									</th>
-									<th
-										scope="col"
-										class="table-headers text-start"
-										v-if="activeView === 'pending'">
-										Stage
 									</th>
 									<th
 										scope="col"
@@ -151,11 +145,6 @@
 									</td>
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
-											>bookedtoday</span
-										>
-									</td>
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
 											>regenthq</span
 										>
 									</td>
@@ -204,16 +193,7 @@
 										<br />
 										<span>{{ valuation.clientName }}</span>
 									</td>
-									<td
-										class="p-5"
-										v-if="activeView === 'pending'">
-										{{
-											!valuation.valuationStage
-												? 'N/A'
-												: determineValuationStage(valuation.valuationStage)
-														.status
-										}}
-									</td>
+
 									<td class="p-5">
 										<span class="w-fit">{{
 											valuation.inspectionDate == null
@@ -231,16 +211,19 @@
 										scope="row"
 										class="flex items-center whitespace-nowrap p-5 text-gray-900">
 										<img
-											class="h-12 w-12 rounded-lg"
+											class="size-14 rounded-lg object-cover"
 											:src="valuation.vehicleImage"
-											alt="Jese image"
+											alt="Vehicle Image"
 											v-if="valuation.vehicleImage" />
 										<div
 											v-else
-											class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
-											<span>{{ valuation.regNo.split(' ')[0] }}</span>
+											class="flex size-14 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
+											<span>{{
+												valuation.regNo == null
+													? 'N/A'
+													: valuation.regNo.split(' ')[0]
+											}}</span>
 										</div>
-
 										<div class="ps-2">
 											<div
 												class="w-fit rounded-full bg-blue-200 px-1 text-sm text-blue-600">

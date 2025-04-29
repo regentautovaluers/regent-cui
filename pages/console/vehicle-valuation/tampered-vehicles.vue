@@ -75,11 +75,6 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers text-start">
-										Progess
-									</th>
-									<th
-										scope="col"
 										class="table-headers">
 										Make & Model
 									</th>
@@ -137,6 +132,11 @@
 											>bookingstage</span
 										>
 									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookingstage</span
+										>
+									</td>
 									<td></td>
 								</tr>
 								<tr
@@ -147,23 +147,15 @@
 									<td
 										scope="row"
 										class="whitespace-nowrap p-4 font-semibold text-gray-600">
-										{{ valuation.regNo }}
+										{{ valuation.regNo ?? 'N/A' }}
 									</td>
-									<td class="inline-flex flex-col p-4">
+									<td class="p-4">
 										<span>{{ valuation.clientName }}</span>
+										<br />
 										<span
 											class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
 											>{{ valuation.clientPhone }}</span
 										>
-									</td>
-									<td class="p-4 font-semibold text-blue-600">
-										{{ !valuation.assessmentStage ? 'N/A' : `${
-										determineValuationStage( valuation.assessmentStage, ).status
-										}
-										<span
-											>${ determineValuationStage( valuation.assessmentStage,
-											).step }</span
-										>` }}
 									</td>
 									<td class="inline-flex flex-col p-4">
 										<span>{{ valuation.vehicleMake ?? 'N/A' }}</span>
@@ -187,10 +179,75 @@
 											-webkit-line-clamp: 3;
 											line-clamp: 3;
 										">
-										test extra metadata that is supposed to cuase the text to
-										wrap to a certain point and then start to truncate.
+										{{}}
 									</td>
-									<td></td>
+									<td>
+										<button
+											:id="'dropdownLeftButton' + index"
+											:data-dropdown-toggle="'dropdownLeft' + index"
+											data-dropdown-placement="left"
+											type="button"
+											v-if="activeView == 'complete'">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="1em"
+												height="1em"
+												viewBox="0 0 16 16"
+												class="size-6">
+												<MenuKebabIcon />
+											</svg>
+										</button>
+
+										<!-- Dropdown menu -->
+										<div
+											:id="'dropdownLeft' + index"
+											class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+											<ul
+												class="py-2 text-sm text-gray-500"
+												aria-labelledby="dropdownLeftButton">
+												<li
+													v-if="
+														valuation.reportURL == null ||
+														determineValuationStage(
+															valuation.valuationStage,
+														).status == 'Ongoing'
+													">
+													<button
+														class="block w-full bg-gray-100 px-4 py-2 text-center"
+														type="button">
+														Report N/A
+													</button>
+												</li>
+												<li v-else>
+													<NuxtLink
+														:to="{
+															name: 'vehicle-valuation-report',
+															params: {
+																valuation_id: valuation.valuationId,
+															},
+														}"
+														class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+														type="button">
+														View Report
+													</NuxtLink>
+												</li>
+												<li
+													v-if="
+														valuation.reportURL != null &&
+														determineValuationStage(
+															valuation.valuationStage,
+														).status == 'Completed'
+													">
+													<a
+														target="_self"
+														:href="valuation.reportURL"
+														class="block w-full px-4 py-2 text-center hover:bg-gray-100">
+														Download Report
+													</a>
+												</li>
+											</ul>
+										</div>
+									</td>
 								</tr>
 							</tbody>
 						</table>
