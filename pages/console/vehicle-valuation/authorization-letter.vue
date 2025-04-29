@@ -276,7 +276,7 @@
 					</div>
 
 					<!-- page controls -->
-					<div class="flex h-12 items-center justify-between">
+					<div class="flex min-h-12 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 							Showing {{ page + 1 }} of {{ totalPages }} pages.
 						</h1>

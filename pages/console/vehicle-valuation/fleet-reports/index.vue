@@ -180,9 +180,9 @@
 			</div>
 
 			<!-- page controls -->
-			<div class="flex h-12 items-center justify-between">
+			<div class="flex min-h-12 items-center justify-between">
 				<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-					Showing {{ 1 }} of {{ totalFleetPages }} pages.
+					Showing {{ fleetPage + 1 }} of {{ totalFleetPages }} pages.
 				</h1>
 				<div class="h-full space-x-2 md:space-x-4">
 					<button
