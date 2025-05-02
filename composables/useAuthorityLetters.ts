@@ -101,7 +101,7 @@ const useAuthorityLetters = () => {
 	};
 
 	const createAuthorizationLetter = async () => {
-		// if the logged in user is a broker anf they have not
+		// if the logged in user is a broked an they have not
 		// filled the agencyOrCorpName show a warning toast and exit
 		// the function
 		if (isPrincipalBroker() && agencyOrCorp.value.name.length === 0) {
@@ -116,8 +116,19 @@ const useAuthorityLetters = () => {
 			return;
 		}
 
-		createAuthorizationLetterLoading.value = true;
+		if (uploadedDocuments.value.length < 1) {
+			useToast('Provide Logbook & Authority Letter!', {
+				type: 'warning',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'bounce',
+			});
 
+			return;
+		}
+
+		createAuthorizationLetterLoading.value = true;
 		try {
 			// create the form data
 			const formData = new FormData();
@@ -149,24 +160,22 @@ const useAuthorityLetters = () => {
 				formData.append('agencyName', agencyOrCorp.value.id);
 			}
 
-			await $fetch(
-				`${runtimeConfig.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`,
-				{
-					method: 'POST',
-					body: formData,
-					onResponse({ response }) {
-						if (response.status === 200) {
-							useToast('Letter created successfully!', {
-								type: 'success',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
-								transition: 'slide',
-							});
-						}
-					},
+			await $fetch('/api/v1/authority-letter/corp/create-authority-letter', {
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				method: 'POST',
+				body: formData,
+				onResponse({ response }) {
+					if (response.status === 200) {
+						useToast('Letter created successfully!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: false,
+							hideProgressBar: true,
+							transition: 'slide',
+						});
+					}
 				},
-			);
+			});
 		} catch (err) {
 			console.log('Failed to create authorization letter', err);
 			useToast('Failed. Try Again!', {
