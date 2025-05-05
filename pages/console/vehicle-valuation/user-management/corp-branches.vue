@@ -17,7 +17,7 @@
 		<!-- div to show when there are no users -->
 		<div
 			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-			v-else-if="fetchStatus === 'success' && corporateBranches.length === 0">
+			v-else-if="fetchStatus === 'success' && !corporateBranches">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no branches!</h1>
 			<button
@@ -130,6 +130,11 @@
 									class="whitespace-nowrap p-6 font-medium text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>branchname</span
+									>
+								</td>
+								<td class="p-6 text-gray-300">
+									<span class="animate-pulse rounded-lg bg-gray-300"
+										>branchlocation</span
 									>
 								</td>
 								<td class="p-6 text-gray-300">

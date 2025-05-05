@@ -12,7 +12,6 @@ export default defineNuxtPlugin(() => {
 	globalThis.$fetch = ofetch.create({
 		async onRequest({ options }) {
 			let headers: Headers = {};
-			console.log(options.baseURL);
 
 			// if the request is going to AVA
 			if (options.baseURL == runtimeConfig.AVA_BASE_URL) {

@@ -10,7 +10,7 @@ export const useCorporateBranch = () => {
 		status: fetchStatus,
 		error: fetchError,
 		refresh: refreshBranches,
-	} = useFetch('/api/v1/corporate-branch/get-all', {
+	} = useFetch(`/api/v1/corporate-branch/get-all?corpId=${getPrincipal.value.corpId}`, {
 		key: 'corp-branches',
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 		method: 'GET',

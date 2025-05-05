@@ -82,7 +82,7 @@ const useNavigationRoutes = () => {
 				{
 					id: 2,
 					screenName: 'Authorization Letters',
-					routeName: 'vehicle-valuation-authorization-letter',
+					routeName: 'vehicle-valuation-create-authorization-letter',
 					renderRoute: true,
 				},
 				{

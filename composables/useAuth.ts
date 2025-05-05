@@ -32,6 +32,13 @@ const useAuth = () => {
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
 	const csrfToken: CookieRef<string | null | undefined> = useCookie('csrf-token');
 
+	// for when loading users
+	const currentPage: Ref<number> = ref(0);
+	const totalPages: Ref<number> = ref(0);
+	const usersList: Ref<any[]> = ref([]);
+	const page: Ref<number> = ref(0);
+	const pageSize: number = 10;
+
 	const getPrincipal: ComputedRef<LoggedInPrincipal> = computed(() => {
 		return authenticatedPrincipal.value;
 	});
@@ -329,6 +336,34 @@ const useAuth = () => {
 		csrfToken.value = data.xsrfToken;
 	};
 
+	const { status: fetchStatus, error: fetchError } = useFetch(
+		`/api/v1/auth/corporate-account/get-accounts?page=${page.value}&size=${pageSize}`,
+		{
+			key: 'corporate-users',
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			query: {
+				corporateId: getPrincipal.value.corpId,
+				page: currentPage.value,
+				size: 10,
+			},
+			server: false,
+			lazy: true,
+			watch: [currentPage],
+			onResponse({ response }) {
+				if (response.status === 200 && response._data.data !== null) {
+					const data = response._data.data;
+					usersList.value = data;
+					const extras = response._data.requestExtras;
+					totalPages.value = extras.totalPages;
+				}
+			},
+		},
+	);
+
 	const attemptLogout = () => {
 		// unset the principal
 		authenticatedPrincipal.value = {
@@ -384,6 +419,12 @@ const useAuth = () => {
 		getPrincipal,
 		getAuthToken,
 		getCsrfToken,
+		page,
+		pageSize,
+		totalPages,
+		usersList,
+		fetchStatus,
+		fetchError,
 		attemptLogin,
 		attemptLogout,
 		isPrincipalAdmin,
