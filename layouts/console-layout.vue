@@ -93,6 +93,23 @@
 						</ol>
 					</ul>
 
+					<!-- Fraud detection -->
+					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<div class="flex size-full items-center justify-between">
+							<NuxtLink
+								:to="{ name: navigationRoutes[4].routeName }"
+								class="inline-flex size-full items-center justify-center"
+								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
+								<FraudDetectionIcon classes="size-6 text-inherit" />
+								<span
+									class="flex-grow font-semibold transition-all duration-200 ease-out"
+									:class="sidebarOpen ? 'block' : 'hidden'"
+									>{{ navigationRoutes[4].screenName }}</span
+								></NuxtLink
+							>
+						</div>
+					</li>
+
 					<!-- AVA memberships -->
 					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<div class="flex size-full items-center justify-between">

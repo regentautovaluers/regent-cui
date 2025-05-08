@@ -101,24 +101,30 @@ const useNavigationRoutes = () => {
 		},
 		{
 			id: 4,
+			screenName: 'Fraud Detection',
+			routeName: 'fraud-detection-query-fraudsters',
+			renderRoute: true,
+		},
+		{
+			id: 5,
 			screenName: 'Emergency Evacuation',
 			routeName: 'emergency-evacuation-home',
 			renderRoute: true,
 		},
 		{
-			id: 5,
+			id: 6,
 			screenName: 'Accident Management',
 			routeName: 'accident-management-home',
 			renderRoute: true,
 		},
 		{
-			id: 6,
+			id: 7,
 			screenName: 'Garage',
 			routeName: 'garage-home',
 			renderRoute: true,
 		},
 		{
-			id: 7,
+			id: 8,
 			screenName: 'Parts',
 			routeName: 'parts-home',
 			renderRoute: true,

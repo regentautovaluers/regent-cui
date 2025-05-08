@@ -1,0 +1,242 @@
+<template>
+	<form @submit.prevent="createFraudsterEntry">
+		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+			<!-- Registration Number -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="registration-number"
+					class="generic-input-label generic-input-required-label"
+					>Registration Number</label
+				>
+				<input
+					type="text"
+					id="registration-number"
+					class="generic-input"
+					placeholder="e.g KDH 908Y"
+					required
+					v-model="onboardFrauster.registrationNumber" />
+			</div>
+			<!-- Chassis Number -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="chassis-number"
+					class="generic-input-label generic-input-required-label"
+					>Chassis Number</label
+				>
+				<input
+					type="text"
+					id="chassis-number"
+					class="generic-input"
+					placeholder="e.g 318292GHJSk56FGFS"
+					required
+					v-model="onboardFrauster.chassisNumber" />
+			</div>
+			<!-- Engine Number -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="engine-number"
+					class="generic-input-label generic-input-required-label"
+					>Engine Number</label
+				>
+				<input
+					type="text"
+					id="engine-number"
+					class="generic-input"
+					placeholder="e.g 123456XYZ"
+					required
+					v-model="onboardFrauster.engineNumber" />
+			</div>
+		</div>
+
+		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+			<!-- Vehicle Color -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="vehicle-color"
+					class="generic-input-label"
+					>Vehicle Color</label
+				>
+				<input
+					type="text"
+					id="vehicle-color"
+					class="generic-input"
+					placeholder="e.g Red"
+					v-model="onboardFrauster.color" />
+			</div>
+			<!-- Vehicle Make -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="vehicle-make"
+					class="generic-input-label generic-input-required-label"
+					>Vehicle Make</label
+				>
+				<input
+					type="text"
+					id="vehicle-make"
+					class="generic-input"
+					placeholder="e.g Mazda"
+					required
+					v-model="onboardFrauster.make" />
+			</div>
+			<!-- Vehicle Model -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="vehicle-model"
+					class="generic-input-label generic-input-required-label"
+					>Vehicle Model</label
+				>
+				<input
+					type="text"
+					id="vehicle-model"
+					class="generic-input"
+					placeholder="e.g Demio"
+					required
+					v-model="onboardFrauster.model" />
+			</div>
+		</div>
+
+		<div
+			id="alert-additional-content-4"
+			class="my-5 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
+			role="alert">
+			<div class="flex items-center">
+				<svg
+					class="me-2 h-4 w-4 flex-shrink-0"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="currentColor"
+					viewBox="0 0 20 20">
+					<path
+						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+				</svg>
+				<span class="sr-only">Info</span>
+				<h3 class="text-lg font-medium">Incident Description</h3>
+			</div>
+			<div class="mb-4 mt-2">
+				<p>
+					Kindly, optionally, use the fields below to provide an extra description of the
+					incident you are adding to the database. This will be of help to other users of
+					the platform. Kindly be as brief but as descriptive as possible. All fields are
+					optional however
+				</p>
+			</div>
+		</div>
+
+		<!-- Incident Description -->
+		<div class="mt-5">
+			<label
+				for="incident-description"
+				class="generic-input-label"
+				>Incident Description</label
+			>
+			<textarea
+				id="incident-description"
+				class="block w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
+				rows="8"
+				placeholder="Provide an optional extra description for this incident"
+				v-model="onboardFrauster.description"></textarea>
+		</div>
+
+		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+			<!-- Date of the incident -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="date-of-incident"
+					class="generic-input-label"
+					>Date of Incident</label
+				>
+				<!-- format yyyy-mm-dd -->
+				<input
+					type="date"
+					id="date-of-incident"
+					class="generic-input"
+					placeholder="e.g 2024-01-17"
+					pattern="\d{4}-\d{2}-\d{2}"
+					v-model="onboardFrauster.dateOfIncident" />
+			</div>
+			<!-- Amount Defaulted -->
+			<div class="w-full lg:w-1/3">
+				<label
+					for="amount-defaulted"
+					class="generic-input-label"
+					>Amount Defaulted</label
+				>
+				<input
+					type="text"
+					id="amount-defaulted"
+					class="generic-input"
+					placeholder="e.g 15,000"
+					v-model="onboardFrauster.amountDefaulted" />
+			</div>
+			<!-- Relevant -->
+			<div class="relative w-full lg:w-1/3">
+				<label
+					for="relevant-links"
+					class="generic-input-label"
+					>Relevant Link(s)</label
+				>
+				<input
+					type="text"
+					id="relevant-links"
+					class="generic-input"
+					placeholder="e.g link to a court case or similar"
+					v-model="relevantLink" />
+
+				<button
+					@click.prevent="handleAppendingRelevantLink"
+					:disabled="!relevantLink"
+					class="absolute right-3 top-1/2 size-7 -translate-y-[5%] rounded-full bg-blue-600 text-white enabled:hover:bg-blue-700 disabled:bg-gray-400 disabled:text-slate-100">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="28"
+						height="28"
+						viewBox="0 0 32 32">
+						<path
+							fill="currentColor"
+							d="M16 2A14.173 14.173 0 0 0 2 16a14.173 14.173 0 0 0 14 14a14.173 14.173 0 0 0 14-14A14.173 14.173 0 0 0 16 2m8 15h-7v7h-2v-7H8v-2h7V8h2v7h7Z" />
+						<path
+							fill="none"
+							d="M24 17h-7v7h-2v-7H8v-2h7V8h2v7h7z" />
+					</svg>
+				</button>
+			</div>
+		</div>
+
+		<div
+			v-if="onboardFrauster.relevantLinks.length > 0"
+			class="my-3 p-2">
+			<h1 class="mb-2 font-semibold text-gray-500">Provided Links</h1>
+			<div
+				v-for="(link, index) in onboardFrauster.relevantLinks"
+				:key="index"
+				class="flex-items-center mr-2 inline w-fit space-x-2 rounded-full border border-yellow-300 bg-yellow-50 p-2 text-yellow-800">
+				<a
+					:href="link"
+					target="_blank"
+					>{{ link }}</a
+				>
+				<button></button>
+			</div>
+		</div>
+
+		<!-- submit button -->
+		<button
+			type="submit"
+			class="generic-form-submit mt-4 w-full md:w-1/3">
+			<FormSubmissionLoader
+				classes="mr-2 size-6 animate-spin text-white"
+				v-if="onboardFraudsterLoading" />
+			{{ onboardFraudsterLoading ? 'Processing' : 'Submit Request' }}
+		</button>
+	</form>
+</template>
+
+<script setup lang="ts">
+	const {
+		onboardFrauster,
+		onboardFraudsterLoading,
+		relevantLink,
+		createFraudsterEntry,
+		handleAppendingRelevantLink,
+	} = useFraudDetection();
+</script>
