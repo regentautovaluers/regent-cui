@@ -30,10 +30,5 @@
 </template>
 
 <script setup lang="ts">
-	definePageMeta({
-		name: 'vehicle-valuation-authorization-letter',
-		layout: 'console-layout',
-	});
-
 	const { doesRouteNameMatch } = useNavigationRoutes();
 </script>
