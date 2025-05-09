@@ -30,282 +30,57 @@
 			<!-- actual links -->
 			<div class="flex flex-grow flex-col justify-between px-1 py-2">
 				<ul class="space-y-3">
-					<!-- home page -->
-					<li
-						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<NuxtLink
-							:to="{ name: navigationRoutes[0].routeName }"
-							class="inline-flex size-full items-center justify-center"
-							:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-							<span>
-								<HomeIcon classes="size-6 text-inherit" />
-							</span>
-							<span
-								class="flex-grow font-semibold transition-all duration-200 ease-out"
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								>{{ navigationRoutes[0].screenName }}</span
-							>
-						</NuxtLink>
-					</li>
-
-					<!-- Vehicle Valuation -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
+					<template
+						v-for="(link, index) in navigationRoutes"
+						:key="index">
+						<li
+							class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 							<NuxtLink
-								:to="{ name: navigationRoutes[3].routeName }"
+								:to="{ name: link.routeName }"
 								class="inline-flex size-full items-center justify-center"
 								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<VehicleValuationIcon classes="size-6 text-inherit" />
+								<span>
+									<HomeIcon classes="size-6 text-inherit" />
+								</span>
 								<span
 									class="flex-grow font-semibold transition-all duration-200 ease-out"
 									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[3].screenName }}</span
-								></NuxtLink
-							>
+									>{{ link.screenName }}</span
+								>
+							</NuxtLink>
+
 							<button
+								v-if="link.childRoutes"
 								:class="sidebarOpen ? 'block' : 'hidden'"
 								type="button"
-								aria-controls="vehicle-valuation-dropdown"
-								data-collapse-toggle="vehicle-valuation-dropdown">
+								:aria-controls="`${link.routeName}-dropdown`"
+								:data-collapse-toggle="`${link.routeName}-dropdown`">
 								<DropdownChevronIcon />
 							</button>
-						</div>
-					</li>
-					<ul
-						id="vehicle-valuation-dropdown"
-						class="ml-8 hidden space-y-2"
-						:class="sidebarOpen ? 'block' : 'hidden'">
-						<ol class="border-s border-gray-400">
-							<li
-								class="group mb-7 ms-4"
-								v-for="link in navigationRoutes[3].childRoutes"
-								:key="link.id">
-								<div
-									class="absolute start-[29px] mt-1.5 size-4 rounded-full border border-white bg-gray-400 group-hover:bg-blue-600"></div>
-								<NuxtLink
-									class="font-normal leading-none text-gray-500"
-									:to="{
-										name: link.routeName,
-									}"
-									>{{ link.screenName }}</NuxtLink
-								>
-							</li>
-						</ol>
-					</ul>
-
-					<!-- Fraud detection -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
-							<NuxtLink
-								:to="{ name: navigationRoutes[4].routeName }"
-								class="inline-flex size-full items-center justify-center"
-								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<FraudDetectionIcon classes="size-6 text-inherit" />
-								<span
-									class="flex-grow font-semibold transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[4].screenName }}</span
-								></NuxtLink
-							>
-						</div>
-					</li>
-
-					<!-- AVA memberships -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
-							<NuxtLink
-								:to="{ name: navigationRoutes[1].routeName }"
-								class="inline-flex size-full items-center justify-center"
-								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<MembershipsIcon classes="size-6 text-inherit" />
-								<span
-									class="flex-grow font-semibold transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[1].screenName }}</span
-								></NuxtLink
-							>
-							<button
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								type="button"
-								aria-controls="ava-members-dropdown"
-								data-collapse-toggle="ava-members-dropdown">
-								<DropdownChevronIcon />
-							</button>
-						</div>
-					</li>
-					<ul
-						id="ava-members-dropdown"
-						class="ml-8 hidden space-y-2"
-						:class="sidebarOpen ? 'block' : 'hidden'">
-						<ol class="border-s border-gray-400">
-							<li
-								class="group mb-7 ms-4"
-								v-for="link in navigationRoutes[1].childRoutes"
-								:key="link.id">
-								<div
-									class="absolute start-[29px] mt-1.5 size-4 rounded-full border border-white bg-gray-400 group-hover:bg-blue-600"></div>
-								<NuxtLink
-									class="font-normal leading-none text-gray-500"
-									:to="{ name: link.routeName }"
-									>{{ link.screenName }}</NuxtLink
-								>
-							</li>
-						</ol>
-					</ul>
-
-					<!-- Roadside Assistance -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
-							<NuxtLink
-								:to="{ name: navigationRoutes[2].routeName }"
-								class="inline-flex size-full items-center justify-center"
-								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<AssistanceIcon classes="size-6 text-inherit" />
-								<span
-									class="flex-grow font-semibold transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[2].screenName }}</span
-								></NuxtLink
-							>
-							<button
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								type="button"
-								aria-controls="roadside-assistance-dropdown"
-								data-collapse-toggle="roadside-assistance-dropdown">
-								<DropdownChevronIcon />
-							</button>
-						</div>
-					</li>
-					<ul
-						id="roadside-assistance-dropdown"
-						class="ml-8 hidden space-y-2"
-						:class="sidebarOpen ? 'block' : 'hidden'">
-						<ol class="border-s border-gray-400">
-							<li class="group mb-7 ms-4">
-								<div
-									class="absolute start-[29px] mt-1.5 size-4 rounded-full border border-white bg-gray-400 group-hover:bg-blue-600"></div>
-								<NuxtLink
-									class="font-normal leading-none text-gray-500"
-									:to="{ name: navigationRoutes[2].childRoutes?.[0].routeName }"
-									>{{ navigationRoutes[2].childRoutes?.[0].screenName }}</NuxtLink
-								>
-							</li>
-							<li
-								class="group mb-7 ms-4"
-								v-for="link in navigationRoutes[2].childRoutes?.slice(1)"
-								:key="link.id">
-								<div
-									class="absolute start-[29px] mt-1.5 size-4 rounded-full border border-white bg-gray-400 group-hover:bg-blue-600"></div>
-								<NuxtLink
-									class="font-normal leading-none text-gray-500"
-									:to="{
-										name: link.routeName,
-										query: {
-											client_lat: clientCoordinates.lat,
-											client_lng: clientCoordinates.lng,
-										},
-									}"
-									>{{ link.screenName }}</NuxtLink
-								>
-							</li>
-						</ol>
-					</ul>
-
-					<!-- Emergency Evacuation -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
-							<NuxtLink
-								:to="{ name: navigationRoutes[4].routeName }"
-								class="inline-flex size-full items-center justify-center"
-								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<EmergencyRescueIcon classes="size-6 text-inherit" />
-								<span
-									class="flex-grow font-semibold transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[4].screenName }}</span
-								></NuxtLink
-							>
-							<!-- <button
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								type="button"
-								aria-controls="roadside-assistance-dropdown"
-								data-collapse-toggle="roadside-assistance-dropdown">
-								<DropdownChevronIcon />
-							</button> -->
-						</div>
-					</li>
-
-					<!-- Accident Management -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
-							<NuxtLink
-								:to="{ name: navigationRoutes[5].routeName }"
-								class="inline-flex size-full items-center justify-center"
-								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<AccidentManagementIcon classes="size-6 text-inherit" />
-								<span
-									class="flex-grow font-semibold transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[5].screenName }}</span
-								></NuxtLink
-							>
-							<!-- <button
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								type="button"
-								aria-controls="roadside-assistance-dropdown"
-								data-collapse-toggle="roadside-assistance-dropdown">
-								<DropdownChevronIcon />
-							</button> -->
-						</div>
-					</li>
-
-					<!-- Garage -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
-							<NuxtLink
-								:to="{ name: navigationRoutes[6].routeName }"
-								class="inline-flex size-full items-center justify-center"
-								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<GarageIcon classes="size-7 text-inherit" />
-								<span
-									class="flex-grow font-semibold transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[6].screenName }}</span
-								></NuxtLink
-							>
-							<!-- <button
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								type="button"
-								aria-controls="roadside-assistance-dropdown"
-								data-collapse-toggle="roadside-assistance-dropdown">
-								<DropdownChevronIcon />
-							</button> -->
-						</div>
-					</li>
-
-					<!-- Parts -->
-					<li class="h-12 w-full rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<div class="flex size-full items-center justify-between">
-							<NuxtLink
-								:to="{ name: navigationRoutes[7].routeName }"
-								class="inline-flex size-full items-center justify-center"
-								:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-								<PartsIcon classes="size-8 text-inherit" />
-								<span
-									class="flex-grow font-semibold transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>{{ navigationRoutes[7].screenName }}</span
-								></NuxtLink
-							>
-							<!-- <button
-								:class="sidebarOpen ? 'block' : 'hidden'"
-								type="button"
-								aria-controls="roadside-assistance-dropdown"
-								data-collapse-toggle="roadside-assistance-dropdown">
-								<DropdownChevronIcon />
-							</button> -->
-						</div>
-					</li>
+						</li>
+						<ul
+							v-if="link.childRoutes"
+							:id="`${link.routeName}-dropdown`"
+							class="ml-8 hidden space-y-2"
+							:class="sidebarOpen ? 'block' : 'hidden'">
+							<ol class="border-s border-gray-400">
+								<li
+									class="group mb-7 ms-4"
+									v-for="(childLink, index) in link.childRoutes"
+									:key="index">
+									<div
+										class="absolute start-[29px] mt-1.5 size-4 rounded-full border border-white bg-gray-400 group-hover:bg-blue-600"></div>
+									<NuxtLink
+										class="font-normal leading-none text-gray-500"
+										:to="{
+											name: childLink.routeName,
+										}"
+										>{{ childLink.screenName }}</NuxtLink
+									>
+								</li>
+							</ol>
+						</ul>
+					</template>
 				</ul>
 				<!-- Carousel -->
 				<SidenavCarousel v-if="sidebarOpen" />
@@ -402,15 +177,7 @@
 							data-drawer-backdrop="false"
 							aria-controls="dashboard-chat-window">
 							<!-- chat icon -->
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="30"
-								height="30"
-								viewBox="0 0 20 20">
-								<path
-									fill="currentColor"
-									d="M14.479 8c.179 0 .356.034.521.099V4.5A1.5 1.5 0 0 0 13.5 3h-3v-.5A.48.48 0 0 0 10 2c-.276 0-.5.23-.5.5V3h-3A1.5 1.5 0 0 0 5 4.5v4A1.5 1.5 0 0 0 6.5 10h6.294l.338-1.039l.004-.012A1.42 1.42 0 0 1 14.48 8M7 6.5a1 1 0 1 1 2 0a1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0a1 1 0 0 1-2 0M10 18c1.743 0 3.042-.226 4.005-.612a1.3 1.3 0 0 1 .117-.44a1.42 1.42 0 0 1-.964-.897l-.004-.012l-.351-1.08l-.035-.09a1.2 1.2 0 0 0-.257-.383l-.064-.06a1.2 1.2 0 0 0-.406-.232l-1.08-.35l-.011-.005a1.423 1.423 0 0 1-.545-2.336H5.309a1.81 1.81 0 0 0-1.809 1.81v.689h.005c.034.78.248 1.757 1.123 2.555C5.584 17.43 7.234 18 10 18m5.226-7.647l-.348-1.07a.423.423 0 0 0-.799 0l-.348 1.07a2.2 2.2 0 0 1-1.377 1.397l-1.071.348a.423.423 0 0 0 0 .798l1.071.348a2.2 2.2 0 0 1 1.399 1.403l.348 1.07a.423.423 0 0 0 .798 0l.349-1.07a2.2 2.2 0 0 1 1.398-1.397l1.072-.348a.424.424 0 0 0 0-.798l-.022-.005l-1.072-.349a2.2 2.2 0 0 1-1.398-1.397m3.791 6.612l.766.248l.015.004a.303.303 0 0 1 .147.46a.3.3 0 0 1-.147.11l-.765.248a1.58 1.58 0 0 0-1 .999l-.248.764a.302.302 0 0 1-.57 0l-.249-.764a1.58 1.58 0 0 0-.999-1.002l-.765-.249a.303.303 0 0 1-.146-.46a.3.3 0 0 1 .146-.11l.765-.248a1.58 1.58 0 0 0 .984-.998l.249-.765a.302.302 0 0 1 .57 0l.249.765a1.58 1.58 0 0 0 .999.998" />
-							</svg>
+							<ChatIcon />
 						</button>
 
 						<!-- user profile info -->
