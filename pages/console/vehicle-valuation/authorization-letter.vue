@@ -1,5 +1,5 @@
 <template>
-	<div class="flex h-full flex-col">
+	<div class="console-layout-padding flex h-full flex-col">
 		<div
 			class="flex h-[4%] w-full items-center space-x-4 font-semibold text-gray-500 md:text-base lg:text-lg">
 			<NuxtLink

@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="console-layout-padding">
 		<!-- top section with general information about the report -->
-		<div class="mx-2 h-52 rounded-lg border shadow-sm">
+		<div class="h-52 rounded-lg border shadow-sm">
 			<!-- general trip details and download button -->
 			<div class="flex items-center justify-between px-8 py-3">
 				<div class="flex">
@@ -70,7 +70,7 @@
 		</div>
 
 		<!-- responder details, trip detals and cost breakdown -->
-		<div class="mx-2 mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
+		<div class="mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<div class="flex h-full flex-col space-y-8 rounded-lg">
 				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
 					<div
@@ -174,7 +174,7 @@
 		</div>
 
 		<!-- map section -->
-		<div class="relative mx-2 mt-24 h-[42rem] overflow-clip rounded-lg border shadow-sm">
+		<div class="relative mt-24 h-[42rem] overflow-clip rounded-lg border shadow-sm">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -389,7 +389,7 @@
 		</div>
 
 		<!-- vehicle spares data section -->
-		<div class="mx-2 mt-10 flex space-x-8">
+		<div class="mt-10 flex space-x-8">
 			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
 				<BatteryIcon
 					classes="size-12"
@@ -439,7 +439,7 @@
 		</div>
 
 		<!-- Final section with ratings -->
-		<div class="mx-2 mt-8 flex space-x-8">
+		<div class="mt-8 flex space-x-8">
 			<div
 				class="flex h-24 w-1/3 flex-col items-start justify-center rounded-lg border px-8 py-2">
 				<h1 class="text-lg font-semibold text-gray-700">Vehicle Received By</h1>

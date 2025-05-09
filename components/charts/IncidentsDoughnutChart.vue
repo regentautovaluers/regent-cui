@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div >
 		<Doughnut
 			id="incidents-distribution"
 			v-if="raIncidentsDoughnutData"
@@ -9,29 +9,29 @@
 				plugins: {
 					legend: {
 						display: false,
-						position: 'bottom',
-						reverse: true,
-						align: 'center',
-						fullSize: true,
-						labels: {
-							boxWidth: 18,
-							boxHeight: 18,
-							borderRadius: 10,
-							useBorderRadius: true,
-							textAlign: 'center',
-							usePointStyle: true,
-							pointStyle: 'circle',
-							font: {
-								size: 14,
-								weight: 'bold',
-							},
-						},
+						// position: 'bottom',
+						// reverse: true,
+						// align: 'center',
+						// fullSize: true,
+						// labels: {
+						// 	boxWidth: 18,
+						// 	boxHeight: 18,
+						// 	borderRadius: 10,
+						// 	useBorderRadius: true,
+						// 	textAlign: 'center',
+						// 	usePointStyle: true,
+						// 	pointStyle: 'circle',
+						// 	font: {
+						// 		size: 14,
+						// 		weight: 'bold',
+						// 	},
+						// },
 					},
 				},
 			}"
 			:data="chartData" />
 	</div>
-	<div class="grid h-12 grid-cols-2 place-items-center overflow-clip">
+	<div class="grid min-h-12 grid-cols-2 place-items-center overflow-clip">
 		<div
 			v-for="(label, index) in props.labels"
 			:key="index"

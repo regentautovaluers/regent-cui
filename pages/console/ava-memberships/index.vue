@@ -1,5 +1,5 @@
 <template>
-	<div class="flex h-full flex-col">
+	<div class="console-layout-padding flex h-full flex-col">
 		<div class="flex h-[7rem] items-center justify-between rounded-lg border p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
 				<img
@@ -23,7 +23,7 @@
 			</NuxtLink>
 		</div>
 
-		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.8fr,.2fr]">
+		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[80%,20%]">
 			<!-- members listing -->
 			<div>
 				<!-- div to show when there is a fetch error -->
@@ -59,7 +59,7 @@
 
 				<!-- div to show when there are members -->
 				<div
-					class="flex h-full flex-col justify-between p-2 md:min-h-[58rem]"
+					class="flex h-full flex-col justify-between md:min-h-[58rem]"
 					v-else>
 					<!-- search & filter controls -->
 					<div class="flex h-fit flex-col space-y-2">
@@ -340,7 +340,7 @@
 				</div>
 				<div
 					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
-					<h1 class="text-2xl font-bold p-5">Memberships</h1>
+					<h1 class="p-5 text-2xl font-bold">Memberships</h1>
 
 					<div
 						class="flex h-full items-center justify-center"

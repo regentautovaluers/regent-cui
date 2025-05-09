@@ -1,5 +1,5 @@
 <template>
-	<div class="flex h-full flex-col">
+	<div class="console-layout-padding flex h-full flex-col">
 		<!-- top information column -->
 		<div class="flex h-[6rem] items-center justify-between rounded-t-lg border p-4">
 			<div class="flex w-full items-center space-x-3 md:w-fit">
@@ -187,7 +187,7 @@
 		</div>
 
 		<!-- actual -->
-		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[.2fr,.8fr]">
+		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[20%,80%]">
 			<!-- side-information including chart -->
 			<div
 				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
@@ -375,7 +375,7 @@
 
 				<!-- div to show when there are incidents -->
 				<div
-					class="flex h-full flex-col justify-between p-2 md:min-h-[54rem]"
+					class="flex h-full flex-col justify-between px-3 md:min-h-[54rem]"
 					v-else>
 					<!-- the table itself -->
 					<div class="mb-4 flex-grow">

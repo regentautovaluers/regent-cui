@@ -1,9 +1,9 @@
 <template>
-	<div class="h-full min-h-[53rem]">
+	<div class="console-layout-padding h-full min-h-[53rem]">
 		<!-- div to show when there is a fetch error -->
 		<div
 			v-if="fetchFleetsStatus === 'error'"
-			class="mt-2 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
+			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 			<button
@@ -16,7 +16,7 @@
 
 		<!-- div to show when there are no authorization letters -->
 		<div
-			class="mt-2 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
 			v-else-if="fetchFleetsStatus === 'success' && corpFleets.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no fleets!</h1>

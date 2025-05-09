@@ -12,7 +12,7 @@
 	}
 
 	.generic-input-label {
-		@apply block font-bold text-gray-600 mb-1;
+		@apply mb-1 block font-bold text-gray-600;
 	}
 
 	.generic-quick-link {
@@ -140,4 +140,8 @@
 
 .ai-trigger-btns {
 	@apply rounded-full border border-gray-600 px-6 py-3 text-gray-600 outline-none;
+}
+
+.console-layout-padding {
+	@apply p-2 xl:p-5;
 }

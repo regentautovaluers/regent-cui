@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="console-layout-padding">
 		<!-- top section with general information about the report -->
-		<div class="mx-2 h-52 rounded-lg border shadow-sm">
+		<div class="h-52 rounded-lg border shadow-sm">
 			<!-- general trip details and download button -->
 			<div class="flex items-center justify-between px-8 py-3">
 				<div class="flex">
@@ -66,7 +66,7 @@
 		</div>
 
 		<!-- responder details, trip detals and cost breakdown -->
-		<div class="mx-2 mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
+		<div class="mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<div class="flex h-full flex-col space-y-8 rounded-lg">
 				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
 					<div
@@ -144,7 +144,7 @@
 		</div>
 
 		<!-- map section -->
-		<div class="relative mx-2 mt-12 h-[42rem] overflow-clip rounded-lg border shadow-sm">
+		<div class="relative mt-12 h-[42rem] overflow-clip rounded-lg border shadow-sm">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -214,7 +214,7 @@
 		</div>
 
 		<!-- Final section with ratings -->
-		<div class="mx-2 mt-10 flex space-x-8">
+		<div class="mt-10 flex space-x-8">
 			<div class="flex h-32 w-1/3 items-center space-x-4 rounded-lg border px-8 py-2">
 				<img
 					src="https://images.unsplash.com/photo-1721048166150-3b2bb2ca3431?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

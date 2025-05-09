@@ -1,5 +1,5 @@
 <template>
-	<div class="flex h-full flex-col">
+	<div class="console-layout-padding flex h-full flex-col">
 		<div
 			class="flex h-fit items-center justify-between"
 			v-if="fetchValuationsStatus === 'success' && corpValuations.length > 0">
