@@ -3,8 +3,8 @@
 		<!-- side bar -->
 		<aside
 			:class="[
-				'flex h-screen flex-col overflow-y-scroll border-r-[1px] bg-white transition-all duration-100 ease-out',
-				sidebarExpanded ? 'min-w-[15.5rem] max-w-[15.5rem]' : 'w-14',
+				'flex h-screen flex-col overflow-y-scroll border-r-[1px] bg-white transition-all duration-100 ease-in-out',
+				sidebarExpanded ? 'min-w-[15.5rem] max-w-[15.5rem]' : 'w-14 min-w-14 max-w-14',
 			]">
 			<!-- logo on top part of sidebar -->
 			<div class="flex h-[70px] w-full items-center justify-center p-4 text-center">
