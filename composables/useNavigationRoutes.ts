@@ -156,10 +156,22 @@ const useNavigationRoutes = () => {
 		return route.name === routeName;
 	};
 
+	const fuzzyRouteNameMatch = (routeName: string, coreRoute: CoreRoute): boolean => {
+		if ((route.name as string) == routeName) return true;
+
+		if (coreRoute.childRoutes) {
+			for (const childRoute of coreRoute.childRoutes) {
+				if ((route.name as string) == childRoute.routeName) return true;
+			}
+		}
+		return false;
+	};
+
 	return {
 		navigationRoutes,
 		currentScreenName,
 		doesRouteNameMatch,
+		fuzzyRouteNameMatch,
 	};
 };
 
