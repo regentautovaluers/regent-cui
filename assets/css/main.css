@@ -143,5 +143,5 @@
 }
 
 .console-layout-padding {
-	@apply p-2 xl:p-5;
+	@apply m-2 xl:m-5;
 }
