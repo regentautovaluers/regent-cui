@@ -312,7 +312,7 @@
 														valuation.reportURL == null ||
 														determineValuationStage(
 															valuation.valuationStage,
-														).status == 'Ongoing'
+														)?.status == 'Ongoing'
 													">
 													<button
 														class="block w-full bg-gray-100 px-4 py-2 text-center"
@@ -338,7 +338,7 @@
 														valuation.reportURL != null &&
 														determineValuationStage(
 															valuation.valuationStage,
-														).status == 'Completed'
+														)?.status == 'Completed'
 													">
 													<a
 														target="_self"
