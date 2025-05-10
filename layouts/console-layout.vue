@@ -183,7 +183,7 @@
 		<!-- main content -->
 		<main class="flex h-screen flex-grow flex-col overflow-y-scroll">
 			<nav
-				class="sticky top-0 z-30 flex min-h-[6.5%] w-full items-center justify-between border-b bg-white px-2"
+				class="sticky top-0 z-30 flex min-h-[6.5%] max-h-[6.5%] w-full items-center justify-between border-b bg-white px-2"
 				id="top-nav">
 				<div class="flex items-center space-x-2 text-gray-700">
 					<button
@@ -257,7 +257,7 @@
 					</div>
 				</div>
 			</nav>
-			<div class="flex-grow">
+			<div class="min-h[93.5%] flex-grow">
 				<slot />
 			</div>
 		</main>

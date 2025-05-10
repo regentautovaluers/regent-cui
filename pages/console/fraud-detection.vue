@@ -1,12 +1,13 @@
 <template>
-	<div class="flex h-full flex-col rounded-lg border-[1px] border-gray-200">
+	<div
+		class="console-layout-padding flex h-full min-h-full flex-col rounded-lg border-[1px] border-gray-200">
 		<div
-			class="flex h-[4%] w-full items-center space-x-8 border-b-2 p-10 font-semibold text-gray-500 md:text-base lg:text-lg">
+			class="flex w-full items-center space-x-8 border-b-2 p-6 font-semibold text-gray-500 md:text-base lg:text-lg">
 			<NuxtLink
 				:to="{ name: 'fraud-detection-onboard-fraudsters' }"
 				:class="[
 					doesRouteNameMatch('fraud-detection-onboard-fraudsters') &&
-						'font-semibold text-blue-600 underline decoration-[3px] underline-offset-[33px]',
+						'font-semibold text-blue-600 underline decoration-[3px] underline-offset-[31px]',
 					'inline-flex items-center space-x-2',
 				]">
 				<svg
@@ -24,7 +25,7 @@
 				:to="{ name: 'fraud-detection-manage-list' }"
 				:class="[
 					doesRouteNameMatch('fraud-detection-manage-list') &&
-						'font-semibold text-blue-600 underline decoration-[3px] underline-offset-[33px]',
+						'font-semibold text-blue-600 underline decoration-[3px] underline-offset-[31px]',
 					'inline-flex items-center space-x-2',
 				]">
 				<svg
@@ -42,7 +43,7 @@
 				:to="{ name: 'fraud-detection-query-fraudsters' }"
 				:class="[
 					doesRouteNameMatch('fraud-detection-query-fraudsters') &&
-						'font-bold text-blue-600 underline decoration-[3px] underline-offset-[33px]',
+						'font-bold text-blue-600 underline decoration-[3px] underline-offset-[31px]',
 					'inline-flex items-center space-x-2',
 				]">
 				<svg
@@ -57,7 +58,7 @@
 				<span>Query Our Fraud Database</span>
 			</NuxtLink>
 		</div>
-		<div class="min-h-[96%] flex-grow p-10">
+		<div class="flex-grow px-10 py-2">
 			<NuxtPage />
 		</div>
 	</div>
@@ -65,4 +66,8 @@
 
 <script setup lang="ts">
 	const { doesRouteNameMatch } = useNavigationRoutes();
+
+	definePageMeta({
+		layout: 'console-layout',
+	});
 </script>
