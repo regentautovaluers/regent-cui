@@ -31,6 +31,14 @@ const useFraudDetection = () => {
 	const ravDBResults: Ref<any[] | null> = ref(null);
 	const iaDBResults: Ref<any> = ref(null);
 
+	// querying fraudsters list
+	// for fetching corp valuations
+	const page: Ref<number> = ref(0);
+	const pageSize: number = 10;
+	const fraudsterEntries: Ref<any[]> = ref([]);
+	const totalPages: Ref<number> = ref(0);
+	const searchRegNo: Ref<string> = ref('');
+
 	const handleAppendingRelevantLink = () => {
 		if (relevantLink.value) onboardFrauster.relevantLinks.push(relevantLink.value);
 		relevantLink.value = null;
@@ -108,6 +116,36 @@ const useFraudDetection = () => {
 		}
 	};
 
+	const {
+		status: fetchFraudsterListStatus,
+		execute: executeFetchFraudsterList,
+		error: fetchFraudsterListError,
+	} = useFetch(
+		() => {
+			let requestURL = `/api/v1/fraud/getbyclient?corporateClientId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+
+			return requestURL;
+		},
+		{
+			key: 'fraudster-list',
+			baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			server: false,
+			lazy: true,
+			onResponse({ response }) {
+				if (response.ok) {
+					const data = response._data.data;
+					fraudsterEntries.value = data;
+					const paginationInfo = response._data.pagination;
+					totalPages.value = paginationInfo.totalPages;
+				}
+			},
+		},
+	) as any;
+
 	return {
 		onboardFrauster,
 		onboardFraudsterLoading,
@@ -116,7 +154,13 @@ const useFraudDetection = () => {
 		searchFraudsterLoading,
 		searchIdentifyAfricaDatabase,
 		ravDBResults,
-        iaDBResults,
+		iaDBResults,
+		fetchFraudsterListStatus,
+		executeFetchFraudsterList,
+		fetchFraudsterListError,
+		fraudsterEntries,
+		totalPages,
+		page,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
 		searchFraudster,
