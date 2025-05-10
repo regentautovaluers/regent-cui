@@ -38,7 +38,8 @@
 								'flex h-12 w-full items-center rounded-xl px-2 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
 								fuzzyRouteNameMatch(link.routeName, link) &&
 									'bg-blue-600 text-white',
-							]">
+							]"
+							:title="link.screenName">
 							<NuxtLink
 								:to="{ name: link.routeName }"
 								class="inline-flex size-full items-center justify-center"
