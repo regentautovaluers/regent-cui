@@ -65,6 +65,18 @@ const useNavigationRoutes = () => {
 					routeName: 'ra-fueldelivery-request',
 					renderRoute: true,
 				},
+				{
+					id: 5,
+					screenName: 'Roadside Assistance Report',
+					routeName: 'ra-expanded-report',
+					renderRoute: false,
+				},
+				{
+					id: 6,
+					screenName: 'Roadside Assistance Report',
+					routeName: 'ra-minimized-report',
+					renderRoute: false,
+				},
 			],
 		},
 		{
@@ -97,6 +109,12 @@ const useNavigationRoutes = () => {
 					routeName: 'vehicle-valuation-fleet-reports',
 					renderRoute: true,
 				},
+				{
+					id: 4,
+					screenName: 'General Valuation Report',
+					routeName: 'vehicle-valuation-report',
+					renderRoute: false,
+				},
 			],
 		},
 		{
@@ -104,6 +122,26 @@ const useNavigationRoutes = () => {
 			screenName: 'Fraud Detection',
 			routeName: 'fraud-detection-query-fraudsters',
 			renderRoute: true,
+			childRoutes: [
+				{
+					id: 1,
+					screenName: 'Onboard Fraudsters',
+					routeName: 'fraud-detection-onboard-fraudsters',
+					renderRoute: false,
+				},
+				{
+					id: 2,
+					screenName: 'Manage Fraudsters List',
+					routeName: 'fraud-detection-manage-list',
+					renderRoute: false,
+				},
+				{
+					id: 3,
+					screenName: 'Manage Fraudsters List',
+					routeName: 'fraud-detection-query-fraudsters',
+					renderRoute: false,
+				},
+			],
 		},
 		{
 			id: 5,

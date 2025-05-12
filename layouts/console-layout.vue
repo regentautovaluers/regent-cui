@@ -87,7 +87,10 @@
 							</NuxtLink>
 
 							<button
-								v-if="link.childRoutes"
+								v-if="
+									link.childRoutes &&
+									link.childRoutes?.filter((x) => x.renderRoute).length > 0
+								"
 								:class="
 									sidebarExpanded
 										? 'block rounded-full p-1 outline-none'
@@ -109,25 +112,27 @@
 									class="group relative mb-7 ms-4"
 									v-for="(childLink, index) in link.childRoutes"
 									:key="index">
-									<div
-										:class="[
-											'absolute -left-6 mt-1.5 size-4 rounded-full border border-white group-hover:bg-blue-600',
-											doesRouteNameMatch(childLink.routeName)
-												? 'bg-blue-600'
-												: 'bg-gray-400',
-										]"></div>
-									<NuxtLink
-										:class="[
-											'font-normal leading-none',
-											doesRouteNameMatch(childLink.routeName)
-												? 'font-semibold text-blue-600'
-												: 'text-gray-500',
-										]"
-										:to="{
-											name: childLink.routeName,
-										}"
-										>{{ childLink.screenName }}</NuxtLink
-									>
+									<template v-if="childLink.renderRoute">
+										<div
+											:class="[
+												'absolute -left-6 mt-1.5 size-4 rounded-full border border-white group-hover:bg-blue-600',
+												doesRouteNameMatch(childLink.routeName)
+													? 'bg-blue-600'
+													: 'bg-gray-400',
+											]"></div>
+										<NuxtLink
+											:class="[
+												'font-normal leading-none',
+												doesRouteNameMatch(childLink.routeName)
+													? 'font-semibold text-blue-600'
+													: 'text-gray-500',
+											]"
+											:to="{
+												name: childLink.routeName,
+											}"
+											>{{ childLink.screenName }}</NuxtLink
+										>
+									</template>
 								</li>
 							</ol>
 						</ul>
@@ -183,7 +188,7 @@
 		<!-- main content -->
 		<main class="flex h-screen flex-grow flex-col overflow-y-scroll">
 			<nav
-				class="sticky top-0 z-30 flex min-h-[6.5%] max-h-[6.5%] w-full items-center justify-between border-b bg-white px-2"
+				class="sticky top-0 z-30 flex max-h-[6.5%] min-h-[6.5%] w-full items-center justify-between border-b bg-white px-2"
 				id="top-nav">
 				<div class="flex items-center space-x-2 text-gray-700">
 					<button
