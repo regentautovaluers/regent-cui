@@ -27,6 +27,7 @@ const useFraudDetection = () => {
 	// search fraudster
 	const searchQuery: Ref<string> = ref('');
 	const searchFraudsterLoading: Ref<boolean> = ref(false);
+	const deleteFraudEntryLoading: Ref<boolean> = ref(false);
 	const searchIdentifyAfricaDatabase: Ref<boolean> = ref(false);
 	const ravFraudDetails: Ref<any[] | null> = ref(null);
 	const iaVehicleDetails: Ref<any> = ref(null);
@@ -118,6 +119,41 @@ const useFraudDetection = () => {
 		}
 	};
 
+	const deleteFraudRecord = async (id: string) => {
+		deleteFraudEntryLoading.value = true;
+		try {
+			await $fetch(`/api/v1/fraud/${id}`, {
+				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+				method: 'DELETE',
+				body: JSON.stringify({
+					corporateClientId: getPrincipal.value.corpId,
+				}),
+				onResponse({ response }) {
+					if (response.ok) {
+						useToast('Success. Reload page!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: false,
+							hideProgressBar: true,
+							transition: 'slide',
+						});
+					}
+				},
+			});
+		} catch (err) {
+			console.log('Failed to delete fraud record', err);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
+		} finally {
+			deleteFraudEntryLoading.value = false;
+		}
+	};
+
 	const {
 		status: fetchFraudsterListStatus,
 		execute: executeFetchFraudsterList,
@@ -162,6 +198,7 @@ const useFraudDetection = () => {
 		relevantLink,
 		searchQuery,
 		searchFraudsterLoading,
+		deleteFraudEntryLoading,
 		searchIdentifyAfricaDatabase,
 		ravFraudDetails,
 		iaVehicleDetails,
@@ -175,6 +212,7 @@ const useFraudDetection = () => {
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
 		searchFraudster,
+		deleteFraudRecord,
 	};
 };
 
