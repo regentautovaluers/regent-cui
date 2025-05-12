@@ -63,30 +63,100 @@
 			</button>
 		</form>
 
-		<!-- IA DB results -->
+		<!-- IA Vehicle Details results -->
 		<div
-			v-if="iaDBResults"
+			v-if="iaVehicleDetails"
 			class="border-b border-dashed border-gray-300 py-5">
-			<h1 class="mb-4 mt-8 text-lg">Showing Result From Identify Africa Database</h1>
-			<IADatabaseFraudResultsCard
-				:reg-no="iaDBResults.regNo"
-				:year-of-manufacture="iaDBResults.vehicle.yearOfManufacture"
-				:vehicle-make="iaDBResults.vehicle.carMake"
-				:vehicle-model="iaDBResults.vehicle.carModel"
-				:chassis-number="iaDBResults.vehicle.ChassisNo"
-				:engine-number="iaDBResults.vehicle.engineNumber"
-				:vehicle-color="iaDBResults.color"
-                :fuel-type="iaDBResults.vehicle.fuel_type"
-                :passenger-capacity="iaDBResults.vehicle.passengerCapacity" />
+			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+				Showing Result From Identify Africa Database
+			</h1>
+
+			<!-- Notice on IA DB Results -->
+			<div
+				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
+				role="alert">
+				<div class="flex items-center">
+					<svg
+						class="me-2 h-4 w-4 flex-shrink-0"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="currentColor"
+						viewBox="0 0 20 20">
+						<path
+							d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+					</svg>
+					<span class="sr-only">Info</span>
+					<h3 class="text-lg font-medium">Consumer Notice</h3>
+				</div>
+				<div class="mb-4 mt-2">
+					<p>
+						Identify Africa allows you to cross check the vehicle details as they were
+						recorded as the vehicle was being registered at the relevant government
+						level, alongside where the vehicle has been used as collateral, e.g. for a
+						loan. The data may not be up to date as it relies on proper jurisdictional
+						procedures e.g. when selling a vehicle, for this record to be updated.
+						Consumption of this data is at your own discretion.
+					</p>
+				</div>
+			</div>
+
+			<IAVehicleDetailsResultsCard
+				:reg-no="iaVehicleDetails.regNo"
+				:year-of-manufacture="iaVehicleDetails.vehicle.yearOfManufacture"
+				:vehicle-make="iaVehicleDetails.vehicle.carMake"
+				:vehicle-model="iaVehicleDetails.vehicle.carModel"
+				:chassis-number="iaVehicleDetails.vehicle.ChassisNo"
+				:engine-number="iaVehicleDetails.vehicle.engineNumber"
+				:vehicle-color="iaVehicleDetails.color"
+				:fuel-type="iaVehicleDetails.vehicle.fuel_type"
+				:passenger-capacity="iaVehicleDetails.vehicle.passengerCapacity" />
 		</div>
 
-		<!-- RAV DB results -->
-		<template v-if="ravDBResults && ravDBResults.length > 0">
-			<h1 class="mb-4 mt-8 text-lg">
-				Showing {{ ravDBResults.length }} Results From Regent Auto Valuers Database
+		<!-- collateral results -->
+		<div
+			v-if="iaVehicleCollateralDetails"
+			class="border-b border-dashed border-gray-300 pb-5">
+			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+				Where this vehicle been used as collateral
 			</h1>
+
+			<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
+		</div>
+
+		<!-- RAV fraud results -->
+		<template v-if="ravFraudDetails && ravFraudDetails.length > 0">
+			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+				Showing {{ ravFraudDetails.length }} Result(s) From Regent Auto Valuers Database
+			</h1>
+			<!-- Notice on RAVDB resulr -->
+			<div
+				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
+				role="alert">
+				<div class="flex items-center">
+					<svg
+						class="me-2 h-4 w-4 flex-shrink-0"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="currentColor"
+						viewBox="0 0 20 20">
+						<path
+							d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+					</svg>
+					<span class="sr-only">Info</span>
+					<h3 class="text-lg font-medium">Consumer Notice</h3>
+				</div>
+				<div class="mb-4 mt-2">
+					<p>
+						According to our fraud database, this vehicle has been flagged for fraud
+						cases a total of {{ ravFraudDetails.length }} time(s). Kindly be aware that
+						this data is being presented to you as it currently exists in our database,
+						and thus, records may not be up to date. Consumption of this data is at your
+						own discretion.
+					</p>
+				</div>
+			</div>
 			<RAVDatabaseFraudResultsCard
-				v-for="(r, idx) in ravDBResults"
+				v-for="(r, idx) in ravFraudDetails"
 				:key="idx"
 				:reg-no="r.registrationNumber"
 				:year-of-manufacture="r.yearOfManufacture"
@@ -97,12 +167,18 @@
 				:vehicle-color="r.color"
 				:defaulted-amount="r.amountDefaulted"
 				:incident-date="r.dateOfIncident"
-				:defrauded-institution="r.corporateClientName" />
+				:defrauded-institution="r.corporateClientName"
+				:contact-person-name="r.corporateClientName"
+				:contact-person-email="r.corpClientEmail"
+				:contact-person-phone="r.corpClientPhoneNumber" />
 		</template>
 	</div>
 </template>
 
 <script setup lang="ts">
+	import IAVehicleColateralResultsCard from '~/components/misc/IAVehicleColateralResultsCard.vue';
+	import IAVehicleDetailsResultsCard from '~/components/misc/IAVehicleDetailsResultsCard.vue';
+
 	definePageMeta({
 		name: 'fraud-detection-query-fraudsters',
 		layout: 'console-layout',
@@ -112,8 +188,9 @@
 		searchQuery,
 		searchFraudsterLoading,
 		searchIdentifyAfricaDatabase,
-		ravDBResults,
-		iaDBResults,
+		ravFraudDetails,
+		iaVehicleDetails,
+		iaVehicleCollateralDetails,
 		searchFraudster,
 	} = useFraudDetection();
 </script>

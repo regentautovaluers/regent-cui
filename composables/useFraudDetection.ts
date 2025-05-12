@@ -28,8 +28,9 @@ const useFraudDetection = () => {
 	const searchQuery: Ref<string> = ref('');
 	const searchFraudsterLoading: Ref<boolean> = ref(false);
 	const searchIdentifyAfricaDatabase: Ref<boolean> = ref(false);
-	const ravDBResults: Ref<any[] | null> = ref(null);
-	const iaDBResults: Ref<any> = ref(null);
+	const ravFraudDetails: Ref<any[] | null> = ref(null);
+	const iaVehicleDetails: Ref<any> = ref(null);
+	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
 
 	// querying fraudsters list
 	// for fetching corp valuations
@@ -94,16 +95,17 @@ const useFraudDetection = () => {
 
 					if (response.ok) {
 						if (!searchIdentifyAfricaDatabase.value) {
-							ravDBResults.value = responseData.data;
+							ravFraudDetails.value = responseData.data;
 						} else {
-							ravDBResults.value = responseData.data.fraudResults;
-							iaDBResults.value = responseData.data.vehicleDetails.data;
+							ravFraudDetails.value = responseData.data.fraudResults;
+							iaVehicleDetails.value = responseData.data.vehicleDetails;
+							iaVehicleCollateralDetails.value = responseData.data.collateralData;
 						}
 					}
 				},
 			});
 		} catch (err) {
-			console.log('Failed to onboard fraudster', err);
+			console.log('Failed to query fraudster', err);
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
@@ -141,6 +143,14 @@ const useFraudDetection = () => {
 					fraudsterEntries.value = data;
 					const paginationInfo = response._data.pagination;
 					totalPages.value = paginationInfo.totalPages;
+				} else {
+					useToast('Failed. Try Again!', {
+						type: 'danger',
+						showIcon: true,
+						showCloseButton: false,
+						hideProgressBar: true,
+						transition: 'slide',
+					});
 				}
 			},
 		},
@@ -153,8 +163,9 @@ const useFraudDetection = () => {
 		searchQuery,
 		searchFraudsterLoading,
 		searchIdentifyAfricaDatabase,
-		ravDBResults,
-		iaDBResults,
+		ravFraudDetails,
+		iaVehicleDetails,
+		iaVehicleCollateralDetails,
 		fetchFraudsterListStatus,
 		executeFetchFraudsterList,
 		fetchFraudsterListError,

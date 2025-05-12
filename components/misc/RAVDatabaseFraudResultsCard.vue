@@ -1,10 +1,10 @@
 <template>
-	<div class="min-h-32 rounded-md border-[1px] border-gray-500 p-8 mt-4">
+	<div class="mt-4 h-fit min-h-32 rounded-md border-[1px] border-gray-500 p-8">
 		<h1 class="text-2xl font-semibold">
 			{{ props.regNo }} - {{ props.yearOfManufacture }} - {{ props.vehicleMake }}
 			{{ props.vehicleModel }}
 		</h1>
-		<div class="flex h-12 items-center space-x-5">
+		<div class="my-2 flex h-12 items-center space-x-5 border-b-[1px] border-gray-300">
 			<div class="flex w-fit items-center space-x-2 text-gray-600">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -46,11 +46,82 @@
 				<span class="text-gray-600">Color: {{ props.vehicleColor }}</span>
 			</div>
 		</div>
-		<p class="w-1/2 text-gray-500">
-			This vehicle has a defaulted loan amount of Ksh {{ props.defaultedAmount }}. The default
-			date is {{ props.incidentDate }}. The previous financial Institution for the loan is
-			{{ props.defraudedInstitution }}.
-		</p>
+		<div class="grid min-h-20 grid-cols-2 divide-x-[1px] divide-gray-300">
+			<div class="min-h-full py-5">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="45"
+					height="45"
+					viewBox="0 0 16 16">
+					<path
+						fill="none"
+						stroke="currentColor"
+						d="M4 11h1m1 0h1M6 8h1M4 8h1M4 5h1m1 0h1m6.5 8.5h-11v-11h6v5h5zm-5-4h3v4h-3z"
+						stroke-width="1" />
+				</svg>
+				<h1 class="my-2 font-semibold">Defrauded Institution</h1>
+				<div class="mt-2 grid w-full grid-cols-2 gap-2 rounded-lg text-gray-600 xl:w-3/4">
+					<div>
+						<h1 class="font-semibold">Name</h1>
+					</div>
+					<div>
+						<span>{{ props.defraudedInstitution }}</span>
+					</div>
+					<div>
+						<h1 class="font-semibold">Defrauded Amount</h1>
+					</div>
+					<div>
+						<span
+							>{{
+								Intl.NumberFormat('en-US', {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0,
+								}).format(Number(props.defaultedAmount))
+							}}
+							Ksh</span
+						>
+					</div>
+					<div>
+						<h1 class="font-semibold">Incident Date</h1>
+					</div>
+					<div>
+						<span>{{ props.incidentDate }}</span>
+					</div>
+				</div>
+			</div>
+			<div class="p-5">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="45"
+					height="45"
+					viewBox="0 0 24 24">
+					<path
+						fill="currentColor"
+						d="M19.95 21q-3.125 0-6.187-1.35T8.2 15.8t-3.85-5.55T3 4.05V3h5.9l.925 5.025l-2.85 2.875q.55.975 1.225 1.85t1.45 1.625q.725.725 1.588 1.388T13.1 17l2.9-2.9l5 1.025V21z" />
+				</svg>
+				<h1 class="my-2 font-semibold">Case Contact Person</h1>
+				<div class="mt-2 grid w-full grid-cols-2 gap-2 rounded-lg text-gray-600 xl:w-3/4">
+					<div>
+						<h1 class="font-semibold">Name</h1>
+					</div>
+					<div>
+						<span>{{ props.contactPersonName }}</span>
+					</div>
+					<div>
+						<h1 class="font-semibold">Email</h1>
+					</div>
+					<div>
+						<span>{{ props.contactPersonEmail }}</span>
+					</div>
+					<div>
+						<h1 class="font-semibold">Phone</h1>
+					</div>
+					<div>
+						<span>{{ props.contactPersonPhone }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -93,6 +164,18 @@
 			required: true,
 		},
 		defraudedInstitution: {
+			type: String,
+			required: true,
+		},
+		contactPersonName: {
+			type: String,
+			required: true,
+		},
+		contactPersonEmail: {
+			type: String,
+			required: true,
+		},
+		contactPersonPhone: {
 			type: String,
 			required: true,
 		},
