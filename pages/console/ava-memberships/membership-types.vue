@@ -55,9 +55,7 @@
 									membership_type: 'roadside-assistance',
 								},
 								query: {
-									registration_cost: Number(membership.membership_rate),
 									membershipType_id: membership.id,
-									freeDistance: membership.free_distance,
 								},
 							}"
 							class="mt-2 inline-flex w-fit items-center space-x-2 rounded-md bg-black p-4 text-white group-hover:bg-white group-hover:text-black">

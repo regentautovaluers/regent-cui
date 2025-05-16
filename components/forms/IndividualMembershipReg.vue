@@ -239,13 +239,6 @@
 				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Vehicles Added</h1>
 				<h2 class="text-lg text-gray-500">{{ memberVehicles.length }}</h2>
 			</div>
-			<div class="h-fit w-full rounded-lg border border-blue-600 p-2 md:w-1/2">
-				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Total Price</h1>
-				<h2 class="text-lg text-gray-500">
-					{{ Number(route.query.registration_cost) * memberVehicles.length }}
-					/ year
-				</h2>
-			</div>
 		</div>
 
 		<!-- submit button -->
@@ -261,8 +254,6 @@
 </template>
 
 <script setup lang="ts">
-	const route = useRoute();
-
 	const {
 		clientFullName,
 		clientPhoneNumber,
