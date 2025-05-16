@@ -179,7 +179,7 @@ export const useBulkMemberRegistration = () => {
 				processedFleetData.value.push({
 					corpName: getPrincipal.value.corpName,
 					full_name: stringToSentenceCase(item[0]),
-					phone_number: `254${item[1]}`,
+					phone_number: `0${item[1]}`,
 					userEmail: item[2],
 					corporateId: getPrincipal.value.corpId,
 					membershipTypeId: Number(route.query.membershipType_id),
