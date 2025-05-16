@@ -15,7 +15,7 @@
 					placeholder="Search Registration Number" />
 				<button
 					type="submit"
-					class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+					class="absolute right-2 translate-y-[7px] top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 					<SearchIcon />
 				</button>
 			</div>
@@ -211,7 +211,7 @@
 											class="flex items-center">
 											<button
 												@click="deleteFraudRecord(entry.id)"
-												class="h-10 w-20 rounded-l-full border-none bg-red-300 p-2 inline-flex items-center justify-center text-sm text-red-600 outline-none transition-colors duration-200 hover:bg-red-400">
+												class="inline-flex h-10 w-20 items-center justify-center rounded-l-full border-none bg-red-300 p-2 text-sm text-red-600 outline-none transition-colors duration-200 hover:bg-red-400">
 												<FormSubmissionLoader
 													classes="size-5 animate-spin text-red-500"
 													v-if="deleteFraudEntryLoading" />
@@ -231,7 +231,7 @@
 				</div>
 
 				<!-- page controls -->
-				<div class="flex min-h-12 items-center justify-between">
+				<div class="mt-5 flex min-h-12 items-center justify-between">
 					<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>

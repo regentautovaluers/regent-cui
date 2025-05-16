@@ -1,5 +1,5 @@
 <template>
-	<div class="relative h-full overflow-clip rounded-lg border shadow-md">
+	<div class="relative h-full overflow-clip border shadow-md">
 		<!-- services switch -->
 		<div
 			class="absolute left-3 top-3 z-10 flex flex-col items-center justify-center text-xs sm:text-sm">

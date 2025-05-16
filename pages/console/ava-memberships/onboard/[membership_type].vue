@@ -1,5 +1,5 @@
 <template>
-	<div class="h-full console-layout-padding">
+	<div class="console-layout-spacing">
 		<div class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
 			<div
 				class="border-b-1 w- space-x-4 text-sm font-semibold text-gray-500 md:text-base lg:w-fit lg:text-lg">

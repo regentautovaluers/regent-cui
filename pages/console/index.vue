@@ -1,5 +1,5 @@
 <template>
-	<div class="flex min-h-full flex-col justify-between">
+	<div class="flex h-fit min-h-screen bg-yellow-700 flex-col justify-between">
 		<div class="my-24 flex flex-col items-center">
 			<h1 class="text-xl uppercase text-gray-500">Hello, {{ getPrincipal.username }}</h1>
 			<h2

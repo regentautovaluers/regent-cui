@@ -1,5 +1,5 @@
 <template>
-	<div class="min-h-80 w-[17rem] max-w-[17rem] rounded-lg border px-5 py-5 shadow-sm">
+	<div class="h-80 w-[17rem] max-w-[17rem] rounded-lg border px-5 py-5 shadow-sm">
 		<div class="size-fit rounded-full border-[1px] border-blue-600">
 			<button
 				class="m-0.5 rounded-full bg-blue-600 p-4"

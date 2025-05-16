@@ -1,198 +1,191 @@
 <template>
-	<div class="console-layout-padding flex h-full flex-col">
-		<!-- top information column -->
-		<div class="flex h-[6rem] items-center justify-between rounded-t-lg border p-4">
-			<div class="flex w-full items-center space-x-3 md:w-fit">
-				<img
-					class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
-					:src="profilePicture"
-					alt="Rounded avatar" />
-				<div class="h-full flex-col overflow-hidden">
-					<h1 class="inline-flex items-center space-x-3">
-						<span class="font-semibold text-blue-600"
-							>Hi, {{ getPrincipal.username }}</span
-						>
-						<HandshakeIcon />
-					</h1>
-					<h2>Welcome to Your Roadside Assistance Dashboard.</h2>
+	<div class="console-layout-spacing flex flex-col">
+		<div class="mt-4 grid flex-grow grid-cols-1 lg:grid-cols-[20%,80%]">
+			<!-- top information column -->
+			<div
+				class="col-span-2 flex h-[7rem] items-center justify-between rounded-t-lg border p-4">
+				<div class="flex w-full items-center space-x-3 md:w-fit">
+					<img
+						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
+						:src="profilePicture"
+						alt="Rounded avatar" />
+					<div class="h-full flex-col overflow-hidden">
+						<h1 class="inline-flex items-center space-x-3">
+							<span class="font-semibold text-blue-600"
+								>Hi, {{ getPrincipal.username }}</span
+							>
+							<HandshakeIcon />
+						</h1>
+						<h2>Welcome to Your Roadside Assistance Dashboard.</h2>
+					</div>
 				</div>
+				<NuxtLink
+					:to="{ name: 'ava-membership-types' }"
+					class="generic-nuxt-link hidden md:flex">
+					Onboard Member
+				</NuxtLink>
 			</div>
-			<NuxtLink
-				:to="{ name: 'ava-membership-types' }"
-				class="generic-nuxt-link hidden md:flex">
-				Onboard Member
-			</NuxtLink>
-		</div>
 
-		<!-- statistics strip -->
-		<div class="flex min-h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
+			<!-- statistics strip -->
 			<div
-				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="1em"
-					height="1em"
-					viewBox="0 0 24 24"
-					class="size-7">
-					<path
-						fill="none"
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3c-1.072-2.143-.224-4.054 2-6c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5" />
-				</svg>
-				<div>
-					<h1 class="font-semibold">Most Requested</h1>
-					<h2>{{ computedMostRequested }}</h2>
-				</div>
-			</div>
-			<div
-				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="1em"
-					height="1em"
-					viewBox="0 0 24 24"
-					class="size-7">
-					<g
-						fill="none"
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-miterlimit="10"
-						stroke-width="1.5">
+				class="col-span-2 mb-10 flex min-h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
+				<div
+					class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="1em"
+						height="1em"
+						viewBox="0 0 24 24"
+						class="size-7">
 						<path
-							d="M21.5 12h-2.111M12 2.5v2.111M2.5 12h2.111M12 21.5v-2.111m0 0A7.389 7.389 0 1 0 12 4.61a7.389 7.389 0 0 0 0 14.778Z" />
-						<path d="M12 16.222a4.222 4.222 0 1 0 0-8.444a4.222 4.222 0 0 0 0 8.444Z" />
-					</g>
-				</svg>
-				<div>
-					<h1 class="font-semibold">Incidents On Map</h1>
-					<h2>{{ totalIncidents + ' Total Incidents' }}</h2>
-					<NuxtLink
-						:to="{ name: 'ra-visual-informer' }"
-						class="text-blue-600 hover:text-blue-700">
-						View Map
-					</NuxtLink>
+							fill="none"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3c-1.072-2.143-.224-4.054 2-6c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5" />
+					</svg>
+					<div>
+						<h1 class="font-semibold">Most Requested</h1>
+						<h2>{{ computedMostRequested }}</h2>
+					</div>
+				</div>
+				<div
+					class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="1em"
+						height="1em"
+						viewBox="0 0 24 24"
+						class="size-7">
+						<g
+							fill="none"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-miterlimit="10"
+							stroke-width="1.5">
+							<path
+								d="M21.5 12h-2.111M12 2.5v2.111M2.5 12h2.111M12 21.5v-2.111m0 0A7.389 7.389 0 1 0 12 4.61a7.389 7.389 0 0 0 0 14.778Z" />
+							<path
+								d="M12 16.222a4.222 4.222 0 1 0 0-8.444a4.222 4.222 0 0 0 0 8.444Z" />
+						</g>
+					</svg>
+					<div>
+						<h1 class="font-semibold">Incident Hotspots</h1>
+						<h2>{{ totalIncidents + ' Total Incidents' }}</h2>
+						<NuxtLink
+							:to="{ name: 'ra-visual-informer' }"
+							class="text-blue-600 hover:text-blue-700">
+							View Map
+						</NuxtLink>
+					</div>
+				</div>
+				<div
+					class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="1em"
+						height="1em"
+						viewBox="0 0 32 32"
+						class="size-7">
+						<path
+							fill="none"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M16 8v8l4 4m9-4c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13" />
+					</svg>
+					<div>
+						<h1 class="font-semibold">Ongoing Requests</h1>
+						<h2>{{ ongoingIncidents + ' Requests' }}</h2>
+					</div>
+				</div>
+				<div
+					class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="1em"
+						height="1em"
+						viewBox="0 0 24 24"
+						class="size-7">
+						<path
+							fill="currentColor"
+							d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+					</svg>
+					<div>
+						<h1 class="font-semibold">Completed Requests</h1>
+						<h2>{{ getTotalCompleted + ' Requests' }}</h2>
+					</div>
 				</div>
 			</div>
-			<div
-				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="1em"
-					height="1em"
-					viewBox="0 0 32 32"
-					class="size-7">
-					<path
-						fill="none"
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M16 8v8l4 4m9-4c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13" />
-				</svg>
-				<div>
-					<h1 class="font-semibold">Ongoing Requests</h1>
-					<h2>{{ ongoingIncidents + ' Requests' }}</h2>
-					<NuxtLink
-						:to="{ name: 'ra-all-incidents' }"
-						class="text-blue-600 hover:text-blue-700">
-						View Ongoing
-					</NuxtLink>
-				</div>
-			</div>
-			<div
-				class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="1em"
-					height="1em"
-					viewBox="0 0 24 24"
-					class="size-7">
-					<path
-						fill="currentColor"
-						d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
-				</svg>
-				<div>
-					<h1 class="font-semibold">Completed Requests</h1>
-					<h2>{{ getTotalCompleted + ' Requests' }}</h2>
-					<NuxtLink
-						:to="{ name: 'ra-all-incidents' }"
-						class="text-blue-600 hover:text-blue-700">
-						View Completed
-					</NuxtLink>
-				</div>
-			</div>
-		</div>
 
-		<!-- Requests quick links -->
-		<div class="mt-4 flex min-h-24 items-center justify-between space-x-3 overflow-auto">
-			<NuxtLink
-				:to="{
-					name: 'ra-fueldelivery-request',
-					query: {
-						client_lat: clientCoordinates.lat,
-						client_lng: clientCoordinates.lng,
-					},
-				}"
-				class="ava-services-quicklinks group">
-				<FuelDeliveryServiceIcon
-					color="#1c64f2"
-					:classes="['size-12']" />
-				<span class="text-lg">Fuel Delivery</span></NuxtLink
-			>
-			<NuxtLink
-				:to="{
-					name: 'ra-jumpstarting-request',
-					query: {
-						client_lat: clientCoordinates.lat,
-						client_lng: clientCoordinates.lng,
-					},
-				}"
-				class="ava-services-quicklinks">
-				<JumpstartingServiceIcon
-					color="#1c64f2"
-					:classes="['size-12']" />
-				<span class="text-lg">Jumpstarting</span></NuxtLink
-			>
-			<NuxtLink
-				:to="{
-					name: 'ra-jumpstarting-request',
-					query: {
-						client_lat: clientCoordinates.lat,
-						client_lng: clientCoordinates.lng,
-					},
-				}"
-				class="ava-services-quicklinks">
-				<TyrechangeServiceIcon
-					color="#1c64f2"
-					:classes="['size-12']" />
-				<span class="text-lg">Tyrechange</span></NuxtLink
-			>
-			<NuxtLink
-				:to="{
-					name: 'ra-jumpstarting-request',
-					query: {
-						client_lat: clientCoordinates.lat,
-						client_lng: clientCoordinates.lng,
-					},
-				}"
-				class="ava-services-quicklinks">
-				<TowingServiceIcon
-					color="#1c64f2"
-					:classes="['size-12']" />
-				<span class="text-lg">Towing</span></NuxtLink
-			>
-		</div>
+			<!-- Requests quick links -->
+			<div
+				class="col-span-2 mb-10 flex min-h-24 items-center justify-between space-x-5 overflow-auto">
+				<NuxtLink
+					:to="{
+						name: 'ra-fueldelivery-request',
+						query: {
+							client_lat: clientCoordinates.lat,
+							client_lng: clientCoordinates.lng,
+						},
+					}"
+					class="ava-services-quicklinks group">
+					<FuelDeliveryServiceIcon
+						color="#1c64f2"
+						:classes="['size-12']" />
+					<span class="text-lg">Fuel Delivery</span></NuxtLink
+				>
+				<NuxtLink
+					:to="{
+						name: 'ra-jumpstarting-request',
+						query: {
+							client_lat: clientCoordinates.lat,
+							client_lng: clientCoordinates.lng,
+						},
+					}"
+					class="ava-services-quicklinks">
+					<JumpstartingServiceIcon
+						color="#1c64f2"
+						:classes="['size-12']" />
+					<span class="text-lg">Jumpstarting</span></NuxtLink
+				>
+				<NuxtLink
+					:to="{
+						name: 'ra-jumpstarting-request',
+						query: {
+							client_lat: clientCoordinates.lat,
+							client_lng: clientCoordinates.lng,
+						},
+					}"
+					class="ava-services-quicklinks">
+					<TyrechangeServiceIcon
+						color="#1c64f2"
+						:classes="['size-12']" />
+					<span class="text-lg">Tyrechange</span></NuxtLink
+				>
+				<NuxtLink
+					:to="{
+						name: 'ra-jumpstarting-request',
+						query: {
+							client_lat: clientCoordinates.lat,
+							client_lng: clientCoordinates.lng,
+						},
+					}"
+					class="ava-services-quicklinks">
+					<TowingServiceIcon
+						color="#1c64f2"
+						:classes="['size-12']" />
+					<span class="text-lg">Towing</span></NuxtLink
+				>
+			</div>
 
-		<!-- actual -->
-		<div class="mt-4 grid flex-grow grid-cols-1 gap-4 lg:grid-cols-[20%,80%]">
 			<!-- side-information including chart -->
 			<div
-				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
+				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 				<div
-					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
+					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
 					<h1 class="text-2xl font-extrabold">Distribution</h1>
 					<div
 						class="flex h-full items-center justify-center"
@@ -231,7 +224,7 @@
 						:data="raIncidentsDoughnutData.data" />
 				</div>
 				<div
-					class="xl:max-h-1/2 flex h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
+					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
 					<h1 class="text-2xl font-extrabold">Top Recent Incidents</h1>
 					<div
 						class="flex h-full items-center justify-center"
@@ -345,7 +338,7 @@
 				<!-- div to show when there is an error -->
 				<div
 					v-if="fetchRoadsideIncidentsStatus === 'error'"
-					class="flex h-full flex-col items-center justify-center space-y-4 md:min-h-[50.5rem]">
+					class="flex h-full flex-col items-center justify-center space-y-4">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
 					<button
@@ -361,7 +354,7 @@
 					v-else-if="
 						fetchRoadsideIncidentsStatus === 'success' && !incidentsListSlice.length
 					"
-					class="flex h-full flex-col items-center justify-center space-y-4 md:min-h-[50.5rem]">
+					class="flex h-full flex-col items-center justify-center space-y-4">
 					<BirdieNotFoundIcon />
 					<h1 class="font-semibold text-gray-500">
 						Oops! Seems like you have no incidents!
@@ -375,7 +368,7 @@
 
 				<!-- div to show when there are incidents -->
 				<div
-					class="flex h-full flex-col justify-between px-3 md:min-h-[54rem]"
+					class="ml-10 flex h-full flex-col justify-between"
 					v-else>
 					<!-- the table itself -->
 					<div class="mb-4 flex-grow">
@@ -558,7 +551,7 @@
 					</div>
 
 					<!-- page controls -->
-					<div class="flex min-h-12 items-center justify-between">
+					<div class="mt-5 flex min-h-12 items-center justify-between">
 						<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 							Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
 						</h1>

@@ -1,8 +1,8 @@
 <template>
-	<div class="console-layout-padding flex h-full flex-col">
+	<div class="console-layout-spacing">
 		<!-- div to show when there is a fetch error -->
 		<div
-			class="flex h-full min-h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full min-h-full flex-col items-center justify-center space-y-4 rounded-lg border bg-white shadow-sm"
 			v-if="fetchMembershipsStatus === 'error'">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -16,7 +16,7 @@
 
 		<!-- div to show when there are no members -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border bg-white shadow-sm"
 			v-else-if="fetchMembershipsStatus === 'success' && corporateMemberships.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no members!</h1>
@@ -45,7 +45,7 @@
 							required />
 						<button
 							type="submit"
-							class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+							class="absolute right-2 top-0 flex size-14 translate-y-[0.45rem] items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 							<SearchIcon />
 						</button>
 					</form>
@@ -120,6 +120,9 @@
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>domain role</span
 									>
+								</td>
+								<td class="p-6 text-gray-300">
+									<span class="animate-pulse rounded-lg bg-gray-300">button</span>
 								</td>
 							</tr>
 							<tr
@@ -216,7 +219,7 @@
 			</div>
 
 			<!-- page controls -->
-			<div class="flex min-h-12 items-center justify-between">
+			<div class="my-5 flex h-12 max-h-12 min-h-12 items-center justify-between">
 				<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 					Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
 				</h1>

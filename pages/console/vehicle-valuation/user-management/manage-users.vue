@@ -2,7 +2,7 @@
 	<!-- members listing -->
 	<!-- div to show when there is a fetch error -->
 	<div
-		class="flex min-h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+		class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
 		v-if="fetchStatus === 'error'">
 		<BirdieNotFoundIcon />
 		<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
@@ -16,7 +16,7 @@
 
 	<!-- div to show when there are no users -->
 	<div
-		class="flex min-h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+		class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
 		v-else-if="fetchStatus === 'success' && usersList.length === 0">
 		<BirdieNotFoundIcon />
 		<h1 class="font-semibold text-gray-500">Oops! Seems like you have no users!</h1>
@@ -29,7 +29,7 @@
 
 	<!-- div to show when there are members -->
 	<div
-		class="min-h-full"
+		class="h-full"
 		v-else>
 		<!-- search & filter controls -->
 		<div class="flex h-fit items-center justify-between">
@@ -40,14 +40,14 @@
 					placeholder="Search Name, Email or Phone" />
 				<button
 					type="submit"
-					class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+					class="absolute right-2 translate-y-[7px] top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 					<SearchIcon />
 				</button>
 			</form>
 		</div>
 
 		<!-- the table itself -->
-		<div class="my-2 flex-grow">
+		<div class="mt-10 flex-grow">
 			<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 				<table class="w-full text-left text-gray-500">
 					<thead class="bg-gray-100 text-sm uppercase text-gray-700">

@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-padding h-full min-h-[53rem]">
+	<div class="console-layout-spacing">
 		<!-- div to show when there is a fetch error -->
 		<div
 			v-if="fetchFleetsStatus === 'error'"

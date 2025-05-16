@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-padding">
+	<div class="console-layout-spacing">
 		<!-- top section with general information about the report -->
 		<div class="h-52 rounded-lg border shadow-sm">
 			<!-- general trip details and download button -->

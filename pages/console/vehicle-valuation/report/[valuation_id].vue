@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-padding grid h-fit grid-cols-2 gap-10 pb-5">
+	<div class="console-layout-spacing grid h-fit grid-cols-2 gap-10 pb-5">
 		<div class="min-h-[50.5rem] rounded-lg border-[.5px] shadow-md outline-none">
 			<div class="flex items-center justify-between p-10">
 				<div class="space-y-3">

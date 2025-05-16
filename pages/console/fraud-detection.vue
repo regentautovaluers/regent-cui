@@ -1,6 +1,5 @@
 <template>
-	<div
-		class="console-layout-padding flex h-full min-h-full flex-col rounded-lg border-[1px] border-gray-200">
+	<div class="console-layout-spacing flex flex-col rounded-lg border-[1px] border-gray-200">
 		<div
 			class="flex w-full items-center space-x-8 border-b-2 p-6 font-semibold text-gray-500 md:text-base lg:text-lg">
 			<NuxtLink

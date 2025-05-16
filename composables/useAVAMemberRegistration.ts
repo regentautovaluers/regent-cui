@@ -156,7 +156,7 @@ export const useBulkMemberRegistration = () => {
 
 			// check for client phone number
 			if (item[1] === null)
-				throw new Error(`Phone of client number on row ${index + 1} is missing`);
+				throw new Error(`Phone number of client on row ${index + 1} is missing`);
 
 			// check for vehicle registration
 			if (item[3] === null)
@@ -179,7 +179,7 @@ export const useBulkMemberRegistration = () => {
 				processedFleetData.value.push({
 					corpName: getPrincipal.value.corpName,
 					full_name: stringToSentenceCase(item[0]),
-					phone_number: `0${item[1]}`,
+					phone_number: `254${item[1]}`,
 					userEmail: item[2],
 					corporateId: getPrincipal.value.corpId,
 					membershipTypeId: Number(route.query.membershipType_id),

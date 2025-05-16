@@ -26,7 +26,7 @@
 					<FormSubmissionLoader
 						classes="mr-2 size-6 animate-spin text-white"
 						v-if="vehicleSearchLoading" />
-					<SearchIcon />
+					<SearchIcon v-else />
 				</button>
 			</div>
 		</div>

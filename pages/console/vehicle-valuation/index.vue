@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-padding flex h-full flex-col">
+	<div class="console-layout-spacing flex flex-col">
 		<div class="flex h-fit items-center justify-between">
 			<div class="space-x-4 font-semibold text-gray-500 md:text-base lg:text-lg">
 				<button
@@ -32,7 +32,7 @@
 					placeholder="Search Registration Number" />
 				<button
 					type="submit"
-					class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+					class="absolute right-2 top-0 flex size-14 translate-y-[7px] items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 					<SearchIcon />
 				</button>
 			</div>
@@ -51,7 +51,7 @@
 			<!-- div to show when there is a fetch error -->
 			<div
 				v-if="fetchValuationsStatus === 'error'"
-				class="mt-2 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
+				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 				<button
@@ -64,7 +64,7 @@
 
 			<!-- div to show when there are no authorization letters -->
 			<div
-				class="mt-2 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
 				v-else-if="fetchValuationsStatus === 'success' && corpValuations.length === 0">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">
@@ -78,7 +78,7 @@
 				v-else>
 				<!-- search & filter controls -->
 
-				<div class="my-2 flex-grow">
+				<div class="mt-5 flex-grow">
 					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 						<table class="w-full text-left text-gray-500">
 							<thead class="bg-gray-100 text-sm uppercase text-gray-700">
