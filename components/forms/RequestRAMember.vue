@@ -21,7 +21,7 @@
 
 				<button
 					type="button"
-					class="generic-form-submit mb-0 w-[10%]"
+					class="generic-form-submit mb-0 h-[70px] w-[10%]"
 					@click.prevent="searchVehicleRegistration">
 					<FormSubmissionLoader
 						classes="mr-2 size-6 animate-spin text-white"
