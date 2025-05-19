@@ -259,6 +259,162 @@
 		<!-- The main UIs for all pages. Let all pages decide their own height. -->
 		<slot />
 	</main>
+
+	<!-- the notification bar on the right side -->
+	<aside
+		id="dashboard-sidenotif-bar"
+		class="fixed right-0 top-0 z-50 h-screen w-96 translate-x-full overflow-y-auto rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+		tabindex="-1"
+		aria-labelledby="drawer-right-label">
+		<h5
+			id="drawer-right-label"
+			class="mb-4 inline-flex items-center text-base font-semibold text-gray-500">
+			Your Notifications
+		</h5>
+		<button
+			type="button"
+			data-drawer-hide="dashboard-sidenotif-bar"
+			aria-controls="dashboard-sidenotif-bar"
+			class="absolute end-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+			<svg
+				class="h-3 w-3"
+				aria-hidden="true"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 14 14">
+				<path
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+			</svg>
+			<span class="sr-only">Close menu</span>
+		</button>
+		<hr class="text-gray-500" />
+		<!-- notification content -->
+	</aside>
+
+	<!-- the chat window on the right side -->
+	<aside
+		id="dashboard-chat-window"
+		class="fixed right-0 top-0 z-50 h-screen w-[32rem] translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+		tabindex="-1"
+		aria-labelledby="drawer-right-label">
+		<h5
+			id="drawer-right-label"
+			class="mb-4 inline-flex items-center text-base font-semibold text-gray-500">
+			Assistant Conversation
+		</h5>
+		<button
+			type="button"
+			id="download-conversation-button"
+			class="absolute end-12 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24">
+				<path
+					fill="none"
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="1.5"
+					d="M6 20h12M12 4v12m0 0l3.5-3.5M12 16l-3.5-3.5" />
+			</svg>
+			<span class="sr-only">Download Conversation</span>
+		</button>
+		<button
+			type="button"
+			data-drawer-hide="dashboard-chat-window"
+			aria-controls="dashboard-chat-window"
+			class="absolute end-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900">
+			<svg
+				class="h-3 w-3"
+				aria-hidden="true"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 14 14">
+				<path
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+			</svg>
+			<span class="sr-only">Close menu</span>
+		</button>
+
+		<hr class="text-gray-500" />
+		<div class="flex h-full flex-col">
+			<div
+				class="flex flex-grow items-end justify-center overflow-y-scroll font-semibold text-gray-500"
+				v-if="getConversation.length == 0">
+				<p class="text-center text-sm">
+					No conversation history. To start one, say Hi! <br />Conversation is cleared
+					when you refresh your browser.
+					<br />
+					You can download a copy of your conversation in the top right corner.
+				</p>
+			</div>
+			<div
+				class="flex-grow overflow-y-scroll px-2"
+				v-else>
+				<!-- the chat content and interactive bot actions -->
+				<template
+					v-for="(item, index) in getConversation"
+					:key="index">
+					<TextNode
+						v-if="item.type === 'TextNode'"
+						:is-source-bot="item.source === 'Bot' ? true : false"
+						:text="item.text" />
+					<template v-else-if="item.type === 'ActionGroupNode'">
+						<ButtonNode
+							v-for="(button, index) in item.buttonNodes"
+							:key="index"
+							:label="button.label"
+							:value="button.value"
+							@option-selected="(option) => handleConvActionSelected(option)" />
+					</template>
+				</template>
+			</div>
+
+			<!-- response form -->
+			<form
+				class="relative mb-2 flex max-h-[10%] min-h-[10%] w-full items-center space-x-2"
+				@submit.prevent="handleConvFormSubmitted">
+				<input
+					type="text"
+					placeholder="Type here. Press ENTER to submit..."
+					class="generic-input h-[50%] w-full"
+					required
+					v-model.trim="userInput" />
+				<button
+					class="absolute end-2 my-2 inline-flex size-10 items-center justify-center rounded-lg bg-blue-600 text-slate-100">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24">
+						<path
+							fill="currentColor"
+							d="M5.133 18.02q-.406.163-.77-.066T4 17.288v-3.942L9.846 12L4 10.654V6.712q0-.438.364-.666t.77-.067l12.512 5.269q.49.225.49.756q0 .53-.49.748z" />
+					</svg>
+				</button>
+			</form>
+		</div>
+	</aside>
+
+	<!-- Settings modal -->
+	<ParentModal
+		modal-id="settings-modal"
+		modal-title="Account Settings"
+		v-if="isSettingsModalOpen"
+		@close-modal="isSettingsModalOpen = false">
+		<UpdateProfilePicture />
+		<MyAccountSettings />
+	</ParentModal>
 </template>
 <script setup lang="ts">
 	const { navigationRoutes, currentScreenName, fuzzyRouteNameMatch, doesRouteNameMatch } =

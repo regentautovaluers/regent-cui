@@ -1,5 +1,5 @@
 <template>
-	<div class="flex h-fit min-h-screen bg-yellow-700 flex-col justify-between">
+	<div class="flex flex-col justify-between">
 		<div class="my-24 flex flex-col items-center">
 			<h1 class="text-xl uppercase text-gray-500">Hello, {{ getPrincipal.username }}</h1>
 			<h2
@@ -53,7 +53,7 @@
 			<h1 class="text-3xl font-semibold">Our Services</h1>
 		</div>
 		<div
-			class="mb-44 flex items-center justify-center space-x-8 overflow-x-auto whitespace-nowrap py-2">
+			class="mb-44 flex h-fit items-center justify-center space-x-8 overflow-x-auto whitespace-nowrap py-2">
 			<!-- vehicle valuation -->
 			<ServicesQuickLinks
 				:title="'Vehicle Valuation'"

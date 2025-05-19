@@ -1,9 +1,9 @@
 <template>
 	<footer class="text-slate-100">
-		<div class="relative grid min-h-96 grid-cols-4 gap-x-16 bg-black px-14 pt-20">
+		<div class="relative grid min-h-[30rem] grid-cols-4 gap-x-16 bg-black px-14 pt-20">
 			<div
-				class="absolute -top-28 left-20 flex h-40 w-[75%] translate-x-24 flex-col rounded-lg bg-blue-600 text-center">
-				<h1 class="text-4xl font-semibold">Our Partners</h1>
+				class="absolute -top-28 left-20 flex h-[12rem] w-[75%] translate-x-[10%] flex-col rounded-lg bg-blue-600 text-center">
+				<h1 class="mt-5 text-4xl font-semibold">Our Partners</h1>
 				<div
 					class="flex flex-grow items-center px-4 pb-2"
 					style="
@@ -33,6 +33,7 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-span-4 mt-10"></div>
 			<div>
 				<h1 class="text-2xl font-bold">About Us.</h1>
 				<p class="mt-5 font-light">
@@ -148,7 +149,7 @@
 			<div>
 				<img
 					src="/images/app-logo-white.png"
-					class="h-10" />
+					class="h-16" />
 				<div class="mt-5 flex flex-col space-y-2">
 					<p class="font-light">
 						Stay in Control On Every Journey with Regent By Your Side
