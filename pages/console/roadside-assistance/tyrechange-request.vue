@@ -89,7 +89,7 @@
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
 	import { type LocationCoords, type MapCoordsMarker } from '~/types';
-	import { googleMapStyle } from '~/data';
+	import { googleMapStyle } from '~/config/ava-google-map-config';
 
 	definePageMeta({
 		name: 'ra-tyrechange-request',

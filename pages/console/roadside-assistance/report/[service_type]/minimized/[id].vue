@@ -281,7 +281,7 @@
 <script setup lang="ts">
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow } from 'vue3-google-map';
-	import { googleMapStyle } from '~/data';
+	import { googleMapStyle } from '~/config/ava-google-map-config';
 
 	definePageMeta({
 		name: 'ra-minimized-report',
