@@ -510,7 +510,7 @@
 </template>
 
 <script setup lang="ts">
-	import { regentServices } from '~/data';
+	import { regentServices } from '~/config/regent-services';
 	import { useScroll } from '@vueuse/core';
 
 	definePageMeta({

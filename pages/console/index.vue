@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-	import { regentServices } from '~/data';
+	import { regentServices } from '~/config/regent-services';
 
 	definePageMeta({
 		name: 'mobivaluer-home',
