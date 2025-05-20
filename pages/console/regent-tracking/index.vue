@@ -32,6 +32,17 @@
 				</div>
 			</CustomMarker> -->
 		</GoogleMap>
+
+		<!-- Settings modal -->
+		<template v-if="!regentTrackingAuthToken">
+			<ParentModal
+				modal-id="regent-track-login-modal"
+				modal-title="Regent Tracking Login"
+				v-if="isRegentTrackLoginModalOpen"
+				@close-modal="isRegentTrackLoginModalOpen = false">
+				<RegentTrackingLogin />
+			</ParentModal>
+		</template>
 	</div>
 </template>
 
@@ -46,4 +57,11 @@
 
 	const runtimeConfig = useRuntimeConfig();
 	const { clientCoordinates } = useClientGeolocation();
+	const isRegentTrackLoginModalOpen: Ref<boolean> = ref(true);
+	const {
+		regentTrackingAuthToken,
+		fetchTrackedVehiclesStatus,
+		fetchTrackedVehicles,
+		trackedVehicles,
+	} = useRegentTracking();
 </script>
