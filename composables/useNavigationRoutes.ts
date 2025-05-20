@@ -145,24 +145,38 @@ const useNavigationRoutes = () => {
 		},
 		{
 			id: 5,
+			screenName: 'Tracking',
+			routeName: 'regent-tracking-home',
+			renderRoute: true,
+			childRoutes: [
+				{
+					id: 1,
+					screenName: 'Traceability Reports',
+					routeName: 'regent-tracking-traceability-report',
+					renderRoute: true,
+				},
+			],
+		},
+		{
+			id: 6,
 			screenName: 'Emergency Evacuation',
 			routeName: 'emergency-evacuation-home',
 			renderRoute: true,
 		},
 		{
-			id: 6,
+			id: 7,
 			screenName: 'Accident Management',
 			routeName: 'accident-management-home',
 			renderRoute: true,
 		},
 		{
-			id: 7,
+			id: 8,
 			screenName: 'Garage',
 			routeName: 'garage-home',
 			renderRoute: true,
 		},
 		{
-			id: 8,
+			id: 9,
 			screenName: 'Parts',
 			routeName: 'parts-home',
 			renderRoute: true,

@@ -60,6 +60,9 @@
 									">
 									<FraudDetectionIcon classes="size-6 text-inherit" />
 								</template>
+								<template v-else-if="link.routeName == 'regent-tracking-home'">
+									<VehicleTrackingIcon classes="size-6 text-inherit" />
+								</template>
 								<template v-else-if="link.routeName == 'emergency-evacuation-home'">
 									<EmergencyRescueIcon classes="size-6 text-inherit" />
 								</template>
