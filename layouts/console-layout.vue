@@ -185,7 +185,7 @@
 		]"
 		style="background-color: #f8faf8">
 		<nav
-			class="sticky top-0 z-20 flex h-[7%] min-h-[7%] w-full items-center justify-between border-b bg-white px-2"
+			class="sticky top-0 z-20 flex h-[9%] min-h-[7%] w-full items-center justify-between border-b bg-white px-2"
 			id="top-nav">
 			<div class="flex items-center space-x-2 text-gray-700">
 				<button
@@ -196,6 +196,11 @@
 				<h1 class="w-fit text-lg font-semibold md:text-2xl">
 					{{ currentScreenName }}
 				</h1>
+			</div>
+			<div
+				class="flex h-[70%] flex-grow items-center justify-center"
+				id="custom-search-box">
+				<!-- any thing can teleport anything here. for now, it's being used by pages for a search bar -->
 			</div>
 			<div class="flex items-center space-x-2">
 				<!-- notification button -->
