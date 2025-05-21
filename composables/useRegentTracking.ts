@@ -1,4 +1,6 @@
 import type { CookieRef } from '#app';
+import { Loader } from '@googlemaps/js-api-loader';
+import { type TrackedDevice } from '~/types';
 
 const useRegentTracking = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -8,6 +10,9 @@ const useRegentTracking = () => {
 	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
 		'regent-tracking-auth-token',
 	);
+	const searchRegNo: Ref<string> = ref('');
+	const activeTrackedDevice: Ref<TrackedDevice | null> = ref(null);
+	const activeTrackedDeviceLocation: Ref<String> = ref('');
 
 	const attemptLogin = async () => {
 		loginAttemptLoading.value = true;
@@ -61,8 +66,6 @@ const useRegentTracking = () => {
 		lazy: true,
 		watch: [regentTrackingAuthToken],
 		transform(data: any) {
-			console.log('items: ', data[0].items);
-
 			return data[0].items.map((item: any) => {
 				return {
 					vehicleReg: item.name,
@@ -71,20 +74,63 @@ const useRegentTracking = () => {
 						lat: item.lat,
 						lng: item.lng,
 					},
+					stopDuration: item.stop_duration,
+					driver: {
+						name: item.driver_data.name,
+						phone: item.driver_data.phone,
+						email: item.driver_data.email,
+					},
+					sensors: item.sensors,
+
+					speed: item.speed,
+					speedUnits: item.distance_unit_hour,
 				};
 			});
 		},
 		onResponse({ response }) {
-			if (response.ok) {
-				useToast('Tracked Devices Retrieved Successfully!', {
-					type: 'success',
+			if (!response.ok) {
+				useToast('Failed to retrieve tracked!.', {
+					type: 'danger',
 					showIcon: true,
 					showCloseButton: false,
 					hideProgressBar: true,
+					transition: 'slide',
 				});
 			}
 		},
-	}) as any;
+	}) as unknown as TrackedDevice[];
+
+	const vehicles: ComputedRef<any[]> = computed(() => {
+		if (!searchRegNo.value) {
+			return trackedVehicles.value;
+		}
+		return trackedVehicles.value.filter((vehicle: TrackedDevice) =>
+			vehicle.vehicleReg.toLowerCase().includes(searchRegNo.value.toLowerCase()),
+		);
+	});
+
+	watch(activeTrackedDevice, async () => {
+		const loader = new Loader({
+			apiKey: 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY',
+			version: 'weekly',
+		});
+		const lat = activeTrackedDevice.value!.location.lat;
+		const lng = activeTrackedDevice.value!.location.lng;
+		const Geocoding = await loader.importLibrary('geocoding');
+
+		const geocoder = new Geocoding.Geocoder();
+		geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+			if (status === 'OK' && results) {
+				if (results[0]) {
+					activeTrackedDeviceLocation.value = results[0].formatted_address;
+				} else {
+					activeTrackedDeviceLocation.value = 'Geocoding failed!';
+				}
+			} else {
+				activeTrackedDeviceLocation.value = 'Geocoding failed!';
+			}
+		});
+	});
 
 	return {
 		email,
@@ -93,8 +139,11 @@ const useRegentTracking = () => {
 		regentTrackingAuthToken,
 		fetchTrackedVehiclesStatus,
 		fetchTrackedVehicles,
-		trackedVehicles,
+		vehicles,
+		searchRegNo,
+		activeTrackedDevice,
 		attemptLogin,
+		activeTrackedDeviceLocation,
 	};
 };
 

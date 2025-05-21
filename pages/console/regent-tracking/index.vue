@@ -1,5 +1,9 @@
 <template>
-	<div class="relative h-full overflow-clip border shadow-md">
+	<div
+		:class="[
+			'ease-liner relative h-full overflow-clip border shadow-md transition-all duration-200',
+			activeTrackedDevice ? 'console-layout-spacing flex' : 'block',
+		]">
 		<GoogleMap
 			ref="mapRef"
 			api-key="AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY"
@@ -11,9 +15,9 @@
 			:zoom-control="true"
 			:fullscreen-control="false"
 			:street-view-control="false">
-			<MarkerCluster @click="console.log('cluster clicked...')">
+			<MarkerCluster>
 				<CustomMarker
-					v-for="(marker, index) in trackedVehicles"
+					v-for="(marker, index) in vehicles"
 					:key="index"
 					:options="{
 						position: {
@@ -21,16 +25,94 @@
 							lng: marker.location.lng,
 						},
 						anchorPoint: 'BOTTOM_CENTER',
-					}">
+					}"
+					@click="activeTrackedDevice = marker">
 					<div
 						class="myloc-box flex h-12 w-fit items-center space-x-2 rounded-lg bg-pink-600 text-white">
-						<span
-							class="inline-flex h-full w-[40px] items-center justify-center rounded-md bg-white text-base font-semibold text-pink-600"></span>
 						<h1 class="text-lg font-semibold">{{ marker.vehicleReg }}</h1>
 					</div>
 				</CustomMarker>
 			</MarkerCluster>
 		</GoogleMap>
+		<div
+			class="relative flex h-full w-[30%] flex-col border-l-2 border-gray-500"
+			v-if="activeTrackedDevice">
+			<div class="border-b- flex h-[7%] items-center justify-between bg-gray-200 px-4">
+				<h1 class="text-xl font-semibold uppercase text-gray-500">
+					{{ activeTrackedDevice.vehicleReg }}
+				</h1>
+			</div>
+			<button
+				class="absolute -left-4 top-1/2 flex size-8 items-center justify-center rounded-full bg-white text-gray-500 shadow-md transition-colors hover:bg-gray-300"
+				@click="activeTrackedDevice = null">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24">
+					<path
+						fill="currentColor"
+						d="M9.293 18.707a1 1 0 0 1 0-1.414L14.586 12L9.293 6.707a1 1 0 0 1 1.414-1.414l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414 0" />
+				</svg>
+			</button>
+			<div class="flex-grow space-y-2 p-2 text-gray-500">
+				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+					<span class="font-semibold">Stop Duration:</span>
+					<span v-if="activeTrackedDevice.stopDuration">{{
+						activeTrackedDevice.stopDuration
+					}}</span>
+					<span v-else>-</span>
+				</div>
+				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+					<span class="font-semibold">Driver:</span>
+					<span
+						v-if="activeTrackedDevice.driver.name && activeTrackedDevice.driver.phone">
+						{{ activeTrackedDevice.driver.name }} ({{
+							activeTrackedDevice.driver.phone
+						}})
+					</span>
+					<span v-else>-</span>
+				</div>
+				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+					<span class="font-semibold">Sensors:</span>
+					<span
+						v-if="
+							activeTrackedDevice.sensors != null &&
+							activeTrackedDevice.sensors.length > 0
+						"
+						v-for="(sensor, index) in activeTrackedDevice.sensors"
+						:key="index">
+						{{ sensor.name }} ({{ sensor.value }})
+					</span>
+					<span v-else>-</span>
+				</div>
+				<div
+					class="flex flex-col justify-center space-y-2 border-b-[1px] border-gray-300 py-4">
+					<span class="font-semibold">Location:</span>
+					<span>{{ activeTrackedDeviceLocation }}</span>
+				</div>
+				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+					<span class="font-semibold">Position:</span>
+					<span
+						>{{ activeTrackedDevice.location.lat }},
+						{{ activeTrackedDevice.location.lng }}</span
+					>
+				</div>
+				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+					<span class="font-semibold"
+						>Last
+						<a
+							href="https://en.wikipedia.org/wiki/Ping_(networking_utility)#:~:text=ping%20is%20a%20computer%20network,most%20embedded%20network%20administration%20software."
+							target="_blank"
+							class="text-blue-500 underline underline-offset-2"
+							>PING</a
+						>
+						:</span
+					>
+					<span>{{ activeTrackedDevice.lastPing }}</span>
+				</div>
+			</div>
+		</div>
 
 		<!-- Login modal -->
 		<template v-if="!regentTrackingAuthToken">
@@ -62,7 +144,8 @@
 				<input
 					type="text"
 					class="generic-input size-full rounded-2xl bg-gray-200 pl-14"
-					placeholder="Search Tracked Vehicles by Reg No" />
+					placeholder="Enter Reg No of Tracked Vehicle..."
+					v-model="searchRegNo" />
 			</form>
 		</Teleport>
 	</div>
@@ -77,14 +160,21 @@
 		layout: 'console-layout',
 	});
 
-	const runtimeConfig = useRuntimeConfig();
 	const { clientCoordinates } = useClientGeolocation();
 	const isRegentTrackLoginModalOpen: Ref<boolean> = ref(true);
+
 	const {
 		regentTrackingAuthToken,
-		fetchTrackedVehiclesStatus,
+		vehicles,
+		searchRegNo,
 		fetchTrackedVehicles,
-		trackedVehicles,
+		activeTrackedDevice,
+		activeTrackedDeviceLocation,
 	} = useRegentTracking();
-	console.log('GMAPS API KEY: ', process.env.GOOGLE_MAPS_API_KEY);
+
+	onMounted(() => {
+		setInterval(() => {
+			fetchTrackedVehicles();
+		}, 30000);
+	});
 </script>
