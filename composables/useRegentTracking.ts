@@ -59,6 +59,21 @@ const useRegentTracking = () => {
 		},
 		server: false,
 		lazy: true,
+		watch: [regentTrackingAuthToken],
+		transform(data: any) {
+			console.log('items: ', data[0].items);
+
+			return data[0].items.map((item: any) => {
+				return {
+					vehicleReg: item.name,
+					lastPing: item.time,
+					location: {
+						lat: item.lat,
+						lng: item.lng,
+					},
+				};
+			});
+		},
 		onResponse({ response }) {
 			if (response.ok) {
 				useToast('Tracked Devices Retrieved Successfully!', {
