@@ -162,3 +162,22 @@ export type BotpressResponse = {
 	sentOn: string;
 	payload: BotpressPayload;
 };
+
+export type TrackedDevice = {
+	vehicleReg: string;
+	lastPing: string | string;
+	location: {
+		lat: number;
+		lng: number;
+	};
+	stopDuration: number | string;
+	driver: {
+		name: string;
+		phone: string;
+		email: string;
+	};
+	sensors: any[];
+
+	speed: string | number;
+	speedUnits: string;
+};
