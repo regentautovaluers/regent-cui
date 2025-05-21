@@ -290,7 +290,7 @@
 
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
-	const googleMapsApiKey = runtimeConfig.GOOGLE_MAPS_APIKEY;
+	const googleMapsApiKey = runtimeConfig.GOOGLE_MAPS_API_KEY;
 	const mapRef: Ref<any> = ref(null);
 
 	const { data: serviceReport } = (await useFetch(

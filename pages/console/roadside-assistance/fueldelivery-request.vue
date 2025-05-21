@@ -3,7 +3,7 @@
 		<div class="overflow-clip rounded-lg border border-gray-500 border-opacity-50">
 			<GoogleMap
 				ref="mapRef"
-				:api-key="runtimeConfig.GOOGLE_MAPS_APIKEY"
+				:api-key="runtimeConfig.GOOGLE_MAPS_API_KEY"
 				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
 				:map-type-control="false"

@@ -9,7 +9,7 @@ pipeline {
         SERVER_IP = '64.225.109.172'
         SSH_USERNAME = 'root'
         SSH_CREDENTIALS_ID = 'your-ssh-credentials-id'
-        GOOGLE_MAPS_APIKEY = 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY'
+        GOOGLE_MAPS_API_KEY = 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY'
         VALUATION_BASE_URL = 'http://64.226.89.245:8100'
         AVA_BASE_URL = 'http://64.225.109.172:4000'
         RECIPIENT_EMAIL = 'martbikathi@gmail.com'
@@ -57,7 +57,7 @@ pipeline {
                             echo "Creating .env file..."
                             cat <<EOT > .env
 
-GOOGLE_MAPS_APIKEY=${GOOGLE_MAPS_APIKEY}
+GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
 VALUATION_BASE_URL=${VALUATION_BASE_URL}
 AVA_BASE_URL=${AVA_BASE_URL}
 EOT

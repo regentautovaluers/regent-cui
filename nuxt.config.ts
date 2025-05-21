@@ -61,18 +61,21 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		// private properties
-		GOOGLE_MAPS_APIKEY: process.env.GOOGLE_MAPS_APIKEY,
+		GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
 		BOTPRESS_CLIENT_ID: process.env.BOTPRESS_CLIENT_ID,
+
+		// public properties
 		public: {
-			VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
-			AVA_BASE_URL: process.env.AVA_BASE_URL,
-			FRAUD_DETECTION_BASE_URL: process.env.FRAUD_DETECTION_BASE_URL,
-			REGENT_TRACK_BASE_URL: process.env.REGENT_TRACK_BASE_URL,
-			APP_VERSION: process.env.APP_VERSION,
-			COPYRIGHT_YEAR: process.env.COPYRIGHT_YEAR,
-			GOOGLE_MAPS_GEOFENCING_COUNTRY: process.env.GOOGLE_MAPS_GEOFENCING_COUNTRY,
+			VALUATION_BASE_URL: '',
+			AVA_BASE_URL: '',
+			FRAUD_DETECTION_BASE_URL: '',
+			REGENT_TRACK_BASE_URL: '',
+			APP_VERSION: '',
+			COPYRIGHT_YEAR: '',
+			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
 		},
 		app: {},
 	},
+	
 	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
 });
