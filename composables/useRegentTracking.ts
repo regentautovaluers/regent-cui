@@ -114,6 +114,8 @@ const useRegentTracking = () => {
 			apiKey: 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY',
 			version: 'weekly',
 		});
+
+		activeTrackedDeviceLocation.value = 'Loading location...';
 		const lat = activeTrackedDevice.value!.location.lat;
 		const lng = activeTrackedDevice.value!.location.lng;
 		const Geocoding = await loader.importLibrary('geocoding');

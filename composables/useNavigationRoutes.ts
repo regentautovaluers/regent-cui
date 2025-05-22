@@ -145,7 +145,7 @@ const useNavigationRoutes = () => {
 		},
 		{
 			id: 5,
-			screenName: 'Tracking',
+			screenName: 'Regent Tracking',
 			routeName: 'regent-tracking-home',
 			renderRoute: true,
 			childRoutes: [
