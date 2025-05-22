@@ -500,7 +500,7 @@
 
 <script setup lang="ts">
 	import { type LocationCoords } from '~/types';
-	import { GoogleMap, InfoWindow } from 'vue3-google-map';
+	import { GoogleMap, InfoWindow, Polyline } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
 
 	definePageMeta({
