@@ -151,7 +151,7 @@ export const useRegentTracking = () => {
 	};
 };
 
-export const useHandleDeviceEvents = () => {
+export const useTrackedDeviceCommandsAndHistory = () => {
 	type DeviceCommand = {
 		type: string;
 		title: string;

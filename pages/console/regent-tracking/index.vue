@@ -113,8 +113,40 @@
 				</div>
 			</div>
 
-			<!-- events and history -->
-			<div class="p-2">
+			<!-- trigger device commands -->
+			<div class="py-4">
+				<h2 id="accordion-collapse-heading-1">
+					<button
+						type="button"
+						class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-5 font-medium text-gray-500 hover:bg-gray-100"
+						@click="eventModalOpenned = !eventModalOpenned">
+						<span>Trigger Events</span>
+						<svg
+							data-accordion-icon
+							:class="[
+								'h-3 w-3 shrink-0 transition-all duration-200 ease-linear',
+								eventModalOpenned ? 'rotate-0' : 'rotate-180',
+							]"
+							aria-hidden="true"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 10 6">
+							<path
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 5 5 1 1 5" />
+						</svg>
+					</button>
+				</h2>
+				<div :class="['p-5', eventModalOpenned ? 'block' : 'hidden']">
+					<TriggerTrackingDeviceEvent :device-id="Number(activeTrackedDevice.id)" />
+				</div>
+			</div>
+
+			<!-- get device history -->
+			<div class="py-4">
 				<h2 id="accordion-collapse-heading-1">
 					<button
 						type="button"

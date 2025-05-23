@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-	import { useHandleDeviceEvents } from '~/composables/useRegentTracking';
+	import { useTrackedDeviceCommandsAndHistory } from '~/composables/useRegentTracking';
 
 	const {
 		selectedCommand,
@@ -47,7 +47,7 @@
 		triggerDeviceCommand,
 		getDeviceCommandsLoading,
 		getEnabledDeviceCommands,
-	} = useHandleDeviceEvents();
+	} = useTrackedDeviceCommandsAndHistory();
 
 	const props = defineProps({
 		deviceId: {
