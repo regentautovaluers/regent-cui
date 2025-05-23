@@ -33,11 +33,20 @@
 					</div>
 				</CustomMarker>
 			</MarkerCluster>
+
+			<Polyline
+				:options="{
+					path: deviceHistory,
+					geodesic: true,
+					strokeColor: '#ec4899',
+					strokeOpacity: 1.0,
+					strokeWeight: 5,
+				}" />
 		</GoogleMap>
 		<div
-			class="relative flex h-full w-[30%] flex-col border-l-2 border-gray-500"
+			class="relative flex h-full w-[30%] flex-col overflow-y-auto border-l-2 border-gray-500"
 			v-if="activeTrackedDevice">
-			<div class="border-b- flex h-[7%] items-center justify-between bg-gray-100 px-4">
+			<div class="border-b- flex h-[7%] min-h-[7%] items-center justify-between bg-gray-100 px-4">
 				<h1 class="text-xl font-semibold uppercase text-gray-500">
 					{{ activeTrackedDevice.vehicleReg }}
 				</h1>
@@ -114,7 +123,7 @@
 			</div>
 
 			<!-- trigger device commands -->
-			<div class="py-4">
+			<div class="mx-2 py-4">
 				<h2 id="accordion-collapse-heading-1">
 					<button
 						type="button"
@@ -146,18 +155,18 @@
 			</div>
 
 			<!-- get device history -->
-			<div class="py-4">
+			<div class="mx-2 py-4">
 				<h2 id="accordion-collapse-heading-1">
 					<button
 						type="button"
 						class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-5 font-medium text-gray-500 hover:bg-gray-100"
-						@click="eventModalOpenned = !eventModalOpenned">
-						<span>Trigger Events</span>
+						@click="historyModalOpenned = !historyModalOpenned">
+						<span>Device History</span>
 						<svg
 							data-accordion-icon
 							:class="[
 								'h-3 w-3 shrink-0 transition-all duration-200 ease-linear',
-								eventModalOpenned ? 'rotate-0' : 'rotate-180',
+								historyModalOpenned ? 'rotate-0' : 'rotate-180',
 							]"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
@@ -172,8 +181,51 @@
 						</svg>
 					</button>
 				</h2>
-				<div :class="['p-5', eventModalOpenned ? 'block' : 'hidden']">
-					<TriggerTrackingDeviceEvent :device-id="Number(activeTrackedDevice.id)" />
+				<div :class="['p-5', historyModalOpenned ? 'block' : 'hidden']">
+					{{ startTimestamp }}
+					<form @submit.prevent="getDeviceHistory(Number(activeTrackedDevice.id))">
+						<!-- Starting date Field -->
+						<div>
+							<label
+								for="cover-period-starts"
+								class="generic-input-label"
+								>Choose Start Date-Time</label
+							>
+							<input
+								type="datetime-local"
+								id="cover-period-starts"
+								class="generic-input"
+								placeholder="Enter Customer Name as Seen In Their National ID"
+								required
+								v-model="startTimestamp" />
+						</div>
+
+						<!-- Ending date Field -->
+						<div>
+							<label
+								for="cover-period-ends"
+								class="generic-input-label"
+								>Choose End Date-Time</label
+							>
+							<input
+								type="datetime-local"
+								id="cover-period-ends"
+								class="generic-input"
+								placeholder="Enter Customer Name as Seen In Their National ID"
+								required
+								v-model="endTimestamp" />
+						</div>
+
+						<!-- submit button -->
+						<button
+							type="submit"
+							class="generic-form-submit mt-3 w-full">
+							<FormSubmissionLoader
+								classes="mr-2 size-6 animate-spin text-white"
+								v-if="getDeviceHistoryLoading" />
+							{{ getDeviceHistoryLoading ? 'Processing' : 'Retrieve' }}
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -216,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-	import { GoogleMap, CustomMarker, MarkerCluster } from 'vue3-google-map';
+	import { GoogleMap, CustomMarker, MarkerCluster, Polyline } from 'vue3-google-map';
 	import TriggerTrackingDeviceEvent from '~/components/forms/TriggerTrackingDeviceEvent.vue';
 
 	definePageMeta({
@@ -228,6 +280,7 @@
 	const isRegentTrackLoginModalOpen: Ref<boolean> = ref(true);
 	const { trackingGoogleMapsConfig } = useAppConfig();
 	const eventModalOpenned: Ref<boolean> = ref(false);
+	const historyModalOpenned: Ref<boolean> = ref(false);
 
 	const {
 		regentTrackingAuthToken,
@@ -237,6 +290,14 @@
 		activeTrackedDevice,
 		activeTrackedDeviceLocation,
 	} = useRegentTracking();
+
+	const {
+		startTimestamp,
+		deviceHistory,
+		endTimestamp,
+		getDeviceHistoryLoading,
+		getDeviceHistory,
+	} = useTrackedDeviceCommandsAndHistory();
 
 	onMounted(() => {
 		setInterval(() => {

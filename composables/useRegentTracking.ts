@@ -157,14 +157,27 @@ export const useTrackedDeviceCommandsAndHistory = () => {
 		title: string;
 	};
 
+	type DeviceHistory = {
+		lat: number;
+		lng: number;
+	};
+
 	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
 		'regent-tracking-auth-token',
 	);
 	const runtimeConfig = useRuntimeConfig();
+
+	// device commands
 	const selectedCommand: Ref<{ type: string; title: string } | null> = ref(null);
 	const triggerDeviceCommandLoading: Ref<boolean> = ref(false);
 	const getDeviceCommandsLoading: Ref<boolean> = ref(false);
 	const enabledDeviceCommands: Ref<DeviceCommand[]> = ref([]);
+
+	// device history
+	const getDeviceHistoryLoading: Ref<boolean> = ref(false);
+	const startTimestamp: Ref<string> = ref('');
+	const endTimestamp: Ref<string> = ref('');
+	const deviceHistory: Ref<DeviceHistory[]> = ref([]);
 
 	const getEnabledDeviceCommands = async (deviceId: number) => {
 		getDeviceCommandsLoading.value = true;
@@ -199,6 +212,58 @@ export const useTrackedDeviceCommandsAndHistory = () => {
 			});
 		} finally {
 			getDeviceCommandsLoading.value = false;
+		}
+	};
+
+	const getDeviceHistory = async (deviceId: number) => {
+		// sample input 2025-05-23T18:03
+
+		const startDate = startTimestamp.value.split('T')[0];
+		const startTime = startTimestamp.value.split('T')[1];
+		const endDate = endTimestamp.value.split('T')[0];
+		const endTime = endTimestamp.value.split('T')[1];
+
+		getDeviceHistoryLoading.value = true;
+		try {
+			await $fetch(
+				`/api/get_history?lang=en&user_api_hash=${regentTrackingAuthToken.value}&device_id=${deviceId}&from_date=${startDate}&from_time=${startTime}&to_date=${endDate}&to_time=${endTime}`,
+				{
+					baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
+					method: 'GET',
+					headers: {
+						Accept: 'application/json',
+					},
+					onResponse({ response }) {
+						const responseData = response._data;
+
+						if (response.ok) {
+							deviceHistory.value = responseData.items.flatMap((outerItem: any) =>
+								outerItem.items.map((item: any) => ({
+									lat: item.lat,
+									lng: item.lng,
+								})),
+							) as DeviceHistory[];
+
+							useToast('Success!', {
+								type: 'success',
+								showIcon: true,
+								showCloseButton: false,
+								hideProgressBar: true,
+							});
+						}
+					},
+				},
+			);
+		} catch (er) {
+			console.log('Error encountered. Reason: ', er);
+			useToast('Error. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			getDeviceHistoryLoading.value = false;
 		}
 	};
 
@@ -241,7 +306,12 @@ export const useTrackedDeviceCommandsAndHistory = () => {
 		enabledDeviceCommands,
 		triggerDeviceCommandLoading,
 		getDeviceCommandsLoading,
+		startTimestamp,
+		endTimestamp,
+		getDeviceHistoryLoading,
+		deviceHistory,
 		triggerDeviceCommand,
 		getEnabledDeviceCommands,
+		getDeviceHistory,
 	};
 };
