@@ -164,6 +164,7 @@ export type BotpressResponse = {
 };
 
 export type TrackedDevice = {
+	id: number | string;
 	vehicleReg: string;
 	lastPing: string | string;
 	location: {

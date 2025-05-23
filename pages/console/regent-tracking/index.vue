@@ -7,7 +7,7 @@
 		<GoogleMap
 			ref="mapRef"
 			api-key="AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY"
-			:styles="googleMapStyle"
+			:styles="trackingGoogleMapsConfig"
 			style="width: 100%; height: 100%"
 			:map-type-control="false"
 			:center="clientCoordinates"
@@ -37,7 +37,7 @@
 		<div
 			class="relative flex h-full w-[30%] flex-col border-l-2 border-gray-500"
 			v-if="activeTrackedDevice">
-			<div class="border-b- flex h-[7%] items-center justify-between bg-gray-200 px-4">
+			<div class="border-b- flex h-[7%] items-center justify-between bg-gray-100 px-4">
 				<h1 class="text-xl font-semibold uppercase text-gray-500">
 					{{ activeTrackedDevice.vehicleReg }}
 				</h1>
@@ -55,7 +55,7 @@
 						d="M9.293 18.707a1 1 0 0 1 0-1.414L14.586 12L9.293 6.707a1 1 0 0 1 1.414-1.414l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414 0" />
 				</svg>
 			</button>
-			<div class="flex-grow space-y-2 p-2 text-gray-500">
+			<div class="flex-h-fit space-y-2 p-2 text-gray-500">
 				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
 					<span class="font-semibold">Stop Duration:</span>
 					<span v-if="activeTrackedDevice.stopDuration">{{
@@ -112,6 +112,38 @@
 					<span>{{ activeTrackedDevice.lastPing }}</span>
 				</div>
 			</div>
+
+			<!-- events and history -->
+			<div class="p-2">
+				<h2 id="accordion-collapse-heading-1">
+					<button
+						type="button"
+						class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-5 font-medium text-gray-500 hover:bg-gray-100"
+						@click="eventModalOpenned = !eventModalOpenned">
+						<span>Trigger Events</span>
+						<svg
+							data-accordion-icon
+							:class="[
+								'h-3 w-3 shrink-0 transition-all duration-200 ease-linear',
+								eventModalOpenned ? 'rotate-0' : 'rotate-180',
+							]"
+							aria-hidden="true"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 10 6">
+							<path
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 5 5 1 1 5" />
+						</svg>
+					</button>
+				</h2>
+				<div :class="['p-5', eventModalOpenned ? 'block' : 'hidden']">
+					<TriggerTrackingDeviceEvent :device-id="Number(activeTrackedDevice.id)" />
+				</div>
+			</div>
 		</div>
 
 		<!-- Login modal -->
@@ -153,7 +185,7 @@
 
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker, MarkerCluster } from 'vue3-google-map';
-	import { googleMapStyle } from '~/config/tracking-google-map-config';
+	import TriggerTrackingDeviceEvent from '~/components/forms/TriggerTrackingDeviceEvent.vue';
 
 	definePageMeta({
 		name: 'regent-tracking-home',
@@ -162,6 +194,8 @@
 
 	const { clientCoordinates } = useClientGeolocation();
 	const isRegentTrackLoginModalOpen: Ref<boolean> = ref(true);
+	const { trackingGoogleMapsConfig } = useAppConfig();
+	const eventModalOpenned: Ref<boolean> = ref(false);
 
 	const {
 		regentTrackingAuthToken,

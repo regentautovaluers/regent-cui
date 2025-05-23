@@ -2,14 +2,15 @@ import type { CookieRef } from '#app';
 import { Loader } from '@googlemaps/js-api-loader';
 import { type TrackedDevice } from '~/types';
 
-const useRegentTracking = () => {
+export const useRegentTracking = () => {
+	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
+		'regent-tracking-auth-token',
+	);
 	const runtimeConfig = useRuntimeConfig();
 	const email: Ref<string> = ref('');
 	const password: Ref<string> = ref('');
 	const loginAttemptLoading: Ref<boolean> = ref(false);
-	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
-		'regent-tracking-auth-token',
-	);
+
 	const searchRegNo: Ref<string> = ref('');
 	const activeTrackedDevice: Ref<TrackedDevice | null> = ref(null);
 	const activeTrackedDeviceLocation: Ref<String> = ref('');
@@ -68,6 +69,7 @@ const useRegentTracking = () => {
 		transform(data: any) {
 			return data[0].items.map((item: any) => {
 				return {
+					id: item.id,
 					vehicleReg: item.name,
 					lastPing: item.time,
 					location: {
@@ -84,7 +86,7 @@ const useRegentTracking = () => {
 
 					speed: item.speed,
 					speedUnits: item.distance_unit_hour,
-				};
+				} as TrackedDevice;
 			});
 		},
 		onResponse({ response }) {
@@ -98,7 +100,7 @@ const useRegentTracking = () => {
 				});
 			}
 		},
-	}) as unknown as TrackedDevice[];
+	});
 
 	const vehicles: ComputedRef<any[]> = computed(() => {
 		if (!searchRegNo.value) {
@@ -140,13 +142,106 @@ const useRegentTracking = () => {
 		loginAttemptLoading,
 		regentTrackingAuthToken,
 		fetchTrackedVehiclesStatus,
-		fetchTrackedVehicles,
 		vehicles,
 		searchRegNo,
 		activeTrackedDevice,
-		attemptLogin,
 		activeTrackedDeviceLocation,
+		fetchTrackedVehicles,
+		attemptLogin,
 	};
 };
 
-export default useRegentTracking;
+export const useHandleDeviceEvents = () => {
+	type DeviceCommand = {
+		type: string;
+		title: string;
+	};
+
+	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
+		'regent-tracking-auth-token',
+	);
+	const runtimeConfig = useRuntimeConfig();
+	const selectedCommand: Ref<{ type: string; title: string } | null> = ref(null);
+	const triggerDeviceCommandLoading: Ref<boolean> = ref(false);
+	const getDeviceCommandsLoading: Ref<boolean> = ref(false);
+	const enabledDeviceCommands: Ref<DeviceCommand[]> = ref([]);
+
+	const getEnabledDeviceCommands = async (deviceId: number) => {
+		getDeviceCommandsLoading.value = true;
+		try {
+			await $fetch(
+				`/api/get_device_commands?lang=en&user_api_hash=${regentTrackingAuthToken.value}&device_id=${deviceId}`,
+				{
+					baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
+					method: 'GET',
+					headers: {
+						Accept: 'application/json',
+					},
+					onResponse({ response }) {
+						const responseData = response._data;
+
+						if (response.ok) {
+							enabledDeviceCommands.value = responseData.filter(
+								(item: DeviceCommand) =>
+									item.type !== 'custom' && !item.type.includes('template'),
+							) as DeviceCommand[];
+						}
+					},
+				},
+			);
+		} catch (er) {
+			console.log('Error encountered. Reason: ', er);
+			useToast('Error. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			getDeviceCommandsLoading.value = false;
+		}
+	};
+
+	const triggerDeviceCommand = async (deviceId: number) => {
+		triggerDeviceCommandLoading.value = true;
+		try {
+			await $fetch(
+				`/api/send_gprs_command?lang=en&user_api_hash=${regentTrackingAuthToken.value}&type=${selectedCommand.value?.type}&message=${selectedCommand.value?.title}&device_id=${deviceId}`,
+				{
+					baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+					},
+					onResponse({ response }) {
+						useToast('Success!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: false,
+							hideProgressBar: true,
+						});
+					},
+				},
+			);
+		} catch (er) {
+			console.log('Error encountered. Reason: ', er);
+			useToast('Error. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			triggerDeviceCommandLoading.value = false;
+		}
+	};
+
+	return {
+		selectedCommand,
+		enabledDeviceCommands,
+		triggerDeviceCommandLoading,
+		getDeviceCommandsLoading,
+		triggerDeviceCommand,
+		getEnabledDeviceCommands,
+	};
+};
