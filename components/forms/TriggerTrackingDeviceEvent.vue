@@ -1,0 +1,62 @@
+<template>
+	<form @submit.prevent="triggerDeviceCommand(props.deviceId)">
+		<!-- Full Name Field -->
+		<div class="relative">
+			<label
+				for="fleet-name"
+				class="generic-input-label"
+				>Event Category</label
+			>
+			<select
+				class="generic-input"
+				id="fleet-name"
+				v-model="selectedCommand"
+				required>
+				<option :value="0">Select the Command to Trigger</option>
+				<option
+					v-for="(command, index) in enabledDeviceCommands"
+					:key="index"
+					:value="command">
+					{{ command.title }}
+				</option>
+			</select>
+			<FormSubmissionLoader
+				classes="mr-2 absolute right-0 top-[52%] right-6 size-5 animate-spin text-gray-500"
+				v-if="getDeviceCommandsLoading" />
+		</div>
+
+		<!-- submit button -->
+		<button
+			type="submit"
+			class="generic-form-submit mt-3 w-full">
+			<FormSubmissionLoader
+				classes="mr-2 size-6 animate-spin text-white"
+				v-if="triggerDeviceCommandLoading" />
+			{{ triggerDeviceCommandLoading ? 'Processing' : 'Trigger' }}
+		</button>
+	</form>
+</template>
+
+<script setup lang="ts">
+	import { useHandleDeviceEvents } from '~/composables/useRegentTracking';
+
+	const {
+		selectedCommand,
+		enabledDeviceCommands,
+		triggerDeviceCommandLoading,
+		triggerDeviceCommand,
+		getDeviceCommandsLoading,
+		getEnabledDeviceCommands,
+	} = useHandleDeviceEvents();
+
+	const props = defineProps({
+		deviceId: {
+			required: true,
+			type: Number,
+		},
+	});
+
+	onMounted(async () => {
+		await getEnabledDeviceCommands(props.deviceId);
+	});
+</script>
