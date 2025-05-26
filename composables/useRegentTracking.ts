@@ -315,3 +315,36 @@ export const useTrackedDeviceCommandsAndHistory = () => {
 		getDeviceHistory,
 	};
 };
+
+export const useTrackingTraceabilityReports = () => {
+	const runtimeConfig = useRuntimeConfig();
+	const searchRegNo: Ref<string> = ref('');
+	const currentPage: Ref<number> = ref(0);
+	const size: Ref<number> = ref(10);
+	const totalPages: Ref<number> = ref(0);
+
+	const {
+		status: fetchTraceabilityReportsStatus,
+		execute: executeFetchTraceabilityReports,
+		data: traceabilityReports,
+	} = useFetch('', {
+		key: 'traceability-report',
+		baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+		},
+		server: false,
+		lazy: true,
+	});
+
+	return {
+		searchRegNo,
+		fetchTraceabilityReportsStatus,
+		size,
+		currentPage,
+		traceabilityReports,
+		totalPages,
+		executeFetchTraceabilityReports,
+	};
+};
