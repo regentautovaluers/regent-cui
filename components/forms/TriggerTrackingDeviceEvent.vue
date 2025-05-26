@@ -8,7 +8,7 @@
 				>Event Category</label
 			>
 			<select
-				class="generic-input"
+				class="generic-input h-[60px]"
 				id="fleet-name"
 				v-model="selectedCommand"
 				required>

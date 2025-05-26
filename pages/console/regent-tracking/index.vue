@@ -46,13 +46,14 @@
 		<div
 			class="relative flex h-full w-[30%] flex-col overflow-y-auto border-l-2 border-gray-500"
 			v-if="activeTrackedDevice">
-			<div class="border-b- flex h-[7%] min-h-[7%] items-center justify-between bg-gray-100 px-4">
+			<div
+				class="border-b- flex h-[7%] min-h-[7%] items-center justify-between bg-gray-100 px-4">
 				<h1 class="text-xl font-semibold uppercase text-gray-500">
 					{{ activeTrackedDevice.vehicleReg }}
 				</h1>
 			</div>
 			<button
-				class="absolute -left-4 top-1/2 flex size-8 items-center justify-center rounded-full bg-white text-gray-500 shadow-md transition-colors hover:bg-gray-300"
+				class="absolute bottom-4 left-4 inline-flex size-fit items-center justify-center space-x-1 rounded-full bg-white p-2 text-gray-500 shadow-md transition-colors hover:bg-gray-300"
 				@click="activeTrackedDevice = null">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -63,78 +64,22 @@
 						fill="currentColor"
 						d="M9.293 18.707a1 1 0 0 1 0-1.414L14.586 12L9.293 6.707a1 1 0 0 1 1.414-1.414l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414 0" />
 				</svg>
+				<span>Close</span>
 			</button>
-			<div class="flex-h-fit space-y-2 p-2 text-gray-500">
-				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
-					<span class="font-semibold">Stop Duration:</span>
-					<span v-if="activeTrackedDevice.stopDuration">{{
-						activeTrackedDevice.stopDuration
-					}}</span>
-					<span v-else>-</span>
-				</div>
-				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
-					<span class="font-semibold">Driver:</span>
-					<span
-						v-if="activeTrackedDevice.driver.name && activeTrackedDevice.driver.phone">
-						{{ activeTrackedDevice.driver.name }} ({{
-							activeTrackedDevice.driver.phone
-						}})
-					</span>
-					<span v-else>-</span>
-				</div>
-				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
-					<span class="font-semibold">Sensors:</span>
-					<span
-						v-if="
-							activeTrackedDevice.sensors != null &&
-							activeTrackedDevice.sensors.length > 0
-						"
-						v-for="(sensor, index) in activeTrackedDevice.sensors"
-						:key="index">
-						{{ sensor.name }} ({{ sensor.value }})
-					</span>
-					<span v-else>-</span>
-				</div>
-				<div
-					class="flex flex-col justify-center space-y-2 border-b-[1px] border-gray-300 py-4">
-					<span class="font-semibold">Location:</span>
-					<span>{{ activeTrackedDeviceLocation }}</span>
-				</div>
-				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
-					<span class="font-semibold">Position:</span>
-					<span
-						>{{ activeTrackedDevice.location.lat }},
-						{{ activeTrackedDevice.location.lng }}</span
-					>
-				</div>
-				<div class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
-					<span class="font-semibold"
-						>Last
-						<a
-							href="https://en.wikipedia.org/wiki/Ping_(networking_utility)#:~:text=ping%20is%20a%20computer%20network,most%20embedded%20network%20administration%20software."
-							target="_blank"
-							class="text-blue-500 underline underline-offset-2"
-							>PING</a
-						>
-						:</span
-					>
-					<span>{{ activeTrackedDevice.lastPing }}</span>
-				</div>
-			</div>
 
-			<!-- trigger device commands -->
+			<!-- device details -->
 			<div class="mx-2 py-4">
 				<h2 id="accordion-collapse-heading-1">
 					<button
 						type="button"
 						class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-5 font-medium text-gray-500 hover:bg-gray-100"
-						@click="eventModalOpenned = !eventModalOpenned">
-						<span>Trigger Events</span>
+						@click="deviceDetailsAccordionOpenned = !deviceDetailsAccordionOpenned">
+						<span>Device Details</span>
 						<svg
 							data-accordion-icon
 							:class="[
 								'h-3 w-3 shrink-0 transition-all duration-200 ease-linear',
-								eventModalOpenned ? 'rotate-0' : 'rotate-180',
+								deviceDetailsAccordionOpenned ? 'rotate-0' : 'rotate-180',
 							]"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +94,100 @@
 						</svg>
 					</button>
 				</h2>
-				<div :class="['p-5', eventModalOpenned ? 'block' : 'hidden']">
+				<div :class="['p-5', deviceDetailsAccordionOpenned ? 'block' : 'hidden']">
+					<div
+						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						<span class="font-semibold">Stop Duration:</span>
+						<span v-if="activeTrackedDevice.stopDuration">{{
+							activeTrackedDevice.stopDuration
+						}}</span>
+						<span v-else>-</span>
+					</div>
+					<div
+						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						<span class="font-semibold">Driver:</span>
+						<span
+							v-if="
+								activeTrackedDevice.driver.name && activeTrackedDevice.driver.phone
+							">
+							{{ activeTrackedDevice.driver.name }} ({{
+								activeTrackedDevice.driver.phone
+							}})
+						</span>
+						<span v-else>-</span>
+					</div>
+					<div
+						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						<span class="font-semibold">Sensors:</span>
+						<span
+							v-if="
+								activeTrackedDevice.sensors != null &&
+								activeTrackedDevice.sensors.length > 0
+							"
+							v-for="(sensor, index) in activeTrackedDevice.sensors"
+							:key="index">
+							{{ sensor.name }} ({{ sensor.value }})
+						</span>
+						<span v-else>-</span>
+					</div>
+					<div
+						class="flex flex-col justify-center space-y-2 border-b-[1px] border-gray-300 py-4">
+						<span class="font-semibold">Location:</span>
+						<span>{{ activeTrackedDeviceLocation }}</span>
+					</div>
+					<div
+						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						<span class="font-semibold">Position:</span>
+						<span
+							>{{ activeTrackedDevice.location.lat }},
+							{{ activeTrackedDevice.location.lng }}</span
+						>
+					</div>
+					<div
+						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						<span class="font-semibold"
+							>Last
+							<a
+								href="https://en.wikipedia.org/wiki/Ping_(networking_utility)#:~:text=ping%20is%20a%20computer%20network,most%20embedded%20network%20administration%20software."
+								target="_blank"
+								class="text-blue-500 underline underline-offset-2"
+								>PING</a
+							>
+							:</span
+						>
+						<span>{{ activeTrackedDevice.lastPing }}</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- trigger device commands -->
+			<div class="mx-2 py-4">
+				<h2 id="accordion-collapse-heading-1">
+					<button
+						type="button"
+						class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-5 font-medium text-gray-500 hover:bg-gray-100"
+						@click="eventAccordionOpenned = !eventAccordionOpenned">
+						<span>Trigger Commands</span>
+						<svg
+							data-accordion-icon
+							:class="[
+								'h-3 w-3 shrink-0 transition-all duration-200 ease-linear',
+								eventAccordionOpenned ? 'rotate-0' : 'rotate-180',
+							]"
+							aria-hidden="true"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 10 6">
+							<path
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 5 5 1 1 5" />
+						</svg>
+					</button>
+				</h2>
+				<div :class="['p-5', eventAccordionOpenned ? 'block' : 'hidden']">
 					<TriggerTrackingDeviceEvent :device-id="Number(activeTrackedDevice.id)" />
 				</div>
 			</div>
@@ -160,13 +198,13 @@
 					<button
 						type="button"
 						class="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-5 font-medium text-gray-500 hover:bg-gray-100"
-						@click="historyModalOpenned = !historyModalOpenned">
+						@click="historyAccordionOpenned = !historyAccordionOpenned">
 						<span>Device History</span>
 						<svg
 							data-accordion-icon
 							:class="[
 								'h-3 w-3 shrink-0 transition-all duration-200 ease-linear',
-								historyModalOpenned ? 'rotate-0' : 'rotate-180',
+								historyAccordionOpenned ? 'rotate-0' : 'rotate-180',
 							]"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
@@ -181,7 +219,7 @@
 						</svg>
 					</button>
 				</h2>
-				<div :class="['p-5', historyModalOpenned ? 'block' : 'hidden']">
+				<div :class="['p-5', historyAccordionOpenned ? 'block' : 'hidden']">
 					{{ startTimestamp }}
 					<form @submit.prevent="getDeviceHistory(Number(activeTrackedDevice.id))">
 						<!-- Starting date Field -->
@@ -279,8 +317,26 @@
 	const { clientCoordinates } = useClientGeolocation();
 	const isRegentTrackLoginModalOpen: Ref<boolean> = ref(true);
 	const { trackingGoogleMapsConfig } = useAppConfig();
-	const eventModalOpenned: Ref<boolean> = ref(false);
-	const historyModalOpenned: Ref<boolean> = ref(false);
+	const eventAccordionOpenned: Ref<boolean> = ref(false);
+	const historyAccordionOpenned: Ref<boolean> = ref(false);
+	const deviceDetailsAccordionOpenned: Ref<boolean> = ref(false);
+
+	watch(
+		[() => eventAccordionOpenned.value, () => historyAccordionOpenned.value, () => deviceDetailsAccordionOpenned.value],
+		([eventAccordionOpennedVal, historyAccordionOpennedVal, deviceDetailsAccordionOpennedVal]) => {
+			if (eventAccordionOpennedVal) {
+				historyAccordionOpenned.value = false;
+				deviceDetailsAccordionOpenned.value = false;
+			} else if (historyAccordionOpennedVal) {
+				eventAccordionOpenned.value = false;
+				deviceDetailsAccordionOpenned.value = false;
+			} else if (deviceDetailsAccordionOpennedVal) {
+				eventAccordionOpenned.value = false;
+				historyAccordionOpenned.value = false;
+			}
+		},
+		{ deep: true },
+	);
 
 	const {
 		regentTrackingAuthToken,
