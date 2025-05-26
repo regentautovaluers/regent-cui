@@ -3,7 +3,7 @@
 		<div class="mt-4 grid flex-grow grid-cols-1 lg:grid-cols-[20%,80%]">
 			<!-- top information column -->
 			<div
-				class="col-span-2 flex h-[7rem] items-center justify-between rounded-t-lg border p-4">
+				class="col-span-2 flex h-[7rem] items-center justify-between rounded-t-lg border bg-white p-4">
 				<div class="flex w-full items-center space-x-3 md:w-fit">
 					<img
 						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
@@ -28,7 +28,7 @@
 
 			<!-- statistics strip -->
 			<div
-				class="col-span-2 mb-10 flex min-h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 p-3 shadow-sm">
+				class="col-span-2 mb-10 flex min-h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 bg-white p-3 shadow-sm">
 				<div
 					class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
 					<svg
@@ -131,7 +131,7 @@
 							client_lng: clientCoordinates.lng,
 						},
 					}"
-					class="ava-services-quicklinks group">
+					class="ava-services-quicklinks group bg-white">
 					<FuelDeliveryServiceIcon
 						color="#1c64f2"
 						:classes="['size-12']" />
@@ -145,7 +145,7 @@
 							client_lng: clientCoordinates.lng,
 						},
 					}"
-					class="ava-services-quicklinks">
+					class="ava-services-quicklinks bg-white">
 					<JumpstartingServiceIcon
 						color="#1c64f2"
 						:classes="['size-12']" />
@@ -159,7 +159,7 @@
 							client_lng: clientCoordinates.lng,
 						},
 					}"
-					class="ava-services-quicklinks">
+					class="ava-services-quicklinks bg-white">
 					<TyrechangeServiceIcon
 						color="#1c64f2"
 						:classes="['size-12']" />
@@ -173,7 +173,7 @@
 							client_lng: clientCoordinates.lng,
 						},
 					}"
-					class="ava-services-quicklinks">
+					class="ava-services-quicklinks bg-white">
 					<TowingServiceIcon
 						color="#1c64f2"
 						:classes="['size-12']" />
@@ -185,7 +185,7 @@
 			<div
 				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 				<div
-					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
+					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
 					<h1 class="text-2xl font-extrabold">Distribution</h1>
 					<div
 						class="flex h-full items-center justify-center"
@@ -224,7 +224,7 @@
 						:data="raIncidentsDoughnutData.data" />
 				</div>
 				<div
-					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border p-5 shadow-sm xl:h-1/2">
+					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
 					<h1 class="text-2xl font-extrabold">Top Recent Incidents</h1>
 					<div
 						class="flex h-full items-center justify-center"

@@ -1,7 +1,7 @@
 <template>
 	<div class="console-layout-spacing b grid flex-grow grid-cols-1 lg:grid-cols-[80%,20%]">
 		<div
-			class="col-span-2 mb-10 flex h-[8rem] items-center justify-between rounded-lg border p-4 shadow-sm">
+			class="col-span-2 mb-10 flex h-[8rem] items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
 				<img
 					class="h-20 w-20 rounded-full"
@@ -270,7 +270,7 @@
 		<div
 			class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 			<div
-				class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border px-5 shadow-sm xl:h-1/2">
+				class="xl:min-h-1/2 v flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white px-5 shadow-sm xl:h-1/2">
 				<div class="flex h-14 items-center justify-between">
 					<h1 class="text-2xl font-bold">About</h1>
 					<button
@@ -314,7 +314,7 @@
 						</button>
 					</div>
 					<div class="my-4 w-full text-center">
-						<h1 class="text-center text-3xl font-bold">Our Services</h1>
+						<h1 class="text-center text-2xl font-bold">Our Services</h1>
 						<h2 class="text-center font-bold text-gray-500">
 							{{ regentServices[activeDescriptionIndex].name }}
 						</h2>
@@ -335,7 +335,7 @@
 				</div>
 			</div>
 			<div
-				class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border shadow-sm xl:h-1/2">
+				class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white shadow-sm xl:h-1/2">
 				<h1 class="p-5 text-2xl font-bold">Memberships</h1>
 
 				<div
