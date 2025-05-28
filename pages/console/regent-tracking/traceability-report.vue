@@ -3,7 +3,7 @@
 	<div class="console-layout-spacing">
 		<!-- div to show when there is an error -->
 		<div
-			v-if="fetchTraceabilityReportsStatus === 'error'"
+			v-if="fetchTrackingCertificatesStatus === 'error'"
 			class="flex h-full flex-col items-center justify-center space-y-4 rounded-md border">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -17,7 +17,9 @@
 
 		<!-- div to show when there are no incidents -->
 		<div
-			v-else-if="fetchTraceabilityReportsStatus === 'success' && !traceabilityReports.length"
+			v-else-if="
+				fetchTrackingCertificatesStatus === 'success' && !trackingCertificates.length
+			"
 			class="flex h-full flex-col items-center justify-center space-y-4 rounded-md border">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no incidents!</h1>
@@ -51,17 +53,17 @@
 								<th
 									scope="col"
 									class="table-headers">
-									Expiry Date
+									Reg No
 								</th>
 								<th
 									scope="col"
 									class="table-headers">
-									Subscription Status
+									Installation Date
 								</th>
 								<th
 									scope="col"
 									class="table-headers">
-									Status
+									Renewal Date
 								</th>
 								<th
 									scope="col"
@@ -77,7 +79,7 @@
 							<!-- loading state -->
 							<tr
 								class="border-b bg-white hover:bg-gray-100"
-								v-if="fetchTraceabilityReportsStatus === 'pending'"
+								v-if="fetchTrackingCertificatesStatus === 'pending'"
 								v-for="a in 10">
 								<td
 									scope="row"
@@ -109,6 +111,33 @@
 								<td class="max-w-48 py-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>demolocation</span
+									>
+								</td>
+								<td></td>
+							</tr>
+							<tr
+								class="border-b bg-white hover:bg-gray-100"
+								v-else
+								v-for="(certificate, index) in trackingCertificates?.slice(0, 10)"
+								:key="index">
+								<td class="inline-flex flex-col p-4">
+									<span>{{ certificate.clientName ?? 'Name N/A' }}</span>
+									<span
+										class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+										>{{ certificate.clientNo }}</span
+									>
+								</td>
+								<td class="p-4 text-blue-600">
+									{{ certificate.installationDate }}
+								</td>
+								<td class="p-4 font-semibold text-pink-600">
+									{{ certificate.regno }}
+								</td>
+								<td class="inline-flex flex-col p-4">
+									<span>{{ certificate.installationDate ?? 'Email N/A' }}</span>
+									<span
+										class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+										>{{ certificate.renewalDate }}</span
 									>
 								</td>
 								<td></td>
@@ -148,11 +177,11 @@
 
 	const {
 		searchRegNo,
-		fetchTraceabilityReportsStatus,
+		fetchTrackingCertificatesStatus,
 		size,
 		currentPage,
-		traceabilityReports,
+		trackingCertificates,
 		totalPages,
-		executeFetchTraceabilityReports,
+		executeFetchTrackingCertificates,
 	} = useTrackingTraceabilityReports();
 </script>

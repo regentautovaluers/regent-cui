@@ -182,3 +182,11 @@ export type TrackedDevice = {
 	speed: string | number;
 	speedUnits: string;
 };
+
+export type TrackerInstallationCertificate = {
+	clientName: string;
+	clientNo: string;
+	regno: string;
+	installationDate: string;
+	renewalDate: string;
+};
