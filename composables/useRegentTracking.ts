@@ -1,6 +1,6 @@
 import type { CookieRef } from '#app';
 import { Loader } from '@googlemaps/js-api-loader';
-import { type TrackedDevice } from '~/types';
+import { type TrackedDevice, type TrackerInstallationCertificate } from '~/types';
 
 export const useRegentTracking = () => {
 	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
@@ -324,12 +324,12 @@ export const useTrackingTraceabilityReports = () => {
 	const totalPages: Ref<number> = ref(0);
 
 	const {
-		status: fetchTraceabilityReportsStatus,
-		execute: executeFetchTraceabilityReports,
-		data: traceabilityReports,
-	} = useFetch('', {
-		key: 'traceability-report',
-		baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
+		status: fetchTrackingCertificatesStatus,
+		execute: executeFetchTrackingCertificates,
+		data: trackingCertificates,
+	} = useFetch<TrackerInstallationCertificate[]>('/tracking/api_certificates.php', {
+		key: 'tracker-installation-certificates',
+		baseURL: runtimeConfig.public.REGENT_TRACK_CERTS_BASE_URL,
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',
@@ -340,11 +340,11 @@ export const useTrackingTraceabilityReports = () => {
 
 	return {
 		searchRegNo,
-		fetchTraceabilityReportsStatus,
+		fetchTrackingCertificatesStatus,
 		size,
 		currentPage,
-		traceabilityReports,
+		trackingCertificates,
 		totalPages,
-		executeFetchTraceabilityReports,
+		executeFetchTrackingCertificates,
 	};
 };
