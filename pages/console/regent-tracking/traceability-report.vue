@@ -18,7 +18,7 @@
 		<!-- div to show when there are no incidents -->
 		<div
 			v-else-if="
-				fetchTrackingCertificatesStatus === 'success' && !trackingCertificates.length
+				fetchTrackingCertificatesStatus === 'success' && !trackingCertificates?.length
 			"
 			class="flex h-full flex-col items-center justify-center space-y-4 rounded-md border">
 			<BirdieNotFoundIcon />
