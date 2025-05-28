@@ -73,9 +73,10 @@ export default defineNuxtConfig({
 			APP_VERSION: '',
 			COPYRIGHT_YEAR: '',
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
+			REGENT_TRACK_CERTS_BASE_URL: '',
 		},
 		app: {},
 	},
-	
+
 	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
 });
