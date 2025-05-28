@@ -70,6 +70,7 @@ export const useRegentTracking = () => {
 			return data[0].items.map((item: any) => {
 				return {
 					id: item.id,
+					pinColor: item.icon_color,
 					vehicleReg: item.name,
 					lastPing: item.time,
 					location: {

@@ -26,9 +26,13 @@
 						},
 						anchorPoint: 'BOTTOM_CENTER',
 					}"
-					@click="activeTrackedDevice = marker">
+					@click="activeTrackedDevice = marker"
+					:style="`--marker-color: ${mapColorToTailwindEquivalent(marker.pinColor).hex}`">
 					<div
-						class="myloc-box flex h-12 w-fit items-center space-x-2 rounded-lg bg-pink-600 text-white">
+						:class="[
+							'myloc-box flex h-12 w-fit items-center space-x-2 rounded-lg text-white',
+						]"
+						style="background-color: var(--marker-color)">
 						<h1 class="text-lg font-semibold">{{ marker.vehicleReg }}</h1>
 					</div>
 				</CustomMarker>
@@ -322,8 +326,16 @@
 	const deviceDetailsAccordionOpenned: Ref<boolean> = ref(false);
 
 	watch(
-		[() => eventAccordionOpenned.value, () => historyAccordionOpenned.value, () => deviceDetailsAccordionOpenned.value],
-		([eventAccordionOpennedVal, historyAccordionOpennedVal, deviceDetailsAccordionOpennedVal]) => {
+		[
+			() => eventAccordionOpenned.value,
+			() => historyAccordionOpenned.value,
+			() => deviceDetailsAccordionOpenned.value,
+		],
+		([
+			eventAccordionOpennedVal,
+			historyAccordionOpennedVal,
+			deviceDetailsAccordionOpennedVal,
+		]) => {
 			if (eventAccordionOpennedVal) {
 				historyAccordionOpenned.value = false;
 				deviceDetailsAccordionOpenned.value = false;
@@ -355,9 +367,38 @@
 		getDeviceHistory,
 	} = useTrackedDeviceCommandsAndHistory();
 
+	const mapColorToTailwindEquivalent = (
+		color: 'green' | 'blue' | 'red' | 'yellow' | 'black',
+	): { human_readable: string; hex: string } => {
+		switch (color) {
+			case 'green':
+				return { human_readable: 'bg-green-500', hex: '#00c951' };
+			case 'blue':
+				return { human_readable: 'bg-blue-500', hex: '#2b7fff' };
+			case 'red':
+				return { human_readable: 'bg-red-500', hex: '#fb2c36' };
+			case 'yellow':
+				return { human_readable: 'bg-yellow-500', hex: '#efb100' };
+			case 'black':
+				return { human_readable: 'bg-black', hex: '#000000' };
+		}
+	};
+
 	onMounted(() => {
 		setInterval(() => {
 			fetchTrackedVehicles();
 		}, 30000);
 	});
 </script>
+
+<style lang="css" scoped>
+	.myloc-box::after {
+		content: '';
+		position: absolute;
+		bottom: -20px;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 10px solid transparent;
+		border-top-color: var(--marker-color);
+	}
+</style>

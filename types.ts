@@ -165,6 +165,7 @@ export type BotpressResponse = {
 
 export type TrackedDevice = {
 	id: number | string;
+	pinColor: 'green' | 'blue' | 'red' | 'yellow' | 'black';
 	vehicleReg: string;
 	lastPing: string | string;
 	location: {
