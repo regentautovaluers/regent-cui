@@ -52,8 +52,12 @@
 			v-if="activeTrackedDevice">
 			<div
 				class="border-b- flex h-[7%] min-h-[7%] items-center justify-between bg-gray-100 px-4">
-				<h1 class="text-xl font-semibold uppercase text-gray-500">
-					{{ activeTrackedDevice.vehicleReg }}
+				<h1 class="inline-flex items-center space-x-2 uppercase text-gray-500">
+					<span class="text-xl font-semibold">{{ activeTrackedDevice.vehicleReg }}</span
+					><span>|</span
+					><span class="text-xl font-semibold">{{
+						activeTrackedDevice.trackerStatus
+					}}</span>
 				</h1>
 			</div>
 			<button

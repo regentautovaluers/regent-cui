@@ -71,6 +71,7 @@ export const useRegentTracking = () => {
 				return {
 					id: item.id,
 					pinColor: item.icon_color,
+					trackerStatus: item.online,
 					vehicleReg: item.name,
 					lastPing: item.time,
 					location: {
