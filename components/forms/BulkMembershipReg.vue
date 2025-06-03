@@ -16,7 +16,7 @@
 			<span class="sr-only">Info</span>
 			<h3 class="text-lg font-medium">Notice On Client Fleets</h3>
 		</div>
-		<div class="mb-4 mt-2">
+		<div class="mt-2 mb-4">
 			<p>
 				You must have a fleet before you can add members. The members you onboard using this
 				form will be linked to that fleet. If you have no fleet, click the 'Add Fleet'
@@ -27,7 +27,7 @@
 		<div class="flex">
 			<button
 				type="button"
-				class="me-2 inline-flex items-center rounded-lg bg-yellow-800 px-3 py-1.5 text-center font-medium text-white hover:bg-yellow-900 focus:outline-none focus:ring-4 focus:ring-yellow-300"
+				class="me-2 inline-flex items-center rounded-lg bg-yellow-800 px-3 py-1.5 text-center font-medium text-white hover:bg-yellow-900 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
 				@click="isAddFleetModalOpen = true">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@
 			</button>
 			<button
 				type="button"
-				class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300"
+				class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
 				data-dismiss-target="#alert-additional-content-4"
 				aria-label="Close"
 				@click="reloadFleets">
@@ -79,7 +79,7 @@
 				v-if="retrievingFleetList" />
 		</div>
 		<div
-			class="mt-7 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+			class="mt-7 flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -140,7 +140,7 @@
 				href="https://drive.google.com/uc?export=download&id=1owNqofnZn3X4w9OOognfBACE16jE9mNt"
 				target="_top"
 				type="button"
-				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-400 bg-opacity-50 px-4 py-3 text-pink-500 disabled:pointer-events-none disabled:opacity-50">
+				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-400 px-4 py-3 text-pink-500 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
 				<span> Click here to intiate excel template download </span>
 				<DownloadIcon />
 			</a>
@@ -155,7 +155,7 @@
 			<div>
 				<label
 					for="dropzone-file"
-					class="mt-3 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 bg-opacity-50 px-4 py-3">
+					class="mt-3 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 px-4 py-3 backdrop-opacity-50">
 					<div class="flex w-full items-center justify-between text-blue-500">
 						<span> Click here to upload the completed Excel document </span>
 						<UploadIcon />
@@ -184,7 +184,7 @@
 				aria-valuemin="0"
 				aria-valuemax="100">
 				<div
-					class="flex flex-col justify-center overflow-hidden whitespace-nowrap rounded-full bg-blue-600 text-center text-xs text-white transition duration-500"
+					class="flex flex-col justify-center overflow-hidden rounded-full bg-blue-600 text-center text-xs whitespace-nowrap text-white transition duration-500"
 					:style="{ width: currentProgress }" />
 			</div>
 			<div class="flex w-full items-center justify-between text-end text-lg text-gray-500">

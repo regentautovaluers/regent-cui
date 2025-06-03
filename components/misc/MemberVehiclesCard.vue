@@ -18,9 +18,9 @@
 			</div>
 		</div>
 		<div
-			class="flex h-12 items-center space-x-2 rounded-b-lg bg-gray-600 bg-opacity-40 pl-4 font-semibold text-white">
+			class="flex h-12 items-center space-x-2 rounded-b-lg bg-gray-600 pl-4 font-semibold text-white backdrop-opacity-40">
 			<div
-				class="rounded-full size-3"
+				class="size-3 rounded-full"
 				:class="props.membershipStatus === 'Active' ? 'bg-green-500' : 'bg-red-500'" />
 			<h1>{{ props.membershipStatus }}</h1>
 		</div>

@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<button
-					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold uppercase text-white hover:bg-blue-700 disabled:bg-gray-300"
+					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white uppercase hover:bg-blue-700 disabled:bg-gray-300"
 					disabled>
 					Download Report
 				</button>
@@ -157,7 +157,7 @@
 					aria-valuemin="0"
 					aria-valuemax="100">
 					<div
-						class="flex flex-col justify-center overflow-hidden whitespace-nowrap rounded-full bg-pink-600 text-center text-xs text-white transition duration-500"
+						class="flex flex-col justify-center overflow-hidden rounded-full bg-pink-600 text-center text-xs whitespace-nowrap text-white transition duration-500"
 						:style="{ width: `${currentPercentage}%` }" />
 				</div>
 				<div
@@ -238,7 +238,7 @@
 								{{ serviceReport.vehicle_model }}</span
 							>
 						</div>
-						<h2 class="whitespace-nowrap font-semibold text-gray-700">
+						<h2 class="font-semibold whitespace-nowrap text-gray-700">
 							Tracking Id: {{ serviceReport.tracking_code }}
 						</h2>
 						<span class="font-semibold text-gray-500">
@@ -282,7 +282,7 @@
 					</div>
 					<div class="flex items-center">
 						<div class="size-4 rounded-full bg-pink-600" />
-						<div class="space-x-18 ml-1 flex flex-grow items-center justify-between">
+						<div class="ml-1 flex flex-grow items-center justify-between space-x-18">
 							<h1 class="text-gray-500">Payment:</h1>
 							<span class="text-blue-500"
 								>{{ serviceReport.cost + serviceReport.extra_charges }} Ksh</span
@@ -379,7 +379,7 @@
 							alt="Report Image" />
 					</button>
 				</div>
-				<div class="absolute top-0 w-full rounded-t-md bg-gray-700 bg-opacity-80 p-4">
+				<div class="absolute top-0 w-full rounded-t-md bg-gray-700 p-4 backdrop-opacity-80">
 					<h1 class="font-semibold text-white">
 						Pre-Towing Pictures
 						{{ serviceReport.registration_no }}

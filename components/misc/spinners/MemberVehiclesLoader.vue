@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div
-			class="flex h-12 items-center space-x-2 rounded-b-lg bg-gray-600 bg-opacity-40 pl-4 font-semibold text-white">
+			class="flex h-12 items-center space-x-2 rounded-b-lg bg-gray-600 pl-4 font-semibold text-white backdrop-opacity-40">
 			<div class="size-3 rounded-full bg-green-500" />
 			<h1 class="animate-pulse rounded-lg bg-gray-300 text-gray-300">sampletext</h1>
 		</div>

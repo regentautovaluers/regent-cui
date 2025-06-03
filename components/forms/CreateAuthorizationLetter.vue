@@ -3,7 +3,7 @@
 		Selected agency/ corp: {{ getSelectedCorpOrBroker }} and ref: {{ agencyOrCorp.name }}
 	</h1> -->
 	<form @submit.prevent="createAuthorizationLetter">
-		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+		<div class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -67,7 +67,7 @@
 				<span class="sr-only">Info</span>
 				<h3 class="text-lg font-medium">Notice On Regent Branches</h3>
 			</div>
-			<div class="mb-4 mt-2">
+			<div class="mt-2 mb-4">
 				<p>
 					If you fail to choose a preffered Regent Branch to direct your request for
 					valuation to, the request will be sent to Customer Care. If your preferred
@@ -77,7 +77,7 @@
 			<div class="flex">
 				<button
 					type="button"
-					class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-yellow-300"
+					class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
 					@click.prevent="refreshRegentBranches">
 					Refresh List
 				</button>
@@ -124,7 +124,7 @@
 				v-model="comments"></textarea>
 		</div>
 		<!-- data below the comments box -->
-		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+		<div class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Policy Number -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -176,7 +176,7 @@
 				<!-- Logbook -->
 				<label
 					for="vehicle-logbook"
-					class="auth-letter-file-input border-gray-400 bg-opacity-50"
+					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
 					:class="
 						logbookUploaded
 							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
@@ -203,7 +203,7 @@
 				<!-- Authority Letter -->
 				<label
 					for="authority-letter"
-					class="auth-letter-file-input border-gray-400 bg-opacity-50 md:ml-3"
+					class="auth-letter-file-input border-gray-400 backdrop-opacity-50 md:ml-3"
 					:class="
 						letterUploaded
 							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
@@ -235,7 +235,7 @@
 				<!-- KRA PIN -->
 				<label
 					for="kra-pin"
-					class="auth-letter-file-input border-gray-400 bg-opacity-50"
+					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
 					:class="
 						kraPinUploaded
 							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
@@ -261,7 +261,7 @@
 				<!-- National ID -->
 				<label
 					for="national-id"
-					class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
+					class="auth-letter-file-input ml-3 border-gray-400 backdrop-opacity-50"
 					:class="
 						natIdUploaded
 							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
@@ -287,7 +287,7 @@
 				<!-- Certificate of Registration -->
 				<label
 					for="cert-of-registration"
-					class="auth-letter-file-input ml-3 border-gray-400 bg-opacity-50"
+					class="auth-letter-file-input ml-3 border-gray-400 backdrop-opacity-50"
 					:class="
 						certUploaded
 							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
