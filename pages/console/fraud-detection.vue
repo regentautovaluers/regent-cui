@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-spacing flex flex-col rounded-lg border-[1px] border-gray-200">
+	<div class="console-layout-spacing flex flex-col rounded-lg border-[1px] border-gray-200 bg-white">
 		<div
 			class="flex w-full items-center space-x-8 border-b-2 p-6 font-semibold text-gray-500 md:text-base lg:text-lg">
 			<NuxtLink
@@ -57,7 +57,7 @@
 				<span>Query Our Fraud Database</span>
 			</NuxtLink>
 		</div>
-		<div class="flex-grow px-10 py-2">
+		<div class="h-fit flex-grow px-10 py-10">
 			<NuxtPage />
 		</div>
 	</div>
