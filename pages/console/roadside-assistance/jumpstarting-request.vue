@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-spacing grid grid-cols-1 gap-4 lg:grid-cols-[.5fr,.5fr]">
+	<div class="console-layout-spacing grid grid-cols-1 gap-4 lg:grid-cols-[.5fr_.5fr]">
 		<div class="overflow-clip rounded-lg border border-gray-500 border-opacity-50">
 			<GoogleMap
 				ref="mapRef"
@@ -40,7 +40,7 @@
 			<h1 class="mb-4 text-3xl font-semibold">Request Jumpstarting</h1>
 			<div
 				class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
-				<div class="border-b-1 space-x-4 font-semibold text-gray-500 lg:w-fit lg:text-lg">
+				<div class="border-b space-x-4 font-semibold text-gray-500 lg:w-fit lg:text-lg">
 					<button
 						@click="currentRegForm = 0"
 						:class="[

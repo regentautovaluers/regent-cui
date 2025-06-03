@@ -4,7 +4,7 @@
 			{{ props.regNo }} - {{ props.yearOfManufacture }} - {{ props.vehicleMake }}
 			{{ props.vehicleModel }}
 		</h1>
-		<div class="my-2 flex h-12 items-center space-x-5 border-b-[1px] border-gray-300">
+		<div class="my-2 flex h-12 items-center space-x-5 border-b border-gray-300">
 			<div class="flex w-fit items-center space-x-2 text-gray-600">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@
 				<span class="text-gray-600">Color: {{ props.vehicleColor }}</span>
 			</div>
 		</div>
-		<div class="grid min-h-20 grid-cols-2 divide-x-[1px] divide-gray-300">
+		<div class="grid min-h-20 grid-cols-2 divide-x divide-gray-300">
 			<div class="min-h-full py-5">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

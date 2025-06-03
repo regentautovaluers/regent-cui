@@ -1,9 +1,9 @@
 <template>
 	<div class="console-layout-spacing flex flex-col">
-		<div class="mt-4 grid flex-grow grid-cols-1 lg:grid-cols-[20%,80%]">
+		<div class="mt-4 grid flex-grow grid-cols-1 lg:grid-cols-[20%_80%]">
 			<!-- top information column -->
 			<div
-				class="col-span-2 flex h-[7rem] items-center justify-between rounded-t-lg border bg-white p-4">
+				class="col-span-2 flex h-28 items-center justify-between rounded-t-lg border bg-white p-4">
 				<div class="flex w-full items-center space-x-3 md:w-fit">
 					<img
 						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
@@ -28,7 +28,7 @@
 
 			<!-- statistics strip -->
 			<div
-				class="col-span-2 mb-10 flex min-h-[7rem] overflow-x-auto rounded-b-lg border border-t-0 bg-white p-3 shadow-sm">
+				class="col-span-2 mb-10 flex min-h-28 overflow-x-auto rounded-b-lg border border-t-0 bg-white p-3 shadow-sm">
 				<div
 					class="flex min-w-64 items-start justify-start space-x-3 whitespace-nowrap text-gray-500 md:w-1/4 md:justify-center">
 					<svg
@@ -185,7 +185,7 @@
 			<div
 				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 				<div
-					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
+					class="xl:min-h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
 					<h1 class="text-2xl font-extrabold">Distribution</h1>
 					<div
 						class="flex h-full items-center justify-center"
@@ -224,7 +224,7 @@
 						:data="raIncidentsDoughnutData.data" />
 				</div>
 				<div
-					class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
+					class="xl:min-h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
 					<h1 class="text-2xl font-extrabold">Top Recent Incidents</h1>
 					<div
 						class="flex h-full items-center justify-center"
@@ -247,7 +247,7 @@
 						class="h-full"
 						v-else>
 						<div
-							class="mb-2 grid h-[5.2rem] grid-cols-[.5fr,.4fr,.1fr] items-center py-3"
+							class="mb-2 grid h-[5.2rem] grid-cols-[.5fr_.4fr_.1fr] items-center py-3"
 							v-for="(incident, index) in topRecentPerService"
 							:key="index">
 							<div>

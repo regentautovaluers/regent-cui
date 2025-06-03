@@ -1,5 +1,5 @@
 <template>
-	<div class="h-full min-h-[58.5rem]">
+	<div class="h-full min-h-234">
 		<!-- div to show when there is a fetch error -->
 		<div
 			class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"

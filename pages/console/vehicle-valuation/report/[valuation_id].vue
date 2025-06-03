@@ -1,6 +1,6 @@
 <template>
 	<div class="console-layout-spacing grid h-fit grid-cols-2 gap-10 pb-5">
-		<div class="min-h-[50.5rem] rounded-lg border-[.5px] shadow-md outline-none">
+		<div class="min-h-202 rounded-lg border-[.5px] shadow-md outline-none">
 			<div class="flex items-center justify-between p-10">
 				<div class="space-y-3">
 					<h2 class="text-gray-600">{{ valuationReport.valuationId }}</h2>
@@ -58,7 +58,7 @@
 					<h1 class="font-semibold text-gray-600">Client KYCs</h1>
 				</div>
 				<div
-					class="bg rounded-lg border-[1px] border-yellow-500 bg-yellow-100/50 p-3"
+					class="bg rounded-lg border border-yellow-500 bg-yellow-100/50 p-3"
 					v-for="(report, index) in valuationReport.kycDocuments"
 					:key="index">
 					<h1 class="font-semibold text-yellow-700">{{ report.split(': ')[0] }}</h1>
@@ -72,7 +72,7 @@
 			</div>
 		</div>
 		<div
-			class="max-h-[50rem] min-h-[50.5rem] space-y-5 overflow-y-scroll rounded-lg border-[.5px] p-10 shadow-md outline-none">
+			class="max-h-200 min-h-202 space-y-5 overflow-y-scroll rounded-lg border-[.5px] p-10 shadow-md outline-none">
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
 				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-blue-500"></div>
@@ -236,7 +236,7 @@
 			</div>
 		</div>
 		<!-- assessment images -->
-		<div class="col-span-2 flex h-[50rem] space-x-5 outline-none">
+		<div class="col-span-2 flex h-200 space-x-5 outline-none">
 			<div class="flex h-full max-h-full w-[15%] flex-col space-y-3 overflow-y-scroll">
 				<img
 					v-for="(i, index) in valuationReport.vehiclePhotos"

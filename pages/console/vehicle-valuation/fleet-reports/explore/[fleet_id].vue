@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<div class="h-full min-h-[53rem]">
+		<div class="h-full min-h-212">
 			<!-- div to show when there is a fetch error -->
 			<div
 				v-if="fetchFleetsJobsStatus === 'error'"

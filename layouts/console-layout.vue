@@ -1,8 +1,8 @@
 <template>
 	<aside
 		:class="[
-			'fixed left-0 z-50 flex h-screen max-h-screen flex-col overflow-y-scroll border-r-[1px] bg-white transition-all duration-200 ease-out',
-			sidebarExpanded ? 'w-[17rem]' : 'w-[60px]',
+			'fixed left-0 z-50 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
+			sidebarExpanded ? 'w-68' : 'w-[60px]',
 		]"
 		@mouseenter="sidebarExpanded = true"
 		@mouseleave="sidebarExpanded = false">
@@ -186,7 +186,7 @@
 	<main
 		:class="[
 			'flex h-screen min-h-screen flex-col overflow-auto transition-all duration-200 ease-out',
-			sidebarExpanded ? 'pl-[17rem]' : 'pl-[60px]',
+			sidebarExpanded ? 'pl-68' : 'pl-[60px]',
 		]"
 		style="background-color: #f8faf8">
 		<nav
@@ -311,7 +311,7 @@
 	<!-- the chat window on the right side -->
 	<aside
 		id="dashboard-chat-window"
-		class="fixed right-0 top-0 z-50 h-screen w-[32rem] translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+		class="fixed right-0 top-0 z-50 h-screen w-lg translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
 		tabindex="-1"
 		aria-labelledby="drawer-right-label">
 		<h5

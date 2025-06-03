@@ -1,12 +1,12 @@
 <template>
 	<div class="flex h-full min-h-full flex-col">
 		<!-- title -->
-		<div class="border-b-[1px] border-gray-300 py-3">
+		<div class="border-b border-gray-300 py-3">
 			<h1 class="text-lg font-semibold">Your Fraud Listings</h1>
 		</div>
 
 		<!-- filters -->
-		<div class="flex h-fit items-center justify-between border-b-[1px] border-gray-300 py-3">
+		<div class="flex h-fit items-center justify-between border-b border-gray-300 py-3">
 			<!-- search box -->
 			<div class="relative flex w-full items-center justify-between md:w-[45%] lg:w-[23%]">
 				<input

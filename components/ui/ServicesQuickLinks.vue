@@ -1,6 +1,6 @@
 <template>
-	<div class="min-h-[21rem] w-[17rem] max-w-[17rem] rounded-lg border px-5 py-5 shadow-sm">
-		<div class="size-fit rounded-full border-[1px] border-blue-600">
+	<div class="min-h-84 w-68 max-w-68 rounded-lg border px-5 py-5 shadow-sm">
+		<div class="size-fit rounded-full border border-blue-600">
 			<button
 				class="m-0.5 rounded-full bg-blue-600 p-4"
 				disabled>

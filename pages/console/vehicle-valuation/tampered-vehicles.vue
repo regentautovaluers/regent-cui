@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<div class="h-full min-h-[53rem]">
+		<div class="h-full min-h-212">
 			<!-- div to show when there is a fetch error -->
 			<div
 				v-if="fetchValuationsStatus === 'error'"
@@ -282,7 +282,7 @@
 	<ParentModal
 		modal-id="all-valuation-filters"
 		modal-title="Results Filters"
-		class="h-[18rem]"
+		class="h-72"
 		v-if="isFilterFormOpen"
 		@close-modal="isFilterFormOpen = false">
 		<form class="w-full">

@@ -1,8 +1,8 @@
 <template>
 	<footer class="text-slate-100">
-		<div class="relative grid min-h-[30rem] grid-cols-4 gap-x-16 bg-black px-14 pt-20">
+		<div class="relative grid min-h-120 grid-cols-4 gap-x-16 bg-black px-14 pt-20">
 			<div
-				class="absolute -top-28 left-20 flex h-[12rem] w-[75%] translate-x-[10%] flex-col rounded-lg bg-blue-600 text-center">
+				class="absolute -top-28 left-20 flex h-48 w-[75%] translate-x-[10%] flex-col rounded-lg bg-blue-600 text-center">
 				<h1 class="mt-5 text-4xl font-semibold">Our Partners</h1>
 				<div
 					class="flex flex-grow items-center px-4 pb-2"

@@ -70,7 +70,7 @@
 		</div>
 
 		<!-- responder details, trip detals and cost breakdown -->
-		<div class="mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
+		<div class="mt-8 grid h-112 grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<div class="flex h-full flex-col space-y-8 rounded-lg">
 				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
 					<div
@@ -174,7 +174,7 @@
 		</div>
 
 		<!-- map section -->
-		<div class="relative mt-24 h-[42rem] overflow-clip rounded-lg border shadow-sm">
+		<div class="relative mt-24 h-168 overflow-clip rounded-lg border shadow-sm">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -296,7 +296,7 @@
 		<!-- pre-towing report summary -->
 		<div class="mt-8 grid h-fit grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<!-- Collected Data Section -->
-			<div class="h-[46rem] max-h-[46rem] px-2">
+			<div class="h-184 max-h-184 px-2">
 				<h1 class="mb-5 text-xl font-semibold">Pre-Towing Report Summary</h1>
 				<div class="flex items-start space-x-4 rounded-lg border p-2">
 					<div
@@ -355,7 +355,7 @@
 			</div>
 
 			<!-- pre-towing pictures section -->
-			<div class="relative h-[45.5rem] max-h-[45.5rem] rounded-lg">
+			<div class="relative h-182 max-h-182 rounded-lg">
 				<div class="mb-2 h-[80%] max-h-[80%] overflow-clip rounded-md border">
 					<img
 						:src="serviceImages[activePreTowingImage]"
