@@ -32,6 +32,7 @@ const useFraudDetection = () => {
 	const ravFraudDetails: Ref<any[] | null> = ref(null);
 	const iaVehicleDetails: Ref<any> = ref(null);
 	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
+	const iaVehicleOwnerDetails: Ref<any> = ref(null);
 
 	// querying fraudsters list
 	// for fetching corp valuations
@@ -99,14 +100,21 @@ const useFraudDetection = () => {
 							ravFraudDetails.value = responseData.data;
 						} else {
 							ravFraudDetails.value = responseData.data.fraudResults;
-							iaVehicleDetails.value = responseData.data.vehicleDetails;
+
+							// FROM IA:
+							// details about the vehicle
+							iaVehicleDetails.value = responseData.data.vehicleDetails.vehicle;
+
+							// details about the vehicle's loaning collateral
 							iaVehicleCollateralDetails.value = responseData.data.collateralData;
+
+							// details about the vehicle's owner
+							iaVehicleOwnerDetails.value = responseData.data.vehicleDetails.owner[0];
 						}
 					}
 				},
 			});
 		} catch (err) {
-			console.log('Failed to query fraudster', err);
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
@@ -203,6 +211,7 @@ const useFraudDetection = () => {
 		ravFraudDetails,
 		iaVehicleDetails,
 		iaVehicleCollateralDetails,
+		iaVehicleOwnerDetails,
 		fetchFraudsterListStatus,
 		executeFetchFraudsterList,
 		fetchFraudsterListError,
