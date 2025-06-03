@@ -34,12 +34,7 @@
 			"
 			class="flex h-full flex-col items-center justify-center space-y-4 rounded-md border">
 			<BirdieNotFoundIcon />
-			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no incidents!</h1>
-			<NuxtLink
-				:to="{ name: 'ra-towing-request' }"
-				class="generic-nuxt-link">
-				Make Towing Request
-			</NuxtLink>
+			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no reports!</h1>
 		</div>
 
 		<!-- div to show when there are incidents -->
@@ -75,7 +70,7 @@
 								<th
 									scope="col"
 									class="table-headers max-w-48">
-									Comments
+									Latest Comment
 								</th>
 							</tr>
 						</thead>
@@ -200,7 +195,7 @@
 			<form
 				@submit.prevent="exportToExcel"
 				class="h-full min-h-full w-16 max-w-16">
-				<button class="generic-form-submit text-xl max-w-full">
+				<button class="generic-form-submit max-w-full text-xl">
 					<FormSubmissionLoader
 						classes="mr-2 size-6 animate-spin text-white"
 						v-if="downloadReports" />

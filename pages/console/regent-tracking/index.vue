@@ -6,7 +6,7 @@
 		]">
 		<GoogleMap
 			ref="mapRef"
-			api-key="AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY"
+			:api-key="googleMapsApiKey"
 			:styles="trackingGoogleMapsConfig"
 			style="width: 100%; height: 100%"
 			:map-type-control="false"
@@ -315,7 +315,7 @@
 
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker, MarkerCluster, Polyline } from 'vue3-google-map';
-	import TriggerTrackingDeviceEvent from '~/components/forms/TriggerTrackingDeviceEvent.vue';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 
 	definePageMeta({
 		name: 'regent-tracking-home',
@@ -370,6 +370,8 @@
 		getDeviceHistoryLoading,
 		getDeviceHistory,
 	} = useTrackedDeviceCommandsAndHistory();
+
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	const mapColorToTailwindEquivalent = (
 		color: 'green' | 'blue' | 'red' | 'yellow' | 'black',

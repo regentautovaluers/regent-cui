@@ -502,6 +502,7 @@
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow, Polyline } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 
 	definePageMeta({
 		name: 'ra-expanded-report',
@@ -517,8 +518,8 @@
 	const activePreTowingImage: Ref<number> = ref(0);
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
-	const googleMapsApiKey = runtimeConfig.GOOGLE_MAPS_API_KEY;
 	const mapRef: Ref<any> = ref(null);
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	const { data: serviceReport } = (await useFetch(
 		`/api/v1/control-unit/get-user-requests/${route.params.service_type}/${route.params.id}`,

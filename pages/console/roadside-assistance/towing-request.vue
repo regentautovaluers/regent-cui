@@ -3,7 +3,7 @@
 		<div class="overflow-clip rounded-lg border border-gray-500 border-opacity-50">
 			<GoogleMap
 				ref="mapRef"
-				:api-key="runtimeConfig.GOOGLE_MAPS_API_KEY"
+				:api-key="googleMapsApiKey"
 				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
 				:map-type-control="false"
@@ -101,6 +101,7 @@
 	import { GoogleMap, CustomMarker, Polyline } from 'vue3-google-map';
 	import { type LocationCoords, type MapCoordsMarker } from '~/types';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 
 	definePageMeta({
 		name: 'ra-towing-request',
@@ -117,6 +118,7 @@
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
 	const polylineCoords: Ref<any[]> = ref([]);
 	const towingDistance: Ref<number> = ref(0);
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
 		const index = extraLocationMarkers.value.findIndex((marker) => marker.id === markerInfo.id);
