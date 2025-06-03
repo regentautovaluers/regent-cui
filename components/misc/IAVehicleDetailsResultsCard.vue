@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-4 min-h-32 rounded-md border-[1px] border-gray-500 p-8">
+	<div class="mt-4 min-h-32 rounded-md bg-white p-8 shadow-md">
 		<h1 class="text-2xl font-semibold">
 			{{ props.regNo }} - {{ props.yearOfManufacture }} - {{ props.vehicleMake }}
 			{{ props.vehicleModel }}

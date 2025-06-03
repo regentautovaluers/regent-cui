@@ -8,60 +8,56 @@
 							<th
 								scope="col"
 								class="table-headers">
-								Date Recorded
+								Name
 							</th>
 							<!-- Details will show client name and their contact -->
 							<th
 								scope="col"
 								class="table-headers">
-								Creditor
+								ID Number
 							</th>
 							<th
 								scope="col"
 								class="table-headers">
-								Category of Secured Creditor
+								Address
 							</th>
 							<th
 								scope="col"
 								class="table-headers">
-								Period of Effectiveness (Days)
+								Phone Number
 							</th>
 							<th
 								scope="col"
 								class="table-headers">
-								Amount
+								Town
+							</th>
+							<th
+								scope="col"
+								class="table-headers">
+								Ownership Type
 							</th>
 						</tr>
 					</thead>
 					<tbody>
 						<!-- the actual data -->
-						<tr
-							class="border-b bg-white hover:bg-gray-100"
-							v-for="(entry, index) in props.entries"
-							:key="index">
+						<tr class="border-b bg-white hover:bg-gray-100">
 							<td class="p-5">
-								{{ entry.inserted_at.split('T')[0] }}
+								{{ props.name }}
 							</td>
 							<td class="p-5">
-								{{ entry.creditors[index]?.name ?? 'Name N/A' }}
+								{{ props.idNumber }}
 							</td>
 							<td class="p-5">
-								{{
-									entry.creditors[index]?.category_of_secured_creditor ??
-									'Category N/A'
-								}}
+								{{ props.address }}
 							</td>
 							<td class="p-5">
-								{{ entry.period_of_effectiveness }}
+								{{ props.phoneNumer }}
 							</td>
 							<td class="p-5">
-								{{
-									Intl.NumberFormat('en-US', {
-										minimumFractionDigits: 0,
-										maximumFractionDigits: 0,
-									}).format(Number(entry.currency_amounts[index]?.amount))
-								}}
-								{{ entry.currency_amounts[index]?.currency }}
+								{{ props.town }}
+							</td>
+							<td class="p-5">
+								{{ props.ownerType }}
 							</td>
 						</tr>
 					</tbody>
@@ -73,6 +69,35 @@
 
 <script setup lang="ts">
 	const props = defineProps({
-		entries: { required: true, type: Array },
+		name: {
+			required: false,
+			type: String,
+			default: 'N/A',
+		},
+		idNumber: {
+			required: false,
+			type: String,
+			default: 'N/A',
+		},
+		address: {
+			required: false,
+			type: String,
+			default: 'N/A',
+		},
+		phoneNumer: {
+			required: false,
+			type: String,
+			default: 'N/A',
+		},
+		town: {
+			required: false,
+			type: String,
+			default: 'N/A',
+		},
+		ownerType: {
+			required: false,
+			type: String,
+			default: 'N/A',
+		},
 	});
 </script>
