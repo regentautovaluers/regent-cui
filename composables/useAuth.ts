@@ -225,58 +225,6 @@ const useAuth = () => {
 		return authenticatedPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
 	};
 
-	const updateProfilePicture = async () => {
-		const fileInput = document.getElementById('profile-picture') as HTMLInputElement;
-		if (fileInput.files && fileInput.files.length > 0) {
-			const file = fileInput.files[0];
-			if (file.size > 2 * 1024 * 1024) {
-				alert('File size exceeds 2MB. Please select a smaller file.');
-				return;
-			}
-
-			const formData = new FormData();
-			formData.append('profilePicture', file);
-			formData.append('userId', getPrincipal.value.userId);
-			formData.append('corporateId', getPrincipal.value.corpId);
-			updateProfilePictureLoading.value = true;
-
-			try {
-				await $fetch('/api/v1/auth/corporate-account/update-profile-picture', {
-					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-					method: 'PATCH',
-					headers: {
-						Accept: 'application/json',
-					},
-					body: formData,
-					onResponse({ response }) {
-						if (response.status === 200) {
-							const serverResponse = response._data.data;
-							authenticatedPrincipal.value.profilePicture = serverResponse;
-							useToast('Profile Picture Updated Successfully!', {
-								type: 'success',
-								showIcon: false,
-								showCloseButton: false,
-								hideProgressBar: true,
-							});
-						} else {
-							throw new Error('Account updating failed. Try again!');
-						}
-					},
-				});
-			} catch (error) {
-				console.log('An error occured: ', error);
-				useToast('Failed. Try Again!', {
-					type: 'danger',
-					showIcon: false,
-					showCloseButton: false,
-					hideProgressBar: true,
-				});
-			} finally {
-				updateProfilePictureLoading.value = false;
-			}
-		}
-	};
-
 	const searchCorporateOrBroker = async () => {
 		searchCorpOrBrokerResults.value = null;
 		searchCorpOrBrokerLoading.value = true;
@@ -430,7 +378,6 @@ const useAuth = () => {
 		isPrincipalAdmin,
 		updateMyAccountDetails,
 		addNewAccount,
-		updateProfilePicture,
 		displayCookieConsent,
 		isPrincipalBroker,
 		searchCorporateOrBroker,

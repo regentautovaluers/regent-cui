@@ -35,7 +35,7 @@
 					:key="index">
 					<li
 						:class="[
-							'flex h-11 w-full items-center rounded-lg py-5 px-2 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
+							'flex h-11 w-full items-center rounded-lg px-2 py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
 							fuzzyRouteNameMatch(link.routeName, link) && 'bg-blue-600 text-white',
 						]"
 						:title="link.screenName">
@@ -106,7 +106,7 @@
 						:class="sidebarExpanded ? 'block' : 'hidden'">
 						<ol class="border-s border-gray-400">
 							<li
-								class="group relative mb-7 ms-4"
+								class="group relative ms-4 mb-7"
 								v-for="(childLink, index) in link.childRoutes"
 								:key="index">
 								<template v-if="childLink.renderRoute">
@@ -119,7 +119,7 @@
 										]"></div>
 									<NuxtLink
 										:class="[
-											'font-normal leading-none',
+											'leading-none font-normal',
 											doesRouteNameMatch(childLink.routeName)
 												? 'font-semibold text-blue-600'
 												: 'text-gray-500',
@@ -253,10 +253,7 @@
 
 				<!-- user profile info -->
 				<div class="flex w-fit max-w-48 items-center space-x-3 px-2 py-1 md:max-w-48">
-					<img
-						class="h-12 min-h-12 w-12 min-w-12 rounded-full object-cover"
-						:src="profilePicture"
-						alt="User Avatar" />
+					<UserAvatar />
 					<div class="hidden h-full flex-col overflow-hidden text-sm md:flex">
 						<h1 class="overflow-clip text-ellipsis whitespace-nowrap">
 							{{ getPrincipal.username }}
@@ -276,7 +273,7 @@
 	<!-- the notification bar on the right side -->
 	<aside
 		id="dashboard-sidenotif-bar"
-		class="fixed right-0 top-0 z-50 h-screen w-96 translate-x-full overflow-y-auto rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+		class="fixed top-0 right-0 z-50 h-screen w-96 translate-x-full overflow-y-auto rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
 		tabindex="-1"
 		aria-labelledby="drawer-right-label">
 		<h5
@@ -311,7 +308,7 @@
 	<!-- the chat window on the right side -->
 	<aside
 		id="dashboard-chat-window"
-		class="fixed right-0 top-0 z-50 h-screen w-lg translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+		class="fixed top-0 right-0 z-50 h-screen w-lg translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
 		tabindex="-1"
 		aria-labelledby="drawer-right-label">
 		<h5
@@ -438,9 +435,6 @@
 	const userInput: Ref<string> = ref('');
 	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();
 
-	// TODO: render this hack another way
-	const profilePicture: Ref<string> = ref('');
-
 	const handleConvFormSubmitted = () => {
 		sendBotpressMessage(userInput.value);
 		appendTextTypeNode(userInput.value, 'Human');
@@ -452,11 +446,6 @@
 		appendTextTypeNode(message, 'Human');
 		userInput.value = '';
 	};
-
-	onMounted(async () => {
-		// set the profile picture
-		profilePicture.value = getPrincipal.value.profilePicture;
-	});
 </script>
 
 <style scoped>

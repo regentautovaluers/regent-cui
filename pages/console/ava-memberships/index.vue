@@ -3,10 +3,9 @@
 		<div
 			class="col-span-2 mb-10 flex h-32 items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
-				<img
-					class="h-20 w-20 rounded-full"
-					:src="profilePicture"
-					alt="Rounded avatar" />
+				<UserAvatar
+					circleSize="size-18"
+					initialsSize="text-2xl" />
 				<div class="h-full flex-col overflow-hidden md:flex">
 					<h1 class="inline-flex items-center space-x-3">
 						<span class="font-semibold text-blue-600"
@@ -71,7 +70,7 @@
 							required />
 						<button
 							type="submit"
-							class="absolute right-2 top-0 flex size-14 translate-y-2 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+							class="absolute top-0 right-2 flex size-14 translate-y-2 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 							<SearchIcon />
 						</button>
 					</form>
@@ -93,7 +92,7 @@
 			<div class="my-4 mr-10 flex-grow">
 				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 					<table class="w-full text-left text-gray-500">
-						<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+						<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 							<tr>
 								<th
 									scope="col"
@@ -129,7 +128,7 @@
 								:key="a">
 								<td
 									scope="row"
-									class="whitespace-nowrap p-6 font-medium text-gray-300">
+									class="p-6 font-medium whitespace-nowrap text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>username</span
 									>
@@ -158,7 +157,7 @@
 								:key="index">
 								<td
 									scope="row"
-									class="whitespace-nowrap p-4 font-semibold text-gray-600">
+									class="p-4 font-semibold whitespace-nowrap text-gray-600">
 									{{ member.full_name }}
 								</td>
 								<td class="p-4 text-blue-600">
@@ -245,7 +244,7 @@
 			</div>
 
 			<!-- page controls -->
-			<div class="mr-10 mt-5 flex min-h-12 items-center justify-between">
+			<div class="mt-5 mr-10 flex min-h-12 items-center justify-between">
 				<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 					Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
 				</h1>
@@ -270,7 +269,7 @@
 		<div
 			class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 			<div
-				class="xl:min-h-1/2 v flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm xl:h-1/2">
+				class="v flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm xl:h-1/2 xl:min-h-1/2">
 				<div class="flex h-14 items-center justify-between">
 					<h1 class="text-2xl font-bold">About</h1>
 					<button
@@ -297,7 +296,7 @@
 							</li>
 							<li>
 								<button
-									class="block w-full whitespace-nowrap px-4 py-2 text-center hover:bg-gray-100"
+									class="block w-full px-4 py-2 text-center whitespace-nowrap hover:bg-gray-100"
 									type="button"
 									@click.prevent="activeDescriptionIndex = 1">
 									Emergency Evacuation
@@ -335,7 +334,7 @@
 				</div>
 			</div>
 			<div
-				class="xl:min-h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white shadow-sm xl:h-1/2">
+				class="flex h-100 min-h-100 flex-col rounded-md border bg-white shadow-sm xl:h-1/2 xl:min-h-1/2">
 				<h1 class="p-5 text-2xl font-bold">Memberships</h1>
 
 				<div
@@ -463,7 +462,7 @@
 			:class="arrivedState.left ? 'disabled' : null"
 			v-if="memberVehicles.length > 1">
 			<span
-				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 outline-none ring-white group-focus:ring-4">
+				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 ring-white outline-none group-focus:ring-4">
 				<svg
 					class="h-4 w-4 text-white rtl:rotate-180"
 					aria-hidden="true"
@@ -489,7 +488,7 @@
 			@click="x += 352"
 			v-if="memberVehicles.length > 1">
 			<span
-				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 outline-none ring-white group-focus:ring-4">
+				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 ring-white outline-none group-focus:ring-4">
 				<svg
 					class="h-4 w-4 text-white rtl:rotate-180"
 					aria-hidden="true"
@@ -523,7 +522,6 @@
 		behavior: 'smooth',
 	});
 	const activeDescriptionIndex: Ref<number> = ref(0);
-	const profilePicture: Ref<string> = ref('');
 	const { getPrincipal } = useAuth();
 	const searchPhrase: Ref<string> = ref('');
 	const isGetVehiclesModalOpen: Ref<boolean> = ref(false);
@@ -544,6 +542,4 @@
 	} = useAVAMemberships();
 
 	const { fetchAvaMembersDistributionStatus, computeActiveInactive } = useAVAMembershipsCharts();
-
-	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
 </script>
