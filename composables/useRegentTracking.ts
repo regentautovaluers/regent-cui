@@ -373,27 +373,34 @@ export const useTrackingTraceabilityReports = () => {
 	const size: Ref<number> = ref(10);
 	const totalPages: Ref<number> = ref(0);
 	const downloadReports: Ref<boolean> = ref(false);
+	const trackingCertificates: Ref<TrackerInstallationCertificate[]> = ref([]);
 
-	const {
-		status: fetchTrackingCertificatesStatus,
-		execute: executeFetchTrackingCertificates,
-		data: trackingCertificates,
-	} = useFetch<TrackerInstallationCertificate[]>('/tracking/api_certificates.php', {
-		key: 'tracker-installation-certificates',
-		// baseURL: runtimeConfig.public.REGENT_TRACK_CERTS_BASE_URL,
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
-		},
-		server: false,
-		lazy: true,
-	});
+	const { status: fetchTrackingCertificatesStatus, execute: executeFetchTrackingCertificates } =
+		useFetch<TrackerInstallationCertificate[]>('/tracking/api_certificates.php', {
+			key: 'tracker-installation-certificates',
+			baseURL: runtimeConfig.public.REGENT_TRACK_CERTS_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			server: false,
+			lazy: true,
+			onResponse({ response }) {
+				if (response.ok) {
+					const data = response._data;
+					trackingCertificates.value = data.data;
+					currentPage.value = data.draw;
+
+					// TODO: Add missing total pages
+				}
+			},
+		});
 
 	const exportToExcel = async () => {
 		downloadReports.value = true;
 		try {
 			await $fetch('/tracking/api_certificates.php', {
-				// baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
+				baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
 				method: 'GET',
 				headers: {
 					Accept: 'application/json',
