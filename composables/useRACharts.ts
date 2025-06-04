@@ -24,7 +24,7 @@ export const useRACharts = () => {
 			server: false,
 			lazy: true,
 			onResponse({ response }) {
-				if (response.status === 200) {
+				if (response.ok) {
 					const analyticsData = response._data;
 					setRAAnalytics({
 						towing: analyticsData.towing,

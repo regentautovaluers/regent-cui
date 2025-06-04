@@ -50,7 +50,7 @@ export const useCorporateBranch = () => {
 					corpId: getPrincipal.value.corpId,
 				}),
 				onResponse({ response }) {
-					if (response.status === 200) {
+					if (response.ok) {
 						useToast('Branch Added Successfully!', {
 							type: 'success',
 							showIcon: true,
@@ -97,7 +97,7 @@ export const useCorporateBranch = () => {
 					branchId: branchId,
 				}),
 				onResponse({ response }) {
-					if (response.status === 200) {
+					if (response.ok) {
 						useToast('Updating Successful!', {
 							type: 'success',
 							showIcon: true,

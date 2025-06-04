@@ -24,7 +24,7 @@ export const useFleets = () => {
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
 		method: 'GET',
 		onResponse({ response }) {
-			if (response.status === 200) {
+			if (response.ok) {
 				return response._data;
 			}
 		},

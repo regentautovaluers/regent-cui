@@ -165,7 +165,7 @@ const useAuthorityLetters = () => {
 				method: 'POST',
 				body: formData,
 				onResponse({ response }) {
-					if (response.status === 200) {
+					if (response.ok) {
 						useToast('Letter created successfully!', {
 							type: 'success',
 							showIcon: true,
@@ -213,7 +213,7 @@ const useAuthorityLetters = () => {
 							});
 						}
 
-						if (response.status === 200) {
+						if (response.ok) {
 							useToast('Success! Downloading Shortly!', {
 								type: 'success',
 								showIcon: true,

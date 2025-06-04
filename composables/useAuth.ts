@@ -139,7 +139,7 @@ const useAuth = () => {
 					userRoles: !roles ? null : roles,
 				}),
 				onResponse({ response }) {
-					if (response.status === 200) {
+					if (response.ok) {
 						useToast('Update Successful!', {
 							type: 'success',
 							showIcon: false,
@@ -195,7 +195,7 @@ const useAuth = () => {
 					userRoles: roles,
 				}),
 				onResponse({ response }) {
-					if (response.status === 200) {
+					if (response.ok) {
 						useToast('Account Creation Successful!', {
 							type: 'success',
 							showIcon: false,
@@ -237,7 +237,7 @@ const useAuth = () => {
 					Accept: 'application/json',
 				},
 				onResponse({ response }) {
-					if (response.status === 200) {
+					if (response.ok) {
 						const serverResponse = response._data.data;
 						searchCorpOrBrokerResults.value = serverResponse;
 					} else {
@@ -302,7 +302,7 @@ const useAuth = () => {
 			lazy: true,
 			watch: [currentPage],
 			onResponse({ response }) {
-				if (response.status === 200 && response._data.data !== null) {
+				if (response.ok && response._data.data !== null) {
 					const data = response._data.data;
 					usersList.value = data;
 					const extras = response._data.requestExtras;

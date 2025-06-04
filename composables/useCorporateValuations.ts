@@ -47,7 +47,7 @@ export const useCorporateValuations = () => {
 			server: false,
 			lazy: true,
 			onResponse({ response }) {
-				if (response.status === 200 && response._data.data !== null) {
+				if (response.ok && response._data.data !== null) {
 					const data = response._data.data;
 					corpValuations.value = data;
 					const extras = response._data.requestExtras;
