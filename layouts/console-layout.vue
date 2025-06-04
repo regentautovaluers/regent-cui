@@ -1,7 +1,7 @@
 <template>
 	<aside
 		:class="[
-			'fixed left-0 z-50 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
+			'mobile-sm:-translate-x-full desktop-4k:-translate-x-0 fixed left-0 z-50 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
 			sidebarExpanded ? 'w-68' : 'w-[60px]',
 		]"
 		@mouseenter="sidebarExpanded = true"
@@ -185,19 +185,19 @@
 	</aside>
 	<main
 		:class="[
-			'flex h-screen min-h-screen flex-col overflow-auto transition-all duration-200 ease-out',
-			sidebarExpanded ? 'pl-68' : 'pl-[60px]',
+			'mobile-sm:pl-0 flex h-screen min-h-screen flex-col overflow-auto transition-all duration-200 ease-out',
+			sidebarExpanded ? 'desktop-4k:pl-68' : 'desktop-4k:pl-[60px]',
 		]"
 		style="background-color: #f8faf8">
 		<nav
 			class="sticky top-0 z-20 flex h-[7%] max-h-[7%] min-h-[7%] w-full items-center justify-between border-b bg-white px-2"
 			id="top-nav">
 			<div class="flex items-center space-x-2 text-gray-700">
-				<!-- <button
+				<button
 					class="text-inherit"
 					@click="sidebarExpanded = !sidebarExpanded">
 					<MenuButtonIcon />
-				</button> -->
+				</button>
 				<h1 class="w-fit text-lg font-semibold md:text-2xl">
 					{{ currentScreenName }}
 				</h1>

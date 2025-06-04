@@ -1,5 +1,5 @@
 <template>
-	<main class="relative grid h-screen grid-cols-1 xl:grid-cols-[60%_40%]">
+	<main class="laptop-lg:grid-cols-[60%_40%] relative grid h-screen grid-cols-1">
 		<section class="hidden xl:block">
 			<div
 				id="default-carousel"
@@ -37,7 +37,7 @@
 					class="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
 					data-carousel-prev>
 					<span
-						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
 						<svg
 							class="h-4 w-4 text-white rtl:rotate-180"
 							aria-hidden="true"
@@ -59,7 +59,7 @@
 					class="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
 					data-carousel-next>
 					<span
-						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
 						<svg
 							class="h-4 w-4 text-white rtl:rotate-180"
 							aria-hidden="true"
@@ -79,10 +79,10 @@
 			</div>
 		</section>
 		<div class="flex flex-col justify-between">
-			<div class="flex h-[15%] items-center px-4 md:h-1/4 md:px-12 xl:px-20">
+			<div class="flex h-fit items-center px-4 py-2 md:h-1/4 md:px-12 xl:px-20">
 				<img
 					src="/images/app-logo.png"
-					class="h-24"
+					class="tablet:h-20 laptop:h-24 h-16"
 					alt="Flowbite Logo" />
 			</div>
 			<div class="flex-grow px-4 py-4 md:px-16 xl:px-24">
