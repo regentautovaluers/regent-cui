@@ -74,7 +74,18 @@ export default defineNuxtConfig({
 			REGENT_TRACK_CERTS_BASE_URL: '',
 		},
 		app: {},
+		apiParty: {
+			endpoints: {
+				trackerCertificates: {
+					url: 'http://192.168.0.20',
+					// Global headers sent with each request
+					headers: {
+						Accept: 'application/json',
+					},
+				},
+			},
+		},
 	},
 
-	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
+	modules: ['@nuxtjs/harlem', '@nuxt/fonts', 'nuxt-api-party'],
 });
