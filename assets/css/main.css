@@ -1,8 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import "flowbite/src/themes/default";
+
+@source '../../pages/**/*.vue';
+@source '../../node_modules/flowbite/**/*.{js,ts}';
 
 @theme {
+	--scale-103: 1.03;
 	--breakpoint-sm: 640px; /* 40rem */
 	--breakpoint-md: 768px; /* 48rem */
 	--breakpoint-lg: 1024px; /* 64rem */
@@ -10,31 +13,11 @@
 	--breakpoint-2xl: 1536px; /* 96rem */
 }
 
-@layer components {
-	.generic-input {
-		@apply block h-[70px] w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
-	}
-@import 'tailwindcss';
 
 @plugin 'flowbite/plugin' {
 	charts: true;
 }
 
-@source '../../pages/**/*.vue';
-@source '../../node_modules/flowbite/**/*.{js,ts}';
-
-@theme {
-	--scale-103: 1.03;
-}
-
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
 	*,
 	::after,
