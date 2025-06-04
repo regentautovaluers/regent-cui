@@ -1,11 +1,11 @@
 import type { CookieRef } from '#app';
 import { Loader } from '@googlemaps/js-api-loader';
 import { type TrackedDevice, type TrackerInstallationCertificate } from '~/types';
-import { Workbook } from 'exceljs';
-import { saveAs } from 'file-saver';
+import * as Excel from 'exceljs';
+import * as FileSaver from 'file-saver';
 
 const outputExcel = async (data: TrackerInstallationCertificate[], outputFile: string) => {
-	const workbook = new Workbook();
+	const workbook = new Excel.Workbook();
 	const worksheet = workbook.addWorksheet(
 		new Date().toLocaleDateString().replaceAll('/', '-') + ' Traceability Report',
 	);
@@ -46,7 +46,7 @@ const outputExcel = async (data: TrackerInstallationCertificate[], outputFile: s
 
 	workbook.xlsx
 		.writeBuffer()
-		.then((buffer) => saveAs(new Blob([buffer]), `${Date.now()}report.xlsx`))
+		.then((buffer) => FileSaver.saveAs(new Blob([buffer]), `${Date.now()}report.xlsx`))
 		.catch((err) => console.log('Error writing excel export', err));
 };
 
@@ -378,24 +378,21 @@ export const useTrackingTraceabilityReports = () => {
 		status: fetchTrackingCertificatesStatus,
 		execute: executeFetchTrackingCertificates,
 		data: trackingCertificates,
-	} = useTrackerCertificatesData<TrackerInstallationCertificate[]>(
-		'/tracking/api_certificates.php',
-		{
-			key: 'tracker-installation-certificates',
-			// baseURL: runtimeConfig.public.REGENT_TRACK_CERTS_BASE_URL,
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-			},
-			// server: false,
-			// lazy: true,
+	} = useFetch<TrackerInstallationCertificate[]>('/tracking/api_certificates.php', {
+		key: 'tracker-installation-certificates',
+		// baseURL: runtimeConfig.public.REGENT_TRACK_CERTS_BASE_URL,
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
 		},
-	);
+		server: false,
+		lazy: true,
+	});
 
 	const exportToExcel = async () => {
 		downloadReports.value = true;
 		try {
-			await $trackerCertificates('/tracking/api_certificates.php', {
+			await $fetch('/tracking/api_certificates.php', {
 				// baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
 				method: 'GET',
 				headers: {
