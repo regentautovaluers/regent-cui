@@ -59,7 +59,7 @@
 						d="M4 11h1m1 0h1M6 8h1M4 8h1M4 5h1m1 0h1m6.5 8.5h-11v-11h6v5h5zm-5-4h3v4h-3z"
 						stroke-width="1" />
 				</svg>
-				<h1 class="my-2 font-semibold">Defrauded Institution</h1>
+				<h1 class="my-2 font-semibold">Defaulted Institution</h1>
 				<div class="mt-2 grid w-full grid-cols-2 gap-2 rounded-lg text-gray-600 xl:w-3/4">
 					<div>
 						<h1 class="font-semibold">Name</h1>
@@ -68,7 +68,7 @@
 						<span>{{ props.defraudedInstitution }}</span>
 					</div>
 					<div>
-						<h1 class="font-semibold">Defrauded Amount</h1>
+						<h1 class="font-semibold">Defaulted Amount</h1>
 					</div>
 					<div>
 						<span

@@ -35,7 +35,7 @@
 					:key="index">
 					<li
 						:class="[
-							'flex h-11 w-full items-center rounded-lg py-6 px-2 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
+							'flex h-11 w-full items-center rounded-lg py-5 px-2 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
 							fuzzyRouteNameMatch(link.routeName, link) && 'bg-blue-600 text-white',
 						]"
 						:title="link.screenName">
