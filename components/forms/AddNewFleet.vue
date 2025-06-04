@@ -16,7 +16,7 @@
 		</div>
 
 		<div
-			class="mt-3 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+			class="mt-3 flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 			<!-- Phone Field -->
 			<div class="w-full lg:w-1/2">
 				<label
@@ -68,11 +68,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="createFleetLoading" />
-			{{ createFleetLoading ? 'Processing' : 'Create Fleet' }}
+			:class="[
+				'generic-form-submit mt-3',
+				createFleetLoading && 'skeleton skeleton-animated',
+			]">
+			{{ createFleetLoading ? 'Please Wait...' : 'Create Fleet' }}
 		</button>
 	</form>
 </template>

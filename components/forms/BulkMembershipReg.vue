@@ -196,12 +196,12 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3 w-full lg:w-1/2"
+			:class="[
+				'generic-form-submit mt-3 w-full lg:w-1/2',
+				registerBulkMembershipsLoading && 'skeleton skeleton-animated',
+			]"
 			:disabled="errorMessage?.type == 'error'">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="registerBulkMembershipsLoading" />
-			{{ registerBulkMembershipsLoading ? 'Processing' : 'Onboard Members' }}
+			{{ registerBulkMembershipsLoading ? 'Please Wait...' : 'Onboard Members' }}
 		</button>
 	</form>
 

@@ -143,11 +143,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3 w-full lg:w-[49%]">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="addNewAccountLoading" />
-			{{ addNewAccountLoading ? 'Processing' : 'Add New User' }}
+			:class="[
+				'generic-form-submit mt-3 w-full',
+				addNewAccountLoading && 'skeleton skeleton-animated',
+			]">
+			{{ addNewAccountLoading ? 'Please Wait...' : 'Add New User' }}
 		</button>
 	</form>
 </template>

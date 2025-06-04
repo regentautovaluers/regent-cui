@@ -15,7 +15,7 @@
 		<div class="flex flex-col">
 			<label class="font-bold text-gray-500">Full Name</label>
 			<div
-				class="flex w-full flex-col space-x-0 space-y-3 md:flex-row md:space-x-4 md:space-y-0">
+				class="flex w-full flex-col space-y-3 space-x-0 md:flex-row md:space-y-0 md:space-x-4">
 				<input
 					type="text"
 					id="first-name"
@@ -84,11 +84,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="updateCorporateAccountLoading" />
-			{{ updateCorporateAccountLoading ? 'Processing' : 'Update' }}
+			:class="[
+				'generic-form-submit mt-3',
+				updateCorporateAccountLoading && 'skeleton skeleton-animated',
+			]">
+			{{ updateCorporateAccountLoading ? 'Please Wait...' : 'Update' }}
 		</button>
 	</form>
 </template>

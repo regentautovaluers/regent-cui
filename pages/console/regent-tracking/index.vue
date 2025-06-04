@@ -52,7 +52,7 @@
 			v-if="activeTrackedDevice">
 			<div
 				class="border-b- flex h-[7%] min-h-[7%] items-center justify-between bg-gray-100 px-4">
-				<h1 class="inline-flex items-center space-x-2 uppercase text-gray-500">
+				<h1 class="inline-flex items-center space-x-2 text-gray-500 uppercase">
 					<span class="text-xl font-semibold">{{ activeTrackedDevice.vehicleReg }}</span
 					><span>|</span
 					><span class="text-xl font-semibold">{{
@@ -103,16 +103,14 @@
 					</button>
 				</h2>
 				<div :class="['p-5', deviceDetailsAccordionOpenned ? 'block' : 'hidden']">
-					<div
-						class="flex items-center justify-between border-b border-gray-300 py-4">
+					<div class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Stop Duration:</span>
 						<span v-if="activeTrackedDevice.stopDuration">{{
 							activeTrackedDevice.stopDuration
 						}}</span>
 						<span v-else>-</span>
 					</div>
-					<div
-						class="flex items-center justify-between border-b border-gray-300 py-4">
+					<div class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Driver:</span>
 						<span
 							v-if="
@@ -124,8 +122,7 @@
 						</span>
 						<span v-else>-</span>
 					</div>
-					<div
-						class="flex items-center justify-between border-b border-gray-300 py-4">
+					<div class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Sensors:</span>
 						<span
 							v-if="
@@ -143,16 +140,14 @@
 						<span class="font-semibold">Location:</span>
 						<span>{{ activeTrackedDeviceLocation }}</span>
 					</div>
-					<div
-						class="flex items-center justify-between border-b border-gray-300 py-4">
+					<div class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Position:</span>
 						<span
 							>{{ activeTrackedDevice.location.lat }},
 							{{ activeTrackedDevice.location.lng }}</span
 						>
 					</div>
-					<div
-						class="flex items-center justify-between border-b border-gray-300 py-4">
+					<div class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold"
 							>Last
 							<a
@@ -265,11 +260,11 @@
 						<!-- submit button -->
 						<button
 							type="submit"
-							class="generic-form-submit mt-3 w-full">
-							<FormSubmissionLoader
-								classes="mr-2 size-6 animate-spin text-white"
-								v-if="getDeviceHistoryLoading" />
-							{{ getDeviceHistoryLoading ? 'Processing' : 'Retrieve' }}
+							:class="[
+								'generic-form-submit mt-3 w-full',
+								getDeviceHistoryLoading && 'skeleton skeleton-animated',
+							]">
+							{{ getDeviceHistoryLoading ? 'Please Wait...' : 'Retrieve' }}
 						</button>
 					</form>
 				</div>

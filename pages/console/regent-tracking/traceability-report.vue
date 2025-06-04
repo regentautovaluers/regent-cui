@@ -45,7 +45,7 @@
 			<div class="mb-4 flex-grow">
 				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 					<table class="w-full text-left text-gray-500">
-						<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+						<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 							<tr>
 								<th
 									scope="col"
@@ -82,7 +82,7 @@
 								v-for="a in 10">
 								<td
 									scope="row"
-									class="whitespace-nowrap p-6 text-gray-300">
+									class="p-6 whitespace-nowrap text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>demoreg</span
 									>
@@ -130,7 +130,7 @@
 									{{ certificate.renewalDate ?? 'Date N/A' }}
 								</td>
 								<td
-									class="h-20 max-h-20 max-w-64 text-wrap text-sm"
+									class="h-20 max-h-20 max-w-64 text-sm text-wrap"
 									style="
 										overflow: hidden;
 										display: inline-flex;
@@ -195,12 +195,13 @@
 			<form
 				@submit.prevent="exportToExcel"
 				class="h-full min-h-full w-16 max-w-16">
-				<button class="generic-form-submit max-w-full text-xl">
-					<FormSubmissionLoader
-						classes="mr-2 size-6 animate-spin text-white"
-						v-if="downloadReports" />
+				<button
+					:class="[
+						'generic-form-submit max-w-full text-xl',
+						downloadReports && 'skeleton skeleton-animated',
+					]">
 					<svg
-						v-else
+						v-if="!downloadReports"
 						xmlns="http://www.w3.org/2000/svg"
 						width="48"
 						height="48"

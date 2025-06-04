@@ -1,7 +1,7 @@
 <template>
 	<form @submit.prevent="registerIndividualMember">
 		<div
-			class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+			class="flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -69,7 +69,7 @@
 				v-model="vehicle.membershipTypeId" />
 
 			<div
-				class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+				class="flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 				<!-- Reg Number -->
 				<div class="w-full lg:w-1/3">
 					<label
@@ -234,7 +234,7 @@
 			>
 		</button>
 		<div
-			class="mt-4 flex w-full flex-col items-center space-x-0 space-y-3 md:w-1/2 md:flex-row md:space-x-4 md:space-y-0">
+			class="mt-4 flex w-full flex-col items-center space-y-3 space-x-0 md:w-1/2 md:flex-row md:space-y-0 md:space-x-4">
 			<div class="h-fit w-full rounded-lg border border-blue-600 p-2 md:w-1/2">
 				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Vehicles Added</h1>
 				<h2 class="text-lg text-gray-500">{{ memberVehicles.length }}</h2>
@@ -244,11 +244,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3 w-full lg:w-1/2">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="registerIndividualMemberLoading" />
-			{{ registerIndividualMemberLoading ? 'Processing' : 'Onboard Member' }}
+			:class="[
+				'generic-form-submit mt-3 w-full',
+				registerIndividualMemberLoading && 'skeleton skeleton-animated',
+			]">
+			{{ registerIndividualMemberLoading ? 'Please Wait...' : 'Onboard Member' }}
 		</button>
 	</form>
 </template>

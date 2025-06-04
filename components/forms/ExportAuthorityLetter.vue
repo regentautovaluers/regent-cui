@@ -43,11 +43,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="exportAuthorityLettersLoading" />
-			{{ exportAuthorityLettersLoading ? 'Processing' : 'Export Data' }}
+			:class="[
+				'generic-form-submit',
+				exportAuthorityLettersLoading && 'skeleton skeleton-animated',
+			]">
+			{{ exportAuthorityLettersLoading ? 'Please Wait...' : 'Export Data' }}
 		</button>
 	</form>
 </template>

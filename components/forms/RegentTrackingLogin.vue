@@ -27,11 +27,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="loginAttemptLoading" />
-			{{ loginAttemptLoading ? 'Processing' : 'Login' }}
+			:class="[
+				'generic-form-submit mt-3',
+				loginAttemptLoading && 'skeleton skeleton-animated',
+			]">
+			{{ loginAttemptLoading ? 'Please Wait...' : 'Login' }}
 		</button>
 	</form>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<form @submit.prevent="createFraudsterEntry">
-		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+		<div class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 
-		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+		<div class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Vehicle Color -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -112,7 +112,7 @@
 				<span class="sr-only">Info</span>
 				<h3 class="text-lg font-medium">Incident Description</h3>
 			</div>
-			<div class="mb-4 mt-2">
+			<div class="mt-2 mb-4">
 				<p>
 					Kindly, optionally, use the fields below to provide an extra description of the
 					incident you are adding to the database. This will be of help to other users of
@@ -137,7 +137,7 @@
 				v-model="onboardFrauster.description"></textarea>
 		</div>
 
-		<div class="mt-5 flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+		<div class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Date of the incident -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -185,7 +185,7 @@
 				<button
 					@click.prevent="handleAppendingRelevantLink"
 					:disabled="!relevantLink"
-					class="absolute right-3 top-1/2 size-7 -translate-y-[5%] rounded-full bg-blue-600 text-white enabled:hover:bg-blue-700 disabled:bg-gray-400 disabled:text-slate-100">
+					class="absolute top-1/2 right-3 size-7 -translate-y-[5%] rounded-full bg-blue-600 text-white enabled:hover:bg-blue-700 disabled:bg-gray-400 disabled:text-slate-100">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="28"
@@ -222,11 +222,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-4 w-full md:w-1/3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="onboardFraudsterLoading" />
-			{{ onboardFraudsterLoading ? 'Processing' : 'Submit Request' }}
+			:class="[
+				'generic-form-submit mt-4 w-full',
+				onboardFraudsterLoading && 'skeleton skeleton-animated',
+			]">
+			{{ onboardFraudsterLoading ? 'Please Wait...' : 'Submit Request' }}
 		</button>
 	</form>
 </template>

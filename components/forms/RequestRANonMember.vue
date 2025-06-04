@@ -14,7 +14,7 @@
 		">
 		<!-- client contacts -->
 		<div
-			class="flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+			class="flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/2">
 				<label
@@ -80,7 +80,7 @@
 
 		<!-- vehicle registration, make, model -->
 		<div
-			class="my-5 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+			class="my-5 flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 			<!-- Reg Number -->
 
 			<!-- Vehicle Make -->
@@ -316,11 +316,15 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="makeRequestLoading" />
-			{{ makeRequestLoading ? 'Processing' : `Make ${props.roadsideAssistanceName} Request` }}
+			:class="[
+				'generic-form-submit mt-3',
+				makeRequestLoading && 'skeleton skeleton-animated',
+			]">
+			{{
+				makeRequestLoading
+					? 'Please Wait...'
+					: `Make ${props.roadsideAssistanceName} Request`
+			}}
 		</button>
 	</form>
 </template>

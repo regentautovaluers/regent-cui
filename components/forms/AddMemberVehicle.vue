@@ -30,7 +30,7 @@
 				hidden
 				v-model="userVehicles.membershipTypeId" />
 			<div
-				class="mt-2 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+				class="mt-2 flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 				<!-- Vehicle Make -->
 				<div class="w-full lg:w-1/2">
 					<label
@@ -181,11 +181,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-4">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="addMemberVehicleLoading" />
-			{{ addMemberVehicleLoading ? 'Processing' : 'Add Vehicle' }}
+			:class="[
+				'generic-form-submit mt-4',
+				addMemberVehicleLoading && 'skeleton skeleton-animated',
+			]">
+			{{ addMemberVehicleLoading ? 'Please Wait...' : 'Add Vehicle' }}
 		</button>
 	</form>
 </template>

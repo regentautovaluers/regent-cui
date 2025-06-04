@@ -41,7 +41,7 @@
 				aria-valuemin="0"
 				aria-valuemax="100">
 				<div
-					class="flex flex-col justify-center overflow-hidden whitespace-nowrap rounded-full bg-pink-600 text-center text-xs text-white transition duration-500"
+					class="flex flex-col justify-center overflow-hidden rounded-full bg-pink-600 text-center text-xs whitespace-nowrap text-white transition duration-500"
 					:style="{ width: `${currentPercentage}%` }" />
 			</div>
 			<div
@@ -320,11 +320,15 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="makeRequestLoading" />
-			{{ makeRequestLoading ? 'Processing' : `Make ${props.roadsideAssistanceName} Request` }}
+			:class="[
+				'generic-form-submit mt-3',
+				makeRequestLoading && 'skeleton skeleton-animated',
+			]">
+			{{
+				makeRequestLoading
+					? 'Please Wait...'
+					: `Make ${props.roadsideAssistanceName} Request`
+			}}
 		</button>
 	</form>
 </template>

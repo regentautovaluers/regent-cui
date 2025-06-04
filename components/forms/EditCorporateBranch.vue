@@ -36,11 +36,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="editCorporateBranchLoading" />
-			{{ editCorporateBranchLoading ? 'Processing' : 'Update Branch' }}
+			:class="[
+				'generic-form-submit mt-3',
+				editCorporateBranchLoading && 'skeleton skeleton-animated',
+			]">
+			{{ editCorporateBranchLoading ? 'Please Wait...' : 'Update Branch' }}
 		</button>
 	</form>
 </template>

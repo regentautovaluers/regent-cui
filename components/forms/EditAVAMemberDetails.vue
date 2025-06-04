@@ -2,7 +2,7 @@
 	<form
 		@submit.prevent="updateMemberDetails(props.memberId, clientName, clientPhone, clientEmail)">
 		<div
-			class="mb-2 flex flex-col items-center justify-between space-x-0 space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
+			class="mb-2 flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
 			<!-- Phone Field -->
 			<div class="w-full lg:w-1/2">
 				<label
@@ -54,11 +54,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-4">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="updateMemberDetailsLoading" />
-			{{ updateMemberDetailsLoading ? 'Processing' : 'Update' }}
+			:class="[
+				'generic-form-submit mt-4',
+				updateMemberDetailsLoading && 'skeleton skeleton-animated',
+			]">
+			{{ updateMemberDetailsLoading ? 'Please Wait...' : 'Update' }}
 		</button>
 	</form>
 </template>

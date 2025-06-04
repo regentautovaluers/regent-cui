@@ -20,7 +20,7 @@
 				<span class="sr-only">Info</span>
 				<h3 class="text-lg font-medium">Security Notice</h3>
 			</div>
-			<div class="mb-4 mt-2">
+			<div class="mt-2 mb-4">
 				<p>
 					Kindly provide the email associated with the account you want to reset the
 					password for, and if it exists we will email it a password reset link.
@@ -37,11 +37,8 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="false" />
-			{{ false ? 'Processing' : 'Proceed' }}
+			:class="['generic-form-submit mt-3', false && 'skeleton skeleton-animated']">
+			{{ false ? 'Please Wait...' : 'Proceed' }}
 		</button>
 	</form>
 

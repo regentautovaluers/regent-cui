@@ -20,7 +20,7 @@
 				<span class="sr-only">Info</span>
 				<h3 class="text-lg font-medium">Security Notice</h3>
 			</div>
-			<div class="mb-4 mt-2">
+			<div class="mt-2 mb-4">
 				<p>
 					Kindly provide the code that has been emailed to you. You may also choose to
 					bypass this step for the next 15 days. This choice is invalidated by browser
@@ -54,11 +54,8 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="false" />
-			{{ false ? 'Processing' : 'Proceed' }}
+			:class="['generic-form-submit mt-3', false && 'skeleton skeleton-animated']">
+			{{ false ? 'Please Wait...' : 'Proceed' }}
 		</button>
 	</form>
 

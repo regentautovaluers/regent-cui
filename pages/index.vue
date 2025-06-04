@@ -2,7 +2,7 @@
 	<form @submit.prevent="attemptLogin">
 		<div class="mb-16 text-3xl md:text-4xl lg:text-5xl">
 			<h1 class="font-bold">Hello,</h1>
-			<h2 class="whitespace-nowrap font-bold">Welcome Back</h2>
+			<h2 class="font-bold whitespace-nowrap">Welcome Back</h2>
 		</div>
 		<div class="space-y-4">
 			<input
@@ -37,11 +37,8 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="loginAttemptLoading" />
-			{{ loginAttemptLoading ? 'Processing' : 'Login' }}
+			:class="['generic-form-submit', loginAttemptLoading && 'skeleton skeleton-animated']">
+			{{ loginAttemptLoading ? 'Please Wait...' : 'Login' }}
 		</button>
 	</form>
 

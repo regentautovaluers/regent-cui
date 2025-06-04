@@ -28,11 +28,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-3 w-full">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="triggerDeviceCommandLoading" />
-			{{ triggerDeviceCommandLoading ? 'Processing' : 'Trigger' }}
+			:class="[
+				'generic-form-submit mt-3 w-full',
+				triggerDeviceCommandLoading && 'skeleton skeleton-animated',
+			]">
+			{{ triggerDeviceCommandLoading ? 'Please Wait...' : 'Trigger' }}
 		</button>
 	</form>
 </template>

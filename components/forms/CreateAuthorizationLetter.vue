@@ -315,11 +315,11 @@
 		<!-- submit button -->
 		<button
 			type="submit"
-			class="generic-form-submit mt-4 w-full md:w-1/3">
-			<FormSubmissionLoader
-				classes="mr-2 size-6 animate-spin text-white"
-				v-if="createAuthorizationLetterLoading" />
-			{{ createAuthorizationLetterLoading ? 'Processing' : 'Submit Request' }}
+			:class="[
+				'generic-form-submit mt-4 w-full md:w-1/3',
+				createAuthorizationLetterLoading && 'skeleton skeleton-animated',
+			]">
+			{{ createAuthorizationLetterLoading ? 'Please Wait...' : 'Submit Request' }}
 		</button>
 	</form>
 </template>
