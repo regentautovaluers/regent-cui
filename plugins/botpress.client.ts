@@ -1,8 +1,8 @@
-import { getClient } from '@botpress/webchat';
+// import { getClient } from '@botpress/webchat';
 import type { BotpressResponse } from '~/types';
 
 export default defineNuxtPlugin(async () => {
-	const client = getClient({ clientId: 'ced26376-bd02-4eea-9372-0b83ab1428f4' });
+	// const client = getClient({ clientId: 'ced26376-bd02-4eea-9372-0b83ab1428f4' });
 	const { parseBotpressResponse } = useAssistantConversation();
 	// await client.connect();
 
@@ -12,8 +12,8 @@ export default defineNuxtPlugin(async () => {
 	// });
 
 	return {
-		provide: {
-			botpressClient: client,
-		},
+		// provide: {
+		// 	botpressClient: client,
+		// },
 	};
 });

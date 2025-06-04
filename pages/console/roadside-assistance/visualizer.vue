@@ -96,7 +96,7 @@
 
 		<GoogleMap
 			ref="mapRef"
-			:api-key="runtimeConfig.GOOGLE_MAPS_API_KEY"
+			:api-key="googleMapsApiKey"
 			:styles="googleMapStyle"
 			style="width: 100%; height: 100%"
 			:map-type-control="false"
@@ -132,6 +132,7 @@
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	definePageMeta({
 		name: 'ra-visual-informer',

@@ -13,7 +13,7 @@
 				<template #membershipType>
 					<div class="w-1/2">
 						<h1
-							class="font-semibold underline underline-offset-[16px] group-hover:text-white">
+							class="font-semibold underline underline-offset-16 group-hover:text-white">
 							{{ membership.membership_name }}
 						</h1>
 					</div>
@@ -30,7 +30,7 @@
 							)"
 							:key="index">
 							<svg
-								class="mt-0.5 size-4 flex-shrink-0 text-black group-hover:text-white"
+								class="mt-0.5 size-4 shrink-0 text-black group-hover:text-white"
 								xmlns="http://www.w3.org/2000/svg"
 								width="24"
 								height="24"

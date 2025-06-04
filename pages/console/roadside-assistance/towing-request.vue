@@ -1,9 +1,9 @@
 <template>
-	<div class="console-layout-spacing grid grid-cols-1 gap-4 lg:grid-cols-[.5fr,.5fr]">
+	<div class="console-layout-spacing grid grid-cols-1 gap-4 lg:grid-cols-[.5fr_.5fr]">
 		<div class="overflow-clip rounded-lg border border-gray-500 border-opacity-50">
 			<GoogleMap
 				ref="mapRef"
-				:api-key="runtimeConfig.GOOGLE_MAPS_API_KEY"
+				:api-key="googleMapsApiKey"
 				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
 				:map-type-control="false"
@@ -49,7 +49,7 @@
 			<h1 class="mb-4 text-3xl font-semibold antialiased">Request Towing</h1>
 			<div
 				class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
-				<div class="border-b-1 space-x-4 font-semibold text-gray-500 lg:w-fit lg:text-lg">
+				<div class="border-b space-x-4 font-semibold text-gray-500 lg:w-fit lg:text-lg">
 					<button
 						@click="currentRegForm = 0"
 						:class="[
@@ -101,6 +101,7 @@
 	import { GoogleMap, CustomMarker, Polyline } from 'vue3-google-map';
 	import { type LocationCoords, type MapCoordsMarker } from '~/types';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 
 	definePageMeta({
 		name: 'ra-towing-request',
@@ -117,6 +118,7 @@
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
 	const polylineCoords: Ref<any[]> = ref([]);
 	const towingDistance: Ref<number> = ref(0);
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
 		const index = extraLocationMarkers.value.findIndex((marker) => marker.id === markerInfo.id);

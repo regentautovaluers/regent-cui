@@ -1,48 +1,72 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import "flowbite/src/themes/default";
 
-@layer components {
-	.generic-input {
-		@apply block h-[70px] w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
-	}
+@source '../../pages/**/*.vue';
+@source '../../node_modules/flowbite/**/*.{js,ts}';
 
-	.generic-input-modified {
-		@apply w-full border-b-2 border-x-transparent border-b-gray-200 border-t-transparent bg-transparent py-5 ps-10 text-gray-600 focus:border-x-transparent focus:border-b-blue-500 focus:border-t-transparent focus:ring-0;
-	}
+@theme {
+	--scale-103: 1.03;
+	--breakpoint-sm: 640px; /* 40rem */
+	--breakpoint-md: 768px; /* 48rem */
+	--breakpoint-lg: 1024px; /* 64rem */
+	--breakpoint-xl: 1280px; /* 80rem */
+	--breakpoint-2xl: 1536px; /* 96rem */
+}
 
-	.generic-input-label {
-		@apply mb-1 block font-bold text-gray-600;
-	}
 
-	.generic-quick-link {
-		@apply block w-fit font-bold text-blue-600 hover:text-blue-700;
-	}
+@plugin 'flowbite/plugin' {
+	charts: true;
+}
 
-	.generic-input-required-label {
-		@apply after:ml-0.5 after:text-gray-600 after:content-['*'];
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentcolor);
 	}
+}
 
-	.generic-form-submit {
-		@apply mb-2 me-2 inline-flex h-14 w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-lg font-semibold text-white hover:bg-blue-700 disabled:bg-gray-200;
-	}
+@utility generic-input {
+	@apply block h-[70px] w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
+}
 
-	.generic-nuxt-link {
-		@apply inline-flex h-12 w-fit items-center justify-center rounded-lg bg-blue-600 px-3 py-2 font-semibold text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300;
-	}
+@utility generic-input-modified {
+	@apply w-full border-b-2 border-x-transparent border-t-transparent border-b-gray-200 bg-transparent py-5 ps-10 text-gray-600 focus:border-x-transparent focus:border-t-transparent focus:border-b-blue-500 focus:ring-0;
+}
 
-	.ava-services-quicklinks {
-		@apply inline-flex h-full items-center space-x-2 whitespace-nowrap rounded-lg border px-3 text-gray-500 md:w-1/4;
-	}
+@utility generic-input-label {
+	@apply mb-1 block font-bold text-gray-600;
+}
 
-	.auth-letter-file-input {
-		@apply w-fit cursor-pointer rounded-full border-[1px] bg-opacity-50 px-4 py-2;
-	}
+@utility generic-quick-link {
+	@apply block w-fit font-bold text-blue-600 hover:text-blue-700;
+}
+
+@utility generic-input-required-label {
+	@apply after:ml-0.5 after:text-gray-600 after:content-['*'];
+}
+
+@utility generic-form-submit {
+	@apply me-2 mb-2 inline-flex h-14 w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-lg font-semibold text-white hover:bg-blue-700 disabled:bg-gray-200;
+}
+
+@utility generic-nuxt-link {
+	@apply inline-flex h-12 w-fit items-center justify-center rounded-lg bg-blue-600 px-3 py-2 font-semibold text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300;
+}
+
+@utility ava-services-quicklinks {
+	@apply inline-flex h-full items-center space-x-2 rounded-lg border px-3 whitespace-nowrap text-gray-500 md:w-1/4;
+}
+
+@utility auth-letter-file-input {
+	@apply w-fit cursor-pointer rounded-full border px-4 py-2 backdrop-opacity-50;
 }
 
 @layer base {
 	th {
-		@apply whitespace-nowrap font-bold;
+		@apply font-bold whitespace-nowrap;
 	}
 
 	tr {
@@ -76,7 +100,7 @@
 }
 
 .homepage-quicklinks {
-	@apply flex size-[90px] items-center justify-center rounded-[2rem] bg-blue-600 p-3 shadow-md transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700;
+	@apply flex size-[90px] items-center justify-center rounded-4xl bg-blue-600 p-3 shadow-md transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700;
 }
 
 .table-page-buttons {
@@ -88,7 +112,7 @@
 }
 
 .table-headers {
-	@apply whitespace-nowrap px-6 py-3 font-bold;
+	@apply px-6 py-3 font-bold whitespace-nowrap;
 }
 
 .myloc-box {
@@ -142,7 +166,7 @@
 }
 
 .ai-trigger-btns {
-	@apply rounded-full border border-gray-600 px-6 py-3 text-gray-600 outline-none;
+	@apply rounded-full border border-gray-600 px-6 py-3 text-gray-600 outline-hidden;
 }
 
 .console-layout-spacing {

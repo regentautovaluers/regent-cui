@@ -77,7 +77,7 @@
 				role="alert">
 				<div class="flex items-center">
 					<svg
-						class="me-2 h-4 w-4 flex-shrink-0"
+						class="me-2 h-4 w-4 shrink-0"
 						aria-hidden="true"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="currentColor"
@@ -102,14 +102,30 @@
 
 			<IAVehicleDetailsResultsCard
 				:reg-no="iaVehicleDetails.regNo"
-				:year-of-manufacture="iaVehicleDetails.vehicle.yearOfManufacture"
-				:vehicle-make="iaVehicleDetails.vehicle.carMake"
-				:vehicle-model="iaVehicleDetails.vehicle.carModel"
-				:chassis-number="iaVehicleDetails.vehicle.ChassisNo"
-				:engine-number="iaVehicleDetails.vehicle.engineNumber"
+				:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
+				:vehicle-make="iaVehicleDetails.carMake"
+				:vehicle-model="iaVehicleDetails.carModel"
+				:chassis-number="iaVehicleDetails.ChassisNo"
+				:engine-number="iaVehicleDetails.engineNumber"
 				:vehicle-color="iaVehicleDetails.color"
-				:fuel-type="iaVehicleDetails.vehicle.fuel_type"
-				:passenger-capacity="iaVehicleDetails.vehicle.passengerCapacity" />
+				:fuel-type="iaVehicleDetails.fuel_type"
+				:passenger-capacity="iaVehicleDetails.passengerCapacity" />
+		</div>
+
+		<!-- vehicle owner results -->
+		<div
+			v-if="iaVehicleOwnerDetails"
+			class="border-b border-dashed border-gray-300 pb-5">
+			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+				Details of owner when vehicle was registered
+			</h1>
+			<IAVehicleOwnerDetails
+				:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
+				:id-number="iaVehicleOwnerDetails.ID_NUMBER"
+				:address="iaVehicleOwnerDetails.ADDRESS"
+				:phone-numer="iaVehicleOwnerDetails.TELNO"
+				:town="iaVehicleOwnerDetails.TOWN"
+				:owner-type="iaVehicleOwnerDetails.OWNER_TYPE" />
 		</div>
 
 		<!-- collateral results -->
@@ -119,7 +135,6 @@
 			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
 				Where this vehicle been used as collateral
 			</h1>
-
 			<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
 		</div>
 
@@ -134,7 +149,7 @@
 				role="alert">
 				<div class="flex items-center">
 					<svg
-						class="me-2 h-4 w-4 flex-shrink-0"
+						class="me-2 h-4 w-4 shrink-0"
 						aria-hidden="true"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="currentColor"
@@ -191,6 +206,7 @@
 		ravFraudDetails,
 		iaVehicleDetails,
 		iaVehicleCollateralDetails,
+		iaVehicleOwnerDetails,
 		searchFraudster,
 	} = useFraudDetection();
 </script>

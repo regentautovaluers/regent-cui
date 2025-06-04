@@ -6,7 +6,7 @@
 	<ParentModal
 		modal-id="export-to-excel"
 		modal-title="Export to Excel"
-		class="h-[18rem]"
+		class="h-72"
 		v-if="isExportExcelModalOpen"
 		@close-modal="isExportExcelModalOpen = false">
 		<ExportAuthorityLetter />
@@ -16,7 +16,7 @@
 	<ParentModal
 		modal-id="search-corp-brokers"
 		:modal-title="isPrincipalBroker() ? 'Search Corporate' : 'Search Brokers'"
-		class="h-[28rem]"
+		class="h-112"
 		v-if="isSearchCorpBrokersModalOpen"
 		@close-modal="isSearchCorpBrokersModalOpen = false">
 		<SearchCorporateOrBroker

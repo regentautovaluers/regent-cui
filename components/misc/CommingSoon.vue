@@ -1,7 +1,7 @@
 <template>
 	<div class="flex size-full flex-col items-center justify-center">
 		<h2
-			class="my-3 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-7xl font-semibold text-transparent">
+			class="my-3 bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-7xl font-semibold text-transparent">
 			<span>Coming Soon</span>
 		</h2>
 		<button

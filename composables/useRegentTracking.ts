@@ -1,6 +1,54 @@
 import type { CookieRef } from '#app';
 import { Loader } from '@googlemaps/js-api-loader';
 import { type TrackedDevice, type TrackerInstallationCertificate } from '~/types';
+import { Workbook } from 'exceljs';
+import { saveAs } from 'file-saver';
+
+const outputExcel = async (data: TrackerInstallationCertificate[], outputFile: string) => {
+	const workbook = new Workbook();
+	const worksheet = workbook.addWorksheet(
+		new Date().toLocaleDateString().replaceAll('/', '-') + ' Traceability Report',
+	);
+	worksheet.columns = [
+		{
+			header: 'Client Name',
+			key: 'clientName',
+			width: 30,
+		},
+		{
+			header: 'Phone Number',
+			key: 'clientNo',
+			width: 20,
+		},
+		{
+			header: 'Vehicle Registration',
+			key: 'regno',
+			width: 10,
+		},
+		{
+			header: 'Installation Date',
+			key: 'installationDate',
+			width: 15,
+		},
+		{
+			header: 'Renewal Date',
+			key: 'renewalDate',
+			width: 15,
+		},
+		{
+			header: 'Status Update',
+			key: 'renewalDate',
+			width: 50,
+		},
+	];
+
+	worksheet.addRows(data);
+
+	workbook.xlsx
+		.writeBuffer()
+		.then((buffer) => saveAs(new Blob([buffer]), `${Date.now()}report.xlsx`))
+		.catch((err) => console.log('Error writing excel export', err));
+};
 
 export const useRegentTracking = () => {
 	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
@@ -324,21 +372,55 @@ export const useTrackingTraceabilityReports = () => {
 	const currentPage: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
 	const totalPages: Ref<number> = ref(0);
+	const downloadReports: Ref<boolean> = ref(false);
 
 	const {
 		status: fetchTrackingCertificatesStatus,
 		execute: executeFetchTrackingCertificates,
 		data: trackingCertificates,
-	} = useFetch<TrackerInstallationCertificate[]>('/tracking/api_certificates.php', {
-		key: 'tracker-installation-certificates',
-		baseURL: runtimeConfig.public.REGENT_TRACK_CERTS_BASE_URL,
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
+	} = useTrackerCertificatesData<TrackerInstallationCertificate[]>(
+		'/tracking/api_certificates.php',
+		{
+			key: 'tracker-installation-certificates',
+			// baseURL: runtimeConfig.public.REGENT_TRACK_CERTS_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			// server: false,
+			// lazy: true,
 		},
-		server: false,
-		lazy: true,
-	});
+	);
+
+	const exportToExcel = async () => {
+		downloadReports.value = true;
+		try {
+			await $trackerCertificates('/tracking/api_certificates.php', {
+				// baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+				},
+				onResponse({ response }) {
+					if (response.ok) {
+						const responseData = response._data as TrackerInstallationCertificate[];
+
+						outputExcel(responseData, 'certificates.xlsx');
+					}
+				},
+			});
+		} catch (er) {
+			console.log('Error encountered. Reason: ', er);
+			useToast('Error. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			downloadReports.value = false;
+		}
+	};
 
 	return {
 		searchRegNo,
@@ -347,6 +429,8 @@ export const useTrackingTraceabilityReports = () => {
 		currentPage,
 		trackingCertificates,
 		totalPages,
+		downloadReports,
 		executeFetchTrackingCertificates,
+		exportToExcel,
 	};
 };

@@ -1,7 +1,7 @@
 <template>
-	<div class="console-layout-spacing b grid flex-grow grid-cols-1 lg:grid-cols-[80%,20%]">
+	<div class="console-layout-spacing b grid flex-grow grid-cols-1 lg:grid-cols-[80%_20%]">
 		<div
-			class="col-span-2 mb-10 flex h-[8rem] items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
+			class="col-span-2 mb-10 flex h-32 items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
 				<img
 					class="h-20 w-20 rounded-full"
@@ -270,7 +270,7 @@
 		<div
 			class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
 			<div
-				class="xl:min-h-1/2 v flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white px-5 shadow-sm xl:h-1/2">
+				class="xl:min-h-1/2 v flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm xl:h-1/2">
 				<div class="flex h-14 items-center justify-between">
 					<h1 class="text-2xl font-bold">About</h1>
 					<button
@@ -309,7 +309,7 @@
 				<div class="flex-grow">
 					<div class="flex h-fit w-full items-center justify-center">
 						<button
-							class="inline-flex size-[6rem] items-center justify-center rounded-full bg-pink-500 text-white shadow-sm">
+							class="inline-flex size-24 items-center justify-center rounded-full bg-pink-500 text-white shadow-sm">
 							<MembershipsIcon classes="size-16 text-inherit" />
 						</button>
 					</div>
@@ -335,7 +335,7 @@
 				</div>
 			</div>
 			<div
-				class="xl:min-h-1/2 flex h-[25rem] min-h-[25rem] flex-col rounded-md border bg-white shadow-sm xl:h-1/2">
+				class="xl:min-h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white shadow-sm xl:h-1/2">
 				<h1 class="p-5 text-2xl font-bold">Memberships</h1>
 
 				<div

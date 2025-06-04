@@ -6,7 +6,7 @@
 		]">
 		<GoogleMap
 			ref="mapRef"
-			api-key="AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY"
+			:api-key="googleMapsApiKey"
 			:styles="trackingGoogleMapsConfig"
 			style="width: 100%; height: 100%"
 			:map-type-control="false"
@@ -104,7 +104,7 @@
 				</h2>
 				<div :class="['p-5', deviceDetailsAccordionOpenned ? 'block' : 'hidden']">
 					<div
-						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Stop Duration:</span>
 						<span v-if="activeTrackedDevice.stopDuration">{{
 							activeTrackedDevice.stopDuration
@@ -112,7 +112,7 @@
 						<span v-else>-</span>
 					</div>
 					<div
-						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Driver:</span>
 						<span
 							v-if="
@@ -125,7 +125,7 @@
 						<span v-else>-</span>
 					</div>
 					<div
-						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Sensors:</span>
 						<span
 							v-if="
@@ -139,12 +139,12 @@
 						<span v-else>-</span>
 					</div>
 					<div
-						class="flex flex-col justify-center space-y-2 border-b-[1px] border-gray-300 py-4">
+						class="flex flex-col justify-center space-y-2 border-b border-gray-300 py-4">
 						<span class="font-semibold">Location:</span>
 						<span>{{ activeTrackedDeviceLocation }}</span>
 					</div>
 					<div
-						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold">Position:</span>
 						<span
 							>{{ activeTrackedDevice.location.lat }},
@@ -152,7 +152,7 @@
 						>
 					</div>
 					<div
-						class="flex items-center justify-between border-b-[1px] border-gray-300 py-4">
+						class="flex items-center justify-between border-b border-gray-300 py-4">
 						<span class="font-semibold"
 							>Last
 							<a
@@ -315,7 +315,7 @@
 
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker, MarkerCluster, Polyline } from 'vue3-google-map';
-	import TriggerTrackingDeviceEvent from '~/components/forms/TriggerTrackingDeviceEvent.vue';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 
 	definePageMeta({
 		name: 'regent-tracking-home',
@@ -370,6 +370,8 @@
 		getDeviceHistoryLoading,
 		getDeviceHistory,
 	} = useTrackedDeviceCommandsAndHistory();
+
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	const mapColorToTailwindEquivalent = (
 		color: 'green' | 'blue' | 'red' | 'yellow' | 'black',

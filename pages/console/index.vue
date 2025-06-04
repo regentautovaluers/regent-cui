@@ -3,7 +3,7 @@
 		<div class="my-24 flex flex-col items-center">
 			<h1 class="text-xl uppercase text-gray-500">Hello, {{ getPrincipal.username }}</h1>
 			<h2
-				class="my-3 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-7xl font-semibold text-transparent">
+				class="my-3 bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-7xl font-semibold text-transparent">
 				<span>Say Hi to AVA,</span><br /><span>Our Virtual Assistant</span>
 			</h2>
 			<!-- TODO: Remove this button later -->

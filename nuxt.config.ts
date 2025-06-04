@@ -1,4 +1,5 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import tailwindcss from '@tailwindcss/vite';
+
 export default defineNuxtConfig({
 	compatibilityDate: '2024-04-03',
 	devtools: { enabled: true },
@@ -19,11 +20,8 @@ export default defineNuxtConfig({
 		dirs: ['./utils'],
 	},
 	css: ['~/assets/css/main.css'],
-	postcss: {
-		plugins: {
-			tailwindcss: {},
-			autoprefixer: {},
-		},
+	vite: {
+		plugins: [tailwindcss()],
 	},
 	app: {
 		head: {
@@ -76,7 +74,18 @@ export default defineNuxtConfig({
 			REGENT_TRACK_CERTS_BASE_URL: '',
 		},
 		app: {},
+		apiParty: {
+			endpoints: {
+				trackerCertificates: {
+					url: 'http://192.168.0.20',
+					// Global headers sent with each request
+					headers: {
+						Accept: 'application/json',
+					},
+				},
+			},
+		},
 	},
 
-	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
+	modules: ['@nuxtjs/harlem', '@nuxt/fonts', 'nuxt-api-party'],
 });

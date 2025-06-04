@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="flex h-fit w-[22rem] min-w-[22rem] flex-col overflow-clip rounded-lg bg-blue-600 transition-colors duration-300 hover:bg-blue-700">
+		class="flex h-fit w-88 min-w-88 flex-col overflow-clip rounded-lg bg-blue-600 transition-colors duration-300 hover:bg-blue-700">
 		<div class="flex h-12 items-center pl-4 text-xl font-extrabold text-white">
 			<h1 class="animate-pulse rounded-lg bg-gray-300 text-gray-300">samplereg</h1>
 		</div>
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div
-			class="flex h-12 items-center space-x-2 rounded-b-lg bg-gray-600 bg-opacity-40 pl-4 font-semibold text-white">
+			class="flex h-12 items-center space-x-2 rounded-b-lg bg-gray-600 pl-4 font-semibold text-white backdrop-opacity-40">
 			<div class="size-3 rounded-full bg-green-500" />
 			<h1 class="animate-pulse rounded-lg bg-gray-300 text-gray-300">sampletext</h1>
 		</div>

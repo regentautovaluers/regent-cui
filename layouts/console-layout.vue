@@ -1,11 +1,13 @@
 <template>
 	<aside
 		:class="[
-			'fixed left-0 z-50 flex h-screen max-h-screen flex-col overflow-y-scroll border-r-[1px] bg-white transition-all duration-200 ease-out',
-			sidebarExpanded ? 'w-[15.5rem]' : 'w-14',
-		]">
+			'fixed left-0 z-50 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
+			sidebarExpanded ? 'w-68' : 'w-[60px]',
+		]"
+		@mouseenter="sidebarExpanded = true"
+		@mouseleave="sidebarExpanded = false">
 		<!-- logo on top part of sidebar -->
-		<div class="flex h-[70px] w-full items-center justify-center p-4 text-center">
+		<div class="flex h-[70px] w-full items-center p-4 text-center">
 			<NuxtLink
 				:to="{ name: 'mobivaluer-home' }"
 				class="flex items-center"
@@ -26,14 +28,14 @@
 			</NuxtLink>
 		</div>
 		<!-- actual links -->
-		<div class="flex flex-grow flex-col justify-between px-1 py-2">
-			<ul class="space-y-3">
+		<div class="flex flex-grow flex-col justify-between px-[.5rem] py-2">
+			<ul class="space-y-4">
 				<template
 					v-for="(link, index) in navigationRoutes"
 					:key="index">
 					<li
 						:class="[
-							'flex h-12 w-full items-center rounded-lg px-2 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
+							'flex h-11 w-full items-center rounded-lg py-5 px-2 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
 							fuzzyRouteNameMatch(link.routeName, link) && 'bg-blue-600 text-white',
 						]"
 						:title="link.screenName">
@@ -70,10 +72,10 @@
 									<AccidentManagementIcon classes="size-6 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'garage-home'">
-									<GarageIcon classes="size-7 text-inherit" />
+									<GarageIcon classes="size-6 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'parts-home'">
-									<PartsIcon classes="size-8 text-inherit" />
+									<PartsIcon classes="size-6 text-inherit" />
 								</template>
 							</span>
 							<span
@@ -171,28 +173,31 @@
 			</ul>
 		</div>
 
-		<div class="flex h-12 w-full flex-col items-center text-sm text-gray-600">
-			<h1 v-if="sidebarExpanded">Regent Auto Valuers</h1>
+		<div
+			class="h-12 w-full text-sm text-gray-600"
+			v-if="sidebarExpanded">
+			<h1>Regent Auto Valuers</h1>
 			<h2>
-				<span>&copy; 2025</span><span v-if="sidebarExpanded">. All Rights Reserved</span>
+				<span>&copy; 2025.</span>
+				<span> All Rights Reserved</span>
 			</h2>
 		</div>
 	</aside>
 	<main
 		:class="[
 			'flex h-screen min-h-screen flex-col overflow-auto transition-all duration-200 ease-out',
-			sidebarExpanded ? 'pl-[15.5rem]' : 'pl-14',
+			sidebarExpanded ? 'pl-68' : 'pl-[60px]',
 		]"
 		style="background-color: #f8faf8">
 		<nav
-			class="sticky top-0 z-20 flex h-[7%] min-h-[7%] max-h-[7%] w-full items-center justify-between border-b bg-white px-2"
+			class="sticky top-0 z-20 flex h-[7%] max-h-[7%] min-h-[7%] w-full items-center justify-between border-b bg-white px-2"
 			id="top-nav">
 			<div class="flex items-center space-x-2 text-gray-700">
-				<button
+				<!-- <button
 					class="text-inherit"
 					@click="sidebarExpanded = !sidebarExpanded">
 					<MenuButtonIcon />
-				</button>
+				</button> -->
 				<h1 class="w-fit text-lg font-semibold md:text-2xl">
 					{{ currentScreenName }}
 				</h1>
@@ -306,7 +311,7 @@
 	<!-- the chat window on the right side -->
 	<aside
 		id="dashboard-chat-window"
-		class="fixed right-0 top-0 z-50 h-screen w-[32rem] translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
+		class="fixed right-0 top-0 z-50 h-screen w-lg translate-x-full overflow-y-hidden rounded-l-lg border-2 border-gray-500 bg-white p-4 transition-transform"
 		tabindex="-1"
 		aria-labelledby="drawer-right-label">
 		<h5

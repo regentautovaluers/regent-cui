@@ -1,10 +1,10 @@
 <template>
-	<div class="mt-4 h-fit min-h-32 rounded-md border-[1px] border-gray-500 p-8">
+	<div class="mt-4 h-fit min-h-32 rounded-md shadow-md bg-white p-8">
 		<h1 class="text-2xl font-semibold">
 			{{ props.regNo }} - {{ props.yearOfManufacture }} - {{ props.vehicleMake }}
 			{{ props.vehicleModel }}
 		</h1>
-		<div class="my-2 flex h-12 items-center space-x-5 border-b-[1px] border-gray-300">
+		<div class="my-2 flex h-12 items-center space-x-5 border-b border-gray-300">
 			<div class="flex w-fit items-center space-x-2 text-gray-600">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@
 				<span class="text-gray-600">Color: {{ props.vehicleColor }}</span>
 			</div>
 		</div>
-		<div class="grid min-h-20 grid-cols-2 divide-x-[1px] divide-gray-300">
+		<div class="grid min-h-20 grid-cols-2 divide-x divide-gray-300">
 			<div class="min-h-full py-5">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@
 						d="M4 11h1m1 0h1M6 8h1M4 8h1M4 5h1m1 0h1m6.5 8.5h-11v-11h6v5h5zm-5-4h3v4h-3z"
 						stroke-width="1" />
 				</svg>
-				<h1 class="my-2 font-semibold">Defrauded Institution</h1>
+				<h1 class="my-2 font-semibold">Defaulted Institution</h1>
 				<div class="mt-2 grid w-full grid-cols-2 gap-2 rounded-lg text-gray-600 xl:w-3/4">
 					<div>
 						<h1 class="font-semibold">Name</h1>
@@ -68,7 +68,7 @@
 						<span>{{ props.defraudedInstitution }}</span>
 					</div>
 					<div>
-						<h1 class="font-semibold">Defrauded Amount</h1>
+						<h1 class="font-semibold">Defaulted Amount</h1>
 					</div>
 					<div>
 						<span

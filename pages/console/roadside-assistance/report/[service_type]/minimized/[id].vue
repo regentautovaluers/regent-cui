@@ -66,7 +66,7 @@
 		</div>
 
 		<!-- responder details, trip detals and cost breakdown -->
-		<div class="mt-8 grid h-[28rem] grid-cols-2 gap-x-8 rounded-lg shadow-sm">
+		<div class="mt-8 grid h-112 grid-cols-2 gap-x-8 rounded-lg shadow-sm">
 			<div class="flex h-full flex-col space-y-8 rounded-lg">
 				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
 					<div
@@ -144,7 +144,7 @@
 		</div>
 
 		<!-- map section -->
-		<div class="relative mt-12 h-[42rem] overflow-clip rounded-lg border shadow-sm">
+		<div class="relative mt-12 h-168 overflow-clip rounded-lg border shadow-sm">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -282,6 +282,7 @@
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 
 	definePageMeta({
 		name: 'ra-minimized-report',
@@ -290,8 +291,8 @@
 
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
-	const googleMapsApiKey = runtimeConfig.GOOGLE_MAPS_API_KEY;
 	const mapRef: Ref<any> = ref(null);
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	const { data: serviceReport } = (await useFetch(
 		`/api/v1/control-unit/get-user-requests/${route.params.service_type}/${route.params.id}`,

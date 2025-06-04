@@ -78,6 +78,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 	const currentPercentage: ComputedRef<number> = computed(() => {
 		return (freeDistanceLeftForTowing.value * 100) / 20;
 	});
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	// load the towing price charges
 	const {
@@ -108,7 +109,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 
 	const bindToDropOffLocation = async () => {
 		const loader = new Loader({
-			apiKey: runtimeConfig.GOOGLE_MAPS_API_KEY,
+			apiKey: googleMapsApiKey,
 			version: 'weekly',
 		});
 
@@ -146,7 +147,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 
 	const bindToPickUpLocation = async () => {
 		const loader = new Loader({
-			apiKey: runtimeConfig.GOOGLE_MAPS_API_KEY,
+			apiKey: googleMapsApiKey,
 			version: 'weekly',
 		});
 		const Places = await loader.importLibrary('places');

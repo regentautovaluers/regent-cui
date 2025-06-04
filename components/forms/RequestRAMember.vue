@@ -253,7 +253,7 @@
 					placeholder="Type an address to search"
 					required />
 				<PickupLocationIcon
-					classes="flex-shrink-0 size-9 transition duration-75 text-gray-500 group-hover:text-blue-600 absolute left-0 top-1/3 -translate-y-1 peer-focus:text-blue-600" />
+					classes="shrink-0 size-9 transition duration-75 text-gray-500 group-hover:text-blue-600 absolute left-0 top-1/3 -translate-y-1 peer-focus:text-blue-600" />
 			</div>
 		</div>
 
@@ -274,7 +274,7 @@
 					placeholder="Type an address to search"
 					required />
 				<DropOffLocationIcon
-					classes="flex-shrink-0 size-7 transition duration-75 text-gray-500 group-hover:text-blue-600 absolute left-0 top-1/3 -translate-y-1 peer-focus:text-blue-600" />
+					classes="shrink-0 size-7 transition duration-75 text-gray-500 group-hover:text-blue-600 absolute left-0 top-1/3 -translate-y-1 peer-focus:text-blue-600" />
 			</div>
 		</div>
 
