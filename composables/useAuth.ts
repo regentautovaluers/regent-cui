@@ -111,7 +111,8 @@ const useAuth = () => {
 
 	const updateMyAccountDetails = async (
 		userId: string,
-		username: string,
+		firstName: string,
+		lastName: string,
 		email: string,
 		phoneNumber: string,
 		roleInOrganization: string,
@@ -130,7 +131,7 @@ const useAuth = () => {
 				},
 				body: JSON.stringify({
 					userId: userId,
-					username: username,
+					username: `${firstName} ${lastName}`,
 					email: email,
 					phoneNumber: phoneNumber,
 					roleInOrganization: roleInOrganization,
