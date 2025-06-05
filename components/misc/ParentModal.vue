@@ -1,17 +1,20 @@
 <template>
 	<!-- Main modal -->
 	<div
-		class="fixed left-0 right-0 top-0 z-50 flex h-screen max-h-screen w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/80 backdrop-blur">
-		<div class="relative max-h-full w-full max-w-2xl p-4">
+		:id="props.modalId"
+		tabindex="-1"
+		data-modal-placement="top-center"
+		class="fixed top-0 right-0 left-0 z-50 hidden h-[100%] max-h-full w-full overflow-x-hidden overflow-y-auto bg-white/10 p-4 md:inset-0">
+		<div class="relative max-h-full w-full max-w-2xl">
 			<!-- Modal content -->
-			<div class="relative rounded-lg bg-white shadow">
+			<div class="relative rounded-xl bg-white shadow-sm">
 				<!-- Modal header -->
-				<div class="flex items-center justify-between rounded-t border-b p-4">
-					<h3 class="text-xl font-semibold text-gray-500">{{ props.modalTitle }}</h3>
+				<div class="flex items-center justify-between rounded-t-xl bg-blue-50/50 px-5 py-3">
+					<h3 class="font-semibold text-gray-500">{{ props.modalTitle }}</h3>
 					<button
 						type="button"
 						class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-						@click.prevent="emits('close-modal')">
+						:data-modal-hide="props.modalId">
 						<svg
 							class="h-3 w-3"
 							aria-hidden="true"
@@ -45,5 +48,4 @@
 		modalTitle: { required: true, type: String },
 		class: { required: false, type: String },
 	});
-	const emits = defineEmits(['close-modal']);
 </script>
