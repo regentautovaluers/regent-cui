@@ -1,6 +1,6 @@
 <template>
 	<svg
-		class="h-3 w-3 text-inherit"
+		class="size-[10px] text-inherit"
 		aria-hidden="true"
 		xmlns="http://www.w3.org/2000/svg"
 		fill="none"
