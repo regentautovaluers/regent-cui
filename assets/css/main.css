@@ -30,7 +30,11 @@
 }
 
 @utility generic-input {
-	@apply tablet:h-[60px] laptop:h-[70px] block h-[55px] w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
+	@apply tablet:h-[60px] block h-[55px] w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-sm text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
+}
+
+@utility generic-text-area {
+	@apply block w-full rounded-lg border-gray-200 px-4 py-3 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500;
 }
 
 @utility generic-input-modified {
@@ -38,7 +42,7 @@
 }
 
 @utility generic-input-label {
-	@apply mb-1 block font-bold text-gray-600;
+	@apply mb-1 block text-sm font-bold text-gray-600;
 }
 
 @utility generic-quick-link {
@@ -50,7 +54,7 @@
 }
 
 @utility generic-form-submit {
-	@apply laptop:h-[60px] me-2 mb-2 inline-flex h-[55px] w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-lg font-semibold text-white hover:bg-blue-700 disabled:bg-gray-200;
+	@apply tablet:h-[60px] me-2 mb-2 inline-flex h-[55px] w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-gray-400 hover:bg-blue-700 disabled:bg-gray-200;
 }
 
 @utility generic-nuxt-link {
@@ -63,6 +67,14 @@
 
 @utility auth-letter-file-input {
 	@apply w-fit cursor-pointer rounded-full border px-4 py-2 backdrop-opacity-50;
+}
+
+@utility generic-search-submit-button {
+	@apply tablet:h-[60px] absolute top-0 right-0 flex size-14 h-[55px] items-center justify-center rounded-lg rounded-l-none bg-blue-600 hover:bg-blue-700;
+}
+
+@utility generic-table-cell {
+	@apply text-sm;
 }
 
 @layer base {
@@ -105,7 +117,7 @@
 }
 
 .table-page-buttons {
-	@apply h-full w-20 rounded-lg border border-blue-600 text-center text-sm font-semibold text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white disabled:border-gray-200 disabled:bg-transparent disabled:text-gray-500 md:h-full md:w-32 md:text-base;
+	@apply h-full w-20 rounded-lg border border-blue-600 text-center text-sm font-semibold text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white disabled:border-gray-200 disabled:bg-transparent disabled:text-gray-500 md:h-full md:w-32 ;
 }
 
 .table-filter-buttons {
@@ -113,7 +125,7 @@
 }
 
 .table-headers {
-	@apply px-6 py-3 font-bold whitespace-nowrap;
+	@apply px-6 py-3 text-sm font-bold whitespace-nowrap;
 }
 
 .myloc-box {
