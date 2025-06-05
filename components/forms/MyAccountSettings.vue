@@ -13,7 +13,7 @@
 			)
 		">
 		<div class="flex flex-col">
-			<label class="font-bold text-gray-500">Full Name</label>
+			<label class="generic-input-label">Full Name</label>
 			<div
 				class="flex w-full flex-col space-y-3 space-x-0 md:flex-row md:space-y-0 md:space-x-4">
 				<input
@@ -33,7 +33,7 @@
 			</div>
 		</div>
 		<div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Email</label>
+			<label class="generic-input-label">Email</label>
 			<div class="flex flex-grow">
 				<input
 					type="email"
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Phone Number</label>
+			<label class="generic-input-label">Phone Number</label>
 			<div class="flex flex-grow">
 				<input
 					type="text"
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<!-- <div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Password</label>
+			<label class="generic-input-label">Password</label>
 			<div class="flex flex-grow">
 				<input
 					type="password"
@@ -68,7 +68,7 @@
 			</div>
 		</div> -->
 		<div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Role In Company</label>
+			<label class="generic-input-label">Role In Company</label>
 			<div class="flex flex-grow">
 				<input
 					type="text"

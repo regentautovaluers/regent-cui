@@ -3,7 +3,8 @@
 		@submit.prevent="
 			updateMyAccountDetails(
 				props.userId,
-				username,
+				firstName,
+				lastName,
 				email,
 				phoneNumber,
 				roleInOrganization,
@@ -13,7 +14,7 @@
 			)
 		">
 		<div class="flex flex-col">
-			<label class="font-bold text-gray-500">Full Name</label>
+			<label class="generic-input-label">Full Name</label>
 			<div
 				class="flex w-full flex-col space-y-3 space-x-0 md:flex-row md:space-y-0 md:space-x-4">
 				<input
@@ -33,7 +34,7 @@
 			</div>
 		</div>
 		<div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Email</label>
+			<label class="generic-input-label">Email</label>
 			<div class="flex flex-grow">
 				<input
 					type="email"
@@ -45,7 +46,7 @@
 			</div>
 		</div>
 		<div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Phone Number</label>
+			<label class="generic-input-label">Phone Number</label>
 			<div class="flex flex-grow">
 				<input
 					type="text"
@@ -57,7 +58,7 @@
 			</div>
 		</div>
 		<!-- <div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Password</label>
+			<label class="generic-input-label">Password</label>
 			<div class="flex flex-grow">
 				<input
 					type="password"
@@ -68,7 +69,7 @@
 			</div>
 		</div> -->
 		<div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Role In Company</label>
+			<label class="generic-input-label">Role In Company</label>
 			<div class="flex flex-grow">
 				<input
 					type="text"
@@ -83,7 +84,7 @@
 		<div class="relative mt-3">
 			<label
 				for="user-branch"
-				class="font-bold text-gray-500"
+				class="generic-input-label"
 				>User's Branch</label
 			>
 			<select
@@ -104,7 +105,7 @@
 				v-if="fetchStatus === 'pending'" />
 		</div>
 		<div class="mt-3">
-			<label class="font-bold text-gray-500">User Privilege</label>
+			<label class="generic-input-label">User Privilege</label>
 			<div class="flex flex-grow space-x-4">
 				<label class="generic-input flex w-1/2 items-center justify-between">
 					<span class="text-gray-500">Normal User</span>
@@ -128,7 +129,7 @@
 		</div>
 
 		<div class="mt-3 flex flex-col">
-			<label class="font-bold text-gray-500">Account Status</label>
+			<label class="generic-input-label">Account Status</label>
 			<div class="flex flex-grow">
 				<select
 					class="generic-input"
@@ -175,10 +176,6 @@
 	const userRole: Ref<string> = ref(props.userRole.toLowerCase());
 	const isAccountEnabled: Ref<boolean> = ref(props.isAccountEnabled);
 	const corporateBranch: Ref<string> = ref(props.branchId);
-
-	const username = computed(() => {
-		return `${firstName.value} ${lastName.value}`;
-	});
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
