@@ -192,3 +192,9 @@ export type TrackerInstallationCertificate = {
 	installationDate: string;
 	renewalDate: string;
 };
+
+export type CollateralSearchTypeOption = {
+	name: string;
+	id: string;
+	prompt: string;
+};

@@ -1,3 +1,5 @@
+import type { CollateralSearchTypeOption } from '~/types';
+
 const useFraudDetection = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
@@ -25,6 +27,57 @@ const useFraudDetection = () => {
 	const onboardFraudsterLoading: Ref<boolean> = ref(false);
 
 	// search fraudster
+	const searchCollateralTypeOptions: readonly CollateralSearchTypeOption[] = [
+		{
+			id: 'defaulter-db',
+			name: 'Defaulters',
+			prompt: 'Enter vehicle reg, chassis or engine number.',
+		},
+		{
+			id: 'national-id',
+			name: 'National ID',
+			prompt: 'Enter national ID number.',
+		},
+		{
+			id: 'alien-id',
+			name: 'Alien ID',
+			prompt: 'Enter alien ID number.',
+		},
+		{
+			id: 'vehicle-reg',
+			name: 'Vehicle Plate',
+			prompt: 'Enter vehicle reg number.',
+		},
+		{
+			id: 'driving-license',
+			name: 'Driving License',
+			prompt: 'Enter national ID number.',
+		},
+		{
+			id: 'kra-pin',
+			name: 'KRA PIN',
+			prompt: 'Enter KRA pin',
+		},
+		{
+			id: 'business',
+			name: 'Business',
+			prompt: 'Enter business registration number.',
+		},
+		{
+			id: 'collateral',
+			name: 'Loan Collateral',
+			prompt: 'Enter vehicle chassis number.',
+		},
+		{
+			id: 'bank-account',
+			name: 'Bank Account',
+			prompt: 'Enter bank account number.',
+		},
+	];
+
+	const searchCollateralType: Ref<CollateralSearchTypeOption> = ref(
+		searchCollateralTypeOptions[0],
+	);
 	const searchQuery: Ref<string> = ref('');
 	const searchFraudsterLoading: Ref<boolean> = ref(false);
 	const deleteFraudEntryLoading: Ref<boolean> = ref(false);
@@ -201,6 +254,8 @@ const useFraudDetection = () => {
 	) as any;
 
 	return {
+		searchCollateralTypeOptions,
+		searchCollateralType,
 		onboardFrauster,
 		onboardFraudsterLoading,
 		relevantLink,

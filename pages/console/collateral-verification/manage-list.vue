@@ -1,21 +1,17 @@
 <template>
 	<div class="flex h-full min-h-full flex-col">
-		<!-- title -->
-		<div class="border-b border-gray-300 py-3">
-			<h1 class="text-lg font-semibold">Your Fraud Listings</h1>
-		</div>
-
 		<!-- filters -->
-		<div class="flex h-fit items-center justify-between border-b border-gray-300 py-3">
+		<div class="flex h-fit items-center justify-between">
 			<!-- search box -->
-			<div class="relative flex w-full items-center justify-between md:w-[45%] lg:w-[23%]">
+			<div
+				class="laptop:w-[45%] laptop-lg:w-[23%] relative flex w-full items-center justify-between">
 				<input
 					type="text"
 					class="generic-input"
 					placeholder="Search Registration Number" />
 				<button
 					type="submit"
-					class="absolute top-0 right-2 flex size-14 translate-y-[7px] items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+					class="generic-search-submit-button">
 					<SearchIcon />
 				</button>
 			</div>
@@ -144,30 +140,32 @@
 									v-else
 									v-for="(entry, index) in fraudsterEntries"
 									:key="index">
-									<td class="p-5">
+									<td class="generic-table-cell p-5 font-semibold text-blue-600">
 										{{ entry.registrationNumber }}
 									</td>
-									<td class="p-5">
+									<td class="generic-table-cell p-5">
 										{{ entry.color }}
 									</td>
-									<td class="p-5">
+									<td class="generic-table-cell p-5">
 										{{ entry.chassisNumber }}
 									</td>
-									<td class="p-5">
+									<td class="generic-table-cell p-5 font-semibold text-pink-600">
 										{{ entry.engineNumber }}
 									</td>
-									<th class="inline-flex space-x-1 p-5">
+									<th class="generic-table-cell inline-flex space-x-1 p-5">
 										<span>{{ entry.make }}</span>
 										<span>{{ entry.model }}</span>
 									</th>
-									<td class="p-5">{{ entry.dateOfIncident }}</td>
+									<td class="generic-table-cell p-5">
+										{{ entry.dateOfIncident }}
+									</td>
 									<th class="inline-flex items-center space-x-2 p-4">
 										<NuxtLink
 											class="rounded-full border-none bg-green-300 p-2 text-green-600 transition-colors duration-200 outline-none hover:bg-green-400">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
-												width="22"
-												height="22"
+												width="18"
+												height="18"
 												viewBox="0 0 24 24">
 												<g
 													fill="none"
@@ -186,8 +184,8 @@
 											class="rounded-full border-none bg-blue-300 p-2 text-blue-600 transition-colors duration-200 outline-none hover:bg-blue-400">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
-												width="22"
-												height="22"
+												width="18"
+												height="18"
 												viewBox="0 0 24 24">
 												<path
 													fill="currentColor"
@@ -198,8 +196,8 @@
 											@click="confirmDeleteForEntryWithId = entry.id">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
-												width="22"
-												height="22"
+												width="18"
+												height="18"
 												viewBox="0 0 12 12">
 												<path
 													fill="currentColor"
@@ -232,7 +230,7 @@
 
 				<!-- page controls -->
 				<div class="mt-5 flex min-h-12 items-center justify-between">
-					<h1 class="text-sm font-semibold text-gray-500 md:text-base">
+					<h1 class="text-sm font-semibold text-gray-500">
 						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>
 					<div class="h-full space-x-2 md:space-x-4">

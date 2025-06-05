@@ -110,16 +110,15 @@
 						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
 				</svg>
 				<span class="sr-only">Info</span>
-				<h3 class="text-lg font-medium">Incident Description</h3>
+				<h3 class="font-semibold">Incident Description</h3>
 			</div>
-			<div class="mt-2 mb-4">
-				<p>
-					Kindly, optionally, use the fields below to provide an extra description of the
-					incident you are adding to the database. This will be of help to other users of
-					the platform. Kindly be as brief but as descriptive as possible. All fields are
-					optional however
-				</p>
-			</div>
+
+			<p class="mt-2 mb-4 text-sm">
+				Optionally, use the fields below to provide an extra description of the
+				incident you are adding to the database. This will be of help to other users of the
+				platform. Kindly be as brief but as descriptive as possible. All fields are optional
+				however
+			</p>
 		</div>
 
 		<!-- Incident Description -->
@@ -131,8 +130,8 @@
 			>
 			<textarea
 				id="incident-description"
-				class="block w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
-				rows="8"
+				class="generic-text-area"
+				rows="5"
 				placeholder="Provide an optional extra description for this incident"
 				v-model="onboardFrauster.description"></textarea>
 		</div>
@@ -223,7 +222,7 @@
 		<button
 			type="submit"
 			:class="[
-				'generic-form-submit mt-4 w-full',
+				'generic-form-submit laptop:w-1/2 desktop-4k:w-1/3 mt-4 w-full',
 				onboardFraudsterLoading && 'skeleton skeleton-animated',
 			]">
 			{{ onboardFraudsterLoading ? 'Please Wait...' : 'Submit Request' }}

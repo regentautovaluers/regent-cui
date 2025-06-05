@@ -1,74 +1,65 @@
 <template>
-	<div class="mt-10">
-		<h1 class="text-center text-4xl font-semibold">Query Database</h1>
-		<form
-			@submit.prevent="searchFraudster"
-			class="mt-5 flex w-full flex-col items-center">
-			<!-- Relevant -->
-			<div class="w-full lg:w-1/2">
+	<form
+		@submit.prevent="searchFraudster"
+		class="mt-5 w-full">
+		<h3 class="text-base font-semibold text-gray-500">Search From Database:</h3>
+		<div
+			class="tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 mt-3 grid grid-cols-2 gap-4">
+			<label
+				v-for="(option, index) in searchCollateralTypeOptions"
+				:key="index"
+				:for="option.id"
+				:class="[
+					'inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105',
+					{
+						'bg-blue-600 text-white': searchCollateralType.id === option.id,
+					},
+				]">
 				<input
-					type="text"
-					id="relevant-links"
-					class="generic-input h-16 text-lg"
-					placeholder="Enter Vehicle's Registration Number, Chassis Number, Engine Number..."
-					v-model="searchQuery"
-					required />
-			</div>
+					type="radio"
+					name="search-option"
+					:id="option.id"
+					:value="option"
+					v-model="searchCollateralType"
+					hidden />
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="25"
+					height="25"
+					viewBox="0 0 32 32">
+					<path
+						fill="currentColor"
+						d="M16 2H8.25A3.25 3.25 0 0 0 5 5.25v21.5A3.25 3.25 0 0 0 8.25 30h15.5A3.25 3.25 0 0 0 27 26.75V13h-7.75A3.25 3.25 0 0 1 16 9.75zm10.863 9a3.25 3.25 0 0 0-.815-1.366l-6.682-6.682A3.25 3.25 0 0 0 18 2.136V9.75c0 .69.56 1.25 1.25 1.25z" />
+				</svg>
+				<span class="text-sm font-semibold text-inherit">{{ option.name }}</span>
+			</label>
+		</div>
 
-			<h3 class="mt-10 text-xl font-semibold">Search From Records Database</h3>
-			<div class="mt-3 flex items-center space-x-5">
-				<div class="flex items-center">
-					<input
-						checked
-						id="rav-db"
-						type="radio"
-						name="forward-search-to-ia"
-						:value="false"
-						class="size-7 rounded-md border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
-						v-model="searchIdentifyAfricaDatabase" />
-					<label
-						for="rav-db"
-						class="font-base ms-2 w-full py-4 text-lg text-gray-500"
-						>Regent Auto Valuers Database</label
-					>
-				</div>
-				<div class="flex items-center">
-					<input
-						id="ia-db"
-						type="radio"
-						name="forward-search-to-ia"
-						:value="true"
-						class="size-7 rounded-md border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
-						v-model="searchIdentifyAfricaDatabase" />
-					<label
-						for="ia-db"
-						class="font-base ms-2 w-full py-4 text-lg text-gray-500"
-						>Identify Africa Database</label
-					>
-				</div>
-			</div>
-
-			<!-- submit button -->
+		<div
+			class="laptop:w-1/2 laptop-lg:w-1/3 relative mt-5 flex w-full items-center justify-between">
+			<input
+				type="text"
+				class="generic-input"
+				:placeholder="searchCollateralType.prompt"
+				v-model="searchQuery" />
 			<button
 				type="submit"
-				class="generic-form-submit mt-4 w-full md:w-1/3">
-				<FormSubmissionLoader
-					classes="mr-2 size-6 animate-spin text-white"
-					v-if="searchFraudsterLoading" />
-				{{ searchFraudsterLoading ? 'Processing' : 'Search Database' }}
+				class="generic-search-submit-button">
+				<SearchIcon />
 			</button>
-		</form>
+		</div>
+	</form>
 
-		<!-- IA Vehicle Details results -->
-		<div
-			v-if="iaVehicleDetails"
-			class="border-b border-dashed border-gray-300 py-5">
-			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
-				Showing Result From Identify Africa Database
-			</h1>
+	<!-- IA Vehicle Details results -->
+	<div
+		v-if="iaVehicleDetails"
+		class="border-b border-dashed border-gray-300 py-5">
+		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
+			Showing Result From Identify Africa Database
+		</h1>
 
-			<!-- Notice on IA DB Results -->
-			<!-- <div
+		<!-- Notice on IA DB Results -->
+		<!-- <div
 				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
 				role="alert">
 				<div class="flex items-center">
@@ -96,51 +87,51 @@
 				</div>
 			</div> -->
 
-			<IAVehicleDetailsResultsCard
-				:reg-no="iaVehicleDetails.regNo"
-				:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
-				:vehicle-make="iaVehicleDetails.carMake"
-				:vehicle-model="iaVehicleDetails.carModel"
-				:chassis-number="iaVehicleDetails.ChassisNo"
-				:engine-number="iaVehicleDetails.engineNumber"
-				:vehicle-color="iaVehicleDetails.color"
-				:fuel-type="iaVehicleDetails.fuel_type"
-				:passenger-capacity="iaVehicleDetails.passengerCapacity" />
-		</div>
+		<IAVehicleDetailsResultsCard
+			:reg-no="iaVehicleDetails.regNo"
+			:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
+			:vehicle-make="iaVehicleDetails.carMake"
+			:vehicle-model="iaVehicleDetails.carModel"
+			:chassis-number="iaVehicleDetails.ChassisNo"
+			:engine-number="iaVehicleDetails.engineNumber"
+			:vehicle-color="iaVehicleDetails.color"
+			:fuel-type="iaVehicleDetails.fuel_type"
+			:passenger-capacity="iaVehicleDetails.passengerCapacity" />
+	</div>
 
-		<!-- vehicle owner results -->
-		<div
-			v-if="iaVehicleOwnerDetails"
-			class="border-b border-dashed border-gray-300 pb-5">
-			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
-				Details of owner when vehicle was registered
-			</h1>
-			<IAVehicleOwnerDetails
-				:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
-				:id-number="iaVehicleOwnerDetails.ID_NUMBER"
-				:address="iaVehicleOwnerDetails.ADDRESS"
-				:phone-numer="iaVehicleOwnerDetails.TELNO"
-				:town="iaVehicleOwnerDetails.TOWN"
-				:owner-type="iaVehicleOwnerDetails.OWNER_TYPE" />
-		</div>
+	<!-- vehicle owner results -->
+	<div
+		v-if="iaVehicleOwnerDetails"
+		class="border-b border-dashed border-gray-300 pb-5">
+		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
+			Details of owner when vehicle was registered
+		</h1>
+		<IAVehicleOwnerDetails
+			:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
+			:id-number="iaVehicleOwnerDetails.ID_NUMBER"
+			:address="iaVehicleOwnerDetails.ADDRESS"
+			:phone-numer="iaVehicleOwnerDetails.TELNO"
+			:town="iaVehicleOwnerDetails.TOWN"
+			:owner-type="iaVehicleOwnerDetails.OWNER_TYPE" />
+	</div>
 
-		<!-- collateral results -->
-		<div
-			v-if="iaVehicleCollateralDetails"
-			class="border-b border-dashed border-gray-300 pb-5">
-			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
-				Where this vehicle been used as collateral
-			</h1>
-			<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
-		</div>
+	<!-- collateral results -->
+	<div
+		v-if="iaVehicleCollateralDetails"
+		class="border-b border-dashed border-gray-300 pb-5">
+		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
+			Where this vehicle been used as collateral
+		</h1>
+		<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
+	</div>
 
-		<!-- RAV fraud results -->
-		<template v-if="ravFraudDetails && ravFraudDetails.length > 0">
-			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
-				Showing {{ ravFraudDetails.length }} Result(s) From Regent Auto Valuers Database
-			</h1>
-			<!-- Notice on RAVDB resulr -->
-			<!-- <div
+	<!-- RAV fraud results -->
+	<template v-if="ravFraudDetails && ravFraudDetails.length > 0">
+		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
+			Showing {{ ravFraudDetails.length }} Result(s) From Regent Auto Valuers Database
+		</h1>
+		<!-- Notice on RAVDB resulr -->
+		<!-- <div
 				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
 				role="alert">
 				<div class="flex items-center">
@@ -166,24 +157,23 @@
 					</p>
 				</div>
 			</div> -->
-			<RAVDatabaseFraudResultsCard
-				v-for="(r, idx) in ravFraudDetails"
-				:key="idx"
-				:reg-no="r.registrationNumber"
-				:year-of-manufacture="r.yearOfManufacture"
-				:vehicle-make="r.make"
-				:vehicle-model="r.model"
-				:chassis-number="r.chassisNumber"
-				:engine-number="r.engineNumber"
-				:vehicle-color="r.color"
-				:defaulted-amount="r.amountDefaulted"
-				:incident-date="r.dateOfIncident"
-				:defrauded-institution="r.corporateClientName"
-				:contact-person-name="r.corporateClientName"
-				:contact-person-email="r.corpClientEmail"
-				:contact-person-phone="r.corpClientPhoneNumber" />
-		</template>
-	</div>
+		<RAVDatabaseFraudResultsCard
+			v-for="(r, idx) in ravFraudDetails"
+			:key="idx"
+			:reg-no="r.registrationNumber"
+			:year-of-manufacture="r.yearOfManufacture"
+			:vehicle-make="r.make"
+			:vehicle-model="r.model"
+			:chassis-number="r.chassisNumber"
+			:engine-number="r.engineNumber"
+			:vehicle-color="r.color"
+			:defaulted-amount="r.amountDefaulted"
+			:incident-date="r.dateOfIncident"
+			:defrauded-institution="r.corporateClientName"
+			:contact-person-name="r.corporateClientName"
+			:contact-person-email="r.corpClientEmail"
+			:contact-person-phone="r.corpClientPhoneNumber" />
+	</template>
 </template>
 
 <script setup lang="ts">
@@ -196,6 +186,8 @@
 	});
 
 	const {
+		searchCollateralTypeOptions,
+		searchCollateralType,
 		searchQuery,
 		searchFraudsterLoading,
 		searchIdentifyAfricaDatabase,
