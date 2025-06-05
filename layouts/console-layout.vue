@@ -1,11 +1,9 @@
 <template>
 	<aside
 		:class="[
-			'mobile-sm:-translate-x-full desktop-4k:-translate-x-0 fixed left-0 z-50 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
+			'mobile-sm:-translate-x-full desktop-4k:-translate-x-0 fixed left-0 z-40 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
 			sidebarExpanded ? 'w-68' : 'w-[60px]',
-		]"
-		@mouseenter="sidebarExpanded = true"
-		@mouseleave="sidebarExpanded = false">
+		]">
 		<!-- logo on top part of sidebar -->
 		<div class="flex h-[70px] w-full items-center p-4 text-center">
 			<NuxtLink
@@ -28,7 +26,11 @@
 			</NuxtLink>
 		</div>
 		<!-- actual links -->
-		<div class="flex flex-grow flex-col justify-between px-[.5rem] py-2">
+		<div
+			:class="[
+				'flex flex-grow flex-col justify-between py-5',
+				sidebarExpanded ? 'px-5' : 'px-2',
+			]">
 			<ul class="space-y-4">
 				<template
 					v-for="(link, index) in navigationRoutes"
@@ -45,41 +47,41 @@
 							:class="!sidebarExpanded ? 'w-19' : 'w-full space-x-2'">
 							<span>
 								<template v-if="link.routeName == 'mobivaluer-home'">
-									<HomeIcon classes="size-6 text-inherit" />
+									<HomeIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'ava-memberships-home'">
-									<MembershipsIcon classes="size-6 text-inherit" />
+									<MembershipsIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'ra-all-incidents'">
-									<AssistanceIcon classes="size-6 text-inherit" />
+									<AssistanceIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'vehicle-valuation-home'">
-									<VehicleValuationIcon classes="size-6 text-inherit" />
+									<VehicleValuationIcon classes="size-5 text-inherit" />
 								</template>
 								<template
 									v-else-if="
 										link.routeName == 'fraud-detection-query-fraudsters'
 									">
-									<FraudDetectionIcon classes="size-6 text-inherit" />
+									<FraudDetectionIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'regent-tracking-home'">
-									<VehicleTrackingIcon classes="size-6 text-inherit" />
+									<VehicleTrackingIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'emergency-evacuation-home'">
-									<EmergencyRescueIcon classes="size-6 text-inherit" />
+									<EmergencyRescueIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'accident-management-home'">
-									<AccidentManagementIcon classes="size-6 text-inherit" />
+									<AccidentManagementIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'garage-home'">
-									<GarageIcon classes="size-6 text-inherit" />
+									<GarageIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'parts-home'">
-									<PartsIcon classes="size-6 text-inherit" />
+									<PartsIcon classes="size-5 text-inherit" />
 								</template>
 							</span>
 							<span
-								class="flex-grow font-semibold transition-all duration-200 ease-out"
+								class="flex-grow text-sm font-semibold transition-all duration-200 ease-out"
 								:class="sidebarExpanded ? 'block' : 'hidden'"
 								>{{ link.screenName }}
 							</span>
@@ -112,14 +114,14 @@
 								<template v-if="childLink.renderRoute">
 									<div
 										:class="[
-											'absolute -left-6 mt-1.5 size-4 rounded-full border border-white group-hover:bg-blue-600',
+											'absolute -left-[23px] mt-[3px] h-5 w-3 rounded-full border border-white group-hover:bg-blue-600',
 											doesRouteNameMatch(childLink.routeName)
 												? 'bg-blue-600'
 												: 'bg-gray-400',
 										]"></div>
 									<NuxtLink
 										:class="[
-											'leading-none font-normal',
+											'text-sm leading-none font-normal',
 											doesRouteNameMatch(childLink.routeName)
 												? 'font-semibold text-blue-600'
 												: 'text-gray-500',
@@ -145,10 +147,11 @@
 					<button
 						class="inline-flex size-full items-center justify-start space-x-3"
 						:class="!sidebarExpanded && 'w-19 justify-center'"
-						@click="isSettingsModalOpen = true">
-						<SettingsIcon classes="size-7 text-inherit" />
+						data-modal-target="settings-modal"
+						data-modal-toggle="settings-modal">
+						<SettingsIcon classes="size-5 text-inherit" />
 						<span
-							class="transition-all duration-200 ease-out"
+							class="text-sm transition-all duration-200 ease-out"
 							:class="sidebarExpanded ? 'block' : 'hidden'"
 							>Settings</span
 						>
@@ -162,9 +165,9 @@
 						class="inline-flex size-full items-center space-x-3"
 						:class="!sidebarExpanded && 'w-19 justify-center'"
 						@click="attemptLogout">
-						<LogoutIcon classes="size-7 text-inherit" />
+						<LogoutIcon classes="size-5 text-inherit" />
 						<span
-							class="transition-all duration-200 ease-out"
+							class="text-sm transition-all duration-200 ease-out"
 							:class="sidebarExpanded ? 'block' : 'hidden'"
 							>Logout</span
 						>
@@ -174,7 +177,7 @@
 		</div>
 
 		<div
-			class="h-12 w-full text-sm text-gray-600"
+			class="h-12 w-full px-5 pb-5 text-sm text-gray-600"
 			v-if="sidebarExpanded">
 			<h1>Regent Auto Valuers</h1>
 			<h2>
@@ -419,10 +422,7 @@
 	<!-- Settings modal -->
 	<ParentModal
 		modal-id="settings-modal"
-		modal-title="Account Settings"
-		v-if="isSettingsModalOpen"
-		@close-modal="isSettingsModalOpen = false">
-		<UpdateProfilePicture />
+		modal-title="Account Settings">
 		<MyAccountSettings />
 	</ParentModal>
 </template>
@@ -431,7 +431,6 @@
 		useNavigationRoutes();
 	const { getPrincipal, attemptLogout } = useAuth();
 	const sidebarExpanded: Ref<boolean> = ref(false);
-	const isSettingsModalOpen: Ref<boolean> = ref(false);
 	const userInput: Ref<string> = ref('');
 	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();
 
