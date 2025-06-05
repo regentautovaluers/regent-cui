@@ -1,10 +1,6 @@
 <template>
 	<div class="mt-10">
 		<h1 class="text-center text-4xl font-semibold">Query Database</h1>
-		<h2 class="mt-5 text-center text-xl text-gray-500">
-			Query our extensive fraud database with over 23,000 flagged vehicles
-		</h2>
-
 		<form
 			@submit.prevent="searchFraudster"
 			class="mt-5 flex w-full flex-col items-center">
@@ -19,7 +15,7 @@
 					required />
 			</div>
 
-			<h3 class="mt-10 text-xl font-semibold">Search From Database</h3>
+			<h3 class="mt-10 text-xl font-semibold">Search From Records Database</h3>
 			<div class="mt-3 flex items-center space-x-5">
 				<div class="flex items-center">
 					<input
@@ -67,12 +63,12 @@
 		<div
 			v-if="iaVehicleDetails"
 			class="border-b border-dashed border-gray-300 py-5">
-			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
 				Showing Result From Identify Africa Database
 			</h1>
 
 			<!-- Notice on IA DB Results -->
-			<div
+			<!-- <div
 				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
 				role="alert">
 				<div class="flex items-center">
@@ -88,7 +84,7 @@
 					<span class="sr-only">Info</span>
 					<h3 class="text-lg font-medium">Consumer Notice</h3>
 				</div>
-				<div class="mb-4 mt-2">
+				<div class="mt-2 mb-4">
 					<p>
 						Identify Africa allows you to cross check the vehicle details as they were
 						recorded as the vehicle was being registered at the relevant government
@@ -98,7 +94,7 @@
 						Consumption of this data is at your own discretion.
 					</p>
 				</div>
-			</div>
+			</div> -->
 
 			<IAVehicleDetailsResultsCard
 				:reg-no="iaVehicleDetails.regNo"
@@ -116,7 +112,7 @@
 		<div
 			v-if="iaVehicleOwnerDetails"
 			class="border-b border-dashed border-gray-300 pb-5">
-			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
 				Details of owner when vehicle was registered
 			</h1>
 			<IAVehicleOwnerDetails
@@ -132,7 +128,7 @@
 		<div
 			v-if="iaVehicleCollateralDetails"
 			class="border-b border-dashed border-gray-300 pb-5">
-			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
 				Where this vehicle been used as collateral
 			</h1>
 			<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
@@ -140,11 +136,11 @@
 
 		<!-- RAV fraud results -->
 		<template v-if="ravFraudDetails && ravFraudDetails.length > 0">
-			<h1 class="mb-4 mt-8 text-lg font-semibold text-yellow-500">
+			<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
 				Showing {{ ravFraudDetails.length }} Result(s) From Regent Auto Valuers Database
 			</h1>
 			<!-- Notice on RAVDB resulr -->
-			<div
+			<!-- <div
 				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
 				role="alert">
 				<div class="flex items-center">
@@ -160,7 +156,7 @@
 					<span class="sr-only">Info</span>
 					<h3 class="text-lg font-medium">Consumer Notice</h3>
 				</div>
-				<div class="mb-4 mt-2">
+				<div class="mt-2 mb-4">
 					<p>
 						According to our fraud database, this vehicle has been flagged for fraud
 						cases a total of {{ ravFraudDetails.length }} time(s). Kindly be aware that
@@ -169,7 +165,7 @@
 						own discretion.
 					</p>
 				</div>
-			</div>
+			</div> -->
 			<RAVDatabaseFraudResultsCard
 				v-for="(r, idx) in ravFraudDetails"
 				:key="idx"
@@ -195,7 +191,7 @@
 	import IAVehicleDetailsResultsCard from '~/components/misc/IAVehicleDetailsResultsCard.vue';
 
 	definePageMeta({
-		name: 'fraud-detection-query-fraudsters',
+		name: 'collateral-verification-query',
 		layout: 'console-layout',
 	});
 

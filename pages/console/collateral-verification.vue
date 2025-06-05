@@ -3,9 +3,9 @@
 		<div
 			class="flex w-full items-center space-x-8 border-b-2 p-6 font-semibold text-gray-500 md:text-base lg:text-lg">
 			<NuxtLink
-				:to="{ name: 'fraud-detection-onboard-fraudsters' }"
+				:to="{ name: 'collateral-verification-onboard-fraudsters' }"
 				:class="[
-					doesRouteNameMatch('fraud-detection-onboard-fraudsters') &&
+					doesRouteNameMatch('collateral-verification-onboard-fraudsters') &&
 						'font-semibold text-blue-600 underline decoration-[3px] underline-offset-31',
 					'inline-flex items-center space-x-2',
 				]">
@@ -18,12 +18,12 @@
 						fill="currentColor"
 						d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z" />
 				</svg>
-				<span>Onboard Fraudsters</span>
+				<span>Onboard Assets</span>
 			</NuxtLink>
 			<NuxtLink
-				:to="{ name: 'fraud-detection-manage-list' }"
+				:to="{ name: 'collateral-verification-manage-list' }"
 				:class="[
-					doesRouteNameMatch('fraud-detection-manage-list') &&
+					doesRouteNameMatch('collateral-verification-manage-list') &&
 						'font-semibold text-blue-600 underline decoration-[3px] underline-offset-31',
 					'inline-flex items-center space-x-2',
 				]">
@@ -39,9 +39,9 @@
 				<span>Manage List</span>
 			</NuxtLink>
 			<NuxtLink
-				:to="{ name: 'fraud-detection-query-fraudsters' }"
+				:to="{ name: 'collateral-verification-query' }"
 				:class="[
-					doesRouteNameMatch('fraud-detection-query-fraudsters') &&
+					doesRouteNameMatch('collateral-verification-query') &&
 						'font-bold text-blue-600 underline decoration-[3px] underline-offset-31',
 					'inline-flex items-center space-x-2',
 				]">
@@ -54,7 +54,7 @@
 						fill="currentColor"
 						d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14" />
 				</svg>
-				<span>Query Our Fraud Database</span>
+				<span>Verify Collateral Assets</span>
 			</NuxtLink>
 		</div>
 		<div class="h-fit flex-grow px-10 py-10">

@@ -1,10 +1,10 @@
 <template>
-    <OnboardFraudsters />
+	<OnboardFraudsters />
 </template>
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'fraud-detection-onboard-fraudsters',
+		name: 'collateral-verification-onboard-fraudsters',
 		layout: 'console-layout',
 	});
 </script>

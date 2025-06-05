@@ -15,7 +15,7 @@
 					placeholder="Search Registration Number" />
 				<button
 					type="submit"
-					class="absolute right-2 translate-y-[7px] top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+					class="absolute top-0 right-2 flex size-14 translate-y-[7px] items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 					<SearchIcon />
 				</button>
 			</div>
@@ -52,7 +52,7 @@
 				<div class="my-2 flex-grow">
 					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 						<table class="w-full text-left text-gray-500">
-							<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+							<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 								<tr>
 									<th
 										scope="col"
@@ -100,7 +100,7 @@
 									:key="a">
 									<td
 										scope="row"
-										class="whitespace-nowrap p-6 font-medium text-gray-300">
+										class="p-6 font-medium whitespace-nowrap text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>username</span
 										>
@@ -163,7 +163,7 @@
 									<td class="p-5">{{ entry.dateOfIncident }}</td>
 									<th class="inline-flex items-center space-x-2 p-4">
 										<NuxtLink
-											class="rounded-full border-none bg-green-300 p-2 text-green-600 outline-none transition-colors duration-200 hover:bg-green-400">
+											class="rounded-full border-none bg-green-300 p-2 text-green-600 transition-colors duration-200 outline-none hover:bg-green-400">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
 												width="22"
@@ -183,7 +183,7 @@
 											</svg>
 										</NuxtLink>
 										<NuxtLink
-											class="rounded-full border-none bg-blue-300 p-2 text-blue-600 outline-none transition-colors duration-200 hover:bg-blue-400">
+											class="rounded-full border-none bg-blue-300 p-2 text-blue-600 transition-colors duration-200 outline-none hover:bg-blue-400">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
 												width="22"
@@ -194,7 +194,7 @@
 													d="M4 21q-.425 0-.712-.288T3 20v-2.425q0-.4.15-.763t.425-.637L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.437.65T21 6.4q0 .4-.138.763t-.437.662l-12.6 12.6q-.275.275-.638.425t-.762.15zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z" /></svg></NuxtLink
 										><button
 											v-if="confirmDeleteForEntryWithId != entry.id"
-											class="rounded-full border-none bg-red-300 p-2 text-red-600 outline-none transition-colors duration-200 hover:bg-red-400"
+											class="rounded-full border-none bg-red-300 p-2 text-red-600 transition-colors duration-200 outline-none hover:bg-red-400"
 											@click="confirmDeleteForEntryWithId = entry.id">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -211,7 +211,7 @@
 											class="flex items-center">
 											<button
 												@click="deleteFraudRecord(entry.id)"
-												class="inline-flex h-10 w-20 items-center justify-center rounded-l-full border-none bg-red-300 p-2 text-sm text-red-600 outline-none transition-colors duration-200 hover:bg-red-400">
+												class="inline-flex h-10 w-20 items-center justify-center rounded-l-full border-none bg-red-300 p-2 text-sm text-red-600 transition-colors duration-200 outline-none hover:bg-red-400">
 												<FormSubmissionLoader
 													classes="size-5 animate-spin text-red-500"
 													v-if="deleteFraudEntryLoading" />
@@ -219,7 +219,7 @@
 											</button>
 											<button
 												@click="confirmDeleteForEntryWithId = null"
-												class="h-10 w-20 rounded-r-full border-none bg-yellow-300 p-2 text-center text-yellow-600 outline-none transition-colors duration-200 hover:bg-yellow-400">
+												class="h-10 w-20 rounded-r-full border-none bg-yellow-300 p-2 text-center text-yellow-600 transition-colors duration-200 outline-none hover:bg-yellow-400">
 												Cancel
 											</button>
 										</div>
@@ -257,7 +257,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'fraud-detection-manage-list',
+		name: 'collateral-verification-manage-list',
 		layout: 'console-layout',
 	});
 
