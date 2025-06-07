@@ -23,4 +23,12 @@ export const regentServices = [
 		shortDescription:
 			'With over 20 years of experience, we offer fair and data-driven vehicle assessments you can trust.',
 	},
+	{
+		id: 4,
+		name: 'Vehicle Tracking',
+		description:
+			'Our vehicle and fleet tracking services ensure that you have real-time visibility over your assets. Monitor your fleet, track your vehicles, and stay on top of your logistics. Our GPS tracking technology is reliable, efficient, and easy to use, providing you with the insights you need to optimize your operations and make informed decisions.',
+		shortDescription:
+			'With over 20 years of experience, we offer fair and data-driven vehicle assessments you can trust.',
+	},
 ];
