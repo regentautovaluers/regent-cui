@@ -5,34 +5,63 @@
 		<h3 class="text-base font-semibold text-gray-500">Search From Database:</h3>
 		<div
 			class="tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 mt-3 grid grid-cols-2 gap-4">
-			<label
+			<template
 				v-for="(option, index) in searchCollateralTypeOptions"
-				:key="index"
-				:for="option.id"
-				:class="[
-					'inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105',
-					{
-						'bg-blue-600 text-white': searchCollateralType.id === option.id,
-					},
-				]">
-				<input
-					type="radio"
-					name="search-option"
-					:id="option.id"
-					:value="option"
-					v-model="searchCollateralType"
-					hidden />
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="25"
-					height="25"
-					viewBox="0 0 32 32">
-					<path
-						fill="currentColor"
-						d="M16 2H8.25A3.25 3.25 0 0 0 5 5.25v21.5A3.25 3.25 0 0 0 8.25 30h15.5A3.25 3.25 0 0 0 27 26.75V13h-7.75A3.25 3.25 0 0 1 16 9.75zm10.863 9a3.25 3.25 0 0 0-.815-1.366l-6.682-6.682A3.25 3.25 0 0 0 18 2.136V9.75c0 .69.56 1.25 1.25 1.25z" />
-				</svg>
-				<span class="text-sm font-semibold text-inherit">{{ option.name }}</span>
-			</label>
+				:key="index">
+				<!-- render a label for checks with no modal -->
+				<label
+					v-if="!option.opensInModal"
+					:for="option.id"
+					:class="[
+						'inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105',
+						{
+							'bg-blue-600 text-white': searchCollateralType.id === option.id,
+						},
+					]">
+					<input
+						type="radio"
+						name="search-option"
+						:id="option.id"
+						:value="option"
+						v-model="searchCollateralType"
+						hidden />
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="25"
+						height="25"
+						viewBox="0 0 32 32">
+						<path
+							fill="currentColor"
+							d="M16 2H8.25A3.25 3.25 0 0 0 5 5.25v21.5A3.25 3.25 0 0 0 8.25 30h15.5A3.25 3.25 0 0 0 27 26.75V13h-7.75A3.25 3.25 0 0 1 16 9.75zm10.863 9a3.25 3.25 0 0 0-.815-1.366l-6.682-6.682A3.25 3.25 0 0 0 18 2.136V9.75c0 .69.56 1.25 1.25 1.25z" />
+					</svg>
+					<span class="text-sm font-semibold text-inherit">{{ option.name }}</span>
+				</label>
+
+				<!-- render a button for checks with a modal -->
+				<button
+					v-else
+					type="button"
+					@click="searchCollateralType = option"
+					:class="[
+						'inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105',
+						{
+							'bg-blue-600 text-white': searchCollateralType.id === option.id,
+						},
+					]"
+					:data-modal-target="`verify-${option.id}-modal`"
+					:data-modal-toggle="`verify-${option.id}-modal`">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="25"
+						height="25"
+						viewBox="0 0 32 32">
+						<path
+							fill="currentColor"
+							d="M16 2H8.25A3.25 3.25 0 0 0 5 5.25v21.5A3.25 3.25 0 0 0 8.25 30h15.5A3.25 3.25 0 0 0 27 26.75V13h-7.75A3.25 3.25 0 0 1 16 9.75zm10.863 9a3.25 3.25 0 0 0-.815-1.366l-6.682-6.682A3.25 3.25 0 0 0 18 2.136V9.75c0 .69.56 1.25 1.25 1.25z" />
+					</svg>
+					<span class="text-sm font-semibold text-inherit">{{ option.name }}</span>
+				</button>
+			</template>
 		</div>
 
 		<div
@@ -174,6 +203,55 @@
 			:contact-person-email="r.corpClientEmail"
 			:contact-person-phone="r.corpClientPhoneNumber" />
 	</template>
+
+	<!-- Verify National ID -->
+	<ParentModal
+		modal-id="verify-national-id-modal"
+		modal-title="Verify National ID">
+		<NationalIDVerficiationForm />
+	</ParentModal>
+
+	<!-- Verify Alien ID -->
+	<ParentModal
+		modal-id="verify-alien-id-modal"
+		modal-title="Verify Alien ID">
+		<AlienIDVerficiationForm />
+	</ParentModal>
+
+	<!-- Verify Driving License -->
+	<ParentModal
+		modal-id="verify-driving-license-modal"
+		modal-title="Verify Driving License">
+		<h1>Verify Driving License</h1>
+	</ParentModal>
+
+	<!-- Verify KRA PIN -->
+	<ParentModal
+		modal-id="verify-kra-pin-modal"
+		modal-title="Verify KRA PIN">
+		<h1>Verify KRA PIN</h1>
+	</ParentModal>
+
+	<!-- Verify Business -->
+	<ParentModal
+		modal-id="verify-business-modal"
+		modal-title="Verify Business">
+		<h1>Verify Business</h1>
+	</ParentModal>
+
+	<!-- Verify Collateral -->
+	<ParentModal
+		modal-id="verify-collateral-modal"
+		modal-title="Verify Loan Collateral">
+		<h1>Verify Loan Collateral</h1>
+	</ParentModal>
+
+	<!-- Verify Bank Account -->
+	<ParentModal
+		modal-id="verify-bank-account-modal"
+		modal-title="Verify Bank Account">
+		<h1>Verify Bank Account</h1>
+	</ParentModal>
 </template>
 
 <script setup lang="ts">
