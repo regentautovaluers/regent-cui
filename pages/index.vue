@@ -24,11 +24,11 @@
 					checked
 					id="remember-me"
 					type="checkbox"
-					class="size-7 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500"
+					class="size-6 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500"
 					v-model="revealPassword" />
 				<label
 					for="remember-me"
-					class="generic-input-label text-sm md:text-base"
+					class="generic-input-label text-sm"
 					>Show Password</label
 				>
 			</div>
@@ -45,7 +45,7 @@
 	<!-- link to forgot password -->
 	<NuxtLink
 		:to="{ name: 'exterior-forgot-password' }"
-		class="generic-quick-link text-sm md:text-base">
+		class="generic-quick-link text-sm">
 		Forgot Password
 	</NuxtLink>
 </template>
