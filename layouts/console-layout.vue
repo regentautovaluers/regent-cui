@@ -59,9 +59,7 @@
 									<VehicleValuationIcon classes="size-5 text-inherit" />
 								</template>
 								<template
-									v-else-if="
-										link.routeName == 'fraud-detection-query-fraudsters'
-									">
+									v-else-if="link.routeName == 'collateral-verification-query'">
 									<FraudDetectionIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'regent-tracking-home'">
@@ -201,7 +199,8 @@
 					@click="sidebarExpanded = !sidebarExpanded">
 					<MenuButtonIcon />
 				</button>
-				<h1 class="w-fit text-lg font-semibold md:text-2xl">
+				<h1
+					class="tablet:text-xl laptop-lg:text-2xl tablet:block hidden w-fit text-lg font-semibold">
 					{{ currentScreenName }}
 				</h1>
 			</div>

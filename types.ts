@@ -196,5 +196,6 @@ export type TrackerInstallationCertificate = {
 export type CollateralSearchTypeOption = {
 	name: string;
 	id: string;
-	prompt: string;
+	prompt?: string;
+	opensInModal: boolean;
 };
