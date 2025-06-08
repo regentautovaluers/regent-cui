@@ -3,6 +3,24 @@ const useCollateralVerficiation = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const responseData: Ref<any> = ref(null);
 
+	const {
+		status: fetchBankListStatus,
+		execute: executeFetchBankList,
+		data: bankList,
+	} = useFetch('/api/v1/verification/bank-list', {
+		key: 'bank-list',
+		baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+		},
+		server: false,
+		lazy: true,
+		transform(data: any) {
+			return data.data;
+		},
+	}) as any;
+
 	const verifyCollateral = async (requestBody: {}, checkType: string) => {
 		collateralCheckLoading.value = true;
 		try {
@@ -21,7 +39,11 @@ const useCollateralVerficiation = () => {
 							transition: 'slide',
 						});
 
-						responseData.value = response._data.data;
+						if (checkType == 'verify-driving-license') {
+							responseData.value = response._data.data.data;
+						} else {
+							responseData.value = response._data.data;
+						}
 					}
 				},
 			});
@@ -42,6 +64,9 @@ const useCollateralVerficiation = () => {
 	return {
 		responseData,
 		collateralCheckLoading,
+		fetchBankListStatus,
+		executeFetchBankList,
+		bankList,
 		verifyCollateral,
 	};
 };

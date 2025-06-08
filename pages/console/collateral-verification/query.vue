@@ -222,14 +222,14 @@
 	<ParentModal
 		modal-id="verify-driving-license-modal"
 		modal-title="Verify Driving License">
-		<h1>Verify Driving License</h1>
+		<VerifyDrivingLicenseForm />
 	</ParentModal>
 
 	<!-- Verify KRA PIN -->
 	<ParentModal
 		modal-id="verify-kra-pin-modal"
 		modal-title="Verify KRA PIN">
-		<h1>Verify KRA PIN</h1>
+		<VerifyKRAPinForm />
 	</ParentModal>
 
 	<!-- Verify Business -->
@@ -250,11 +250,13 @@
 	<ParentModal
 		modal-id="verify-bank-account-modal"
 		modal-title="Verify Bank Account">
-		<h1>Verify Bank Account</h1>
+		<VerifyBankAccountForm />
 	</ParentModal>
 </template>
 
 <script setup lang="ts">
+	import VerifyDrivingLicenseForm from '~/components/forms/collateral-verification/VerifyDrivingLicenseForm.vue';
+import VerifyKRAPinForm from '~/components/forms/collateral-verification/VerifyKRAPinForm .vue';
 	import IAVehicleColateralResultsCard from '~/components/misc/IAVehicleColateralResultsCard.vue';
 	import IAVehicleDetailsResultsCard from '~/components/misc/IAVehicleDetailsResultsCard.vue';
 
