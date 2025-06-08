@@ -18,7 +18,7 @@
 				type="submit"
 				class="generic-search-submit-button">
 				<FormSubmissionLoader
-					classes="mr-2 size-6 animate-spin text-white"
+					class="mr-2 size-6 animate-spin text-white"
 					v-if="collateralCheckLoading" />
 				<SearchIcon v-else />
 			</button>

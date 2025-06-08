@@ -21,7 +21,7 @@
 				</option>
 			</select>
 			<FormSubmissionLoader
-				classes="mr-2 absolute right-0 top-[52%] right-6 size-5 animate-spin text-gray-500"
+				class="mr-2 absolute top-[52%] right-6 size-5 animate-spin text-gray-500"
 				v-if="getDeviceCommandsLoading" />
 		</div>
 

@@ -12,7 +12,7 @@
 				type="submit"
 				class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
 				<FormSubmissionLoader
-					classes="size-6 animate-spin text-white"
+					class="size-6 animate-spin text-white"
 					v-if="searchCorpOrBrokerLoading" />
 				<SearchIcon v-else />
 			</button>

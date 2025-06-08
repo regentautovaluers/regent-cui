@@ -193,7 +193,7 @@
 							fetchRAIncidentsAnalyticsStatus === 'pending' &&
 							!raIncidentsDoughnutData.data.length
 						">
-						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
+						<FormSubmissionLoader class="size-10 animate-spin text-gray-300" />
 					</div>
 					<div
 						class="flex h-full flex-col items-center justify-center"
@@ -232,7 +232,7 @@
 							fetchRAIncidentsAnalyticsStatus === 'pending' &&
 							!raIncidentsDoughnutData.data.length
 						">
-						<FormSubmissionLoader classes="size-10 animate-spin text-gray-300" />
+						<FormSubmissionLoader class="size-10 animate-spin text-gray-300" />
 					</div>
 					<div
 						class="flex h-full flex-col items-center justify-center"

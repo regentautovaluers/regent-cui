@@ -20,7 +20,7 @@
 				</option>
 			</select>
 			<FormSubmissionLoader
-				classes="mr-2 absolute right-0 top-[34%] right-6 size-5 animate-spin text-gray-500"
+				class="mr-2 absolute top-[34%] right-6 size-5 animate-spin text-gray-500"
 				v-if="fetchmembershipTypesStatus === 'pending'" />
 		</div>
 		<div class="mt-2">
