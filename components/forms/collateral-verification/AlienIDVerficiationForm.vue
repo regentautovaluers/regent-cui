@@ -3,8 +3,7 @@
 		@submit.prevent="
 			verifyCollateral(
 				{
-					key: 'idNumber',
-					query: searchQuery,
+					idNumber: searchQuery,
 				},
 				'verify-alien-id',
 			)
@@ -13,8 +12,9 @@
 			<input
 				type="text"
 				class="generic-input"
-				placeholder="Provide National ID..."
-				v-model="searchQuery" />
+				placeholder="Provide Alien ID as number..."
+				v-model="searchQuery"
+				pattern="[0-9]*" />
 			<button
 				type="submit"
 				class="generic-search-submit-button">

@@ -1,7 +1,77 @@
+import type { CollateralSearchTypeOption } from '~/types';
+
 const useCollateralVerficiation = () => {
 	const collateralCheckLoading = ref(false);
 	const runtimeConfig = useRuntimeConfig();
 	const responseData: Ref<any> = ref(null);
+
+	// search fraudster
+	const searchCollateralTypeOptions: readonly CollateralSearchTypeOption[] = [
+		{
+			id: 'defaulter-db',
+			name: 'Defaulters',
+			prompt: 'Enter vehicle reg, chassis or engine number.',
+			opensInModal: false,
+		},
+		{
+			id: 'national-id',
+			name: 'National ID',
+			prompt: 'Enter national ID number.',
+			opensInModal: true,
+		},
+		{
+			id: 'alien-id',
+			name: 'Alien ID',
+			prompt: 'Enter alien ID number.',
+			opensInModal: true,
+		},
+		{
+			id: 'vehicle-reg',
+			name: 'Vehicle Plate',
+			prompt: 'Enter vehicle reg number.',
+			opensInModal: false,
+		},
+		{
+			id: 'driving-license',
+			name: 'Driving License',
+			prompt: 'Enter national ID number.',
+			opensInModal: true,
+		},
+		{
+			id: 'kra-pin',
+			name: 'KRA PIN',
+			prompt: 'Enter KRA pin',
+			opensInModal: true,
+		},
+		{
+			id: 'business',
+			name: 'Business',
+			prompt: 'Enter business registration number.',
+			opensInModal: true,
+		},
+		{
+			id: 'collateral',
+			name: 'Loan Collateral',
+			prompt: 'Enter vehicle chassis number.',
+			opensInModal: false,
+		},
+		{
+			id: 'bank-account',
+			name: 'Bank Account',
+			prompt: 'Enter bank account number.',
+			opensInModal: true,
+		},
+	];
+
+	const willNotOpenModal: Ref<CollateralSearchTypeOption[]> = ref([
+		searchCollateralTypeOptions[0],
+		searchCollateralTypeOptions[3],
+		searchCollateralTypeOptions[7],
+	]);
+
+	const searchCollateralType: Ref<CollateralSearchTypeOption> = ref(
+		searchCollateralTypeOptions[0],
+	);
 
 	const {
 		status: fetchBankListStatus,
@@ -67,6 +137,9 @@ const useCollateralVerficiation = () => {
 		fetchBankListStatus,
 		executeFetchBankList,
 		bankList,
+		searchCollateralType,
+		searchCollateralTypeOptions,
+		willNotOpenModal,
 		verifyCollateral,
 	};
 };

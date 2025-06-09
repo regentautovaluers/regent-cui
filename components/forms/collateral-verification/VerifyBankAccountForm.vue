@@ -23,12 +23,12 @@
 						: 'border-gray-300',
 				]"
 				id="target-brank"
-				v-model="accountNumber"
+				v-model="bankId"
 				required>
 				<option
 					v-for="(bank, index) in bankList"
 					:key="index"
-					:value="bank.id.branchId">
+					:value="bank.id">
 					{{ bank.name }}
 				</option>
 			</select>
@@ -44,8 +44,8 @@
 			<input
 				type="text"
 				class="generic-input"
-				placeholder="Provide KRA Pin..."
-				v-model="bankId"
+				placeholder="Provide Account Number..."
+				v-model="accountNumber"
 				required />
 		</div>
 

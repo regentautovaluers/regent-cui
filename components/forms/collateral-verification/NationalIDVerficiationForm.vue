@@ -12,8 +12,9 @@
 			<input
 				type="text"
 				class="generic-input"
-				placeholder="Provide National ID..."
-				v-model="searchQuery" />
+				placeholder="Provide National ID as number..."
+				v-model="searchQuery"
+				pattern="[0-9]*" />
 			<button
 				type="submit"
 				class="generic-search-submit-button">
