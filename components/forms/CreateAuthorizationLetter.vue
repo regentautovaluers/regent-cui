@@ -106,7 +106,7 @@
 				</option>
 			</select>
 			<FormSubmissionLoader
-				class="mr-2 absolute top-[52%] right-6 size-5 animate-spin text-gray-500"
+				class="absolute top-[52%] right-6 mr-2 size-5 animate-spin text-gray-500"
 				v-if="fetchStatus === 'pending'" />
 		</div>
 		<!-- comments -->
@@ -118,7 +118,7 @@
 			>
 			<textarea
 				id="comments"
-				class="block w-full rounded-lg border-gray-200 px-4 py-3 focus:border-blue-500 focus:ring-blue-500"
+				class="generic-text-area"
 				rows="8"
 				placeholder="Provide optional comments for this request."
 				v-model="comments"></textarea>
@@ -148,7 +148,8 @@
 					type="button"
 					id="officer-name"
 					class="generic-input text-start"
-					@click="emits('open-search-agent-corp-modal')">
+					data-modal-target="search-corp-brokers"
+					data-modal-toggle="search-corp-brokers">
 					{{ agencyOrCorp.name }}
 				</button>
 			</div>
@@ -327,7 +328,6 @@
 <script setup lang="ts">
 	const { regentBranches, fetchStatus, fetchError, refreshRegentBranches } = useRegentBranches();
 	const { getPrincipal } = useAuth();
-	const emits = defineEmits(['open-search-agent-corp-modal']);
 	const {
 		registrationNumber,
 		clientName,

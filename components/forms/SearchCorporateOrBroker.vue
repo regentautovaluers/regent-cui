@@ -10,7 +10,7 @@
 				v-model="corpOrBrokerSearchTerm" />
 			<button
 				type="submit"
-				class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+				class="generic-search-submit-button">
 				<FormSubmissionLoader
 					class="size-6 animate-spin text-white"
 					v-if="searchCorpOrBrokerLoading" />
@@ -37,8 +37,7 @@
 						setSelectedCorpOrBroker({
 							name: result.corpName,
 							id: result.corpId,
-						});
-						emits('close-search-agent-corp-modal');
+						})
 					"
 					class="rounded-lg bg-blue-600 p-2 px-4 text-white">
 					Select
@@ -49,7 +48,6 @@
 </template>
 
 <script setup lang="ts">
-	const emits = defineEmits(['selected-agency-or-corp', 'close-search-agent-corp-modal']);
 	const {
 		searchCorpOrBrokerResults,
 		corpOrBrokerSearchTerm,
