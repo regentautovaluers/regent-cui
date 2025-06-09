@@ -2,14 +2,20 @@ import type { CollateralSearchTypeOption } from '~/types';
 
 const useCollateralVerficiation = () => {
 	const collateralCheckLoading = ref(false);
-	const runtimeConfig = useRuntimeConfig();
 	const responseData: Ref<any> = ref(null);
+	const searchDefaulterQuery: Ref<string> = ref('');
+	const searchDefaulterLoading: Ref<boolean> = ref(false);
+	const runtimeConfig = useRuntimeConfig();
+	const { getPrincipal } = useAuth();
+	const ravDefaulterDetails: Ref<any[] | null> = ref(null);
+	const iaVehicleDetails: Ref<any> = ref(null);
+	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
+	const iaVehicleOwnerDetails: Ref<any> = ref(null);
 
-	// search fraudster
 	const searchCollateralTypeOptions: readonly CollateralSearchTypeOption[] = [
 		{
 			id: 'defaulter-db',
-			name: 'Defaulters',
+			name: 'Defaulters DB',
 			prompt: 'Enter vehicle reg, chassis or engine number.',
 			opensInModal: false,
 		},
@@ -131,16 +137,50 @@ const useCollateralVerficiation = () => {
 		}
 	};
 
+	const searchDefaulter = async () => {
+		let requestURI: string = `/api/v1/fraud/search?searchQuery=${searchDefaulterQuery.value}&searchType=valuation&searcherEmail=${getPrincipal.value.email}&searcherPhone=${getPrincipal.value.phonenumber}&searcherName=${getPrincipal.value.username}&searcherOrganisation=${getPrincipal.value.corpName}`;
+
+		searchDefaulterLoading.value = true;
+		try {
+			await $fetch(requestURI, {
+				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+				method: 'GET',
+				onResponse({ response }) {
+					if (response.ok) {
+						ravDefaulterDetails.value = response._data.data;
+					}
+				},
+			});
+		} catch (err) {
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
+		} finally {
+			searchDefaulterLoading.value = false;
+		}
+	};
+
 	return {
 		responseData,
 		collateralCheckLoading,
+		searchDefaulterLoading,
 		fetchBankListStatus,
 		executeFetchBankList,
 		bankList,
 		searchCollateralType,
 		searchCollateralTypeOptions,
 		willNotOpenModal,
+		searchDefaulterQuery,
+		iaVehicleDetails,
+		iaVehicleCollateralDetails,
+		iaVehicleOwnerDetails,
+		ravDefaulterDetails,
 		verifyCollateral,
+		searchDefaulter,
 	};
 };
 

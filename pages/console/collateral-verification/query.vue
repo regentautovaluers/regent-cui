@@ -1,8 +1,8 @@
 <template>
 	<form
-		@submit.prevent="searchFraudster"
+		@submit.prevent="searchDefaulter"
 		class="mt-5 w-full">
-		<h3 class="text-base font-semibold text-gray-500">Search From Database:</h3>
+		<h3 class="text-base font-semibold text-gray-500">Search From Database Type:</h3>
 		<div
 			class="tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 mt-3 grid grid-cols-2 gap-4">
 			<template
@@ -65,16 +65,20 @@
 		</div>
 
 		<div
-			class="laptop:w-1/2 laptop-lg:w-1/3 relative mt-5 flex w-full items-center justify-between">
+			class="laptop:w-1/2 laptop-lg:w-1/3 relative mt-5 flex w-full items-center justify-between"
+			v-if="willNotOpenModal.includes(searchCollateralType)">
 			<input
 				type="text"
 				class="generic-input"
 				:placeholder="searchCollateralType.prompt"
-				v-model="searchQuery" />
+				v-model="searchDefaulterQuery" />
 			<button
 				type="submit"
 				class="generic-search-submit-button">
-				<SearchIcon />
+				<FormSubmissionLoader
+					class="size-6 animate-spin text-white"
+					v-if="searchDefaulterLoading" />
+				<SearchIcon v-else />
 			</button>
 		</div>
 	</form>
@@ -86,36 +90,6 @@
 		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
 			Showing Result From Identify Africa Database
 		</h1>
-
-		<!-- Notice on IA DB Results -->
-		<!-- <div
-				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
-				role="alert">
-				<div class="flex items-center">
-					<svg
-						class="me-2 h-4 w-4 shrink-0"
-						aria-hidden="true"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="currentColor"
-						viewBox="0 0 20 20">
-						<path
-							d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-					</svg>
-					<span class="sr-only">Info</span>
-					<h3 class="text-lg font-medium">Consumer Notice</h3>
-				</div>
-				<div class="mt-2 mb-4">
-					<p>
-						Identify Africa allows you to cross check the vehicle details as they were
-						recorded as the vehicle was being registered at the relevant government
-						level, alongside where the vehicle has been used as collateral, e.g. for a
-						loan. The data may not be up to date as it relies on proper jurisdictional
-						procedures e.g. when selling a vehicle, for this record to be updated.
-						Consumption of this data is at your own discretion.
-					</p>
-				</div>
-			</div> -->
-
 		<IAVehicleDetailsResultsCard
 			:reg-no="iaVehicleDetails.regNo"
 			:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
@@ -155,39 +129,12 @@
 	</div>
 
 	<!-- RAV fraud results -->
-	<template v-if="ravFraudDetails && ravFraudDetails.length > 0">
-		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
-			Showing {{ ravFraudDetails.length }} Result(s) From Regent Auto Valuers Database
+	<template v-if="ravDefaulterDetails && ravDefaulterDetails.length > 0">
+		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+			Showing {{ ravDefaulterDetails.length }} Result(s) From Regent Auto Valuers Database
 		</h1>
-		<!-- Notice on RAVDB resulr -->
-		<!-- <div
-				class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
-				role="alert">
-				<div class="flex items-center">
-					<svg
-						class="me-2 h-4 w-4 shrink-0"
-						aria-hidden="true"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="currentColor"
-						viewBox="0 0 20 20">
-						<path
-							d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-					</svg>
-					<span class="sr-only">Info</span>
-					<h3 class="text-lg font-medium">Consumer Notice</h3>
-				</div>
-				<div class="mt-2 mb-4">
-					<p>
-						According to our fraud database, this vehicle has been flagged for fraud
-						cases a total of {{ ravFraudDetails.length }} time(s). Kindly be aware that
-						this data is being presented to you as it currently exists in our database,
-						and thus, records may not be up to date. Consumption of this data is at your
-						own discretion.
-					</p>
-				</div>
-			</div> -->
 		<RAVDatabaseFraudResultsCard
-			v-for="(r, idx) in ravFraudDetails"
+			v-for="(r, idx) in ravDefaulterDetails"
 			:key="idx"
 			:reg-no="r.registrationNumber"
 			:year-of-manufacture="r.yearOfManufacture"
@@ -239,13 +186,6 @@
 		<h1>Verify Business</h1>
 	</ParentModal>
 
-	<!-- Verify Collateral -->
-	<ParentModal
-		modal-id="verify-collateral-modal"
-		modal-title="Verify Loan Collateral">
-		<h1>Verify Loan Collateral</h1>
-	</ParentModal>
-
 	<!-- Verify Bank Account -->
 	<ParentModal
 		modal-id="verify-bank-account-modal"
@@ -255,26 +195,27 @@
 </template>
 
 <script setup lang="ts">
-	import VerifyDrivingLicenseForm from '~/components/forms/collateral-verification/VerifyDrivingLicenseForm.vue';
-import VerifyKRAPinForm from '~/components/forms/collateral-verification/VerifyKRAPinForm .vue';
-	import IAVehicleColateralResultsCard from '~/components/misc/IAVehicleColateralResultsCard.vue';
-	import IAVehicleDetailsResultsCard from '~/components/misc/IAVehicleDetailsResultsCard.vue';
-
 	definePageMeta({
 		name: 'collateral-verification-query',
 		layout: 'console-layout',
 	});
 
 	const {
-		searchCollateralTypeOptions,
+		searchDefaulterQuery,
+		responseData,
+		collateralCheckLoading,
+		searchDefaulterLoading,
+		fetchBankListStatus,
+		executeFetchBankList,
+		bankList,
 		searchCollateralType,
-		searchQuery,
-		searchFraudsterLoading,
-		searchIdentifyAfricaDatabase,
-		ravFraudDetails,
+		searchCollateralTypeOptions,
+		willNotOpenModal,
 		iaVehicleDetails,
 		iaVehicleCollateralDetails,
 		iaVehicleOwnerDetails,
-		searchFraudster,
-	} = useFraudDetection();
+		ravDefaulterDetails,
+		verifyCollateral,
+		searchDefaulter,
+	} = useCollateralVerification();
 </script>
