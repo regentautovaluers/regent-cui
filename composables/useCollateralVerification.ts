@@ -1,4 +1,5 @@
 import type { CollateralSearchTypeOption } from '~/types';
+import { type Reactive } from 'vue';
 
 const useCollateralVerficiation = () => {
 	const collateralCheckLoading = ref(false);
@@ -12,7 +13,7 @@ const useCollateralVerficiation = () => {
 	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
 	const iaVehicleOwnerDetails: Ref<any> = ref(null);
 
-	const searchCollateralTypeOptions: readonly CollateralSearchTypeOption[] = [
+	const searchCollateralTypeOptions: Reactive<CollateralSearchTypeOption[]> = reactive([
 		{
 			id: 'defaulter-db',
 			name: 'Defaulters DB',
@@ -67,12 +68,6 @@ const useCollateralVerficiation = () => {
 			prompt: 'Enter bank account number.',
 			opensInModal: true,
 		},
-	];
-
-	const willNotOpenModal: Ref<CollateralSearchTypeOption[]> = ref([
-		searchCollateralTypeOptions[0],
-		searchCollateralTypeOptions[3],
-		searchCollateralTypeOptions[7],
 	]);
 
 	const searchCollateralType: Ref<CollateralSearchTypeOption> = ref(
@@ -173,7 +168,6 @@ const useCollateralVerficiation = () => {
 		bankList,
 		searchCollateralType,
 		searchCollateralTypeOptions,
-		willNotOpenModal,
 		searchDefaulterQuery,
 		iaVehicleDetails,
 		iaVehicleCollateralDetails,

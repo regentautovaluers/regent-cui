@@ -63,10 +63,13 @@
 				</button>
 			</template>
 		</div>
-
 		<div
 			class="laptop:w-1/2 laptop-lg:w-1/3 relative mt-5 flex w-full items-center justify-between"
-			v-if="willNotOpenModal.includes(searchCollateralType)">
+			v-if="
+				searchCollateralTypeOptions
+					.filter((e) => !e.opensInModal)
+					.includes(searchCollateralType)
+			">
 			<input
 				type="text"
 				class="generic-input"
@@ -210,7 +213,6 @@
 		bankList,
 		searchCollateralType,
 		searchCollateralTypeOptions,
-		willNotOpenModal,
 		iaVehicleDetails,
 		iaVehicleCollateralDetails,
 		iaVehicleOwnerDetails,
