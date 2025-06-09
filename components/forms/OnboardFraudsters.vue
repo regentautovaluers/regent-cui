@@ -14,7 +14,7 @@
 					class="generic-input"
 					placeholder="e.g KDH 908Y"
 					required
-					v-model="onboardFrauster.registrationNumber" />
+					v-model="onboardDefaulter.registrationNumber" />
 			</div>
 			<!-- Chassis Number -->
 			<div class="w-full lg:w-1/3">
@@ -29,7 +29,7 @@
 					class="generic-input"
 					placeholder="e.g 318292GHJSk56FGFS"
 					required
-					v-model="onboardFrauster.chassisNumber" />
+					v-model="onboardDefaulter.chassisNumber" />
 			</div>
 			<!-- Engine Number -->
 			<div class="w-full lg:w-1/3">
@@ -44,7 +44,7 @@
 					class="generic-input"
 					placeholder="e.g 123456XYZ"
 					required
-					v-model="onboardFrauster.engineNumber" />
+					v-model="onboardDefaulter.engineNumber" />
 			</div>
 		</div>
 
@@ -61,7 +61,7 @@
 					id="vehicle-color"
 					class="generic-input"
 					placeholder="e.g Red"
-					v-model="onboardFrauster.color" />
+					v-model="onboardDefaulter.color" />
 			</div>
 			<!-- Vehicle Make -->
 			<div class="w-full lg:w-1/3">
@@ -76,7 +76,7 @@
 					class="generic-input"
 					placeholder="e.g Mazda"
 					required
-					v-model="onboardFrauster.make" />
+					v-model="onboardDefaulter.make" />
 			</div>
 			<!-- Vehicle Model -->
 			<div class="w-full lg:w-1/3">
@@ -91,7 +91,7 @@
 					class="generic-input"
 					placeholder="e.g Demio"
 					required
-					v-model="onboardFrauster.model" />
+					v-model="onboardDefaulter.model" />
 			</div>
 		</div>
 
@@ -114,10 +114,9 @@
 			</div>
 
 			<p class="mt-2 mb-4 text-sm">
-				Optionally, use the fields below to provide an extra description of the
-				incident you are adding to the database. This will be of help to other users of the
-				platform. Kindly be as brief but as descriptive as possible. All fields are optional
-				however
+				Optionally, use the fields below to provide an extra description of the incident you
+				are adding to the database. This will be of help to other users of the platform.
+				Kindly be as brief but as descriptive as possible. All fields are optional however
 			</p>
 		</div>
 
@@ -133,7 +132,7 @@
 				class="generic-text-area"
 				rows="5"
 				placeholder="Provide an optional extra description for this incident"
-				v-model="onboardFrauster.description"></textarea>
+				v-model="onboardDefaulter.description"></textarea>
 		</div>
 
 		<div class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
@@ -151,7 +150,7 @@
 					class="generic-input"
 					placeholder="e.g 2024-01-17"
 					pattern="\d{4}-\d{2}-\d{2}"
-					v-model="onboardFrauster.dateOfIncident" />
+					v-model="onboardDefaulter.dateOfIncident" />
 			</div>
 			<!-- Amount Defaulted -->
 			<div class="w-full lg:w-1/3">
@@ -165,7 +164,7 @@
 					id="amount-defaulted"
 					class="generic-input"
 					placeholder="e.g 15,000"
-					v-model="onboardFrauster.amountDefaulted" />
+					v-model="onboardDefaulter.amountDefaulted" />
 			</div>
 			<!-- Relevant -->
 			<div class="relative w-full lg:w-1/3">
@@ -202,11 +201,11 @@
 		</div>
 
 		<div
-			v-if="onboardFrauster.relevantLinks.length > 0"
+			v-if="onboardDefaulter.relevantLinks.length > 0"
 			class="my-3 p-2">
 			<h1 class="mb-2 font-semibold text-gray-500">Provided Links</h1>
 			<div
-				v-for="(link, index) in onboardFrauster.relevantLinks"
+				v-for="(link, index) in onboardDefaulter.relevantLinks"
 				:key="index"
 				class="flex-items-center mr-2 inline w-fit space-x-2 rounded-full border border-yellow-300 bg-yellow-50 p-2 text-yellow-800">
 				<a
@@ -223,17 +222,17 @@
 			type="submit"
 			:class="[
 				'generic-form-submit laptop:w-1/2 desktop-4k:w-1/3 mt-4 w-full',
-				onboardFraudsterLoading && 'skeleton skeleton-animated',
+				onboardDefaulterLoading && 'skeleton skeleton-animated',
 			]">
-			{{ onboardFraudsterLoading ? 'Please Wait...' : 'Submit Request' }}
+			{{ onboardDefaulterLoading ? 'Please Wait...' : 'Submit Request' }}
 		</button>
 	</form>
 </template>
 
 <script setup lang="ts">
 	const {
-		onboardFrauster,
-		onboardFraudsterLoading,
+		onboardDefaulter,
+		onboardDefaulterLoading,
 		relevantLink,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,

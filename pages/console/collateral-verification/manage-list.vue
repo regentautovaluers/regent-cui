@@ -212,7 +212,7 @@
 												class="inline-flex h-10 w-20 items-center justify-center rounded-l-full border-none bg-red-300 p-2 text-sm text-red-600 transition-colors duration-200 outline-none hover:bg-red-400">
 												<FormSubmissionLoader
 													class="size-5 animate-spin text-red-500"
-													v-if="deleteFraudEntryLoading" />
+													v-if="deleteDefaulterEntryLoading" />
 												<span v-else>Confirm</span>
 											</button>
 											<button
@@ -264,7 +264,7 @@
 		executeFetchFraudsterList,
 		fetchFraudsterListError,
 		fraudsterEntries,
-		deleteFraudEntryLoading,
+		deleteDefaulterEntryLoading,
 		totalPages,
 		page,
 		deleteFraudRecord,
