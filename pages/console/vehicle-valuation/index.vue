@@ -32,7 +32,7 @@
 					placeholder="Search Registration Number" />
 				<button
 					type="submit"
-					class="absolute right-2 top-0 flex size-14 translate-y-[7px] items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+					class="generic-search-submit-button">
 					<SearchIcon />
 				</button>
 			</div>
@@ -81,7 +81,7 @@
 				<div class="mt-5 flex-grow">
 					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 						<table class="w-full text-left text-gray-500">
-							<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+							<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 								<tr>
 									<th
 										scope="col"
@@ -133,7 +133,7 @@
 									:key="a">
 									<td
 										scope="row"
-										class="whitespace-nowrap p-6 font-medium text-gray-300">
+										class="p-6 font-medium whitespace-nowrap text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>username</span
 										>
@@ -209,7 +209,7 @@
 									</td>
 									<th
 										scope="row"
-										class="flex items-center whitespace-nowrap p-5 text-gray-900">
+										class="flex items-center p-5 whitespace-nowrap text-gray-900">
 										<img
 											class="size-14 rounded-lg object-cover"
 											:src="valuation.vehicleImage"
