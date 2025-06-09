@@ -57,7 +57,7 @@ const useCollateralVerficiation = () => {
 			opensInModal: true,
 		},
 		{
-			id: 'collateral',
+			id: 'loan-collateral',
 			name: 'Loan Collateral',
 			prompt: 'Enter vehicle chassis number.',
 			opensInModal: false,
@@ -132,17 +132,29 @@ const useCollateralVerficiation = () => {
 		}
 	};
 
-	const searchDefaulter = async () => {
-		let requestURI: string = `/api/v1/fraud/search?searchQuery=${searchDefaulterQuery.value}&searchType=valuation&searcherEmail=${getPrincipal.value.email}&searcherPhone=${getPrincipal.value.phonenumber}&searcherName=${getPrincipal.value.username}&searcherOrganisation=${getPrincipal.value.corpName}`;
-
+	const searchDefaulter = async (searchType: CollateralSearchTypeOption) => {
 		searchDefaulterLoading.value = true;
+
 		try {
-			await $fetch(requestURI, {
+			await $fetch(generateSearchDefaulterURI(searchType.id), {
 				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 				method: 'GET',
 				onResponse({ response }) {
 					if (response.ok) {
-						ravDefaulterDetails.value = response._data.data;
+						const responseData = response._data;
+
+						// From Defaulters DB
+						ravDefaulterDetails.value = responseData.data;
+
+						// FROM IA:
+						// details about the vehicle
+						iaVehicleDetails.value = responseData.data.verificationData;
+
+						// details about the vehicle's loaning collateral
+						iaVehicleCollateralDetails.value = responseData.data.verificationData;
+
+						// details about the vehicle's owner
+						// iaVehicleOwnerDetails.value = responseData.data.vehicleDetails.owner[0];
 					}
 				},
 			});
@@ -158,6 +170,22 @@ const useCollateralVerficiation = () => {
 			searchDefaulterLoading.value = false;
 		}
 	};
+
+	function generateSearchDefaulterURI(type: string): string | never {
+		const sharedURISubstring: string = `searchType=valuation&searcherEmail=${getPrincipal.value.email}&searcherPhone=${getPrincipal.value.phonenumber}&searcherName=${getPrincipal.value.username}&searcherOrganisation=${getPrincipal.value.corpName}`;
+
+		switch (type) {
+			case 'defaulter-db':
+				return `/api/v1/fraud/search?searchQuery=${searchDefaulterQuery.value}&${sharedURISubstring}`;
+			case 'loan-collateral':
+				return `/api/v1/verification/verify-collateral?chassisNumber=${searchDefaulterQuery.value}&${sharedURISubstring}`;
+			case 'vehicle-reg':
+				return `/api/v1/verification/verify-vehicle?regNo=${searchDefaulterQuery.value}&${sharedURISubstring}`;
+
+			default:
+				throw new Error('No search type defined');
+		}
+	}
 
 	return {
 		responseData,
