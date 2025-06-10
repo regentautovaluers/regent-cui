@@ -1,6 +1,6 @@
 <template>
 	<form
-		@submit.prevent="searchDefaulter"
+		@submit.prevent="searchDefaulter(searchCollateralType)"
 		class="mt-5 w-full">
 		<h3 class="text-base font-semibold text-gray-500">Search From Database Type:</h3>
 		<div
@@ -90,7 +90,7 @@
 	<div
 		v-if="iaVehicleDetails"
 		class="border-b border-dashed border-gray-300 py-5">
-		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
+		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
 			Showing Result From Identify Africa Database
 		</h1>
 		<IAVehicleDetailsResultsCard
@@ -109,8 +109,8 @@
 	<div
 		v-if="iaVehicleOwnerDetails"
 		class="border-b border-dashed border-gray-300 pb-5">
-		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
-			Details of owner when vehicle was registered
+		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+			Details of owner to whom vehicle was registered
 		</h1>
 		<IAVehicleOwnerDetails
 			:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
@@ -125,7 +125,7 @@
 	<div
 		v-if="iaVehicleCollateralDetails"
 		class="border-b border-dashed border-gray-300 pb-5">
-		<h1 class="mt-8 mb-4 text-lg font-semibold text-yellow-500">
+		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
 			Where this vehicle been used as collateral
 		</h1>
 		<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
