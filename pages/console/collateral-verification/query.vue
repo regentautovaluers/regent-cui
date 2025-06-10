@@ -186,7 +186,7 @@
 	<ParentModal
 		modal-id="verify-business-modal"
 		modal-title="Verify Business">
-		<h1>Verify Business</h1>
+		<VerifyBusinessForm />
 	</ParentModal>
 
 	<!-- Verify Bank Account -->

@@ -110,7 +110,10 @@ const useCollateralVerficiation = () => {
 							transition: 'slide',
 						});
 
-						if (checkType == 'verify-driving-license') {
+						if (
+							checkType == 'verify-driving-license' ||
+							checkType == 'verify-business'
+						) {
 							responseData.value = response._data.data.data;
 						} else {
 							responseData.value = response._data.data;
