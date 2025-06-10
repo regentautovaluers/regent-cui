@@ -143,18 +143,23 @@ const useCollateralVerficiation = () => {
 					if (response.ok) {
 						const responseData = response._data;
 
-						// From Defaulters DB
-						ravDefaulterDetails.value = responseData.data;
+						if (searchType.id === 'defaulter-db') {
+							// From Defaulters DB
+							ravDefaulterDetails.value = responseData.data;
+						} else if (searchType.id === 'loan-collateral') {
+							// From IA
+							iaVehicleCollateralDetails.value =
+								responseData.data.verificationData.data.results;
 
-						// FROM IA:
-						// details about the vehicle
-						iaVehicleDetails.value = responseData.data.verificationData;
+							// From Defaullter's DB
+							ravDefaulterDetails.value = responseData.data.fraudData;
+						} else if (searchType.id === 'vehicle-reg') {
+							// From IA
+							iaVehicleDetails.value = responseData.data.verificationData;
 
-						// details about the vehicle's loaning collateral
-						iaVehicleCollateralDetails.value = responseData.data.verificationData;
-
-						// details about the vehicle's owner
-						// iaVehicleOwnerDetails.value = responseData.data.vehicleDetails.owner[0];
+							// From Defaullter's DB
+							ravDefaulterDetails.value = responseData.data.fraudData;
+						}
 					}
 				},
 			});
