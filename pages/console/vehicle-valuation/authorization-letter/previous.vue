@@ -42,7 +42,7 @@
 							v-model="searchPhrase" />
 						<button
 							type="submit"
-							class="absolute right-2 top-0 flex size-14 translate-y-[7px] items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+							class="generic-search-submit-button">
 							<SearchIcon />
 						</button>
 					</form>
@@ -69,7 +69,7 @@
 			<div class="my-2 flex-grow">
 				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 					<table class="w-full text-left text-gray-500">
-						<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+						<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 							<tr>
 								<th
 									scope="col"
@@ -116,7 +116,7 @@
 								:key="a">
 								<td
 									scope="row"
-									class="whitespace-nowrap p-6 font-medium text-gray-300">
+									class="p-6 font-medium whitespace-nowrap text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>username</span
 									>
@@ -181,11 +181,11 @@
 									>
 									<span>{{ letter.createdOn.split(' ')[0] }}</span>
 								</td>
-								<td class="w-48 max-w-48 text-wrap px-2 text-sm">
+								<td class="w-48 max-w-48 px-2 text-sm text-wrap">
 									{{ letter.feedback ?? 'N/A' }}
 								</td>
 								<td
-									class="max-w-48 overflow-hidden text-ellipsis p-4 text-center text-gray-600">
+									class="max-w-48 overflow-hidden p-4 text-center text-ellipsis text-gray-600">
 									{{
 										!letter.assessmentStage
 											? 'N/A'

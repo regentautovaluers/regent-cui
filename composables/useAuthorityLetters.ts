@@ -101,23 +101,11 @@ const useAuthorityLetters = () => {
 	};
 
 	const createAuthorizationLetter = async () => {
-		// if the logged in user is a broked an they have not
+		// if the logged in user is a broker and they have not
 		// filled the agencyOrCorpName show a warning toast and exit
 		// the function
 		if (isPrincipalBroker() && agencyOrCorp.value.name.length === 0) {
 			useToast('Corporate is Required!', {
-				type: 'warning',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'bounce',
-			});
-
-			return;
-		}
-
-		if (uploadedDocuments.value.length < 1) {
-			useToast('Provide Logbook & Authority Letter!', {
 				type: 'warning',
 				showIcon: true,
 				showCloseButton: false,
