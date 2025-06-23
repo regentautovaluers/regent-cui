@@ -1,7 +1,7 @@
 <template>
 	<div class="console-layout-spacing flex flex-col">
 		<div class="flex h-fit items-center justify-between">
-			<div class="space-x-4 font-semibold text-gray-500 md:text-base lg:text-lg">
+			<div class="space-x-4 font-semibold text-gray-500">
 				<button
 					@click="() => (activeView = 'complete')"
 					:class="[
@@ -42,7 +42,7 @@
 				<button
 					class="table-filter-buttons"
 					@click.prevent="isFilterFormOpen = true">
-					Filters<FilterIcon class="text-xl" />
+					Filters<FilterIcon />
 				</button>
 			</div>
 		</div>
@@ -65,7 +65,7 @@
 			<!-- div to show when there are no authorization letters -->
 			<div
 				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-				v-else-if="fetchValuationsStatus === 'success' && corpValuations.length === 0">
+				v-else-if="fetchValuationsStatus === 'success' && !corpValuations.length">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">
 					Oops! Seems like you have no valuations!
@@ -112,12 +112,7 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Assessed & Market Value
-									</th>
-									<th
-										scope="col"
-										class="table-headers">
-										Forced Value
+										Booking & Serial Number
 									</th>
 									<th
 										scope="col"
@@ -131,13 +126,6 @@
 									v-if="fetchValuationsStatus === 'pending'"
 									v-for="a in 10"
 									:key="a">
-									<td
-										scope="row"
-										class="p-6 font-medium whitespace-nowrap text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>username</span
-										>
-									</td>
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>useremail</span
@@ -173,11 +161,11 @@
 
 								<!-- the actual data -->
 								<tr
-									class="border-b bg-white hover:bg-gray-100"
+									class="border-b bg-white text-sm hover:bg-gray-100"
 									v-else
 									v-for="(valuation, index) in corpValuations"
 									:key="index">
-									<td class="p-5">
+									<td class="p-4">
 										<span
 											class="w-fit rounded-lg bg-pink-200 px-1 text-pink-600"
 											>{{ valuation.regentBranch.branchName }}</span
@@ -185,7 +173,7 @@
 										<br />
 										<span>{{ valuation.bookingDate.split('T')[0] }}</span>
 									</td>
-									<td class="p-5">
+									<td class="p-4">
 										<span
 											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
 											>{{ valuation.clientPhone }}</span
@@ -194,7 +182,7 @@
 										<span>{{ valuation.clientName }}</span>
 									</td>
 
-									<td class="p-5">
+									<td class="p-4">
 										<span class="w-fit">{{
 											valuation.inspectionDate == null
 												? 'Date N/A'
@@ -209,9 +197,9 @@
 									</td>
 									<th
 										scope="row"
-										class="flex items-center p-5 whitespace-nowrap text-gray-900">
+										class="flex items-center p-4 whitespace-nowrap text-gray-900">
 										<img
-											class="size-14 rounded-lg object-cover"
+											class="size-12 rounded-lg object-cover"
 											:src="valuation.vehicleImage"
 											alt="Vehicle Image"
 											v-if="valuation.vehicleImage" />
@@ -220,7 +208,7 @@
 											class="flex size-14 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
 											<span>{{
 												valuation.regNo == null
-													? 'N/A'
+													? 'Reg No. N/A'
 													: valuation.regNo.split(' ')[0]
 											}}</span>
 										</div>
@@ -234,54 +222,37 @@
 											</div>
 										</div>
 									</th>
-									<td class="p-5">
+									<td class="p-4">
 										<span class="w-fit">{{
-											valuation.chargedAmount == null
+											valuation.completeTransaction == null
 												? 'Amount N/A'
 												: Intl.NumberFormat('en-US', {
 														minimumFractionDigits: 0,
 														maximumFractionDigits: 0,
-													}).format(valuation.chargedAmount)
+													}).format(
+														valuation.completeTransaction.reduce(
+															(acc, curr) => acc + curr.amountPaid,
+															0,
+														),
+													)
 										}}</span>
 										<br />
 										<span
 											class="w-fit rounded-lg bg-yellow-200 px-1 text-yellow-600"
-											>{{ valuation.paymentMethod ?? 'Method N/A' }}</span
+											>{{
+												(valuation.paymentMethod as string[])
+													.join(', ')
+													.toLowerCase() ?? 'Method N/A'
+											}}</span
 										>
 									</td>
-									<td class="space-x-3 p-5">
-										<span>{{
-											!valuation.vehicleValue ||
-											!valuation.vehicleValue.assessedValue
-												? 'A/Val N/A'
-												: Intl.NumberFormat('en-US', {
-														minimumFractionDigits: 0,
-														maximumFractionDigits: 0,
-													}).format(valuation.vehicleValue.assessedValue)
-										}}</span>
-										<span class="text-2xl">&middot;</span>
-										<span>{{
-											!valuation.vehicleValue ||
-											!valuation.vehicleValue.marketValue
-												? 'Mkt/Val N/A'
-												: Intl.NumberFormat('en-US', {
-														minimumFractionDigits: 0,
-														maximumFractionDigits: 0,
-													}).format(valuation.vehicleValue.marketValue)
-										}}</span>
-									</td>
-									<td class="p-5">
-										{{
-											!valuation.vehicleValue ||
-											!valuation.vehicleValue.forcedSaleValue
-												? 'Fcd/Val N/A'
-												: Intl.NumberFormat('en-US', {
-														minimumFractionDigits: 0,
-														maximumFractionDigits: 0,
-													}).format(
-														valuation.vehicleValue.forcedSaleValue,
-													)
-										}}
+									<td class="p-4">
+										<span class="w-fit">{{ valuation.valuationId }}</span>
+										<br />
+										<span
+											class="w-fit rounded-lg bg-yellow-200 px-1 text-yellow-600"
+											>{{ valuation.serialNumber ?? 'Serial N/A' }}</span
+										>
 									</td>
 									<td>
 										<button
@@ -358,7 +329,7 @@
 
 				<!-- page controls -->
 				<div class="flex min-h-12 items-center justify-between">
-					<h1 class="text-sm font-semibold text-gray-500 md:text-base">
+					<h1 class="text-sm font-semibold text-gray-500">
 						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>
 					<div class="h-full space-x-2 md:space-x-4">

@@ -54,6 +54,7 @@ export const useCorporateValuations = () => {
 					totalPages.value = extras.totalPages;
 				}
 			},
+			watch: [activeView, page],
 		},
 	) as any;
 

@@ -4,7 +4,7 @@
 		width="1em"
 		height="1em"
 		viewBox="0 0 16 16"
-		class="size-6">
+		class="size-inherit">
 		<g
 			fill="currentColor"
 			stroke="currentColor"
