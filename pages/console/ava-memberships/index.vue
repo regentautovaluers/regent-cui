@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-spacing b grid flex-grow grid-cols-1 lg:grid-cols-[80%_20%]">
+	<div class="console-layout-spacing grid flex-grow grid-cols-1 lg:grid-cols-[80%_20%]">
 		<div
 			class="col-span-2 mb-10 flex h-32 items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
@@ -27,7 +27,7 @@
 
 		<!-- div to show when there is a fetch error -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 shadow-sm"
+			class="mr-10 flex h-full flex-col items-center justify-center space-y-4 rounded-lg bg-white shadow-sm"
 			v-if="fetchMembershipsStatus === 'error'">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -41,7 +41,7 @@
 
 		<!-- div to show when there are no members -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 shadow-sm"
+			class="mr-10 flex h-full flex-col items-center justify-center space-y-4 rounded-lg bg-white shadow-sm"
 			v-else-if="fetchMembershipsStatus === 'success' && corporateMemberships.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no members!</h1>
@@ -267,11 +267,11 @@
 
 		<!-- side-information including chart -->
 		<div
-			class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
+			class="tablet-lg:flex-row laptop-lg:flex-col laptop-lg:h-full laptop-lg:space-y-10 flex h-fit max-h-full flex-col">
 			<div
-				class="v flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm xl:h-1/2 xl:min-h-1/2">
+				class="laptop-lg:h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm">
 				<div class="flex h-14 items-center justify-between">
-					<h1 class="text-2xl font-bold">About</h1>
+					<h1 class="text-xl font-bold">About</h1>
 					<button
 						id="ava-services-desc"
 						data-dropdown-toggle="ava-services-desc"
@@ -308,18 +308,18 @@
 				<div class="flex-grow">
 					<div class="flex h-fit w-full items-center justify-center">
 						<button
-							class="inline-flex size-24 items-center justify-center rounded-full bg-pink-500 text-white shadow-sm">
-							<MembershipsIcon classes="size-16 text-inherit" />
+							class="inline-flex size-20 items-center justify-center rounded-full bg-pink-500 text-white shadow-sm">
+							<MembershipsIcon classes="size-10 text-inherit" />
 						</button>
 					</div>
 					<div class="my-4 w-full text-center">
-						<h1 class="text-center text-2xl font-bold">Our Services</h1>
+						<h1 class="text-center text-xl font-bold">Our Services</h1>
 						<h2 class="text-center font-bold text-gray-500">
 							{{ regentServices[activeDescriptionIndex].name }}
 						</h2>
 					</div>
 
-					<p class="text-sm text-gray-500">
+					<p class="text-xs text-gray-500">
 						{{ regentServices[activeDescriptionIndex].description }}
 					</p>
 				</div>
@@ -328,21 +328,18 @@
 						href="https://ava.ke/"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-blue-600 transition-colors duration-300 hover:text-blue-700"
+						class="text-sm text-blue-600 transition-colors duration-300 hover:text-blue-700"
 						>Read More</a
 					>
 				</div>
 			</div>
 			<div
-				class="flex h-100 min-h-100 flex-col rounded-md border bg-white shadow-sm xl:h-1/2 xl:min-h-1/2">
-				<h1 class="p-5 text-2xl font-bold">Memberships</h1>
+				class="laptop-lg:h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm">
+				<h1 class="p-5 text-xl font-bold">Memberships</h1>
 
 				<div
 					class="flex h-full items-center justify-center"
-					v-if="
-						fetchAvaMembersDistributionStatus === 'pending' &&
-						!computeActiveInactive.length
-					">
+					v-if="fetchAvaMembersDistributionStatus === 'pending'">
 					<FormSubmissionLoader class="size-10 animate-spin text-gray-300" />
 				</div>
 				<div

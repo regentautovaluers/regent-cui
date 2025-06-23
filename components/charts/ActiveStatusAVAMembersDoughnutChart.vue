@@ -31,7 +31,7 @@
 			:data="chartData" />
 	</div>
 	<div
-		class="mt-3 flex flex-col items-center justify-center space-y-3"
+		class="flex items-center justify-center space-x-4"
 		v-if="props.data.length">
 		<div
 			v-for="(label, index) in props.labels"

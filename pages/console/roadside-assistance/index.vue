@@ -153,7 +153,7 @@
 				>
 				<NuxtLink
 					:to="{
-						name: 'ra-jumpstarting-request',
+						name: 'ra-tyrechange-request',
 						query: {
 							client_lat: clientCoordinates.lat,
 							client_lng: clientCoordinates.lng,
@@ -167,7 +167,7 @@
 				>
 				<NuxtLink
 					:to="{
-						name: 'ra-jumpstarting-request',
+						name: 'ra-towing-request',
 						query: {
 							client_lat: clientCoordinates.lat,
 							client_lng: clientCoordinates.lng,
@@ -183,10 +183,10 @@
 
 			<!-- side-information including chart -->
 			<div
-				class="xl:grid-cols-0 grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 xl:flex xl:flex-col xl:gap-x-0">
+				class="tablet-lg:flex-row laptop-lg:flex-col laptop-lg:h-full laptop-lg:space-y-10 flex h-fit max-h-full flex-col">
 				<div
-					class="xl:min-h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
-					<h1 class="text-2xl font-extrabold">Distribution</h1>
+					class="laptop-lg:h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm">
+					<h1 class="my-4 text-xl font-extrabold">Distribution</h1>
 					<div
 						class="flex h-full items-center justify-center"
 						v-if="
@@ -224,8 +224,8 @@
 						:data="raIncidentsDoughnutData.data" />
 				</div>
 				<div
-					class="xl:min-h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white p-5 shadow-sm xl:h-1/2">
-					<h1 class="text-2xl font-extrabold">Top Recent Incidents</h1>
+					class="laptop-lg:h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm">
+					<h1 class="my-4 text-xl font-extrabold">Top Recent Incidents</h1>
 					<div
 						class="flex h-full items-center justify-center"
 						v-if="
@@ -247,19 +247,19 @@
 						class="h-full"
 						v-else>
 						<div
-							class="mb-2 grid h-[5.2rem] grid-cols-[.5fr_.4fr_.1fr] items-center py-3"
+							class="mb-2 flex h-[5.2rem] items-center justify-between py-3"
 							v-for="(incident, index) in topRecentPerService"
 							:key="index">
 							<div>
-								<h1 class="font-bold text-gray-600">
+								<h1 class="text-sm font-bold text-gray-600">
 									{{ incident.registration_no }}
 								</h1>
-								<h2 class="text-sm font-semibold text-gray-400">
+								<h2 class="text-xs font-semibold text-gray-400">
 									{{ formatServerProvidedDateTime(incident.date_created) }}
 								</h2>
 							</div>
 							<div>
-								<h1 class="font-bold text-gray-600">
+								<h1 class="text-sm font-bold text-gray-600">
 									{{ screenFormatRAServiceName(incident.service) }}
 								</h1>
 							</div>
@@ -274,9 +274,9 @@
 								<!-- Dropdown menu -->
 								<div
 									id="recentsDropdownLeft"
-									class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+									class="z-10 hidden w-40 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
 									<ul
-										class="py-2 text-gray-500"
+										class="py-2 text-sm text-gray-500"
 										aria-labelledby="recentsDropdownLeftButton">
 										<li
 											v-if="
@@ -374,7 +374,7 @@
 					<div class="mb-4 flex-grow">
 						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 							<table class="w-full text-left text-gray-500">
-								<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+								<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 									<tr>
 										<th
 											scope="col"
@@ -418,7 +418,7 @@
 										:key="index">
 										<td
 											scope="row"
-											class="whitespace-nowrap p-6 font-semibold text-gray-600">
+											class="p-6 font-semibold whitespace-nowrap text-gray-600">
 											{{ incident.registration_no }}
 										</td>
 										<td class="p-6">
@@ -434,7 +434,7 @@
 										</td>
 										<td class="p-6">{{ incident.service_status }}</td>
 										<td
-											class="max-w-48 overflow-hidden text-ellipsis py-6 text-blue-600">
+											class="max-w-48 overflow-hidden py-6 text-ellipsis text-blue-600">
 											{{ incident.pickup_location }}
 										</td>
 										<td class="flex items-center justify-end p-6">
@@ -513,7 +513,7 @@
 										v-for="a in 10">
 										<td
 											scope="row"
-											class="whitespace-nowrap p-6 text-gray-300">
+											class="p-6 whitespace-nowrap text-gray-300">
 											<span class="animate-pulse rounded-lg bg-gray-300"
 												>demoreg</span
 											>
