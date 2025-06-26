@@ -29,23 +29,179 @@
 				<input
 					type="text"
 					class="generic-input"
-					placeholder="Search Registration Number" />
+					placeholder="Enter Exact Reg or Booking No."
+					v-model="searchRegNo" />
 				<button
 					type="submit"
 					class="generic-search-submit-button">
 					<SearchIcon />
 				</button>
 			</div>
-
-			<!-- other filters -->
-			<div class="h-full">
-				<button
-					class="table-filter-buttons"
-					@click.prevent="isFilterFormOpen = true">
-					Filters<FilterIcon />
-				</button>
-			</div>
 		</div>
+
+		<form
+			@submit.prevent="executeFetchValuations"
+			class="table-filters-form">
+			<button
+				type="button"
+				@click="setShowTampered()"
+				:class="[
+					'table-filter-form-options',
+					showTampered ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
+				]">
+				Only Tampered
+			</button>
+			<button
+				data-popover-target="payment-method-pop-over"
+				data-popover-trigger="click"
+				data-popover-placement="bottom"
+				type="button"
+				:class="[
+					'table-filter-form-options',
+					paymentMethod ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
+				]">
+				Payment Method
+			</button>
+			<div
+				data-popover
+				id="payment-method-pop-over"
+				role="tooltip"
+				class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300">
+				<div class="space-y-2 px-3 py-2">
+					<div
+						class="flex h-10 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200"
+						v-for="(pm, index) in ['cash', 'mpesa', 'cheque', 'invoice']"
+						:key="index">
+						<input
+							id="has-spare-tyre"
+							type="radio"
+							:value="pm"
+							v-model="paymentMethod"
+							name="bordered-radio"
+							class="size-5 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+						<label
+							for="has-spare-tyre"
+							class="ms-2 w-full py-4 font-medium text-gray-600"
+							>{{ pm }}</label
+						>
+					</div>
+				</div>
+				<div data-popper-arrow></div>
+			</div>
+			<button
+				data-popover-target="payment-status-pop-over"
+				data-popover-trigger="click"
+				data-popover-placement="bottom"
+				type="button"
+				:class="[
+					'table-filter-form-options',
+					paymentStatus ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
+				]">
+				Payment Status
+			</button>
+
+			<div
+				data-popover
+				id="payment-status-pop-over"
+				role="tooltip"
+				class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-xs transition-opacity duration-300">
+				<div class="space-y-2 px-3 py-2">
+					<div
+						class="flex h-10 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200"
+						v-for="(ps, index) in ['paid', 'not-paid']"
+						:key="index">
+						<input
+							id="has-spare-tyre"
+							type="radio"
+							:value="ps"
+							v-model="paymentStatus"
+							name="bordered-radio"
+							class="size-5 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+						<label
+							for="has-spare-tyre"
+							class="ms-2 w-full py-4 font-medium text-gray-600"
+							>{{ ps }}</label
+						>
+					</div>
+				</div>
+				<div data-popper-arrow></div>
+			</div>
+
+			<button
+				data-popover-target="date-range-pop-over"
+				data-popover-trigger="click"
+				data-popover-placement="bottom"
+				type="button"
+				:class="[
+					'table-filter-form-options',
+					startDate || endDate ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
+				]">
+				Date Range
+			</button>
+
+			<div
+				data-popover
+				id="date-range-pop-over"
+				role="tooltip"
+				class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-xs transition-opacity duration-300">
+				<div class="space-y-2 px-3 py-2">
+					<!-- Starting date Field -->
+					<div>
+						<label
+							for="cover-period-starts"
+							class="generic-input-label mb-0 text-xs"
+							>Start Date</label
+						>
+						<input
+							type="date"
+							id="cover-period-starts"
+							class="generic-input h-10"
+							placeholder="Select"
+							pattern="\d{4}-\d{2}-\d{2}"
+							required
+							v-model="startDate" />
+					</div>
+
+					<!-- Ending date Field -->
+					<div>
+						<label
+							for="cover-period-starts"
+							class="generic-input-label mb-0 text-xs"
+							>End Date</label
+						>
+						<input
+							type="date"
+							id="cover-period-starts"
+							class="generic-input h-10"
+							placeholder="Select"
+							pattern="\d{4}-\d{2}-\d{2}"
+							required
+							v-model="endDate" />
+					</div>
+				</div>
+				<div data-popper-arrow></div>
+			</div>
+			<span
+				class="text-lg"
+				v-if="startDate || endDate || paymentStatus || paymentMethod || showTampered"
+				>&middot;</span
+			>
+			<button
+				type="submit"
+				class="table-filter-form-options flex items-center space-x-2"
+				v-if="startDate || endDate || paymentStatus || paymentMethod || showTampered">
+				<span class="material-symbols--error-rounded size-5"></span>
+				<span>Apply Filters</span>
+			</button>
+			<button
+				type="button"
+				@click="clearFilters()"
+				class="table-filter-form-options flex items-center space-x-2"
+				v-if="startDate || endDate || paymentStatus || paymentMethod || showTampered">
+				<span class="material-symbols-light--close-rounded size-5"></span>
+				<span>Clear Filters</span>
+			</button>
+		</form>
 
 		<div class="h-full min-h-212">
 			<!-- div to show when there is a fetch error -->
@@ -350,61 +506,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Search Corp or Broker modal -->
-	<ParentModal
-		modal-id="all-valuation-filters"
-		modal-title="Results Filters"
-		class="h-72"
-		v-if="isFilterFormOpen"
-		@close-modal="isFilterFormOpen = false">
-		<form class="w-full">
-			<InformationChip>
-				<p class="text-sm font-semibold text-gray-500">
-					Select the dates between which you want to filter results.
-				</p>
-			</InformationChip>
-			<div>
-				<label
-					for="letter-start-date"
-					class="generic-input-label generic-input-required-label"
-					>Start Date</label
-				>
-				<input
-					type="date"
-					id="letter-start-date"
-					class="generic-input"
-					placeholder="Enter Customer Name as Seen In Their National ID"
-					pattern="\d{4}-\d{2}-\d{2}"
-					required
-					v-model="startDate" />
-			</div>
-
-			<!-- Ending date Field -->
-			<div>
-				<label
-					for="letter-end-date"
-					class="generic-input-label generic-input-required-label"
-					>End Date</label
-				>
-				<input
-					type="date"
-					id="letter-end-date"
-					class="generic-input"
-					placeholder="Enter Customer Name as Seen In Their National ID"
-					pattern="\d{4}-\d{2}-\d{2}"
-					required
-					v-model="endDate" />
-			</div>
-
-			<!-- submit button -->
-			<button
-				type="submit"
-				class="generic-form-submit mt-3">
-				Apply Filters
-			</button>
-		</form>
-	</ParentModal>
 </template>
 
 <script setup lang="ts">
@@ -420,9 +521,22 @@
 		corpValuations,
 		totalPages,
 		page,
+		startDate,
+		endDate,
+		paymentStatus,
+		showTampered,
+		paymentMethod,
+		searchRegNo,
 		executeFetchValuations,
+		clearFilters,
 	} = useCorporateValuations();
 	const isFilterFormOpen: Ref<boolean> = ref(false);
-	const startDate: Ref<string> = ref('');
-	const endDate: Ref<string> = ref('');
+
+	function setShowTampered() {
+		if (showTampered.value == null) {
+			showTampered.value = true;
+		} else {
+			showTampered.value = null;
+		}
+	}
 </script>
