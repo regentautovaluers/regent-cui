@@ -19,7 +19,7 @@ export default defineNuxtConfig({
 	imports: {
 		dirs: ['./utils'],
 	},
-	css: ['~/assets/css/main.css'],
+	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
 	vite: {
 		plugins: [tailwindcss()],
 	},

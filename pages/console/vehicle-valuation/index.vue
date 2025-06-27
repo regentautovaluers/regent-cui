@@ -1,11 +1,11 @@
 <template>
 	<div class="console-layout-spacing flex flex-col">
-		<div class="flex h-fit items-center justify-between">
-			<div class="space-x-4 font-semibold text-gray-500">
+		<div class="tablet:flex-row flex h-fit flex-col items-center justify-between">
+			<div class="flex items-center space-x-3 font-semibold text-gray-500">
 				<button
 					@click="() => (activeView = 'complete')"
 					:class="[
-						'border-b-2',
+						'border-b-2 text-sm',
 						activeView === 'complete'
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',
@@ -15,7 +15,7 @@
 				<button
 					@click="() => (activeView = 'pending')"
 					:class="[
-						'border-b-2',
+						'border-b-2 text-sm',
 						activeView == 'pending'
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',
@@ -25,7 +25,8 @@
 			</div>
 
 			<!-- search box -->
-			<div class="relative flex w-full items-center justify-between md:w-[45%] lg:w-[23%]">
+			<div
+				class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
 				<input
 					type="text"
 					class="generic-input"
@@ -241,18 +242,18 @@
 								<tr>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers hidden">
 										Regent Branch & Date
 									</th>
 									<!-- Details will show client name and their contact -->
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers tablet:table-cell hidden">
 										Client Details
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers tablet:table-cell hidden">
 										Inspection Details
 									</th>
 									<th
@@ -262,12 +263,12 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers desktop-4k:table-cell hidden">
 										Payment
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers laptop:table-cell hidden">
 										Booking & Serial Number
 									</th>
 									<th
@@ -321,7 +322,7 @@
 									v-else
 									v-for="(valuation, index) in corpValuations"
 									:key="index">
-									<td class="p-4">
+									<td class="hidden p-4">
 										<span
 											class="w-fit rounded-lg bg-pink-200 px-1 text-pink-600"
 											>{{ valuation.regentBranch.branchName }}</span
@@ -329,7 +330,7 @@
 										<br />
 										<span>{{ valuation.bookingDate.split('T')[0] }}</span>
 									</td>
-									<td class="p-4">
+									<td class="tablet:table-cell hidden p-4">
 										<span
 											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
 											>{{ valuation.clientPhone }}</span
@@ -338,7 +339,7 @@
 										<span>{{ valuation.clientName }}</span>
 									</td>
 
-									<td class="p-4">
+									<td class="tablet:table-cell hidden p-4">
 										<span class="w-fit">{{
 											valuation.inspectionDate == null
 												? 'Date N/A'
@@ -378,7 +379,7 @@
 											</div>
 										</div>
 									</th>
-									<td class="p-4">
+									<td class="desktop-4k:table-cell hidden p-4">
 										<span class="w-fit">{{
 											valuation.completeTransaction == null
 												? 'Amount N/A'
@@ -402,7 +403,7 @@
 											}}</span
 										>
 									</td>
-									<td class="p-4">
+									<td class="laptop:table-cell hidden p-4">
 										<span class="w-fit">{{ valuation.valuationId }}</span>
 										<br />
 										<span
