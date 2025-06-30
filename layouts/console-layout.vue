@@ -193,7 +193,7 @@
 		]"
 		style="background-color: #f8faf8">
 		<nav
-			class="laptop:h-[7%] laptop:min-h-[7%] laptop:max-h-[7%] sticky top-0 z-20 flex h-[5%] max-h-[5%] min-h-[5%] w-full items-center justify-between border-b bg-white px-2"
+			class="h-[8%] min-h-[8%] max-h-[8%] sticky top-0 z-20 flex w-full items-center justify-between border-b bg-white px-2"
 			id="top-nav">
 			<div class="flex items-center space-x-2 text-gray-700">
 				<button

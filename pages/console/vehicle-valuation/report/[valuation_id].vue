@@ -1,7 +1,7 @@
 <template>
 	<div class="console-layout-spacing laptop:grid-cols-2 grid h-fit grid-cols-1 gap-10 pb-5">
 		<div
-			class="laptop-lg:col-span-1 col-span-2 h-[43rem] rounded-lg border-[.5px] bg-white shadow-md outline-none">
+			class="laptop-lg:col-span-1 col-span-2 h-[31rem] rounded-lg border-[.5px] bg-white shadow-md outline-none">
 			<div class="flex items-center justify-between px-8 py-5">
 				<div class="space-y-3">
 					<h2 class="text-gray-600">{{ valuationReport.valuationId }}</h2>
@@ -52,30 +52,9 @@
 					>
 				</div>
 			</div>
-
-			<!-- kyc -->
-			<div class="grid grid-cols-3 gap-2 px-10 py-5">
-				<div class="col-span-3">
-					<h1 class="text-sm font-semibold text-gray-600">Client KYCs</h1>
-				</div>
-				<div
-					class="bg rounded-lg border border-yellow-500 bg-yellow-100/50 p-3"
-					v-for="(report, index) in valuationReport.kycDocuments"
-					:key="index">
-					<h1 class="text-sm font-semibold text-yellow-700">
-						{{ report.split(': ')[0] }}
-					</h1>
-					<a
-						:href="report.split(': ')[1]"
-						target="_top"
-						class="text-xs text-blue-700"
-						>Download</a
-					>
-				</div>
-			</div>
 		</div>
 		<div
-			class="laptop-lg:col-span-1 col-span-2 h-[43rem] overflow-y-scroll rounded-lg border-[.5px] bg-white p-10 shadow-md outline-none">
+			class="laptop-lg:col-span-1 col-span-2 h-[31rem] overflow-y-scroll rounded-lg border-[.5px] bg-white p-10 shadow-md outline-none">
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
 				<div class="h-8 max-h-8 w-2 max-w-2 min-w-2 rounded-full bg-blue-500"></div>
@@ -166,14 +145,14 @@
 		<div
 			class="laptop-lg:grid-cols-4 tablet:grid-cols-2 col-span-2 grid grid-cols-1 gap-5 rounded-lg">
 			<div
-				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
+				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
 				<div
-					class="flex size-16 items-center justify-center rounded-full bg-blue-500 text-white">
+					class="flex size-12 items-center justify-center rounded-full bg-blue-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Assessed Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">{{
+					<h1 class="text-sm font-semibold text-gray-600">Assessed Value</h1>
+					<span class="text-lg font-semibold text-blue-700">{{
 						valuationReport.awardedValues.assessedValue == null
 							? 'N/A'
 							: Intl.NumberFormat('en-US', {
@@ -184,14 +163,14 @@
 				</div>
 			</div>
 			<div
-				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
+				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
 				<div
-					class="flex size-16 items-center justify-center rounded-full bg-green-500 text-white">
+					class="flex size-12 items-center justify-center rounded-full bg-green-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Market Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">{{
+					<h1 class="text-sm font-semibold text-gray-600">Market Value</h1>
+					<span class="text-lg font-semibold text-blue-700">{{
 						valuationReport.awardedValues.marketValue == null
 							? 'N/A'
 							: Intl.NumberFormat('en-US', {
@@ -203,14 +182,14 @@
 			</div>
 
 			<div
-				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
+				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
 				<div
-					class="flex size-16 items-center justify-center rounded-full bg-purple-500 text-white">
+					class="flex size-12 items-center justify-center rounded-full bg-purple-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Forced Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">{{
+					<h1 class="text-sm font-semibold text-gray-600">Forced Value</h1>
+					<span class="text-lg font-semibold text-blue-700">{{
 						valuationReport.awardedValues.forcedValue == null
 							? 'N/A'
 							: Intl.NumberFormat('en-US', {
@@ -221,14 +200,14 @@
 				</div>
 			</div>
 			<div
-				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
+				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
 				<div
-					class="flex size-16 items-center justify-center rounded-full bg-red-500 text-white">
+					class="flex size-12 items-center justify-center rounded-full bg-red-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-lg font-semibold text-gray-600">Windscreen Value</h1>
-					<span class="text-2xl font-semibold text-blue-700">{{
+					<h1 class="text-sm font-semibold text-gray-600">Windscreen Value</h1>
+					<span class="text-lg font-semibold text-blue-700">{{
 						valuationReport.awardedValues.windscreenValue == null
 							? 'N/A'
 							: Intl.NumberFormat('en-US', {
@@ -346,7 +325,6 @@
 					clientName: valuationBooking.clientName,
 					vehicleMake: valuationBooking.vehicleMake,
 					vehicleType: valuationBooking.vehicleType,
-					kycDocuments: valuationBooking.uploadedDocuments,
 					engineNumber: reportData.engineAndWindscreenFinal.engineNumber,
 					chassisNumber: reportData.tyreAndChassisFinal.chassisNumber,
 					policyNumber: reportData.engineAndWindscreenFinal.policyNumber,
