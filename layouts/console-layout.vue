@@ -1,8 +1,10 @@
 <template>
 	<aside
 		:class="[
-			'mobile-sm:-translate-x-full desktop-4k:-translate-x-0 fixed left-0 z-40 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
-			sidebarExpanded ? 'w-68' : 'w-[60px]',
+			'fixed left-0 z-40 flex h-screen max-h-screen flex-col overflow-y-scroll border-r bg-white transition-all duration-200 ease-out',
+			sidebarExpanded
+				? 'w-68 -translate-x-0'
+				: 'laptop-lg:-translate-x-0 w-[60px] -translate-x-[60px]',
 		]">
 		<!-- logo on top part of sidebar -->
 		<div class="flex h-[70px] w-full items-center p-4 text-center">
@@ -186,21 +188,23 @@
 	</aside>
 	<main
 		:class="[
-			'mobile-sm:pl-0 flex h-screen min-h-screen flex-col overflow-auto transition-all duration-200 ease-out',
-			sidebarExpanded ? 'desktop-4k:pl-68' : 'desktop-4k:pl-[60px]',
+			'flex h-screen min-h-screen flex-col overflow-auto overflow-x-hidden transition-all duration-200 ease-out',
+			sidebarExpanded ? 'pl-68' : 'laptop-lg:pl-[60px] pl-0',
 		]"
 		style="background-color: #f8faf8">
 		<nav
-			class="laptop:h-[7%] laptop:max-h-[5%] sticky top-0 z-20 flex h-[5%] max-h-[5%] w-full items-center justify-between border-b bg-white px-2"
+			class="laptop:h-[7%] laptop:min-h-[7%] laptop:max-h-[7%] sticky top-0 z-20 flex h-[5%] max-h-[5%] min-h-[5%] w-full items-center justify-between border-b bg-white px-2"
 			id="top-nav">
 			<div class="flex items-center space-x-2 text-gray-700">
 				<button
-					class="text-inherit"
+					class="inline-flex size-9 items-center justify-center rounded-md border-[1px] text-inherit outline-none"
 					@click="sidebarExpanded = !sidebarExpanded">
 					<MenuButtonIcon />
 				</button>
 				<h1
-					class="tablet:text-xl laptop-lg:text-2xl tablet:block hidden w-fit text-lg font-semibold">
+					:class="[
+						'tablet:text-lg laptop:text-xl laptop-lg:text-2xl tablet:block hidden w-fit text-lg font-semibold',
+					]">
 					{{ currentScreenName }}
 				</h1>
 			</div>

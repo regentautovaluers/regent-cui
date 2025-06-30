@@ -5,7 +5,7 @@
 				<button
 					@click="() => (activeView = 'complete')"
 					:class="[
-						'border-b-2 text-sm',
+						'tablet:text-base border-b-2 text-sm',
 						activeView === 'complete'
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',
@@ -15,7 +15,7 @@
 				<button
 					@click="() => (activeView = 'pending')"
 					:class="[
-						'border-b-2 text-sm',
+						'tablet:text-base border-b-2 text-sm',
 						activeView == 'pending'
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',

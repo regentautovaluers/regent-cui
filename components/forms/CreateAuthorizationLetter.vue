@@ -65,7 +65,7 @@
 						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
 				</svg>
 				<span class="sr-only">Info</span>
-				<h3 class="font-medium">Notice On Regent Branches</h3>
+				<h3 class="font-medium text-sm">Notice On Regent Branches</h3>
 			</div>
 
 			<p class="mt-2 mb-4 text-sm">
@@ -170,7 +170,35 @@
 
 		<!-- documents -->
 		<div
-			class="laptop-lg:w-fit laptop-lg:space-y-0 my-4 flex w-full items-center space-y-2 space-x-2">
+			class="mt-4 flex w-full max-w-full grid-cols-2 flex-wrap items-center space-y-2 space-x-2">
+
+			<!-- Certificate of Registration -->
+			<label
+				for="cert-of-registration"
+				class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
+				:class="
+					certUploaded
+						? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+						: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+				">
+				<span>Certificate of Incorporation</span>
+				<input
+					id="cert-of-registration"
+					type="file"
+					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
+					class="hidden"
+					@change.prevent="
+						(e) => {
+							handleFileUpload(
+								(e.target as HTMLInputElement)?.files?.[0] as File,
+								'Certificate of Registration',
+							);
+							certUploaded = true;
+						}
+					" />
+			</label>
+
+			<!-- kra pin -->
 			<label
 				for="kra-pin"
 				class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
@@ -222,31 +250,7 @@
 					" />
 			</label>
 
-			<!-- Certificate of Registration -->
-			<label
-				for="cert-of-registration"
-				class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-				:class="
-					certUploaded
-						? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-						: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-				">
-				<span>Certificate of Incorporation</span>
-				<input
-					id="cert-of-registration"
-					type="file"
-					accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-					class="hidden"
-					@change.prevent="
-						(e) => {
-							handleFileUpload(
-								(e.target as HTMLInputElement)?.files?.[0] as File,
-								'Certificate of Registration',
-							);
-							certUploaded = true;
-						}
-					" />
-			</label>
+			
 
 			<label
 				for="vehicle-logbook"

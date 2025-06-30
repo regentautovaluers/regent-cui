@@ -149,30 +149,30 @@ const navigationRoutes: readonly CoreRoute[] = [
 			},
 		],
 	},
-	{
-		id: 6,
-		screenName: 'Emergency Evacuation',
-		routeName: 'emergency-evacuation-home',
-		renderRoute: true,
-	},
-	{
-		id: 7,
-		screenName: 'Accident Management',
-		routeName: 'accident-management-home',
-		renderRoute: true,
-	},
-	{
-		id: 8,
-		screenName: 'Garage',
-		routeName: 'garage-home',
-		renderRoute: true,
-	},
-	{
-		id: 9,
-		screenName: 'Parts',
-		routeName: 'parts-home',
-		renderRoute: true,
-	},
+	// {
+	// 	id: 6,
+	// 	screenName: 'Emergency Evacuation',
+	// 	routeName: 'emergency-evacuation-home',
+	// 	renderRoute: true,
+	// },
+	// {
+	// 	id: 7,
+	// 	screenName: 'Accident Management',
+	// 	routeName: 'accident-management-home',
+	// 	renderRoute: true,
+	// },
+	// {
+	// 	id: 8,
+	// 	screenName: 'Garage',
+	// 	routeName: 'garage-home',
+	// 	renderRoute: true,
+	// },
+	// {
+	// 	id: 9,
+	// 	screenName: 'Parts',
+	// 	routeName: 'parts-home',
+	// 	renderRoute: true,
+	// },
 ];
 
 export default navigationRoutes;
