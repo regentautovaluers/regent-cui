@@ -1,6 +1,7 @@
 <template>
-	<div class="console-layout-spacing grid h-fit grid-cols-2 gap-10 pb-5">
-		<div class="min-h-202 rounded-lg border-[.5px] shadow-md outline-none">
+	<div class="console-layout-spacing laptop:grid-cols-2 grid h-fit grid-cols-1 gap-10 pb-5">
+		<div
+			class="laptop-lg:col-span-1 col-span-2 min-h-202 rounded-lg border-[.5px] shadow-md outline-none">
 			<div class="flex items-center justify-between p-10">
 				<div class="space-y-3">
 					<h2 class="text-gray-600">{{ valuationReport.valuationId }}</h2>
@@ -72,10 +73,10 @@
 			</div>
 		</div>
 		<div
-			class="max-h-200 min-h-202 space-y-5 overflow-y-scroll rounded-lg border-[.5px] p-10 shadow-md outline-none">
+			class="laptop-lg:col-span-1 col-span-2 max-h-200 min-h-202 space-y-5 overflow-y-scroll rounded-lg border-[.5px] p-10 shadow-md outline-none">
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-blue-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-blue-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">Front Section Condition</h1>
 					<p class="mt-3 text-gray-500">
@@ -85,7 +86,7 @@
 			</div>
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-red-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-red-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">Engine & Windscreen Condition</h1>
 					<p class="mt-3 text-gray-500">
@@ -96,7 +97,7 @@
 			</div>
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-blue-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-blue-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">Left & Right Sides Condition</h1>
 					<p class="mt-3 text-gray-500">
@@ -107,7 +108,7 @@
 			</div>
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-green-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-green-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">Rear Side & Boot Condition</h1>
 					<p class="mt-3 text-gray-500">
@@ -117,7 +118,7 @@
 			</div>
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-pink-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-pink-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">Tyre & Chassis Condition</h1>
 					<p class="mt-3 text-gray-500">
@@ -128,7 +129,7 @@
 			</div>
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-yellow-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-yellow-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">Interior & Dashboard Condition</h1>
 					<p class="mt-3 text-gray-500">
@@ -139,7 +140,7 @@
 			</div>
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-gray-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-gray-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">Mechanical & Electrical Condition</h1>
 					<p class="mt-3 text-gray-500">
@@ -150,7 +151,7 @@
 			</div>
 			<div class="mb-8 flex items-start space-x-4">
 				<!-- the pill -->
-				<div class="h-10 max-h-10 w-2 min-w-2 max-w-2 rounded-full bg-violet-500"></div>
+				<div class="h-10 max-h-10 w-2 max-w-2 min-w-2 rounded-full bg-violet-500"></div>
 				<div class="h-fit min-h-32 flex-grow">
 					<h1 class="text-2xl font-semibold">General Condition & Remedy</h1>
 					<p class="mt-3 text-gray-500">
@@ -160,7 +161,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-span-2 grid grid-cols-4 gap-x-10 rounded-lg">
+		<div
+			class="laptop-lg:grid-cols-4 tablet:grid-cols-2 col-span-2 grid grid-cols-1 gap-5 rounded-lg">
 			<div
 				class="flex h-28 items-center space-x-4 rounded-lg border-[.5px] px-8 shadow-md outline-none">
 				<div
@@ -236,14 +238,16 @@
 			</div>
 		</div>
 		<!-- assessment images -->
-		<div class="col-span-2 flex h-200 space-x-5 outline-none">
-			<div class="flex h-full max-h-full w-[15%] flex-col space-y-3 overflow-y-scroll">
+		<div
+			class="laptop-lg:flex-row laptop-lg:space-x-5 col-span-2 flex h-200 flex-col space-y-5 outline-none">
+			<div
+				class="laptop-lg:w-[15%] laptop-lg:flex-col laptop-lg:space-y-3 flex h-full max-h-full min-h-52 space-x-3 overflow-y-scroll">
 				<img
 					v-for="(i, index) in valuationReport.vehiclePhotos"
 					:key="index"
 					:src="i"
 					alt="Vehicle Image"
-					class="max-h-48 min-h-48 w-full cursor-pointer rounded-md object-cover"
+					class="laptop-lg:w-full h-48 min-h-48 w-48 min-w-48 cursor-pointer rounded-md object-cover"
 					:class="activeImage === index && 'border-2 border-pink-600'"
 					@click="activeImage = index" />
 			</div>
@@ -254,7 +258,7 @@
 					<span>({{ valuationReport.regNo }})</span>
 				</div>
 				<button
-					class="absolute right-2 top-2 flex size-12 items-center justify-center rounded-full bg-blue-600 text-white"
+					class="absolute top-2 right-2 flex size-12 items-center justify-center rounded-full bg-blue-600 text-white"
 					@click="imageStretched = !imageStretched"
 					title="Fit or Zoom">
 					<svg
