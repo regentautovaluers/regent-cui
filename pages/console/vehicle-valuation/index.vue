@@ -41,7 +41,7 @@
 		</div>
 
 		<form
-			@submit.prevent="executeFetchValuations"
+			@submit.prevent="executeFetchValuations()"
 			class="table-filters-form">
 			<button
 				type="button"
@@ -242,7 +242,7 @@
 								<tr>
 									<th
 										scope="col"
-										class="table-headers hidden">
+										class="table-headers desktop-4k:table-cell hidden">
 										Regent Branch & Date
 									</th>
 									<!-- Details will show client name and their contact -->
@@ -322,18 +322,20 @@
 									v-else
 									v-for="(valuation, index) in corpValuations"
 									:key="index">
-									<td class="hidden p-4">
+									<td class="desktop-4k:table-cell hidden p-4">
 										<span
 											class="w-fit rounded-lg bg-pink-200 px-1 text-pink-600"
 											>{{ valuation.regentBranch.branchName }}</span
 										>
 										<br />
-										<span>{{ valuation.bookingDate.split('T')[0] }}</span>
+										<span>{{
+											valuation.bookingDate?.split('T')[0] ?? 'Date N/A'
+										}}</span>
 									</td>
 									<td class="tablet:table-cell hidden p-4">
 										<span
 											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
-											>{{ valuation.clientPhone }}</span
+											>{{ valuation.clientPhone ?? 'Phone N/A' }}</span
 										>
 										<br />
 										<span>{{ valuation.clientName }}</span>
@@ -341,9 +343,7 @@
 
 									<td class="tablet:table-cell hidden p-4">
 										<span class="w-fit">{{
-											valuation.inspectionDate == null
-												? 'Date N/A'
-												: valuation.inspectionDate.split('T')[0]
+											valuation.inspectionDate?.split('T')[0] ?? 'Date N/A'
 										}}</span>
 										<br />
 										<span class="w-fit rounded-lg bg-gray-200 px-1">{{
@@ -362,11 +362,9 @@
 											v-if="valuation.vehicleImage" />
 										<div
 											v-else
-											class="flex size-14 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
+											class="flex size-12 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
 											<span>{{
-												valuation.regNo == null
-													? 'Reg No. N/A'
-													: valuation.regNo.split(' ')[0]
+												valuation.regNo?.split(' ')[0] ?? 'Reg N/A'
 											}}</span>
 										</div>
 										<div class="ps-2">
@@ -375,7 +373,7 @@
 												{{ valuation.regNo }}
 											</div>
 											<div class="font-normal text-gray-500">
-												{{ valuation.vehicleMake }}
+												{{ valuation.vehicleMake ?? 'Make N/A' }}
 											</div>
 										</div>
 									</th>
@@ -397,9 +395,11 @@
 										<span
 											class="w-fit rounded-lg bg-yellow-200 px-1 text-yellow-600"
 											>{{
-												(valuation.paymentMethod as string[])
-													.join(', ')
-													.toLowerCase() ?? 'Method N/A'
+												(valuation.paymentMethod as string[]).length == 0
+													? 'Method N/A'
+													: ((valuation.paymentMethod as string[])
+															.join(', ')
+															.toLowerCase() ?? 'Method N/A')
 											}}</span
 										>
 									</td>
@@ -485,7 +485,7 @@
 				</div>
 
 				<!-- page controls -->
-				<div class="flex min-h-12 items-center justify-between">
+				<div class="mt-8 flex min-h-12 items-center justify-between">
 					<h1 class="text-sm font-semibold text-gray-500">
 						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>

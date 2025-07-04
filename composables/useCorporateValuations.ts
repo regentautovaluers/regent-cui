@@ -8,8 +8,8 @@ export const useCorporateValuations = () => {
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const corpValuations: Ref<any[]> = ref([]);
-	const totalPages: Ref<number> = ref(0);
+	const corpValuations: ComputedRef<any[]> = computed(() => fetchedData.value?.valuations);
+	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 	const searchRegNo: Ref<string> = ref('');
 	const startDate: Ref<string | null> = ref(null);
 	const endDate: Ref<string | null> = ref(null);
@@ -21,6 +21,7 @@ export const useCorporateValuations = () => {
 		status: fetchValuationsStatus,
 		execute: executeFetchValuations,
 		error: fetchValuationsError,
+		data: fetchedData,
 	} = useFetch(
 		() => {
 			let requestURL = `/api/v1/valuation/booking/get-all?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
@@ -71,17 +72,21 @@ export const useCorporateValuations = () => {
 			},
 			server: false,
 			lazy: true,
-			onResponse({ response }) {
-				if (response.ok && response._data.data !== null) {
-					const data = response._data.data;
-					corpValuations.value = data;
-					const extras = response._data.requestExtras;
-					totalPages.value = extras.totalPages;
+			transform(response: any) {
+				if (
+					response?.data &&
+					Array.isArray(response.data) &&
+					(response.data as []).length > 0
+				) {
+					return {
+						valuations: response.data,
+						totalPages: response.requestExtras?.totalPages || 0,
+					};
 				}
 			},
 			watch: [activeView, page],
 		},
-	) as any;
+	);
 
 	function clearFilters(): void {
 		searchRegNo.value = '';
