@@ -1,6 +1,6 @@
 <template>
 	<form @submit.prevent="createFraudsterEntry">
-		<div class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
+		<div class="flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
 				<label
