@@ -2,7 +2,7 @@
 	<div class="h-full min-h-234">
 		<!-- div to show when there is a fetch error -->
 		<div
-			class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
 			v-if="fetchAuthorityLetterStatus === 'error'">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
@@ -16,8 +16,8 @@
 
 		<!-- div to show when there are no authorization letters -->
 		<div
-			class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-			v-else-if="fetchAuthorityLetterStatus === 'success' && authorityLetters.length === 0">
+			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			v-else-if="fetchAuthorityLetterStatus === 'success' && !authorityLetters.length">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">
 				Oops! Seems like you have no authority letters!
@@ -26,7 +26,7 @@
 
 		<!-- div to show when there are authority letters -->
 		<div
-			class="mt-5 flex h-full flex-col"
+			class="flex h-full flex-col"
 			v-else>
 			<!-- search & filter controls -->
 			<div class="flex h-fit flex-col space-y-2">
@@ -154,7 +154,7 @@
 								<td></td>
 							</tr>
 							<tr
-								class="border-b bg-white hover:bg-gray-100"
+								class="border-b bg-white text-sm hover:bg-gray-100"
 								v-else
 								v-for="(letter, index) in authorityLetters"
 								:key="index">
@@ -244,7 +244,7 @@
 			</div>
 
 			<!-- page controls -->
-			<div class="flex min-h-12 items-center justify-between">
+			<div class="flex min-h-12 items-center justify-between mt-10">
 				<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 					Showing {{ page + 1 }} of {{ totalPages }} pages.
 				</h1>

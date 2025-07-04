@@ -38,7 +38,7 @@
 				<span>Previous Letters</span>
 			</NuxtLink>
 		</div>
-		<div class="laptop:p-5 laptop-lg:p-10 h-fit flex-grow p-2">
+		<div class="laptop:p-5 h-fit flex-grow p-2">
 			<NuxtPage />
 		</div>
 	</div>
