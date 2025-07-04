@@ -85,24 +85,18 @@ const navigationRoutes: readonly CoreRoute[] = [
 		childRoutes: [
 			{
 				id: 1,
-				screenName: 'User Management',
-				routeName: 'vehicle-valuation-manage-user',
-				renderRoute: true,
-			},
-			{
-				id: 2,
 				screenName: 'Authorization Letters',
 				routeName: 'vehicle-valuation-create-authorization-letter',
 				renderRoute: true,
 			},
 			{
-				id: 3,
+				id: 2,
 				screenName: 'Fleet Reports',
 				routeName: 'vehicle-valuation-fleet-reports',
 				renderRoute: true,
 			},
 			{
-				id: 4,
+				id: 3,
 				screenName: 'General Valuation Report',
 				routeName: 'vehicle-valuation-report',
 				renderRoute: false,

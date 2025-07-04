@@ -1,5 +1,6 @@
 <template>
 	<form
+		class="h-fit rounded-lg border px-6 py-2 shadow-sm md:py-6"
 		@submit.prevent="
 			updateMyAccountDetails(
 				getPrincipal.userId,
@@ -94,6 +95,11 @@
 </template>
 
 <script setup lang="ts">
+	definePageMeta({
+		name: 'settings-my-account',
+		layout: 'console-layout',
+	});
+
 	const { getPrincipal, updateMyAccountDetails, updateCorporateAccountLoading } = useAuth();
 	const firstName: Ref<string> = ref(getPrincipal.value.username.split(' ')[0]);
 	const lastName: Ref<string> = ref(getPrincipal.value.username.split(' ')[1]);

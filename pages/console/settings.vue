@@ -5,6 +5,16 @@
 			<h1 class="mb-2 text-lg font-extrabold md:text-3xl">Actions</h1>
 			<div class="flex flex-grow flex-col space-y-2">
 				<NuxtLink
+					:to="{ name: 'settings-my-account' }"
+					class="rounded-lg p-2 text-gray-500"
+					:class="
+						doesRouteNameMatch('settings-my-account')
+							? 'bg-gray-200 font-semibold'
+							: 'hover:bg-gray-200'
+					"
+					>My Account</NuxtLink
+				>
+				<NuxtLink
 					:to="{ name: 'vehicle-valuation-manage-user' }"
 					class="rounded-lg p-2 text-gray-500"
 					:class="
@@ -42,7 +52,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'valuation-user-management',
+		name: 'settings',
 		layout: 'console-layout',
 	});
 

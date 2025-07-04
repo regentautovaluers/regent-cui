@@ -144,18 +144,17 @@
 				<!-- settings -->
 				<li
 					class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
-					<button
+					<NuxtLink
+						:to="{ name: 'settings-my-account' }"
 						class="inline-flex size-full items-center justify-start space-x-3"
-						:class="!sidebarExpanded && 'w-19 justify-center'"
-						data-modal-target="settings-modal"
-						data-modal-toggle="settings-modal">
+						:class="!sidebarExpanded && 'w-19 justify-center'">
 						<SettingsIcon classes="size-5 text-inherit" />
 						<span
 							class="text-sm transition-all duration-200 ease-out"
 							:class="sidebarExpanded ? 'block' : 'hidden'"
 							>Settings</span
 						>
-					</button>
+					</NuxtLink>
 				</li>
 
 				<!-- logout -->
@@ -193,7 +192,7 @@
 		]"
 		style="background-color: #f8faf8">
 		<nav
-			class="h-[8%] min-h-[8%] max-h-[8%] sticky top-0 z-20 flex w-full items-center justify-between border-b bg-white px-2"
+			class="sticky top-0 z-20 flex h-[8%] max-h-[8%] min-h-[8%] w-full items-center justify-between border-b bg-white px-2"
 			id="top-nav">
 			<div class="flex items-center space-x-2 text-gray-700">
 				<button
