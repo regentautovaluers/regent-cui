@@ -1,7 +1,7 @@
 <template>
 	<form
 		@submit.prevent="searchDefaulter()"
-		class="mt-5 w-full">
+		class="w-full">
 		<h3 class="text-base font-semibold text-gray-500">Search From Database Type:</h3>
 		<div
 			class="tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 mt-3 grid grid-cols-2 gap-4">
