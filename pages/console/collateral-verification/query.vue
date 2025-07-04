@@ -1,6 +1,6 @@
 <template>
 	<form
-		@submit.prevent="searchDefaulter(searchCollateralType)"
+		@submit.prevent="searchDefaulter()"
 		class="mt-5 w-full">
 		<h3 class="text-base font-semibold text-gray-500">Search From Database Type:</h3>
 		<div
@@ -42,12 +42,7 @@
 					v-else
 					type="button"
 					@click="searchCollateralType = option"
-					:class="[
-						'inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105',
-						{
-							'bg-blue-600 text-white': searchCollateralType.id === option.id,
-						},
-					]"
+					class="inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105"
 					:data-modal-target="`verify-${option.id}-modal`"
 					:data-modal-toggle="`verify-${option.id}-modal`">
 					<svg
@@ -153,6 +148,19 @@
 			:contact-person-email="r.corpClientEmail"
 			:contact-person-phone="r.corpClientPhoneNumber" />
 	</template>
+
+	<!-- Search defaulters db -->
+	<ParentModal
+		modal-id="verify-defaulter-db-modal"
+		modal-title="Search Defaulters">
+		<SearchDefaultersForm
+			:search-loading="searchDefaulterLoading"
+			@initiate-search="
+				({ regNo, engineNo, chassisNo }) => {
+					searchDefaulter(regNo, engineNo, chassisNo);
+				}
+			" />
+	</ParentModal>
 
 	<!-- Verify National ID -->
 	<ParentModal

@@ -18,7 +18,7 @@ const useCollateralVerficiation = () => {
 			id: 'defaulter-db',
 			name: 'Defaulters DB',
 			prompt: 'Enter vehicle reg, chassis or engine number.',
-			opensInModal: false,
+			opensInModal: true,
 		},
 		{
 			id: 'national-id',
@@ -135,37 +135,40 @@ const useCollateralVerficiation = () => {
 		}
 	};
 
-	const searchDefaulter = async (searchType: CollateralSearchTypeOption) => {
+	const searchDefaulter = async (...searchPhrases: string[]) => {
 		searchDefaulterLoading.value = true;
 
 		try {
-			await $fetch(generateSearchDefaulterURI(searchType.id), {
-				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
-				method: 'GET',
-				onResponse({ response }) {
-					if (response.ok) {
-						const responseData = response._data;
+			await $fetch(
+				generateSearchDefaulterURI(searchCollateralType.value.id, ...searchPhrases),
+				{
+					baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+					method: 'GET',
+					onResponse({ response }) {
+						if (response.ok) {
+							const responseData = response._data;
 
-						if (searchType.id === 'defaulter-db') {
-							// From Defaulters DB
-							ravDefaulterDetails.value = responseData.data;
-						} else if (searchType.id === 'loan-collateral') {
-							// From IA
-							iaVehicleCollateralDetails.value =
-								responseData.data.verificationData.data.results;
+							if (searchCollateralType.value.id === 'defaulter-db') {
+								// From Defaulters DB
+								ravDefaulterDetails.value = responseData.data;
+							} else if (searchCollateralType.value.id === 'loan-collateral') {
+								// From IA
+								iaVehicleCollateralDetails.value =
+									responseData.data.verificationData.data.results;
 
-							// From Defaullter's DB
-							ravDefaulterDetails.value = responseData.data.fraudData;
-						} else if (searchType.id === 'vehicle-reg') {
-							// From IA
-							iaVehicleDetails.value = responseData.data.verificationData;
+								// From Defaullter's DB
+								ravDefaulterDetails.value = responseData.data.fraudData;
+							} else if (searchCollateralType.value.id === 'vehicle-reg') {
+								// From IA
+								iaVehicleDetails.value = responseData.data.verificationData;
 
-							// From Defaullter's DB
-							ravDefaulterDetails.value = responseData.data.fraudData;
+								// From Defaullter's DB
+								ravDefaulterDetails.value = responseData.data.fraudData;
+							}
 						}
-					}
+					},
 				},
-			});
+			);
 		} catch (err) {
 			useToast('Failed. Try Again!', {
 				type: 'danger',
@@ -179,12 +182,14 @@ const useCollateralVerficiation = () => {
 		}
 	};
 
-	function generateSearchDefaulterURI(type: string): string | never {
+	function generateSearchDefaulterURI(type: string, ...searchPhrases: string[]): string | never {
 		const sharedURISubstring: string = `searchType=valuation&searcherEmail=${getPrincipal.value.email}&searcherPhone=${getPrincipal.value.phonenumber}&searcherName=${getPrincipal.value.username}&searcherOrganisation=${getPrincipal.value.corpName}`;
 
 		switch (type) {
 			case 'defaulter-db':
-				return `/api/v1/fraud/search?searchQuery=${searchDefaulterQuery.value}&${sharedURISubstring}`;
+				return `/api/v1/fraud/search?${searchPhrases.map(
+					(q, i) => `searchQuery${i + 1}=${q}`,
+				)}&${sharedURISubstring}`;
 			case 'loan-collateral':
 				return `/api/v1/verification/verify-collateral?chassisNumber=${searchDefaulterQuery.value}&${sharedURISubstring}`;
 			case 'vehicle-reg':
