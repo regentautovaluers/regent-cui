@@ -27,8 +27,10 @@ const useAuthorityLetters = () => {
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const authorityLetters: Ref<any[]> = ref([]);
-	const totalPages: Ref<number> = ref(0);
+	const authorityLetters: ComputedRef<any[]> = computed(
+		() => fetchedData.value?.authorityLetters,
+	);
+	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 	const searchRegNo: Ref<string> = ref('');
 
 	// for exporting authority letters
@@ -40,7 +42,11 @@ const useAuthorityLetters = () => {
 		}
 	});
 
-	const { status: fetchAuthorityLetterStatus, execute: executeGetAuthorityLetters } = useFetch(
+	const {
+		status: fetchAuthorityLetterStatus,
+		execute: executeGetAuthorityLetters,
+		data: fetchedData,
+	} = useFetch(
 		() => {
 			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
 
@@ -59,33 +65,38 @@ const useAuthorityLetters = () => {
 			},
 			server: false,
 			lazy: true,
-			onResponse({ response }) {
-				const data = response._data.data;
-				const extras = response._data.requestExtras;
-				totalPages.value = extras.totalPages;
-				authorityLetters.value = data.map((data: any) => {
+			transform(response: any) {
+				if (
+					response?.data &&
+					Array.isArray(response.data) &&
+					(response.data as []).length > 0
+				) {
 					return {
-						letterId: data.letterId,
-						registrationNumber: data.registrationNumber,
-						clientName: data.clientName,
-						feedback:
-							data.feedbackTrail.length == 0
-								? null
-								: data.feedbackTrail[data.feedbackTrail.length - 1].feedback,
-						clientPhone: data.clientPhone,
-						policyNumber: data.policyNumber,
-						agencyName: data.agencyName,
-						authorizedBy: {
-							username: data.authorizedBy.username,
-						},
-						createdOn: data.createdOn,
-						assessmentStage: data.assessmentStage,
-						reportURL: data.reportURL,
+						authorityLetters: response?.data.map((data: any) => ({
+							letterId: data.letterId,
+							registrationNumber: data.registrationNumber,
+							clientName: data.clientName,
+							feedback:
+								data.feedbackTrail.length == 0
+									? null
+									: data.feedbackTrail[data.feedbackTrail.length - 1].feedback,
+							clientPhone: data.clientPhone,
+							policyNumber: data.policyNumber,
+							agencyName: data.agencyName,
+							authorizedBy: {
+								username: data.authorizedBy.username,
+							},
+							createdOn: data.createdOn,
+							assessmentStage: data.assessmentStage,
+							reportURL: data.reportURL,
+						})),
+						totalPages: response.requestExtras?.totalPages || 0,
 					};
-				});
+				}
 			},
+			watch: [page],
 		},
-	) as any;
+	);
 
 	const handleFileUpload = (file: File, prependString: string) => {
 		if (file) {
@@ -240,7 +251,6 @@ const useAuthorityLetters = () => {
 
 	const handleSearchTriggered = (searchSlug: string) => {
 		page.value = 0;
-		authorityLetters.value = [];
 		searchRegNo.value = searchSlug;
 	};
 
