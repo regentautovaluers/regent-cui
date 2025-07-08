@@ -1,5 +1,6 @@
 <template>
-	<div class="min-h-84 w-68 max-w-68 rounded-lg border px-5 py-5 shadow-sm">
+	<div
+		class="laptop:w-68 flex h-[21rem] flex-col justify-center rounded-lg border px-6 shadow-sm">
 		<div class="size-fit rounded-full border border-blue-600">
 			<button
 				class="m-0.5 rounded-full bg-blue-600 p-4"
@@ -7,12 +8,12 @@
 				<slot />
 			</button>
 		</div>
-		<h1 class="mt-2 text-xl font-semibold">{{ title }}</h1>
-		<p class="my-3 text-wrap text-gray-500">
+		<h1 class="mt-2 font-semibold whitespace-nowrap">{{ title }}</h1>
+		<p class="my-3 text-sm text-wrap text-gray-500">
 			{{ props.serviceDescription }}
 		</p>
 		<NuxtLink
-			class="text-blue-500 duration-100 ease-in-out hover:text-blue-700"
+			class="text-sm text-blue-500 duration-100 ease-in-out hover:text-blue-700"
 			:to="{ name: props.link }">
 			<span>Get Started</span>
 		</NuxtLink>

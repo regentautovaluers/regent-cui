@@ -1,9 +1,11 @@
 <template>
 	<div class="flex flex-col justify-between">
 		<div class="my-24 flex flex-col items-center">
-			<h1 class="text-xl uppercase text-gray-500">Hello, {{ getPrincipal.username }}</h1>
+			<h1 class="tablet:text-xl text-lg text-gray-500 uppercase">
+				Hello, {{ getPrincipal.username }}
+			</h1>
 			<h2
-				class="my-3 bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-7xl font-semibold text-transparent">
+				class="tablet:text-4xl laptop-lg:text-6xl my-3 bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-2xl font-semibold text-transparent">
 				<span>Say Hi to AVA,</span><br /><span>Our Virtual Assistant</span>
 			</h2>
 			<!-- TODO: Remove this button later -->
@@ -23,15 +25,13 @@
 				</svg>
 				<span>Experimental</span>
 			</button>
-			<p class="my-4 text-center text-lg text-gray-500">
+			<p class="mt-16 mb-5 text-center text-lg text-gray-500">
 				Hi there! I am AVA, Regent's Smart Virtual Assistant. <br />
 				How can I help you today?
 			</p>
 
 			<!-- form to trigger the AI chat modal -->
-			<div class="mt-10 w-[45%]">
-				<AIChatForm />
-			</div>
+			<AIChatForm />
 		</div>
 
 		<div class="flex flex-col items-center space-y-1 py-2">
@@ -53,15 +53,13 @@
 			<h1 class="text-3xl font-semibold">Our Services</h1>
 		</div>
 		<div
-			class="mb-44 flex h-fit items-center justify-center space-x-8 overflow-x-auto whitespace-nowrap py-2">
+			class="tablet:grid-cols-2 laptop:gap-y-0 laptop:flex mb-44 grid h-fit grid-cols-1 place-content-center gap-x-5 gap-y-5 p-4">
 			<!-- vehicle valuation -->
 			<ServicesQuickLinks
 				:title="'Vehicle Valuation'"
 				:link="navigationRoutes[3].routeName"
 				:service-description="regentServices[2].shortDescription">
-				<VehicleValuationIcon
-					color="white"
-					classes="text-lg" />
+				<VehicleValuationIcon color="white" />
 			</ServicesQuickLinks>
 
 			<!-- Roadside assistance -->
@@ -69,9 +67,7 @@
 				:title="'Roadside Assistance'"
 				:link="navigationRoutes[2].routeName"
 				:service-description="regentServices[0].shortDescription">
-				<AssistanceIcon
-					color="white"
-					classes="text-lg" />
+				<AssistanceIcon color="white" />
 			</ServicesQuickLinks>
 
 			<!-- emergency evacuation -->
@@ -79,9 +75,15 @@
 				:title="'Emergency Evacuation'"
 				:link="navigationRoutes[2].routeName"
 				:service-description="regentServices[1].shortDescription">
-				<EmergencyRescueIcon
-					color="white"
-					classes="text-lg" />
+				<EmergencyRescueIcon color="white" />
+			</ServicesQuickLinks>
+
+			<!-- collateral verification -->
+			<ServicesQuickLinks
+				:title="'Collateral Verification'"
+				:link="navigationRoutes[4].routeName"
+				:service-description="regentServices[1].shortDescription">
+				<FraudDetectionIcon color="white" />
 			</ServicesQuickLinks>
 		</div>
 

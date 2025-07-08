@@ -420,13 +420,6 @@
 			</form>
 		</div>
 	</aside>
-
-	<!-- Settings modal -->
-	<ParentModal
-		modal-id="settings-modal"
-		modal-title="Account Settings">
-		<MyAccountSettings />
-	</ParentModal>
 </template>
 <script setup lang="ts">
 	const { navigationRoutes, currentScreenName, fuzzyRouteNameMatch, doesRouteNameMatch } =
