@@ -146,7 +146,8 @@
 			:defrauded-institution="r.corporateClientName"
 			:contact-person-name="r.corporateClientName"
 			:contact-person-email="r.corpClientEmail"
-			:contact-person-phone="r.corpClientPhoneNumber" />
+			:contact-person-phone="r.corpClientPhoneNumber"
+			:incident-description="r.description" />
 	</template>
 
 	<!-- Search defaulters db -->

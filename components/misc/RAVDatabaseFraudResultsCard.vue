@@ -5,7 +5,7 @@
 			{{ props.vehicleMake }}
 			{{ props.vehicleModel }}
 		</h1>
-		<div class="my-2 flex h-12 items-center space-x-5 border-b border-gray-300">
+		<div class="mt-2 flex h-12 items-center space-x-5 border-b border-gray-300">
 			<div class="flex w-fit items-center space-x-2 text-sm text-gray-600">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@
 						d="M4 11h1m1 0h1M6 8h1M4 8h1M4 5h1m1 0h1m6.5 8.5h-11v-11h6v5h5zm-5-4h3v4h-3z"
 						stroke-width="1" />
 				</svg>
-				<h1 class="my-2 text-sm font-semibold">Defaulted Institution</h1>
+				<h1 class="my-2 text-sm font-semibold">Defrauded Institution</h1>
 				<div
 					class="mt-2 grid w-full grid-cols-2 gap-2 rounded-lg text-sm text-gray-600 xl:w-3/4">
 					<div>
@@ -102,7 +102,7 @@
 						fill="currentColor"
 						d="M19.95 21q-3.125 0-6.187-1.35T8.2 15.8t-3.85-5.55T3 4.05V3h5.9l.925 5.025l-2.85 2.875q.55.975 1.225 1.85t1.45 1.625q.725.725 1.588 1.388T13.1 17l2.9-2.9l5 1.025V21z" />
 				</svg>
-				<h1 class="my-2 text-sm font-semibold">Case Contact Person</h1>
+				<h1 class="my-2 text-sm font-semibold">Contact Person</h1>
 				<div
 					class="mt-2 grid w-full grid-cols-2 gap-2 rounded-lg text-sm text-gray-600 xl:w-3/4">
 					<div>
@@ -125,6 +125,12 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div
+			class="text-sm text-gray-500 border-t py-4"
+			v-if="props.incidentDescription">
+			<h1 class="font-semibold">Incident Description</h1>
+			<p>{{ props.incidentDescription }}</p>
 		</div>
 	</div>
 </template>
@@ -180,6 +186,10 @@
 			required: true,
 		},
 		contactPersonPhone: {
+			type: String,
+			required: true,
+		},
+		incidentDescription: {
 			type: String,
 			required: true,
 		},
