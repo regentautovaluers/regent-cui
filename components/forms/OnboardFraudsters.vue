@@ -110,13 +110,12 @@
 						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
 				</svg>
 				<span class="sr-only">Info</span>
-				<h3 class="font-semibold">Incident Description</h3>
+				<h3 class="text-sm font-semibold">Incident Description</h3>
 			</div>
 
 			<p class="mt-2 mb-4 text-sm">
 				Optionally, use the fields below to provide an extra description of the incident you
 				are adding to the database. This will be of help to other users of the platform.
-				Kindly be as brief but as descriptive as possible. All fields are optional however
 			</p>
 		</div>
 
@@ -130,7 +129,7 @@
 			<textarea
 				id="incident-description"
 				class="generic-text-area"
-				rows="5"
+				rows="10"
 				placeholder="Provide an optional extra description for this incident"
 				v-model="onboardDefaulter.description"></textarea>
 		</div>
@@ -177,13 +176,14 @@
 					type="text"
 					id="relevant-links"
 					class="generic-input"
-					placeholder="e.g link to a court case or similar"
+					placeholder="e.g link to a court case"
 					v-model="relevantLink" />
 
 				<button
 					@click.prevent="handleAppendingRelevantLink"
 					:disabled="!relevantLink"
-					class="absolute top-1/2 right-3 size-7 -translate-y-[5%] rounded-full bg-blue-600 text-white enabled:hover:bg-blue-700 disabled:bg-gray-400 disabled:text-slate-100">
+					class="absolute top-1/2 right-3 size-7 -translate-y-[5%] cursor-pointer rounded-full bg-blue-600 text-white enabled:hover:bg-blue-700 disabled:bg-gray-400 disabled:text-slate-100"
+					type="button">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="28"
@@ -202,18 +202,25 @@
 
 		<div
 			v-if="onboardDefaulter.relevantLinks.length > 0"
-			class="my-3 p-2">
-			<h1 class="mb-2 font-semibold text-gray-500">Provided Links</h1>
-			<div
-				v-for="(link, index) in onboardDefaulter.relevantLinks"
-				:key="index"
-				class="flex-items-center mr-2 inline w-fit space-x-2 rounded-full border border-yellow-300 bg-yellow-50 p-2 text-yellow-800">
-				<a
-					:href="link"
-					target="_blank"
-					>{{ link }}</a
-				>
-				<button></button>
+			class="mt-3 p-2">
+			<h1 class="mb-2 text-sm font-semibold text-gray-500">Provided Links</h1>
+			<div class="flex items-center space-x-2">
+				<span
+					v-for="(link, index) in onboardDefaulter.relevantLinks"
+					:key="index"
+					class="mr-2 flex w-fit items-center space-x-2 rounded-full border border-yellow-300 bg-yellow-50 px-2 py-1 text-sm text-yellow-800">
+					<a
+						:href="link"
+						target="_blank"
+						>{{ link }}</a
+					>
+					<button
+						class="inline-flex size-5 cursor-pointer items-center justify-center rounded-full border border-yellow-300"
+						type="button"
+						@click="handleRemovingRelevantLink(index)">
+						<span class="ic--round-close size-[16px]"></span>
+					</button>
+				</span>
 			</div>
 		</div>
 
@@ -236,5 +243,6 @@
 		relevantLink,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
+		handleRemovingRelevantLink,
 	} = useFraudDetection();
 </script>

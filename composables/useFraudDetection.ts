@@ -38,6 +38,10 @@ const useFraudDetection = () => {
 		relevantLink.value = null;
 	};
 
+	const handleRemovingRelevantLink = (index: number) => {
+		onboardDefaulter.relevantLinks.splice(index, 1);
+	};
+
 	const createFraudsterEntry = async () => {
 		onboardDefaulterLoading.value = true;
 		try {
@@ -157,6 +161,7 @@ const useFraudDetection = () => {
 		page,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
+		handleRemovingRelevantLink,
 		deleteFraudRecord,
 	};
 };

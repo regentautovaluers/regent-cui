@@ -1,7 +1,9 @@
 <template>
 	<div class="flex h-full min-h-full flex-col">
 		<!-- filters -->
-		<div class="flex h-fit items-center justify-between">
+		<div
+			class="flex h-fit items-center justify-between"
+			v-if="fetchFraudsterListStatus === 'success' && fraudsterEntries.length > 0">
 			<!-- search box -->
 			<div
 				class="laptop:w-[45%] laptop-lg:w-[23%] relative flex w-full items-center justify-between">
@@ -31,13 +33,13 @@
 				</button>
 			</div>
 
-			<!-- div to show when there are no authorization letters -->
+			<!-- div to show when there are no entries -->
 			<div
 				class="mt-2 flex h-full flex-col items-center justify-center space-y-4"
 				v-else-if="fetchFraudsterListStatus === 'success' && fraudsterEntries.length === 0">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">
-					Oops! Seems like you have no valuations!
+					Oops! Seems like you have no collateral!
 				</h1>
 			</div>
 
