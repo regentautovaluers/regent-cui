@@ -94,13 +94,13 @@
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
-									Feedback
+									class="table-headers text-center">
+									Progress
 								</th>
 								<th
 									scope="col"
-									class="table-headers text-center">
-									Progress
+									class="table-headers">
+									Feedback
 								</th>
 								<th
 									scope="col"
@@ -181,16 +181,16 @@
 									>
 									<span>{{ letter.createdOn.split(' ')[0] }}</span>
 								</td>
+								<td
+									class="max-w-24 overflow-hidden p-4 text-center text-wrap text-gray-600">
+									{{
+										(letter.assessmentStage as string)
+											?.toLowerCase()
+											.replaceAll('_', ' ') ?? 'N/A'
+									}}
+								</td>
 								<td class="w-48 max-w-48 px-2 text-sm text-wrap">
 									{{ letter.feedback ?? 'N/A' }}
-								</td>
-								<td
-									class="max-w-48 overflow-hidden p-4 text-center text-ellipsis text-gray-600">
-									{{
-										!letter.assessmentStage
-											? 'N/A'
-											: determineValuationStage(letter.assessmentStage).status
-									}}
 								</td>
 								<td>
 									<button
@@ -244,7 +244,7 @@
 			</div>
 
 			<!-- page controls -->
-			<div class="flex min-h-12 items-center justify-between mt-10">
+			<div class="mt-10 flex min-h-12 items-center justify-between">
 				<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 					Showing {{ page + 1 }} of {{ totalPages }} pages.
 				</h1>

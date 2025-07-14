@@ -53,43 +53,6 @@
 				Only Tampered
 			</button>
 			<button
-				data-popover-target="payment-method-pop-over"
-				data-popover-trigger="click"
-				data-popover-placement="bottom"
-				type="button"
-				:class="[
-					'table-filter-form-options',
-					paymentMethod ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
-				]">
-				Payment Method
-			</button>
-			<div
-				data-popover
-				id="payment-method-pop-over"
-				role="tooltip"
-				class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300">
-				<div class="space-y-2 px-3 py-2">
-					<div
-						class="flex h-10 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200"
-						v-for="(pm, index) in ['cash', 'mpesa', 'cheque', 'invoice']"
-						:key="index">
-						<input
-							id="has-spare-tyre"
-							type="radio"
-							:value="pm"
-							v-model="paymentMethod"
-							name="bordered-radio"
-							class="size-5 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-						<label
-							for="has-spare-tyre"
-							class="ms-2 w-full py-4 font-medium text-gray-600"
-							>{{ pm }}</label
-						>
-					</div>
-				</div>
-				<div data-popper-arrow></div>
-			</div>
-			<button
 				data-popover-target="payment-status-pop-over"
 				data-popover-trigger="click"
 				data-popover-placement="bottom"
@@ -264,7 +227,7 @@
 									<th
 										scope="col"
 										class="table-headers desktop-4k:table-cell hidden">
-										Payment
+										Progress
 									</th>
 									<th
 										scope="col"
@@ -377,31 +340,13 @@
 											</div>
 										</div>
 									</th>
-									<td class="desktop-4k:table-cell hidden p-4">
+									<td
+										class="desktop-4k:table-cell hidden max-w-24 p-4 text-wrap">
 										<span class="w-fit">{{
-											valuation.completeTransaction == null
-												? 'Amount N/A'
-												: Intl.NumberFormat('en-US', {
-														minimumFractionDigits: 0,
-														maximumFractionDigits: 0,
-													}).format(
-														valuation.completeTransaction.reduce(
-															(acc, curr) => acc + curr.amountPaid,
-															0,
-														),
-													)
+											(valuation.valuationStage as string)
+												?.toLowerCase()
+												.replaceAll('_', ' ') ?? 'N/A'
 										}}</span>
-										<br />
-										<span
-											class="w-fit rounded-lg bg-yellow-200 px-1 text-yellow-600"
-											>{{
-												(valuation.paymentMethod as string[]).length == 0
-													? 'Method N/A'
-													: ((valuation.paymentMethod as string[])
-															.join(', ')
-															.toLowerCase() ?? 'Method N/A')
-											}}</span
-										>
 									</td>
 									<td class="laptop:table-cell hidden p-4">
 										<span class="w-fit">{{ valuation.valuationId }}</span>
