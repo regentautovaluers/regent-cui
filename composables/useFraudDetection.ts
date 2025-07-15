@@ -29,9 +29,12 @@ const useFraudDetection = () => {
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const fraudsterEntries: Ref<any[]> = ref([]);
-	const totalPages: Ref<number> = ref(0);
+	const fraudsterEntries: ComputedRef<any[]> = computed(() => fetchedData.value?.entries);
+	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 	const searchRegNo: Ref<string> = ref('');
+
+	// deleting fraud entry
+	const activeEntryIndex: Ref<number> = ref(0);
 
 	const handleAppendingRelevantLink = () => {
 		if (relevantLink.value) onboardDefaulter.relevantLinks.push(relevantLink.value);
@@ -75,10 +78,10 @@ const useFraudDetection = () => {
 		}
 	};
 
-	const deleteFraudRecord = async (id: string) => {
+	const deleteFraudRecord = async () => {
 		deleteDefaulterEntryLoading.value = true;
 		try {
-			await $fetch(`/api/v1/fraud/${id}`, {
+			await $fetch(`/api/v1/fraud/${fraudsterEntries.value[activeEntryIndex.value].id}`, {
 				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 				method: 'DELETE',
 				body: JSON.stringify({
@@ -114,6 +117,7 @@ const useFraudDetection = () => {
 		status: fetchFraudsterListStatus,
 		execute: executeFetchFraudsterList,
 		error: fetchFraudsterListError,
+		data: fetchedData,
 	} = useFetch(
 		() => {
 			let requestURL = `/api/v1/fraud/getbyclient?corporateClientId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
@@ -129,22 +133,19 @@ const useFraudDetection = () => {
 			},
 			server: false,
 			lazy: true,
-			onResponse({ response }) {
-				if (response.ok) {
-					const data = response._data.data;
-					fraudsterEntries.value = data;
-					const paginationInfo = response._data.pagination;
-					totalPages.value = paginationInfo.totalPages;
-				} else {
-					useToast('Failed. Try Again!', {
-						type: 'danger',
-						showIcon: true,
-						showCloseButton: false,
-						hideProgressBar: true,
-						transition: 'slide',
-					});
+			transform(response: any) {
+				if (
+					response?.data &&
+					Array.isArray(response.data) &&
+					(response.data as []).length > 0
+				) {
+					return {
+						entries: response.data,
+						totalPages: response.pagination.totalPages,
+					};
 				}
 			},
+			watch: [page],
 		},
 	) as any;
 
@@ -152,6 +153,7 @@ const useFraudDetection = () => {
 		onboardDefaulter,
 		onboardDefaulterLoading,
 		relevantLink,
+		activeEntryIndex,
 		deleteDefaulterEntryLoading,
 		fetchFraudsterListStatus,
 		executeFetchFraudsterList,

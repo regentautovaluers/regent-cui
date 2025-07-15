@@ -193,36 +193,12 @@
 													fill="currentColor"
 													d="M4 21q-.425 0-.712-.288T3 20v-2.425q0-.4.15-.763t.425-.637L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.437.65T21 6.4q0 .4-.138.763t-.437.662l-12.6 12.6q-.275.275-.638.425t-.762.15zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z" /></svg></NuxtLink
 										><button
-											v-if="confirmDeleteForEntryWithId != entry.id"
-											class="rounded-full border-none bg-red-300 p-2 text-red-600 transition-colors duration-200 outline-none hover:bg-red-400"
-											@click="confirmDeleteForEntryWithId = entry.id">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												width="18"
-												height="18"
-												viewBox="0 0 12 12">
-												<path
-													fill="currentColor"
-													d="M5 3h2a1 1 0 0 0-2 0M4 3a2 2 0 1 1 4 0h2.5a.5.5 0 0 1 0 1h-.441l-.443 5.17A2 2 0 0 1 7.623 11H4.377a2 2 0 0 1-1.993-1.83L1.941 4H1.5a.5.5 0 0 1 0-1zm3.5 3a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0zM5 5.5a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 1 0V6a.5.5 0 0 0-.5-.5" />
-											</svg>
+											class="inline-flex h-9 w-9 items-center justify-center rounded-full border-none bg-red-300 p-2 text-red-600 transition-colors duration-200 outline-none hover:bg-red-400"
+											data-modal-target="delete-entry-modal"
+											data-modal-toggle="delete-entry-modal"
+											@click="activeEntryIndex = index">
+											<span class="weui--delete-on-filled size-5"></span>
 										</button>
-										<div
-											v-else
-											class="flex items-center">
-											<button
-												@click="deleteFraudRecord(entry.id)"
-												class="inline-flex h-10 w-20 items-center justify-center rounded-l-full border-none bg-red-300 p-2 text-sm text-red-600 transition-colors duration-200 outline-none hover:bg-red-400">
-												<FormSubmissionLoader
-													class="size-5 animate-spin text-red-500"
-													v-if="deleteDefaulterEntryLoading" />
-												<span v-else>Confirm</span>
-											</button>
-											<button
-												@click="confirmDeleteForEntryWithId = null"
-												class="h-10 w-20 rounded-r-full border-none bg-yellow-300 p-2 text-center text-yellow-600 transition-colors duration-200 outline-none hover:bg-yellow-400">
-												Cancel
-											</button>
-										</div>
 									</th>
 								</tr>
 							</tbody>
@@ -253,6 +229,24 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Delete Entry Modal -->
+	<ParentModal
+		modal-id="delete-entry-modal"
+		modal-title="Delete Entry Modal">
+		<form
+			@submit.prevent="deleteFraudRecord()"
+			class="flex flex-col items-center justify-center">
+			<p class="text-center text-gray-500">Are you sure you want to delete entry?</p>
+			<button
+				class="generic-form-submit tablet:w-1/2 mt-4 h-[50px] w-full rounded-full border border-red-600 bg-red-200 text-red-500 hover:bg-red-200 hover:text-red-500">
+				<FormSubmissionLoader
+					class="mr-2 size-6 animate-spin text-red-500"
+					v-if="deleteDefaulterEntryLoading" />
+				<span v-else>Proceed</span>
+			</button>
+		</form>
+	</ParentModal>
 </template>
 
 <script setup lang="ts">
@@ -267,9 +261,9 @@
 		fetchFraudsterListError,
 		fraudsterEntries,
 		deleteDefaulterEntryLoading,
+		activeEntryIndex,
 		totalPages,
 		page,
 		deleteFraudRecord,
 	} = useFraudDetection();
-	const confirmDeleteForEntryWithId: Ref<string | null> = ref(null);
 </script>
