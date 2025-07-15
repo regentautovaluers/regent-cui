@@ -24,6 +24,7 @@ const useFraudDetection = () => {
 	const relevantLink: Ref<string | null> = ref(null);
 	const onboardDefaulterLoading: Ref<boolean> = ref(false);
 	const deleteDefaulterEntryLoading: Ref<boolean> = ref(false);
+	const editDefaulterLoading: Ref<boolean> = ref(false);
 
 	// querying fraudsters list
 	// for fetching corp valuations
@@ -75,6 +76,39 @@ const useFraudDetection = () => {
 			});
 		} finally {
 			onboardDefaulterLoading.value = false;
+		}
+	};
+
+	const editDefaulterEntry = async (editDefaulter: any, id: string) => {
+		editDefaulterLoading.value = true;
+		try {
+			await $fetch(`/api/v1/fraud/${id}`, {
+				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+				method: 'PATCH',
+				body: JSON.stringify(editDefaulter),
+				onResponse({ response }) {
+					if (response.ok) {
+						useToast('Edit Successful!', {
+							type: 'success',
+							showIcon: true,
+							showCloseButton: false,
+							hideProgressBar: true,
+							transition: 'slide',
+						});
+					}
+				},
+			});
+		} catch (err) {
+			console.log('Failed to edit entry', err);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
+		} finally {
+			editDefaulterLoading.value = false;
 		}
 	};
 
@@ -160,10 +194,12 @@ const useFraudDetection = () => {
 		fetchFraudsterListError,
 		fraudsterEntries,
 		totalPages,
+		editDefaulterLoading,
 		page,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
 		handleRemovingRelevantLink,
+		editDefaulterEntry,
 		deleteFraudRecord,
 	};
 };

@@ -162,37 +162,14 @@
 										{{ entry.dateOfIncident }}
 									</td>
 									<th class="inline-flex items-center space-x-2 p-4">
-										<NuxtLink
-											class="rounded-full border-none bg-green-300 p-2 text-green-600 transition-colors duration-200 outline-none hover:bg-green-400">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												width="18"
-												height="18"
-												viewBox="0 0 24 24">
-												<g
-													fill="none"
-													stroke="currentColor"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													color="currentColor">
-													<path
-														d="M21.544 11.045c.304.426.456.64.456.955c0 .316-.152.529-.456.955C20.178 14.871 16.689 19 12 19c-4.69 0-8.178-4.13-9.544-6.045C2.152 12.529 2 12.315 2 12c0-.316.152-.529.456-.955C3.822 9.129 7.311 5 12 5c4.69 0 8.178 4.13 9.544 6.045" />
-													<path d="M15 12a3 3 0 1 0-6 0a3 3 0 0 0 6 0" />
-												</g>
-											</svg>
-										</NuxtLink>
-										<NuxtLink
-											class="rounded-full border-none bg-blue-300 p-2 text-blue-600 transition-colors duration-200 outline-none hover:bg-blue-400">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												width="18"
-												height="18"
-												viewBox="0 0 24 24">
-												<path
-													fill="currentColor"
-													d="M4 21q-.425 0-.712-.288T3 20v-2.425q0-.4.15-.763t.425-.637L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.437.65T21 6.4q0 .4-.138.763t-.437.662l-12.6 12.6q-.275.275-.638.425t-.762.15zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z" /></svg></NuxtLink
-										><button
+										<button
+											class="inline-flex h-9 w-9 items-center justify-center rounded-full border-none bg-green-300 p-2 text-green-600 transition-colors duration-200 outline-none hover:bg-green-400"
+											data-modal-target="view-entry-modal"
+											data-modal-toggle="view-entry-modal"
+											@click="activeEntryIndex = index">
+											<span class="oui--expand size-5"></span>
+										</button>
+										<button
 											class="inline-flex h-9 w-9 items-center justify-center rounded-full border-none bg-red-300 p-2 text-red-600 transition-colors duration-200 outline-none hover:bg-red-400"
 											data-modal-target="delete-entry-modal"
 											data-modal-toggle="delete-entry-modal"
@@ -246,6 +223,14 @@
 				<span v-else>Proceed</span>
 			</button>
 		</form>
+	</ParentModal>
+	<ParentModal
+		modal-id="view-entry-modal"
+		modal-title="Collateral Entry">
+		<EditFraudster
+			v-if="fraudsterEntries"
+			:collateral-entry="fraudsterEntries[activeEntryIndex]"
+			:entry-id="fraudsterEntries[activeEntryIndex].id" />
 	</ParentModal>
 </template>
 
