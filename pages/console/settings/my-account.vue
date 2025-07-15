@@ -100,7 +100,8 @@
 		layout: 'console-layout',
 	});
 
-	const { getPrincipal, updateMyAccountDetails, updateCorporateAccountLoading } = useAuth();
+	const { getPrincipal } = useAuth();
+	const { updateMyAccountDetails, updateCorporateAccountLoading } = useUserAccounts();
 	const firstName: Ref<string> = ref(getPrincipal.value.username.split(' ')[0]);
 	const lastName: Ref<string> = ref(getPrincipal.value.username.split(' ')[1]);
 	const email: Ref<string> = ref(getPrincipal.value.email);

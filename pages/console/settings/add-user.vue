@@ -97,7 +97,7 @@
 				</option>
 			</select>
 			<FormSubmissionLoader
-				class="mr-2 absolute top-[52%] right-7 size-5 animate-spin text-gray-500"
+				class="absolute top-[52%] right-7 mr-2 size-5 animate-spin text-gray-500"
 				v-if="fetchStatus === 'pending'" />
 		</div>
 		<div class="mt-3">
@@ -186,6 +186,6 @@
 		userRole.value = '';
 	};
 
-	const { addNewAccountLoading, addNewAccount } = useAuth();
+	const { addNewAccountLoading, addNewAccount } = useUserAccounts();
 	const { fetchStatus, corporateBranches } = useCorporateBranch();
 </script>
