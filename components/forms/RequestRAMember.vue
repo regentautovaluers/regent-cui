@@ -21,7 +21,7 @@
 
 				<button
 					type="button"
-					class="generic-form-submit mb-0 h-[70px] w-[10%]"
+					class="generic-form-submit mb-0 w-[10%]"
 					@click.prevent="searchVehicleRegistration">
 					<FormSubmissionLoader
 						class="mr-2 size-6 animate-spin text-white"
@@ -141,10 +141,10 @@
 						:value="true"
 						v-model="haveSpareTyre"
 						name="bordered-radio"
-						class="size-6 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+						class="size-5 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
 					<label
 						for="has-spare-tyre"
-						class="ms-2 w-full py-4 font-medium text-gray-600"
+						class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
 						>Client Has Spare Tyre</label
 					>
 				</div>
@@ -157,10 +157,10 @@
 						:value="false"
 						v-model="haveSpareTyre"
 						name="bordered-radio"
-						class="size-6 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+						class="size-5 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
 					<label
 						for="has-no-spare-tyre"
-						class="ms-2 w-full py-4 font-medium text-gray-600"
+						class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
 						>Client Has No Spare Tyre</label
 					>
 				</div>
@@ -249,7 +249,7 @@
 				<input
 					type="text"
 					id="client-location"
-					class="generic-input-modified peer"
+					class="generic-input-modified peer text-sm"
 					placeholder="Type an address to search"
 					required />
 				<PickupLocationIcon
@@ -270,7 +270,7 @@
 				<input
 					type="text"
 					id="dropoff-location"
-					class="generic-input-modified peer"
+					class="generic-input-modified peer text-sm"
 					placeholder="Type an address to search"
 					required />
 				<DropOffLocationIcon
@@ -287,7 +287,7 @@
 			>
 			<textarea
 				id="comments-box"
-				class="block w-full rounded-lg border-gray-200 px-4 py-3 text-gray-600 focus:border-blue-500 focus:ring-blue-500"
+				class="block w-full rounded-lg border-gray-200 px-4 py-3 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
 				rows="4"
 				placeholder="Provide optional details for this request."
 				v-model="requestRemarks"></textarea>
@@ -298,22 +298,20 @@
 			<div
 				class="w-1/3 rounded-lg border border-pink-500 p-3"
 				v-if="renderElementForService('ra-towing-request')">
-				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
-				<h2 class="text-lg font-semibold text-gray-500">{{ computedTowingDistance }} Km</h2>
+				<h1 class="font-semibold text-pink-500">Distance</h1>
+				<h2 class="font-semibold text-gray-500">{{ computedTowingDistance }} Km</h2>
 			</div>
 			<div
 				class="w-1/3 rounded-lg border border-pink-500 p-3"
 				v-if="renderElementForService('ra-towing-request')">
-				<h1 class="text-lg font-semibold text-pink-500">Free Tow</h1>
-				<h2 class="text-lg font-semibold text-gray-500">
-					{{ freeDistanceLeftForTowing }}Km
-				</h2>
+				<h1 class="font-semibold text-pink-500">Free Tow</h1>
+				<h2 class="font-semibold text-gray-500">{{ freeDistanceLeftForTowing }}Km</h2>
 			</div>
 			<div
 				class="rounded-lg border border-pink-500 p-3"
 				:class="renderElementForService('ra-towing-request') ? 'w-1/3' : 'w-full'">
-				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
-				<h2 class="text-lg font-semibold text-gray-500">{{ computedServiceCost }} Ksh</h2>
+				<h1 class="font-semibold text-pink-500">Cost</h1>
+				<h2 class="font-semibold text-gray-500">{{ computedServiceCost }} Ksh</h2>
 			</div>
 		</div>
 

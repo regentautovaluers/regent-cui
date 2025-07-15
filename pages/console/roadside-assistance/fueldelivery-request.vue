@@ -1,6 +1,6 @@
 <template>
 	<div class="console-layout-spacing grid grid-cols-1 gap-4 lg:grid-cols-[.5fr_.5fr]">
-		<div class="overflow-clip rounded-lg border border-gray-500 border-opacity-50">
+		<div class="border-opacity-50 overflow-clip rounded-lg border border-gray-500">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -37,31 +37,29 @@
 			</GoogleMap>
 		</div>
 		<div>
-			<h1 class="mb-4 text-3xl font-semibold">Request Fuel Delivery</h1>
-			<div
-				class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
-				<div class="border-b space-x-4 font-semibold text-gray-500 lg:w-fit lg:text-lg">
-					<button
-						@click="currentRegForm = 0"
-						:class="[
-							'border-b-2 pb-1',
-							currentRegForm === 0
-								? 'border-b-blue-600 text-blue-600'
-								: 'border-b-inherit',
-						]">
-						<span>Registered Client</span>
-					</button>
-					<button
-						@click="currentRegForm = 1"
-						:class="[
-							'border-b-2 pb-1',
-							currentRegForm === 1
-								? 'border-b-blue-600 text-blue-600'
-								: 'border-b-inherit',
-						]">
-						<span>Unregistered Client</span>
-					</button>
-				</div>
+			<h1 class="mb-4 text-xl font-semibold">Request Fuel Delivery</h1>
+
+			<div class="space-x-4 border-b font-semibold text-gray-500 lg:w-fit">
+				<button
+					@click="currentRegForm = 0"
+					:class="[
+						'border-b-2 pb-1',
+						currentRegForm === 0
+							? 'border-b-blue-600 text-blue-600'
+							: 'border-b-inherit',
+					]">
+					<span>Registered Client</span>
+				</button>
+				<button
+					@click="currentRegForm = 1"
+					:class="[
+						'border-b-2 pb-1',
+						currentRegForm === 1
+							? 'border-b-blue-600 text-blue-600'
+							: 'border-b-inherit',
+					]">
+					<span>Unregistered Client</span>
+				</button>
 			</div>
 
 			<RequestRAMember

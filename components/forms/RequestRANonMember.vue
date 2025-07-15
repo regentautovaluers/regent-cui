@@ -257,7 +257,7 @@
 				<input
 					type="text"
 					id="client-location"
-					class="generic-input-modified peer"
+					class="generic-input-modified peer text-sm"
 					placeholder="Type an address to search" />
 				<PickupLocationIcon
 					classes="shrink-0 size-9 transition duration-75 text-gray-500 group-hover:text-blue-600 absolute left-0 top-1/3 -translate-y-1 peer-focus:text-blue-600" />
@@ -276,7 +276,7 @@
 				<input
 					type="text"
 					id="dropoff-location"
-					class="generic-input-modified peer"
+					class="generic-input-modified peer text-sm"
 					placeholder="Type an address to search" />
 				<DropOffLocationIcon
 					classes="shrink-0 size-7 transition duration-75 text-gray-500 group-hover:text-blue-600 absolute left-0 top-1/3 -translate-y-1 peer-focus:text-blue-600" />
@@ -291,7 +291,7 @@
 			>
 			<textarea
 				id="comments-box"
-				class="block w-full rounded-lg border-gray-200 px-4 py-3 text-gray-600 focus:border-blue-500 focus:ring-blue-500"
+				class="block w-full rounded-lg border-gray-200 px-4 py-3 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
 				rows="4"
 				placeholder="Provide optional details for this request."
 				v-model="requestRemarks"></textarea>
@@ -302,14 +302,14 @@
 			<div
 				class="w-1/2 rounded-lg border border-pink-500 p-3"
 				v-if="renderElementForService('ra-towing-request')">
-				<h1 class="text-lg font-semibold text-pink-500">Distance</h1>
-				<h1 class="text-lg font-semibold text-gray-500">{{ computedTowingDistance }}Km</h1>
+				<h1 class="font-semibold text-pink-500">Distance</h1>
+				<h1 class="font-semibold text-gray-500">{{ computedTowingDistance }}Km</h1>
 			</div>
 			<div
 				class="rounded-lg border border-pink-500 p-3"
 				:class="renderElementForService('ra-towing-request') ? 'w-1/2' : 'w-full'">
-				<h1 class="text-lg font-semibold text-pink-500">Cost</h1>
-				<h1 class="text-lg font-semibold text-gray-500">{{ computedServiceCost }}Ksh</h1>
+				<h1 class="font-semibold text-pink-500">Cost</h1>
+				<h1 class="font-semibold text-gray-500">{{ computedServiceCost }}Ksh</h1>
 			</div>
 		</div>
 

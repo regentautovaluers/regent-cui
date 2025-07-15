@@ -1,17 +1,18 @@
 <template>
-	<div class="flex h-full flex-col">
+	<div class="console-layout-spacing flex flex-col">
 		<div
 			class="flex h-fit items-center justify-between"
 			v-if="fetchFleetsJobsStatus === 'success' && corpFleetsJobs.length > 0">
 			<!-- search box -->
-			<div class="relative flex w-full items-center justify-between md:w-[45%] lg:w-[23%]">
+			<div
+				class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
 				<input
 					type="text"
 					class="generic-input"
 					placeholder="Search Registration Number" />
 				<button
 					type="submit"
-					class="absolute right-0 top-0 flex size-14 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+					class="generic-search-submit-button">
 					<SearchIcon />
 				</button>
 			</div>
@@ -60,7 +61,7 @@
 				<div class="my-2 flex-grow">
 					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 						<table class="w-full text-left text-gray-500">
-							<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+							<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 								<tr>
 									<th
 										scope="col"
@@ -106,7 +107,7 @@
 									:key="a">
 									<td
 										scope="row"
-										class="whitespace-nowrap p-6 font-medium text-gray-300">
+										class="p-6 font-medium whitespace-nowrap text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>username</span
 										>

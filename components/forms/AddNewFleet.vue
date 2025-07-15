@@ -3,13 +3,13 @@
 		<div>
 			<label
 				for="fleet-name"
-				class="generic-input-label"
+				class="generic-input-label generic-input-required-label"
 				>Fleet Name</label
 			>
 			<input
 				type="text"
 				id="fleet-name"
-				class="generic-input"
+				class="generic-input h-[50px]"
 				placeholder="e.g Kenya Power & Lightning Company"
 				required
 				v-model="fleetName" />
@@ -21,13 +21,13 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="contact-person-phone"
-					class="generic-input-label"
+					class="generic-input-label generic-input-required-label"
 					>Contact Person Phone Number</label
 				>
 				<input
 					type="text"
 					id="contact-person-phone"
-					class="generic-input"
+					class="generic-input h-[50px]"
 					placeholder="e.g +254704080056"
 					required
 					v-model="contactPhoneNumber" />
@@ -37,13 +37,13 @@
 			<div class="w-full lg:w-1/2">
 				<label
 					for="contact-person-email"
-					class="generic-input-label"
+					class="generic-input-label generic-input-required-label"
 					>Contact Person Email</label
 				>
 				<input
 					type="email"
 					id="contact-person-email"
-					class="generic-input"
+					class="generic-input h-[50px]"
 					placeholder="e.g youremail@co.ke"
 					required
 					v-model="contactEmail" />
@@ -53,13 +53,13 @@
 		<div class="mt-3">
 			<label
 				for="contact-person-name"
-				class="generic-input-label"
+				class="generic-input-label generic-input-required-label"
 				>Contact Person Name</label
 			>
 			<input
 				type="text"
 				id="contact-person-name"
-				class="generic-input"
+				class="generic-input h-[50px]"
 				placeholder="e.g John Mwangi"
 				required
 				v-model="contactFullName" />

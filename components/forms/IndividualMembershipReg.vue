@@ -236,8 +236,8 @@
 		<div
 			class="mt-4 flex w-full flex-col items-center space-y-3 space-x-0 md:w-1/2 md:flex-row md:space-y-0 md:space-x-4">
 			<div class="h-fit w-full rounded-lg border border-blue-600 p-2 md:w-1/2">
-				<h1 class="text-2xl font-semibold tracking-wide text-blue-600">Vehicles Added</h1>
-				<h2 class="text-lg text-gray-500">{{ memberVehicles.length }}</h2>
+				<h1 class="font-semibold tracking-wide text-blue-600">Vehicles Added</h1>
+				<h2 class="text-gray-500">{{ memberVehicles.length }}</h2>
 			</div>
 		</div>
 
@@ -245,7 +245,7 @@
 		<button
 			type="submit"
 			:class="[
-				'generic-form-submit mt-3 w-full',
+				'generic-form-submit mt-3 w-full laptop:w-1/3',
 				registerIndividualMemberLoading && 'skeleton skeleton-animated',
 			]">
 			{{ registerIndividualMemberLoading ? 'Please Wait...' : 'Onboard Member' }}

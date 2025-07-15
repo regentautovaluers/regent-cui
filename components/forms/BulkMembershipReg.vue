@@ -14,21 +14,20 @@
 					d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
 			</svg>
 			<span class="sr-only">Info</span>
-			<h3 class="text-lg font-medium">Notice On Client Fleets</h3>
+			<h3 class="text-sm font-medium">Notice On Client Fleets</h3>
 		</div>
-		<div class="mt-2 mb-4">
-			<p>
-				You must have a fleet before you can add members. The members you onboard using this
-				form will be linked to that fleet. If you have no fleet, click the 'Add Fleet'
-				button below to add to your fleets. If your fleet is not showing up here, please
-				'Refresh List' or contact us for support.
-			</p>
-		</div>
+		<p class="mt-2 mb-4 text-sm">
+			You must have a fleet before you can add members. The members you onboard using this
+			form will be linked to that fleet. If you have no fleet, click the 'Add Fleet' button
+			below to add to your fleets. If your fleet is not showing up here, please 'Refresh List'
+			or contact us for support.
+		</p>
 		<div class="flex">
 			<button
 				type="button"
-				class="me-2 inline-flex items-center rounded-lg bg-yellow-800 px-3 py-1.5 text-center font-medium text-white hover:bg-yellow-900 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
-				@click="isAddFleetModalOpen = true">
+				class="me-2 inline-flex items-center rounded-lg bg-yellow-800 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-yellow-900 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
+				data-modal-target="add-fleet-modal"
+				data-modal-toggle="add-fleet-modal">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="2em"
@@ -44,7 +43,7 @@
 			</button>
 			<button
 				type="button"
-				class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
+				class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-sm font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
 				data-dismiss-target="#alert-additional-content-4"
 				aria-label="Close"
 				@click="reloadFleets">
@@ -66,7 +65,16 @@
 				id="fleet-name"
 				v-model="selectedFleetId"
 				required>
-				<option :value="0">Select the Designated Fleet</option>
+				<option
+					:value="0"
+					v-if="corporateFleetData && (corporateFleetData as []).length > 0">
+					Select the fleet you form the available ones
+				</option>
+				<option
+					:value="0"
+					v-else>
+					No fleet available. Please add one!
+				</option>
 				<option
 					v-for="(fleet, index) in corporateFleetData"
 					:key="index"
@@ -75,7 +83,7 @@
 				</option>
 			</select>
 			<FormSubmissionLoader
-				class="mr-2 absolute top-[52%] right-6 size-5 animate-spin text-gray-500"
+				class="absolute top-[52%] right-6 mr-2 size-5 animate-spin text-gray-500"
 				v-if="retrievingFleetList" />
 		</div>
 		<div
@@ -130,9 +138,9 @@
 		</div>
 
 		<!-- Download Excel document -->
-		<h1 class="mt-5 text-xl antialiased">Download Excel Template</h1>
+		<h1 class="mt-5 font-semibold text-gray-500">Download Excel Template</h1>
 		<div class="flex flex-col">
-			<span class="text-gray-500"
+			<span class="text-sm text-gray-500"
 				>Kindly download our Excel template and complete all columns. Kindly refrain from
 				altering the column structure or their sequence.</span
 			>
@@ -140,16 +148,16 @@
 				href="https://drive.google.com/uc?export=download&id=1owNqofnZn3X4w9OOognfBACE16jE9mNt"
 				target="_top"
 				type="button"
-				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-400 px-4 py-3 text-pink-500 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
+				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-400 px-4 py-3 text-sm text-pink-700 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
 				<span> Click here to intiate excel template download </span>
 				<DownloadIcon />
 			</a>
 		</div>
 
 		<!-- upload Excel document -->
-		<h1 class="mt-5 text-xl antialiased">Upload Excel Document</h1>
+		<h1 class="mt-5 font-semibold text-gray-500">Upload Excel Document</h1>
 		<div class="flex flex-col">
-			<span class="text-gray-500"
+			<span class="text-sm text-gray-500"
 				>Please upload the completed document to proceed with onboarding.</span
 			>
 			<div>
@@ -187,8 +195,8 @@
 					class="flex flex-col justify-center overflow-hidden rounded-full bg-blue-600 text-center text-xs whitespace-nowrap text-white transition duration-500"
 					:style="{ width: currentProgress }" />
 			</div>
-			<div class="flex w-full items-center justify-between text-end text-lg text-gray-500">
-				<span class="uppercase">Parsing Progress</span>
+			<div class="flex w-full items-center justify-between text-end text-gray-500">
+				<span class="uppercase">File Parsing Progress</span>
 				<span>{{ currentProgress }}</span>
 			</div>
 		</div>
@@ -197,7 +205,7 @@
 		<button
 			type="submit"
 			:class="[
-				'generic-form-submit mt-3 w-full lg:w-1/2',
+				'generic-form-submit laptop:w-1/3 mt-3 w-full',
 				registerBulkMembershipsLoading && 'skeleton skeleton-animated',
 			]"
 			:disabled="errorMessage?.type == 'error'">
@@ -208,15 +216,12 @@
 	<!-- Add Fleet modal -->
 	<ParentModal
 		modal-id="add-fleet-modal"
-		modal-title="Add Fleet"
-		v-if="isAddFleetModalOpen"
-		@close-modal="isAddFleetModalOpen = false">
+		modal-title="Add Fleet">
 		<AddNewFleet />
 	</ParentModal>
 </template>
 
 <script setup lang="ts">
-	const isAddFleetModalOpen: Ref<boolean> = ref(false);
 	const { corporateFleetData, retrievingFleetList, reloadFleets } = useFleets();
 	const {
 		selectedFleetId,

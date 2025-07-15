@@ -2,7 +2,7 @@
 	<div class="console-layout-spacing">
 		<div class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
 			<div
-				class="border-b w- space-x-4 text-sm font-semibold text-gray-500 md:text-base lg:w-fit lg:text-lg">
+				class="border-b w- space-x-4 text-sm font-semibold text-gray-500 md:text-base lg:w-fit">
 				<button
 					@click="() => (activeRegistrationForm = 0)"
 					:class="[
