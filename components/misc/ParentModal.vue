@@ -3,7 +3,7 @@
 	<div
 		:id="props.modalId"
 		tabindex="-1"
-		data-modal-placement="top-center"
+		:data-modal-placement="props.modalPlacement"
 		class="fixed top-0 right-0 left-0 z-50 hidden h-[100%] max-h-full w-full overflow-x-hidden overflow-y-auto bg-white/10 p-4 md:inset-0">
 		<div class="relative max-h-full w-full max-w-2xl">
 			<!-- Modal content -->
@@ -14,7 +14,8 @@
 					<button
 						type="button"
 						class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-						:data-modal-hide="props.modalId">
+						:data-modal-hide="props.modalId"
+						@click="emits('close-modal')">
 						<svg
 							class="h-3 w-3"
 							aria-hidden="true"
@@ -47,5 +48,10 @@
 		modalId: { required: true, type: String || Number },
 		modalTitle: { required: true, type: String },
 		class: { required: false, type: String },
+		modalPlacement: {
+			required: false,
+			default: 'top-center',
+		},
 	});
+	const emits = defineEmits(['close-modal']);
 </script>
