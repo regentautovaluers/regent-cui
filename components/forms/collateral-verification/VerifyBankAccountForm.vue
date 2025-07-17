@@ -90,5 +90,5 @@
 		executeFetchBankList,
 		bankList,
 		verifyCollateral,
-	} = useCollateralVerification();
+	} = useCollateralVerificiation();
 </script>

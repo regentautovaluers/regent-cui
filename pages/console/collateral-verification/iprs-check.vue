@@ -6,7 +6,7 @@
 		<div
 			class="tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 mt-3 grid grid-cols-2 gap-4">
 			<template
-				v-for="(option, index) in searchCollateralTypeOptions"
+				v-for="(option, index) in iprsSearchOptions"
 				:key="index">
 				<!-- render a label for checks with no modal -->
 				<label
@@ -60,11 +60,7 @@
 		</div>
 		<div
 			class="laptop:w-1/2 laptop-lg:w-1/3 relative mt-5 flex w-full items-center justify-between"
-			v-if="
-				searchCollateralTypeOptions
-					.filter((e) => !e.opensInModal)
-					.includes(searchCollateralType)
-			">
+			v-if="iprsSearchOptions.filter((e) => !e.opensInModal).includes(searchCollateralType)">
 			<input
 				type="text"
 				class="generic-input"
@@ -150,19 +146,6 @@
 			:incident-description="r.description" />
 	</template>
 
-	<!-- Search defaulters db -->
-	<ParentModal
-		modal-id="verify-defaulter-db-modal"
-		modal-title="Search Defaulters">
-		<SearchDefaultersForm
-			:search-loading="searchDefaulterLoading"
-			@initiate-search="
-				({ regNo, engineNo, chassisNo }) => {
-					searchDefaulter(regNo, engineNo, chassisNo);
-				}
-			" />
-	</ParentModal>
-
 	<!-- Verify National ID -->
 	<ParentModal
 		modal-id="verify-national-id-modal"
@@ -208,25 +191,20 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'collateral-verification-query',
+		name: 'collateral-iprs-check',
 		layout: 'console-layout',
 	});
 
 	const {
 		searchDefaulterQuery,
-		responseData,
-		collateralCheckLoading,
 		searchDefaulterLoading,
-		fetchBankListStatus,
-		executeFetchBankList,
-		bankList,
-		searchCollateralType,
-		searchCollateralTypeOptions,
+		iprsSearchOptions,
 		iaVehicleDetails,
+		searchCollateralType,
 		iaVehicleCollateralDetails,
 		iaVehicleOwnerDetails,
 		ravDefaulterDetails,
 		verifyCollateral,
 		searchDefaulter,
-	} = useCollateralVerification();
+	} = useCollateralVerificiation();
 </script>

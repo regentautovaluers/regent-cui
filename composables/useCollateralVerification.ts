@@ -1,7 +1,6 @@
 import type { CollateralSearchTypeOption } from '~/types';
-import { type Reactive } from 'vue';
 
-const useCollateralVerficiation = () => {
+export function useCollateralVerificiation() {
 	const collateralCheckLoading = ref(false);
 	const responseData: Ref<any> = ref(null);
 	const searchDefaulterQuery: Ref<string> = ref('');
@@ -13,13 +12,13 @@ const useCollateralVerficiation = () => {
 	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
 	const iaVehicleOwnerDetails: Ref<any> = ref(null);
 
-	const searchCollateralTypeOptions: Reactive<CollateralSearchTypeOption[]> = reactive([
-		{
-			id: 'defaulter-db',
-			name: 'Defaulters DB',
-			prompt: 'Enter vehicle reg, chassis or engine number.',
-			opensInModal: true,
-		},
+	const collateralSearchOptions: CollateralSearchTypeOption = {
+		id: 'defaulter-db',
+		name: 'Defaulters DB',
+		prompt: 'Enter vehicle reg, chassis or engine number.',
+		opensInModal: true,
+	};
+	const iprsSearchOptions: CollateralSearchTypeOption[] = reactive([
 		{
 			id: 'national-id',
 			name: 'National ID',
@@ -70,9 +69,7 @@ const useCollateralVerficiation = () => {
 		},
 	]);
 
-	const searchCollateralType: Ref<CollateralSearchTypeOption> = ref(
-		searchCollateralTypeOptions[0],
-	);
+	const searchCollateralType: Ref<CollateralSearchTypeOption> = ref(iprsSearchOptions[0]);
 
 	const {
 		status: fetchBankListStatus,
@@ -135,7 +132,7 @@ const useCollateralVerficiation = () => {
 		}
 	};
 
-	const searchDefaulter = async (...searchPhrases: string[]) => {
+	const searchDefaulter = async (type?: string, ...searchPhrases: string[]) => {
 		searchDefaulterLoading.value = true;
 
 		try {
@@ -188,7 +185,7 @@ const useCollateralVerficiation = () => {
 		switch (type) {
 			case 'defaulter-db':
 				return `/api/v1/fraud/search?${searchPhrases.map(
-					(q, i) => `searchQuery${i + 1}=${q}&`
+					(q, i) => `searchQuery${i + 1}=${q}&`,
 				)}&${sharedURISubstring}`;
 			case 'loan-collateral':
 				return `/api/v1/verification/verify-collateral?chassisNumber=${searchDefaulterQuery.value}&${sharedURISubstring}`;
@@ -208,15 +205,14 @@ const useCollateralVerficiation = () => {
 		executeFetchBankList,
 		bankList,
 		searchCollateralType,
-		searchCollateralTypeOptions,
+		iprsSearchOptions,
 		searchDefaulterQuery,
 		iaVehicleDetails,
 		iaVehicleCollateralDetails,
 		iaVehicleOwnerDetails,
 		ravDefaulterDetails,
+		collateralSearchOptions,
 		verifyCollateral,
 		searchDefaulter,
 	};
-};
-
-export default useCollateralVerficiation;
+}

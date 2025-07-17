@@ -35,7 +35,7 @@ const useFraudDetection = () => {
 	const searchRegNo: Ref<string> = ref('');
 
 	// deleting fraud entry
-	const activeEntryIndex: Ref<number> = ref(0);
+	const activeEntryIndex: Ref<number> = ref(-1);
 
 	const handleAppendingRelevantLink = () => {
 		if (relevantLink.value) onboardDefaulter.relevantLinks.push(relevantLink.value);

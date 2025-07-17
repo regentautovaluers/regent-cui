@@ -98,5 +98,5 @@
 
 <script setup lang="ts">
 	const searchQuery: Ref<string> = ref('');
-	const { collateralCheckLoading, responseData, verifyCollateral } = useCollateralVerification();
+	const { collateralCheckLoading, responseData, verifyCollateral } = useCollateralVerificiation();
 </script>

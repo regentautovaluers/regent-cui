@@ -1,5 +1,5 @@
 <template>
-	<div class="flex h-full min-h-full flex-col">
+	<div class="flex h-full min-h-full flex-col rounded-md bg-white p-8 shadow-md">
 		<!-- filters -->
 		<div
 			class="flex h-fit items-center justify-between"
@@ -210,7 +210,13 @@
 	<!-- Delete Entry Modal -->
 	<ParentModal
 		modal-id="delete-entry-modal"
-		modal-title="Delete Entry Modal">
+		modal-title="Delete Entry Modal"
+		modal-placement="center-center"
+		@close-modal="
+			() => {
+				activeEntryIndex = -1;
+			}
+		">
 		<form
 			@submit.prevent="deleteFraudRecord()"
 			class="flex flex-col items-center justify-center">
@@ -226,9 +232,14 @@
 	</ParentModal>
 	<ParentModal
 		modal-id="view-entry-modal"
-		modal-title="Collateral Entry">
+		modal-title="Collateral Entry"
+		@close-modal="
+			() => {
+				activeEntryIndex = -1;
+			}
+		">
 		<EditFraudster
-			v-if="fraudsterEntries"
+			v-if="fraudsterEntries && activeEntryIndex > -1"
 			:collateral-entry="fraudsterEntries[activeEntryIndex]"
 			:entry-id="fraudsterEntries[activeEntryIndex].id" />
 	</ParentModal>

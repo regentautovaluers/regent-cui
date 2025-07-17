@@ -129,7 +129,7 @@
 			<textarea
 				id="incident-description"
 				class="generic-text-area"
-				rows="10"
+				rows="12"
 				placeholder="Provide an optional extra description for this incident"
 				v-model="onboardDefaulter.description"></textarea>
 		</div>

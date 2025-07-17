@@ -61,7 +61,9 @@
 									<VehicleValuationIcon classes="size-5 text-inherit" />
 								</template>
 								<template
-									v-else-if="link.routeName == 'collateral-verification-query'">
+									v-else-if="
+										link.routeName == 'collateral-verification-query-collateral'
+									">
 									<FraudDetectionIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'regent-tracking-home'">
@@ -424,6 +426,7 @@
 <script setup lang="ts">
 	const { navigationRoutes, currentScreenName, fuzzyRouteNameMatch, doesRouteNameMatch } =
 		useNavigationRoutes();
+
 	const { getPrincipal, attemptLogout } = useAuth();
 	const sidebarExpanded: Ref<boolean> = ref(false);
 	const userInput: Ref<string> = ref('');

@@ -106,7 +106,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 	{
 		id: 4,
 		screenName: 'Collateral Verification Hub',
-		routeName: 'collateral-verification-query',
+		routeName: 'collateral-verification-query-collateral',
 		renderRoute: true,
 		childRoutes: [
 			{
@@ -124,7 +124,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 			{
 				id: 3,
 				screenName: 'Query Collateral',
-				routeName: 'collateral-verification-query',
+				routeName: 'collateral-verification-query-collateral',
 				renderRoute: false,
 			},
 		],
