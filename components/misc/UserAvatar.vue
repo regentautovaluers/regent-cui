@@ -1,9 +1,9 @@
 <template>
 	<div
 		:class="[
-			'ax-w-12 flex max-h-12 min-h-12 min-w-12 items-center justify-center rounded-full border bg-blue-600 outline-none',
+			'flex max-h-11 min-h-11 max-w-11 min-w-11 items-center justify-center rounded-full border bg-blue-600 outline-none',
 		]">
-		<span :class="['text-xl font-semibold text-slate-100']">{{ firstLetter }}</span>
+		<span :class="['text-lg font-semibold text-slate-100']">{{ firstLetter }}</span>
 	</div>
 </template>
 
