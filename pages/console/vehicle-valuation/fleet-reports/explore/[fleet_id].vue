@@ -1,28 +1,52 @@
 <template>
+	<!-- new UI layout -->
 	<div class="console-layout-spacing flex flex-col">
-		<div
-			class="flex h-fit items-center justify-between"
-			v-if="fetchFleetsJobsStatus === 'success' && corpFleetsJobs.length > 0">
+		<div class="tablet:flex-row flex h-fit flex-col items-center justify-between">
+			<div class="flex items-center space-x-3 font-semibold text-gray-500">
+				<button
+					@click="() => (activeView = 'all')"
+					:class="[
+						'tablet:text-base border-b-2 text-sm',
+						activeView === 'all'
+							? 'border-b-blue-600 text-blue-600'
+							: 'border-b-inherit',
+					]">
+					<span>All Entries</span>
+				</button>
+				<button
+					@click="() => (activeView = 'complete')"
+					:class="[
+						'tablet:text-base border-b-2 text-sm',
+						activeView === 'complete'
+							? 'border-b-blue-600 text-blue-600'
+							: 'border-b-inherit',
+					]">
+					<span>Completed</span>
+				</button>
+				<button
+					@click="() => (activeView = 'pending')"
+					:class="[
+						'tablet:text-base border-b-2 text-sm',
+						activeView == 'pending'
+							? 'border-b-blue-600 text-blue-600'
+							: 'border-b-inherit',
+					]">
+					<span>Ongoing</span>
+				</button>
+			</div>
+
 			<!-- search box -->
 			<div
 				class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
 				<input
 					type="text"
 					class="generic-input"
-					placeholder="Search Registration Number" />
+					placeholder="Enter Exact Reg or Booking No."
+					v-model="searchRegNo" />
 				<button
 					type="submit"
 					class="generic-search-submit-button">
 					<SearchIcon />
-				</button>
-			</div>
-
-			<!-- other filters -->
-			<div class="h-full">
-				<button
-					class="table-filter-buttons"
-					@click.prevent="isFilterFormOpen = true">
-					Filters<FilterIcon class="text-xl" />
 				</button>
 			</div>
 		</div>
@@ -61,7 +85,7 @@
 				<div class="my-2 flex-grow">
 					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 						<table class="w-full text-left text-gray-500">
-							<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
+							<thead class="bg-gray-100 text-gray-700 uppercase">
 								<tr>
 									<th
 										scope="col"
@@ -91,7 +115,7 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Assessment Note
+										Note
 									</th>
 									<th
 										scope="col"
@@ -144,7 +168,7 @@
 									</td>
 								</tr>
 								<tr
-									class="border-b bg-white hover:bg-gray-100"
+									class="border-b bg-white text-sm hover:bg-gray-100"
 									v-else
 									v-for="(fleet, index) in corpFleetsJobs"
 									:key="index">
@@ -244,7 +268,7 @@
 				</div>
 
 				<!-- page controls -->
-				<div class="flex h-12 items-center justify-between">
+				<div class="mt-8 flex min-h-12 items-center justify-between">
 					<h1 class="text-sm font-semibold text-gray-500 md:text-base">
 						Showing {{ 1 }} of {{ totalFleetJobPages }} pages.
 					</h1>
@@ -285,5 +309,7 @@
 		corpFleetsJobs,
 		executeFetchJobsFleets,
 		fetchFleetsJobsError,
+		activeView,
+		searchRegNo,
 	} = useValuationFleetJobs();
 </script>
