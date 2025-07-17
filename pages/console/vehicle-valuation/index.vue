@@ -203,22 +203,18 @@
 						<table class="w-full text-left text-gray-500">
 							<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 								<tr>
-									<th
-										scope="col"
-										class="table-headers desktop-4k:table-cell hidden">
-										Regent Branch & Date
-									</th>
 									<!-- Details will show client name and their contact -->
-									<th
-										scope="col"
-										class="table-headers tablet:table-cell hidden">
-										Client Details
-									</th>
 									<th
 										scope="col"
 										class="table-headers tablet:table-cell hidden">
 										Inspection Details
 									</th>
+									<th
+										scope="col"
+										class="table-headers tablet:table-cell hidden">
+										Client Details
+									</th>
+
 									<th
 										scope="col"
 										class="table-headers">
@@ -232,7 +228,7 @@
 									<th
 										scope="col"
 										class="table-headers laptop:table-cell hidden">
-										Booking & Serial Number
+										Pending
 									</th>
 									<th
 										scope="col"
@@ -246,11 +242,6 @@
 									v-if="fetchValuationsStatus === 'pending'"
 									v-for="a in 10"
 									:key="a">
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>useremail</span
-										>
-									</td>
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>regenthq</span
@@ -285,16 +276,6 @@
 									v-else
 									v-for="(valuation, index) in corpValuations"
 									:key="index">
-									<td class="desktop-4k:table-cell hidden p-4">
-										<span
-											class="w-fit rounded-lg bg-pink-200 px-1 text-pink-600"
-											>{{ valuation.regentBranch.branchName }}</span
-										>
-										<br />
-										<span>{{
-											valuation.bookingDate?.split('T')[0] ?? 'Date N/A'
-										}}</span>
-									</td>
 									<td class="tablet:table-cell hidden p-4">
 										<span
 											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
@@ -310,9 +291,7 @@
 										}}</span>
 										<br />
 										<span class="w-fit rounded-lg bg-gray-200 px-1">{{
-											valuation.isSpecial
-												? 'Special Report'
-												: 'Regular Report'
+											valuation.regentBranch.branchName
 										}}</span>
 									</td>
 									<th
@@ -340,21 +319,16 @@
 											</div>
 										</div>
 									</th>
-									<td
-										class="desktop-4k:table-cell hidden max-w-24 p-4 text-wrap">
+									<td class="desktop-4k:table-cell hidden max-w-24 p-4 text-wrap">
 										<span class="w-fit">{{
 											(valuation.valuationStage as string)
 												?.toLowerCase()
 												.replaceAll('_', ' ') ?? 'N/A'
 										}}</span>
 									</td>
-									<td class="laptop:table-cell hidden p-4">
-										<span class="w-fit">{{ valuation.valuationId }}</span>
-										<br />
-										<span
-											class="w-fit rounded-lg bg-yellow-200 px-1 text-yellow-600"
-											>{{ valuation.serialNumber ?? 'Serial N/A' }}</span
-										>
+									<td
+										class="laptop:table-cell hidden w-72 max-w-72 p-4 text-xs text-wrap">
+										{{ valuation.pending ?? 'None' }}
 									</td>
 									<td>
 										<button
