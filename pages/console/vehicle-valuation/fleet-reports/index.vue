@@ -31,12 +31,12 @@
 			<div class="my-2 flex-grow">
 				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 					<table class="w-full text-left text-gray-500">
-						<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+						<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 							<tr>
 								<th
 									scope="col"
 									class="table-headers">
-									Fleet Name
+									Name
 								</th>
 								<!-- Details will show client name and their contact -->
 								<th
@@ -52,7 +52,7 @@
 								<th
 									scope="col"
 									class="table-headers">
-									Vehicles Issued
+									Issued
 								</th>
 								<th
 									scope="col"
@@ -63,6 +63,11 @@
 									scope="col"
 									class="table-headers">
 									Completed
+								</th>
+								<th
+									scope="col"
+									class="table-headers text-center">
+									Intermediary
 								</th>
 								<th
 									scope="col"
@@ -78,7 +83,7 @@
 								:key="a">
 								<td
 									scope="row"
-									class="whitespace-nowrap p-6 font-medium text-gray-300">
+									class="p-6 font-medium whitespace-nowrap text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>username</span
 									>
@@ -106,6 +111,9 @@
 								<td class="p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300">agency</span>
 								</td>
+								<td class="p-6 text-gray-300">
+									<span class="animate-pulse rounded-lg bg-gray-300">agency</span>
+								</td>
 								<td></td>
 							</tr>
 							<tr
@@ -115,25 +123,27 @@
 								:key="index">
 								<td
 									scope="row"
-									class="whitespace-nowrap p-6 font-semibold text-gray-600">
+									class="generic-table-cell p-5 font-semibold text-gray-600">
 									{{ fleet.fleetName }}
 								</td>
-								<td class="whitespace-nowrap p-6 text-gray-600">
+								<td class="generic-table-cell p-5 text-gray-600">
 									{{ fleet.startDate }}
 								</td>
-								<td class="whitespace-nowrap p-6 text-gray-600">
+								<td class="generic-table-cell p-5 text-gray-600">
 									{{ fleet.endDate }}
 								</td>
-								<td class="p-6 text-center font-semibold">
+								<td class="generic-table-cell p-5 font-semibold">
 									{{ fleet.vehiclesIssued ?? 'N/A' }}
 								</td>
-								<td class="p-6 text-center">
-									{{
-										!fleet.vehiclesInProgress ? 'N/A' : fleet.vehiclesInProgress
-									}}
+								<td class="generic-table-cell p-5">
+									{{ fleet.vehiclesInProgress ?? '0' }}
 								</td>
-								<td class="p-6 text-center">
-									{{ !fleet.vehiclesCompleted ? 'N/A' : fleet.vehiclesCompleted }}
+								<td class="generic-table-cell p-5">
+									{{ fleet.vehiclesCompleted ?? '0' }}
+								</td>
+								<td
+									class="generic-table-cell w-48 max-w-48 p-5 text-center text-wrap">
+									{{ fleet.brokerOrganization?.corpName ?? 'N/A' }}
 								</td>
 								<td class="p-6 text-end">
 									<button
