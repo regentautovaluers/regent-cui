@@ -48,7 +48,7 @@
 				@click="setShowTampered()"
 				:class="[
 					'table-filter-form-options',
-					showTampered ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
+					showTampered && 'bg-blue-600 text-white hover:bg-blue-600',
 				]">
 				Only Tampered
 			</button>
@@ -204,17 +204,17 @@
 							<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 								<tr>
 									<!-- Details will show client name and their contact -->
-									<th
-										scope="col"
-										class="table-headers tablet:table-cell hidden">
-										Inspection Details
-									</th>
+
 									<th
 										scope="col"
 										class="table-headers tablet:table-cell hidden">
 										Client Details
 									</th>
-
+									<th
+										scope="col"
+										class="table-headers tablet:table-cell hidden">
+										Inspection Details
+									</th>
 									<th
 										scope="col"
 										class="table-headers">
@@ -227,8 +227,15 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers laptop:table-cell hidden">
+										class="table-headers laptop:table-cell hidden"
+										v-if="activeView == 'pending'">
 										Pending
+									</th>
+									<th
+										scope="col"
+										class="table-headers laptop:table-cell hidden"
+										v-if="showTampered">
+										Note
 									</th>
 									<th
 										scope="col"
@@ -262,7 +269,16 @@
 											>authorizedby</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td
+										class="p-6 text-gray-300"
+										v-if="activeView == 'pending'">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookingstage</span
+										>
+									</td>
+									<td
+										class="p-6 text-gray-300"
+										v-if="showTampered">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>bookingstage</span
 										>
@@ -327,8 +343,14 @@
 										}}</span>
 									</td>
 									<td
-										class="laptop:table-cell hidden w-72 max-w-72 p-4 text-xs text-wrap">
+										class="laptop:table-cell hidden w-72 max-w-72 p-4 text-xs text-wrap"
+										v-if="activeView == 'pending'">
 										{{ valuation.pending ?? 'None' }}
+									</td>
+									<td
+										class="laptop:table-cell hidden w-48 max-w-48 p-4 text-sm text-wrap"
+										v-if="showTampered">
+										{{ valuation.inspectionNote ?? '-' }}
 									</td>
 									<td>
 										<button
