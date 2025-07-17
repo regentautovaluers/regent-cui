@@ -20,7 +20,7 @@
 							? 'border-b-blue-600 text-blue-600'
 							: 'border-b-inherit',
 					]">
-					<span>Pending</span>
+					<span>Ongoing</span>
 				</button>
 			</div>
 
