@@ -60,7 +60,7 @@
 			<div class="flex h-fit flex-col space-y-2">
 				<div class="flex justify-between">
 					<form
-						class="relative h-fit w-full md:w-[45%] lg:w-[30%]"
+						class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between"
 						@submit.prevent="handleSearchTriggered(searchPhrase)">
 						<input
 							type="text"
@@ -70,7 +70,7 @@
 							required />
 						<button
 							type="submit"
-							class="absolute top-0 right-2 flex size-14 translate-y-2 items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700">
+							class="generic-search-submit-button">
 							<SearchIcon />
 						</button>
 					</form>
@@ -204,7 +204,9 @@
 															selectedIndexToEdit = index;
 															isEditMemberDetailsModalOpen = true;
 														}
-													">
+													"
+													data-modal-target="edit-member-details"
+													data-modal-toggle="edit-member-details">
 													Edit Details
 												</button>
 											</li>
@@ -217,7 +219,9 @@
 															getMemberVehicles(member.id);
 															isGetVehiclesModalOpen = true;
 														}
-													">
+													"
+													data-modal-target="view-member-vehicles"
+													data-modal-toggle="view-member-vehicles">
 													View Vehicles
 												</button>
 											</li>
@@ -225,13 +229,15 @@
 												<button
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 													type="button"
+													data-modal-target="add-member-vehicles"
+													data-modal-toggle="add-member-vehicles"
 													@click="
 														() => {
 															selectedIndexToEdit = index;
 															isAddVehiclesModalOpen = true;
 														}
 													">
-													Add Vehicles
+													Add Vehicle
 												</button>
 											</li>
 										</ul>
@@ -378,6 +384,7 @@
 		v-if="isEditMemberDetailsModalOpen"
 		modalId="edit-member-details"
 		modalTitle="Edit Member Details"
+		modalPlacement="center-center"
 		@close-modal="
 			() => {
 				isEditMemberDetailsModalOpen = false;
@@ -396,6 +403,7 @@
 		v-if="isAddVehiclesModalOpen"
 		modalId="add-member-vehicles"
 		modalTitle="Add Vehicles"
+		modalPlacement="center-center"
 		@close-modal="
 			() => {
 				isAddVehiclesModalOpen = false;
@@ -407,13 +415,11 @@
 
 	<!-- View Member Vehicles modal -->
 	<ParentModal
-		v-if="isGetVehiclesModalOpen"
-		modalId="member-vehicles"
+		modalId="view-member-vehicles"
 		modalTitle="Member Vehicles"
 		class="relative p-3 py-2 md:p-4"
 		@close-modal="
 			() => {
-				isGetVehiclesModalOpen = false;
 				memberVehicles = [];
 			}
 		">
