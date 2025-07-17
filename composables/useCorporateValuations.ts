@@ -82,6 +82,11 @@ export const useCorporateValuations = () => {
 						valuations: response.data,
 						totalPages: response.requestExtras?.totalPages || 0,
 					};
+				} else {
+					return {
+						valuations: [],
+						totalPages: 0,
+					};
 				}
 			},
 			watch: [activeView, page],
