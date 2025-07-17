@@ -186,7 +186,7 @@
 									{{
 										(letter.assessmentStage as string)
 											?.toLowerCase()
-											.replaceAll('_', ' ') ?? 'N/A'
+											.replaceAll('_', ' ') ?? 'instructions received'
 									}}
 								</td>
 								<td class="w-48 max-w-48 px-2 text-sm text-wrap">
