@@ -1,16 +1,15 @@
 <template>
-	<form
-		@submit.prevent="searchDefaulter()"
-		class="w-full">
-		<h3 class="text-base font-semibold text-gray-500">Search From Database Type:</h3>
-		<div
-			class="tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 mt-3 grid grid-cols-2 gap-4">
-			<template
-				v-for="(option, index) in iprsSearchOptions"
-				:key="index">
+	<div class="h-full rounded-md bg-white p-8 shadow-sm">
+		<form
+			@submit.prevent="searchDefaulter()"
+			class="w-full">
+			<h3 class="text-sm font-semibold text-gray-500">What are you looking to verify?</h3>
+			<div
+				class="tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 mt-3 grid grid-cols-2 gap-4">
 				<!-- render a label for checks with no modal -->
 				<label
-					v-if="!option.opensInModal"
+					v-for="(option, index) in iprsSearchOptions.filter((opt) => !opt.opensInModal)"
+					:key="index"
 					:for="option.id"
 					:class="[
 						'inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105',
@@ -39,12 +38,13 @@
 
 				<!-- render a button for checks with a modal -->
 				<button
-					v-else
+					v-for="(option, index) in iprsSearchOptions.filter((opt) => opt.opensInModal)"
+					:key="index"
 					type="button"
 					@click="searchCollateralType = option"
 					class="inline-flex h-18 w-full cursor-pointer items-center justify-center space-x-2 rounded-md border p-3 text-gray-500 hover:bg-blue-100/50 hover:text-blue-500 active:scale-105"
-					:data-modal-target="`verify-${option.id}-modal`"
-					:data-modal-toggle="`verify-${option.id}-modal`">
+					:data-modal-target="option.opensInModal && `verify-${option.id}-modal`"
+					:data-modal-toggle="option.opensInModal && `verify-${option.id}-modal`">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="25"
@@ -56,137 +56,115 @@
 					</svg>
 					<span class="text-sm font-semibold text-inherit">{{ option.name }}</span>
 				</button>
-			</template>
-		</div>
+			</div>
+			<div
+				class="laptop:w-1/2 laptop-lg:w-1/3 relative mt-5 flex w-full items-center justify-between"
+				v-if="
+					iprsSearchOptions.filter((e) => !e.opensInModal).includes(searchCollateralType)
+				">
+				<input
+					type="text"
+					class="generic-input"
+					:placeholder="searchCollateralType.prompt"
+					v-model="searchDefaulterQuery" />
+				<button
+					type="submit"
+					class="generic-search-submit-button">
+					<FormSubmissionLoader
+						class="size-6 animate-spin text-white"
+						v-if="searchDefaulterLoading" />
+					<SearchIcon v-else />
+				</button>
+			</div>
+		</form>
+
+		<!-- IA Vehicle Details results -->
 		<div
-			class="laptop:w-1/2 laptop-lg:w-1/3 relative mt-5 flex w-full items-center justify-between"
-			v-if="iprsSearchOptions.filter((e) => !e.opensInModal).includes(searchCollateralType)">
-			<input
-				type="text"
-				class="generic-input"
-				:placeholder="searchCollateralType.prompt"
-				v-model="searchDefaulterQuery" />
-			<button
-				type="submit"
-				class="generic-search-submit-button">
-				<FormSubmissionLoader
-					class="size-6 animate-spin text-white"
-					v-if="searchDefaulterLoading" />
-				<SearchIcon v-else />
-			</button>
+			v-if="iaVehicleDetails"
+			class="border-b border-dashed border-gray-300 py-5">
+			<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+				Showing Result From Identify Africa Database
+			</h1>
+			<IAVehicleDetailsResultsCard
+				:reg-no="iaVehicleDetails.regNo"
+				:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
+				:vehicle-make="iaVehicleDetails.carMake"
+				:vehicle-model="iaVehicleDetails.carModel"
+				:chassis-number="iaVehicleDetails.ChassisNo"
+				:engine-number="iaVehicleDetails.engineNumber"
+				:vehicle-color="iaVehicleDetails.color"
+				:fuel-type="iaVehicleDetails.fuel_type"
+				:passenger-capacity="iaVehicleDetails.passengerCapacity" />
 		</div>
-	</form>
 
-	<!-- IA Vehicle Details results -->
-	<div
-		v-if="iaVehicleDetails"
-		class="border-b border-dashed border-gray-300 py-5">
-		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
-			Showing Result From Identify Africa Database
-		</h1>
-		<IAVehicleDetailsResultsCard
-			:reg-no="iaVehicleDetails.regNo"
-			:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
-			:vehicle-make="iaVehicleDetails.carMake"
-			:vehicle-model="iaVehicleDetails.carModel"
-			:chassis-number="iaVehicleDetails.ChassisNo"
-			:engine-number="iaVehicleDetails.engineNumber"
-			:vehicle-color="iaVehicleDetails.color"
-			:fuel-type="iaVehicleDetails.fuel_type"
-			:passenger-capacity="iaVehicleDetails.passengerCapacity" />
+		<!-- vehicle owner results -->
+		<div
+			v-if="iaVehicleOwnerDetails"
+			class="border-b border-dashed border-gray-300 pb-5">
+			<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+				Details of owner to whom vehicle was registered
+			</h1>
+			<IAVehicleOwnerDetails
+				:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
+				:id-number="iaVehicleOwnerDetails.ID_NUMBER"
+				:address="iaVehicleOwnerDetails.ADDRESS"
+				:phone-numer="iaVehicleOwnerDetails.TELNO"
+				:town="iaVehicleOwnerDetails.TOWN"
+				:owner-type="iaVehicleOwnerDetails.OWNER_TYPE" />
+		</div>
+
+		<!-- collateral results -->
+		<div
+			v-if="iaVehicleCollateralDetails"
+			class="border-b border-dashed border-gray-300 pb-5">
+			<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+				Where this vehicle been used as collateral
+			</h1>
+			<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
+		</div>
+
+		<!-- Verify National ID -->
+		<ParentModal
+			modal-id="verify-national-id-modal"
+			modal-title="Verify National ID">
+			<NationalIDVerficiationForm v-once />
+		</ParentModal>
+
+		<!-- Verify Alien ID -->
+		<ParentModal
+			modal-id="verify-alien-id-modal"
+			modal-title="Verify Alien ID">
+			<AlienIDVerficiationForm />
+		</ParentModal>
+
+		<!-- Verify Driving License -->
+		<ParentModal
+			modal-id="verify-driving-license-modal"
+			modal-title="Verify Driving License">
+			<VerifyDrivingLicenseForm />
+		</ParentModal>
+
+		<!-- Verify KRA PIN -->
+		<ParentModal
+			modal-id="verify-kra-pin-modal"
+			modal-title="Verify KRA PIN">
+			<VerifyKRAPinForm />
+		</ParentModal>
+
+		<!-- Verify Business -->
+		<ParentModal
+			modal-id="verify-business-modal"
+			modal-title="Verify Business">
+			<VerifyBusinessForm />
+		</ParentModal>
+
+		<!-- Verify Bank Account -->
+		<ParentModal
+			modal-id="verify-bank-account-modal"
+			modal-title="Verify Bank Account">
+			<VerifyBankAccountForm />
+		</ParentModal>
 	</div>
-
-	<!-- vehicle owner results -->
-	<div
-		v-if="iaVehicleOwnerDetails"
-		class="border-b border-dashed border-gray-300 pb-5">
-		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
-			Details of owner to whom vehicle was registered
-		</h1>
-		<IAVehicleOwnerDetails
-			:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
-			:id-number="iaVehicleOwnerDetails.ID_NUMBER"
-			:address="iaVehicleOwnerDetails.ADDRESS"
-			:phone-numer="iaVehicleOwnerDetails.TELNO"
-			:town="iaVehicleOwnerDetails.TOWN"
-			:owner-type="iaVehicleOwnerDetails.OWNER_TYPE" />
-	</div>
-
-	<!-- collateral results -->
-	<div
-		v-if="iaVehicleCollateralDetails"
-		class="border-b border-dashed border-gray-300 pb-5">
-		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
-			Where this vehicle been used as collateral
-		</h1>
-		<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
-	</div>
-
-	<!-- RAV fraud results -->
-	<template v-if="ravDefaulterDetails && ravDefaulterDetails.length > 0">
-		<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
-			Showing {{ ravDefaulterDetails.length }} Result(s) From Regent Auto Valuers Database
-		</h1>
-		<RAVDatabaseFraudResultsCard
-			v-for="(r, idx) in ravDefaulterDetails"
-			:key="idx"
-			:reg-no="r.registrationNumber"
-			:year-of-manufacture="r.yearOfManufacture"
-			:vehicle-make="r.make"
-			:vehicle-model="r.model"
-			:chassis-number="r.chassisNumber"
-			:engine-number="r.engineNumber"
-			:vehicle-color="r.color"
-			:defaulted-amount="r.amountDefaulted"
-			:incident-date="r.dateOfIncident"
-			:defrauded-institution="r.corporateClientName"
-			:contact-person-name="r.corporateClientName"
-			:contact-person-email="r.corpClientEmail"
-			:contact-person-phone="r.corpClientPhoneNumber"
-			:incident-description="r.description" />
-	</template>
-
-	<!-- Verify National ID -->
-	<ParentModal
-		modal-id="verify-national-id-modal"
-		modal-title="Verify National ID">
-		<NationalIDVerficiationForm />
-	</ParentModal>
-
-	<!-- Verify Alien ID -->
-	<ParentModal
-		modal-id="verify-alien-id-modal"
-		modal-title="Verify Alien ID">
-		<AlienIDVerficiationForm />
-	</ParentModal>
-
-	<!-- Verify Driving License -->
-	<ParentModal
-		modal-id="verify-driving-license-modal"
-		modal-title="Verify Driving License">
-		<VerifyDrivingLicenseForm />
-	</ParentModal>
-
-	<!-- Verify KRA PIN -->
-	<ParentModal
-		modal-id="verify-kra-pin-modal"
-		modal-title="Verify KRA PIN">
-		<VerifyKRAPinForm />
-	</ParentModal>
-
-	<!-- Verify Business -->
-	<ParentModal
-		modal-id="verify-business-modal"
-		modal-title="Verify Business">
-		<VerifyBusinessForm />
-	</ParentModal>
-
-	<!-- Verify Bank Account -->
-	<ParentModal
-		modal-id="verify-bank-account-modal"
-		modal-title="Verify Bank Account">
-		<VerifyBankAccountForm />
-	</ParentModal>
 </template>
 
 <script setup lang="ts">
