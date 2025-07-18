@@ -14,7 +14,10 @@
 				:street-view-control="false">
 				<!-- where logged in client is -->
 				<CustomMarker
-					:options="{ position: clientCoordinates, anchorPoint: 'BOTTOM_CENTER' }">
+					:options="{
+						position: { lat: $clientLocation.lat, lng: $clientLocation.lng },
+						anchorPoint: 'BOTTOM_CENTER',
+					}">
 					<div class="myloc-box w-fit rounded-lg bg-pink-600 p-2 text-white">
 						<h1 class="text-lg font-semibold">Your Location</h1>
 					</div>
@@ -68,6 +71,7 @@
 					]">
 					<span>Unregistered Client</span>
 				</button>
+				client location: {{ $clientLocation }}
 			</div>
 
 			<RequestRAMember
