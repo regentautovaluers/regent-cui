@@ -6,7 +6,7 @@
 				:api-key="googleMapsApiKey"
 				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
-				:center="{ lat: $clientLocation.lat, lng: $clientLocation.lng }"
+				:center="{ lat: clientLocation.lat, lng: clientLocation.lng }"
 				:map-type-control="false"
 				:zoom="12"
 				:zoom-control="true"
@@ -15,7 +15,7 @@
 				<!-- where logged in client is -->
 				<CustomMarker
 					:options="{
-						position: { lat: $clientLocation.lat, lng: $clientLocation.lng },
+						position: { lat: clientLocation.lat, lng: clientLocation.lng },
 						anchorPoint: 'BOTTOM_CENTER',
 					}">
 					<div class="myloc-box w-fit rounded-lg bg-pink-600 p-2 text-white">
@@ -71,7 +71,7 @@
 					]">
 					<span>Unregistered Client</span>
 				</button>
-				client location: {{ $clientLocation }}
+				client location: {{ (clientLocation, error) }}
 			</div>
 
 			<RequestRAMember
@@ -110,7 +110,6 @@
 	});
 
 	const route = useRoute();
-	const { $clientLocation } = useNuxtApp();
 	const currentRegForm: Ref<number> = ref(0);
 	const clientCoordinates: Ref<LocationCoords> = ref({
 		lat: Number(route.query.client_lat),
@@ -120,6 +119,7 @@
 	const polylineCoords: Ref<any[]> = ref([]);
 	const towingDistance: Ref<number> = ref(0);
 	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { error, clientLocation } = useClientLocation();
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
 		const index = extraLocationMarkers.value.findIndex((marker) => marker.id === markerInfo.id);
