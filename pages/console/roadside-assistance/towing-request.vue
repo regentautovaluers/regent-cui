@@ -6,6 +6,7 @@
 				:api-key="googleMapsApiKey"
 				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
+				:center="{ lat: $clientLocation.lat, lng: $clientLocation.lng }"
 				:map-type-control="false"
 				:zoom="12"
 				:zoom-control="true"
@@ -105,7 +106,7 @@
 	});
 
 	const route = useRoute();
-	const runtimeConfig = useRuntimeConfig();
+	const { $clientLocation } = useNuxtApp();
 	const currentRegForm: Ref<number> = ref(0);
 	const clientCoordinates: Ref<LocationCoords> = ref({
 		lat: Number(route.query.client_lat),
