@@ -233,8 +233,7 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers laptop:table-cell hidden"
-										v-if="showTampered">
+										class="table-headers laptop:table-cell hidden">
 										Note
 									</th>
 									<th
@@ -276,9 +275,7 @@
 											>bookingstage</span
 										>
 									</td>
-									<td
-										class="p-6 text-gray-300"
-										v-if="showTampered">
+									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>bookingstage</span
 										>
@@ -348,8 +345,7 @@
 										{{ valuation.pending ?? 'None' }}
 									</td>
 									<td
-										class="laptop:table-cell hidden w-48 max-w-48 p-4 text-sm text-wrap"
-										v-if="showTampered">
+										class="laptop:table-cell hidden w-48 max-w-48 p-4 text-sm text-wrap">
 										{{ valuation.inspectionNote ?? '-' }}
 									</td>
 									<td>
@@ -472,7 +468,6 @@
 		executeFetchValuations,
 		clearFilters,
 	} = useCorporateValuations();
-	const isFilterFormOpen: Ref<boolean> = ref(false);
 
 	function setShowTampered() {
 		if (showTampered.value == null) {
