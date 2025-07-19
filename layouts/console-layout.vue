@@ -52,9 +52,6 @@
 									<HomeIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'ava-memberships-home'">
-									<MembershipsIcon classes="size-5 text-inherit" />
-								</template>
-								<template v-else-if="link.routeName == 'ra-all-incidents'">
 									<AssistanceIcon classes="size-5 text-inherit" />
 								</template>
 								<template v-else-if="link.routeName == 'vehicle-valuation-home'">

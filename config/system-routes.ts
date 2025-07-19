@@ -9,7 +9,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 	},
 	{
 		id: 1,
-		screenName: 'AVA Memberships',
+		screenName: 'AVA Road Assistance',
 		routeName: 'ava-memberships-home',
 		renderRoute: true,
 		childRoutes: [
@@ -21,7 +21,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 			},
 			{
 				id: 2,
-				screenName: 'Roadside Members',
+				screenName: 'Road Members',
 				routeName: 'ava-ra-members',
 				renderRoute: true,
 			},
@@ -31,54 +31,22 @@ const navigationRoutes: readonly CoreRoute[] = [
 				routeName: 'ava-ee-members',
 				renderRoute: true,
 			},
-		],
-	},
-	{
-		id: 2,
-		screenName: 'Roadside Assistance',
-		routeName: 'ra-all-incidents',
-		renderRoute: true,
-		childRoutes: [
-			{
-				id: 1,
-				screenName: 'Request Towing',
-				routeName: 'ra-towing-request',
-				renderRoute: true,
-			},
-			{
-				id: 2,
-				screenName: 'Request Tyrechange',
-				routeName: 'ra-tyrechange-request',
-				renderRoute: true,
-			},
-			{
-				id: 3,
-				screenName: 'Request Jumpstarting',
-				routeName: 'ra-jumpstarting-request',
-				renderRoute: true,
-			},
 			{
 				id: 4,
-				screenName: 'Request Fuel Delivery',
-				routeName: 'ra-fueldelivery-request',
+				screenName: 'Road Assistance Reports',
+				routeName: 'ra-all-incidents',
 				renderRoute: true,
 			},
 			{
 				id: 5,
-				screenName: 'Roadside Assistance Report',
-				routeName: 'ra-expanded-report',
-				renderRoute: false,
-			},
-			{
-				id: 6,
-				screenName: 'Roadside Assistance Report',
-				routeName: 'ra-minimized-report',
-				renderRoute: false,
+				screenName: 'Request Road Assistance',
+				routeName: 'ra-towing-request',
+				renderRoute: true,
 			},
 		],
 	},
 	{
-		id: 3,
+		id: 2,
 		screenName: 'Vehicle Valuation',
 		routeName: 'vehicle-valuation-home',
 		renderRoute: true,
@@ -104,7 +72,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 		],
 	},
 	{
-		id: 4,
+		id: 3,
 		screenName: 'Collateral Verification Hub',
 		routeName: 'collateral-verification-query-collateral',
 		renderRoute: true,
@@ -130,7 +98,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 		],
 	},
 	{
-		id: 5,
+		id: 4,
 		screenName: 'Regent Tracking',
 		routeName: 'regent-tracking-home',
 		renderRoute: true,
