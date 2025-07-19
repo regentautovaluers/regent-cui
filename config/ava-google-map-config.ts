@@ -95,3 +95,5 @@ export const googleMapStyle = [
 	},
 	{},
 ];
+
+export const googleMapsApiKey: string = 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY';

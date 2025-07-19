@@ -6,15 +6,18 @@
 				:api-key="googleMapsApiKey"
 				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
+				:center="{ lat: coords.latitude, lng: coords.longitude }"
 				:map-type-control="false"
-				:center="clientCoordinates"
 				:zoom="13"
 				:zoom-control="true"
 				:fullscreen-control="false"
 				:street-view-control="false">
 				<!-- where logged in client is -->
 				<CustomMarker
-					:options="{ position: clientCoordinates, anchorPoint: 'BOTTOM_CENTER' }">
+					:options="{
+						position: { lat: coords.latitude, lng: coords.longitude },
+						anchorPoint: 'BOTTOM_CENTER',
+					}">
 					<div class="myloc-box w-fit rounded-lg bg-pink-600 p-2 text-white">
 						<h1 class="text-lg font-semibold">Your Location</h1>
 					</div>
@@ -39,7 +42,7 @@
 		<div>
 			<h1 class="mb-4 text-xl font-semibold antialiased">Request Tyrechange</h1>
 
-			<div class="space-x-4 border-b font-semibold text-gray-500 lg:w-fit">
+			<div class="space-x-4 font-semibold text-gray-500 lg:w-fit">
 				<button
 					@click="currentRegForm = 0"
 					:class="[
@@ -86,24 +89,18 @@
 
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
-	import { type LocationCoords, type MapCoordsMarker } from '~/types';
-	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
+	import { type MapCoordsMarker } from '~/types';
+	import { googleMapStyle, googleMapsApiKey } from '~/config/ava-google-map-config';
+	import { useGeolocation } from '@vueuse/core';
 
 	definePageMeta({
 		name: 'ra-tyrechange-request',
 		layout: 'console-layout',
 	});
 
-	const route = useRoute();
-	const runtimeConfig = useRuntimeConfig();
 	const currentRegForm: Ref<number> = ref(0);
-	const clientCoordinates: Ref<LocationCoords> = ref({
-		lat: Number(route.query.client_lat),
-		lng: Number(route.query.client_lng),
-	});
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
 		const index = extraLocationMarkers.value.findIndex((marker) => marker.id === markerInfo.id);

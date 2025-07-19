@@ -6,7 +6,7 @@
 				:api-key="googleMapsApiKey"
 				:styles="googleMapStyle"
 				style="width: 100%; height: 100%"
-				:center="{ lat: clientLocation.lat, lng: clientLocation.lng }"
+				:center="{ lat: coords.latitude, lng: coords.longitude }"
 				:map-type-control="false"
 				:zoom="12"
 				:zoom-control="true"
@@ -15,7 +15,7 @@
 				<!-- where logged in client is -->
 				<CustomMarker
 					:options="{
-						position: { lat: clientLocation.lat, lng: clientLocation.lng },
+						position: { lat: coords.latitude, lng: coords.longitude },
 						anchorPoint: 'BOTTOM_CENTER',
 					}">
 					<div class="myloc-box w-fit rounded-lg bg-pink-600 p-2 text-white">
@@ -50,13 +50,13 @@
 		</div>
 		<div>
 			<h1 class="mb-4 text-xl font-semibold antialiased">Request Towing</h1>
-			<div class="space-x-4 border-b font-semibold text-gray-500">
+			<div class="space-x-4 text-gray-500">
 				<button
 					@click="currentRegForm = 0"
 					:class="[
 						'border-b-2 pb-1',
 						currentRegForm === 0
-							? 'border-b-blue-600 text-blue-600'
+							? 'border-b-blue-600 font-semibold text-blue-600'
 							: 'border-b-inherit',
 					]">
 					<span>Registered Client</span>
@@ -66,12 +66,11 @@
 					:class="[
 						'border-b-2 pb-1',
 						currentRegForm === 1
-							? 'border-b-blue-600 text-blue-600'
+							? 'border-b-blue-600 font-semibold text-blue-600'
 							: 'border-b-inherit',
 					]">
 					<span>Unregistered Client</span>
 				</button>
-				client location: {{ (clientLocation, error) }}
 			</div>
 
 			<RequestRAMember
@@ -100,26 +99,20 @@
 
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker, Polyline } from 'vue3-google-map';
-	import { type LocationCoords, type MapCoordsMarker } from '~/types';
-	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
+	import { type MapCoordsMarker } from '~/types';
+	import { googleMapStyle, googleMapsApiKey } from '~/config/ava-google-map-config';
+	import { useGeolocation } from '@vueuse/core';
 
 	definePageMeta({
 		name: 'ra-towing-request',
 		layout: 'console-layout',
 	});
 
-	const route = useRoute();
+	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
 	const currentRegForm: Ref<number> = ref(0);
-	const clientCoordinates: Ref<LocationCoords> = ref({
-		lat: Number(route.query.client_lat),
-		lng: Number(route.query.client_lng),
-	});
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
 	const polylineCoords: Ref<any[]> = ref([]);
 	const towingDistance: Ref<number> = ref(0);
-	const { googleMapsApiKey } = useGoogleMapsConfig();
-	const { error, clientLocation } = useClientLocation();
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
 		const index = extraLocationMarkers.value.findIndex((marker) => marker.id === markerInfo.id);
