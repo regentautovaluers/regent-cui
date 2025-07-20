@@ -1,88 +1,24 @@
 <template>
 	<main class="laptop-lg:grid-cols-[60%_40%] relative grid h-screen grid-cols-1">
-		<section class="hidden xl:block">
-			<div
-				id="default-carousel"
-				class="relative h-full w-full"
-				data-carousel="slide">
-				<!-- Carousel wrapper -->
-				<div class="relative h-full overflow-hidden">
-					<!-- Item 1 -->
-					<div
-						v-for="(slide, index) in slides"
-						:key="index"
-						class="hidden duration-1000 ease-in-out"
-						data-carousel-item>
-						<img
-							:src="slide"
-							class="size-full object-cover"
-							alt="Landing Page Slide" />
-					</div>
-				</div>
-				<!-- Slider indicators -->
-				<div
-					class="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse">
-					<button
-						v-for="index in slides"
-						:key="index"
-						type="button"
-						class="h-3 w-3 rounded-full"
-						aria-current="true"
-						:aria-label="'Slide ' + index"
-						:data-carousel-slide-to="index"></button>
-				</div>
-				<!-- Slider controls -->
-				<button
-					type="button"
-					class="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-					data-carousel-prev>
-					<span
-						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-						<svg
-							class="h-4 w-4 text-white rtl:rotate-180"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 6 10">
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M5 1 1 5l4 4" />
-						</svg>
-						<span class="sr-only">Previous</span>
-					</span>
-				</button>
-				<button
-					type="button"
-					class="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-					data-carousel-next>
-					<span
-						class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-						<svg
-							class="h-4 w-4 text-white rtl:rotate-180"
-							aria-hidden="true"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 6 10">
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="m1 9 4-4-4-4" />
-						</svg>
-						<span class="sr-only">Next</span>
-					</span>
-				</button>
-			</div>
+		<section class="hidden w-full xl:block">
+			<!-- Carousel -->
+			<ClientOnly>
+				<ImageCarousel
+					:images="[
+						'/images/slides/landingpage/1.jpg',
+						'/images/slides/landingpage/2.jpg',
+						'/images/slides/landingpage/3.jpg',
+						'/images/slides/landingpage/4.jpg',
+					]"
+					carousel-height="h-full"
+					control-buttons-position="bottom-4" />
+			</ClientOnly>
 		</section>
 		<div class="flex flex-col justify-between">
 			<div class="flex h-fit items-center px-4 py-2 md:h-1/4 md:px-12 xl:px-20">
 				<img
 					src="/images/app-logo.png"
-					class="tablet:h-20 laptop:h-24 h-16"
+					class="tablet:h-20 h-16"
 					alt="Flowbite Logo" />
 			</div>
 			<div class="flex-grow px-4 py-4 md:px-16 xl:px-24">

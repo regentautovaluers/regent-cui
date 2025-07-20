@@ -137,7 +137,18 @@
 				</template>
 			</ul>
 			<!-- Carousel -->
-			<SidenavCarousel v-if="sidebarExpanded" />
+			<ClientOnly>
+				<ImageCarousel
+					v-show="sidebarExpanded"
+					:images="[
+						'/images/slides/landingpage/1.jpg',
+						'/images/slides/landingpage/2.jpg',
+						'/images/slides/landingpage/3.jpg',
+						'/images/slides/landingpage/4.jpg',
+					]"
+					carousel-height="h-68"
+					control-buttons-position="top-4" />
+			</ClientOnly>
 
 			<ul class="space-y-2">
 				<!-- settings -->
@@ -191,7 +202,7 @@
 		]"
 		style="background-color: #f8faf8">
 		<nav
-			class="sticky top-0 z-20 flex h-[8%] max-h-[8%] min-h-[8%] w-full items-center justify-between border-b bg-white px-2"
+			class="sticky top-0 z-20 flex h-[75px] max-h-[75px] min-h-[75px] w-full items-center justify-between border-b bg-white px-2"
 			id="top-nav">
 			<div class="flex items-center space-x-2 text-gray-700">
 				<button
