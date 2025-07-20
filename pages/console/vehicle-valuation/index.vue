@@ -27,19 +27,21 @@
 			<!-- search box -->
 			<div
 				class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
-				<input
-					type="text"
-					class="generic-input"
-					placeholder="Enter Exact Reg or Booking No."
-					v-model="searchRegNo" />
-				<button
-					type="submit"
-					class="generic-search-submit-button">
-					<SearchIcon />
-				</button>
+				<form
+					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
+					<input
+						type="text"
+						class="generic-input"
+						placeholder="Enter Exact Reg or Booking No."
+						v-model="searchRegNo" />
+					<button
+						type="submit"
+						class="generic-search-submit-button">
+						<SearchIcon />
+					</button>
+				</form>
 			</div>
 		</div>
-
 		<form
 			@submit.prevent="executeFetchValuations()"
 			class="table-filters-form">
@@ -196,8 +198,6 @@
 			<div
 				class="flex h-full flex-col"
 				v-else>
-				<!-- search & filter controls -->
-
 				<div class="mt-5 flex-grow">
 					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 						<table class="w-full text-left text-gray-500">

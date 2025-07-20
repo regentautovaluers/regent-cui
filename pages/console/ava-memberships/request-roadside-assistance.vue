@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="console-layout-spacing grid flex-grow grid-cols-1 lg:h-full lg:grid-cols-[.15fr_.85fr]">
+		class="console-layout-spacing grid flex-grow grid-cols-1 gap-10 lg:h-full lg:grid-cols-[.15fr_.85fr]">
 		<div class="flex h-fit flex-col lg:h-full">
 			<h1 class="mb-2 text-lg font-extrabold">Request</h1>
 			<div class="flex flex-grow flex-col space-y-2">
