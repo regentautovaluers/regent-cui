@@ -1,8 +1,7 @@
 const useUserAccounts = () => {
 	// for when loading users
-	const currentPage: Ref<number> = ref(0);
-	const totalPages: Ref<number> = ref(0);
-	const usersList: Ref<any[]> = ref([]);
+	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
+	const usersList: ComputedRef<any[]> = computed(() => fetchedData.value?.users);
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
 	const { getPrincipal } = useAuth();
@@ -12,7 +11,11 @@ const useUserAccounts = () => {
 	const addNewAccountLoading: Ref<boolean> = ref(false);
 	const updateCorporateAccountLoading: Ref<boolean> = ref(false);
 
-	const { status: fetchStatus, error: fetchError } = useFetch(
+	const {
+		status: fetchStatus,
+		error: fetchError,
+		data: fetchedData,
+	} = useFetch(
 		`/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`,
 		{
 			key: 'corporate-users',
@@ -23,15 +26,24 @@ const useUserAccounts = () => {
 			},
 			server: false,
 			lazy: true,
-			watch: [currentPage],
-			onResponse({ response }) {
-				if (response.ok && response._data.data !== null) {
-					const data = response._data.data;
-					usersList.value = data;
-					const extras = response._data.requestExtras;
-					totalPages.value = extras.totalPages;
+			transform(response: any) {
+				if (
+					response?.data &&
+					Array.isArray(response.data) &&
+					(response.data as []).length > 0
+				) {
+					return {
+						users: response.data,
+						totalPages: response.requestExtras?.totalPages || 0,
+					};
+				} else {
+					return {
+						users: [],
+						totalPages: 0,
+					};
 				}
 			},
+			watch: [page],
 		},
 	);
 

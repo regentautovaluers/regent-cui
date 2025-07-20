@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="h-fit rounded-lg border px-6 py-2 shadow-sm md:py-6"
+		class="h-full rounded-lg border px-6 py-2 shadow-sm md:py-6"
 		@submit.prevent="
 			addNewAccount(
 				username,
@@ -15,7 +15,7 @@
 		">
 		<h1 class="text-lg font-semibold">Add New User</h1>
 		<div>
-			<label class="font-bold text-gray-500">Full Name</label>
+			<label class="generic-input-label generic-input-required-label">Full Name</label>
 			<div class="flex w-full space-x-4">
 				<input
 					type="text"
@@ -33,7 +33,7 @@
 		</div>
 		<div class="mt-3">
 			<label
-				class="font-bold text-gray-500"
+				class="generic-input-label generic-input-required-label"
 				for="email"
 				>Email</label
 			>
@@ -49,7 +49,7 @@
 		</div>
 		<div class="mt-3">
 			<label
-				class="font-bold text-gray-500"
+				class="generic-input-label"
 				for="phone"
 				>Phone Number</label
 			>
@@ -64,7 +64,7 @@
 			</div>
 		</div>
 		<div class="mt-3">
-			<label class="font-bold text-gray-500">Password</label>
+			<label class="generic-input-label generic-input-required-label">Password</label>
 			<div class="flex flex-grow">
 				<input
 					type="password"
@@ -80,7 +80,7 @@
 		<div class="relative mt-3">
 			<label
 				for="user-branch"
-				class="font-bold text-gray-500"
+				class="generic-input-label"
 				>User's Branch</label
 			>
 			<select
@@ -101,7 +101,7 @@
 				v-if="fetchStatus === 'pending'" />
 		</div>
 		<div class="mt-3">
-			<label class="font-bold text-gray-500">Role In Company</label>
+			<label class="generic-input-label">Role In Company</label>
 			<div class="flex flex-grow">
 				<input
 					type="text"
@@ -113,7 +113,7 @@
 			</div>
 		</div>
 		<div class="mt-3">
-			<label class="font-bold text-gray-500">User Privilege</label>
+			<label class="generic-input-label">User Privilege</label>
 			<div class="flex flex-grow space-x-4">
 				<div class="flex w-full items-center justify-between space-x-4">
 					<label class="generic-input flex w-1/2 items-center justify-between">
@@ -144,7 +144,7 @@
 		<button
 			type="submit"
 			:class="[
-				'generic-form-submit mt-3 w-full',
+				'generic-form-submit laptop:w-1/2 mt-3',
 				addNewAccountLoading && 'skeleton skeleton-animated',
 			]">
 			{{ addNewAccountLoading ? 'Please Wait...' : 'Add New User' }}

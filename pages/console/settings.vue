@@ -3,7 +3,7 @@
 		class="console-layout-spacing grid flex-grow grid-cols-1 gap-10 lg:h-full lg:grid-cols-[.15fr_.85fr]">
 		<div class="flex h-fit flex-col lg:h-full">
 			<h1 class="mb-2 text-lg font-extrabold md:text-3xl">Actions</h1>
-			<div class="flex flex-grow flex-col space-y-2">
+			<div class="flex flex-grow flex-col space-y-2 text-sm">
 				<NuxtLink
 					:to="{ name: 'settings-my-account' }"
 					class="rounded-lg p-2 text-gray-500"

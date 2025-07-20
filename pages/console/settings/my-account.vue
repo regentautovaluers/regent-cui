@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="h-fit rounded-lg border px-6 py-2 shadow-sm md:py-6"
+		class="h-full rounded-lg border px-6 py-2 shadow-sm md:py-6"
 		@submit.prevent="
 			updateMyAccountDetails(
 				getPrincipal.userId,
@@ -86,10 +86,10 @@
 		<button
 			type="submit"
 			:class="[
-				'generic-form-submit mt-3',
+				'generic-form-submit laptop:w-1/2 mt-3',
 				updateCorporateAccountLoading && 'skeleton skeleton-animated',
 			]">
-			{{ updateCorporateAccountLoading ? 'Please Wait...' : 'Update' }}
+			{{ updateCorporateAccountLoading ? 'Please Wait...' : 'Save Changes' }}
 		</button>
 	</form>
 </template>
