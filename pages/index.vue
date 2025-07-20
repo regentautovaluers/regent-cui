@@ -43,11 +43,11 @@
 	</form>
 
 	<!-- link to forgot password -->
-	<NuxtLink
+	<!-- <NuxtLink
 		:to="{ name: 'exterior-forgot-password' }"
 		class="generic-quick-link text-sm">
 		Forgot Password
-	</NuxtLink>
+	</NuxtLink> -->
 </template>
 
 <script setup lang="ts">
