@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white p-8 rounded-md">
+	<div class="bg-white p-8 rounded-md shadow-sm">
 		<OnboardFraudsters />
 	</div>
 </template>
