@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="h-full rounded-lg border px-6 py-2 shadow-sm md:py-6"
+		class="h-full rounded-lg border px-6 py-2 bg-white shadow-sm md:py-6"
 		@submit.prevent="
 			updateMyAccountDetails(
 				getPrincipal.userId,

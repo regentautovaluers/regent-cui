@@ -1,7 +1,8 @@
 <template>
 	<div class="console-layout-spacing">
-		<div class="flex h-fit flex-col mb-5">
-			<div class="laptop:w-fit flex w-full items-center space-x-2 rounded-lg border-[1px]">
+		<div class="mb-5 flex h-fit flex-col">
+			<div
+				class="laptop:w-fit flex w-full items-center space-x-2 rounded-lg border-[1px] bg-white">
 				<NuxtLink
 					:to="{ name: 'ra-towing-request' }"
 					class="h-10 rounded-lg p-2 text-sm text-gray-500"
