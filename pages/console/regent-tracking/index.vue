@@ -4,6 +4,13 @@
 			'ease-liner relative h-full overflow-clip border shadow-md transition-all duration-200',
 			activeTrackedDevice ? 'console-layout-spacing flex' : 'block',
 		]">
+		<button
+			class="generic-form-submit w-fit"
+			data-modal-target="regent-track-login-modal"
+			data-modal-toggle="regent-track-login-modal"
+			v-if="!regentTrackingAuthToken">
+			Login
+		</button>
 		<GoogleMap
 			ref="mapRef"
 			:api-key="googleMapsApiKey"
@@ -272,15 +279,11 @@
 		</div>
 
 		<!-- Login modal -->
-		<template v-if="!regentTrackingAuthToken">
-			<ParentModal
-				modal-id="regent-track-login-modal"
-				modal-title="Regent Tracking Login"
-				v-if="isRegentTrackLoginModalOpen"
-				@close-modal="isRegentTrackLoginModalOpen = false">
-				<RegentTrackingLogin />
-			</ParentModal>
-		</template>
+		<ParentModal
+			modal-id="regent-track-login-modal"
+			modal-title="Regent Tracking Login">
+			<RegentTrackingLogin />
+		</ParentModal>
 
 		<!-- search box teleported to the navbar -->
 		<Teleport to="#custom-search-box">

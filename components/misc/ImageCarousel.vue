@@ -52,7 +52,7 @@
 	let intervalId: number | null = null; // Use `let` for reassignment
 
 	// Transition duration from CSS (in milliseconds)
-	const TRANSITION_DURATION = 1500;
+	const TRANSITION_DURATION = 4000;
 
 	/**
 	 * Updates the active slide and manages the leaving slide for animation.

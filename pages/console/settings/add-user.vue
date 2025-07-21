@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="h-full rounded-lg border px-6 py-2 shadow-sm md:py-6"
+		class="h-full rounded-lg border bg-white px-6 py-2 shadow-sm md:py-6"
 		@submit.prevent="
 			addNewAccount(
 				username,
@@ -13,7 +13,6 @@
 				cleanRefs,
 			)
 		">
-		<h1 class="text-lg font-semibold">Add New User</h1>
 		<div>
 			<label class="generic-input-label generic-input-required-label">Full Name</label>
 			<div class="flex w-full space-x-4">
