@@ -100,7 +100,7 @@
 }
 
 @utility generic-search-submit-button {
-	@apply tablet:h-[60px] absolute top-0 right-0 flex size-14 h-[55px] items-center justify-center rounded-lg rounded-l-none bg-blue-600 hover:bg-blue-700;
+	@apply absolute top-0 right-0 flex w-14 h-full items-center justify-center rounded-lg rounded-l-none bg-blue-600 hover:bg-blue-700;
 }
 
 @utility generic-table-cell {

@@ -64,7 +64,7 @@
 							@submit.prevent="handleSearchTriggered(searchPhrase)">
 							<input
 								type="text"
-								class="generic-input"
+								class="generic-input h-[50px]"
 								placeholder="Search Client Name"
 								v-model="searchPhrase"
 								required />
