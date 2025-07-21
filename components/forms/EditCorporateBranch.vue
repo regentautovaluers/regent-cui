@@ -1,8 +1,8 @@
 <template>
 	<form @submit.prevent="editCorporateBranch(branchName, branchLocation, props.branchId)">
-		<div class="mt-3 flex flex-col">
+		<div class="flex flex-col">
 			<label
-				class="font-bold text-gray-500"
+				class="generic-input-label"
 				for="branch-name"
 				>Branch Name</label
 			>
@@ -18,7 +18,7 @@
 		</div>
 		<div class="mt-3 flex flex-col">
 			<label
-				class="font-bold text-gray-500"
+				class="generic-input-label"
 				for="branch-location"
 				>Branch Location</label
 			>

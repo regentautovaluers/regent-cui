@@ -36,12 +36,20 @@
 			class="h-full"
 			v-else>
 			<!-- search & filter controls -->
-			<div class="flex h-12 items-center justify-end space-x-2">
+			<div class="flex h-10 items-center justify-between space-x-2">
+				<button
+					class="h-[50px] text-sm font-semibold text-blue-600 hover:text-blue-600"
+					type="button"
+					data-modal-target="add-corporate-branch-modal"
+					data-modal-toggle="add-corporate-branch-modal">
+					Add New Branch
+				</button>
+
 				<form
 					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
 					<input
 						type="text"
-						class="generic-input"
+						class="generic-input h-[50px]"
 						placeholder="Search Name, Email or Phone" />
 					<button
 						type="submit"
@@ -104,43 +112,17 @@
 								<td class="p-6">{{ branch.branchLocation }}</td>
 								<td class="flex items-center justify-end p-6">
 									<button
-										:id="'dropdownLeftButton' + index"
-										:data-dropdown-toggle="'dropdownLeft' + index"
-										data-dropdown-placement="left"
-										type="button">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="1em"
-											height="1em"
-											viewBox="0 0 16 16"
-											class="size-6">
-											<MenuKebabIcon />
-										</svg>
+										type="button"
+										class="text-blue-600 hover:font-semibold hover:text-blue-700"
+										data-modal-target="edit-corporate-branch-modal"
+										data-modal-toggle="edit-corporate-branch-modal"
+										@click="
+											() => {
+												selectedIndexToEdit = index;
+											}
+										">
+										Edit
 									</button>
-									<!-- Dropdown menu -->
-									<div
-										:id="'dropdownLeft' + index"
-										class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
-										<ul
-											class="py-2 text-gray-500"
-											aria-labelledby="dropdownLeftButton">
-											<li>
-												<button
-													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
-													type="button"
-													data-modal-target="edit-corporate-branch-modal"
-													data-modal-toggle="edit-corporate-branch-modal"
-													@click="
-														() => {
-															selectedIndexToEdit = index;
-															isEditCorpBranchModalOpen = true;
-														}
-													">
-													Edit Branch
-												</button>
-											</li>
-										</ul>
-									</div>
 								</td>
 							</tr>
 
@@ -178,14 +160,13 @@
 			modal-title="Edit Branch"
 			modal-id="edit-corporate-branch-modal"
 			modal-placement="center-center"
-			v-if="isEditCorpBranchModalOpen"
 			@close-modal="
 				() => {
-					isEditCorpBranchModalOpen = false;
 					selectedIndexToEdit = -1;
 				}
 			">
 			<EditCorporateBranch
+				v-if="corporateBranches && selectedIndexToEdit > -1"
 				:branch-id="corporateBranches[selectedIndexToEdit].branchId"
 				:branch-name="corporateBranches[selectedIndexToEdit].branchName"
 				:branch-location="corporateBranches[selectedIndexToEdit].branchLocation" />
@@ -194,7 +175,8 @@
 		<!-- Modal to add corporate branch -->
 		<ParentModal
 			modal-title="Add Branch"
-			modal-id="add-corporate-branch-modal">
+			modal-id="add-corporate-branch-modal"
+			modal-placement="center-center">
 			<AddCorporateBranch />
 		</ParentModal>
 	</div>
@@ -206,7 +188,6 @@
 	});
 
 	const selectedIndexToEdit: Ref<any> = ref(-1);
-	const isEditCorpBranchModalOpen: Ref<boolean> = ref(false);
 	const { corporateBranches, fetchStatus, fetchError, reloadCorporateBranches } =
 		useCorporateBranch();
 </script>
