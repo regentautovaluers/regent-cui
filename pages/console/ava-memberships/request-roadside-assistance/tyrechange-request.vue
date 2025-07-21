@@ -1,5 +1,5 @@
 <template>
-	<div class="console-layout-spacing grid grid-cols-1 gap-4 lg:grid-cols-[.5fr_.5fr]">
+	<div class="grid grid-cols-1 gap-4 lg:grid-cols-[.5fr_.5fr]">
 		<div class="border-opacity-50 overflow-clip rounded-lg border border-gray-500">
 			<GoogleMap
 				ref="mapRef"
