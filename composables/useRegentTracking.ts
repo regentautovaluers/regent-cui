@@ -54,6 +54,9 @@ export const useRegentTracking = () => {
 	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
 		'regent-tracking-auth-token',
 	);
+	const trackedAssetsFetchUrl: ComputedRef<String> = computed(
+		() => `/api/get_devices?lang=en&user_api_hash=${regentTrackingAuthToken.value}`,
+	);
 	const runtimeConfig = useRuntimeConfig();
 	const email: Ref<string> = ref('');
 	const password: Ref<string> = ref('');
@@ -104,7 +107,11 @@ export const useRegentTracking = () => {
 		status: fetchTrackedVehiclesStatus,
 		execute: fetchTrackedVehicles,
 		data: trackedVehicles,
-	} = useFetch(`/api/get_devices?lang=en&user_api_hash=${regentTrackingAuthToken.value}`, {
+	} = useFetch('/api/get_devices', {
+		query: {
+			lang: 'en',
+			user_api_hash: regentTrackingAuthToken,
+		},
 		key: 'tracked-vehicles',
 		baseURL: runtimeConfig.public.REGENT_TRACK_BASE_URL,
 		method: 'GET',
@@ -113,7 +120,7 @@ export const useRegentTracking = () => {
 		},
 		server: false,
 		lazy: true,
-		watch: [regentTrackingAuthToken],
+		// immediate: false,
 		transform(data: any) {
 			if (data[0].items && Array.isArray(data[0].items) && (data[0].items as []).length > 0) {
 				return data[0].items.map((item: any) => {
@@ -141,16 +148,14 @@ export const useRegentTracking = () => {
 				});
 			}
 		},
-		onResponse({ response }) {
-			if (!response.ok) {
-				useToast('Failed to retrieve tracked!.', {
-					type: 'danger',
-					showIcon: true,
-					showCloseButton: false,
-					hideProgressBar: true,
-					transition: 'slide',
-				});
-			}
+		onResponseError() {
+			useToast('Failed to retrieve tracked!.', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+				transition: 'slide',
+			});
 		},
 	});
 

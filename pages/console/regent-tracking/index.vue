@@ -3,7 +3,7 @@
 		<div
 			class="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
 			role="alert"
-			v-if="!regentTrackingAuthToken">
+			v-show="!regentTrackingAuthToken">
 			<div class="flex items-center">
 				<svg
 					class="me-2 h-4 w-4 shrink-0"
@@ -355,6 +355,11 @@
 						]">
 						{{ loginAttemptLoading ? 'Please Wait...' : 'Login' }}
 					</button>
+					<p
+						class="text-center text-sm font-bold text-gray-500"
+						v-if="regentTrackingAuthToken">
+						Successful login! Close this by clicking 'X' above.
+					</p>
 				</form>
 			</ParentModal>
 
