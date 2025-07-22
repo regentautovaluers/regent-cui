@@ -115,29 +115,31 @@ export const useRegentTracking = () => {
 		lazy: true,
 		watch: [regentTrackingAuthToken],
 		transform(data: any) {
-			return data[0].items.map((item: any) => {
-				return {
-					id: item.id,
-					pinColor: item.icon_color,
-					trackerStatus: item.online,
-					vehicleReg: item.name,
-					lastPing: item.time,
-					location: {
-						lat: item.lat,
-						lng: item.lng,
-					},
-					stopDuration: item.stop_duration,
-					driver: {
-						name: item.driver_data.name,
-						phone: item.driver_data.phone,
-						email: item.driver_data.email,
-					},
-					sensors: item.sensors,
+			if (data[0].items && Array.isArray(data[0].items) && (data[0].items as []).length > 0) {
+				return data[0].items.map((item: any) => {
+					return {
+						id: item.id,
+						pinColor: item.icon_color,
+						trackerStatus: item.online,
+						vehicleReg: item.name,
+						lastPing: item.time,
+						location: {
+							lat: item.lat,
+							lng: item.lng,
+						},
+						stopDuration: item.stop_duration,
+						driver: {
+							name: item.driver_data.name,
+							phone: item.driver_data.phone,
+							email: item.driver_data.email,
+						},
+						sensors: item.sensors,
 
-					speed: item.speed,
-					speedUnits: item.distance_unit_hour,
-				} as TrackedDevice;
-			});
+						speed: item.speed,
+						speedUnits: item.distance_unit_hour,
+					} as TrackedDevice;
+				});
+			}
 		},
 		onResponse({ response }) {
 			if (!response.ok) {
