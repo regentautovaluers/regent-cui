@@ -85,12 +85,18 @@ const navigationRoutes: readonly CoreRoute[] = [
 			},
 			{
 				id: 2,
+				screenName: 'Onboard Assets',
+				routeName: 'collateral-verification-bulk-onboard-fraudsters',
+				renderRoute: false,
+			},
+			{
+				id: 3,
 				screenName: 'Manage List',
 				routeName: 'collateral-verification-manage-list',
 				renderRoute: false,
 			},
 			{
-				id: 3,
+				id: 4,
 				screenName: 'Query Collateral',
 				routeName: 'collateral-verification-query-collateral',
 				renderRoute: false,

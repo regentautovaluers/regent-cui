@@ -199,3 +199,22 @@ export type CollateralSearchTypeOption = {
 	prompt?: string;
 	opensInModal: boolean;
 };
+
+export type CollateralAssetEntry = {
+	registrationNumber: string | null;
+	chassisNumber: string | null;
+	engineNumber: string | null;
+	color: string | null;
+	make: string | null;
+	model: string | null;
+	yearOfManufacture: number | null;
+	corporateClientId?: string | null;
+	corporateClientName?: string | null;
+	corpClientRepName?: string | null;
+	corpClientEmail?: string | null;
+	corpClientPhoneNumber?: string | null;
+	description: string | null;
+	relevantLinks?: string[] | null;
+	dateOfIncident: string | null;
+	amountDefaulted: number | null;
+};
