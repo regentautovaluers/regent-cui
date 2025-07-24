@@ -1,7 +1,7 @@
 import { type IndividuaProcessedMembershipType } from '~/types';
 
 export const useAVAMemberships = () => {
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
 	const currentPage: Ref<number> = ref(0);
 	const size = 10;
@@ -20,7 +20,7 @@ export const useAVAMemberships = () => {
 
 	const { status: fetchMembershipsStatus, refresh: refreshMembers } = useFetch(
 		() => {
-			let requestURL = `/api/v1/memberships?corporateId=${getPrincipal.value.corpId}&page=${currentPage.value}&size=${size}`;
+			let requestURL = `/api/v1/memberships?corporateId=${getAuthenticatedPrincipal.value?.corpId}&page=${currentPage.value}&size=${size}`;
 
 			if (searchTerm.value !== '') {
 				requestURL = requestURL + `&searchTerm=${searchTerm.value}`;

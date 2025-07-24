@@ -6,7 +6,7 @@ export function useCollateralVerificiation() {
 	const searchDefaulterQuery: Ref<string> = ref('');
 	const searchDefaulterLoading: Ref<boolean> = ref(false);
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const ravDefaulterDetails: Ref<any[] | null> = ref(null);
 	const iaVehicleDetails: Ref<any> = ref(null);
 	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
@@ -180,7 +180,7 @@ export function useCollateralVerificiation() {
 	};
 
 	function generateSearchDefaulterURI(type: string, ...searchPhrases: string[]): string | never {
-		const sharedURISubstring: string = `searchType=valuation&searcherEmail=${getPrincipal.value.email}&searcherPhone=${getPrincipal.value.phonenumber}&searcherName=${getPrincipal.value.username}&searcherOrganisation=${getPrincipal.value.corpName}`;
+		const sharedURISubstring: string = `searchType=valuation&searcherEmail=${getAuthenticatedPrincipal.value?.email}&searcherPhone=${getAuthenticatedPrincipal.value?.phonenumber}&searcherName=${getAuthenticatedPrincipal.value?.username}&searcherOrganisation=${getAuthenticatedPrincipal.value?.corpName}`;
 
 		switch (type) {
 			case 'defaulter-db':

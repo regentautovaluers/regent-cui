@@ -17,9 +17,9 @@ export type LoggedInPrincipal = {
 	email: string;
 	phonenumber: string;
 	roles: string[];
-	profilePicture: string;
 	corpId: string;
 	branchId: string;
+	branchName: string;
 	corpName: string;
 	roleInOrganization: string;
 	isBroker: boolean;
@@ -199,3 +199,14 @@ export type CollateralSearchTypeOption = {
 	prompt?: string;
 	opensInModal: boolean;
 };
+
+export type ModalPlacementOptions =
+	| 'top-left'
+	| 'top-center'
+	| 'top-right'
+	| 'center-left'
+	| 'center-center'
+	| 'center-right'
+	| 'bottom-left'
+	| 'bottom-center'
+	| 'bottom-right';

@@ -271,10 +271,10 @@
 					<UserAvatar />
 					<div class="hidden h-full flex-col overflow-hidden text-sm md:flex">
 						<h1 class="overflow-clip text-ellipsis whitespace-nowrap">
-							{{ getPrincipal.username }}
+							{{ getAuthenticatedPrincipal.username }}
 						</h1>
 						<h2 class="overflow-clip text-ellipsis whitespace-nowrap">
-							{{ getPrincipal.corpName }}
+							{{ getAuthenticatedPrincipal.corpName }}
 						</h2>
 					</div>
 				</div>
@@ -435,7 +435,7 @@
 	const { navigationRoutes, currentScreenName, fuzzyRouteNameMatch, doesRouteNameMatch } =
 		useNavigationRoutes();
 
-	const { getPrincipal, attemptLogout } = useAuth();
+	const { getAuthenticatedPrincipal, attemptLogout } = useAuth();
 	const sidebarExpanded: Ref<boolean> = ref(false);
 	const userInput: Ref<string> = ref('');
 	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();

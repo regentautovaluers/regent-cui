@@ -5,7 +5,7 @@ import {
 
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal, isPrincipalBroker } = useAuth();
+	const { getAuthenticatedPrincipal, isPrincipalBroker } = useAuth();
 
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
@@ -48,7 +48,7 @@ const useAuthorityLetters = () => {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getAuthenticatedPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&searchSlug=${searchRegNo.value}`;
@@ -134,7 +134,7 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-			formData.append('authorizedBy', getPrincipal.value.userId);
+			formData.append('authorizedBy', getAuthenticatedPrincipal.value?.userId);
 
 			if (preferredBranch.value.length > 0) {
 				formData.append('regentBranch', preferredBranch.value);
@@ -197,7 +197,7 @@ const useAuthorityLetters = () => {
 				{
 					method: 'GET',
 					query: {
-						corpId: getPrincipal.value.corpId,
+						corpId: getAuthenticatedPrincipal.value?.corpId,
 						startDate: startDate,
 						endDate: endDate,
 					},
@@ -226,7 +226,7 @@ const useAuthorityLetters = () => {
 							link.href = url;
 							link.setAttribute(
 								'download',
-								`authority-letters-${getPrincipal.value.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
+								`authority-letters-${getAuthenticatedPrincipal.value?.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
 							);
 							document.body.appendChild(link);
 							link.click();

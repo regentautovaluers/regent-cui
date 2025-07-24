@@ -1,6 +1,6 @@
 const useFraudDetection = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 
 	// onboard defaulter
 	const onboardDefaulter = reactive({
@@ -11,11 +11,11 @@ const useFraudDetection = () => {
 		make: null,
 		model: null,
 		yearOfManufacture: 0,
-		corporateClientId: getPrincipal.value.corpId,
-		corporateClientName: getPrincipal.value.corpName,
-		corpClientRepName: getPrincipal.value.username,
-		corpClientEmail: getPrincipal.value.email,
-		corpClientPhoneNumber: getPrincipal.value.phonenumber,
+		corporateClientId: getAuthenticatedPrincipal.value?.corpId,
+		corporateClientName: getAuthenticatedPrincipal.value?.corpName,
+		corpClientRepName: getAuthenticatedPrincipal.value?.username,
+		corpClientEmail: getAuthenticatedPrincipal.value?.email,
+		corpClientPhoneNumber: getAuthenticatedPrincipal.value?.phonenumber,
 		description: null,
 		relevantLinks: [] as string[],
 		dateOfIncident: null,
@@ -119,7 +119,7 @@ const useFraudDetection = () => {
 				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 				method: 'DELETE',
 				body: JSON.stringify({
-					corporateClientId: getPrincipal.value.corpId,
+					corporateClientId: getAuthenticatedPrincipal.value?.corpId,
 				}),
 				onResponse({ response }) {
 					if (response.ok) {
@@ -154,7 +154,7 @@ const useFraudDetection = () => {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/fraud/getbyclient?corporateClientId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/fraud/getbyclient?corporateClientId=${getAuthenticatedPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
 
 			return requestURL;
 		},

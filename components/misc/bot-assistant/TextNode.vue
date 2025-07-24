@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const profilePicture: Ref<string> = ref('');
 
 	const props = defineProps({
@@ -44,6 +44,6 @@
 
 	onMounted(async () => {
 		// set the profile picture
-		profilePicture.value = getPrincipal.value.profilePicture;
+		profilePicture.value = getAuthenticatedPrincipal.value?.profilePicture;
 	});
 </script>

@@ -9,7 +9,7 @@
 				<div class="h-full flex-col overflow-hidden text-sm md:flex">
 					<h1 class="inline-flex items-center space-x-3">
 						<span class="font-semibold text-blue-600"
-							>Hi, {{ getPrincipal.username }}</span
+							>Hi, {{ getAuthenticatedPrincipal.username }}</span
 						>
 						<HandshakeIcon />
 					</h1>
@@ -215,7 +215,7 @@
 												</li>
 												<li>
 													<button
-														v-if="member.membershipVehicleCount > 0"
+														v-show="member.membershipVehicleCount > 0"
 														class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 														type="button"
 														@click="
@@ -519,6 +519,7 @@
 <script setup lang="ts">
 	import { regentServices } from '~/config/regent-services';
 	import { useScroll } from '@vueuse/core';
+	import { getAuthenticatedPrincipal } from '~/stores/authenticated-principal';
 
 	definePageMeta({
 		name: 'ava-memberships-home',
@@ -530,7 +531,7 @@
 		behavior: 'smooth',
 	});
 	const activeDescriptionIndex: Ref<number> = ref(0);
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const searchPhrase: Ref<string> = ref('');
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const {

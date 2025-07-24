@@ -1,6 +1,6 @@
 export const useCorporateBranch = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const nuxtApp = useNuxtApp();
 	const addCorporateBranchLoading: Ref<boolean> = ref(false);
 	const editCorporateBranchLoading: Ref<boolean> = ref(false);
@@ -10,25 +10,28 @@ export const useCorporateBranch = () => {
 		status: fetchStatus,
 		error: fetchError,
 		refresh: refreshBranches,
-	} = useFetch(`/api/v1/corporate-branch/get-all?corpId=${getPrincipal.value.corpId}`, {
-		key: 'corp-branches',
-		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
+	} = useFetch(
+		`/api/v1/corporate-branch/get-all?corpId=${getAuthenticatedPrincipal.value?.corpId}`,
+		{
+			key: 'corp-branches',
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+			},
+			query: {
+				corpId: getAuthenticatedPrincipal.value?.corpId,
+			},
+			server: false,
+			lazy: true,
+			transform(data: any) {
+				return data.data;
+			},
+			getCachedData(key) {
+				return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+			},
 		},
-		query: {
-			corpId: getPrincipal.value.corpId,
-		},
-		server: false,
-		lazy: true,
-		transform(data: any) {
-			return data.data;
-		},
-		getCachedData(key) {
-			return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
-		},
-	}) as any;
+	) as any;
 
 	const reloadCorporateBranches = async () => {
 		refreshBranches();
@@ -47,7 +50,7 @@ export const useCorporateBranch = () => {
 				body: JSON.stringify({
 					branchName: branchName,
 					branchLocation: branchLocation,
-					corpId: getPrincipal.value.corpId,
+					corpId: getAuthenticatedPrincipal.value?.corpId,
 				}),
 				onResponse({ response }) {
 					if (response.ok) {

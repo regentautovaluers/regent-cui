@@ -228,7 +228,7 @@
 </template>
 
 <script setup lang="ts">
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const props = defineProps({
 		collateralEntry: {
 			required: true,
@@ -256,11 +256,11 @@
 		make: (props.collateralEntry as any).make,
 		model: (props.collateralEntry as any).model,
 		yearOfManufacture: (props.collateralEntry as any).yearOfManufacture,
-		corporateClientId: getPrincipal.value.corpId,
-		corporateClientName: getPrincipal.value.corpName,
-		corpClientRepName: getPrincipal.value.username,
-		corpClientEmail: getPrincipal.value.email,
-		corpClientPhoneNumber: getPrincipal.value.phonenumber,
+		corporateClientId: getAuthenticatedPrincipal.value?.corpId,
+		corporateClientName: getAuthenticatedPrincipal.value?.corpName,
+		corpClientRepName: getAuthenticatedPrincipal.value?.username,
+		corpClientEmail: getAuthenticatedPrincipal.value?.email,
+		corpClientPhoneNumber: getAuthenticatedPrincipal.value?.phonenumber,
 		description: (props.collateralEntry as any).description,
 		relevantLinks: (props.collateralEntry as any).relevantLinks as string[],
 		dateOfIncident: (props.collateralEntry as any).dateOfIncident,

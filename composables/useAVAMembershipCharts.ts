@@ -1,9 +1,10 @@
 export const useAVAMembershipsCharts = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 
 	const { data: avaMembersDistribution, status: fetchAvaMembersDistributionStatus } = useFetch(
-		() => `/api/v1/corp/reports/donut-graph-data?corporateId=${getPrincipal.value.corpId}`,
+		() =>
+			`/api/v1/corp/reports/donut-graph-data?corporateId=${getAuthenticatedPrincipal.value?.corpId}`,
 		{
 			key: 'ava-members-distribution',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
@@ -21,11 +22,7 @@ export const useAVAMembershipsCharts = () => {
 
 	const computeActiveInactive: ComputedRef<number[]> = computed(() => {
 		if (avaMembersDistribution.value) {
-			return [
-                avaMembersDistribution.value.active,
-				avaMembersDistribution.value.inactive
-            ]
-			
+			return [avaMembersDistribution.value.active, avaMembersDistribution.value.inactive];
 		}
 
 		return [];

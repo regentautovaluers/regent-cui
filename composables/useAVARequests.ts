@@ -33,7 +33,7 @@ export const useClientGeolocation = () => {
 
 export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMarker) => void) => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const route = useRoute();
 	const makeRequestLoading = ref(false);
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
@@ -194,7 +194,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				method: 'GET',
 				query: {
 					registration: vehicleRegistration.value,
-					corporateId: getPrincipal.value.corpId,
+					corporateId: getAuthenticatedPrincipal.value?.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status === 404) {
@@ -265,7 +265,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				method: 'POST',
 				body: JSON.stringify({
 					appUserName: userName.value,
-					corporate_client: getPrincipal.value.corpId,
+					corporate_client: getAuthenticatedPrincipal.value?.corpId,
 					appUserPhone: userPhoneNumber.value,
 					...(userEmail.value !== undefined ? { appUserEmail: userEmail.value } : {}),
 					appServiceType: backendServiceName,

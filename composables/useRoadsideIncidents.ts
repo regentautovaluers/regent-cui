@@ -2,7 +2,7 @@ import { setRoadsideIncidents, getRoadsideIncidents } from '~/stores/roadside-in
 
 const useRoadsideIncidents = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const currentPage: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
 	const topRecentPerService: Ref<any[]> = ref([]);
@@ -78,7 +78,7 @@ const useRoadsideIncidents = () => {
 	};
 
 	const { status: fetchRoadsideIncidentsStatus } = useFetch(
-		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
+		`/api/v1/corp/reports/services/corporate/${getAuthenticatedPrincipal.value?.corpId}`,
 		{
 			key: 'roadside-incidents',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,

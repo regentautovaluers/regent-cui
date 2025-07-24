@@ -2,7 +2,7 @@
 	<div class="flex flex-col justify-between">
 		<div class="my-24 flex flex-col items-center">
 			<h1 class="tablet:text-xl text-lg text-gray-500 uppercase">
-				Hello, {{ getPrincipal.username }}
+				Hello, {{ getAuthenticatedPrincipal.username }}
 			</h1>
 			<h2
 				class="tablet:text-4xl laptop-lg:text-6xl my-3 bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-2xl font-semibold text-transparent">
@@ -101,5 +101,5 @@
 	});
 
 	const { navigationRoutes } = useNavigationRoutes();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 </script>

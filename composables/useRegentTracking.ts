@@ -54,9 +54,6 @@ export const useRegentTracking = () => {
 	const regentTrackingAuthToken: CookieRef<string | null | undefined> = useCookie(
 		'regent-tracking-auth-token',
 	);
-	const trackedAssetsFetchUrl: ComputedRef<String> = computed(
-		() => `/api/get_devices?lang=en&user_api_hash=${regentTrackingAuthToken.value}`,
-	);
 	const runtimeConfig = useRuntimeConfig();
 	const email: Ref<string> = ref('');
 	const password: Ref<string> = ref('');

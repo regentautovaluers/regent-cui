@@ -1,10 +1,12 @@
+import { type LoggedInPrincipal } from '~/types';
+
 const useUserAccounts = () => {
 	// for when loading users
 	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 	const usersList: ComputedRef<any[]> = computed(() => fetchedData.value?.users);
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const runtimeConfig = useRuntimeConfig();
 
 	// adding / updating user accounts
@@ -16,7 +18,7 @@ const useUserAccounts = () => {
 		error: fetchError,
 		data: fetchedData,
 	} = useFetch(
-		`/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`,
+		`/api/v1/auth/corporate-account/get-accounts?corporateId=${getAuthenticatedPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`,
 		{
 			key: 'corporate-users',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
@@ -72,7 +74,7 @@ const useUserAccounts = () => {
 					phoneNumber: phoneNumber,
 					password: password,
 					profilePicture: null,
-					corporateId: getPrincipal.value.corpId,
+					corporateId: getAuthenticatedPrincipal.value?.corpId,
 					corpBranchId: corporateBranchId,
 					roleInOrganization: roleInOrganization,
 					userRoles: roles,
@@ -170,6 +172,7 @@ const useUserAccounts = () => {
 		updateCorporateAccountLoading,
 		addNewAccountLoading,
 		addNewAccount,
+		getUserDetails,
 	};
 };
 

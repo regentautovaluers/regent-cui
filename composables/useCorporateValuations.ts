@@ -1,6 +1,6 @@
 export const useCorporateValuations = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const { name: routeName } = useRoute();
 
 	const activeView: Ref<'pending' | 'complete'> = ref('complete');
@@ -24,7 +24,7 @@ export const useCorporateValuations = () => {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/valuation/booking/get-all?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/valuation/booking/get-all?corpId=${getAuthenticatedPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (routeName == 'vehicle-valuation-tampered-vehicles') {
 				requestURL = requestURL + `&isVehicleTampered=true`;

@@ -9,11 +9,11 @@ import { type RoadsideAssistanceAnalytics } from '~/types';
 
 export const useRACharts = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const doughnutChartColors: readonly string[] = ['#09bc3c', '#fd5353', '#fdbf20', '#0063FF'];
 
 	const { status: fetchRAIncidentsAnalyticsStatus } = useFetch(
-		() => `/api/v1/corp/reports/corporate-requests/${getPrincipal.value.corpId}`,
+		() => `/api/v1/corp/reports/corporate-requests/${getAuthenticatedPrincipal.value?.corpId}`,
 		{
 			key: 'ra-incidents-analytics',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,

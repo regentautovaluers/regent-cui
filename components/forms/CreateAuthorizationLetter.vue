@@ -65,7 +65,7 @@
 						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
 				</svg>
 				<span class="sr-only">Info</span>
-				<h3 class="font-medium text-sm">Notice On Regent Branches</h3>
+				<h3 class="text-sm font-medium">Notice On Regent Branches</h3>
 			</div>
 
 			<p class="mt-2 mb-4 text-sm">
@@ -164,14 +164,13 @@
 					id="authorized-by"
 					class="generic-input"
 					disabled
-					:value="getPrincipal.username" />
+					:value="getAuthenticatedPrincipal.username" />
 			</div>
 		</div>
 
 		<!-- documents -->
 		<div
 			class="mt-4 flex w-full max-w-full grid-cols-2 flex-wrap items-center space-y-2 space-x-2">
-
 			<!-- Certificate of Registration -->
 			<label
 				for="cert-of-registration"
@@ -250,8 +249,6 @@
 					" />
 			</label>
 
-			
-
 			<label
 				for="vehicle-logbook"
 				class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
@@ -318,7 +315,7 @@
 
 <script setup lang="ts">
 	const { regentBranches, fetchStatus, fetchError, refreshRegentBranches } = useRegentBranches();
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const {
 		registrationNumber,
 		clientName,

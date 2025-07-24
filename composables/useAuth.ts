@@ -1,6 +1,8 @@
-import { useStorage, type RemovableRef } from '@vueuse/core';
-import { type LoggedInPrincipal } from '~/types';
 import type { CookieRef } from '#app';
+import {
+	getAuthenticatedPrincipal,
+	setAuthenticatedPrincipal,
+} from '~/stores/authenticated-principal';
 
 const useAuth = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -11,36 +13,11 @@ const useAuth = () => {
 	const updateProfilePictureLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
-
-	const authenticatedPrincipal: RemovableRef<LoggedInPrincipal> = useStorage(
-		'authenticated-principal',
-		{
-			userId: '',
-			username: '',
-			email: '',
-			phonenumber: '',
-			roles: [],
-			profilePicture: '',
-			corpId: '',
-			branchId: '',
-			corpName: '',
-			roleInOrganization: '',
-			isBroker: false,
-		},
-	);
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
-	const csrfToken: CookieRef<string | null | undefined> = useCookie('csrf-token');
-
-	const getPrincipal: ComputedRef<LoggedInPrincipal> = computed(() => {
-		return authenticatedPrincipal.value;
-	});
+	const refreshToken: CookieRef<string | null | undefined> = useCookie('refresh-token');
 
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
 		return authToken.value;
-	});
-
-	const getCsrfToken: ComputedRef<string | null | undefined> = computed(() => {
-		return csrfToken.value;
 	});
 
 	const searchBrokerOrCorpURI: ComputedRef<string> = computed(() => {
@@ -63,29 +40,38 @@ const useAuth = () => {
 				}),
 
 				onResponse({ response }) {
-					switch (response.status) {
-						case 401: {
-							useToast('Invalid Credentials', {
-								type: 'warning',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
-							});
-							break;
-						}
-
-						case 200: {
-							useToast('Login Successful', {
-								type: 'success',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
-							});
-
-							setCredentialsInBrowserStorage(response._data.data);
-							navigateTo({ name: 'mobivaluer-home' });
-						}
+					if (!response.ok) {
+						useToast('Invalid Credentials', {
+							type: 'warning',
+							showIcon: true,
+							showCloseButton: false,
+							hideProgressBar: true,
+						});
+						return;
 					}
+
+					const data = response._data.data;
+					// set the refresh and access tokens
+					authToken.value = data.jwtToken;
+					refreshToken.value = data.refreshToken;
+
+					// set the authenticated principal
+					const principal = {
+						userId: data.userId,
+						username: data.username,
+						email: data.email,
+						phonenumber: data.phoneNumber,
+						roles: data.userRoles,
+						branchName: '',
+						corpId: data.corpId,
+						branchId: data.branchId,
+						corpName: data.corpName,
+						roleInOrganization: data.roleInOrganization,
+						isBroker: data.isBroker,
+					};
+					setAuthenticatedPrincipal(principal);
+
+					navigateTo({ name: 'mobivaluer-home' });
 				},
 			});
 		} catch (er) {
@@ -102,7 +88,7 @@ const useAuth = () => {
 	};
 
 	const isPrincipalAdmin = (): boolean => {
-		return authenticatedPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
+		return getAuthenticatedPrincipal.value?.roles.includes('role_corp_admin'.toUpperCase());
 	};
 
 	const searchCorporateOrBroker = async () => {
@@ -138,51 +124,10 @@ const useAuth = () => {
 		}
 	};
 
-	const setCredentialsInBrowserStorage = (data: any) => {
-		// set the principal
-		const principal: LoggedInPrincipal = {
-			userId: data.userId,
-			username: data.username,
-			email: data.email,
-			phonenumber: data.phoneNumber,
-			roles: data.userRoles,
-			profilePicture:
-				data.profilePicture === null
-					? '/images/profile-pic-placeholder.png'
-					: data.profilePicture,
-			corpId: data.corpId,
-			branchId: data.branchId,
-			corpName: data.corpName,
-			roleInOrganization: data.roleInOrganization,
-			isBroker: data.isBroker,
-		};
-
-		authenticatedPrincipal.value = principal;
-
-		// set the auth and csrf tokens
-		authToken.value = data.jwtToken;
-		csrfToken.value = data.xsrfToken;
-	};
-
 	const attemptLogout = () => {
-		// unset the principal
-		authenticatedPrincipal.value = {
-			userId: '',
-			username: '',
-			email: '',
-			phonenumber: '',
-			roles: [],
-			profilePicture: '',
-			corpId: '',
-			branchId: '',
-			corpName: '',
-			roleInOrganization: '',
-			isBroker: false,
-		};
-
 		// unset the auth token and csrf token
 		authToken.value = '';
-		csrfToken.value = '';
+		refreshToken.value = '';
 		useToast('Logout Successful!', {
 			type: 'success',
 			showIcon: false,
@@ -195,7 +140,7 @@ const useAuth = () => {
 	};
 
 	const displayCookieConsent = (): boolean => {
-		if (!authToken.value || !csrfToken.value || !authenticatedPrincipal.value) {
+		if (!authToken.value || !refreshToken.value || !getAuthenticatedPrincipal.value) {
 			return true;
 		}
 
@@ -203,7 +148,7 @@ const useAuth = () => {
 	};
 
 	const isPrincipalBroker = (): boolean => {
-		return authenticatedPrincipal.value.isBroker;
+		return getAuthenticatedPrincipal.value?.isBroker;
 	};
 
 	return {
@@ -214,9 +159,8 @@ const useAuth = () => {
 		updateProfilePictureLoading,
 		searchCorpOrBrokerLoading,
 		searchCorpOrBrokerResults,
-		getPrincipal,
+		getAuthenticatedPrincipal,
 		getAuthToken,
-		getCsrfToken,
 		attemptLogin,
 		attemptLogout,
 		isPrincipalAdmin,

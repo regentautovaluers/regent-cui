@@ -1,16 +1,16 @@
 <template>
 	<form
-		class="h-full rounded-lg border px-6 py-2 bg-white shadow-sm md:py-6"
+		class="h-full rounded-lg border bg-white px-6 py-2 shadow-sm md:py-6"
 		@submit.prevent="
 			updateMyAccountDetails(
-				getPrincipal.userId,
+				getAuthenticatedPrincipal.userId,
 				firstName,
 				lastName,
 				email,
 				phoneNumber,
 				roleInOrganization,
 				true,
-				getPrincipal.branchId,
+				getAuthenticatedPrincipal.branchId,
 			)
 		">
 		<div class="flex flex-col">
@@ -100,13 +100,15 @@
 		layout: 'console-layout',
 	});
 
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const { updateMyAccountDetails, updateCorporateAccountLoading } = useUserAccounts();
-	const firstName: Ref<string> = ref(getPrincipal.value.username.split(' ')[0]);
-	const lastName: Ref<string> = ref(getPrincipal.value.username.split(' ')[1]);
-	const email: Ref<string> = ref(getPrincipal.value.email);
-	const phoneNumber: Ref<string> = ref(getPrincipal.value.phonenumber);
-	const roleInOrganization: Ref<string> = ref(getPrincipal.value.roleInOrganization);
+	const firstName: Ref<string> = ref(getAuthenticatedPrincipal.value?.username.split(' ')[0]);
+	const lastName: Ref<string> = ref(getAuthenticatedPrincipal.value?.username.split(' ')[1]);
+	const email: Ref<string> = ref(getAuthenticatedPrincipal.value?.email);
+	const phoneNumber: Ref<string> = ref(getAuthenticatedPrincipal.value?.phonenumber);
+	const roleInOrganization: Ref<string> = ref(
+		getAuthenticatedPrincipal.value?.roleInOrganization,
+	);
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {

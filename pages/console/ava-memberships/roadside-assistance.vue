@@ -12,7 +12,7 @@
 					<div class="h-full flex-col overflow-hidden">
 						<h1 class="inline-flex items-center space-x-3">
 							<span class="font-semibold text-blue-600"
-								>Hi, {{ getPrincipal.username }}</span
+								>Hi, {{ getAuthenticatedPrincipal.username }}</span
 							>
 							<HandshakeIcon />
 						</h1>
@@ -580,7 +580,7 @@
 		layout: 'console-layout',
 	});
 
-	const { getPrincipal } = useAuth();
+	const { getAuthenticatedPrincipal } = useAuth();
 	const profilePicture: Ref<string> = ref('');
 	const { clientCoordinates } = useClientGeolocation();
 	const {
@@ -599,5 +599,5 @@
 		topRecentPerService,
 	} = useRoadsideIncidents();
 
-	onMounted(() => (profilePicture.value = getPrincipal.value.profilePicture));
+	onMounted(() => (profilePicture.value = getAuthenticatedPrincipal.value?.profilePicture));
 </script>
