@@ -108,7 +108,6 @@ export const useBulkMemberRegistration = () => {
 	const contactEmail: Ref<string> = ref('');
 	const totalSize = ref(0);
 	const currentProgress = ref('0%');
-	const reader = new FileReader();
 	const errorMessage: Ref<ExcelProcesssingErrorMessage | null> = ref(null);
 	const registerBulkMembershipsLoading = ref(false);
 	const { corporateFleetData } = useFleets();
@@ -125,6 +124,7 @@ export const useBulkMemberRegistration = () => {
 
 	const parseUploadedExcelFile = async (e: any): Promise<void> => {
 		const selectedFile = e.target.files[0];
+		const reader = new FileReader();
 
 		if (selectedFile) {
 			addListeners(reader);

@@ -148,7 +148,7 @@
 				href="https://drive.google.com/uc?export=download&id=1owNqofnZn3X4w9OOognfBACE16jE9mNt"
 				target="_top"
 				type="button"
-				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-400 px-4 py-3 text-sm text-pink-700 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
+				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-300 px-4 py-3 text-sm text-pink-500 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
 				<span> Click here to intiate excel template download </span>
 				<DownloadIcon />
 			</a>
@@ -163,7 +163,7 @@
 			<div>
 				<label
 					for="dropzone-file"
-					class="mt-3 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-400 bg-blue-400 px-4 py-3 backdrop-opacity-50">
+					class="mt-3 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-300 bg-blue-400 px-4 py-3 backdrop-opacity-50">
 					<div class="flex w-full items-center justify-between text-blue-500">
 						<span> Click here to upload the completed Excel document </span>
 						<UploadIcon />
