@@ -1,5 +1,81 @@
 <template>
 	<form @submit.prevent="createFraudsterEntry">
+		<div
+			id="alert-additional-content-4"
+			class="mb-5 rounded-lg border border-blue-300 bg-blue-50 p-4 text-blue-800"
+			role="alert">
+			<div class="flex items-center">
+				<svg
+					class="me-2 h-4 w-4 shrink-0"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="currentColor"
+					viewBox="0 0 20 20">
+					<path
+						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+				</svg>
+				<span class="sr-only">Info</span>
+				<h3 class="text-sm font-semibold">Autofill With AI</h3>
+			</div>
+
+			<p class="mt-2 mb-4 text-sm">
+				Do you have the vehicles logbook image? You can upload it here and our quick
+				two-step process will pick key information about the vehicle for you and autofill
+				the form.
+				<span class="font-bold"
+					>AI output may not be accurate. Kindly double check the output.</span
+				>
+			</p>
+			<div
+				class="laptop:space-y-0 laptop:flex-row laptop:space-x-4 laptop:h-14 flex h-fit flex-col items-center space-y-4">
+				<label
+					for="cert-of-registration"
+					class="auth-letter-file-input laptop:w-1/2 laptop:h-full flex h-14 w-full items-center justify-between rounded-lg border-gray-400 backdrop-opacity-50"
+					:class="
+						fileLink != ''
+							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
+					">
+					<span>1. Click to select vehicle logbook.</span>
+					<input
+						id="cert-of-registration"
+						type="file"
+						accept=".jpg, .jpeg, .png, .webp"
+						class="hidden"
+						@change.prevent="
+							(e) => {
+								handleLogbookUpload(
+									(e.target as HTMLInputElement)?.files?.[0] as File,
+								);
+							}
+						" />
+					<FormSubmissionLoader
+						class="mr-2 size-6 animate-spin text-yellow-800"
+						v-if="uploadInProgress" />
+				</label>
+				<div
+					class="laptop:w-1/2 laptop:h-full flex h-14 w-full items-center justify-between rounded-lg border border-blue-300 bg-blue-50 p-4 text-sm text-blue-800">
+					<span>2. Proceed to extract.</span>
+					<form
+						@submit.prevent="extractLogbookInfo"
+						v-if="fileLink != ''">
+						<button
+							type="submit"
+							class="flex cursor-pointer items-center justify-center rounded-lg border border-blue-300 bg-blue-50 p-2 text-sm text-blue-800">
+							<FormSubmissionLoader
+								class="textblue-800 mr-2 size-3 animate-spin"
+								v-if="extractionInProgress" />
+							<span
+								class="font-semibold"
+								v-else
+								>Extract</span
+							>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
 		<div class="flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Registration Number -->
 			<div class="w-full lg:w-1/3">
@@ -201,7 +277,7 @@
 		</div>
 
 		<div
-			v-if="onboardDefaulter.relevantLinks.length > 0"
+			v-if="onboardDefaulter.relevantLinks?.length! > 0"
 			class="mt-3 p-2">
 			<h1 class="mb-2 text-sm font-semibold text-gray-500">Provided Links</h1>
 			<div class="flex items-center space-x-2">
@@ -241,8 +317,23 @@
 		onboardDefaulter,
 		onboardDefaulterLoading,
 		relevantLink,
+		uploadInProgress,
+		fileLink,
+		extractedLogbookInfo,
+		extractionInProgress,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
 		handleRemovingRelevantLink,
+		handleLogbookUpload,
+		extractLogbookInfo,
 	} = useFraudDetection();
+
+	watch(extractedLogbookInfo, (newValue) => {
+		(onboardDefaulter.registrationNumber = newValue.registrattion),
+			(onboardDefaulter.chassisNumber = newValue.chasiss),
+			(onboardDefaulter.engineNumber = newValue.engine_no),
+			(onboardDefaulter.color = newValue.colour),
+			(onboardDefaulter.make = newValue.make_of_vehicle),
+			(onboardDefaulter.model = newValue.model);
+	});
 </script>

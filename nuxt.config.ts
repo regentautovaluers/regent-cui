@@ -72,6 +72,8 @@ export default defineNuxtConfig({
 			COPYRIGHT_YEAR: '',
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
 			REGENT_TRACK_CERTS_BASE_URL: '',
+			REGENT_AUTOMATIONS_BASE_URL: '',
+			REGENT_MEDIA_STORAGE_BASE_URL: '',
 		},
 		app: {},
 	},

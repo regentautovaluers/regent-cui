@@ -186,6 +186,110 @@ export function useFraudDetection() {
 		},
 	) as any;
 
+	// extract logbook info
+	const uploadInProgress: Ref<boolean> = ref(false);
+	const extractionInProgress: Ref<boolean> = ref(false);
+	const fileLink: Ref<string> = ref('');
+	const extractedLogbookInfo = ref({
+		registrattion: '',
+		chasiss: '',
+		make_of_vehicle: '',
+		model: '',
+		type_of_vehicle: '',
+		body_type: '',
+		fuel_type: '',
+		manufacture_year: '',
+		rating: '',
+		engine_no: '',
+		number_of_passengers: '',
+		colour: '',
+		date_of_registration: '',
+		gross_weight: '',
+	});
+
+	const handleLogbookUpload = async (file: File) => {
+		if (file) {
+			const ext = file.name.split('.').pop();
+			const randomId = crypto.randomUUID().toUpperCase().replaceAll('-', '').substring(0, 8);
+			const renamedFile = `${randomId}.${ext}`;
+			const renamedFileBlob = new File([file], renamedFile, { type: file.type });
+			try {
+				fileLink.value = await uploadFileGetLink(renamedFile, renamedFileBlob);
+			} catch (e) {
+				useToast('Failed. Try Again!', {
+					type: 'danger',
+					showIcon: true,
+					showCloseButton: false,
+					hideProgressBar: true,
+					transition: 'slide',
+				});
+			}
+		}
+	};
+
+	const uploadFileGetLink = async (fileName: string, file: File): Promise<string> => {
+		let fileLink: string = '';
+
+		// create the form data
+		const formData = new FormData();
+		formData.append('filePath', `/${getPrincipal.value.corpId}/${fileName}`);
+		formData.append('file', file);
+		formData.append('basePath', 'collateral-verification-media');
+		formData.append(
+			'watermarkText',
+			`uploaded by ${getPrincipal.value.corpName}#${new Date().toISOString().split('T')[0]}#powered by Regent Auto Valuers`,
+		);
+
+		uploadInProgress.value = true;
+
+		await $fetch('/media/upload', {
+			baseURL: runtimeConfig.public.REGENT_MEDIA_STORAGE_BASE_URL,
+			method: 'POST',
+			body: formData,
+			onResponse({ response }) {
+				if (response.ok) {
+					fileLink = response._data;
+				}
+			},
+		});
+
+		uploadInProgress.value = false;
+		return fileLink;
+	};
+
+	const extractLogbookInfo = async () => {
+		extractionInProgress.value = true;
+		await $fetch('/webhook/extract-logbook-information', {
+			baseURL: runtimeConfig.public.REGENT_AUTOMATIONS_BASE_URL,
+			method: 'POST',
+			body: JSON.stringify({
+				image_url: fileLink.value,
+			}),
+			onResponse({ response }) {
+				if (response.ok) {
+					extractedLogbookInfo.value = response._data;
+					useToast('Success!', {
+						type: 'success',
+						showIcon: true,
+						showCloseButton: false,
+						hideProgressBar: true,
+						transition: 'slide',
+					});
+				} else {
+					useToast('Failed. Try Again!', {
+						type: 'danger',
+						showIcon: true,
+						showCloseButton: false,
+						hideProgressBar: true,
+						transition: 'slide',
+					});
+				}
+			},
+		});
+
+		extractionInProgress.value = false;
+	};
+
 	return {
 		onboardDefaulter,
 		onboardDefaulterLoading,
@@ -199,11 +303,17 @@ export function useFraudDetection() {
 		totalPages,
 		editDefaulterLoading,
 		page,
+		uploadInProgress,
+		extractionInProgress,
+		fileLink,
+		extractedLogbookInfo,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
 		handleRemovingRelevantLink,
 		editDefaulterEntry,
 		deleteFraudRecord,
+		handleLogbookUpload,
+		extractLogbookInfo,
 	};
 }
 
