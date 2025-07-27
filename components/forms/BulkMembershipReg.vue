@@ -145,7 +145,7 @@
 				altering the column structure or their sequence.</span
 			>
 			<a
-				href="https://drive.google.com/uc?export=download&id=1owNqofnZn3X4w9OOognfBACE16jE9mNt"
+				href="https://media.regentautovaluers.com/media/download/utility-media/ava-roadside-assistance/onboarding_template.xlsx"
 				target="_top"
 				type="button"
 				class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-300 px-4 py-3 text-sm text-pink-500 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
