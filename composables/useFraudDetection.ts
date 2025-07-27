@@ -214,6 +214,7 @@ export function useFraudDetection() {
 			const renamedFile = `${randomId}.${ext}`;
 			const renamedFileBlob = new File([file], renamedFile, { type: file.type });
 			try {
+				uploadInProgress.value = false;
 				fileLink.value = await uploadFileGetLink(renamedFile, renamedFileBlob);
 			} catch (e) {
 				useToast('Failed. Try Again!', {
@@ -223,6 +224,8 @@ export function useFraudDetection() {
 					hideProgressBar: true,
 					transition: 'slide',
 				});
+			} finally {
+				uploadInProgress.value = false;
 			}
 		}
 	};
@@ -240,8 +243,6 @@ export function useFraudDetection() {
 			`uploaded by ${getPrincipal.value.corpName}#${new Date().toISOString().split('T')[0]}#powered by Regent Auto Valuers`,
 		);
 
-		uploadInProgress.value = true;
-
 		await $fetch('/media/upload', {
 			baseURL: runtimeConfig.public.REGENT_MEDIA_STORAGE_BASE_URL,
 			method: 'POST',
@@ -253,7 +254,6 @@ export function useFraudDetection() {
 			},
 		});
 
-		uploadInProgress.value = false;
 		return fileLink;
 	};
 
