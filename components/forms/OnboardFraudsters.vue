@@ -329,7 +329,7 @@
 	} = useFraudDetection();
 
 	watch(extractedLogbookInfo, (newValue) => {
-		(onboardDefaulter.registrationNumber = newValue.registrattion),
+		(onboardDefaulter.registrationNumber = newValue.registration),
 			(onboardDefaulter.chassisNumber = newValue.chassis),
 			(onboardDefaulter.engineNumber = newValue.engine_no),
 			(onboardDefaulter.color = newValue.colour),
