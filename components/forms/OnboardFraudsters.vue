@@ -330,7 +330,7 @@
 
 	watch(extractedLogbookInfo, (newValue) => {
 		(onboardDefaulter.registrationNumber = newValue.registrattion),
-			(onboardDefaulter.chassisNumber = newValue.chasiss),
+			(onboardDefaulter.chassisNumber = newValue.chassis),
 			(onboardDefaulter.engineNumber = newValue.engine_no),
 			(onboardDefaulter.color = newValue.colour),
 			(onboardDefaulter.make = newValue.make_of_vehicle),

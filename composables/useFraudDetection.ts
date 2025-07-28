@@ -191,8 +191,8 @@ export function useFraudDetection() {
 	const extractionInProgress: Ref<boolean> = ref(false);
 	const fileLink: Ref<string> = ref('');
 	const extractedLogbookInfo = ref({
-		registrattion: '',
-		chasiss: '',
+		registration: '',
+		chassis: '',
 		make_of_vehicle: '',
 		model: '',
 		type_of_vehicle: '',
