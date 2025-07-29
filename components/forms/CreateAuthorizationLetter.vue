@@ -97,12 +97,13 @@
 					selected>
 					Send to Customer Care
 				</option>
-				<option
+				<!-- TODO: Re-enable this later -->
+				<!-- <option
 					v-for="(branch, index) in regentBranches"
 					:key="index"
 					:value="branch.branchId">
 					{{ branch.branchName }}
-				</option>
+				</option> -->
 			</select>
 			<FormSubmissionLoader
 				class="absolute top-[52%] right-6 mr-2 size-5 animate-spin text-gray-500"
