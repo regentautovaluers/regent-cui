@@ -19,24 +19,24 @@
 			</div>
 
 			<p class="mt-2 mb-4 text-sm">
-				Do you have the vehicles logbook image? You can upload it here and our quick
-				two-step process will pick key information about the vehicle for you and autofill
-				the form.
+				Do you have the vehicles logbook image? You can upload it here and our quick process
+				will pick key information about the vehicle for you and autofill the form.
 				<span class="font-bold"
-					>AI output may not be accurate. Kindly double check the output.</span
+					>AI output may not be accurate. Kindly double check the output. Regent does not
+					store any file you upload here.</span
 				>
 			</p>
 			<div
 				class="laptop:space-y-0 laptop:flex-row laptop:space-x-4 laptop:h-14 flex h-fit flex-col items-center space-y-4">
 				<label
 					for="cert-of-registration"
-					class="auth-letter-file-input laptop:w-1/2 laptop:h-full flex h-14 w-full items-center justify-between rounded-lg border-gray-400 backdrop-opacity-50"
+					class="auth-letter-file-input laptop:h-full flex h-14 w-full items-center justify-between rounded-lg border-gray-400 backdrop-opacity-50"
 					:class="
 						fileLink != ''
 							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
 							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
 					">
-					<span>1. Click to select vehicle logbook.</span>
+					<span>Click to select vehicle logbook and extract data.</span>
 					<input
 						id="cert-of-registration"
 						type="file"
@@ -44,35 +44,15 @@
 						class="hidden"
 						@change.prevent="
 							(e) => {
-								handleLogbookUpload(
+								extractLogbookInfo(
 									(e.target as HTMLInputElement)?.files?.[0] as File,
 								);
 							}
 						" />
 					<FormSubmissionLoader
 						class="mr-2 size-6 animate-spin text-yellow-800"
-						v-if="uploadInProgress" />
+						v-if="extractionInProgress" />
 				</label>
-				<div
-					class="laptop:w-1/2 laptop:h-full flex h-14 w-full items-center justify-between rounded-lg border border-blue-300 bg-blue-50 p-4 text-sm text-blue-800">
-					<span>2. Proceed to extract.</span>
-					<form
-						@submit.prevent="extractLogbookInfo"
-						v-if="fileLink != ''">
-						<button
-							type="submit"
-							class="flex cursor-pointer items-center justify-center rounded-lg border border-blue-300 bg-blue-50 p-2 text-sm text-blue-800">
-							<FormSubmissionLoader
-								class="textblue-800 mr-2 size-3 animate-spin"
-								v-if="extractionInProgress" />
-							<span
-								class="font-semibold"
-								v-else
-								>Extract</span
-							>
-						</button>
-					</form>
-				</div>
 			</div>
 		</div>
 
@@ -317,14 +297,12 @@
 		onboardDefaulter,
 		onboardDefaulterLoading,
 		relevantLink,
-		uploadInProgress,
 		fileLink,
 		extractedLogbookInfo,
 		extractionInProgress,
 		createFraudsterEntry,
 		handleAppendingRelevantLink,
 		handleRemovingRelevantLink,
-		handleLogbookUpload,
 		extractLogbookInfo,
 	} = useFraudDetection();
 
