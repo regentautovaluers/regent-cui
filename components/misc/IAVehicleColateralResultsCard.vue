@@ -3,7 +3,7 @@
 		<div class="my-2 flex-grow">
 			<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 				<table class="w-full text-left text-gray-500">
-					<thead class="bg-gray-100 text-sm uppercase text-gray-700">
+					<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
 						<tr>
 							<th
 								scope="col"
@@ -36,7 +36,7 @@
 					<tbody>
 						<!-- the actual data -->
 						<tr
-							class="border-b bg-white hover:bg-gray-100"
+							class="border-b bg-white text-sm hover:bg-gray-100"
 							v-for="(entry, index) in props.entries"
 							:key="index">
 							<td class="p-5">

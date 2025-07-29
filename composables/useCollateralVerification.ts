@@ -11,6 +11,18 @@ export function useCollateralVerificiation() {
 	const iaVehicleDetails: Ref<any> = ref(null);
 	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
 	const iaVehicleOwnerDetails: Ref<any> = ref(null);
+	const checkType: Ref<
+		| 'national-id'
+		| 'alien-id'
+		| 'vehicle-reg'
+		| 'driving-license'
+		| 'kra-pin'
+		| 'business'
+		| 'loan-collateral'
+		| 'bank-account'
+		| null
+	> = ref(null);
+
 
 	const collateralSearchOptions: CollateralSearchTypeOption = {
 		id: 'defaulter-db',
@@ -157,7 +169,7 @@ export function useCollateralVerificiation() {
 								ravDefaulterDetails.value = responseData.data.fraudData;
 							} else if (searchCollateralType.value.id === 'vehicle-reg') {
 								// From IA
-								iaVehicleDetails.value = responseData.data.verificationData;
+								iaVehicleDetails.value = responseData.data.verificationData.data.vehicle;
 
 								// From Defaullter's DB
 								ravDefaulterDetails.value = responseData.data.fraudData;
@@ -212,6 +224,7 @@ export function useCollateralVerificiation() {
 		iaVehicleOwnerDetails,
 		ravDefaulterDetails,
 		collateralSearchOptions,
+		checkType,
 		verifyCollateral,
 		searchDefaulter,
 	};
