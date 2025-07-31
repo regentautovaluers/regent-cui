@@ -100,7 +100,7 @@
 }
 
 @utility generic-search-submit-button {
-	@apply absolute top-0 right-0 flex w-14 h-full items-center justify-center rounded-lg rounded-l-none bg-blue-600 hover:bg-blue-700;
+	@apply absolute top-0 right-0 flex h-full w-14 items-center justify-center rounded-lg rounded-l-none bg-blue-600 hover:bg-blue-700;
 }
 
 @utility generic-table-cell {
@@ -251,4 +251,16 @@
 	100% {
 		background-position: -50%;
 	}
+}
+
+/* hide scrollbars */
+.hide-scrollbar::-webkit-scrollbar {
+	/* for Chrome, Safari Opera */
+	display: none;
+}
+
+.hide-scrollbar {
+	/* Hide scrollbar for IE, Edge and Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 }
