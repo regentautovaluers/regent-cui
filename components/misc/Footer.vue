@@ -1,39 +1,5 @@
 <template>
-	<template> </template>
-	<footer
-		class="tablet:grid-cols-2 laptop-lg:grid-cols-4 laptop-lg:place-content-center desktop-4k:px-[22rem] laptop:px-10 relative grid min-h-120 w-full grid-cols-1 place-items-start gap-16 bg-black p-2 text-sm text-slate-100">
-		<div
-			class="desktop-4k:flex absolute -top-36 left-20 hidden h-48 w-[61.9%] translate-x-[24.2%] flex-col rounded-lg bg-blue-600 text-center">
-			<h1 class="mt-5 text-2xl font-semibold">Our Partners</h1>
-			<div
-				class="flex flex-grow items-center px-4 pb-2"
-				style="
-					::-webkit-scrollbar-thumb {
-						border-radius: 10px;
-					}
-
-					/* Hide scrollbar for Chrome, Safari and Opera */
-					::-webkit-scrollbar {
-						display: none;
-					}
-
-					/* Hide scrollbar for IE, Edge and Firefox */
-					.no-scrollbar {
-						-ms-overflow-style: none; /* IE and Edge */
-						scrollbar-width: none; /* Firefox */
-					}
-				">
-				<div
-					class="flex h-full w-64 items-center justify-center"
-					v-for="a in 8"
-					:key="a">
-					<img
-						:src="`/images/partners/${a}.png`"
-						alt="Partner Logo"
-						class="h-17" />
-				</div>
-			</div>
-		</div>
+	<template>
 		<div class="w-full">
 			<h1 class="text-2xl font-bold">About Us.</h1>
 			<p class="mt-5 font-light">
@@ -211,7 +177,7 @@
 				</div>
 			</div>
 		</div>
-	</footer>
+	</template>
 	<div
 		class="tablet:flex-row tablet:space-y-0 desktop-4k:px-[22rem] laptop:px-10 bottom-0 col-span-full flex w-full flex-col items-center justify-between space-y-2 bg-gray-700/80 px-2 py-6 text-sm text-slate-100">
 		<p><span>&copy; 2025. Regent Auto Valuers. All rights reserved.</span></p>
