@@ -1,7 +1,7 @@
 <template>
-	<div
-		class="laptop-lg:grid-cols-[22%_78%] grid h-full grid-cols-1 rounded-md bg-white shadow-sm">
-		<div class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] border-b-[1px] p-4">
+	<div class="laptop:grid-cols-[22%_78%] grid h-full grid-cols-1 rounded-md bg-white shadow-sm">
+		<div
+			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full h-fit border-b-[1px] p-4">
 			<h1 class="text-sm font-semibold text-blue-600">What are you looking to verify?</h1>
 			<h2 class="text-xs text-gray-500">
 				Click on any of these, then submit the relevant form to view findings.
@@ -11,12 +11,12 @@
 				data-accordion="collapse"
 				data-active-classes="bg-gray-100 font-semibold text-blue-600"
 				data-inactive-classes="text-gray-500"
-				class="my-2 space-y-4">
+				class="laptop:space-y-4 laptop:space-x-0 laptop:flex-col hide-scrollbar my-2 flex space-x-4 overflow-x-scroll">
 				<!-- vehicle registration -->
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-1"
 						aria-controls="accordion-flush-body-1"
 						@click="
@@ -78,7 +78,7 @@
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-2"
 						aria-controls="accordion-flush-body-2"
 						@click="
@@ -140,7 +140,7 @@
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-3"
 						aria-controls="accordion-flush-body-3"
 						@click="() => (checkType = 'national-id')">
@@ -199,7 +199,7 @@
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-4"
 						aria-controls="accordion-flush-body-4"
 						@click="() => (checkType = 'alien-id')">
@@ -258,7 +258,7 @@
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-5"
 						aria-controls="accordion-flush-body-5"
 						@click="() => (checkType = 'driving-license')">
@@ -317,7 +317,7 @@
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-6"
 						aria-controls="accordion-flush-body-6"
 						@click="() => (checkType = 'kra-pin')">
@@ -376,7 +376,7 @@
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-8"
 						aria-controls="accordion-flush-body-8"
 						@click="() => (checkType = 'business')">
@@ -434,7 +434,7 @@
 				<h2 id="accordion-flush-heading-1">
 					<button
 						type="button"
-						class="flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
 						data-accordion-target="#accordion-flush-body-7"
 						aria-controls="accordion-flush-body-7"
 						@click="() => (checkType = 'bank-account')">
