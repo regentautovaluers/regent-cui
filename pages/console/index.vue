@@ -90,9 +90,9 @@
 			<div
 				class="desktop-4k:flex absolute h-[11rem] w-full translate-y-10 flex-col rounded-lg bg-blue-600 text-center">
 				<h1 class="mt-5 text-2xl font-semibold text-slate-100">Our Partners</h1>
-				<div class="hide-scrollbar flex flex-grow items-center px-4 pb-2">
+				<div class="hide-scrollbar flex flex-grow items-center overflow-x-scroll px-4 pb-2">
 					<div
-						class="flex h-full w-64 items-center justify-center"
+						class="tablet:w-64 tablet:mt-0 mt-4 flex h-full w-32 min-w-32 items-center justify-center"
 						v-for="a in 8"
 						:key="a">
 						<img
