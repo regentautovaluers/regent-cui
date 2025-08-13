@@ -218,3 +218,21 @@ export type CollateralAssetEntry = {
 	dateOfIncident: string | null;
 	amountDefaulted: number | null;
 };
+
+export type CollateralVerificationsTokens = {
+	id: string;
+	name: string | null;
+	balance: number;
+	billingType: 'postpaid' | 'prepaid';
+	invoiceDueDays: string | number | null;
+};
+
+export type CollateralVerificationsCheckType =
+	| 'national-id'
+	| 'alien-id'
+	| 'vehicle-reg'
+	| 'driving-license'
+	| 'kra-pin'
+	| 'business'
+	| 'loan-collateral'
+	| 'bank-account';
