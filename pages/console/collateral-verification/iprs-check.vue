@@ -4,19 +4,25 @@
 			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full h-fit border-b-[1px] p-4">
 			<h1 class="text-sm font-semibold text-blue-600">What are you looking to verify?</h1>
 			<h2 class="text-xs text-gray-500">
-				Click on any of these, then submit the relevant form to view findings.
+				<span>Click on any of these, then submit the relevant form to view findings.</span
+				><span
+					>Kindly note that you have
+					<b>{{ getCollateralVerificationTokenInfo?.balance }}</b> search tokens left.
+					Checks you are not allowed to perform with this limit will be disabled!</span
+				>
 			</h2>
 			<div
 				id="accordion-flush"
 				data-accordion="collapse"
-				data-active-classes="bg-gray-100 font-semibold text-blue-600"
+				data-active-classes="bg-blue-600 font-semibold text-slate-100"
 				data-inactive-classes="text-gray-500"
 				class="laptop:space-y-4 laptop:space-x-0 laptop:flex-col hide-scrollbar my-2 flex space-x-4 overflow-x-scroll">
 				<!-- vehicle registration -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('vehicle-reg')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-1"
 						aria-controls="accordion-flush-body-1"
 						@click="
@@ -77,8 +83,9 @@
 				<!-- loan collateral -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('loan-collateral')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-2"
 						aria-controls="accordion-flush-body-2"
 						@click="
@@ -139,8 +146,9 @@
 				<!-- National ID -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('national-id')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-3"
 						aria-controls="accordion-flush-body-3"
 						@click="() => (checkType = 'national-id')">
@@ -198,8 +206,9 @@
 				<!-- Alien ID -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('alien-id')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-4"
 						aria-controls="accordion-flush-body-4"
 						@click="() => (checkType = 'alien-id')">
@@ -257,8 +266,9 @@
 				<!-- Driving license -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('driving-license')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-5"
 						aria-controls="accordion-flush-body-5"
 						@click="() => (checkType = 'driving-license')">
@@ -316,8 +326,9 @@
 				<!-- KRA Pin -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('kra-pin')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-6"
 						aria-controls="accordion-flush-body-6"
 						@click="() => (checkType = 'kra-pin')">
@@ -375,8 +386,9 @@
 				<!-- Business -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('business')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-8"
 						aria-controls="accordion-flush-body-8"
 						@click="() => (checkType = 'business')">
@@ -433,8 +445,9 @@
 				<!-- Bank Account -->
 				<h2 id="accordion-flush-heading-1">
 					<button
+						:disabled="!shouldAllowSearch('bank-account')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-7"
 						aria-controls="accordion-flush-body-7"
 						@click="() => (checkType = 'bank-account')">
@@ -928,6 +941,9 @@
 		verifyCollateral,
 		searchDefaulter,
 	} = useCollateralVerificiation();
+
+	const { shouldAllowSearch, getCollateralVerificationTokenInfo } =
+		useCollateralVerificationTokensManagement();
 
 	watch([checkType, searchCollateralType], (_newValue) => {
 		responseData.value = null;

@@ -52,8 +52,17 @@
 				"
 				>IPRS Check</NuxtLink
 			>
+			<NuxtLink
+				:to="{ name: 'collateral-verification-management' }"
+				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
+				:class="
+					doesRouteNameMatch('collateral-verification-management')
+						? 'bg-gray-200'
+						: 'hover:bg-gray-100'
+				">
+				Management</NuxtLink
+			>
 		</div>
-
 		<NuxtPage />
 	</div>
 </template>
