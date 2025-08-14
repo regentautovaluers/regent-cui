@@ -1,5 +1,4 @@
 import type { CollateralSearchTypeOption, CollateralVerificationsCheckType } from '~/types';
-import crypto from 'crypto-js';
 
 export function useCollateralVerificiation() {
 	const collateralCheckLoading = ref(false);
@@ -143,9 +142,6 @@ export function useCollateralVerificiation() {
 				{
 					baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 					method: 'GET',
-					headers: {
-						'x-client-id': encryptClientId(getPrincipal.value.corpId),
-					},
 					onResponse({ response }) {
 						if (response.ok) {
 							const responseData = response._data;
@@ -201,12 +197,6 @@ export function useCollateralVerificiation() {
 			default:
 				throw new Error('No search type defined');
 		}
-	}
-
-	function encryptClientId(clientId: string) {
-		const ENCRYPTION_KEY = '7x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H+';
-		const encrypted = crypto.AES.encrypt(clientId, ENCRYPTION_KEY);
-		return encrypted.toString();
 	}
 
 	return {
