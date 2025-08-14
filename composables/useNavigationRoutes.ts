@@ -29,6 +29,10 @@ const useNavigationRoutes = () => {
 		return route.name === routeName;
 	};
 
+	function doesRoutePathInclude(substring: string): boolean {
+		return route.path.includes(substring);
+	}
+
 	const fuzzyRouteNameMatch = (routeName: string, coreRoute: CoreRoute): boolean => {
 		if ((route.name as string) == routeName) return true;
 
@@ -44,6 +48,7 @@ const useNavigationRoutes = () => {
 		navigationRoutes,
 		currentScreenName,
 		doesRouteNameMatch,
+		doesRoutePathInclude,
 		fuzzyRouteNameMatch,
 	};
 };
