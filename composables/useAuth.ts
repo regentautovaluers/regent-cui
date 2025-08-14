@@ -1,6 +1,7 @@
 import { useStorage, type RemovableRef } from '@vueuse/core';
 import { type LoggedInPrincipal } from '~/types';
 import type { CookieRef } from '#app';
+import crypto from 'crypto-js';
 
 const useAuth = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -206,6 +207,12 @@ const useAuth = () => {
 		return authenticatedPrincipal.value.isBroker;
 	};
 
+	function encryptCorporateClientId(clientId: string) {
+		const ENCRYPTION_KEY = '7x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H+';
+		const encrypted = crypto.AES.encrypt(clientId, ENCRYPTION_KEY);
+		return encrypted.toString();
+	}
+
 	return {
 		email,
 		password,
@@ -223,6 +230,7 @@ const useAuth = () => {
 		displayCookieConsent,
 		isPrincipalBroker,
 		searchCorporateOrBroker,
+		encryptCorporateClientId,
 	};
 };
 
