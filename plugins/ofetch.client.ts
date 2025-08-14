@@ -7,7 +7,7 @@ interface Headers {
 
 export default defineNuxtPlugin(() => {
 	const { public: runtimeConfig } = useRuntimeConfig();
-	const { getAuthToken } = useAuth();
+	const { getAuthToken, encryptCorporateClientId, getPrincipal } = useAuth();
 
 	globalThis.$fetch = ofetch.create({
 		async onRequest({ options }) {
@@ -20,6 +20,11 @@ export default defineNuxtPlugin(() => {
 					'LiV1tKgaqEtwPn7',
 				);
 				headers['Ava-Api-Key'] = 'fe08ab023b8f4d44a8612a64f4f642c9bcb34850';
+			}
+
+			// if the request us going to Fraud Detection
+			if (options.baseURL == runtimeConfig.FRAUD_DETECTION_BASE_URL) {
+				headers['x-client-id'] = encryptCorporateClientId(getPrincipal.value.corpId);
 			}
 
 			// if the request is going to valuation
