@@ -56,7 +56,8 @@
 				:to="{ name: 'collateral-verification-management' }"
 				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
 				:class="
-					doesRouteNameMatch('collateral-verification-management')
+					doesRouteNameMatch('collateral-verification-management') ||
+					doesRoutePathInclude('/collateral-verification/management')
 						? 'bg-gray-200'
 						: 'hover:bg-gray-100'
 				">
@@ -67,7 +68,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-	const { doesRouteNameMatch } = useNavigationRoutes();
+	const { doesRouteNameMatch, doesRoutePathInclude } = useNavigationRoutes();
 
 	definePageMeta({
 		layout: 'console-layout',
