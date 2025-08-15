@@ -89,6 +89,10 @@ function useCollateralVerificationInvoiceManagement() {
 	const startDate: Ref<string | null> = ref(null);
 	const endDate: Ref<string | null> = ref(null);
 
+	// downloading invoice
+	const invoiceDownloadLoading: Ref<boolean> = ref(false);
+	const downloadedInvoice: Ref<string | null> = ref(null);
+
 	const {
 		status: fetchCollateralVerificationInvoiceListStatus,
 		execute: executeFetchCollateralVerificationInvoiceList,
@@ -139,6 +143,47 @@ function useCollateralVerificationInvoiceManagement() {
 		},
 	);
 
+	async function downloadInvoice(invoiceId: string) {
+		invoiceDownloadLoading.value = true;
+		try {
+			// Fetch the PDF file as a binary blob.
+			const response = await fetch(
+				`${runtimeConfig.public.FRAUD_DETECTION_BASE_URL}/api/v1/invoices/by-id/${invoiceId}`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/pdf',
+					},
+				},
+			);
+
+			// Check if the request was successful.
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			// Get the response data as a Blob.
+			const pdfBlob = await response.blob();
+			downloadedInvoice.value = URL.createObjectURL(pdfBlob);
+			useToast('Download successful!', {
+				type: 'success',
+				showIcon: false,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} catch (error) {
+			console.log('An error occured: ', error);
+			useToast('Failed. Try Again!', {
+				type: 'danger',
+				showIcon: false,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
+		} finally {
+			invoiceDownloadLoading.value = false;
+		}
+	}
+
 	function clearFilters(): void {
 		startDate.value = null;
 		endDate.value = null;
@@ -157,8 +202,11 @@ function useCollateralVerificationInvoiceManagement() {
 		collateralVerificationInvoices,
 		fetchCollateralVerificationInvoiceListStatus,
 		fetchCollateralVerificationInvoiceListError,
+		downloadedInvoice,
+		invoiceDownloadLoading,
 		executeFetchCollateralVerificationInvoiceList,
 		clearFilters,
+		downloadInvoice,
 	};
 }
 
