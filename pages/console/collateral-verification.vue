@@ -31,6 +31,11 @@
 	const { isPrincipalAdmin } = useAuth();
 	const routeEntries = [
 		{
+			to: 'collateral-verification-home',
+			name: 'Homepage',
+			shouldShow: true,
+		},
+		{
 			to: 'collateral-verification-onboard-fraudsters',
 			name: 'Onboard Defaulter',
 			shouldShow: true,
@@ -56,8 +61,8 @@
 			shouldShow: true,
 		},
 		{
-			to: 'collateral-verification-management',
-			name: 'Management',
+			to: 'collateral-verification-view-invoices',
+			name: 'Invoices',
 			shouldShow: isPrincipalAdmin(),
 		},
 	];
