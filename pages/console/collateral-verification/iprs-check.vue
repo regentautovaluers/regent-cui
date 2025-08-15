@@ -370,7 +370,7 @@
 								class="generic-input h-[50px]"
 								placeholder="Provide KRA Pin"
 								v-model="searchQuery"
-								pattern="[0-9]*" />
+								pattern="[0-9,a-z,A-Z]*" />
 							<!-- submit button -->
 							<button
 								type="submit"
