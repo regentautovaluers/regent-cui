@@ -1,5 +1,6 @@
 <template>
-	<div class="flex flex-1 flex-col">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-md border-[.5px] bg-white p-2 shadow-sm">
 		<form
 			@submit.prevent="executeFetchCollateralVerificationInvoiceList()"
 			class="table-filters-form">
@@ -171,12 +172,12 @@
 									<th
 										scope="col"
 										class="table-headers">
-										Invoice (Ksh)
+										Invoice Amount
 									</th>
 									<th
 										scope="col"
 										class="table-headers desktop-4k:table-cell hidden">
-										Paid (Ksh)
+										Paid Amount
 									</th>
 									<th
 										scope="col"
@@ -187,6 +188,11 @@
 										scope="col"
 										class="table-headers laptop:table-cell hidden">
 										Fully Paid At
+									</th>
+									<th
+										scope="col"
+										class="table-headers">
+										Action
 									</th>
 								</tr>
 							</thead>
@@ -256,18 +262,33 @@
 										>
 									</td>
 									<td
-										class="laptop:table-cell hidden p-3 text-center text-sm font-semibold text-pink-500">
-										{{ invoice.amount }}
+										class="laptop:table-cell hidden p-3 text-sm font-semibold text-pink-500">
+										{{ invoice.amount ?? 'N/A' }}
 									</td>
 									<td
-										class="laptop:table-cell hidden p-3 text-center text-sm font-semibold text-pink-500">
-										{{ invoice.amountPaid }}
+										class="laptop:table-cell hidden p-3 text-sm font-semibold text-pink-500">
+										{{ invoice.amountPaid ?? 'N/A' }}
 									</td>
 									<td class="laptop:table-cell hidden p-3 text-sm">
-										{{ (invoice.lastPaymentAt as string)?.split('T')[0] }}
+										{{
+											(invoice.lastPaymentAt as string)?.split('T')[0] ??
+											'N/A'
+										}}
 									</td>
 									<td class="laptop:table-cell hidden p-3 text-sm">
-										{{ (invoice.paidAt as string)?.split('T')[0] }}
+										{{ (invoice.paidAt as string)?.split('T')[0] ?? 'N/A' }}
+									</td>
+									<td class="laptop:table-cell hidden p-3 text-sm">
+										<button
+											@click="
+												() => {
+													downloadInvoice(invoice.id);
+												}
+											"
+											:data-modal-target="`view-invoice-${invoice.id}-modal`"
+											:data-modal-toggle="`view-invoice-${invoice.id}-modal`">
+											View Invoice
+										</button>
 									</td>
 								</tr>
 							</tbody>
@@ -297,6 +318,23 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- View invoice modal(s) -->
+		<template
+			v-if="collateralVerificationInvoices && collateralVerificationInvoices.length"
+			v-for="(invoice, idx) in collateralVerificationInvoices"
+			:key="idx">
+			<ParentModal
+				:modal-id="`view-invoice-${invoice.id}-modal`"
+				modal-title="Service Invoice">
+				<span v-if="invoiceDownloadLoading"> Please Wait </span>
+				<iframe
+					v-else-if="!invoiceDownloadLoading && downloadedInvoice"
+					:src="downloadedInvoice"
+					class="h-[650px] w-full rounded-lg border-none outline-none"
+					title="PDF Preview"></iframe>
+			</ParentModal>
+		</template>
 	</div>
 </template>
 
@@ -315,7 +353,10 @@
 		collateralVerificationInvoices,
 		fetchCollateralVerificationInvoiceListStatus,
 		fetchCollateralVerificationInvoiceListError,
+		downloadedInvoice,
+		invoiceDownloadLoading,
 		executeFetchCollateralVerificationInvoiceList,
 		clearFilters,
+		downloadInvoice,
 	} = useCollateralVerificationInvoiceManagement();
 </script>

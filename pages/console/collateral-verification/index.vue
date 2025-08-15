@@ -1,10 +1,10 @@
 <template>
-	<h1>Search history</h1>
+	<h1>Hello world</h1>
 </template>
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'collateral-verification-search-history',
+		name: 'collateral-verification-home',
 		layout: 'console-layout',
 	});
 </script>
