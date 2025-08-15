@@ -1,7 +1,7 @@
 <template>
 	<div class="relative flex min-h-screen flex-col">
 		<nav
-			class="fixed top-0 z-50 flex h-[75px] min-h-[75px] w-full items-center justify-between bg-white">
+			class="fixed top-0 z-40 flex h-[75px] min-h-[75px] w-full items-center justify-between bg-white">
 			<div class="flex items-center space-x-2">
 				<button
 					class="inline-flex size-10 items-center justify-center rounded-full outline-none"
