@@ -9,30 +9,30 @@ function useCollateralVerificationTokensManagement() {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 
-	const { status: fetchCollateralVerificationTokensStatus } = useFetch(
-		`/api/v1/client-info/${getPrincipal.value.corpId}`,
-		{
-			key: 'collateral-verifications-tokens-metadata',
-			baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
-			method: 'GET',
-			server: false,
-			lazy: true,
-			onResponse({ response }) {
-				if (response.ok) {
-					const data = response._data.data as CollateralVerificationsTokens;
-					setCollateralVerificationTokenInfo(data);
-					return;
-				}
+	const {
+		status: fetchCollateralVerificationTokensStatus,
+		execute: executeFetchCollateralVerificationTokenStatus,
+	} = useFetch(`/api/v1/client-info/${getPrincipal.value.corpId}`, {
+		key: 'collateral-verifications-tokens-metadata',
+		baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+		method: 'GET',
+		server: false,
+		lazy: true,
+		onResponse({ response }) {
+			if (response.ok) {
+				const data = response._data.data as CollateralVerificationsTokens;
+				setCollateralVerificationTokenInfo(data);
+				return;
+			}
 
-				useToast('Token Pre-Check Failed!', {
-					type: 'danger',
-					showIcon: true,
-					showCloseButton: false,
-					hideProgressBar: true,
-				});
-			},
+			useToast('Token Pre-Check Failed!', {
+				type: 'danger',
+				showIcon: true,
+				showCloseButton: false,
+				hideProgressBar: true,
+			});
 		},
-	);
+	});
 
 	function shouldAllowSearch(type: CollateralVerificationsCheckType): boolean {
 		const tokensBalance = getCollateralVerificationTokenInfo.value?.balance;
@@ -68,6 +68,7 @@ function useCollateralVerificationTokensManagement() {
 
 	return {
 		fetchCollateralVerificationTokensStatus,
+		executeFetchCollateralVerificationTokenStatus,
 		getCollateralVerificationTokenInfo,
 		shouldAllowSearch,
 	};
@@ -95,7 +96,7 @@ function useCollateralVerificationInvoiceManagement() {
 		data: collateralVerificationInvoiceList,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/invoices/m8cyni35?page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/invoices/${getPrincipal.value.corpId}?page=${page.value}&size=${pageSize}`;
 
 			if (startDate.value !== null) {
 				requestURL = requestURL + `&startDate=${startDate.value}`;

@@ -12,6 +12,8 @@ export function useCollateralVerificiation() {
 	const iaVehicleCollateralDetails: Ref<any[] | null> = ref(null);
 	const iaVehicleOwnerDetails: Ref<any> = ref(null);
 	const checkType: Ref<CollateralVerificationsCheckType | null> = ref(null);
+	const { executeFetchCollateralVerificationTokenStatus } =
+		useCollateralVerificationTokensManagement();
 
 	const collateralSearchOptions: CollateralSearchTypeOption = {
 		id: 'defaulter-db',
@@ -98,7 +100,7 @@ export function useCollateralVerificiation() {
 				method: 'POST',
 				body: JSON.stringify(requestBody),
 
-				onResponse({ response }) {
+				async onResponse({ response }) {
 					if (response.ok) {
 						useToast('Success!', {
 							type: 'success',
@@ -116,11 +118,12 @@ export function useCollateralVerificiation() {
 						} else {
 							responseData.value = response._data.data;
 						}
+
+						await executeFetchCollateralVerificationTokenStatus();
 					}
 				},
 			});
 		} catch (err) {
-			console.log('Failed to delete fraud record', err);
 			useToast('Failed. Try Again!', {
 				type: 'danger',
 				showIcon: true,
@@ -142,7 +145,7 @@ export function useCollateralVerificiation() {
 				{
 					baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 					method: 'GET',
-					onResponse({ response }) {
+					async onResponse({ response }) {
 						if (response.ok) {
 							const responseData = response._data;
 
@@ -164,6 +167,8 @@ export function useCollateralVerificiation() {
 								// From Defaullter's DB
 								ravDefaulterDetails.value = responseData.data.fraudData;
 							}
+
+							await executeFetchCollateralVerificationTokenStatus();
 						}
 					},
 				},
