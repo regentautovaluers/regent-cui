@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col">
+	<div class="flex flex-1 flex-col">
 		<form
 			@submit.prevent="executeFetchCollateralVerificationInvoiceList()"
 			class="table-filters-form">
@@ -119,24 +119,24 @@
 			</button>
 		</form>
 
-		<div class="">
+		<div class="h-full">
 			<!-- div to show when there is a fetch error -->
 			<div
 				v-if="fetchCollateralVerificationInvoiceListStatus === 'error'"
-				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
+				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border text-sm">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 				<button
 					class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
 					@click="refreshPage">
 					<span>Refresh</span>
-					<RefreshIcon classes="size-6" />
+					<RefreshIcon classes="size-5" />
 				</button>
 			</div>
 
 			<!-- div to show when there are no authorization letters -->
 			<div
-				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border text-sm"
 				v-else-if="
 					fetchCollateralVerificationInvoiceListStatus === 'success' &&
 					!collateralVerificationInvoices.length
@@ -239,7 +239,7 @@
 									v-for="(invoice, index) in collateralVerificationInvoices"
 									:key="index">
 									<td
-										class="laptop:table-cell hidden w-72 max-w-72 p-3 text-sm text-wrap font-semibold text-blue-500">
+										class="laptop:table-cell hidden w-72 max-w-72 p-3 text-sm font-semibold text-wrap text-blue-500">
 										{{ invoice.invoiceNumber }}
 									</td>
 									<td class="tablet:table-cell hidden p-3">
@@ -255,13 +255,15 @@
 											{{ (invoice.periodEnd as string)?.split('T')[0] }}</span
 										>
 									</td>
-									<td class="laptop:table-cell hidden p-3 text-center text-sm font-semibold text-pink-500">
+									<td
+										class="laptop:table-cell hidden p-3 text-center text-sm font-semibold text-pink-500">
 										{{ invoice.amount }}
 									</td>
-									<td class="laptop:table-cell hidden p-3 text-center text-sm font-semibold text-pink-500">
+									<td
+										class="laptop:table-cell hidden p-3 text-center text-sm font-semibold text-pink-500">
 										{{ invoice.amountPaid }}
 									</td>
-									<td class="laptop:table-cell hidden p-3 text-sm ">
+									<td class="laptop:table-cell hidden p-3 text-sm">
 										{{ (invoice.lastPaymentAt as string)?.split('T')[0] }}
 									</td>
 									<td class="laptop:table-cell hidden p-3 text-sm">

@@ -1,74 +1,66 @@
 <template>
 	<div class="console-layout-spacing">
+		<h1 class="text-lg font-bold text-gray-500">Collateral Verification</h1>
+		<h2 class="text-xs text-gray-500">
+			Easily verify documents and vehicle loan collateral here.
+		</h2>
 		<div
-			class="laptop:w-fit hide-scrollbar mb-5 flex w-full items-center space-x-2 overflow-x-scroll rounded-full border-[1px] bg-white p-1">
+			class="hide-scrollbar my-5 flex items-center space-x-3 overflow-x-scroll border-b-[.5px] text-sm">
 			<NuxtLink
-				:to="{ name: 'collateral-verification-onboard-fraudsters' }"
-				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
-				:class="
-					doesRouteNameMatch('collateral-verification-onboard-fraudsters')
-						? 'bg-gray-200'
-						: 'hover:bg-gray-100'
-				"
-				>Onboard Defaulter</NuxtLink
-			>
-			<NuxtLink
-				:to="{ name: 'collateral-verification-bulk-onboard-fraudsters' }"
-				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
-				:class="
-					doesRouteNameMatch('collateral-verification-bulk-onboard-fraudsters')
-						? 'bg-gray-200'
-						: 'hover:bg-gray-100'
-				"
-				>Bulk Onboard Defaulter</NuxtLink
-			>
-			<NuxtLink
-				:to="{ name: 'collateral-verification-manage-list' }"
-				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
-				:class="
-					doesRouteNameMatch('collateral-verification-manage-list')
-						? 'bg-gray-200'
-						: 'hover:bg-gray-100'
-				"
-				>Your Defaulter List</NuxtLink
-			>
-			<NuxtLink
-				:to="{ name: 'collateral-verification-query-collateral' }"
-				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
-				:class="
-					doesRouteNameMatch('collateral-verification-query-collateral')
-						? 'bg-gray-200'
-						: 'hover:bg-gray-100'
-				"
-				>Verify Collateral</NuxtLink
-			>
-			<NuxtLink
-				:to="{ name: 'collateral-iprs-check' }"
-				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
-				:class="
-					doesRouteNameMatch('collateral-iprs-check')
-						? 'bg-gray-200'
-						: 'hover:bg-gray-100'
-				"
-				>IPRS Check</NuxtLink
-			>
-			<NuxtLink
-				:to="{ name: 'collateral-verification-management' }"
-				class="h-10 rounded-full p-2 text-sm whitespace-nowrap text-gray-500"
-				:class="
-					doesRouteNameMatch('collateral-verification-management') ||
-					doesRoutePathInclude('/collateral-verification/management')
-						? 'bg-gray-200'
-						: 'hover:bg-gray-100'
-				">
-				Management</NuxtLink
-			>
+				v-for="(e, idx) in routeEntries.filter((re) => re.shouldShow)"
+				:key="idx"
+				:to="{ name: e.to }"
+				class="relative text-sm whitespace-nowrap">
+				<span
+					:class="[
+						doesRouteNameMatch(e.to) ||
+						(e.to == 'collateral-verification-management' &&
+							doesRoutePathInclude('/collateral-verification/management'))
+							? 'font-semibold text-blue-600 after:absolute after:-bottom-[.5px] after:left-0 after:h-[2px] after:w-full after:bg-blue-600'
+							: 'text-gray-500',
+					]">
+					{{ e.name }}
+				</span>
+			</NuxtLink>
 		</div>
 		<NuxtPage />
 	</div>
 </template>
 <script setup lang="ts">
 	const { doesRouteNameMatch, doesRoutePathInclude } = useNavigationRoutes();
+	const { isPrincipalAdmin } = useAuth();
+	const routeEntries = [
+		{
+			to: 'collateral-verification-onboard-fraudsters',
+			name: 'Onboard Defaulter',
+			shouldShow: true,
+		},
+		{
+			to: 'collateral-verification-bulk-onboard-fraudsters',
+			name: 'Bulk Onboarding',
+			shouldShow: true,
+		},
+		{
+			to: 'collateral-verification-manage-list',
+			name: 'Your Defaulter List',
+			shouldShow: true,
+		},
+		{
+			to: 'collateral-verification-query-collateral',
+			name: 'Collateral Verification',
+			shouldShow: true,
+		},
+		{
+			to: 'collateral-iprs-check',
+			name: 'IPRS Verification',
+			shouldShow: true,
+		},
+		{
+			to: 'collateral-verification-management',
+			name: 'Management',
+			shouldShow: isPrincipalAdmin(),
+		},
+	];
 
 	definePageMeta({
 		layout: 'console-layout',

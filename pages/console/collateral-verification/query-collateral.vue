@@ -1,6 +1,7 @@
 <template>
-	<div class="h-full rounded-md bg-white p-8 shadow-sm">
-		<div class="w-1/2 place-self-center">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-md border-[.5px] bg-white p-2 shadow-sm">
+		<div class="laptop:w-1/2 place-self-center">
 			<div
 				id="alert-additional-content-4"
 				class="my-5 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"

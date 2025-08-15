@@ -1,5 +1,6 @@
 <template>
-	<div class="flex h-full min-h-full flex-col rounded-md bg-white p-8 shadow-md">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-md border-[.5px] bg-white p-2 shadow-md">
 		<!-- filters -->
 		<div
 			class="flex h-fit items-center justify-between"
@@ -22,20 +23,20 @@
 			<!-- div to show when there is a fetch error -->
 			<div
 				v-if="fetchFraudsterListStatus === 'error'"
-				class="mt-2 flex h-full flex-col items-center justify-center space-y-4">
+				class="mt-2 flex h-full flex-col items-center justify-center space-y-4 text-sm">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 				<button
 					class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
 					@click="refreshPage">
 					<span>Refresh</span>
-					<RefreshIcon classes="size-6" />
+					<RefreshIcon classes="size-5" />
 				</button>
 			</div>
 
 			<!-- div to show when there are no entries -->
 			<div
-				class="mt-2 flex h-full flex-col items-center justify-center space-y-4"
+				class="mt-2 flex h-full flex-col items-center justify-center space-y-4 text-sm"
 				v-else-if="fetchFraudsterListStatus === 'success' && fraudsterEntries.length === 0">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">

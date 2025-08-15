@@ -1,8 +1,8 @@
 <template>
 	<form @submit.prevent="emits('initiate-search', { regNo, engineNo, chassisNo })">
-		<div class="tablet:flex-row flex flex-col items-center space-x-4">
+		<div class="tablet:flex tablet:space-x-4">
 			<!-- Registration Number -->
-			<div class="tablet:w-full w-1/2">
+			<div class="tablet:w-1/2">
 				<label
 					for="registration-number"
 					class="generic-input-label"
@@ -15,8 +15,8 @@
 					placeholder="e.g KDH 908Y"
 					v-model.trim="regNo" />
 			</div>
-			<!-- Client Name -->
-			<div class="tablet:w-full w-1/2">
+			<!-- Engine number -->
+			<div class="tablet:w-1/2">
 				<label
 					for="client-name"
 					class="generic-input-label"
@@ -31,7 +31,7 @@
 			</div>
 		</div>
 
-		<!-- Client Phone Number -->
+		<!-- Chassis Number -->
 		<div class="mt-4">
 			<label
 				for="client-phone"
@@ -53,7 +53,7 @@
 				'generic-form-submit mt-4 w-full',
 				props.searchLoading && 'skeleton skeleton-animated',
 			]">
-			{{ props.searchLoading ? 'Please Wait...' : 'Submit Request' }}
+			{{ props.searchLoading ? 'Please Wait...' : 'Search' }}
 		</button>
 	</form>
 </template>

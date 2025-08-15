@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="laptop:grid-cols-[22%_78%] grid  grid-cols-1 rounded-md bg-white shadow-sm">
+		class="laptop:grid-cols-[20%_80%] laptop:p-4 laptop-lg:p-8 grid flex-1 grid-cols-1 rounded-md border-[.5px] bg-white p-2 shadow-sm">
 		<div
 			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full laptop:space-y-4 laptop:space-x-0 laptop:flex-col hide-scrollbar flex h-fit space-x-4 overflow-x-scroll border-b-[1px] p-4">
 			<NuxtLink

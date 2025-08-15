@@ -33,7 +33,7 @@
 			<!-- form to trigger the AI chat modal -->
 			<AIChatForm />
 
-			<div class="my-10 flex flex-col items-center space-y-1">
+			<div class="my-10 flex flex-col items-center space-y-5">
 				<button
 					disabled
 					class="inline-flex items-center space-x-2 rounded-full bg-blue-200/30 px-4 py-1 text-blue-600">
@@ -88,7 +88,7 @@
 
 			<!-- partners strip -->
 			<div
-				class="desktop-4k:flex absolute h-[11rem] w-full translate-y-10 flex-col rounded-lg bg-blue-600 text-center">
+				class="desktop-4k:flex absolute h-[11rem] w-full 2 flex-col rounded-lg bg-blue-600 text-center">
 				<h1 class="mt-5 text-2xl font-semibold text-slate-100">Our Partners</h1>
 				<div class="hide-scrollbar flex flex-grow items-center overflow-x-scroll px-4 pb-2">
 					<div
@@ -103,7 +103,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex w-full flex-col items-center bg-black pt-[9.5rem]">
+		<div class="flex w-full flex-col items-center bg-black pt-[6rem]">
 			<div
 				class="tablet:w-[95%] laptop:w-[80%] laptop-lg:w-[75%] desktop-4k:w-[70%] tablet:grid-cols-2 laptop-lg:grid-cols-4 laptop-lg:place-content-center grid h-full w-full grid-cols-1 py-10 text-sm text-slate-100">
 				<!-- grid 1 -->
@@ -217,7 +217,7 @@
 				<div class="w-full">
 					<img
 						src="/images/app-logo-white.png"
-						class="tablet:h-12 laptop:h-16 h-10" />
+						class="tablet:h-12 h-10" />
 					<div class="mt-5 flex flex-col space-y-2">
 						<p class="font-light">
 							Stay in Control On Every Journey with Regent By Your Side

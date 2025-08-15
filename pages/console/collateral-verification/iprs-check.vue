@@ -1,13 +1,14 @@
 <template>
-	<div class="laptop:grid-cols-[22%_78%] grid h-full grid-cols-1 rounded-md bg-white shadow-sm">
+	<div
+		class="laptop:grid-cols-[20%_80%] flex-1 laptop:p-4 laptop-lg:p-8 grid h-full grid-cols-1 rounded-md border-[.5px] bg-white p-2 shadow-sm">
 		<div
-			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full h-fit border-b-[1px] p-4">
+			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full h-fit border-b-[1px] p-2">
 			<h1 class="text-sm font-semibold text-blue-600">What are you looking to verify?</h1>
 			<h2 class="text-xs text-gray-500">
 				<span>Click on any of these, then submit the relevant form to view findings.</span
 				><span
 					>Kindly note that you have
-					<b>{{ getCollateralVerificationTokenInfo?.balance }}</b> search tokens left.
+					<b>{{ getCollateralVerificationTokenInfo?.balance ?? 'N/A' }}</b> search tokens left.
 					Checks you are not allowed to perform with this limit will be disabled!</span
 				>
 			</h2>
@@ -22,7 +23,7 @@
 					<button
 						:disabled="!shouldAllowSearch('vehicle-reg')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-1"
 						aria-controls="accordion-flush-body-1"
 						@click="
@@ -38,7 +39,7 @@
 						<span>Vehicle Plate</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -85,7 +86,7 @@
 					<button
 						:disabled="!shouldAllowSearch('loan-collateral')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-2"
 						aria-controls="accordion-flush-body-2"
 						@click="
@@ -101,7 +102,7 @@
 						<span>Loan Collateral</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -148,14 +149,14 @@
 					<button
 						:disabled="!shouldAllowSearch('national-id')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-3"
 						aria-controls="accordion-flush-body-3"
 						@click="() => (checkType = 'national-id')">
 						<span>National ID</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -208,14 +209,14 @@
 					<button
 						:disabled="!shouldAllowSearch('alien-id')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-4"
 						aria-controls="accordion-flush-body-4"
 						@click="() => (checkType = 'alien-id')">
 						<span>Alien ID</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -268,14 +269,14 @@
 					<button
 						:disabled="!shouldAllowSearch('driving-license')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-5"
 						aria-controls="accordion-flush-body-5"
 						@click="() => (checkType = 'driving-license')">
 						<span>Driving License</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -328,14 +329,14 @@
 					<button
 						:disabled="!shouldAllowSearch('kra-pin')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-6"
 						aria-controls="accordion-flush-body-6"
 						@click="() => (checkType = 'kra-pin')">
 						<span>KRA PIN</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -388,14 +389,14 @@
 					<button
 						:disabled="!shouldAllowSearch('business')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-8"
 						aria-controls="accordion-flush-body-8"
 						@click="() => (checkType = 'business')">
 						<span>Business</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -447,14 +448,14 @@
 					<button
 						:disabled="!shouldAllowSearch('bank-account')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-sm font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-7"
 						aria-controls="accordion-flush-body-7"
 						@click="() => (checkType = 'bank-account')">
 						<span>Bank Account</span>
 						<svg
 							data-accordion-icon
-							class="size-[10px] shrink-0 rotate-180"
+							class="size-[8px] shrink-0 rotate-180"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -533,7 +534,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="h-full p-4">
+		<div class="h-full p-2">
 			<!-- IA Vehicle Details results -->
 			<div
 				v-if="iaVehicleDetails"
