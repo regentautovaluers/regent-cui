@@ -10,7 +10,7 @@
 				</button>
 				<img
 					src="/images/app-logo.png"
-					class="h-11"
+					class="tablet:h-11 h-8"
 					alt="Regent Logo" />
 			</div>
 
@@ -27,10 +27,8 @@
 					<!-- notification bell -->
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="30"
-						height="30"
 						viewBox="0 0 24 24"
-						class="text-inherit">
+						class="tablet:size-11 size-8 text-inherit">
 						<g
 							fill="none"
 							stroke="currentColor"
@@ -46,7 +44,7 @@
 				</button>
 
 				<!-- chat button -->
-				<button
+				<!-- <button
 					class="rounded-lg p-2 text-pink-500 transition-all duration-150 ease-linear hover:bg-pink-600 hover:text-slate-100"
 					type="button"
 					data-drawer-target="dashboard-chat-window"
@@ -54,9 +52,9 @@
 					data-drawer-placement="right"
 					data-drawer-backdrop="false"
 					aria-controls="dashboard-chat-window">
-					<!-- chat icon -->
+					
 					<ChatIcon />
-				</button>
+				</button> -->
 
 				<!-- user profile info -->
 				<div class="flex w-fit max-w-48 items-center space-x-3 px-2 py-1 md:max-w-48">
@@ -72,11 +70,13 @@
 				</div>
 			</div>
 		</nav>
-		<main class="mt-[75px] flex min-h-screen flex-grow">
+		<main class="hide-scrollbar mt-[75px] flex min-h-screen flex-grow overflow-x-scroll">
 			<aside
 				:class="[
-					'fixed flex h-[calc(100vh-3.5rem)] max-h-[calc(100%-3.5rem)] flex-col justify-between overflow-y-scroll py-5',
-					!sidebarOpen ? 'w-[3%] min-w-[3%]' : 'w-[15%] min-w-[15%]',
+					'hide-scrollbar fixed z-40 flex h-[calc(100vh-3.5rem)] max-h-[calc(100%-3.5rem)] flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white py-5',
+					!sidebarOpen
+						? 'laptop-lg:-translate-x-0 w-[60px] -translate-x-[60px]'
+						: 'w-68 -translate-x-0',
 				]">
 				<!-- links -->
 				<div
@@ -260,7 +260,12 @@
 				</footer>
 			</aside>
 			<div
-				:class="['flex flex-1 flex-col', sidebarOpen ? 'ml-[15%]' : 'ml-[3%]']"
+				:class="[
+					'flex flex-1 flex-col',
+					sidebarOpen
+						? 'laptop:translate-x-0 laptop:ml-68 translate-x-68'
+						: 'laptop:ml-[60px]',
+				]"
 				@click="() => (sidebarOpen = false)">
 				<NuxtPage />
 			</div>

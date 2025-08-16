@@ -88,9 +88,9 @@
 
 			<!-- partners strip -->
 			<div
-				class="desktop-4k:flex absolute h-[11rem] w-full 2 flex-col rounded-lg bg-blue-600 text-center">
-				<h1 class="mt-5 text-2xl font-semibold text-slate-100">Our Partners</h1>
-				<div class="hide-scrollbar flex flex-grow items-center overflow-x-scroll px-4 pb-2">
+				class="desktop-4k:flex tablet:h-[11rem] absolute h-[10rem] w-full flex-col rounded-lg bg-blue-600 text-center">
+				<h1 class="py-4 text-2xl font-semibold text-slate-100">Our Partners</h1>
+				<div class="hide-scrollbar flex flex-grow items-center overflow-x-scroll">
 					<div
 						class="tablet:w-64 tablet:mt-0 mt-4 flex h-full w-32 min-w-32 items-center justify-center"
 						v-for="a in 8"
@@ -105,18 +105,16 @@
 		</div>
 		<div class="flex w-full flex-col items-center bg-black pt-[6rem]">
 			<div
-				class="tablet:w-[95%] laptop:w-[80%] laptop-lg:w-[75%] desktop-4k:w-[70%] tablet:grid-cols-2 laptop-lg:grid-cols-4 laptop-lg:place-content-center grid h-full w-full grid-cols-1 py-10 text-sm text-slate-100">
+				class="tablet:w-[95%] laptop:w-[80%] laptop-lg:w-[75%] desktop-4k:w-[70%] laptop-lg:grid-cols-4 laptop-lg:place-content-center grid h-full grid-cols-2 gap-4 py-10 text-sm text-slate-100">
 				<!-- grid 1 -->
-				<div class="w-full">
+				<div class="tablet:col-span-1 col-span-2 p-2">
 					<h1 class="text-2xl font-bold">About Us.</h1>
 					<p class="font-light">
-						Regent Auto Valuers is a trusted <br />
-						provider of innovative automotive solutions <br />
+						Regent Auto Valuers is a trusted provider of innovative automotive solutions
 						across Kenya and Rwanda.
 					</p>
-					<div class="mt-8 flex items-center space-x-6">
+					<div class="mt-2 flex items-center space-x-6">
 						<!-- facebook -->
-
 						<a
 							href="#"
 							target="_blank"
@@ -173,7 +171,6 @@
 						</a>
 
 						<!-- mail -->
-
 						<a
 							href="mailto:customercare@regentautovaluers.com"
 							target="_blank"
@@ -193,9 +190,9 @@
 				</div>
 
 				<!-- grid 2 -->
-				<div class="w-full">
+				<div class="">
 					<h1 class="text-2xl font-bold">Quick Links.</h1>
-					<div class="mt-5 flex flex-col space-y-2">
+					<div class="mt-2 flex flex-col space-y-2">
 						<NuxtLink class="font-light">Request Valuation</NuxtLink>
 						<NuxtLink class="font-light">Roadside Assistance</NuxtLink>
 						<NuxtLink class="font-light">Accident Management</NuxtLink>
@@ -206,25 +203,27 @@
 				</div>
 
 				<!-- grid 3 -->
-				<div class="w-full">
+				<div class="">
 					<h1 class="text-2xl font-bold">Our Companies.</h1>
-					<div class="mt-5 flex flex-col space-y-2">
+					<div class="mt-2 flex flex-col space-y-2">
 						<NuxtLink class="font-light">Regent Auto Valuers</NuxtLink>
 						<NuxtLink class="font-light">Regent Tracking</NuxtLink>
 						<NuxtLink class="font-light">AVA</NuxtLink>
 					</div>
 				</div>
-				<div class="w-full">
+
+				<!-- grid- 4 -->
+				<div class="tablet:col-span-1 col-span-2 w-full p-2">
 					<img
 						src="/images/app-logo-white.png"
 						class="tablet:h-12 h-10" />
-					<div class="mt-5 flex flex-col space-y-2">
+					<div class="mt-2 flex flex-col space-y-2">
 						<p class="font-light">
 							Stay in Control On Every Journey with Regent By Your Side
 						</p>
 					</div>
 					<!-- location -->
-					<div class="mt-5 flex items-center space-x-4">
+					<div class="mt-2 flex items-center space-x-4">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="22"
@@ -247,7 +246,7 @@
 					</div>
 
 					<!-- email contact information -->
-					<div class="mt-5 flex items-center space-x-4">
+					<div class="mt-2 flex items-center space-x-4">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="22"
@@ -274,7 +273,7 @@
 					</div>
 
 					<!-- phone information -->
-					<div class="mt-5 flex items-center space-x-4">
+					<div class="mt-2 flex items-center space-x-4">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="22"

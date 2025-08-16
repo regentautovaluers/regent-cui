@@ -189,6 +189,7 @@
 										class="table-headers laptop:table-cell hidden">
 										Fully Paid At
 									</th>
+									
 									<th
 										scope="col"
 										class="table-headers">
@@ -223,6 +224,11 @@
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>authorizedby</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookingstage</span
 										>
 									</td>
 									<td class="p-6 text-gray-300">
@@ -278,7 +284,7 @@
 									<td class="laptop:table-cell hidden p-3 text-sm">
 										{{ (invoice.paidAt as string)?.split('T')[0] ?? 'N/A' }}
 									</td>
-									<td class="laptop:table-cell hidden p-3 text-sm">
+									<td class="laptop:table-cell hidden p-3 text-sm text-blue-600">
 										<button
 											@click="
 												() => {

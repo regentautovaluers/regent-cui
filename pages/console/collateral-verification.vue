@@ -2,15 +2,16 @@
 	<div class="console-layout-spacing">
 		<h1 class="text-lg font-bold text-gray-500">Collateral Verification</h1>
 		<h2 class="text-xs text-gray-500">
-			Easily verify documents and vehicle loan collateral here.
+			A quick and easy way to verify documents and vehicle loan collateral here. Contribute to
+			the largest collateral recording system in the country.
 		</h2>
 		<div
-			class="hide-scrollbar my-5 flex items-center space-x-3 overflow-x-scroll border-b-[.5px] text-sm">
+			class="hide-scrollbar laptop:space-x-4 my-4 space-x-2 overflow-x-scroll border-b-[.5px] whitespace-nowrap">
 			<NuxtLink
 				v-for="(e, idx) in routeEntries.filter((re) => re.shouldShow)"
 				:key="idx"
 				:to="{ name: e.to }"
-				class="relative text-sm whitespace-nowrap">
+				class="relative text-sm">
 				<span
 					:class="[
 						doesRouteNameMatch(e.to) ||
