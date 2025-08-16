@@ -51,7 +51,7 @@
 				</button>
 				<h1 class="text-3xl font-semibold">Our Services</h1>
 				<div
-					class="tablet:grid-cols-2 desktop-4k:grid-cols-4 tablet:p-0 grid w-full gap-4 p-4">
+					class="tablet:grid-cols-2 laptop:grid-cols-4 tablet:p-0 grid w-full gap-4 p-4">
 					<!-- vehicle valuation -->
 					<ServicesQuickLinks
 						:title="'Vehicle Valuation'"
@@ -105,7 +105,7 @@
 		</div>
 		<div class="flex w-full flex-col items-center bg-black pt-[6rem]">
 			<div
-				class="tablet:w-[95%] laptop:w-[80%] laptop-lg:w-[75%] desktop-4k:w-[70%] laptop-lg:grid-cols-4 laptop-lg:place-content-center grid h-full grid-cols-2 gap-4 py-10 text-sm text-slate-100">
+				class="tablet:w-[95%] laptop:w-[80%] laptop-lg:w-[75%] desktop-4k:w-[70%] laptop:grid-cols-4 laptop-lg:place-content-center grid h-full grid-cols-2 gap-4 py-10 text-sm text-slate-100">
 				<!-- grid 1 -->
 				<div class="tablet:col-span-1 col-span-2 p-2">
 					<h1 class="text-2xl font-bold">About Us.</h1>

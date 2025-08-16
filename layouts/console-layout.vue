@@ -10,7 +10,7 @@
 				</button>
 				<img
 					src="/images/app-logo.png"
-					class="tablet:h-11 h-8"
+					class="tablet:h-9 h-8"
 					alt="Regent Logo" />
 			</div>
 
@@ -28,7 +28,7 @@
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
-						class="tablet:size-11 size-8 text-inherit">
+						class="tablet:size-9 size-8 text-inherit">
 						<g
 							fill="none"
 							stroke="currentColor"
@@ -263,8 +263,8 @@
 				:class="[
 					'flex flex-1 flex-col',
 					sidebarOpen
-						? 'laptop:translate-x-0 laptop:ml-68 translate-x-68'
-						: 'laptop:ml-[60px]',
+						? 'laptop-lg:translate-x-0 laptop-lg:ml-68 translate-x-68'
+						: 'laptop-lg:ml-[60px]',
 				]"
 				@click="() => (sidebarOpen = false)">
 				<NuxtPage />

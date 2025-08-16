@@ -1,7 +1,7 @@
 <template>
 	<div
 		:class="[
-			'tablet:size-11 flex size-8 items-center justify-center rounded-full border bg-blue-600 outline-none',
+			'tablet:size-9 flex size-8 items-center justify-center rounded-full border bg-blue-600 outline-none',
 		]">
 		<span :class="['text-lg font-semibold text-slate-100']">{{ firstLetter }}</span>
 	</div>
