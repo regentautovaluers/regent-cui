@@ -161,22 +161,22 @@
 
 									<th
 										scope="col"
-										class="table-headers tablet:table-cell hidden">
-										Invoice Number
+										class="table-headers px-3">
+										Inv. Number
 									</th>
 									<th
 										scope="col"
-										class="table-headers tablet:table-cell hidden">
+										class="table-headers mobile-lg:table-cell hidden">
 										Time Period
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
-										Invoice Amount
+										class="table-headers tablet:table-cell hidden">
+										Inv. Amount
 									</th>
 									<th
 										scope="col"
-										class="table-headers desktop-4k:table-cell hidden">
+										class="table-headers tablet:table-cell hidden">
 										Paid Amount
 									</th>
 									<th
@@ -186,15 +186,16 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers laptop:table-cell hidden">
+										class="table-headers laptop-lg:table-cell hidden">
 										Fully Paid At
 									</th>
-									
+
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers pe-3">
 										Action
 									</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -211,27 +212,27 @@
 											>regenthq</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="mobile-lg:table-cell hidden p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>domain role</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="tablet:table-cell hidden p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>agency</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="tablet:table-cell hidden p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>authorizedby</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="laptop:table-cell hidden p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>bookingstage</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="laptop-lg:table-cell hidden p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>bookingstage</span
 										>
@@ -250,11 +251,10 @@
 									v-else
 									v-for="(invoice, index) in collateralVerificationInvoices"
 									:key="index">
-									<td
-										class="laptop:table-cell hidden w-72 max-w-72 p-3 text-sm font-semibold text-wrap text-blue-500">
+									<td class="px-3 text-sm font-semibold text-wrap text-blue-500">
 										{{ invoice.invoiceNumber }}
 									</td>
-									<td class="tablet:table-cell hidden p-3">
+									<td class="mobile-lg:table-cell hidden py-4">
 										<span class="w-fit">
 											from
 											{{
@@ -268,23 +268,23 @@
 										>
 									</td>
 									<td
-										class="laptop:table-cell hidden p-3 text-sm font-semibold text-pink-500">
+										class="tablet:table-cell hidden py-4 text-sm font-semibold text-pink-500">
 										{{ invoice.amount ?? 'N/A' }}
 									</td>
 									<td
-										class="laptop:table-cell hidden p-3 text-sm font-semibold text-pink-500">
+										class="tablet:table-cell hidden py-4 text-sm font-semibold text-pink-500">
 										{{ invoice.amountPaid ?? 'N/A' }}
 									</td>
-									<td class="laptop:table-cell hidden p-3 text-sm">
+									<td class="laptop:table-cell hidden py-4 text-sm">
 										{{
 											(invoice.lastPaymentAt as string)?.split('T')[0] ??
 											'N/A'
 										}}
 									</td>
-									<td class="laptop:table-cell hidden p-3 text-sm">
+									<td class="laptop-lg:table-cell hidden py-4 text-sm">
 										{{ (invoice.paidAt as string)?.split('T')[0] ?? 'N/A' }}
 									</td>
-									<td class="laptop:table-cell hidden p-3 text-sm text-blue-600">
+									<td class="py-4 pe-3 text-sm text-blue-600">
 										<button
 											@click="
 												() => {
@@ -293,7 +293,7 @@
 											"
 											:data-modal-target="`view-invoice-${invoice.id}-modal`"
 											:data-modal-toggle="`view-invoice-${invoice.id}-modal`">
-											View Invoice
+											View Inv
 										</button>
 									</td>
 								</tr>
@@ -303,11 +303,13 @@
 				</div>
 
 				<!-- page controls -->
-				<div class="mt-8 flex h-12 min-h-12 items-center justify-between">
+				<div
+					class="tablet:flex-row tablet:min-h-12 mt-5 flex min-h-16 flex-col items-center justify-between">
 					<h1 class="text-sm font-semibold text-gray-500">
 						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>
-					<div class="h-full space-x-2 md:space-x-4">
+					<div
+						class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
 						<button
 							class="table-page-buttons"
 							@click="page -= 1"

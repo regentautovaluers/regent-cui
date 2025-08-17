@@ -1,16 +1,16 @@
 <template>
 	<div
-		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-md border-[.5px] bg-white p-2 shadow-md">
+		class="laptop:py-4 laptop-lg:p-8 flex flex-1 flex-col rounded-md border-[.5px] bg-white p-2 shadow-md">
 		<!-- filters -->
 		<div
 			class="flex h-fit items-center justify-between"
 			v-if="fetchFraudsterListStatus === 'success' && fraudsterEntries.length > 0">
 			<!-- search box -->
 			<div
-				class="laptop:w-[45%] laptop-lg:w-[23%] relative flex w-full items-center justify-between">
+				class="tablet:w-1/2 laptop:w-[45%] laptop-lg:w-[23%] relative flex w-full items-center justify-between">
 				<input
 					type="text"
-					class="generic-input"
+					class="generic-input h-[50px]"
 					placeholder="Search Registration Number" />
 				<button
 					type="submit"
@@ -44,7 +44,7 @@
 				</h1>
 			</div>
 
-			<!-- div to show when there are fraud entries -->
+			<!-- div to show when there are entries -->
 			<div
 				class="flex h-full flex-col"
 				v-else>
@@ -55,39 +55,35 @@
 								<tr>
 									<th
 										scope="col"
-										class="table-headers">
-										Reg No.
+										class="table-headers ps-3">
+										Vehicle
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
-										Color
+										class="table-headers hidden">
+										Chassis & Engine No.
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
-										Chassis No.
-									</th>
-									<th
-										scope="col"
-										class="table-headers">
-										Engine No.
-									</th>
-									<th
-										scope="col"
-										class="table-headers">
+										class="table-headers mobile-lg:table-cell hidden">
 										Make & Model
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers tablet:table-cell hidden">
 										Incident Date
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers laptop:table-cell hidden">
+										Added By
+									</th>
+									<th
+										scope="col"
+										class="table-headers pe-3">
 										Actions
 									</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -99,37 +95,32 @@
 									:key="a">
 									<td
 										scope="row"
-										class="p-6 font-medium whitespace-nowrap text-gray-300">
+										class="px-3 py-4 font-medium whitespace-nowrap text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>username</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="py-4 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>useremail</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>useremail</span
-										>
-									</td>
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>useremail</span
-										>
-									</td>
-									<td class="p-6 text-gray-300">
+									<td class="mobile-lg:table-cell hidden py-4 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>regenthq</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="tablet:table-cell hidden py-4 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>domain role</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="laptop:table-cell hidden py-4 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>domain role</span
+										>
+									</td>
+									<td class="py-4 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>agency</span
 										>
@@ -143,26 +134,40 @@
 									v-else
 									v-for="(entry, index) in fraudsterEntries"
 									:key="index">
-									<td class="generic-table-cell p-5 font-semibold text-blue-600">
-										{{ entry.registrationNumber }}
+									<td
+										class="generic-table-cell py-4 ps-3 font-semibold text-blue-600">
+										<span>{{ entry.registrationNumber ?? 'Reg No. N/A' }}</span>
+										<br />
+										<span
+											class="w-fit rounded-lg bg-yellow-200 px-1 text-yellow-600">
+											{{ entry.color ?? 'Color N/A' }}</span
+										>
+										<br />
 									</td>
-									<td class="generic-table-cell p-5">
-										{{ entry.color }}
+									<td class="mobile-lg:table-cell generic-table-cell hidden py-4">
+										<span
+											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
+											>{{ entry.chassisNumber ?? 'Chassis No. N/A' }}</span
+										>
+										<br />
+										<span>{{ entry.engineNumber ?? 'Engine No. N/A' }}</span>
 									</td>
-									<td class="generic-table-cell p-5">
-										{{ entry.chassisNumber }}
-									</td>
-									<td class="generic-table-cell p-5 font-semibold text-pink-600">
-										{{ entry.engineNumber }}
-									</td>
-									<th class="generic-table-cell inline-flex space-x-1 p-5">
+									<th class="generic-table-cell hidden space-x-1 py-4">
 										<span>{{ entry.make }}</span>
 										<span>{{ entry.model }}</span>
 									</th>
-									<td class="generic-table-cell p-5">
+									<td class="tablet:table-cell generic-table-cell hidden py-4">
 										{{ entry.dateOfIncident }}
 									</td>
-									<th class="inline-flex items-center space-x-2 p-4">
+									<td class="generic-table-cell laptop:table-cell hidden py-4">
+										<span
+											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
+											>{{ entry.corpClientRepName ?? 'Name N/A' }}</span
+										>
+										<br />
+										<span>{{ entry.corpClientEmail ?? 'Email N/A' }}</span>
+									</td>
+									<th class="inline-flex items-center space-x-2 py-4 pe-3">
 										<button
 											class="inline-flex h-9 w-9 items-center justify-center rounded-full border-none bg-green-300 p-2 text-green-600 transition-colors duration-200 outline-none hover:bg-green-400"
 											data-modal-target="view-entry-modal"
@@ -185,11 +190,13 @@
 				</div>
 
 				<!-- page controls -->
-				<div class="mt-5 flex min-h-12 items-center justify-between">
+				<div
+					class="tablet:flex-row tablet:min-h-12 mt-5 flex min-h-16 flex-col items-center justify-between">
 					<h1 class="text-sm font-semibold text-gray-500">
 						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>
-					<div class="h-full space-x-2 md:space-x-4">
+					<div
+						class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
 						<button
 							class="table-page-buttons"
 							@click="page -= 1"

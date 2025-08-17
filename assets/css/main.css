@@ -159,7 +159,7 @@
 }
 
 .table-page-buttons {
-	@apply h-full w-20 rounded-lg border border-blue-600 text-center text-sm font-semibold text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white disabled:border-gray-200 disabled:bg-transparent disabled:text-gray-500 md:h-full md:w-32;
+	@apply tablet:w-32 h-full w-[45%] rounded-lg border border-blue-600 text-center text-sm font-semibold text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white disabled:border-gray-200 disabled:bg-transparent disabled:text-gray-500;
 }
 
 .table-filter-buttons {
@@ -167,7 +167,7 @@
 }
 
 .table-headers {
-	@apply px-6 py-3 text-sm font-bold whitespace-nowrap;
+	@apply py-3 text-sm font-bold whitespace-nowrap;
 }
 
 .myloc-box {
@@ -225,7 +225,7 @@
 }
 
 .console-layout-spacing {
-	@apply laptop:p-5 laptop-lg:p-10 tablet:p-2 flex flex-1 flex-col p-0;
+	@apply laptop:p-5 laptop-lg:p-10 flex flex-1 flex-col p-2;
 }
 
 /* Special thanks to Flyonui for the skeleton animation: https://flyonui.com/ */
