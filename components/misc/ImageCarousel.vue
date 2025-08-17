@@ -1,17 +1,28 @@
 <template>
 	<div
 		:class="[
-			'relative w-full max-w-full overflow-hidden rounded-lg bg-white shadow-lg',
+			'relative w-full max-w-full overflow-hidden rounded-lg border-[.5px] bg-white shadow-lg',
 			props.carouselHeight,
 		]">
 		<div
-			v-for="(image, index) in images"
+			v-for="(image, index) in props.images"
 			:key="index"
-			:class="{
-				active: index === activeIndex,
-				leaving: index === leavingIndex && index !== activeIndex,
-			}"
+			:class="[
+				'relative',
+				{
+					active: index === activeIndex,
+					leaving: index === leavingIndex && index !== activeIndex,
+				},
+			]"
 			class="carousel-item">
+			<a
+				v-if="props.links"
+				:href="props.links[index].to"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="absolute bottom-4 w-[85%] translate-x-[18px] rounded-lg border-[.5px] bg-slate-100 p-3 text-center text-sm font-bold shadow-md"
+				>{{ props.links[index].text }}</a
+			>
 			<img
 				:src="image"
 				:alt="`Image ${index + 1}`"
@@ -21,17 +32,17 @@
 		<div
 			:class="[
 				'absolute left-1/2 z-10 flex -translate-x-1/2 transform space-x-2',
-				controlButtonsPosition,
+				props.controlButtonsPosition,
 			]">
 			<button
 				v-for="(_image, index) in images"
 				:key="`btn-${index}`"
 				@click="goToSlide(index)"
 				:class="{
-					'bg-slate-100': index === activeIndex,
-					'bg-gray-600': index !== activeIndex,
+					'bg-pink-600': index === activeIndex,
+					'bg-slate-100': index !== activeIndex,
 				}"
-				class="carousel-btn h-3 w-3 rounded-full transition-colors duration-300 hover:bg-gray-800"></button>
+				class="carousel-btn h-3 w-3 rounded-full transition-colors duration-300 hover:bg-slate-400"></button>
 		</div>
 	</div>
 </template>
@@ -40,11 +51,15 @@
 	import { ref, onMounted, onUnmounted, watch } from 'vue';
 
 	// Define props for the component
-	const props = defineProps<{
-		images: string[];
-		carouselHeight: string;
-		controlButtonsPosition: string;
-	}>();
+	const props = defineProps({
+		images: { required: true, type: [] },
+		links: {
+			required: false,
+			type: { text: String, to: String },
+		},
+		carouselHeight: { required: true, type: String },
+		controlButtonsPosition: { required: true, type: String },
+	});
 
 	// Reactive state
 	const activeIndex = ref<number>(0);
@@ -52,7 +67,7 @@
 	let intervalId: number | null = null; // Use `let` for reassignment
 
 	// Transition duration from CSS (in milliseconds)
-	const TRANSITION_DURATION = 4000;
+	const TRANSITION_DURATION = 5000;
 
 	/**
 	 * Updates the active slide and manages the leaving slide for animation.

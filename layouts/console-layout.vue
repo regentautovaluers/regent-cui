@@ -204,12 +204,25 @@
 						<ImageCarousel
 							v-show="sidebarOpen"
 							:images="[
-								'/images/slides/landingpage/1.jpg',
-								'/images/slides/landingpage/2.jpg',
-								'/images/slides/landingpage/3.jpg',
-								'/images/slides/landingpage/4.jpg',
+								'/images/slides/sidebar/1.jpg',
+								'/images/slides/sidebar/2.jpg',
+								'/images/slides/sidebar/3.jpg',
 							]"
-							carousel-height="h-68"
+							:links="[
+								{
+									text: 'Get our 70MAI Dashcams',
+									to: 'https://regenttrack.co.ke/product/70mai-m500-dash-cam/',
+								},
+								{
+									text: 'Request Tracking',
+									to: 'https://regenttrack.co.ke/vehicle-tracking/',
+								},
+								{
+									text: 'Get our 70MAI Dashcams',
+									to: 'https://regenttrack.co.ke/product/70mai-a400-dash-cam/',
+								},
+							]"
+							carousel-height="h-72"
 							control-buttons-position="top-4" />
 					</ClientOnly>
 
