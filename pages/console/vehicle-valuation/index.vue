@@ -1,178 +1,178 @@
 <template>
 	<div class="console-layout-spacing flex flex-col">
-		<div class="tablet:flex-row flex h-fit flex-col items-center justify-between">
-			<div class="flex items-center space-x-3 font-semibold text-gray-500">
-				<button
-					@click="() => (activeView = 'complete')"
-					:class="[
-						'tablet:text-base border-b-2 text-sm',
-						activeView === 'complete'
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
-					]">
-					<span>Completed</span>
-				</button>
-				<button
-					@click="() => (activeView = 'pending')"
-					:class="[
-						'tablet:text-base border-b-2 text-sm',
-						activeView == 'pending'
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
-					]">
-					<span>Ongoing</span>
-				</button>
-			</div>
-
-			<!-- search box -->
-			<div
-				class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
-				<form
-					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
-					<input
-						type="text"
-						class="generic-input"
-						placeholder="Enter Exact Reg or Booking No."
-						v-model="searchRegNo" />
-					<button
-						type="submit"
-						class="generic-search-submit-button">
-						<SearchIcon />
-					</button>
-				</form>
-			</div>
+		<div class="flex items-center space-x-3 font-semibold text-gray-500">
+			<button
+				@click="() => (activeView = 'complete')"
+				:class="[
+					'tablet:text-base border-b-2 text-sm',
+					activeView === 'complete'
+						? 'border-b-blue-600 text-blue-600'
+						: 'border-b-inherit',
+				]">
+				<span>Completed</span>
+			</button>
+			<button
+				@click="() => (activeView = 'pending')"
+				:class="[
+					'tablet:text-base border-b-2 text-sm',
+					activeView == 'pending'
+						? 'border-b-blue-600 text-blue-600'
+						: 'border-b-inherit',
+				]">
+				<span>Ongoing</span>
+			</button>
 		</div>
-		<form
-			@submit.prevent="executeFetchValuations()"
-			class="table-filters-form">
-			<button
-				type="button"
-				@click="setShowTampered()"
-				:class="[
-					'table-filter-form-options',
-					showTampered && 'bg-blue-600 text-white hover:bg-blue-600',
-				]">
-				Only Tampered
-			</button>
-			<button
-				data-popover-target="payment-status-pop-over"
-				data-popover-trigger="click"
-				data-popover-placement="bottom"
-				type="button"
-				:class="[
-					'table-filter-form-options',
-					paymentStatus ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
-				]">
-				Payment Status
-			</button>
+		<div class="tablet:space-x-0 mt-2 flex h-fit items-center justify-between space-x-2">
+			<!-- search box -->
+			<form
+				class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
+				@submit.prevent="executeFetchValuations()">
+				<input
+					type="text"
+					class="generic-input h-full"
+					placeholder="Enter Reg or Booking No."
+					v-model="searchRegNo" />
+				<button
+					type="submit"
+					class="generic-search-submit-button">
+					<SearchIcon />
+				</button>
+			</form>
 
+			<button
+				title="Open Filters"
+				@click="() => (areFiltersOpen = !areFiltersOpen)"
+				class="group inline-flex h-[50px] w-16 cursor-pointer items-center justify-center rounded-lg border p-1 outline-none hover:bg-blue-600">
+				<span
+					class="mage--filter size-7 text-gray-600 group-hover:text-white"></span>
+			</button>
+		</div>
+
+		<Transition name="fade-slide">
 			<div
-				data-popover
-				id="payment-status-pop-over"
-				role="tooltip"
-				class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-xs transition-opacity duration-300">
-				<div class="space-y-2 px-3 py-2">
+				class="mt-2 flex justify-center rounded-lg border p-4"
+				v-show="areFiltersOpen">
+				<form
+					@submit.prevent="
+						() => {
+							areFiltersOpen = false;
+							executeFetchValuations();
+						}
+					"
+					class="tablet:w-3/4 laptop:w/1-2 laptop-lg:w-1/4 flex w-full flex-col">
+					<h1 class="text font-bold text-gray-500">Select Filters</h1>
+
+					<!-- show tampered vehicles -->
 					<div
-						class="flex h-10 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200"
-						v-for="(ps, index) in ['paid', 'not-paid']"
-						:key="index">
+						class="flex h-14 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
 						<input
-							id="has-spare-tyre"
+							id="show-tampered-vehicles"
 							type="radio"
-							:value="ps"
-							v-model="paymentStatus"
+							:value="true"
+							v-model="showTampered"
 							name="bordered-radio"
 							class="size-5 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
 						<label
-							for="has-spare-tyre"
-							class="ms-2 w-full py-4 font-medium text-gray-600"
-							>{{ ps }}</label
+							for="show-tampered-vehicles"
+							class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
+							>Also Include Tampered Vehicles</label
 						>
 					</div>
-				</div>
-				<div data-popper-arrow></div>
-			</div>
 
-			<button
-				data-popover-target="date-range-pop-over"
-				data-popover-trigger="click"
-				data-popover-placement="bottom"
-				type="button"
-				:class="[
-					'table-filter-form-options',
-					startDate || endDate ? 'bg-blue-600 text-white hover:bg-blue-600' : '',
-				]">
-				Date Range
-			</button>
+					<!-- payment status -->
+					<div class="mt-4 w-full space-y-2">
+						<label
+							for="payment-status"
+							class="generic-input-label"
+							>Payment Status</label
+						>
+						<select
+							class="generic-input"
+							id="payment-status"
+							v-model="paymentStatus">
+							<option
+								v-for="(type, i) in ['paid', 'not-paid']"
+								:key="i"
+								:value="type">
+								{{ type }}
+							</option>
+						</select>
+					</div>
 
-			<div
-				data-popover
-				id="date-range-pop-over"
-				role="tooltip"
-				class="invisible absolute z-10 inline-block w-64 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-xs transition-opacity duration-300">
-				<div class="space-y-2 px-3 py-2">
-					<!-- Starting date Field -->
-					<div>
+					<!-- start date -->
+					<div class="mt-4 w-full space-y-2">
 						<label
 							for="cover-period-starts"
-							class="generic-input-label mb-0 text-xs"
+							class="generic-input-label"
 							>Start Date</label
 						>
 						<input
 							type="date"
 							id="cover-period-starts"
-							class="generic-input h-10"
+							class="generic-input"
 							placeholder="Select"
 							pattern="\d{4}-\d{2}-\d{2}"
-							required
 							v-model="startDate" />
 					</div>
 
-					<!-- Ending date Field -->
-					<div>
+					<!-- start date -->
+					<div class="mt-4 w-full space-y-2">
 						<label
-							for="cover-period-starts"
-							class="generic-input-label mb-0 text-xs"
+							for="cover-period-ends"
+							class="generic-input-label"
 							>End Date</label
 						>
 						<input
 							type="date"
-							id="cover-period-starts"
-							class="generic-input h-10"
+							id="cover-period-ends"
+							class="generic-input"
 							placeholder="Select"
 							pattern="\d{4}-\d{2}-\d{2}"
-							required
 							v-model="endDate" />
 					</div>
-				</div>
-				<div data-popper-arrow></div>
-			</div>
-			<span
-				class="text-lg"
-				v-if="startDate || endDate || paymentStatus || paymentMethod || showTampered"
-				>&middot;</span
-			>
-			<button
-				type="submit"
-				class="table-filter-form-options flex items-center space-x-2"
-				v-if="startDate || endDate || paymentStatus || paymentMethod || showTampered">
-				<span class="material-symbols--error-rounded size-5"></span>
-				<span>Apply Filters</span>
-			</button>
-			<button
-				type="button"
-				@click="clearFilters()"
-				class="table-filter-form-options flex items-center space-x-2"
-				v-if="startDate || endDate || paymentStatus || paymentMethod || showTampered">
-				<span class="material-symbols-light--close-rounded size-5"></span>
-				<span>Clear Filters</span>
-			</button>
-		</form>
 
+					<div class="mt-2 flex items-center justify-center space-x-2">
+						<!-- submit button -->
+						<button
+							type="submit"
+							v-if="
+								startDate ||
+								endDate ||
+								paymentStatus ||
+								paymentMethod ||
+								showTampered
+							"
+							class="generic-form-submit m-0">
+							Apply
+						</button>
+
+						<!-- clear filters -->
+						<button
+							type="button"
+							@click="
+								() => {
+									areFiltersOpen = false;
+									clearFilters();
+								}
+							"
+							v-if="
+								startDate ||
+								endDate ||
+								paymentStatus ||
+								paymentMethod ||
+								showTampered
+							"
+							class="generic-form-submit m-0 border bg-white text-gray-500 shadow-none hover:bg-white">
+							Clear Filters
+						</button>
+					</div>
+				</form>
+			</div>
+		</Transition>
 		<div class="h-full min-h-212">
 			<!-- div to show when there is a fetch error -->
 			<div
-				v-if="fetchValuationsStatus === 'error'"
+				v-if="fetchValuationsError"
 				class="mt-5 flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm">
 				<BirdieNotFoundIcon />
 				<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
@@ -422,11 +422,13 @@
 				</div>
 
 				<!-- page controls -->
-				<div class="mt-8 flex min-h-12 items-center justify-between">
+				<div
+					class="tablet:flex-row tablet:min-h-12 mt-5 flex min-h-16 flex-col items-center justify-between">
 					<h1 class="text-sm font-semibold text-gray-500">
 						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>
-					<div class="h-full space-x-2 md:space-x-4">
+					<div
+						class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
 						<button
 							class="table-page-buttons"
 							@click="page -= 1"
@@ -452,6 +454,7 @@
 		layout: 'console-layout',
 	});
 
+	const areFiltersOpen: Ref<boolean> = ref(false);
 	const {
 		activeView,
 		fetchValuationsStatus,
@@ -468,12 +471,4 @@
 		executeFetchValuations,
 		clearFilters,
 	} = useCorporateValuations();
-
-	function setShowTampered() {
-		if (showTampered.value == null) {
-			showTampered.value = true;
-		} else {
-			showTampered.value = null;
-		}
-	}
 </script>
