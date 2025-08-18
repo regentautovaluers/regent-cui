@@ -103,20 +103,20 @@ const navigationRoutes: readonly CoreRoute[] = [
 			},
 		],
 	},
-	{
-		id: 4,
-		screenName: 'Tracking',
-		routeName: 'regent-tracking-home',
-		renderRoute: true,
-		childRoutes: [
-			{
-				id: 1,
-				screenName: 'Traceability Reports',
-				routeName: 'regent-tracking-traceability-report',
-				renderRoute: true,
-			},
-		],
-	},
+	// {
+	// 	id: 4,
+	// 	screenName: 'Tracking',
+	// 	routeName: 'regent-tracking-home',
+	// 	renderRoute: true,
+	// 	childRoutes: [
+	// 		{
+	// 			id: 1,
+	// 			screenName: 'Traceability Reports',
+	// 			routeName: 'regent-tracking-traceability-report',
+	// 			renderRoute: true,
+	// 		},
+	// 	],
+	// },
 	// {
 	// 	id: 6,
 	// 	screenName: 'Emergency Evacuation',
