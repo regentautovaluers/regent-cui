@@ -1,6 +1,7 @@
 <template>
-	<div class="grid grid-cols-1 gap-4 lg:grid-cols-[.5fr_.5fr]">
-		<div class="border-opacity-50 overflow-clip rounded-lg border border-gray-500">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 laptop:flex-1 grid grid-cols-1 gap-4 p-2 lg:grid-cols-[.5fr_.5fr]">
+		<div class="border-opacity-50 min-h-96 overflow-clip rounded-lg border border-gray-500">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -38,28 +39,29 @@
 			</GoogleMap>
 		</div>
 		<div>
-			<h1 class="mb-4 text-xl font-semibold">Request Fuel Delivery</h1>
-
-			<div class="space-x-4 border-b font-semibold text-gray-500 lg:w-fit">
+			<h1 class="mb-5 text-xl font-semibold antialiased">Request Fuel Delivery</h1>
+			<div class="mb-5 flex items-center text-gray-500">
 				<button
 					@click="currentRegForm = 0"
-					:class="[
-						'border-b-2 pb-1',
-						currentRegForm === 0
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
-					]">
-					<span>Registered Client</span>
+					class="relative w-1/2 pb-1">
+					<span
+						:class="
+							currentRegForm === 0 &&
+							'font-semibold text-blue-600 after:absolute after:-bottom-[2px] after:left-0 after:h-[2.5px] after:w-full after:bg-blue-600'
+						"
+						>Registered Client</span
+					>
 				</button>
 				<button
 					@click="currentRegForm = 1"
-					:class="[
-						'border-b-2 pb-1',
-						currentRegForm === 1
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
-					]">
-					<span>Unregistered Client</span>
+					class="relative w-1/2 pb-1">
+					<span
+						:class="
+							currentRegForm === 1 &&
+							'font-semibold text-blue-600 after:absolute after:-bottom-[2px] after:left-0 after:h-[2.5px] after:w-full after:bg-blue-600'
+						"
+						>Registered Client</span
+					>
 				</button>
 			</div>
 
