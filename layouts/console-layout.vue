@@ -75,75 +75,77 @@
 				:class="[
 					'hide-scrollbar fixed z-40 flex h-[calc(100vh-3.5rem)] max-h-[calc(100%-3.5rem)] flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white py-5',
 					!sidebarOpen
-						? 'laptop-lg:-translate-x-0 w-[60px] -translate-x-[60px]'
+						? 'laptop-lg:-translate-x-0 w-[70px] -translate-x-[70px]'
 						: 'w-68 -translate-x-0',
 				]">
 				<!-- links -->
-				<div
-					:class="[
-						'flex flex-grow flex-col justify-between',
-						sidebarOpen ? 'px-5' : 'px-2',
-					]">
-					<ul class="space-y-4">
+				<div :class="sidebarOpen ? 'pl-5' : 'pr-0 pl-2'">
+					<ul class="space-y-4 w-full">
 						<template
 							v-for="(link, index) in navigationRoutes"
 							:key="index">
 							<li
 								:class="[
-									'flex h-11 w-full items-center rounded-lg px-2 py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
-									fuzzyRouteNameMatch(link.routeName, link) &&
-										'bg-blue-600 text-white',
-								]"
-								:title="link.screenName">
+									'flex h-15 w-full items-center px-2 py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
+									fuzzyRouteNameMatch(link.routeName, link)
+										? 'rounded-l-lg border-r-4 border-blue-600 bg-gray-300 text-gray-600'
+										: 'rounded-lg',
+								]">
 								<NuxtLink
 									:to="{ name: link.routeName }"
-									class="inline-flex size-full items-center justify-center"
-									:class="!sidebarOpen ? 'w-19' : 'w-full space-x-2'">
-									<span>
+									:class="[
+										'inline-flex size-full max-h-15 max-w-full',
+										!sidebarOpen
+											? 'w-19 flex-col justify-center space-y-1'
+											: 'w-full flex-row items-center justify-center space-x-2',
+									]">
+									<span class="place-self-center">
 										<template v-if="link.routeName == 'mobivaluer-home'">
-											<HomeIcon classes="size-5 text-inherit" />
+											<HomeIcon classes="size-6 text-inherit" />
 										</template>
 										<template
 											v-else-if="link.routeName == 'ava-memberships-home'">
-											<AssistanceIcon classes="size-5 text-inherit" />
+											<AssistanceIcon classes="size-6 text-inherit" />
 										</template>
 										<template
 											v-else-if="link.routeName == 'vehicle-valuation-home'">
-											<VehicleValuationIcon classes="size-5 text-inherit" />
+											<VehicleValuationIcon classes="size-6 text-inherit" />
 										</template>
 										<template
 											v-else-if="
 												link.routeName ==
 												'collateral-verification-query-collateral'
 											">
-											<FraudDetectionIcon classes="size-5 text-inherit" />
+											<FraudDetectionIcon classes="size-6 text-inherit" />
 										</template>
 										<template
 											v-else-if="link.routeName == 'regent-tracking-home'">
-											<VehicleTrackingIcon classes="size-5 text-inherit" />
+											<VehicleTrackingIcon classes="size-6 text-inherit" />
 										</template>
 										<template
 											v-else-if="
 												link.routeName == 'emergency-evacuation-home'
 											">
-											<EmergencyRescueIcon classes="size-5 text-inherit" />
+											<EmergencyRescueIcon classes="size-6 text-inherit" />
 										</template>
 										<template
 											v-else-if="
 												link.routeName == 'accident-management-home'
 											">
-											<AccidentManagementIcon classes="size-5 text-inherit" />
+											<AccidentManagementIcon classes="size-6 text-inherit" />
 										</template>
 										<template v-else-if="link.routeName == 'garage-home'">
-											<GarageIcon classes="size-5 text-inherit" />
+											<GarageIcon classes="size-6 text-inherit" />
 										</template>
 										<template v-else-if="link.routeName == 'parts-home'">
-											<PartsIcon classes="size-5 text-inherit" />
+											<PartsIcon classes="size-6 text-inherit" />
 										</template>
 									</span>
 									<span
-										class="flex-grow text-sm font-semibold transition-all duration-200 ease-out"
-										:class="sidebarOpen ? 'block' : 'hidden'"
+										:class="[
+											'flex-grow overflow-clip text-ellipsis whitespace-nowrap',
+											!sidebarOpen ? 'text-xs' : 'text-sm',
+										]"
 										>{{ link.screenName }}
 									</span>
 								</NuxtLink>
@@ -199,7 +201,12 @@
 							</ul>
 						</template>
 					</ul>
-					<!-- Carousel -->
+
+					<ul class="space-y-2"></ul>
+				</div>
+
+				<!-- Carousel -->
+				<div class="h-fit px-5">
 					<ClientOnly>
 						<ImageCarousel
 							v-show="sidebarOpen"
@@ -225,41 +232,42 @@
 							carousel-height="h-72"
 							control-buttons-position="top-4" />
 					</ClientOnly>
-
-					<ul class="space-y-2">
-						<!-- settings -->
-						<li
-							class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
-							<NuxtLink
-								:to="{ name: 'settings-my-account' }"
-								class="inline-flex size-full items-center justify-start space-x-3"
-								:class="!sidebarOpen && 'w-19 justify-center'">
-								<SettingsIcon classes="size-5 text-inherit" />
-								<span
-									class="text-sm transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>Settings</span
-								>
-							</NuxtLink>
-						</li>
-
-						<!-- logout -->
-						<li
-							class="flex h-12 w-full items-center rounded-xl text-gray-600 hover:bg-gray-300/50">
-							<button
-								class="inline-flex size-full items-center space-x-3"
-								:class="!sidebarOpen && 'w-19 justify-center'"
-								@click="attemptLogout">
-								<LogoutIcon classes="size-5 text-inherit" />
-								<span
-									class="text-sm transition-all duration-200 ease-out"
-									:class="sidebarOpen ? 'block' : 'hidden'"
-									>Logout</span
-								>
-							</button>
-						</li>
-					</ul>
 				</div>
+
+				<!-- logout and settings -->
+				<ul class="px-2 w-full">
+					<!-- settings -->
+					<li
+						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<NuxtLink
+							:to="{ name: 'settings-my-account' }"
+							class="inline-flex size-full items-center justify-start space-x-3"
+							:class="!sidebarOpen && 'w-19 justify-center'">
+							<SettingsIcon classes="size-6 text-inherit" />
+							<span
+								class="text-sm transition-all duration-200 ease-out"
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								>Settings</span
+							>
+						</NuxtLink>
+					</li>
+
+					<!-- logout -->
+					<li
+						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<button
+							class="inline-flex size-full items-center space-x-3"
+							:class="!sidebarOpen && 'w-19 justify-center'"
+							@click="attemptLogout">
+							<LogoutIcon classes="size-5 text-inherit" />
+							<span
+								class="text-sm transition-all duration-200 ease-out"
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								>Logout</span
+							>
+						</button>
+					</li>
+				</ul>
 
 				<!-- sidebar footer -->
 				<footer
@@ -277,7 +285,7 @@
 					'flex flex-1 flex-col',
 					sidebarOpen
 						? 'laptop-lg:translate-x-0 laptop-lg:ml-68 translate-x-68'
-						: 'laptop-lg:ml-[60px]',
+						: 'laptop-lg:ml-[70px]',
 				]"
 				@click="() => (sidebarOpen = false)">
 				<NuxtPage />
