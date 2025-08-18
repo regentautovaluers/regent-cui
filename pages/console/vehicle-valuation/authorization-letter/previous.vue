@@ -1,9 +1,9 @@
 <template>
-	<div class="h-full min-h-234">
+	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
 		<!-- div to show when there is a fetch error -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-			v-if="fetchAuthorityLetterStatus === 'error'">
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
+			v-if="fetchAuthorityLetterError">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
 			<button
@@ -16,8 +16,8 @@
 
 		<!-- div to show when there are no authorization letters -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
-			v-else-if="fetchAuthorityLetterStatus === 'success' && !authorityLetters.length">
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
+			v-else-if="fetchAuthorityLetterStatus === 'success' && authorityLetters.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">
 				Oops! Seems like you have no authority letters!
@@ -26,17 +26,18 @@
 
 		<!-- div to show when there are authority letters -->
 		<div
-			class="flex h-full flex-col"
+			class="flex flex-1 flex-col justify-between"
 			v-else>
 			<!-- search & filter controls -->
 			<div class="flex h-fit flex-col space-y-2">
-				<div class="flex justify-between">
+				<div
+					class="tablet:space-x-0 mt-2 flex h-fit items-center justify-between space-x-2">
 					<form
-						class="relative h-fit w-full md:w-[45%] lg:w-[25%]"
+						class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
 						@submit.prevent="handleSearchTriggered(searchPhrase)">
 						<input
 							type="text"
-							class="generic-input"
+							class="generic-input h-full"
 							placeholder="Search Registration"
 							required
 							v-model="searchPhrase" />
@@ -47,10 +48,12 @@
 						</button>
 					</form>
 					<button
+						data-modal-target="export-authority-letters-modal"
+						data-modal-toggle="export-authority-letters-modal"
 						type="button"
-						class="h-14 w-fit items-center justify-center rounded-lg bg-blue-600 px-2 font-semibold text-white hover:bg-blue-700"
+						class="group inline-flex h-[50px] w-14 cursor-pointer items-center justify-center rounded-lg border border-gray-400 p-1 outline-none hover:bg-gray-100"
 						@click.prevent="isExportExcelModalOpen = true">
-						Export to Excel
+						<span class="ph--microsoft-excel-logo-thin size-7 text-gray-400"></span>
 					</button>
 				</div>
 				<button
@@ -73,38 +76,38 @@
 							<tr>
 								<th
 									scope="col"
-									class="table-headers">
+									class="table-headers ps-3">
 									Reg & Policy No.
 								</th>
 								<!-- Details will show client name and their contact -->
 								<th
 									scope="col"
-									class="table-headers">
-									Client Details
+									class="table-headers mobile-lg:table-cell hidden">
+									Client
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
+									class="table-headers tablet:table-cell hidden">
 									Agency / Broker
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
-									Authorized By & On
+									class="table-headers tablet:table-cell hidden">
+									Authorized By
 								</th>
 								<th
 									scope="col"
-									class="table-headers text-center">
+									class="table-headers laptop:table-cell hidden">
 									Progress
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
+									class="table-headers laptop:table-cell hidden pe-3">
 									Feedback
 								</th>
 								<th
 									scope="col"
-									class="table-headers" />
+									class="table-headers"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -121,27 +124,27 @@
 										>username</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
+								<td class="mobile-lg:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>useremail</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
+								<td class="tablet:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>regenthq</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
+								<td class="tablet:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>domain role</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
+								<td class="laptop:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>authorizedby</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
+								<td class="laptop:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>created today</span
 									>
@@ -151,14 +154,13 @@
 										>bookingstage</span
 									>
 								</td>
-								<td></td>
 							</tr>
 							<tr
 								class="border-b bg-white text-sm hover:bg-gray-100"
 								v-else
 								v-for="(letter, index) in authorityLetters"
 								:key="index">
-								<td class="p-4">
+								<td class="py-4 ps-3">
 									<span
 										class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
 										>{{ letter.registrationNumber }}</span
@@ -166,30 +168,35 @@
 									<br />
 									<span class="text-sm">{{ letter.policyNumber ?? 'N/A' }}</span>
 								</td>
-								<td class="inline-flex flex-col p-4">
+								<td class="mobile-lg:table-cell hidden py-4">
 									<span>{{ letter.clientName }}</span>
+									<br />
 									<span
 										class="w-fit rounded-lg bg-blue-200 px-1 text-sm text-blue-600"
 										>{{ letter.clientPhone }}</span
 									>
 								</td>
-								<td class="p-4">{{ letter.agencyName ?? 'N/A' }}</td>
-								<td class="inline-flex flex-col p-4">
+								<td class="tablet:table-cell hidden py-4">
+									{{ letter.agencyName ?? 'N/A' }}
+								</td>
+								<td class="tablet:table-cell hidden py-4">
 									<span
 										class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
 										>{{ letter.authorizedBy.username }}</span
 									>
+									<br />
 									<span>{{ letter.createdOn.split(' ')[0] }}</span>
 								</td>
 								<td
-									class="max-w-24 overflow-hidden p-4 text-center text-wrap text-gray-600">
+									class="laptop:table-cell hidden max-w-24 overflow-hidden py-4 text-wrap text-gray-600">
 									{{
 										(letter.assessmentStage as string)
 											?.toLowerCase()
 											.replaceAll('_', ' ') ?? 'instructions received'
 									}}
 								</td>
-								<td class="w-48 max-w-48 px-2 text-sm text-wrap">
+								<td
+									class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
 									{{ letter.feedback ?? 'N/A' }}
 								</td>
 								<td>
@@ -244,11 +251,13 @@
 			</div>
 
 			<!-- page controls -->
-			<div class="mt-10 flex min-h-12 items-center justify-between">
-				<h1 class="text-sm font-semibold text-gray-500 md:text-base">
+			<div
+				class="tablet:flex-row tablet:min-h-12 tablet:h-12 mt-5 flex h-16 min-h-16 flex-col items-center justify-between">
+				<h1 class="text-sm font-semibold text-gray-500">
 					Showing {{ page + 1 }} of {{ totalPages }} pages.
 				</h1>
-				<div class="h-full space-x-2 md:space-x-4">
+				<div
+					class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
 					<button
 						class="table-page-buttons"
 						@click="page -= 1"
@@ -264,6 +273,13 @@
 				</div>
 			</div>
 		</div>
+
+		<ParentModal
+			modal-id="export-authority-letters-modal"
+			modal-title="Export Letters"
+			modal-placement="center-center">
+			<ExportAuthorityLetter />
+		</ParentModal>
 	</div>
 </template>
 
@@ -279,6 +295,7 @@
 		page,
 		totalPages,
 		fetchAuthorityLetterStatus,
+		fetchAuthorityLetterError,
 		authorityLetters,
 		searchRegNo,
 		handleSearchTriggered,

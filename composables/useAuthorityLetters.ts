@@ -44,6 +44,7 @@ const useAuthorityLetters = () => {
 
 	const {
 		status: fetchAuthorityLetterStatus,
+		error: fetchAuthorityLetterError,
 		execute: executeGetAuthorityLetters,
 		data: fetchedData,
 	} = useFetch(
@@ -273,6 +274,7 @@ const useAuthorityLetters = () => {
 		certUploaded,
 		letterUploaded,
 		fetchAuthorityLetterStatus,
+		fetchAuthorityLetterError,
 		authorityLetters,
 		createAuthorizationLetter,
 		handleFileUpload,
