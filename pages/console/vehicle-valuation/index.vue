@@ -42,9 +42,8 @@
 			<button
 				title="Open Filters"
 				@click="() => (areFiltersOpen = !areFiltersOpen)"
-				class="group inline-flex h-[50px] w-16 cursor-pointer items-center justify-center rounded-lg border p-1 outline-none hover:bg-blue-600">
-				<span
-					class="mage--filter size-7 text-gray-600 group-hover:text-white"></span>
+				class="group inline-flex h-[50px] w-14 cursor-pointer items-center justify-center rounded-lg border border-gray-400 p-1 outline-none hover:bg-gray-100">
+				<span class="mage--filter size-7 text-gray-400"></span>
 			</button>
 		</div>
 
