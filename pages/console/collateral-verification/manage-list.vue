@@ -2,7 +2,7 @@
 	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
 		<!-- div to show when there is a fetch error -->
 		<div
-			v-if="fetchFraudsterListStatus === 'error'"
+			v-if="fetchFraudsterListError"
 			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
@@ -79,7 +79,9 @@
 									class="table-headers pe-3">
 									Actions
 								</th>
-								<th></th>
+								<th
+									scope="col"
+									class="table-headers"></th>
 							</tr>
 						</thead>
 						<tbody>
