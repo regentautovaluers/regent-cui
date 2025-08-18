@@ -80,9 +80,9 @@
 				]">
 				<!-- links -->
 				<div :class="sidebarOpen ? 'pl-5' : 'pr-0 pl-2'">
-					<ul class="space-y-4 w-full">
+					<ul class="w-full space-y-4">
 						<template
-							v-for="(link, index) in navigationRoutes"
+							v-for="(link, index) in navigationRoutes.filter((r) => r.renderRoute)"
 							:key="index">
 							<li
 								:class="[
@@ -235,7 +235,7 @@
 				</div>
 
 				<!-- logout and settings -->
-				<ul class="px-2 w-full">
+				<ul class="w-full px-2">
 					<!-- settings -->
 					<li
 						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
