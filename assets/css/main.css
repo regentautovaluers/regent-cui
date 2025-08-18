@@ -240,7 +240,7 @@
 }
 
 .console-layout-spacing {
-	@apply laptop:p-5 laptop-lg:p-10 flex flex-1 flex-col p-2;
+	@apply laptop:m-5 laptop-lg:m-10 m-2 flex flex-1 flex-col;
 }
 
 /* Special thanks to Flyonui for the skeleton animation: https://flyonui.com/ */

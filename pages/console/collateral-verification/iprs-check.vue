@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="laptop:grid-cols-[20%_80%] flex-1 laptop:p-4 laptop-lg:p-8 grid h-full grid-cols-1 rounded-md border-[.5px] bg-white p-2 shadow-sm">
+		class="laptop:grid-cols-[20%_80%] laptop:p-4 laptop-lg:p-8 laptop:flex-1 grid grid-cols-1 rounded-md p-2">
 		<div
 			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full h-fit border-b-[1px] p-2">
 			<h1 class="text-sm font-semibold text-blue-600">What are you looking to verify?</h1>
@@ -8,8 +8,9 @@
 				<span>Click on any of these, then submit the relevant form to view findings.</span
 				><span
 					>Kindly note that you have
-					<b>{{ getCollateralVerificationTokenInfo?.balance ?? 'N/A' }}</b> search tokens left.
-					Checks you are not allowed to perform with this limit will be disabled!</span
+					<b>{{ getCollateralVerificationTokenInfo?.balance ?? 'N/A' }}</b> search tokens
+					left. Checks you are not allowed to perform with this limit will be
+					disabled!</span
 				>
 			</h2>
 			<div
@@ -19,11 +20,11 @@
 				data-inactive-classes="text-gray-500"
 				class="laptop:space-y-4 laptop:space-x-0 laptop:flex-col hide-scrollbar my-2 flex space-x-4 overflow-x-scroll">
 				<!-- vehicle registration -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('vehicle-reg')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-1"
 						aria-controls="accordion-flush-body-1"
 						@click="
@@ -52,41 +53,42 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-1"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="searchDefaulter()">
-							<!-- search input -->
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Enter vehicle reg number"
-								v-model="searchDefaulterQuery" />
 
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									searchDefaulterLoading && 'skeleton skeleton-animated',
-								]">
-								{{ searchDefaulterLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+					<div
+						id="accordion-flush-body-1"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="searchDefaulter()">
+								<!-- search input -->
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Enter vehicle reg number"
+									v-model="searchDefaulterQuery" />
+
+								<!-- submit button -->
+								<button
+									type="submit"
+									:class="[
+										'generic-form-submit h-[50px] shadow-none',
+										searchDefaulterLoading && 'skeleton skeleton-animated',
+									]">
+									{{ searchDefaulterLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
 				<!-- loan collateral -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('loan-collateral')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-2"
 						aria-controls="accordion-flush-body-2"
 						@click="
@@ -115,41 +117,41 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-2"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="searchDefaulter()">
-							<!-- search input -->
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Enter vehicle chassis number"
-								v-model="searchDefaulterQuery" />
+					<div
+						id="accordion-flush-body-2"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="searchDefaulter()">
+								<!-- search input -->
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Enter vehicle chassis number"
+									v-model="searchDefaulterQuery" />
 
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									searchDefaulterLoading && 'skeleton skeleton-animated',
-								]">
-								{{ searchDefaulterLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+								<!-- submit button -->
+								<button
+									type="submit"
+									:class="[
+										'generic-form-submit h-[50px] shadow-none',
+										searchDefaulterLoading && 'skeleton skeleton-animated',
+									]">
+									{{ searchDefaulterLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
 				<!-- National ID -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('national-id')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-3"
 						aria-controls="accordion-flush-body-3"
 						@click="() => (checkType = 'national-id')">
@@ -169,47 +171,47 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-3"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="
-								verifyCollateral(
-									{
-										idNumber: searchQuery,
-									},
-									'verify-national-id',
-								)
-							">
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Provide National ID"
-								v-model="searchQuery"
-								pattern="[0-9]*" />
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									collateralCheckLoading && 'skeleton skeleton-animated',
-								]">
-								{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+					<div
+						id="accordion-flush-body-3"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="
+									verifyCollateral(
+										{
+											idNumber: searchQuery,
+										},
+										'verify-national-id',
+									)
+								">
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Provide National ID"
+									v-model="searchQuery"
+									pattern="[0-9]*" />
+								<!-- submit button -->
+								<button
+									type="submit"
+									:class="[
+										'generic-form-submit h-[50px] shadow-none',
+										collateralCheckLoading && 'skeleton skeleton-animated',
+									]">
+									{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
 				<!-- Alien ID -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('alien-id')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-4"
 						aria-controls="accordion-flush-body-4"
 						@click="() => (checkType = 'alien-id')">
@@ -229,47 +231,47 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-4"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="
-								verifyCollateral(
-									{
-										idNumber: searchQuery,
-									},
-									'verify-alien-id',
-								)
-							">
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Provide Alien ID"
-								v-model="searchQuery"
-								pattern="[0-9]*" />
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									collateralCheckLoading && 'skeleton skeleton-animated',
-								]">
-								{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+					<div
+						id="accordion-flush-body-4"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="
+									verifyCollateral(
+										{
+											idNumber: searchQuery,
+										},
+										'verify-alien-id',
+									)
+								">
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Provide Alien ID"
+									v-model="searchQuery"
+									pattern="[0-9]*" />
+								<!-- submit button -->
+								<button
+									type="submit"
+									:class="[
+										'generic-form-submit h-[50px] shadow-none',
+										collateralCheckLoading && 'skeleton skeleton-animated',
+									]">
+									{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
 				<!-- Driving license -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('driving-license')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-5"
 						aria-controls="accordion-flush-body-5"
 						@click="() => (checkType = 'driving-license')">
@@ -289,47 +291,47 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-5"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="
-								verifyCollateral(
-									{
-										idNumber: searchQuery,
-									},
-									'verify-driving-license',
-								)
-							">
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Provide National ID"
-								v-model="searchQuery"
-								pattern="[0-9]*" />
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									collateralCheckLoading && 'skeleton skeleton-animated',
-								]">
-								{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+					<div
+						id="accordion-flush-body-5"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="
+									verifyCollateral(
+										{
+											idNumber: searchQuery,
+										},
+										'verify-driving-license',
+									)
+								">
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Provide National ID"
+									v-model="searchQuery"
+									pattern="[0-9]*" />
+								<!-- submit button -->
+								<button
+									type="submit"
+									:class="[
+										'generic-form-submit h-[50px] shadow-none',
+										collateralCheckLoading && 'skeleton skeleton-animated',
+									]">
+									{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
 				<!-- KRA Pin -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('kra-pin')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-6"
 						aria-controls="accordion-flush-body-6"
 						@click="() => (checkType = 'kra-pin')">
@@ -349,47 +351,47 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-6"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="
-								verifyCollateral(
-									{
-										pinNumber: searchQuery,
-									},
-									'verify-kra-pin',
-								)
-							">
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Provide KRA Pin"
-								v-model="searchQuery"
-								pattern="[0-9,a-z,A-Z]*" />
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									collateralCheckLoading && 'skeleton skeleton-animated',
-								]">
-								{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+					<div
+						id="accordion-flush-body-6"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="
+									verifyCollateral(
+										{
+											pinNumber: searchQuery,
+										},
+										'verify-kra-pin',
+									)
+								">
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Provide KRA Pin"
+									v-model="searchQuery"
+									pattern="[0-9,a-z,A-Z]*" />
+								<!-- submit button -->
+								<button
+									type="submit"
+									:class="[
+										'generic-form-submit h-[50px] shadow-none',
+										collateralCheckLoading && 'skeleton skeleton-animated',
+									]">
+									{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
 				<!-- Business -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('business')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-8"
 						aria-controls="accordion-flush-body-8"
 						@click="() => (checkType = 'business')">
@@ -409,46 +411,46 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-8"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="
-								verifyCollateral(
-									{
-										businessRegNumber: searchQuery,
-									},
-									'verify-business',
-								)
-							">
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Provide Business Reg Number"
-								v-model="searchQuery" />
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									collateralCheckLoading && 'skeleton skeleton-animated',
-								]">
-								{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+					<div
+						id="accordion-flush-body-8"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="
+									verifyCollateral(
+										{
+											businessRegNumber: searchQuery,
+										},
+										'verify-business',
+									)
+								">
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Provide Business Reg Number"
+									v-model="searchQuery" />
+								<!-- submit button -->
+								<button
+									type="submit"
+									:class="[
+										'generic-form-submit h-[50px] shadow-none',
+										collateralCheckLoading && 'skeleton skeleton-animated',
+									]">
+									{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
 				<!-- Bank Account -->
-				<h2 id="accordion-flush-heading-1">
+				<div class="min-w-72 space-y-2">
 					<button
 						:disabled="!shouldAllowSearch('bank-account')"
 						type="button"
-						class="laptop:w-full flex h-14 w-60 items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
+						class="laptop:w-full flex h-14 w-full items-center justify-between gap-3 rounded-lg border border-gray-200 p-4 text-xs font-medium text-gray-500 disabled:bg-gray-200"
 						data-accordion-target="#accordion-flush-body-7"
 						aria-controls="accordion-flush-body-7"
 						@click="() => (checkType = 'bank-account')">
@@ -468,73 +470,74 @@
 								d="M9 5 5 1 1 5" />
 						</svg>
 					</button>
-				</h2>
-				<div
-					id="accordion-flush-body-7"
-					class="hidden"
-					aria-labelledby="accordion-flush-heading-1">
-					<div class="rounded-lg border p-2 py-5 shadow-sm">
-						<form
-							class="space-y-2"
-							@submit.prevent="
-								verifyCollateral(
-									{
-										bankId: bankId,
-										accountNumber: accountNumber,
-									},
-									'verify-bank-account',
-								)
-							">
-							<div class="relative flex w-full flex-col">
-								<label
-									for="target-brank"
-									class="generic-input-label"
-									>Select a Bank</label
-								>
-								<select
+					<div
+						id="accordion-flush-body-7"
+						class="hidden"
+						aria-labelledby="accordion-flush-heading-1">
+						<div class="rounded-lg border p-2 py-5 shadow-sm">
+							<form
+								class="space-y-2"
+								@submit.prevent="
+									verifyCollateral(
+										{
+											bankId: bankId,
+											accountNumber: accountNumber,
+										},
+										'verify-bank-account',
+									)
+								">
+								<div class="relative flex w-full flex-col">
+									<label
+										for="target-brank"
+										class="generic-input-label"
+										>Select a Bank</label
+									>
+									<select
+										:class="[
+											'generic-input',
+											fetchBankListStatus === 'error'
+												? 'border-yellow-300 focus:border-yellow-600 focus:ring-yellow-600'
+												: 'border-gray-300',
+										]"
+										id="target-brank"
+										v-model="bankId"
+										required>
+										<option
+											v-for="(bank, index) in bankList"
+											:key="index"
+											:value="bank.id">
+											{{ bank.name }}
+										</option>
+									</select>
+									<FormSubmissionLoader
+										class="absolute top-[52%] right-6 mr-2 size-5 animate-spin text-gray-500"
+										v-if="fetchBankListStatus === 'pending'" />
+									<WarningIndicator
+										class="absolute top-[52%] right-6 mr-2 size-5 text-yellow-500"
+										v-else />
+								</div>
+								<input
+									type="text"
+									class="generic-input h-[50px]"
+									placeholder="Provide Account Number"
+									v-model="accountNumber" />
+								<!-- submit button -->
+								<button
+									type="submit"
 									:class="[
-										'generic-input',
-										fetchBankListStatus === 'error'
-											? 'border-yellow-300 focus:border-yellow-600 focus:ring-yellow-600'
-											: 'border-gray-300',
-									]"
-									id="target-brank"
-									v-model="bankId"
-									required>
-									<option
-										v-for="(bank, index) in bankList"
-										:key="index"
-										:value="bank.id">
-										{{ bank.name }}
-									</option>
-								</select>
-								<FormSubmissionLoader
-									class="absolute top-[52%] right-6 mr-2 size-5 animate-spin text-gray-500"
-									v-if="fetchBankListStatus === 'pending'" />
-								<WarningIndicator
-									class="absolute top-[52%] right-6 mr-2 size-5 text-yellow-500"
-									v-else />
-							</div>
-							<input
-								type="text"
-								class="generic-input h-[50px]"
-								placeholder="Provide Account Number"
-								v-model="accountNumber" />
-							<!-- submit button -->
-							<button
-								type="submit"
-								:class="[
-									'generic-form-submit h-[50px] shadow-none',
-									collateralCheckLoading && 'skeleton skeleton-animated',
-								]">
-								{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
-							</button>
-						</form>
+										'generic-form-submit h-[50px] shadow-none',
+										collateralCheckLoading && 'skeleton skeleton-animated',
+									]">
+									{{ collateralCheckLoading ? 'Please Wait...' : 'Search' }}
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="h-full p-2">
+		<div class="flex flex-1 flex-col p-2">
+			<h1 class="text-sm font-bold text-gray-500">Results will show here</h1>
 			<!-- IA Vehicle Details results -->
 			<div
 				v-if="iaVehicleDetails"

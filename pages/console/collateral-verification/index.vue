@@ -1,6 +1,5 @@
 <template>
-	<div
-		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-md border-[.5px] bg-white p-2 shadow-sm"></div>
+	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2"></div>
 </template>
 
 <script setup lang="ts">

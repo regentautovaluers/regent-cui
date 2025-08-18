@@ -1,12 +1,8 @@
 <template>
-	<div class="console-layout-spacing">
-		<h1 class="text-lg font-bold text-gray-500">Collateral Verification</h1>
-		<h2 class="text-xs text-gray-500">
-			A quick and easy way to verify documents and vehicle loan collateral here. Contribute to
-			the largest collateral recording system in the country.
-		</h2>
-		<div
-			class="hide-scrollbar laptop:space-x-4 my-4 space-x-2 overflow-x-scroll border-b-[.5px] whitespace-nowrap">
+	<!-- new UI -->
+	<div class="console-layout-spacing rounded-lg border border-gray-200 bg-white">
+		<!-- links strip -->
+		<div class="hide-scrollbar space-x-4 overflow-x-scroll border-b p-5 whitespace-nowrap">
 			<NuxtLink
 				v-for="(e, idx) in routeEntries.filter((re) => re.shouldShow)"
 				:key="idx"
@@ -17,7 +13,7 @@
 						doesRouteNameMatch(e.to) ||
 						(e.to == 'collateral-verification-management' &&
 							doesRoutePathInclude('/collateral-verification/management'))
-							? 'font-semibold text-blue-600 after:absolute after:-bottom-[.5px] after:left-0 after:h-[2px] after:w-full after:bg-blue-600'
+							? 'font-semibold text-blue-600 after:absolute after:-bottom-[23px] after:left-0 after:h-[2.5px] after:w-full after:bg-blue-600'
 							: 'text-gray-500',
 					]">
 					{{ e.name }}
@@ -34,7 +30,7 @@
 		{
 			to: 'collateral-verification-home',
 			name: 'Homepage',
-			shouldShow: true,
+			shouldShow: false,
 		},
 		{
 			to: 'collateral-verification-onboard-fraudsters',
@@ -63,7 +59,7 @@
 		},
 		{
 			to: 'collateral-verification-view-invoices',
-			name: 'Invoices',
+			name: 'Service Invoices',
 			shouldShow: isPrincipalAdmin(),
 		},
 	];
