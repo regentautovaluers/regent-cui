@@ -3,7 +3,7 @@ import type { CoreRoute } from '~/types';
 const navigationRoutes: readonly CoreRoute[] = [
 	{
 		id: 0,
-		screenName: 'Home',
+		screenName: 'Welcome',
 		routeName: 'mobivaluer-home',
 		renderRoute: true,
 	},
@@ -105,7 +105,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 	},
 	{
 		id: 4,
-		screenName: 'Regent Tracking',
+		screenName: 'Tracking',
 		routeName: 'regent-tracking-home',
 		renderRoute: true,
 		childRoutes: [
