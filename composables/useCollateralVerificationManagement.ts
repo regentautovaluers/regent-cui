@@ -92,6 +92,7 @@ function useCollateralVerificationInvoiceManagement() {
 	// downloading invoice
 	const invoiceDownloadLoading: Ref<boolean> = ref(false);
 	const downloadedInvoice: Ref<string | null> = ref(null);
+	const fileName: Ref<string | null> = ref(null);
 
 	const {
 		status: fetchCollateralVerificationInvoiceListStatus,
@@ -162,6 +163,16 @@ function useCollateralVerificationInvoiceManagement() {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 
+			// Attempt to get the filename from the Content-Disposition header.
+			const contentDisposition = response.headers.get('Content-Disposition');
+			if (contentDisposition) {
+				// Use a regular expression to find the filename.
+				const filenameMatch = /filename="(.+?)"/.exec(contentDisposition);
+				if (filenameMatch && filenameMatch.length > 1) {
+					fileName.value = filenameMatch[1];
+				}
+			}
+
 			// Get the response data as a Blob.
 			const pdfBlob = await response.blob();
 			downloadedInvoice.value = URL.createObjectURL(pdfBlob);
@@ -203,6 +214,7 @@ function useCollateralVerificationInvoiceManagement() {
 		fetchCollateralVerificationInvoiceListStatus,
 		fetchCollateralVerificationInvoiceListError,
 		downloadedInvoice,
+		fileName,
 		invoiceDownloadLoading,
 		executeFetchCollateralVerificationInvoiceList,
 		clearFilters,
