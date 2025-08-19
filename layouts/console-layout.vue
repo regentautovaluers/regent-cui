@@ -273,12 +273,11 @@
 		</aside>
 		<div
 			:class="[
-				'flex flex-1 flex-col',
+				'flex flex-1 flex-col bg-[#f8faf8]',
 				sidebarOpen
 					? 'laptop-lg:translate-x-0 laptop-lg:ml-68 translate-x-68'
 					: 'laptop-lg:ml-[70px]',
-			]"
-			@click="() => (sidebarOpen = false)">
+			]">
 			<NuxtPage />
 		</div>
 	</main>
