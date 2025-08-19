@@ -225,6 +225,15 @@ export type CollateralVerificationsTokens = {
 	balance: number;
 	billingType: 'postpaid' | 'prepaid';
 	invoiceDueDays: string | number | null;
+	fraudBundleSearches: number | null;
+	verifyNationalIdSearches: number | null;
+	verifyAlienIdSearches: number | null;
+	verifyVehicleSearches: number | null;
+	verifyDrivingLicenseSearches: number | null;
+	verifyKraPinSearches: number | null;
+	verifyBusinessSearches: number | null;
+	verifyCollateralSearches: number | null;
+	verifyBankAccountSearches: number | null;
 };
 
 export type CollateralVerificationsCheckType =
