@@ -30,7 +30,7 @@
 		{
 			to: 'collateral-verification-home',
 			name: 'Homepage',
-			shouldShow: false,
+			shouldShow: true,
 		},
 		{
 			to: 'collateral-verification-onboard-fraudsters',
