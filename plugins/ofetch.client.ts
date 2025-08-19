@@ -7,6 +7,7 @@ interface Headers {
 
 export default defineNuxtPlugin(() => {
 	const { public: runtimeConfig } = useRuntimeConfig();
+	const route = useRoute();
 	const { getAuthToken, encryptCorporateClientId, getPrincipal } = useAuth();
 
 	globalThis.$fetch = ofetch.create({
@@ -24,7 +25,12 @@ export default defineNuxtPlugin(() => {
 
 			// if the request us going to Fraud Detection
 			if (options.baseURL == runtimeConfig.FRAUD_DETECTION_BASE_URL) {
-				headers['x-client-id'] = encryptCorporateClientId(getPrincipal.value.corpId);
+				headers['X-Client-Id'] = encryptCorporateClientId(getPrincipal.value.corpId);
+
+				// if we are paying up for tokens -> not via invoice
+				if (route.name == 'collateral-verification-home') {
+					headers['Entity-Token'] = encryptCorporateClientId(getPrincipal.value.corpId);
+				}
 			}
 
 			// if the request is going to valuation
