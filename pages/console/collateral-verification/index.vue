@@ -36,13 +36,27 @@
 					{{ getCollateralVerificationTokenInfo?.balance ?? 'N/A' }}
 				</h1>
 				<h2 class="text-sm">Tokens Available</h2>
-				<button class="generic-form-submit w-1/3 shadow-none">Top Up</button>
+				<button
+					class="generic-form-submit w-1/3 shadow-none"
+					data-modal-target="topup-tokens-modal"
+					data-modal-toggle="topup-tokens-modal">
+					Top Up
+				</button>
 			</div>
 		</div>
+
+		<!-- top up modal -->
+		<ParentModal
+			modal-id="topup-tokens-modal"
+			modal-title="Top Up Tokens"
+			modal-placement="center-center">
+			<TopUpCollateralVerificationsForm />
+		</ParentModal>
 	</div>
 </template>
 <script setup lang="ts">
 	import { CollateralVerificationSearchesBarChart } from '#components';
+	import TopUpCollateralVerificationsForm from '~/components/forms/TopUpCollateralVerificationsForm.vue';
 
 	definePageMeta({
 		name: 'collateral-verification-home',
