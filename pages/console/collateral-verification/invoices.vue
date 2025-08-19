@@ -19,10 +19,10 @@
 			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
 			v-else-if="
 				fetchCollateralVerificationInvoiceListStatus === 'success' &&
-				!collateralVerificationInvoices.length
+				collateralVerificationInvoices.length === 0
 			">
 			<BirdieNotFoundIcon />
-			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no valuations!</h1>
+			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no invoices!</h1>
 		</div>
 
 		<!-- div to show when there are authority letters -->
