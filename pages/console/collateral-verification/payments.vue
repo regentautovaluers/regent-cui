@@ -31,12 +31,12 @@
 	const routeEntries = [
 		{
 			to: 'collateral-verification-payments-invoices',
-			name: 'Invoice Payments',
+			name: 'Invoices',
 			shouldShow: true,
 		},
 		{
 			to: 'collateral-verification-payments-regular',
-			name: 'Regular Payments',
+			name: 'Payment History',
 			shouldShow: true,
 		},
 	];

@@ -10,6 +10,16 @@
 					ticks: {
 						stepSize: 1,
 					},
+					title: {
+						display: true,
+						text: 'Number of Requests',
+					},
+				},
+				x: {
+					title: {
+						display: true,
+						text: 'Search Type',
+					},
 				},
 			},
 			plugins: {
