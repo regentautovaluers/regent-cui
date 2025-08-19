@@ -311,7 +311,7 @@
 									class="generic-input h-[50px]"
 									placeholder="Provide National ID"
 									v-model="searchQuery"
-									pattern="[0-9]*" />
+									pattern="[0-9,a-z,A-Z]*" />
 								<!-- submit button -->
 								<button
 									type="submit"
@@ -714,10 +714,6 @@
 				<div class="flex items-center justify-between border-b py-2">
 					<span class="font-semibold">Date of Birth</span>
 					<span>{{ responseData.date_of_birth ?? 'N/A' }}</span>
-				</div>
-				<div class="flex items-center justify-between border-b py-2">
-					<span class="font-semibold">ID Type</span>
-					<span>{{ responseData.id_type ?? 'N/A' }}</span>
 				</div>
 				<div class="flex items-center justify-between border-b py-2">
 					<span class="font-semibold">License Number</span>
