@@ -115,6 +115,59 @@ function useCollateralVerificationTokensManagement() {
 		}
 	}
 
+	const searchDistribution: ComputedRef<{ searchType: string; totalSearches: number }[]> =
+		computed(() => {
+			let entries = [
+				{
+					searchType: 'Collateral Verification',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.fraudBundleSearches ?? 0,
+				},
+				{
+					searchType: 'National ID',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyNationalIdSearches ?? 0,
+				},
+				{
+					searchType: 'Vehicle Registration',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyVehicleSearches ?? 0,
+				},
+				{
+					searchType: 'Alien ID',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyAlienIdSearches ?? 0,
+				},
+				{
+					searchType: 'Bank Account',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyBankAccountSearches ?? 0,
+				},
+				{
+					searchType: 'Business Verification',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyBusinessSearches ?? 0,
+				},
+				{
+					searchType: 'Loan Collateral',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyCollateralSearches ?? 0,
+				},
+				{
+					searchType: 'Driving License',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyDrivingLicenseSearches ?? 0,
+				},
+				{
+					searchType: 'KRA PIN',
+					totalSearches:
+						getCollateralVerificationTokenInfo.value?.verifyKraPinSearches ?? 0,
+				},
+			];
+
+			return entries;
+		});
+
 	return {
 		fetchCollateralVerificationTokensStatus,
 		executeFetchCollateralVerificationTokenStatus,
@@ -122,6 +175,7 @@ function useCollateralVerificationTokensManagement() {
 		shouldAllowSearch,
 		topUpTokens,
 		initiateTopUpRequestLoading,
+		searchDistribution,
 	};
 }
 
@@ -273,7 +327,41 @@ function useCollateralVerificationInvoiceManagement() {
 	};
 }
 
-function useCollateralVerificationsHistoryManagement() {}
+function useCollateralVerificationsHistoryManagement() {
+	const { getPrincipal } = useAuth();
+	const runtimeConfig = useRuntimeConfig();
+	const history: ComputedRef<any[]> = computed(() => historyData.value?.history);
+
+	const { status: fetchCollateralVerificationHistoryStatus, data: historyData } = useFetch(
+		`/api/v1/client-history/${getPrincipal.value.corpId}?page=0&size=5`,
+		{
+			key: 'collateral-verifications-history',
+			baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+			method: 'GET',
+			server: false,
+			lazy: true,
+			transform(response: any) {
+				if (
+					response?.data &&
+					Array.isArray(response.data) &&
+					(response.data as []).length > 0
+				) {
+					return {
+						history: response?.data.map((data: any) => ({
+							searchType: data.searchType,
+							date: data.createdAt,
+						})),
+					};
+				}
+			},
+		},
+	);
+
+	return {
+		history,
+		fetchCollateralVerificationHistoryStatus,
+	};
+}
 
 export {
 	useCollateralVerificationTokensManagement,
