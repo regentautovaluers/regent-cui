@@ -14,8 +14,7 @@ function useCollateralVerificationTokensManagement() {
 	const { getPrincipal } = useAuth();
 
 	// for when topping up tokens
-	const amount: Ref<number> = ref(0);
-	const phoneNumber: Ref<string> = ref('');
+
 	const initiateTopUpRequestLoading: Ref<boolean> = ref(false);
 
 	const {
@@ -75,23 +74,20 @@ function useCollateralVerificationTokensManagement() {
 		}
 	}
 
-	async function topUpTokens() {
+	async function topUpTokens(amount: number, phoneNumber: string, invoiceNumber?: string) {
 		try {
 			initiateTopUpRequestLoading.value = true;
 
 			await $fetch('/api/v1/payments/initiate-payment', {
 				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 				method: 'POST',
-				headers: {
-					test: 'text',
-				},
 				body: JSON.stringify({
 					branchID: 'BR-IPRS-K18AU25',
-					amount: amount.value,
-					phoneNumber: phoneNumber.value,
+					amount: amount,
+					phoneNumber: phoneNumber,
 					accountReference: 'IPRS',
 					transactionDesc: 'TOP-UP',
-					serviceID: 'TOP-UP',
+					serviceID: invoiceNumber ?? 'TOP-UP',
 				}),
 				onResponse({ response }) {
 					if (response.ok) {
@@ -125,8 +121,6 @@ function useCollateralVerificationTokensManagement() {
 		getCollateralVerificationTokenInfo,
 		shouldAllowSearch,
 		topUpTokens,
-		amount,
-		phoneNumber,
 		initiateTopUpRequestLoading,
 	};
 }

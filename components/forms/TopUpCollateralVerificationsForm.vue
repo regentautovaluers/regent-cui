@@ -1,5 +1,5 @@
 <template>
-	<form @submit.prevent="topUpTokens()">
+	<form @submit.prevent="topUpTokens(amount, phoneNumber)">
 		<div class="mt-3 flex flex-col">
 			<label
 				class="generic-input-label"
@@ -46,6 +46,25 @@
 </template>
 
 <script setup lang="ts">
-	const { topUpTokens, amount, phoneNumber, initiateTopUpRequestLoading } =
+	const props = defineProps({
+		amount: {
+			type: Number,
+			required: false,
+		},
+		invoiceNumber: {
+			type: String,
+			required: false,
+		},
+	});
+
+	const amount: Ref<number> = ref(props.amount ?? 0);
+	const phoneNumber: Ref<string> = ref('');
+	const { topUpTokens, initiateTopUpRequestLoading } =
 		useCollateralVerificationTokensManagement();
+
+	watch(phoneNumber, (newNumber) => {
+		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+			phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
+		}
+	});
 </script>
