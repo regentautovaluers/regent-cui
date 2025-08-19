@@ -270,17 +270,53 @@
 								<td class="laptop-lg:table-cell hidden py-4 text-sm">
 									{{ (invoice.paidAt as string)?.split('T')[0] ?? 'N/A' }}
 								</td>
-								<td class="py-4 pe-3 text-sm text-blue-600">
+								<td class="py-4 pe-3 text-sm">
 									<button
-										@click="
-											() => {
-												downloadInvoice(invoice.id);
-											}
-										"
-										:data-modal-target="`view-invoice-${invoice.id}-modal`"
-										:data-modal-toggle="`view-invoice-${invoice.id}-modal`">
-										View Inv
+										:id="'dropdownLeftButton' + index"
+										:data-dropdown-toggle="'dropdownTop' + index"
+										data-dropdown-placement="left"
+										type="button">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="1em"
+											height="1em"
+											viewBox="0 0 16 16"
+											class="size-6">
+											<MenuKebabIcon />
+										</svg>
 									</button>
+									<!-- Dropdown menu -->
+									<div
+										:id="'dropdownTop' + index"
+										class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+										<ul
+											class="py-2 text-sm text-gray-500"
+											aria-labelledby="dropdownLeftButton">
+											<li>
+												<button
+													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+													type="button"
+													@click="
+														() => {
+															downloadInvoice(invoice.id);
+														}
+													"
+													:data-modal-target="`view-invoice-${invoice.id}-modal`"
+													:data-modal-toggle="`view-invoice-${invoice.id}-modal`">
+													Download Inv.
+												</button>
+											</li>
+											<li v-if="!['paid', 'void'].includes(invoice.status)">
+												<button
+													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+													type="button"
+													:data-modal-target="`pay-invoice-${invoice.id}-modal`"
+													:data-modal-toggle="`pay-invoice-${invoice.id}-modal`">
+													Pay Invoice
+												</button>
+											</li>
+										</ul>
+									</div>
 								</td>
 							</tr>
 						</tbody>
@@ -329,12 +365,27 @@
 				{{ fileName }}
 			</ParentModal>
 		</template>
+
+		<!-- Pay for Invoice modal -->
+		<template
+			v-if="collateralVerificationInvoices && collateralVerificationInvoices.length"
+			v-for="(invoice, idx) in collateralVerificationInvoices"
+			:key="idx">
+			<ParentModal
+				:modal-id="`pay-invoice-${invoice.id}-modal`"
+				modal-title="Pay Invoice"
+				modal-placement="center-center">
+				<TopUpCollateralVerificationsForm
+					:amount="invoice.amount"
+					:invoice-number="invoice.invoiceNumber" />
+			</ParentModal>
+		</template>
 	</div>
 </template>
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'collateral-verification-view-invoices',
+		name: 'collateral-verification-payments-invoices',
 		layout: 'console-layout',
 	});
 

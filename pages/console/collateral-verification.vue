@@ -11,8 +11,8 @@
 				<span
 					:class="[
 						doesRouteNameMatch(e.to) ||
-						(e.to == 'collateral-verification-management' &&
-							doesRoutePathInclude('/collateral-verification/management'))
+						(e.to == 'collateral-verification-payments-regular' &&
+							doesRoutePathInclude('/collateral-verification/payments'))
 							? 'font-semibold text-blue-600 after:absolute after:-bottom-[23px] after:left-0 after:h-[2.5px] after:w-full after:bg-blue-600'
 							: 'text-gray-500',
 					]">
@@ -58,8 +58,8 @@
 			shouldShow: true,
 		},
 		{
-			to: 'collateral-verification-view-invoices',
-			name: 'Service Invoices',
+			to: 'collateral-verification-payments-regular',
+			name: 'Payments',
 			shouldShow: isPrincipalAdmin(),
 		},
 	];
