@@ -7,10 +7,16 @@
 			scales: {
 				y: {
 					beginAtZero: true,
+					ticks: {
+						stepSize: 1,
+					},
 				},
 			},
 			plugins: {
 				legend: { display: false },
+				datalabels: {
+					color: 'rgba(37, 99, 235)',
+				},
 			},
 		}" />
 </template>
@@ -21,6 +27,7 @@
 		labels: { type: Array<string>, required: true },
 		data: { type: Array<number>, required: true },
 	});
+	const computedData = computed(() => props.data.sort((a, b) => a - b));
 
 	const data = computed(() => {
 		return {
@@ -28,17 +35,21 @@
 			datasets: [
 				{
 					// label: 'Data One',
-					backgroundColor: '#2563EB',
+					backgroundColor: generateBarRGBAColor(props.data.length, true),
+					borderColor: generateBarRGBAColor(props.data.length, false),
 					data: props.data,
-					borderRadius: 4,
-					borderWidth: 1,
+					borderWidth: 5,
 				},
 			],
 		};
 	});
 
-	const options = {
-		responsive: true,
-		maintainAspectRatio: false,
-	};
+	function generateBarRGBAColor(totalEntries: number, withAlpha: boolean): string[] {
+		const colors: string[] = [];
+		for (let e = 0; e < totalEntries; e++) {
+			colors.push(`rgba(37, 99, 235, ${withAlpha ? '0.6' : '0.0'})`);
+		}
+
+		return colors;
+	}
 </script>
