@@ -1,5 +1,5 @@
 <template>
-	<form @submit.prevent="topUpTokens(amount, phoneNumber)">
+	<form @submit.prevent="topUpTokens(amount, phoneNumber, props.invoiceNumber)">
 		<div class="mt-3 flex flex-col">
 			<label
 				class="generic-input-label"
