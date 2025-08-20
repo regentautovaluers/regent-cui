@@ -161,20 +161,24 @@
 											aria-labelledby="dropdownLeftButton">
 											<li>
 												<NuxtLink
-													class="block w-full px-4 py-2 text-center hover:bg-gray-100 disabled:bg-gray-100"
-													:disabled="!fleet.vehiclesIssued"
+													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+													v-if="
+														fleet.vehiclesIssued &&
+														fleet.vehiclesIssued > 0
+													"
 													:to="{
 														name: 'vehicle-valuation-explore-fleet',
 														params: {
 															fleet_id: fleet.id,
 														},
 													}">
-													{{
-														!fleet.vehiclesIssued
-															? 'No Vehicles'
-															: 'View Vehicles'
-													}}
+													View Vehicles
 												</NuxtLink>
+												<button
+													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+													v-else>
+													Report N/A
+												</button>
 											</li>
 										</ul>
 									</div>

@@ -3,7 +3,7 @@ export const useCorporateValuations = () => {
 	const { getPrincipal } = useAuth();
 	const { name: routeName } = useRoute();
 
-	const activeView: Ref<'pending' | 'complete'> = ref('complete');
+	const activeView: Ref<'pending' | 'complete'> = ref('pending');
 
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
