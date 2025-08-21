@@ -1,12 +1,10 @@
 <template>
-	<div class="console-layout-spacing h-full">
+	<div class="console-layout-spacing flex flex-1 flex-col">
 		<div
-			class="col-span-2 mb-10 flex h-24 items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
+			class="mb-5 flex h-28 items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
-				<UserAvatar
-					circleSize="size-20"
-					initialsSize="text-2xl" />
-				<div class="h-full flex-col overflow-hidden text-sm md:flex">
+				<UserAvatar />
+				<div class="mobile-lg:text-sm h-full flex-col overflow-hidden text-xs md:flex">
 					<h1 class="inline-flex items-center space-x-3">
 						<span class="font-semibold text-blue-600"
 							>Hi, {{ getPrincipal.username }}</span
@@ -18,15 +16,15 @@
 			</div>
 			<NuxtLink
 				:to="{ name: 'ava-membership-types' }"
-				class="generic-nuxt-link hidden text-xs font-normal uppercase md:flex">
-				Add a New Member
+				class="generic-nuxt-link mobile-md:flex mobile-lg:text-sm hidden text-xs font-normal whitespace-nowrap uppercase">
+				Add Member
 			</NuxtLink>
 		</div>
 
 		<!-- members listing -->
 		<!-- div to show when there is a fetch error -->
 		<div
-			class="mr-10 flex h-full flex-col items-center justify-center space-y-4 rounded-lg bg-white shadow-sm"
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 rounded-lg border bg-white text-sm shadow-sm"
 			v-if="fetchMembershipsStatus === 'error'">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
@@ -40,7 +38,7 @@
 
 		<!-- div to show when there are no members -->
 		<div
-			class="mr-10 flex h-full flex-col items-center justify-center space-y-4 rounded-lg bg-white shadow-sm"
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 rounded-lg border bg-white text-sm shadow-sm"
 			v-else-if="fetchMembershipsStatus === 'success' && corporateMemberships.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no members!</h1>
@@ -54,7 +52,7 @@
 		<!-- div to show when there are members -->
 		<div
 			v-else
-			class="laptop:grid-cols-[80%_20%] grid grid-cols-1">
+			class="laptop:grid-cols-[80%_20%] grid flex-1 grid-cols-1 gap-y-4">
 			<div class="laptop:mr-10 mr-0 flex h-full flex-col justify-between">
 				<!-- search & filter controls -->
 				<div class="flex h-fit flex-col space-y-2">
@@ -96,12 +94,12 @@
 								<tr>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers ps-3">
 										Client Name
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers tablet:table-cell hidden">
 										Category
 									</th>
 									<th
@@ -111,7 +109,7 @@
 									</th>
 									<th
 										scope="col"
-										class="table-headers">
+										class="table-headers tablet:table-cell hidden">
 										Client Contacts
 									</th>
 									<th
@@ -133,24 +131,24 @@
 											>username</span
 										>
 									</td>
-									<td class="p-6 text-gray-300">
+									<td class="tablet:table-cell hidden p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>useremail</span
 										>
 									</td>
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
-											>one</span
+											>useremail</span
+										>
+									</td>
+									<td class="tablet:table-cell hidden p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>useremail</span
 										>
 									</td>
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
-											>domain role</span
-										>
-									</td>
-									<td class="p-6 text-gray-300">
-										<span class="animate-pulse rounded-lg bg-gray-300"
-											>button</span
+											>usermail</span
 										>
 									</td>
 								</tr>
@@ -161,17 +159,18 @@
 									:key="index">
 									<td
 										scope="row"
-										class="p-4 font-semibold whitespace-nowrap text-gray-600">
+										class="py-4 ps-3 whitespace-nowrap text-gray-600">
 										{{ member.full_name }}
 									</td>
-									<td class="p-4 text-blue-600">
+									<td class="tablet:table-cell hidden py-4 text-blue-600">
 										{{ stringToTitleCase(member.category) }}
 									</td>
-									<td class="p-4 font-semibold text-pink-600">
+									<td class="py-4 font-semibold text-pink-600">
 										{{ member.membershipVehicleCount }}
 									</td>
-									<td class="inline-flex flex-col p-4">
+									<td class="tablet:table-cell hidden flex-col py-4">
 										<span>{{ member.userEmail ?? 'Email N/A' }}</span>
+										<br />
 										<span
 											class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
 											>{{ member.phone_number }}</span
@@ -183,14 +182,7 @@
 											:data-dropdown-toggle="'dropdownTop' + index"
 											data-dropdown-placement="left"
 											type="button">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												width="1em"
-												height="1em"
-												viewBox="0 0 16 16"
-												class="size-6">
-												<MenuKebabIcon />
-											</svg>
+											<MenuKebabIcon />
 										</button>
 										<!-- Dropdown menu -->
 										<div
@@ -253,21 +245,23 @@
 				</div>
 
 				<!-- page controls -->
-				<div class="mt-8 flex min-h-12 items-center justify-between">
+				<div
+					class="tablet:flex-row tablet:min-h-12 tablet:h-12 mt-5 flex h-16 min-h-16 flex-col items-center justify-between">
 					<h1 class="text-sm font-semibold text-gray-500">
-						Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
+						Showing {{ page + 1 }} of {{ totalPages }} pages.
 					</h1>
-					<div class="h-full space-x-2 md:space-x-4">
+					<div
+						class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
 						<button
 							class="table-page-buttons"
-							@click="currentPage -= 1"
-							:disabled="currentPage === 0 || totalPages == 1">
+							@click="page -= 1"
+							:disabled="page === 0 || totalPages == 1">
 							Previous
 						</button>
 						<button
 							class="table-page-buttons"
-							@click="currentPage += 1"
-							:disabled="currentPage === totalPages - 1 || totalPages == 1">
+							@click="page += 1"
+							:disabled="page === totalPages - 1 || totalPages == 1">
 							Next
 						</button>
 					</div>
@@ -275,10 +269,10 @@
 			</div>
 
 			<!-- side-information including chart -->
-			<div
-				class="tablet:flex-row laptop-lg:flex-col laptop-lg:h-full laptop-lg:space-y-10 flex h-fit max-h-full flex-col">
+			<div class="tablet:flex-row tablet:space-x-5 laptop:flex-col flex flex-col space-y-5">
+				<!-- descriptions box -->
 				<div
-					class="laptop-lg:h-1/2 flex h-[28rem] min-h-[28rem] flex-col rounded-md border bg-white px-5 shadow-sm">
+					class="tablet:h-full laptop:h-1/2 tablet:w-1/2 laptop:w-full flex h-[28rem] w-full flex-col rounded-md border bg-white px-5 shadow-sm">
 					<div class="flex h-14 items-center justify-between">
 						<h1 class="text-xl font-bold">About</h1>
 						<button
@@ -317,11 +311,11 @@
 					<div class="flex-grow">
 						<div class="flex h-fit w-full items-center justify-center">
 							<button
-								class="inline-flex size-20 items-center justify-center rounded-full bg-pink-500 text-white shadow-sm">
+								class="inline-flex size-16 items-center justify-center rounded-full bg-pink-500 text-white shadow-sm">
 								<MembershipsIcon classes="size-8 text-inherit" />
 							</button>
 						</div>
-						<div class="my-4 w-full text-center">
+						<div class="my-2 w-full text-center">
 							<h1 class="text-center text-xl font-bold">Our Services</h1>
 							<h2 class="text-center font-bold text-gray-500">
 								{{ regentServices[activeDescriptionIndex].name }}
@@ -332,18 +326,18 @@
 							{{ regentServices[activeDescriptionIndex].description }}
 						</p>
 					</div>
-					<div class="flex h-14 items-center border-t pl-3">
-						<a
-							href="https://ava.ke/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="text-sm text-blue-600 transition-colors duration-300 hover:text-blue-700"
-							>Read More</a
-						>
-					</div>
+					<a
+						href="https://ava.ke/"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex h-14 items-center border-t pl-3 text-sm text-blue-600 transition-colors duration-300 hover:text-blue-700"
+						>Read More</a
+					>
 				</div>
+
+				<!-- chart -->
 				<div
-					class="laptop-lg:h-1/2 flex h-100 min-h-100 flex-col rounded-md border bg-white px-5 shadow-sm">
+					class="tablet:h-full laptop:h-1/2 tablet:w-1/2 laptop:w-full flex h-[28rem] w-full flex-col rounded-md border bg-white px-5 shadow-sm">
 					<h1 class="p-5 text-xl font-bold">Memberships</h1>
 
 					<div
@@ -377,7 +371,8 @@
 						v-else
 						:labels="['Active', 'Inactive']"
 						:colors="['#09bc3c', '#fd5353']"
-						:data="computeActiveInactive" />
+						:data="computeActiveInactive"
+						:total="computedTotal" />
 				</div>
 			</div>
 		</div>
@@ -534,7 +529,7 @@
 	const searchPhrase: Ref<string> = ref('');
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const {
-		currentPage,
+		currentPage: page,
 		corporateMemberships,
 		totalNumber,
 		totalPages,
@@ -546,5 +541,6 @@
 		handleSearchTriggered,
 	} = useAVAMemberships();
 
-	const { fetchAvaMembersDistributionStatus, computeActiveInactive } = useAVAMembershipsCharts();
+	const { fetchAvaMembersDistributionStatus, computeActiveInactive, computedTotal } =
+		useAVAMembershipsCharts();
 </script>
