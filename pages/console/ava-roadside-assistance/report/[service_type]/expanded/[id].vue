@@ -1,15 +1,18 @@
 <template>
-	<div class="console-layout-spacing">
+	<div class="console-layout-spacing flex flex-1 flex-col">
 		<!-- top section with general information about the report -->
-		<div class="h-52 rounded-lg border shadow-sm">
+		<div class="rounded-lg border bg-white shadow-sm outline-none">
 			<!-- general trip details and download button -->
-			<div class="flex items-center justify-between px-8 py-3">
-				<div class="flex">
+			<div
+				class="tablet:flex-row tablet:px-8 tablet:items-center tablet:space-y-0 flex min-h-24 flex-col justify-between space-y-2 px-2 py-2">
+				<div class="flex text-sm">
 					<div
-						class="flex size-20 items-center justify-center rounded-2xl bg-blue-500 text-2xl font-semibold text-white">
-						<span>{{ serviceReport.registration_no.split(' ')[0].toUpperCase() }}</span>
+						class="flex size-16 items-center justify-center rounded-2xl bg-blue-500 text-xl font-semibold text-white">
+						<span>{{
+							serviceReport.registration_no.substring(0, 3).toUpperCase()
+						}}</span>
 					</div>
-					<div class="ml-5 flex-grow space-y-1">
+					<div class="ml-5 flex-grow">
 						<h1 class="font-semibold text-blue-600">
 							{{ serviceReport.registration_no }}
 						</h1>
@@ -29,19 +32,19 @@
 					</div>
 				</div>
 				<button
-					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white uppercase hover:bg-blue-700 disabled:bg-gray-300"
+					class="h-12 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white uppercase hover:bg-blue-700 disabled:bg-gray-300"
 					disabled>
 					Download Report
 				</button>
 			</div>
 			<hr />
-			<div class="flex items-start justify-between px-8 py-3">
-				<div class="flex flex-col space-y-1">
+			<div class="tablet:grid-cols-4 tablet:px-8 grid grid-cols-2 gap-4 px-2 py-2 text-sm">
+				<div class="flex h-24 flex-col p-2">
 					<span class="font-semibold text-gray-600">Vehicle Owner</span>
 					<span class="text-gray-500">{{ serviceReport.user_name }}</span>
 					<span class="font-semibold text-blue-600">{{ serviceReport.user_phone }}</span>
 				</div>
-				<div class="flex flex-col space-y-1">
+				<div class="flex h-24 flex-col p-2">
 					<span class="font-semibold text-gray-600">Dispatcher</span>
 					<span class="text-gray-500">{{
 						serviceReport.control_handler.full_names
@@ -50,7 +53,7 @@
 						serviceReport.control_handler.phonenumber
 					}}</span>
 				</div>
-				<div class="flex flex-col space-y-1">
+				<div class="flex h-24 flex-col p-2">
 					<span class="font-semibold text-gray-600">Date & Time</span>
 					<span class="text-gray-500">{{
 						formatToDateTimePair(serviceReport.date_created)[0]
@@ -60,7 +63,7 @@
 						{{ formatToDateTimePair(serviceReport.completion_time)[1] }}</span
 					>
 				</div>
-				<div class="flex flex-col space-y-1">
+				<div class="flex h-24 flex-col p-2">
 					<span class="font-semibold text-gray-600">Reason</span>
 					<span class="text-gray-500">{{
 						stringToTitleCase(serviceReport.service)
@@ -70,14 +73,15 @@
 		</div>
 
 		<!-- responder details, trip detals and cost breakdown -->
-		<div class="mt-8 grid h-112 grid-cols-2 gap-x-8 rounded-lg shadow-sm">
-			<div class="flex h-full flex-col space-y-8 rounded-lg">
-				<div class="flex h-[22%] items-center space-x-4 rounded-lg border px-8 shadow-sm">
+		<div class="laptop:grid-cols-2 my-5 grid grid-cols-1 gap-4 rounded-lg">
+			<div class="flex h-full flex-col space-y-4 rounded-lg">
+				<div
+					class="tablet:px-8 flex h-24 items-center space-x-4 rounded-lg border bg-white px-2 text-sm shadow-sm">
 					<div
-						class="flex size-20 items-center justify-center rounded-2xl bg-blue-500 text-2xl font-semibold text-white">
+						class="flex size-16 items-center justify-center rounded-2xl bg-blue-500 text-xl font-semibold text-white">
 						<span>{{
 							serviceReport.driver_vehicle_registration_snapshot
-								.split(' ')[0]
+								.substring(0, 3)
 								.toUpperCase()
 						}}</span>
 					</div>
@@ -99,24 +103,25 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex-grow rounded-lg border px-8 py-4 shadow-sm">
-					<h1 class="mb-2 text-xl font-semibold">Trip Details</h1>
+				<div
+					class="tablet:px-8 flex-grow rounded-lg border bg-white px-2 py-4 text-sm shadow-sm outline-none">
+					<h1 class="mb-2 font-semibold">Trip Details</h1>
 					<h1 class="font-semibold text-gray-500">
 						As logged by our system on
 						{{ formatToDateTimePair(serviceReport.dispatch_time)[0] }}
 					</h1>
-					<div class="mt-8 flex items-center space-x-4">
+					<div class="mt-5 grid grid-cols-2 gap-3">
 						<div
 							v-for="(detail, index) in tripDetailsFields"
 							:key="index"
-							class="w-1/4 rounded-md border bg-gray-100 p-3">
+							class="h-16 rounded-md border bg-gray-100 p-3">
 							<h1 class="font-semibold text-gray-700">
 								{{ detail.label }}
 							</h1>
 							<span class="font-semibold text-gray-500">{{ detail.value }}</span>
 						</div>
 					</div>
-					<div class="mt-8 space-y-6">
+					<div class="mt-5 space-y-6">
 						<div class="flex items-center space-x-4">
 							<div
 								class="flex size-12 items-center justify-center rounded-full bg-blue-600">
@@ -144,8 +149,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="h-full rounded-lg border px-8 py-4 shadow-sm">
-				<h1 class="mb-8 text-xl font-semibold">Cost Breakdown</h1>
+			<div
+				class="tablet:px-8 h-full rounded-lg border bg-white px-2 py-4 text-sm shadow-sm outline-none">
+				<h1 class="mb-5 font-semibold">Cost Breakdown</h1>
 				<span class="font-semibold text-gray-500">
 					{{ serviceReport.registration_no }} had
 					{{ serviceReport.current_free_distance }} Km of free towing remaining</span
@@ -163,7 +169,7 @@
 				<div
 					v-for="(field, index) in costBreakdownFields"
 					:key="index"
-					class="my-2 flex items-center justify-between py-3 text-lg"
+					class="my-2 flex items-center justify-between py-3 text-sm"
 					:class="{
 						'border-b': index !== costBreakdownFields.length - 1,
 					}">
@@ -174,7 +180,7 @@
 		</div>
 
 		<!-- map section -->
-		<div class="relative mt-24 h-168 overflow-clip rounded-lg border shadow-sm">
+		<div class="relative my-5 h-168 overflow-clip rounded-lg border shadow-sm">
 			<GoogleMap
 				ref="mapRef"
 				:api-key="googleMapsApiKey"
@@ -217,36 +223,9 @@
 
 			<!-- Bottom statistics -->
 			<div
-				class="absolute bottom-8 left-1/2 flex h-40 w-[90%] -translate-x-1/2 transform items-center justify-between rounded-lg border bg-white px-8 py-4 shadow-sm">
-				<div class="flex h-full max-h-full w-1/3 items-center">
-					<!-- <img
-						src="/images/towing-image.jpg"
-						alt="Service Image"
-						class="h-full w-[40%] rounded-lg object-cover" /> -->
-
-					<div class="ml-5 flex-grow space-y-1">
-						<h1 class="font-semibold text-gray-700">
-							{{ serviceReport.user_name }}
-						</h1>
-						<div class="flex w-fit items-center space-x-2">
-							<span
-								class="rounded-xl bg-gray-200 p-1 px-2 text-sm font-semibold text-blue-600">
-								{{ serviceReport.registration_no }}
-							</span>
-							<span class="font-semibold text-gray-500"
-								>{{ serviceReport.vehicle_make }}
-								{{ serviceReport.vehicle_model }}</span
-							>
-						</div>
-						<h2 class="font-semibold whitespace-nowrap text-gray-700">
-							Tracking Id: {{ serviceReport.tracking_code }}
-						</h2>
-						<span class="font-semibold text-gray-500">
-							{{ formatToDateTimePair(serviceReport.date_created)[0] }}
-						</span>
-					</div>
-				</div>
-				<div class="flex h-full max-h-full w-1/3 flex-col justify-center space-y-6">
+				class="tablet:w-[95%] tablet:px-8 tablet:grid-cols-2 absolute bottom-8 left-1/2 grid w-full -translate-x-1/2 transform grid-cols-1 items-center justify-between gap-4 rounded-lg border bg-white px-2 py-4 shadow-sm">
+				<div
+					class="flex h-full max-h-full flex-col justify-center space-y-6 rounded-lg bg-gray-100 p-2 text-sm">
 					<div class="flex items-center space-x-4">
 						<div
 							class="flex size-12 items-center justify-center rounded-full bg-blue-600">
@@ -272,7 +251,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex h-full max-h-full flex-col justify-start space-y-4">
+				<div
+					class="fle x h-full max-h-full flex-col justify-start space-y-4 rounded-lg bg-gray-100 p-2 text-sm">
 					<div class="flex items-center">
 						<div class="size-4 rounded-full bg-blue-600" />
 						<div class="ml-1 flex flex-grow items-center justify-between space-x-8">
@@ -294,77 +274,116 @@
 		</div>
 
 		<!-- pre-towing report summary -->
-		<div class="mt-8 grid h-fit grid-cols-2 gap-x-8 rounded-lg shadow-sm">
+		<div class="laptop:grid-cols-2 mt-8 grid h-fit grid-cols-1 gap-8 rounded-lg">
 			<!-- Collected Data Section -->
-			<div class="h-184 max-h-184 px-2">
-				<h1 class="mb-5 text-xl font-semibold">Pre-Towing Report Summary</h1>
-				<div class="flex items-start space-x-4 rounded-lg border p-2">
+			<div class="px-2">
+				<h1 class="my-3 font-semibold text-gray-500">Pre-Towing Report Summary</h1>
+				<div
+					class="flex min-h-24 space-x-4 rounded-lg border bg-white px-8 py-4 shadow-sm outline-none">
 					<div
-						class="flex w-[7%] items-center justify-center rounded-md border border-yellow-500 p-2">
+						class="tablet:flex hidden h-fit w-20 items-center justify-center rounded-md border border-yellow-500 p-2">
 						<EngineIcon
 							classes="size-12"
 							color="#eab308" />
 					</div>
-					<div>
-						<h1 class="text-lg font-semibold underline">Engine Compartment</h1>
-						<div
-							class="flex items-center space-x-4 py-1"
-							v-for="(detail, index) in computedChecklistEngineDetails"
-							:index="index">
-							<div class="size-5 min-h-5 min-w-5 rounded-md bg-gray-300" />
-							<span class="font-semibold text-gray-500">{{ detail }}</span>
-						</div>
+					<div class="flex-grow text-sm">
+						<h1 class="font-semibold underline">Engine Compartment</h1>
+						<ul>
+							<li
+								class="flex items-center space-x-4 py-1"
+								v-for="(detail, index) in computedChecklistEngineDetails"
+								:index="index">
+								<svg
+									class="me-2 size-4 shrink-0 text-gray-500"
+									aria-hidden="true"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="currentColor"
+									viewBox="0 0 20 20">
+									<path
+										d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+								</svg>
+								<span class="text-gray-500">{{ detail }}</span>
+							</li>
+						</ul>
 					</div>
 				</div>
-				<div class="mt-5 flex items-start space-x-4 rounded-lg border p-2">
+				<div
+					class="mt-5 flex space-x-4 rounded-lg border bg-white px-8 py-4 shadow-sm outline-none">
 					<div
-						class="flex w-[12%] items-center justify-center rounded-md border border-pink-500 p-2">
+						class="tablet:flex hidden h-fit w-20 items-center justify-center rounded-md border border-pink-500 p-2">
 						<VehicleIcon
 							classes="size-12"
 							color="#ec4899" />
 					</div>
-					<div>
-						<h1 class="text-lg font-semibold underline">Exterior Vehicle Condition</h1>
-						<div
-							class="flex items-center space-x-4 py-1"
-							v-for="(detail, index) in computedChecklistExteriorDetails"
-							:index="index">
-							<div class="size-5 min-h-5 min-w-5 rounded-md bg-gray-300" />
-							<span class="font-semibold text-gray-500">{{ detail }}</span>
-						</div>
+					<div class="flex-grow text-sm">
+						<h1 class="font-semibold underline">Exterior Vehicle Condition</h1>
+						<ul>
+							<li
+								v-for="(detail, index) in computedChecklistExteriorDetails"
+								:index="index"
+								class="flex items-center space-x-4 py-1">
+								<svg
+									class="me-2 size-4 shrink-0 text-gray-500"
+									aria-hidden="true"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="currentColor"
+									viewBox="0 0 20 20">
+									<path
+										d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+								</svg>
+								<span class="text-gray-500">{{ detail }}</span>
+							</li>
+						</ul>
 					</div>
 				</div>
-				<div class="mt-5 flex items-start space-x-4 rounded-lg border p-2">
+				<div
+					class="mt-5 flex space-x-4 rounded-lg border bg-white px-8 py-4 shadow-sm outline-none">
 					<div
-						class="flex w-[12%] items-center justify-center rounded-md border border-green-500 p-2">
+						class="tablet:flex hidden h-fit w-20 items-center justify-center rounded-md border border-green-500 p-2">
 						<ExtrasIcon
 							classes="size-12"
 							color="#22c55e" />
 					</div>
-					<div>
-						<h1 class="text-lg font-semibold underline">Extra Vehicle Details</h1>
-						<div
-							class="flex items-center space-x-4 py-1"
-							v-for="(detail, index) in computedChecklistExtraDetails"
-							:index="index">
-							<div class="size-5 min-h-5 min-w-5 rounded-md bg-gray-300" />
-							<span class="font-semibold text-gray-500">{{ detail }}</span>
-						</div>
+					<div class="flex-grow text-sm">
+						<h1 class="font-semibold underline">Extra Vehicle Details</h1>
+						<ul>
+							<li
+								class="flex items-center space-x-4 py-1"
+								v-for="(detail, index) in computedChecklistExtraDetails"
+								:index="index">
+								<svg
+									class="me-2 size-4 shrink-0 text-gray-500"
+									aria-hidden="true"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="currentColor"
+									viewBox="0 0 20 20">
+									<path
+										d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+								</svg>
+								<span class="text-gray-500">{{ detail }}</span>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
 
 			<!-- pre-towing pictures section -->
-			<div class="relative h-182 max-h-182 rounded-lg">
-				<div class="mb-2 h-[80%] max-h-[80%] overflow-clip rounded-md border">
+			<div class="laptop:h-full relative flex h-[43rem] flex-col space-y-4 rounded-lg">
+				<h1
+					class="absolute top-0 w-full rounded-t-md bg-gray-700 p-4 text-sm font-semibold text-white backdrop-opacity-80">
+					Pre-Towing Pictures
+					{{ serviceReport.registration_no }}
+				</h1>
+				<div
+					class="mb-2 h-[80%] max-h-[80%] overflow-clip rounded-md border bg-white shadow-sm">
 					<img
 						:src="serviceImages[activePreTowingImage]"
 						alt="Report Image"
 						class="h-full w-full object-contain" />
 				</div>
-				<div class="flex h-[20%] space-x-2 overflow-auto">
+				<div class="flex h-[20%] space-x-2 overflow-x-auto">
 					<button
-						class="min-w-40 rounded-lg border bg-gray-300"
+						class="min-w-40 rounded-lg border bg-gray-300 shadow-sm"
 						:class="
 							activePreTowingImage === index
 								? 'overflow-clip border-2 border-pink-600'
@@ -379,45 +398,42 @@
 							alt="Report Image" />
 					</button>
 				</div>
-				<div class="absolute top-0 w-full rounded-t-md bg-gray-700 p-4 backdrop-opacity-80">
-					<h1 class="font-semibold text-white">
-						Pre-Towing Pictures
-						{{ serviceReport.registration_no }}
-					</h1>
-				</div>
 			</div>
 		</div>
 
 		<!-- vehicle spares data section -->
-		<div class="mt-10 flex space-x-8">
-			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
+		<div class="mobile-lg:grid-cols-2 laptop:grid-cols-4 my-5 grid grid-cols-1 gap-4">
+			<div
+				class="flex h-24 items-center space-x-4 rounded-lg border bg-white px-8 py-2 shadow-sm">
 				<BatteryIcon
-					classes="size-12"
+					classes="size-8"
 					:color="'#2563eb'" />
-				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg font-semibold text-gray-700">Car Battery</h1>
+				<div class="flex h-full flex-grow flex-col justify-center text-sm">
+					<h1 class="text-base font-semibold text-gray-500">Car Battery</h1>
 					<span class="font-semibold text-gray-500">{{
 						serviceReport.checklist.battery === 'yes' ? 'Present' : 'Not Present'
 					}}</span>
 				</div>
 			</div>
-			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
+			<div
+				class="flex h-24 items-center space-x-4 rounded-lg border bg-white px-8 py-2 shadow-sm">
 				<FirstAidKitIcon
-					classes="size-12"
+					classes="size-9"
 					:color="'#2563eb'" />
-				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg font-semibold text-gray-700">First Aid Kit</h1>
+				<div class="flex h-full flex-grow flex-col justify-center text-sm">
+					<h1 class="text-base font-semibold text-gray-500">First Aid Kit</h1>
 					<span class="font-semibold text-gray-500">{{
 						serviceReport.checklist.first_aid_kit === 'yes' ? 'Present' : 'Not Present'
 					}}</span>
 				</div>
 			</div>
-			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
+			<div
+				class="flex h-24 items-center space-x-4 rounded-lg border bg-white px-8 py-2 shadow-sm">
 				<ToolkitIcon
-					classes="size-12"
+					classes="size-9"
 					:color="'#2563eb'" />
-				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg font-semibold text-gray-700">Toolkit</h1>
+				<div class="flex h-full flex-grow flex-col justify-center text-sm">
+					<h1 class="text-base font-semibold text-gray-500">Toolkit</h1>
 
 					<!-- TODO: Fix the wrapping issue here -->
 					<span class="font-semibold text-gray-500">{{
@@ -425,12 +441,13 @@
 					}}</span>
 				</div>
 			</div>
-			<div class="flex h-20 w-1/4 items-center space-x-4 rounded-lg border px-8 py-2">
+			<div
+				class="flex h-24 items-center space-x-4 rounded-lg border bg-white px-8 py-2 shadow-sm">
 				<GaugeIcon
-					classes="size-12"
+					classes="size-9"
 					:color="'#2563eb'" />
-				<div class="h-full flex-grow space-y-2">
-					<h1 class="text-lg font-semibold text-gray-700">Milage</h1>
+				<div class="flex h-full flex-grow flex-col justify-center text-sm">
+					<h1 class="text-base font-semibold text-gray-500">Milage</h1>
 					<span class="font-semibold text-gray-500"
 						>{{ serviceReport.checklist.start_mileage }}Km</span
 					>
@@ -439,19 +456,21 @@
 		</div>
 
 		<!-- Final section with ratings -->
-		<div class="mt-8 flex space-x-8">
+		<div class="tablet:grid-cols-4 mb-5 grid grid-cols-1 gap-4">
 			<div
-				class="flex h-24 w-1/3 flex-col items-start justify-center rounded-lg border px-8 py-2">
-				<h1 class="text-lg font-semibold text-gray-700">Vehicle Received By</h1>
+				class="flex h-24 flex-col items-start justify-center rounded-lg border bg-white px-8 py-2 text-sm shadow-sm">
+				<h1 class="font-semibold text-gray-500">Vehicle Received By</h1>
 				<h2 class="font-semibold text-gray-500">
 					{{ serviceReport.received_by ?? 'N/A' }}
 				</h2>
 			</div>
-			<div class="flex h-24 flex-grow space-x-8 rounded-lg">
-				<div class="flex h-full w-1/2 items-center rounded-lg border px-8 py-2">
-					<LocationPin />
+			<div
+				class="tablet:col-span-3 tablet:flex-row tablet:space-y-0 tablet:space-x-4 flex h-24 flex-grow flex-col space-y-4 rounded-lg">
+				<div
+					class="flex flex-1 items-center rounded-lg border bg-white px-8 py-2 text-sm shadow-sm outline-none">
+					<!-- TODO: put location pin here -->
 					<div class="ml-5 h-fit flex-grow">
-						<h1 class="text-lg font-semibold text-gray-700">Drop Off Location</h1>
+						<h1 class="font-semibold text-gray-500">Drop Off Location</h1>
 						<h2 class="font-semibold text-gray-500">
 							{{ serviceReport.dropoff_location }}
 						</h2>
@@ -460,12 +479,13 @@
 						}}</span>
 					</div>
 				</div>
-				<div class="flex h-full w-1/2 items-center rounded-lg border px-8 py-2">
+				<div
+					class="flex flex-1 items-center rounded-lg border bg-white px-8 py-2 shadow-sm outline-none">
 					<AvatarIcon
-						width="3em"
-						height="3em" />
-					<div class="ml-5 h-fit flex-grow">
-						<h1 class="text-lg font-semibold text-gray-700">Client Rating</h1>
+						width="2em"
+						height="2em" />
+					<div class="ml-5 h-fit flex-grow text-sm">
+						<h1 class="font-semibold text-gray-500">Client Rating</h1>
 						<h2 class="font-semibold text-gray-500">
 							{{ serviceReport.user_name }}
 						</h2>
