@@ -9,7 +9,7 @@ const navigationRoutes: readonly CoreRoute[] = [
 	},
 	{
 		id: 1,
-		screenName: 'AVA Road Assistance',
+		screenName: 'Roadside Assistance',
 		routeName: 'ava-memberships-home',
 		renderRoute: true,
 		childRoutes: [
@@ -21,25 +21,13 @@ const navigationRoutes: readonly CoreRoute[] = [
 			},
 			{
 				id: 2,
-				screenName: 'Road Members',
-				routeName: 'ava-ra-members',
-				renderRoute: true,
-			},
-			{
-				id: 3,
-				screenName: 'Emergency (E) Members',
-				routeName: 'ava-ee-members',
-				renderRoute: true,
-			},
-			{
-				id: 4,
 				screenName: 'Road Assistance Reports',
 				routeName: 'ra-all-incidents',
 				renderRoute: true,
 			},
 			{
-				id: 5,
-				screenName: 'Request Road Assistance',
+				id: 3,
+				screenName: 'Request Roadside Assistance',
 				routeName: 'ra-towing-request',
 				renderRoute: true,
 			},
