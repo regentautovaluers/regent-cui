@@ -6,19 +6,22 @@ export const useAVAMemberships = () => {
 	const currentPage: Ref<number> = ref(0);
 	const size = 10;
 	const searchTerm: Ref<string> = ref('');
-	const corporateMemberships: Ref<any[]> = ref([]);
+	const corporateMemberships: ComputedRef<any[]> = computed(() => fetchedData.value?.memberships);
 	const totalNumber: Ref<number> = ref(0);
-	const totalPages: Ref<number> = ref(0);
-	const nuxtApp = useNuxtApp();
-	const { name: routeName } = useRoute();
+	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 
 	// member vehicles
 	const fetchMemberVehiclesLoading: Ref<boolean> = ref(false);
 	const memberVehicles: Ref<any[]> = ref([]);
 	const updateMemberDetailsLoading: Ref<boolean> = ref(false);
 	const addMemberVehicleLoading: Ref<boolean> = ref(false);
+	const membershipType: Ref<'roadside-assistance' | 'emergency-evacuation' | null> = ref(null);
 
-	const { status: fetchMembershipsStatus, refresh: refreshMembers } = useFetch(
+	const {
+		status: fetchMembershipsStatus,
+		execute: executeFetchMemberships,
+		data: fetchedData,
+	} = useFetch(
 		() => {
 			let requestURL = `/api/v1/memberships?corporateId=${getPrincipal.value.corpId}&page=${currentPage.value}&size=${size}`;
 
@@ -26,36 +29,39 @@ export const useAVAMemberships = () => {
 				requestURL = requestURL + `&searchTerm=${searchTerm.value}`;
 			}
 
-			if (routeName == 'ava-ra-members') {
-				requestURL = requestURL + `&membershipType=1`;
-			} else if (routeName == 'ava-ee-members') {
-				requestURL = requestURL + `&membershipType=2`;
+			if (membershipType.value) {
+				if (membershipType.value == 'roadside-assistance') {
+					requestURL = requestURL + `&membershipType=1`;
+				}
+
+				if (membershipType.value == 'emergency-evacuation') {
+					requestURL = requestURL + `&membershipType=2`;
+				}
 			}
 
 			return requestURL;
 		},
 		{
-			key: 'AVA-memberships' + currentPage.value,
+			key: 'ava-memberships',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: 'GET',
 			server: false,
 			lazy: true,
-			onResponse({ response }) {
-				const responseData = response._data;
-				corporateMemberships.value = responseData.memberships;
-
-				if (searchTerm.value.length === 0) totalNumber.value = responseData.totalCount;
-				totalPages.value = responseData.totalPages;
-			},
-			getCachedData: (key) => {
-				// Check if the data is already cached in the Nuxt payload
-				if (nuxtApp.isHydrating && nuxtApp.payload.data[key]) {
-					return nuxtApp.payload.data[key];
-				}
-
-				// Check if the data is already cached in the static data
-				if (nuxtApp.static.data[key]) {
-					return nuxtApp.static.data[key];
+			transform(response: any) {
+				if (
+					response?.memberships &&
+					Array.isArray(response.memberships) &&
+					(response.memberships as []).length > 0
+				) {
+					return {
+						memberships: response.memberships,
+						totalPages: response.totalPages,
+					};
+				} else {
+					return {
+						memberships: [],
+						totalPages: 0,
+					};
 				}
 			},
 		},
@@ -175,18 +181,13 @@ export const useAVAMemberships = () => {
 		}
 	};
 
-	const handleSearchTriggered = (searchSlug: string) => {
-		currentPage.value = 0;
-		corporateMemberships.value = [];
-		searchTerm.value = searchSlug;
-	};
-
 	return {
 		currentPage,
 		corporateMemberships,
 		totalNumber,
 		totalPages,
 		searchTerm,
+		membershipType,
 		fetchMembershipsStatus,
 		fetchMemberVehiclesLoading,
 		updateMemberDetailsLoading,
@@ -195,7 +196,6 @@ export const useAVAMemberships = () => {
 		getMemberVehicles,
 		updateMemberDetails,
 		addMemberVehicles,
-		refreshMembers,
-		handleSearchTriggered,
+		executeFetchMemberships,
 	};
 };

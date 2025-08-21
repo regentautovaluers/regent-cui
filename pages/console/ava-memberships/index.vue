@@ -1,7 +1,7 @@
 <template>
 	<div class="console-layout-spacing flex flex-1 flex-col">
 		<div
-			class="mb-5 flex h-28 items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
+			class="mb-10 flex h-28 items-center justify-between rounded-lg border bg-white p-4 shadow-sm">
 			<div class="flex items-center space-x-3">
 				<UserAvatar />
 				<div class="mobile-lg:text-sm h-full flex-col overflow-hidden text-xs md:flex">
@@ -56,15 +56,15 @@
 			<div class="laptop:mr-10 mr-0 flex h-full flex-col justify-between">
 				<!-- search & filter controls -->
 				<div class="flex h-fit flex-col space-y-2">
-					<div class="flex justify-between">
+					<div class="flex justify-between space-x-2">
 						<form
-							class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between"
-							@submit.prevent="handleSearchTriggered(searchPhrase)">
+							class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[35%] relative mt-2 flex w-full items-center justify-between"
+							@submit.prevent="executeFetchMemberships()">
 							<input
 								type="text"
 								class="generic-input h-[50px]"
 								placeholder="Search Client Name"
-								v-model="searchPhrase"
+								v-model="searchTerm"
 								required />
 							<button
 								type="submit"
@@ -72,18 +72,93 @@
 								<SearchIcon />
 							</button>
 						</form>
+						<button
+							title="Open Filters"
+							@click="() => (areFiltersOpen = !areFiltersOpen)"
+							class="group inline-flex h-[50px] w-14 cursor-pointer items-center justify-center rounded-lg border border-gray-400 p-1 outline-none hover:bg-gray-100">
+							<span class="mage--filter size-7 text-gray-400"></span>
+						</button>
 					</div>
-					<button
-						v-if="searchTerm !== ''"
-						@click="
-							() => {
-								searchTerm = '';
-								searchPhrase = '';
-							}
-						"
-						class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
-						Clear Filters
-					</button>
+					<Transition name="fade-slide">
+						<div
+							class="laptop:p-4 min-h-20 rounded-lg bg-white p-2 shadow-sm outline-none"
+							v-show="areFiltersOpen">
+							<div
+								class="tablet:flex-row mb-2 flex flex-col justify-between space-y-2">
+								<h1 class="text-sm font-semibold text-gray-500">Filter Results</h1>
+								<form
+									class="space-x-2"
+									v-if="searchTerm != '' || membershipType != null"
+									@submit.prevent="executeFetchMemberships()">
+									<button
+										@click="
+											() => {
+												searchTerm = '';
+												membershipType = null;
+												areFiltersOpen = false;
+												executeFetchMemberships();
+											}
+										"
+										type="button"
+										class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
+										Clear Filters
+									</button>
+									<button
+										type="submit"
+										class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
+										Apply Filters
+									</button>
+								</form>
+							</div>
+							<ul
+								class="tablet:flex-row tablet:space-y-0 tablet:space-x-2 flex w-full flex-col space-y-2">
+								<li class="w-full">
+									<input
+										type="radio"
+										id="roadside-assistance"
+										name="hosting"
+										value="roadside-assistance"
+										class="peer hidden"
+										required
+										v-model="membershipType" />
+									<label
+										for="roadside-assistance"
+										class="inline-flex w-full flex-1 cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white p-5 text-sm text-gray-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:bg-gray-100 hover:text-gray-600">
+										<div class="block">
+											<div class="w-full font-semibold">
+												Roadside Assistance
+											</div>
+											<div class="w-full">
+												Show only roadside assistance members
+											</div>
+										</div>
+									</label>
+								</li>
+								<li class="w-full">
+									<input
+										type="radio"
+										id="emergency-evacuation"
+										name="hosting"
+										value="emergency-evacuation"
+										class="peer hidden"
+										required
+										v-model="membershipType" />
+									<label
+										for="emergency-evacuation"
+										class="inline-flex w-full flex-1 cursor-pointer items-center justify-between rounded-lg border border-gray-200 bg-white p-5 text-sm text-gray-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:bg-gray-100 hover:text-gray-600">
+										<div class="block">
+											<div class="w-full font-semibold">
+												Emergency Evactuation
+											</div>
+											<div class="w-full">
+												Show only emergency evacuation members.
+											</div>
+										</div>
+									</label>
+								</li>
+							</ul>
+						</div>
+					</Transition>
 				</div>
 
 				<!-- the table itself -->
@@ -526,7 +601,6 @@
 	});
 	const activeDescriptionIndex: Ref<number> = ref(0);
 	const { getPrincipal } = useAuth();
-	const searchPhrase: Ref<string> = ref('');
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const {
 		currentPage: page,
@@ -534,12 +608,14 @@
 		totalNumber,
 		totalPages,
 		searchTerm,
+		membershipType,
 		fetchMembershipsStatus,
 		fetchMemberVehiclesLoading,
 		memberVehicles,
 		getMemberVehicles,
-		handleSearchTriggered,
+		executeFetchMemberships,
 	} = useAVAMemberships();
+	const areFiltersOpen: Ref<boolean> = ref(false);
 
 	const { fetchAvaMembersDistributionStatus, computeActiveInactive, computedTotal } =
 		useAVAMembershipsCharts();
