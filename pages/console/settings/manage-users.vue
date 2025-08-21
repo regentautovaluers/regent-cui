@@ -1,9 +1,9 @@
 <template>
-	<div class="h-full">
+	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
 		<!-- members listing -->
 		<!-- div to show when there is a fetch error -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
 			v-if="fetchStatus === 'error'">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
@@ -17,7 +17,7 @@
 
 		<!-- div to show when there are no users -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
 			v-else-if="fetchStatus === 'success' && usersList.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no users!</h1>
@@ -30,7 +30,7 @@
 
 		<!-- div to show when there are members -->
 		<div
-			class="flex h-full flex-col"
+			class="justify-betwee flex flex-1 flex-col"
 			v-else>
 			<!-- search & filter controls -->
 			<div class="flex h-fit items-center justify-between">
@@ -56,28 +56,23 @@
 							<tr>
 								<th
 									scope="col"
-									class="table-headers">
-									Full Name
+									class="table-headers ps-3">
+									User
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
-									Email
-								</th>
-								<th
-									scope="col"
-									class="table-headers">
+									class="table-headers tablet:table-cell hidden">
 									Privilege
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
+									class="table-headers tablet:table-cell hidden">
 									Company Role
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
-									Account Status
+									class="table-headers mobile-lg:table-cell hidden">
+									Status
 								</th>
 								<th
 									scope="col"
@@ -98,22 +93,17 @@
 										>username</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
-									<span class="animate-pulse rounded-lg bg-gray-300"
-										>useremail</span
-									>
-								</td>
-								<td class="p-6 text-gray-300">
+								<td class="tablet:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>user role</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
+								<td class="tablet:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>domain role</span
 									>
 								</td>
-								<td class="p-6 text-gray-300">
+								<td class="mobile-lg:table-cell hidden p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>accactive</span
 									>
@@ -132,19 +122,23 @@
 								:key="index">
 								<td
 									scope="row"
-									class="p-6 font-semibold whitespace-nowrap text-pink-600">
-									{{ user.username }}
+									class="py-4 ps-3">
+									<span>{{ user.email }}</span
+									><br /><span class="font-semibold text-pink-600">{{
+										user.username
+									}}</span>
 								</td>
-								<td class="p-6">{{ user.email }}</td>
-								<td class="p-6 text-blue-600">
+								<td class="tablet:table-cell hidden py-4 text-blue-600">
 									{{
 										user.userRoles.includes('ROLE_CORP_NORM')
 											? 'Normal'
 											: 'Admin'
 									}}
 								</td>
-								<td class="p-6">{{ user.roleInOrganization }}</td>
-								<td class="p-6">
+								<td class="tablet:table-cell hidden py-4">
+									{{ user.roleInOrganization }}
+								</td>
+								<td class="mobile-lg:table-cell hidden py-4">
 									<div class="flex w-fit items-center space-x-2">
 										<div
 											class="size-3 rounded-full"
@@ -157,28 +151,21 @@
 										}}</span>
 									</div>
 								</td>
-								<td class="flex items-center justify-end p-6">
+								<td class=" py-4 pe-3">
 									<button
-										:id="'dropdownTopButton' + index"
-										:data-dropdown-toggle="'dropdownTop' + index"
-										data-dropdown-placement="top"
+										:id="'dropdownLeftButton' + index"
+										:data-dropdown-toggle="'dropdownLeft' + index"
+										data-dropdown-placement="left"
 										type="button">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="1em"
-											height="1em"
-											viewBox="0 0 16 16"
-											class="size-6">
-											<MenuKebabIcon />
-										</svg>
+										<MenuKebabIcon />
 									</button>
 									<!-- Dropdown menu -->
 									<div
-										:id="'dropdownTop' + index"
+										:id="'dropdownLeft' + index"
 										class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
 										<ul
 											class="py-2 text-gray-500"
-											aria-labelledby="dropdownTopButton">
+											aria-labelledby="dropdownLeftButton">
 											<li>
 												<button
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
@@ -210,11 +197,13 @@
 			</div>
 
 			<!-- page controls -->
-			<div class="mt-8 flex min-h-12 items-center justify-between">
+			<div
+				class="tablet:flex-row tablet:min-h-12 tablet:h-12 mt-5 flex h-16 min-h-16 flex-col items-center justify-between">
 				<h1 class="text-sm font-semibold text-gray-500">
 					Showing {{ page + 1 }} of {{ totalPages }} pages.
 				</h1>
-				<div class="h-full space-x-2 md:space-x-4">
+				<div
+					class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
 					<button
 						class="table-page-buttons"
 						@click="page -= 1"

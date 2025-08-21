@@ -339,7 +339,7 @@
 									class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
 									{{ valuation.inspectionNote ?? 'N/A' }}
 								</td>
-								<td>
+								<td class="py-4 pe-3">
 									<button
 										:id="'dropdownLeftButton' + index"
 										:data-dropdown-toggle="'dropdownLeft' + index"

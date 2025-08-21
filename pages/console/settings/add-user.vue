@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="h-full rounded-lg border bg-white px-6 py-2 shadow-sm md:py-6"
+		class="laptop:p-4 laptop-lg:p-8 flex-1 p-2"
 		@submit.prevent="
 			addNewAccount(
 				username,
