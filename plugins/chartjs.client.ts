@@ -9,6 +9,7 @@ import {
 	ArcElement,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 export default defineNuxtPlugin(() => {
 	Chart.register(
@@ -20,5 +21,6 @@ export default defineNuxtPlugin(() => {
 		Legend,
 		ArcElement,
 		ChartDataLabels,
+		annotationPlugin,
 	);
 });
