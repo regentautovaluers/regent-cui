@@ -21,18 +21,19 @@ export const useAVAMembershipsCharts = () => {
 
 	const computeActiveInactive: ComputedRef<number[]> = computed(() => {
 		if (avaMembersDistribution.value) {
-			return [
-                avaMembersDistribution.value.active,
-				avaMembersDistribution.value.inactive
-            ]
-			
+			return [avaMembersDistribution.value.active, avaMembersDistribution.value.inactive];
 		}
 
 		return [];
 	});
 
+	const computedTotal: ComputedRef<number> = computed(
+		() => avaMembersDistribution.value.active + avaMembersDistribution.value.inactive,
+	);
+
 	return {
 		fetchAvaMembersDistributionStatus,
 		computeActiveInactive,
+		computedTotal,
 	};
 };
