@@ -1,19 +1,18 @@
 <template>
 	<div
-		class="flex h-dvh flex-col items-center justify-center bg-gray-400 bg-[url('/images/helicopter-image.jpg')] bg-cover bg-no-repeat bg-blend-multiply">
+		class="tablet:justify-center flex h-screen flex-col bg-gray-400 bg-[url('/images/helicopter-image.jpg')] bg-cover bg-no-repeat bg-blend-multiply">
 		<h1
-			class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl lg:text-6xl">
+			class="text-2xl laptop:text-4xl mb-4 text-center leading-none font-extrabold tracking-tight text-white">
 			Membership Types
 		</h1>
 		<div
-			class="flex flex-col space-y-4 md:flex-row md:justify-center md:space-x-12 md:space-y-0">
+			class="tablet:flex-row tablet:justify-center tablet:space-x-4 flex flex-col space-y-4 p-2 md:space-y-0">
 			<MembershipTypesCard
 				v-for="(membership, index) in membershipTypes"
 				:key="index">
 				<template #membershipType>
-					<div class="w-1/2">
-						<h1
-							class="font-semibold underline underline-offset-16 group-hover:text-white">
+					<div class="laptop:w-1/2 w-full">
+						<h1 class="font-semibold underline group-hover:text-white">
 							{{ membership.membership_name }}
 						</h1>
 					</div>
@@ -22,7 +21,7 @@
 					<p class="group-hover:text-white">
 						{{ membership.membership_description }}
 					</p>
-					<ul class="space-y-2 group-hover:text-white">
+					<ul class="space-y-1 group-hover:text-white">
 						<li
 							class="flex items-center space-x-3"
 							v-for="(benefit, index) in cleanupMembershipBenefits(
