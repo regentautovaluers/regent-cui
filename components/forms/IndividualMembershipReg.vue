@@ -1,7 +1,9 @@
 <template>
-	<form @submit.prevent="registerIndividualMember">
+	<form
+		@submit.prevent="registerIndividualMember"
+		class="flex-1">
 		<div
-			class="flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
+			class="tablet:flex-row tablet:space-y-0 tablet:space-x-3 flex flex-col items-center justify-between space-y-3 space-x-0">
 			<!-- Full Name Field -->
 			<div class="w-full lg:w-1/3">
 				<label
@@ -56,10 +58,9 @@
 			{{ formErrorMessage }}
 		</p>
 
-		<h1 class="mt-8 text-2xl">Register Your Vehicles</h1>
+		<h1 class="my-4 font-semibold text-gray-500">Add Vehicles</h1>
 		<!-- Vehicle Details & Payment & Status -->
 		<div
-			class="mt-7"
 			v-for="(vehicle, index) in memberVehicles"
 			:key="index">
 			<!-- this field is hidden. it holds the data for membershipTypeId -->
@@ -69,13 +70,13 @@
 				v-model="vehicle.membershipTypeId" />
 
 			<div
-				class="flex flex-col items-center justify-between space-y-3 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-3">
+				class="tablet:flex-row tablet:space-y-0 tablet:space-x-3 flex flex-col items-center justify-between space-y-3 space-x-0">
 				<!-- Reg Number -->
 				<div class="w-full lg:w-1/3">
 					<label
 						for="vehicle-registration-number"
 						class="generic-input-label"
-						>Vehicle Registration Number</label
+						>Vehicle Registration</label
 					>
 					<input
 						type="text"
@@ -133,9 +134,10 @@
 					v-model="vehicle.color" />
 			</div>
 
-			<div class="mt-4 flex items-center justify-between space-x-3">
+			<div
+				class="tablet:flex-row tablet:space-y-0 tablet:space-x-3 mt-4 flex flex-col items-center justify-between space-y-3 space-x-0">
 				<!-- Payment Status Field -->
-				<div class="w-1/2">
+				<div class="tablet:w-1/2 w-full">
 					<label
 						for="payment-status"
 						class="generic-input-label"
@@ -156,7 +158,7 @@
 					</select>
 				</div>
 				<!-- Payment Status Field -->
-				<div class="w-1/2">
+				<div class="tablet:w-1/2 w-full">
 					<label
 						for="membership-status"
 						class="generic-input-label"
@@ -178,9 +180,10 @@
 				</div>
 			</div>
 			<!-- Cover Period -->
-			<div class="mt-7 flex items-center justify-between space-x-3">
+			<div
+				class="tablet:flex-row tablet:space-y-0 tablet:space-x-3 mt-4 flex flex-col items-center justify-between space-y-3 space-x-0">
 				<!-- Starting date Field -->
-				<div class="w-1/2">
+				<div class="tablet:w-1/2 w-full">
 					<label
 						for="cover-period-starts"
 						class="generic-input-label"
@@ -197,7 +200,7 @@
 				</div>
 
 				<!-- Ending date Field -->
-				<div class="w-1/2">
+				<div class="tablet:w-1/2 w-full">
 					<label
 						for="cover-period-ends"
 						class="generic-input-label"
@@ -216,7 +219,7 @@
 		</div>
 		<button
 			type="button"
-			class="my-7 inline-flex items-center space-x-2 text-blue-600"
+			class="my-4 inline-flex items-center space-x-2 text-blue-600"
 			@click="addNewVehicle">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -234,7 +237,7 @@
 			>
 		</button>
 		<div
-			class="mt-4 flex w-full flex-col items-center space-y-3 space-x-0 md:w-1/2 md:flex-row md:space-y-0 md:space-x-4">
+			class="flex w-full flex-col items-center space-y-3 space-x-0 md:w-1/2 md:flex-row md:space-y-0 md:space-x-4">
 			<div class="h-fit w-full rounded-lg border border-blue-600 p-2 md:w-1/2">
 				<h1 class="font-semibold tracking-wide text-blue-600">Vehicles Added</h1>
 				<h2 class="text-gray-500">{{ memberVehicles.length }}</h2>
@@ -245,7 +248,7 @@
 		<button
 			type="submit"
 			:class="[
-				'generic-form-submit mt-3 w-full laptop:w-1/3',
+				'generic-form-submit laptop:w-1/3 mt-3 w-full',
 				registerIndividualMemberLoading && 'skeleton skeleton-animated',
 			]">
 			{{ registerIndividualMemberLoading ? 'Please Wait...' : 'Onboard Member' }}

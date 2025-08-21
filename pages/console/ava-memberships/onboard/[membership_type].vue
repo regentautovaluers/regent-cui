@@ -1,36 +1,32 @@
 <template>
-	<div class="console-layout-spacing">
-		<div class="flex flex-col items-center justify-between space-y-3 lg:flex-row lg:space-y-0">
-			<div
-				class="border-b w- space-x-4 text-sm font-semibold text-gray-500 md:text-base lg:w-fit">
-				<button
-					@click="() => (activeRegistrationForm = 0)"
+	<div class="console-layout-spacing rounded-lg border border-gray-200 bg-white">
+		<div class="hide-scrollbar space-x-4 overflow-x-scroll border-b p-5 whitespace-nowrap">
+			<button
+				@click="() => (activeRegistrationForm = 0)"
+				class="relative text-sm">
+				<span
 					:class="[
-						'border-b-2',
-						activeRegistrationForm === 0
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
-					]">
-					<span>Individual Registration</span>
-				</button>
-				<button
-					@click="() => (activeRegistrationForm = 1)"
+						activeRegistrationForm == 0
+							? 'font-semibold text-blue-600 after:absolute after:-bottom-[23px] after:left-0 after:h-[2.5px] after:w-full after:bg-blue-600'
+							: 'text-gray-500',
+					]"
+					>Individual Registration</span
+				>
+			</button>
+			<button
+				@click="() => (activeRegistrationForm = 1)"
+				class="relative text-sm">
+				<span
 					:class="[
-						'border-b-2',
-						activeRegistrationForm === 1
-							? 'border-b-blue-600 text-blue-600'
-							: 'border-b-inherit',
-					]">
-					<span>Bulk / Fleet Registration</span>
-				</button>
-			</div>
-			<!-- <NuxtLink
-				:to="{ name: 'memberships-home' }"
-				class="w-full rounded-md bg-blue-600 p-4 text-center text-sm font-semibold text-white md:w-fit"
-				>VIEW ALL MEMBERS</NuxtLink
-			> -->
+						activeRegistrationForm == 1
+							? 'font-semibold text-blue-600 after:absolute after:-bottom-[23px] after:left-0 after:h-[2.5px] after:w-full after:bg-blue-600'
+							: 'text-gray-500',
+					]"
+					>Bulk / Fleet Registration</span
+				>
+			</button>
 		</div>
-		<div class="mt-6">
+		<div class="laptop:p-4 laptop-lg:p-8 laptop:flex-1 mt-5 p-2 flex flex-col">
 			<IndividualMembershipReg v-if="activeRegistrationForm === 0" />
 			<BulkMembershipReg v-else-if="activeRegistrationForm === 1" />
 		</div>
