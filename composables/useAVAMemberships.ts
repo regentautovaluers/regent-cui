@@ -7,7 +7,9 @@ export const useAVAMemberships = () => {
 	const size = 10;
 	const searchTerm: Ref<string> = ref('');
 	const corporateMemberships: ComputedRef<any[]> = computed(() => fetchedData.value?.memberships);
-	const totalNumber: Ref<number> = ref(0);
+	const totalNumber: ComputedRef<number> = computed(
+		() => corporateMemberships.value?.length ?? 0,
+	);
 	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 
 	// member vehicles
@@ -64,6 +66,7 @@ export const useAVAMemberships = () => {
 					};
 				}
 			},
+			watch: [currentPage],
 		},
 	);
 

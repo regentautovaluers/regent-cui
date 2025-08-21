@@ -34,12 +34,11 @@
 								content: [`${props.total}`, 'Vehicles'],
 								font: [
 									{
-										size: 50,
+										size: 40,
 										weight: 'bold',
 									},
 									{
 										size: 18,
-										color: 'rgba(37, 99, 235)',
 									},
 								],
 							},
