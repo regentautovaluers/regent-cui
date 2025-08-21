@@ -7,7 +7,7 @@
 				maintainAspectRatio: false,
 				plugins: {
 					legend: {
-						display: false,
+						display: true,
 						position: 'bottom',
 						reverse: true,
 						align: 'center',
@@ -26,22 +26,28 @@
 							},
 						},
 					},
+					annotation: {
+						annotations: {
+							label1: {
+								type: 'label',
+								xValue: 2.5,
+								content: [`${props.total}`, 'Vehicles'],
+								font: [
+									{
+										size: 50,
+										weight: 'bold',
+									},
+									{
+										size: 18,
+										color: 'rgba(37, 99, 235)',
+									},
+								],
+							},
+						},
+					},
 				},
 			}"
 			:data="chartData" />
-	</div>
-	<div
-		class="flex items-center justify-center space-x-4"
-		v-if="props.data.length">
-		<div
-			v-for="(label, index) in props.labels"
-			:key="index"
-			class="flex w-fit items-center space-x-2">
-			<div
-				class="size-4 rounded-full bg-red-600 p-1"
-				:style="{ backgroundColor: props.colors[index] }"></div>
-			<span class="text-gray-500">{{ label }}</span>
-		</div>
 	</div>
 </template>
 
@@ -52,6 +58,7 @@
 		colors: { type: Array<string>, required: true },
 		labels: { type: Array<string>, required: true },
 		data: { type: Array<number>, required: true },
+		total: { type: Number, required: true },
 	});
 
 	const colors = computed(() => props.colors);
