@@ -1,5 +1,5 @@
 <template>
-	<div >
+	<div>
 		<Doughnut
 			id="incidents-distribution"
 			v-if="raIncidentsDoughnutData"
@@ -8,39 +8,46 @@
 				maintainAspectRatio: false,
 				plugins: {
 					legend: {
-						display: false,
-						// position: 'bottom',
-						// reverse: true,
-						// align: 'center',
-						// fullSize: true,
-						// labels: {
-						// 	boxWidth: 18,
-						// 	boxHeight: 18,
-						// 	borderRadius: 10,
-						// 	useBorderRadius: true,
-						// 	textAlign: 'center',
-						// 	usePointStyle: true,
-						// 	pointStyle: 'circle',
-						// 	font: {
-						// 		size: 14,
-						// 		weight: 'bold',
-						// 	},
-						// },
+						display: true,
+						position: 'bottom',
+						reverse: true,
+						align: 'center',
+						fullSize: true,
+						labels: {
+							boxWidth: 18,
+							boxHeight: 18,
+							borderRadius: 10,
+							useBorderRadius: true,
+							textAlign: 'center',
+							usePointStyle: true,
+							pointStyle: 'circle',
+							font: {
+								size: 14,
+								weight: 'bold',
+							},
+						},
+					},
+					annotation: {
+						annotations: {
+							label1: {
+								type: 'label',
+								xValue: 2.5,
+								content: [`${props.total}`, 'Incidents'],
+								font: [
+									{
+										size: 40,
+										weight: 'bold',
+									},
+									{
+										size: 18,
+									},
+								],
+							},
+						},
 					},
 				},
 			}"
 			:data="chartData" />
-	</div>
-	<div class="grid min-h-12 grid-cols-2 place-items-center overflow-clip">
-		<div
-			v-for="(label, index) in props.labels"
-			:key="index"
-			class="flex w-fit items-center space-x-2">
-			<div
-				class="size-4 rounded-full bg-red-600 p-1"
-				:style="{ backgroundColor: props.colors[index] }"></div>
-			<span class="text-gray-500">{{ label }}</span>
-		</div>
 	</div>
 </template>
 
@@ -51,6 +58,7 @@
 		colors: { type: Array<string>, required: true },
 		labels: { type: Array<string>, required: true },
 		data: { type: Array<number>, required: true },
+		total: { type: Number, required: true },
 	});
 
 	const colors = computed(() => props.colors);

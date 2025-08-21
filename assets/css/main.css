@@ -122,7 +122,7 @@
 }
 
 @utility ava-services-quicklinks {
-	@apply inline-flex h-full items-center space-x-2 rounded-lg border px-3 whitespace-nowrap text-gray-500 md:w-1/4;
+	@apply tablet:px-10 inline-flex h-24 items-center space-x-2 rounded-lg border px-4 text-sm whitespace-nowrap text-gray-500 shadow-sm transition-colors duration-150 ease-linear outline-none hover:border-blue-600;
 }
 
 @utility auth-letter-file-input {

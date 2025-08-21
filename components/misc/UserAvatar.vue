@@ -1,7 +1,7 @@
 <template>
 	<div
 		:class="[
-			'flex min-h-12 min-w-12 items-center justify-center rounded-full border bg-blue-600 outline-none',
+			'tablet:flex hidden min-h-12 min-w-12 items-center justify-center rounded-full border bg-blue-600 outline-none',
 		]">
 		<span :class="['text-xl font-semibold text-slate-100']">{{ firstLetter }}</span>
 	</div>
