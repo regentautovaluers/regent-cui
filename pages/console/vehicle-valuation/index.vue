@@ -206,7 +206,7 @@
 								</th>
 								<th
 									scope="col"
-									class="table-headers tablet:table-cell hidden">
+									class="table-headers">
 									Inspection Details
 								</th>
 								<th
@@ -289,7 +289,7 @@
 									}}</span>
 								</td>
 
-								<td class="tablet:table-cell hidden py-4">
+								<td class="tablet:table-cell py-4">
 									<span class="w-fit">{{
 										valuation.inspectionDate?.split('T')[0] ?? 'Date N/A'
 									}}</span>
