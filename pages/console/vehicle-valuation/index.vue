@@ -346,14 +346,7 @@
 										data-dropdown-placement="left"
 										type="button"
 										v-if="activeView == 'complete'">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="1em"
-											height="1em"
-											viewBox="0 0 16 16"
-											class="size-6">
-											<MenuKebabIcon />
-										</svg>
+										<MenuKebabIcon />
 									</button>
 
 									<!-- Dropdown menu -->
