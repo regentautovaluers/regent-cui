@@ -250,6 +250,7 @@ export type GeneralNotificationType = {
 	id: string;
 	data: {
 		source: string;
+		mpesaReceipt?: string;
 	};
 	department: string;
 	message: string;

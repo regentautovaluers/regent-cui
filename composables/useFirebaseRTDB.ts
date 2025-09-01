@@ -5,7 +5,19 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 } from 'firebase/auth';
-import { ref as dbRef, onValue, push, set, remove } from 'firebase/database';
+import {
+	ref as dbRef,
+	push,
+	set,
+	remove,
+	query,
+	limitToLast,
+	orderByKey,
+	endBefore,
+	onChildAdded,
+	orderByChild,
+	startAt,
+} from 'firebase/database';
 import { type GeneralNotificationType } from '~/types';
 
 function useFirebaseRTDB() {
@@ -13,14 +25,17 @@ function useFirebaseRTDB() {
 	const user = ref(null);
 	const isAuthenticated = ref(false);
 	const dataList: Ref<GeneralNotificationType[]> = ref([]);
-	const authError = ref(null);
-	const dataError = ref(null);
+	const authError: Ref<string | null> = ref(null);
+	const dataError: Ref<string | null> = ref(null);
+	const lastAddedKey: Ref<string | null> = ref(null);
+	const { executeFetchCollateralVerificationTokenStatus } =
+		useCollateralVerificationTokensManagement();
 
 	const signIn = async (email: string, password: string) => {
 		authError.value = null;
 		try {
 			await signInWithEmailAndPassword($auth, email, password);
-		} catch (error) {
+		} catch (error: any) {
 			authError.value = error.message;
 		}
 	};
@@ -29,26 +44,31 @@ function useFirebaseRTDB() {
 		authError.value = null;
 		try {
 			await signOut($auth);
-		} catch (error) {
+		} catch (error: any) {
 			authError.value = error.message;
 		}
 	};
 
 	// Database Functions
 	const fetchData = (path: string) => {
+		const twoMonthsAgo = Date.now() - 1000 * 60 * 60 * 24 * 60; // 60 days
 		const dataRef = dbRef($db, path);
-		onValue(
-			dataRef,
+		const recentDataQuery = query(dataRef, orderByChild('timestamp'), startAt(twoMonthsAgo));
+
+		// Clear the list before listening to prevent duplicate entries
+		dataList.value = [];
+		onChildAdded(
+			recentDataQuery,
 			(snapshot) => {
-				const data = snapshot.val();
-				if (data) {
-					dataList.value = Object.keys(data).map((key) => ({
-						id: key,
-						...data[key],
-					}));
-				} else {
-					dataList.value = [];
+				const newData: GeneralNotificationType = { id: snapshot.key, ...snapshot.val() };
+
+				// interceptor to reload IPRS check tokens
+				if (newData.data?.mpesaReceipt && Date.now() - Number(newData.timestamp) < 5000) {
+					executeFetchCollateralVerificationTokenStatus();
 				}
+
+				dataList.value.push(newData);
+				lastAddedKey.value = snapshot.key;
 			},
 			(error) => {
 				dataError.value = error.message;

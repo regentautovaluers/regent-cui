@@ -284,7 +284,7 @@
 			role="tooltip"
 			class="tablet:w-[28rem] laptop invisible absolute z-50 inline-block h-1/2 max-h-1/2 w-full -translate-x-5 translate-y-[05px] rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-xs transition-opacity duration-300">
 			<div class="h-[10%] rounded-t-lg border-b border-gray-200 bg-gray-100 p-3">
-				<h3 class="text-lg text-gray-500 font-semibold text-gray-700">Notifications</h3>
+				<h3 class="text-lg font-semibold text-gray-500 text-gray-700">Notifications</h3>
 			</div>
 			<div class="thin-scrollbar h-[90%] overflow-auto">
 				<div
@@ -300,8 +300,10 @@
 						<h1 class="text-gray-600">{{ e.message }}</h1>
 						<h2 class="inline-flex items-center space-x-2 text-gray-400">
 							<span>{{ calculateTimePassed(e.timestamp).durationPassed }}</span>
-							<span class="text-xl">&middot;</span>
-							<span>{{ e.data.source ?? 'Unknown Source' }}</span>
+							<template v-if="e.data.source"
+								><span class="text-xl">&middot;</span>
+								<span>{{ e.data.source ?? 'Unknown Source' }}</span></template
+							>
 						</h2>
 					</div>
 					<!-- <div class="flex h-full w-12 max-w-12 min-w-12 items-center bg-green-500"></div> -->
