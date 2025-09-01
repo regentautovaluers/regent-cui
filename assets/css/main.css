@@ -310,3 +310,18 @@
 	opacity: 1;
 	transform: translateY(0);
 }
+
+/* thin the scrollbars */
+.thin-scrollbar::-webkit-scrollbar {
+	width: 8px; /* Adjust the width */
+	height: 8px; /* For horizontal scrollbars */
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+	background: #6b7280; /* Customize the thumb color */
+	border-radius: 4px; /* Rounded corners */
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+	background: none; /* Customize the track color */
+}

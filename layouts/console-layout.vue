@@ -283,27 +283,29 @@
 			id="notification-popover"
 			role="tooltip"
 			class="tablet:w-[28rem] laptop invisible absolute z-50 inline-block h-1/2 max-h-1/2 w-full -translate-x-5 translate-y-[05px] rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-xs transition-opacity duration-300">
-			<div class="rounded-t-lg border-b border-gray-200 bg-gray-100 px-3 py-4">
-				<h3 class="text-lg font-semibold text-gray-700">Notifications</h3>
+			<div class="h-[10%] rounded-t-lg border-b border-gray-200 bg-gray-100 p-3">
+				<h3 class="text-lg text-gray-500 font-semibold text-gray-700">Notifications</h3>
 			</div>
-			<div
-				class="flex min-h-20 items-start space-x-3 p-3 hover:bg-gray-100"
-				v-for="(e, index) in notifications"
-				:key="index">
+			<div class="thin-scrollbar h-[90%] overflow-auto">
 				<div
-					:class="[
-						'mt-1 size-2 min-h-2 min-w-2 rounded-full shadow-sm',
-						e.isNew && 'bg-blue-600',
-					]"></div>
-				<div class="h-full flex-grow text-sm">
-					<h1 class="text-gray-600">{{ e.message }}</h1>
-					<h2 class="inline-flex items-center space-x-2 text-gray-400">
-						<span>{{ calculateTimePassed(e.timestamp).durationPassed }}</span>
-						<span class="text-xl">&middot;</span>
-						<span>{{ e.data.source ?? 'Unknown Source' }}</span>
-					</h2>
+					class="flex h-20 items-start space-x-3 p-3 hover:bg-gray-100"
+					v-for="(e, index) in notifications"
+					:key="index">
+					<div
+						:class="[
+							'mt-1 size-2 min-h-2 min-w-2 rounded-full shadow-sm',
+							e.isNew && 'bg-blue-600',
+						]"></div>
+					<div class="flex-grow text-sm">
+						<h1 class="text-gray-600">{{ e.message }}</h1>
+						<h2 class="inline-flex items-center space-x-2 text-gray-400">
+							<span>{{ calculateTimePassed(e.timestamp).durationPassed }}</span>
+							<span class="text-xl">&middot;</span>
+							<span>{{ e.data.source ?? 'Unknown Source' }}</span>
+						</h2>
+					</div>
+					<!-- <div class="flex h-full w-12 max-w-12 min-w-12 items-center bg-green-500"></div> -->
 				</div>
-				<div class="flex h-full w-12 max-w-12 min-w-12 items-center bg-green-500"></div>
 			</div>
 		</div>
 	</main>
@@ -344,10 +346,20 @@
 	const config = useRuntimeConfig();
 
 	const notifications = computed(() =>
-		dataList.value.map((e) => {
-			const timeMeta = calculateTimePassed(e.timestamp);
-			return { ...e, ...timeMeta };
-		}),
+		dataList.value
+			.sort((e1, e2) => {
+				if (e1.timestamp < e2.timestamp) {
+					return 1; // a comes after b
+				}
+				if (e1.timestamp > e2.timestamp) {
+					return -1; // a comes before b
+				}
+				return 0; // timestamps are equal
+			})
+			.map((e) => {
+				const timeMeta = calculateTimePassed(e.timestamp);
+				return { ...e, ...timeMeta };
+			}),
 	);
 
 	onMounted(() => {
