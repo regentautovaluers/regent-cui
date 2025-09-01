@@ -245,3 +245,16 @@ export type CollateralVerificationsCheckType =
 	| 'business'
 	| 'loan-collateral'
 	| 'bank-account';
+
+export type GeneralNotificationType = {
+	id: string;
+	data: {
+		source: string;
+	};
+	department: string;
+	message: string;
+	priority: string;
+	read: false;
+	timestamp: BigInt;
+	type: string;
+};

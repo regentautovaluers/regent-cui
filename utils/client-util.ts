@@ -124,3 +124,45 @@ export const determineValuationStage = (
 
 	return null;
 };
+
+export function calculateTimePassed(timestamp: BigInt): { durationPassed: string; isNew: boolean } {
+	// Convert BigInt timestamp to a regular number for calculations.
+	const pastTime = Number(timestamp);
+	const now = Date.now();
+	const diffInMs = now - pastTime;
+
+	// Define time constants in milliseconds.
+	const minute = 60 * 1000;
+	const hour = minute * 60;
+	const day = hour * 24;
+	const week = day * 7;
+	const month = day * 30; // Approximation for a month
+	const year = day * 365; // Approximation for a year
+
+	let durationPassed = '';
+	let isNew = diffInMs < week;
+
+	if (diffInMs < minute) {
+		durationPassed = 'just now';
+	} else if (diffInMs < hour) {
+		const minutes = Math.floor(diffInMs / minute);
+		durationPassed = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+	} else if (diffInMs < day) {
+		const hours = Math.floor(diffInMs / hour);
+		durationPassed = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+	} else if (diffInMs < week) {
+		const days = Math.floor(diffInMs / day);
+		durationPassed = `${days} day${days > 1 ? 's' : ''} ago`;
+	} else if (diffInMs < month) {
+		const weeks = Math.floor(diffInMs / week);
+		durationPassed = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+	} else if (diffInMs < year) {
+		const months = Math.floor(diffInMs / month);
+		durationPassed = `${months} month${months > 1 ? 's' : ''} ago`;
+	} else {
+		const years = Math.floor(diffInMs / year);
+		durationPassed = `${years} year${years > 1 ? 's' : ''} ago`;
+	}
+
+	return { durationPassed, isNew };
+}
