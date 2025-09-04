@@ -75,67 +75,64 @@
 					: 'w-68 -translate-x-0',
 			]">
 			<!-- links -->
-			<div :class="sidebarOpen ? 'pl-5' : 'pr-0 pl-2'">
+			<div>
 				<ul class="w-full space-y-4">
 					<template
 						v-for="(link, index) in navigationRoutes.filter((r) => r.renderRoute)"
 						:key="index">
 						<li
 							:class="[
-								'flex h-15 w-full items-center px-2 py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
+								'flex h-12 w-full items-center px-2 py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
 								fuzzyRouteNameMatch(link.routeName, link)
-									? 'rounded-l-lg border-r-4 border-blue-600 bg-gray-300 text-gray-600'
-									: 'rounded-lg',
+									? 'border-l-4 border-blue-600 text-gray-600'
+									: 'rounded-lg ml-2',
 							]">
 							<NuxtLink
 								:to="{ name: link.routeName }"
 								:class="[
-									'inline-flex size-full max-h-15 max-w-full',
+									'inline-flex size-full max-h-12 max-w-full justify-center',
 									!sidebarOpen
-										? 'w-19 flex-col justify-center space-y-1'
+										? 'w-19'
 										: 'w-full flex-row items-center justify-center space-x-2',
 								]">
 								<span class="place-self-center">
 									<template v-if="link.routeName == 'mobivaluer-home'">
-										<HomeIcon classes="size-6 text-inherit" />
+										<HomeIcon classes="size-[25px] text-inherit" />
 									</template>
 									<template v-else-if="link.routeName == 'ava-memberships-home'">
-										<AssistanceIcon classes="size-6 text-inherit" />
+										<AssistanceIcon classes="size-[25px] text-inherit" />
 									</template>
 									<template
 										v-else-if="link.routeName == 'vehicle-valuation-home'">
-										<VehicleValuationIcon classes="size-6 text-inherit" />
+										<VehicleValuationIcon classes="size-[25px] text-inherit" />
 									</template>
 									<template
 										v-else-if="
 											link.routeName ==
 											'collateral-verification-query-collateral'
 										">
-										<FraudDetectionIcon classes="size-6 text-inherit" />
+										<FraudDetectionIcon classes="size-[25px] text-inherit" />
 									</template>
 									<template v-else-if="link.routeName == 'regent-tracking-home'">
-										<VehicleTrackingIcon classes="size-6 text-inherit" />
+										<VehicleTrackingIcon classes="size-[25px] text-inherit" />
 									</template>
 									<template
 										v-else-if="link.routeName == 'emergency-evacuation-home'">
-										<EmergencyRescueIcon classes="size-6 text-inherit" />
+										<EmergencyRescueIcon classes="size-[25px] text-inherit" />
 									</template>
 									<template
 										v-else-if="link.routeName == 'accident-management-home'">
-										<AccidentManagementIcon classes="size-6 text-inherit" />
+										<AccidentManagementIcon
+											classes="size-[25px] text-inherit" />
 									</template>
 									<template v-else-if="link.routeName == 'garage-home'">
-										<GarageIcon classes="size-6 text-inherit" />
+										<GarageIcon classes="size-[25px] text-inherit" />
 									</template>
 									<template v-else-if="link.routeName == 'parts-home'">
-										<PartsIcon classes="size-6 text-inherit" />
+										<PartsIcon classes="size-[25px] text-inherit" />
 									</template>
 								</span>
-								<span
-									:class="[
-										'flex-grow overflow-clip text-ellipsis whitespace-nowrap',
-										!sidebarOpen ? 'text-xs' : 'text-sm',
-									]"
+								<span :class="['flex-grow text-sm', !sidebarOpen && 'hidden']"
 									>{{ link.screenName }}
 								</span>
 							</NuxtLink>
@@ -145,7 +142,7 @@
 									link.childRoutes?.filter((x) => x.renderRoute).length > 0
 								"
 								:class="
-									sidebarOpen ? 'block rounded-full p-1 outline-none' : 'hidden'
+									sidebarOpen ? 'block rounded-full pr-4 outline-none' : 'hidden'
 								"
 								type="button"
 								:aria-controls="`${link.routeName}-dropdown`"
@@ -223,7 +220,7 @@
 			</div>
 
 			<!-- logout and settings -->
-			<ul class="w-full px-2">
+			<ul class="w-full px-2 py-5">
 				<!-- settings -->
 				<li
 					class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
@@ -284,7 +281,7 @@
 			role="tooltip"
 			class="tablet:w-[28rem] laptop invisible absolute z-50 inline-block h-1/2 max-h-1/2 w-full -translate-x-5 translate-y-[05px] rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-xs transition-opacity duration-300">
 			<div class="h-[10%] rounded-t-lg border-b border-gray-200 bg-gray-100 p-3">
-				<h3 class="text-lg font-semibold text-gray-500 text-gray-700">Notifications</h3>
+				<h3 class="text-lg font-semibold text-gray-500">Notifications</h3>
 			</div>
 			<div class="thin-scrollbar h-[90%] overflow-auto">
 				<div
