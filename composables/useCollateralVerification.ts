@@ -188,9 +188,9 @@ export function useCollateralVerificiation() {
 
 		switch (type) {
 			case 'defaulter-db':
-				return `/api/v1/fraud/search?${searchPhrases.map(
-					(q, i) => `searchQuery${i + 1}=${q}&`,
-				)}&${sharedURISubstring}`;
+				return `/api/v1/fraud/search?${searchPhrases
+					.filter((sp) => sp.length > 0)
+					.map((q, i) => `searchQuery${i + 1}=${q}&`)}${sharedURISubstring}`;
 			case 'loan-collateral':
 				return `/api/v1/verification/verify-collateral?chassisNumber=${searchDefaulterQuery.value}&${sharedURISubstring}`;
 			case 'vehicle-reg':
