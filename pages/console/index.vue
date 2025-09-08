@@ -50,14 +50,14 @@
 					<span>Services</span>
 				</button>
 				<h1 class="text-3xl font-semibold">Our Services</h1>
-				<div
-					class="tablet:grid-cols-2 laptop:grid-cols-4 tablet:p-0 grid w-full gap-4 p-4">
+				<div class="tablet:grid-cols-2 laptop:grid-cols-4 tablet:p-0 grid w-full gap-4 p-4">
 					<!-- vehicle valuation -->
 					<ServicesQuickLinks
 						:title="'Vehicle Valuation'"
 						:link="navigationRoutes[3].routeName"
 						:service-description="regentServices[2].shortDescription">
-						<VehicleValuationIcon color="white" />
+						<span
+							class="icon-[material-symbols-light--garage-money] text-4xl text-[30px] text-white"></span>
 					</ServicesQuickLinks>
 
 					<!-- Roadside assistance -->
@@ -65,7 +65,8 @@
 						:title="'Roadside Assistance'"
 						:link="navigationRoutes[2].routeName"
 						:service-description="regentServices[0].shortDescription">
-						<AssistanceIcon color="white" />
+						<span
+							class="icon-[material-symbols-light--auto-towing] text-4xl text-white"></span>
 					</ServicesQuickLinks>
 
 					<!-- emergency evacuation -->
@@ -81,7 +82,8 @@
 						:title="'Collateral Verification'"
 						:link="navigationRoutes[4].routeName"
 						:service-description="regentServices[1].shortDescription">
-						<FraudDetectionIcon color="white" />
+						<span
+							class="icon-[material-symbols-light--shield-question-outline-rounded] text-4xl text-[30px] text-white"></span>
 					</ServicesQuickLinks>
 				</div>
 			</div>

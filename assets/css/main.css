@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'flowbite/src/themes/default';
+@plugin "@iconify/tailwind4";
 
 @source '../../pages/**/*.vue';
 @source '../../node_modules/flowbite/**/*.{js,ts}';

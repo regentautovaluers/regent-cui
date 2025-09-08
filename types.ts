@@ -23,6 +23,15 @@ export type LoggedInPrincipal = {
 	corpName: string;
 	roleInOrganization: string;
 	isBroker: boolean;
+	corpType:
+		| 'BANK'
+		| 'MICRO_FINANCE'
+		| 'SACCO'
+		| 'INSURANCE'
+		| 'COURT'
+		| 'GOVT_INST'
+		| 'OTHERS'
+		| null;
 };
 
 export interface LocationCoords {

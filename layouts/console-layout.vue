@@ -71,22 +71,28 @@
 			:class="[
 				'hide-scrollbar fixed z-40 flex h-[calc(100vh-3.5rem)] max-h-[calc(100%-3.5rem)] flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white py-5',
 				!sidebarOpen
-					? 'laptop-lg:-translate-x-0 w-[70px] -translate-x-[70px]'
+					? 'laptop-lg:-translate-x-0 w-[65px] -translate-x-[65px]'
 					: 'w-68 -translate-x-0',
 			]">
+			<!-- <span class="icon-[solar--4k-broken] text-red-500 hover:text-2xl"></span> -->
 			<!-- links -->
 			<div>
-				<ul class="w-full space-y-4">
+				<ul class="space-y-4">
 					<template
 						v-for="(link, index) in navigationRoutes.filter((r) => r.renderRoute)"
 						:key="index">
 						<li
 							:class="[
-								'flex h-12 w-full items-center px-2 py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
-								fuzzyRouteNameMatch(link.routeName, link)
-									? 'border-l-4 border-blue-600 text-gray-600'
-									: 'rounded-lg ml-2',
+								'relative mx-2 flex h-12 items-center rounded-xl py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
+								fuzzyRouteNameMatch(link.routeName, link) && 'space-x-4',
 							]">
+							<div
+								:class="[
+									'absolute -left-2 h-10 max-h-10 w-[4px] max-w-[4px] min-w-[4px] rounded-full',
+									fuzzyRouteNameMatch(link.routeName, link)
+										? 'bg-blue-600'
+										: 'hidden',
+								]"></div>
 							<NuxtLink
 								:to="{ name: link.routeName }"
 								:class="[
@@ -97,25 +103,38 @@
 								]">
 								<span class="place-self-center">
 									<template v-if="link.routeName == 'mobivaluer-home'">
-										<HomeIcon classes="size-[25px] text-inherit" />
+										<span
+											class="icon-[material-symbols-light--home-outline-rounded] text-[30px]"></span>
 									</template>
 									<template v-else-if="link.routeName == 'ava-memberships-home'">
-										<AssistanceIcon classes="size-[25px] text-inherit" />
+										<span
+											class="icon-[material-symbols-light--auto-towing] text-[30px]"></span>
 									</template>
 									<template
 										v-else-if="link.routeName == 'vehicle-valuation-home'">
-										<VehicleValuationIcon classes="size-[25px] text-inherit" />
+										<span
+											class="icon-[material-symbols-light--garage-money] text-[30px]"></span>
 									</template>
 									<template
 										v-else-if="
 											link.routeName ==
 											'collateral-verification-query-collateral'
 										">
-										<FraudDetectionIcon classes="size-[25px] text-inherit" />
+										<span
+											class="icon-[material-symbols-light--shield-question-outline-rounded] text-[30px]"></span>
 									</template>
 									<template v-else-if="link.routeName == 'regent-tracking-home'">
-										<VehicleTrackingIcon classes="size-[25px] text-inherit" />
+										<span
+											class="icon-[material-symbols-light--globe-location-pin] text-[30px]"></span>
 									</template>
+									<template
+										v-else-if="
+											link.routeName == 'insurance-telematics-all-vehicles'
+										">
+										<span
+											class="icon-[material-symbols-light--map-outline-rounded] text-[30px]"></span>
+									</template>
+									<!-- 
 									<template
 										v-else-if="link.routeName == 'emergency-evacuation-home'">
 										<EmergencyRescueIcon classes="size-[25px] text-inherit" />
@@ -131,6 +150,7 @@
 									<template v-else-if="link.routeName == 'parts-home'">
 										<PartsIcon classes="size-[25px] text-inherit" />
 									</template>
+									 -->
 								</span>
 								<span :class="['flex-grow text-sm', !sidebarOpen && 'hidden']"
 									>{{ link.screenName }}
@@ -186,8 +206,6 @@
 						</ul>
 					</template>
 				</ul>
-
-				<ul class="space-y-2"></ul>
 			</div>
 
 			<!-- Carousel -->
@@ -270,7 +288,7 @@
 				'flex flex-1 flex-col bg-[#f8faf8]',
 				sidebarOpen
 					? 'laptop-lg:translate-x-0 laptop-lg:ml-68 translate-x-68'
-					: 'laptop-lg:ml-[70px]',
+					: 'laptop-lg:ml-[65px]',
 			]">
 			<NuxtPage />
 		</div>

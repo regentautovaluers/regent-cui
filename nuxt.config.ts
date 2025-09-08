@@ -17,7 +17,7 @@ export default defineNuxtConfig({
 		},
 	],
 	imports: {
-		dirs: ['./utils'],
+		dirs: ['./utils/**', './composables/**'],
 	},
 	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
 	vite: {

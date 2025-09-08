@@ -52,7 +52,7 @@
 
 	// Define props for the component
 	const props = defineProps({
-		images: { required: true, type: [] },
+		images: { required: true, type: Array<String> },
 		links: {
 			required: false,
 			type: { text: String, to: String },

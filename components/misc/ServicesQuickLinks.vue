@@ -3,7 +3,7 @@
 		class="flex h-[21rem] flex-col items-start justify-center rounded-lg border px-6 shadow-sm">
 		<div class="size-fit rounded-full border border-blue-600">
 			<button
-				class="m-0.5 rounded-full bg-blue-600 p-4"
+				class="m-0.5 inline-flex size-18 items-center justify-center rounded-full bg-blue-600 p-4"
 				disabled>
 				<slot />
 			</button>

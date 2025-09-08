@@ -27,6 +27,7 @@ const useAuth = () => {
 			corpName: '',
 			roleInOrganization: '',
 			isBroker: false,
+			corpType: null,
 		},
 	);
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
@@ -156,6 +157,7 @@ const useAuth = () => {
 			corpName: data.corpName,
 			roleInOrganization: data.roleInOrganization,
 			isBroker: data.isBroker,
+			corpType: data.corpType,
 		};
 
 		authenticatedPrincipal.value = principal;
@@ -179,6 +181,7 @@ const useAuth = () => {
 			corpName: '',
 			roleInOrganization: '',
 			isBroker: false,
+			corpType: null,
 		};
 
 		// unset the auth token and csrf token
