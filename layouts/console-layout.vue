@@ -1,6 +1,6 @@
 <template>
 	<nav
-		class="fixed top-0 z-40 flex h-[75px] min-h-[75px] w-full items-center justify-between bg-white">
+		class="fixed top-0 z-40 flex h-[75px] min-h-[75px] w-full items-center justify-between border-b-[1px] bg-white">
 		<div class="flex items-center space-x-2">
 			<button
 				class="inline-flex size-10 items-center justify-center rounded-full outline-none"
@@ -9,7 +9,7 @@
 			</button>
 			<img
 				src="/images/app-logo.png"
-				class="tablet:h-9 h-8"
+				class="tablet:h-11 h-8"
 				alt="Regent Logo" />
 		</div>
 
