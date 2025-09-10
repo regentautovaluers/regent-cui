@@ -249,12 +249,12 @@ export interface DriverData {
 	updated_at: null;
 }
 
-export enum Online {
-	ACK = 'ack',
-	Engine = 'engine',
-	Offline = 'offline',
-	Online = 'online',
-}
+export type Online =
+	| 'ack'
+	| 'engine'
+	| 'online' /* these means the tracker is ok */
+	| 'offline'
+	| 'expired';
 
 export interface Sensor {
 	id: number;
