@@ -1,5 +1,6 @@
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
-import { type AsyncDataOptions } from '#app';
+import { useAsyncData } from '#app';
+import type { AsyncDataOptions, AsyncData } from '#app';
 
 // Define the API response type as the union of success and error responses
 export type ApiResponse<T> = StandardSuccessResponse<T> | StandardErrorResponse;
@@ -70,21 +71,21 @@ export const useStandardizedApi = () => {
  * @param options The options for the fetch request, including query, method, body, and transform.
  * @returns The useAsyncData return object with data, pending, and error states.
  */
-export const useApiData = <T = unknown>(
+export const useApiData = <T = unknown, R = T>(
 	key: string,
 	endpoint: string,
-	options: Omit<AsyncDataOptions<ApiResponse<T>>, 'transform'> & {
+	options: Omit<AsyncDataOptions<ApiResponse<T>, R>, 'transform'> & {
 		query?: Record<string, any>;
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 		body?: any;
-		transform?: (data: ApiResponse<T>) => T;
+		transform?: (data: ApiResponse<T>) => R;
 	} = {},
 ) => {
 	const { query, method = 'GET', body, transform, ...asyncDataOptions } = options;
 
 	const api = useStandardizedApi();
 
-	return useAsyncData<ApiResponse<T>, StandardErrorResponse>(
+	return useAsyncData<ApiResponse<T>, StandardErrorResponse, R>(
 		key,
 		() =>
 			api.handleApiCall<T>(endpoint, {
@@ -94,7 +95,7 @@ export const useApiData = <T = unknown>(
 			}),
 		{
 			...asyncDataOptions,
-			transform: transform as AsyncDataOptions<ApiResponse<T>>['transform'],
+			transform: transform as AsyncDataOptions<ApiResponse<T>, R>['transform'],
 		},
 	);
 };
