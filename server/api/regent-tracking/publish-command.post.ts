@@ -1,4 +1,4 @@
-import { type ProxyError } from '~/types/proxy-types';
+import { type SendCommandResponse } from '~/types/regent-tracking/device-commands';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
@@ -7,9 +7,11 @@ export default defineEventHandler(async (event) => {
 	// Set source context for response wrapper
 	event.context.source = 'regent-tracking-service';
 
-	const response = await makeProxyRequest<{ status: number; message: string }>(
+	const response = await makeProxyRequest<SendCommandResponse>(
 		`${config.public.REGENT_TRACK_BASE_URL}/api/send_gprs_command?lang=en&user_api_hash=${query.api_hash}&type=${query.type}&message=${query.message}&device_id=${query.device_id}`,
 	);
+
+	console.log('response: ', response);
 
 	if (response.status == 0) {
 		throw createProxyError(400, 'Failed to send command');

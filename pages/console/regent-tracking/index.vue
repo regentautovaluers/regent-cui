@@ -171,7 +171,7 @@
 		<Transition>
 			<!-- TODO: Add in animations later  -->
 			<div
-				class="absolute left-0 flex h-[90%] w-[23rem] translate-x-[31.2rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300"
+				class="absolute left-0 flex h-[90%] w-[27rem] translate-x-[31.2rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300"
 				v-if="activeDevice">
 				<div class="p-5">
 					<div class="flex items-center justify-between">
@@ -257,8 +257,103 @@
 
 				<!-- switch view based on what tab is currently active  -->
 				<div
-					class="flex-grow bg-red-500"
-					v-if="activeDeviceTab == 'details'"></div>
+					class="flex-grow space-y-5 p-5"
+					v-if="activeDeviceTab == 'details'">
+					<div
+						class="flex h-fit flex-col rounded-lg border border-gray-200 p-4 shadow-sm outline-none">
+						<h1 class="w-full font-bold text-gray-600">Vehicle Information</h1>
+						<div class="my-5 h-20 rounded-lg border border-green-200 bg-green-50 p-3">
+							<h1 class="text-sm font-semibold text-gray-500">Last Location</h1>
+							<span class="text-sm text-gray-400"
+								>Gataka Road, Nkaimurunya ward, Kajiado County</span
+							>
+						</div>
+						<div class="space-y-5 text-sm">
+							<!-- diver name -->
+							<div class="grid grid-cols-[40%_60%] divide-x-1 divide-gray-400">
+								<h1 class="inline-flex items-center space-x-3">
+									<span
+										class="icon-[material-symbols-light--person-2-outline-rounded] text-xl text-gray-500"></span>
+									<span class="text-gray-500">Driver</span>
+								</h1>
+								<span class="text-end font-semibold text-gray-600">{{
+									activeDevice.driver_data.name ?? 'Name N/A'
+								}}</span>
+							</div>
+
+							<!-- diver name -->
+							<div class="grid grid-cols-[40%_60%] divide-x-1 divide-gray-400">
+								<h1 class="inline-flex items-center space-x-3">
+									<span
+										class="icon-[material-symbols-light--indeterminate-question-box] text-xl text-gray-500"></span>
+									<span class="text-gray-500">Current Status</span>
+								</h1>
+								<span class="text-end font-semibold text-gray-600"
+									>{{ activeDevice.online }}
+								</span>
+							</div>
+
+							<!-- recent ping -->
+							<div class="grid grid-cols-[40%_60%] divide-x-1 divide-gray-400">
+								<h1 class="inline-flex items-center space-x-3">
+									<span
+										class="icon-[material-symbols-light--nest-clock-farsight-analog-rounded] text-lg text-gray-500"></span>
+									<span class="text-gray-500">Recent Ping</span>
+								</h1>
+								<span class="text-end font-semibold text-gray-600">{{
+									activeDevice.time.toString().replace(' ', ' | ')
+								}}</span>
+							</div>
+						</div>
+					</div>
+
+					<div
+						class="flex h-fit flex-col rounded-lg border border-gray-200 p-4 shadow-sm outline-none">
+						<h1 class="mb-4 w-full text-sm font-bold text-gray-600">
+							Vehicle Commands
+						</h1>
+						<div class="grid grid-cols-2 gap-4">
+							<button
+								class="inline-flex items-center justify-center space-x-3 rounded-lg bg-red-500 p-3 text-slate-100"
+								type="button"
+								@click="
+									triggerDeviceCommand(
+										'stop',
+										activeDevice.id,
+										'Engine Stop',
+										'engineStop',
+									)
+								">
+								<span
+									class="icon-[svg-spinners--ring-resize]text-2xl text-slate-100"
+									v-if="stopDeviceCommandLoading"></span>
+								<span
+									v-else
+									class="icon-[material-symbols-light--stop-circle-rounded] text-2xl text-slate-100"></span>
+								<span class="text-sm font-semibold">Stop Engine</span>
+							</button>
+							<button
+								class="inline-flex items-center justify-center space-x-3 rounded-lg bg-green-500 p-3 text-sm font-semibold text-slate-100"
+								type="button"
+								@click="
+									triggerDeviceCommand(
+										'start',
+										activeDevice.id,
+										'Engine Resume',
+										'engineResume',
+									)
+								">
+								<span
+									class="icon-[svg-spinners--ring-resize]text-2xl text-slate-100"
+									v-if="startDeviceCommandLoading"></span>
+								<span
+									class="icon-[material-symbols-light--play-circle] text-2xl text-slate-100"
+									v-else></span>
+								<span class="text-sm font-semibold">Start Engine</span>
+							</button>
+						</div>
+					</div>
+				</div>
 				<div
 					class="flex-grow bg-pink-500"
 					v-else-if="activeDeviceTab == 'alerts'"></div>
@@ -296,6 +391,8 @@
 		setActiveDevice,
 		setActiveDeviceTab,
 	} = await useRegentDeviceTracking();
+	const { startDeviceCommandLoading, stopDeviceCommandLoading, triggerDeviceCommand } =
+		useRegentTrackingDeviceUtils();
 
 	const {
 		startTimestamp,
