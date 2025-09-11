@@ -15,7 +15,7 @@ export async function useRegentDeviceTracking() {
 		error: errorFetchingClientVehicles,
 	} = await useApiData<TrackedVehicles[], TrackedVehicles[]>(
 		'client-devices',
-		'/api/regent-tracking/load-vehicles',
+		'/api/regent-tracking/load-vehicles?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi',
 		{
 			method: 'GET',
 			server: false,
