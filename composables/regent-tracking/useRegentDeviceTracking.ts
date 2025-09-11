@@ -1,9 +1,13 @@
 import { type TrackedVehicles, type Online } from '~/types/regent-tracking/tracked-vehicles';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
 
+export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
+
 export async function useRegentDeviceTracking() {
 	const deviceOnlineStatus: Ref<Online | null> = ref(null);
 	const searchString: Ref<string | null> = ref(null);
+	const activeDevice: Ref<TrackedVehicles | null> = ref(null);
+	const activeDeviceTab: Ref<ActiveDeviceTab> = ref('details');
 
 	const {
 		data: vehicles,
@@ -80,6 +84,14 @@ export async function useRegentDeviceTracking() {
 		deviceOnlineStatus.value = newStatus;
 	}
 
+	function setActiveDevice(device: TrackedVehicles) {
+		activeDevice.value = device;
+	}
+
+	function setActiveDeviceTab(tab: ActiveDeviceTab) {
+		activeDeviceTab.value = tab;
+	}
+
 	return {
 		totalVehicles,
 		computedVehicles,
@@ -87,7 +99,11 @@ export async function useRegentDeviceTracking() {
 		deviceOnlineStatus,
 		fetchingClientVehicles,
 		errorFetchingClientVehicles,
+		activeDevice,
+		activeDeviceTab,
 		deriveColor,
 		setDeviceOnlineStatus,
+		setActiveDevice,
+		setActiveDeviceTab,
 	};
 }
