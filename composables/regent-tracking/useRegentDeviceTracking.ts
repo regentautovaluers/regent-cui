@@ -13,6 +13,7 @@ export async function useRegentDeviceTracking() {
 		data: vehicles,
 		pending: fetchingClientVehicles,
 		error: errorFetchingClientVehicles,
+		execute: refetchClientVehicles,
 	} = await useApiData<TrackedVehicles[], TrackedVehicles[]>(
 		'client-devices',
 		'/api/regent-tracking/load-vehicles?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi',
@@ -105,5 +106,6 @@ export async function useRegentDeviceTracking() {
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,
+		refetchClientVehicles,
 	};
 }

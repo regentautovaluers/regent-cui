@@ -11,8 +11,6 @@ export default defineEventHandler(async (event) => {
 		`${config.public.REGENT_TRACK_BASE_URL}/api/send_gprs_command?lang=en&user_api_hash=${query.api_hash}&type=${query.type}&message=${query.message}&device_id=${query.device_id}`,
 	);
 
-	console.log('response: ', response);
-
 	if (response.status == 0) {
 		throw createProxyError(400, 'Failed to send command');
 	}
