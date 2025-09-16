@@ -89,5 +89,5 @@ export default defineNuxtConfig({
 		app: {},
 	},
 
-	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
+	modules: ['@nuxtjs/harlem'],
 });
