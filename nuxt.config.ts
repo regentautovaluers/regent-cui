@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineNuxtConfig({
 	compatibilityDate: '2024-04-03',
 	devtools: { enabled: true },
+	ssr: true,
 	build: {
 		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
 	},
@@ -16,12 +17,11 @@ export default defineNuxtConfig({
 		},
 	],
 	imports: {
-		dirs: ['./utils/**', './composables/**'],
+		dirs: ['./utils'],
 	},
 	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
 	vite: {
 		plugins: [tailwindcss()],
-		base: './',
 	},
 	app: {
 		head: {
