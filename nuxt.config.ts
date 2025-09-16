@@ -88,14 +88,6 @@ export default defineNuxtConfig({
 		},
 		app: {},
 	},
-	// Enable SSR
-	ssr: true,
-
-	// Configure server APIs
-	nitro: {
-		// Enable server-side API routes
-		preset: 'node-server',
-	},
 
 	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
 });
