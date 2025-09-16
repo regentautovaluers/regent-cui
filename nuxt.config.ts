@@ -8,7 +8,7 @@ export default defineNuxtConfig({
 		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
 	},
 	devServer: {
-		port: 8000,
+		port: 3000,
 	},
 	components: [
 		{
