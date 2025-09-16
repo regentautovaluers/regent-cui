@@ -3,6 +3,7 @@ WORKDIR /app
 COPY ./package.json /app/package.json
 RUN npm install   
 COPY . /app
+RUN npx nuxi clean .
 RUN npm run generate
 
 FROM node:20.19-slim as serve

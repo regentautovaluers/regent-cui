@@ -17,7 +17,7 @@ export default defineNuxtConfig({
 		},
 	],
 	imports: {
-		dirs: ['./utils', './composables/**'],
+		dirs: ['./utils/**', './composables/**'],
 	},
 	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
 	vite: {
@@ -89,5 +89,5 @@ export default defineNuxtConfig({
 		app: {},
 	},
 
-	modules: ['@nuxtjs/harlem'],
+	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
 });
