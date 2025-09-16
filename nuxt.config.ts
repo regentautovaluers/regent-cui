@@ -22,6 +22,9 @@ export default defineNuxtConfig({
 	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
 	vite: {
 		plugins: [tailwindcss()],
+		server: {
+			allowedHosts: ['corporate.regentautovaluers.com'],
+		},
 	},
 	app: {
 		head: {
