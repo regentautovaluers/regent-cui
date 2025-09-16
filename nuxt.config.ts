@@ -3,12 +3,11 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineNuxtConfig({
 	compatibilityDate: '2024-04-03',
 	devtools: { enabled: true },
-	ssr: true,
 	build: {
 		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
 	},
 	devServer: {
-		port: 3000,
+		port: 8000,
 	},
 	components: [
 		{
@@ -22,9 +21,7 @@ export default defineNuxtConfig({
 	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
 	vite: {
 		plugins: [tailwindcss()],
-		server: {
-			allowedHosts: ['corporate.regentautovaluers.com'],
-		},
+		base: './',
 	},
 	app: {
 		head: {
@@ -90,6 +87,14 @@ export default defineNuxtConfig({
 			FIREBASE_PASSWORD: '',
 		},
 		app: {},
+	},
+	// Enable SSR
+	ssr: true,
+
+	// Configure server APIs
+	nitro: {
+		// Enable server-side API routes
+		preset: 'node-server',
 	},
 
 	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
