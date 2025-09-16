@@ -108,7 +108,12 @@
 						<button
 							class="inline-flex w-fit cursor-pointer justify-end rounded-lg border border-gray-200 bg-gray-100 p-1"
 							type="button"
-							@click="setActiveDevice(device)">
+							@click="
+								() => {
+									setActiveDevice(device);
+									alertsActiveDevice = device;
+								}
+							">
 							<span
 								class="icon-[material-symbols-light--double-arrow-rounded] text-2xl text-gray-600"></span>
 						</button>
@@ -171,7 +176,7 @@
 		<Transition>
 			<!-- TODO: Add in animations later  -->
 			<div
-				class="absolute left-0 flex h-[90%] w-[27rem] translate-x-[31.2rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300"
+				class="absolute left-0 flex h-[90%] max-h-[90%] w-[27rem] translate-x-[31.2rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300"
 				v-if="activeDevice">
 				<div class="p-5">
 					<div class="flex items-center justify-between">
@@ -238,10 +243,21 @@
 							Details
 						</button>
 						<button
-							:class="['font-semibold', activeDeviceTab == 'alerts' && 'bg-blue-100']"
+							:class="[
+								'inline-flex items-center justify-center space-x-2 font-semibold',
+								activeDeviceTab == 'alerts' && 'bg-blue-100',
+							]"
 							type="button"
-							@click="setActiveDeviceTab('alerts')">
-							Alerts
+							@click="
+								() => {
+									executeFetchDeviceAlerts();
+									setActiveDeviceTab('alerts');
+								}
+							">
+							<span
+								class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+								v-if="fetchingDeviceAlerts"></span>
+							<span>Alerts</span>
 						</button>
 						<button
 							:class="[
@@ -355,11 +371,40 @@
 					</div>
 				</div>
 				<div
-					class="flex-grow bg-pink-500"
-					v-else-if="activeDeviceTab == 'alerts'"></div>
+					class="thin-scrollbar relative flex-grow overflow-y-auto pt-24"
+					v-else-if="activeDeviceTab == 'alerts'">
+					<div class="absolute top-0 my-3 h-20 w-full bg-red-500 p-2"></div>
+					<div
+						v-for="(a, index) in alerts"
+						:key="index"
+						class="mx-5 mb-4 h-28 rounded-lg border border-gray-300 p-5 shadow-sm">
+						<h1 class="font-bold text-gray-600">{{ a.type }}</h1>
+						<p class="text-sm font-medium text-gray-500">
+							{{ a.name }}
+						</p>
+						<p class="inline-flex items-center space-x-3 text-sm text-gray-400">
+							<span>&iacute;</span>
+							<span
+								>{{ a.created_at.split(' ')[0] }} |
+								{{ a.created_at.split(' ')[1] }}</span
+							>
+						</p>
+					</div>
+				</div>
 				<div
-					class="flex-grow bg-yellow-500"
-					v-else-if="activeDeviceTab == 'history'"></div>
+					class="flex-grow space-y-5 p-5"
+					v-else-if="activeDeviceTab == 'history'">
+					<NuxtLink
+						:to="{
+							name: 'regent-tracking-vehicle-history',
+							query: { device_id: activeDevice.id, vehicle_reg: activeDevice.name },
+						}"
+						class="out inline-flex h-12 w-full items-center justify-center space-x-1 rounded-lg bg-blue-500 outline-none">
+						<span
+							class="icon-[material-symbols-light--info-outline-rounded] text-xl text-slate-100"></span>
+						<span class="text-sm text-slate-100">View Detailed History</span>
+					</NuxtLink>
+				</div>
 			</div>
 		</Transition>
 	</div>
@@ -369,8 +414,6 @@
 	import { GoogleMap, CustomMarker, MarkerCluster, Polyline } from 'vue3-google-map';
 	import { googleMapStyle, googleMapsApiKey } from '~/config/ava-google-map-config';
 	import { useGeolocation } from '@vueuse/core';
-	import { Transition } from 'vue';
-
 	definePageMeta({
 		name: 'regent-tracking-home',
 		layout: 'console-layout',
@@ -393,6 +436,16 @@
 	} = await useRegentDeviceTracking();
 	const { startDeviceCommandLoading, stopDeviceCommandLoading, triggerDeviceCommand } =
 		useRegentTrackingDeviceUtils();
+
+	const {
+		alertsActiveDevice,
+		dateFrom,
+		dateTo,
+		alerts,
+		fetchingDeviceAlerts,
+		errorFetchingDeviceAlerts,
+		executeFetchDeviceAlerts,
+	} = await useRegentTrackingDeviceAlerts();
 
 	const {
 		startTimestamp,

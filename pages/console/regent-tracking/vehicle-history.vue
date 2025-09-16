@@ -1,5 +1,6 @@
 <template>
 	<div class="console-layout-spacing flex flex-col space-y-10">
+		Nesting areas: {{ nestingAreas }}
 		<!-- top part with filters -->
 		<div
 			class="divide-y-[2px] rounded-lg border border-gray-200 bg-white shadow-sm outline-none">
@@ -9,7 +10,7 @@
 					<h2 class="text-sm text-gray-500">Historical Movement & Nesting Analysis</h2>
 				</div>
 				<div class="flex w-1/3 items-center justify-end space-x-5">
-					<div class="font-bold text-gray-600">KDC 872R</div>
+					<div class="font-bold text-gray-600">{{ query.vehicle_reg }}</div>
 					<span class="h-full text-gray-500">&VerticalBar;</span>
 					<div class="inline-flex items-center space-x-2">
 						<span
@@ -22,7 +23,7 @@
 				<h1 class="inline-flex items-center space-x-2">
 					<span
 						class="icon-[material-symbols-light--calendar-clock-rounded] text-xl text-gray-700"></span>
-					<span class="text-gray-700">Analysis Period </span>
+					<span class="text-gray-700">Analysis Period</span>
 				</h1>
 				<div
 					class="grid h-12 w-[45%] grid-cols-5 divide-x-[1.5px] overflow-clip rounded-lg border-[1px] text-xs text-gray-600">
@@ -66,7 +67,9 @@
 				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
 				<div class="flex-grow">
 					<h2 class="text-sm text-gray-500">Total Distance</h2>
-					<h1 class="text-lg font-semibold text-gray-700">2593 km</h1>
+					<h1 class="text-lg font-semibold text-gray-700">
+						{{ deviceHistory?.distance_sum }}
+					</h1>
 				</div>
 				<button
 					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-blue-300 bg-blue-100">
@@ -89,8 +92,10 @@
 			<div
 				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
 				<div class="flex-grow">
-					<h2 class="text-sm text-gray-500">Idle Time</h2>
-					<h1 class="text-lg font-semibold text-gray-700">127.4 hrs</h1>
+					<h2 class="text-sm text-gray-500">Stop Duration</h2>
+					<h1 class="text-lg font-semibold text-gray-700">
+						{{ deviceHistory?.stop_duration }}
+					</h1>
 				</div>
 				<button
 					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-yellow-300 bg-yellow-100">
@@ -107,17 +112,36 @@
 				<div class="h-[13%] p-5">
 					<h1 class="font-bold text-gray-700">Nesting Area Prediction</h1>
 					<h2 class="text-sm text-gray-500">
-						Click on a nesting area to view it on the map
+						Where were you most likely to find the vehicle?
 					</h2>
 				</div>
 				<div class="thin-scrollbar h-[87%] max-h-[85%] space-y-5 overflow-y-auto p-5">
 					<div
 						class="h-[10.5rem] rounded-lg border border-green-100 bg-gray-100 p-5 outline-none"
-						v-for="a in 10"
-						:key="a">
+						v-for="(e, idx) in nestingAreas"
+						:key="idx">
 						<div class="flex items-center justify-between">
 							<div>
-								<h1 class="font-semibold text-gray-700">Primary Residence</h1>
+								<h1
+									class="font-semibold text-gray-700"
+									v-if="idx == 0">
+									Most Likely
+								</h1>
+								<h1
+									class="font-semibold text-gray-700"
+									v-else-if="idx == 1">
+									Medium Likely
+								</h1>
+								<h1
+									class="font-semibold text-gray-700"
+									v-else-if="idx == 2">
+									Least Likely
+								</h1>
+								<h1
+									class="font-semibold text-gray-700"
+									v-else>
+									Other Places
+								</h1>
 								<p class="text-sm text-gray-500">
 									Kericho Road, Kahawa Sukari, 4th Avenue
 								</p>
@@ -132,7 +156,9 @@
 								<h1 class="inline-flex items-center space-x-1">
 									<span
 										class="icon-[material-symbols-light--nest-clock-farsight-analog-rounded] text-gray-700"></span>
-									<span class="font-bold text-gray-700">34.8hrs</span>
+									<span class="font-bold text-gray-700"
+										>{{ Math.ceil(e.location_time_hours) }}hrs</span
+									>
 								</h1>
 								<h2 class="text-sm text-gray-500">Time Spent</h2>
 							</div>
@@ -148,7 +174,7 @@
 								<h1 class="inline-flex items-center space-x-1">
 									<span
 										class="icon-[material-symbols-light--pin-drop-outline] text-xl text-gray-700"></span>
-									<span class="font-bold text-gray-700">42</span>
+									<span class="font-bold text-gray-700">{{ e.appearances }}</span>
 								</h1>
 								<h2 class="text-sm text-gray-500">Visits</h2>
 							</div>
@@ -306,6 +332,14 @@
 		name: 'regent-tracking-vehicle-history',
 		layout: 'console-layout',
 	});
+	const { query } = useRoute();
 
-	const { filterPeriod, setFilterPeriod } = useRegentTrackingDeviceHistory();
+	const {
+		filterPeriod,
+		deviceHistory,
+		fetchingDeviceHistory,
+		errorFetchingDeviceHistory,
+		nestingAreas,
+		setFilterPeriod,
+	} = await useRegentTrackingDeviceHistory();
 </script>
