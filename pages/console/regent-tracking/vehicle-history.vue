@@ -68,7 +68,7 @@
 				<div class="flex-grow">
 					<h2 class="text-sm text-gray-500">Total Distance</h2>
 					<h1 class="text-lg font-semibold text-gray-700">
-						{{ deviceHistory?.distance_sum }}
+						{{ deviceHistory?.distance_sum ?? 'Unknown' }}
 					</h1>
 				</div>
 				<button
@@ -94,7 +94,7 @@
 				<div class="flex-grow">
 					<h2 class="text-sm text-gray-500">Stop Duration</h2>
 					<h1 class="text-lg font-semibold text-gray-700">
-						{{ deviceHistory?.stop_duration }}
+						{{ deviceHistory?.stop_duration ?? 'Unknown' }}
 					</h1>
 				</div>
 				<button
@@ -147,8 +147,16 @@
 								</p>
 							</div>
 							<div
-								class="flex w-[25%] justify-center rounded-full border border-green-400 bg-green-100 p-1 text-xs text-green-500 outline-none">
-								<span>Very High</span>
+								v-if="[0, 1, 2].includes(idx)"
+								:class="[
+									'flex w-[25%] justify-center rounded-full border p-1 text-xs outline-none',
+									idx == 0 && 'border-green-400 bg-green-100 text-green-500',
+									idx == 1 && 'border-yellow-400 bg-yellow-100 text-yellow-500',
+									idx == 2 && 'border-red-400 bg-red-100 text-red-500',
+								]">
+								<span v-if="idx == 0">Very High</span>
+								<span v-else-if="idx == 1">Medium</span>
+								<span v-else-if="idx == 2">Low</span>
 							</div>
 						</div>
 						<div class="mt-2 flex items-center justify-between">
@@ -166,9 +174,11 @@
 								<h1 class="inline-flex items-center space-x-1">
 									<span
 										class="icon-[material-symbols-light--pie-chart-outline] text-xl text-gray-700"></span>
-									<span class="font-bold text-gray-700">58%</span>
+									<span class="font-bold text-gray-700"
+										>~{{ e.location_time_hours_fraction.toFixed(1) }}%</span
+									>
 								</h1>
-								<h2 class="text-sm text-gray-500">Of Total</h2>
+								<h2 class="text-sm text-gray-500">Of Time</h2>
 							</div>
 							<div>
 								<h1 class="inline-flex items-center space-x-1">
