@@ -373,8 +373,7 @@
 			:key="idx">
 			<ParentModal
 				:modal-id="`pay-invoice-${invoice.id}-modal`"
-				modal-title="Pay Invoice"
-				modal-placement="center-center">
+				modal-title="Pay Invoice">
 				<TopUpCollateralVerificationsForm
 					:amount="invoice.amount"
 					:invoice-number="invoice.invoiceNumber" />

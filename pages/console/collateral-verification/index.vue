@@ -81,8 +81,7 @@
 		<!-- top up modal -->
 		<ParentModal
 			modal-id="topup-tokens-modal"
-			modal-title="Top Up Tokens"
-			modal-placement="center-center">
+			modal-title="Top Up Tokens">
 			<TopUpCollateralVerificationsForm />
 		</ParentModal>
 	</div>

@@ -276,8 +276,7 @@
 
 		<ParentModal
 			modal-id="export-authority-letters-modal"
-			modal-title="Export Letters"
-			modal-placement="center-center">
+			modal-title="Export Letters">
 			<ExportAuthorityLetter />
 		</ParentModal>
 	</div>

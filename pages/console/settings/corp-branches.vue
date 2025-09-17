@@ -159,7 +159,6 @@
 		<ParentModal
 			modal-title="Edit Branch"
 			modal-id="edit-corporate-branch-modal"
-			modal-placement="center-center"
 			@close-modal="
 				() => {
 					selectedIndexToEdit = -1;
@@ -175,8 +174,7 @@
 		<!-- Modal to add corporate branch -->
 		<ParentModal
 			modal-title="Add Branch"
-			modal-id="add-corporate-branch-modal"
-			modal-placement="center-center">
+			modal-id="add-corporate-branch-modal">
 			<AddCorporateBranch />
 		</ParentModal>
 	</div>

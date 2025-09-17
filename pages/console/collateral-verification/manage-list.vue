@@ -213,7 +213,6 @@
 	<ParentModal
 		modal-id="delete-entry-modal"
 		modal-title="Delete Entry Modal"
-		modal-placement="center-center"
 		@close-modal="
 			() => {
 				activeEntryIndex = -1;
