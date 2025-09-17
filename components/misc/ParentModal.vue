@@ -1,5 +1,4 @@
 <template>
-	<!-- new modal structure -->
 	<!-- Main modal -->
 	<div
 		:id="props.modalId"
@@ -54,10 +53,6 @@
 		modalId: { required: true, type: String || Number },
 		modalTitle: { required: true, type: String },
 		class: { required: false, type: String },
-		modalPlacement: {
-			required: false,
-			default: 'top-center',
-		},
 		fullScreen: {
 			required: false,
 			default: false,
