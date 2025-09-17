@@ -47,7 +47,7 @@ export async function useRegentTrackingDeviceHistory() {
 					lng: item.items[0].lng,
 					time_recorded: item.items[0].time,
 				})),
-				50,
+				100,
 				2,
 			);
 		}

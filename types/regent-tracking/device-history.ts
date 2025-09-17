@@ -9,8 +9,8 @@ export interface VehiclePing {
 export interface AnalyzedLocation {
 	representative_lat: number;
 	representative_lng: number;
-	total_time_hours: number;
 	location_time_hours: number;
+	location_time_hours_fraction: number;
 	appearances: number;
 }
 
