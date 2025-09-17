@@ -43,5 +43,10 @@
 			name: 'New Account',
 			shouldShow: true,
 		},
+		{
+			to: 'corp-branches',
+			name: 'Your Branches',
+			shouldShow: true,
+		},
 	];
 </script>

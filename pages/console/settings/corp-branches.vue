@@ -1,9 +1,9 @@
 <template>
 	<!-- members listing -->
-	<div>
+	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
 		<!-- div to show when there is a fetch error -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
 			v-if="(fetchStatus === 'error' || fetchError) && corporateBranches.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Failed to load data!</h1>
@@ -16,7 +16,7 @@
 
 		<!-- div to show when there are no users -->
 		<div
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-lg border shadow-sm"
+			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
 			v-else-if="fetchStatus === 'success' && !corporateBranches">
 			<BirdieNotFoundIcon />
 			<h1 class="text-sm font-semibold text-gray-500">
