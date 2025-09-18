@@ -1,221 +1,617 @@
 <template>
-	<!-- traceability reports -->
-	<div class="console-layout-spacing">
-		<!-- <div
-			class="flex h-fit items-center justify-between"
-			v-if="
-				fetchTrackingCertificatesStatus === 'success' && trackingCertificates!.length > 0
-			">
-			<form class="size-fit">
-				<button class="table-filter-buttons">
-					Export to Excel<FilterIcon class="text-xl" />
+	<div class="console-layout-spacing flex flex-col space-y-10">
+		<!-- top part -->
+		<div
+			class="inline-flex h-28 items-center justify-between rounded-lg border border-gray-200 bg-white p-5 shadow-sm outline-none">
+			<div class="flex h-full items-center space-x-3">
+				<button
+					class="inline-flex h-[70%] w-[50px] items-center justify-center rounded-lg bg-red-500 outline-none">
+					<span
+						class="icon-[material-symbols-light--shield-outline] text-4xl text-slate-100"></span>
 				</button>
-			</form>
-		</div> -->
-
-		<!-- div to show when there is an error -->
-		<div
-			v-if="fetchTrackingCertificatesStatus === 'error'"
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-md border">
-			<BirdieNotFoundIcon />
-			<h1 class="font-semibold text-gray-500">Oops! Fetch Failed!</h1>
-			<button
-				class="inline-flex items-center space-x-2 rounded-lg border bg-transparent px-2 py-1 text-gray-500 hover:text-gray-600"
-				@click="refreshPage">
-				<span>Refresh</span>
-				<RefreshIcon classes="size-6" />
-			</button>
-		</div>
-
-		<!-- div to show when there are no incidents -->
-		<div
-			v-else-if="
-				fetchTrackingCertificatesStatus === 'success' && !trackingCertificates?.length
-			"
-			class="flex h-full flex-col items-center justify-center space-y-4 rounded-md border">
-			<BirdieNotFoundIcon />
-			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no reports!</h1>
-		</div>
-
-		<!-- div to show when there are incidents -->
-		<div
-			class="ml-10 flex h-full flex-col justify-between"
-			v-else>
-			<!-- the table itself -->
-			<div class="mb-4 flex-grow">
-				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-					<table class="w-full text-left text-gray-500">
-						<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
-							<tr>
-								<th
-									scope="col"
-									class="table-headers">
-									Client Name & No
-								</th>
-								<th
-									scope="col"
-									class="table-headers">
-									Reg No
-								</th>
-								<th
-									scope="col"
-									class="table-headers">
-									Installation Date
-								</th>
-								<th
-									scope="col"
-									class="table-headers">
-									Renewal Date
-								</th>
-								<th
-									scope="col"
-									class="table-headers max-w-48">
-									Latest Comment
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!-- loading state -->
-							<tr
-								class="border-b bg-white hover:bg-gray-100"
-								v-if="fetchTrackingCertificatesStatus === 'pending'"
-								v-for="a in 10">
-								<td
-									scope="row"
-									class="p-6 whitespace-nowrap text-gray-300">
-									<span class="animate-pulse rounded-lg bg-gray-300"
-										>demoreg</span
-									>
-								</td>
-								<td class="p-6 text-gray-300">
-									<span class="animate-pulse rounded-lg bg-gray-300"
-										>demodatetime</span
-									>
-								</td>
-								<td class="p-6 text-gray-300">
-									<span class="animate-pulse rounded-lg bg-gray-300"
-										>demophone</span
-									>
-								</td>
-								<td class="p-6 text-gray-300">
-									<span class="animate-pulse rounded-lg bg-gray-300"
-										>demoservice</span
-									>
-								</td>
-								<td class="p-6 text-gray-300">
-									<span class="animate-pulse rounded-lg bg-gray-300"
-										>demostatus</span
-									>
-								</td>
-							</tr>
-							<tr
-								class="border-b bg-white hover:bg-gray-100"
-								v-else
-								v-for="(certificate, index) in trackingCertificates?.slice(0, 10)"
-								:key="index">
-								<td class="inline-flex flex-col p-4">
-									<span>{{ certificate.clientName ?? 'Name N/A' }}</span>
-									<span
-										class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
-										>{{ certificate.clientNo }}</span
-									>
-								</td>
-								<td class="p-4 font-semibold text-blue-600">
-									{{ certificate.regno }}
-								</td>
-								<td class="p-4 font-semibold text-pink-600">
-									{{ certificate.installationDate ?? 'Date N/A' }}
-								</td>
-								<td class="p-4 font-semibold">
-									{{ certificate.renewalDate ?? 'Date N/A' }}
-								</td>
-								<td
-									class="h-20 max-h-20 max-w-64 text-sm text-wrap"
-									style="
-										overflow: hidden;
-										display: inline-flex;
-										-webkit-box-orient: vertical;
-										-webkit-line-clamp: 3;
-										line-clamp: 3;
-									">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit.
-									Explicabo, odio mollitia corporis veritatis quia.
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				<div>
+					<h1 class="text-xl font-semibold text-gray-700">Traceability Report</h1>
+					<h2 class="text-sm text-gray-500">Real-time Vehicle Status and Monitoring</h2>
 				</div>
 			</div>
+			<div class="flex items-center space-x-4">
+				<button
+					class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-green-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-green-600">
+					<span class="icon-[material-symbols-light--download-rounded] text-2xl"></span>
+					<span>Export Excel</span></button
+				><button
+					class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-red-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-red-600">
+					<span
+						class="icon-[material-symbols-light--table-convert-outline] text-2xl"></span>
+					<span>Export PDF</span>
+				</button>
+			</div>
+		</div>
 
-			<!-- page controls -->
-			<div class="mt-5 flex min-h-12 items-center justify-between">
-				<h1 class="text-sm font-semibold text-gray-500 md:text-base">
-					Showing {{ currentPage + 1 }} of {{ totalPages }} pages.
-				</h1>
-				<div class="h-full space-x-2 md:space-x-4">
+		<!-- the stats -->
+		<div class="grid h-28 grid-cols-6 gap-5">
+			<div
+				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Total Vehicles</h2>
+					<h1 class="text-lg font-semibold text-gray-700">1200</h1>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-blue-300 bg-blue-100">
+					<span
+						class="icon-[material-symbols-light--supervisor-account] text-3xl text-blue-600"></span>
+				</button>
+			</div>
+			<div
+				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Online Vehicles</h2>
+					<h1 class="text-lg font-semibold text-gray-700">1190</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm">
+						<span class="font-bold text-green-500">99.17%</span
+						><span class="text-gray-500">of total</span>
+					</h3>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-green-300 bg-green-100">
+					<span
+						class="icon-[material-symbols-light--android-wifi-4-bar] text-3xl text-green-600"></span>
+				</button>
+			</div>
+			<div
+				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Offline Vehicles</h2>
+					<h1 class="text-lg font-semibold text-gray-700">1190</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm">
+						<span class="font-bold text-red-500">99.17%</span
+						><span class="text-gray-500">of total</span>
+					</h3>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-red-300 bg-red-100">
+					<span
+						class="icon-[material-symbols-light--android-wifi-4-bar-off] text-3xl text-red-600"></span>
+				</button>
+			</div>
+			<div
+				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Watchlist</h2>
+					<h1 class="text-lg font-semibold text-gray-700">1190</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm text-red-500">
+						Requires Attention
+					</h3>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-red-300 bg-red-100">
+					<span
+						class="icon-[material-symbols-light--warning-rounded] text-3xl text-red-600"></span>
+				</button>
+			</div>
+			<div
+				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Installations</h2>
+					<h1 class="text-lg font-semibold text-gray-700">1190</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm text-gray-500">
+						Last 1 Month
+					</h3>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-blue-300 bg-blue-100">
+					<span
+						class="icon-[material-symbols-light--chart-data-outline] text-3xl text-blue-600"></span>
+				</button>
+			</div>
+			<div
+				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Expiring Soon</h2>
+					<h1 class="text-lg font-semibold text-gray-700">125</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm text-gray-500">
+						Within 30 days
+					</h3>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-purple-300 bg-purple-100">
+					<span
+						class="icon-[material-symbols-light--date-range] text-3xl text-purple-600"></span>
+				</button>
+			</div>
+		</div>
+
+		<!-- general vehicle data -->
+		<div
+			class="divide-y-[2px] rounded-lg border border-gray-200 bg-white shadow-sm outline-none">
+			<div class="flex h-24 items-center justify-between p-5 text-sm">
+				<div>
+					<h1 class="text-lg font-bold text-gray-700">All Vehicles</h1>
+					<h2 class="text-sm text-gray-500">1200 Vehicles Found</h2>
+				</div>
+			</div>
+			<div class>
+				<form class="flex w-full items-center justify-between p-5">
+					<input
+						type="text"
+						name="search-tracked-device"
+						id="search-tracked-device"
+						placeholder="Search by registration, client name or client number."
+						class="h-14 w-1/3 rounded-md ps-10 text-sm text-gray-700 outline-none placeholder:text-gray-500" />
+				</form>
+
+				<!-- table -->
+				<div class="flex-grow">
+					<div class="relative overflow-x-auto">
+						<table class="w-full text-left text-gray-500">
+							<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
+								<tr>
+									<!-- Details will show client name and their contact -->
+
+									<th
+										scope="col"
+										class="table-headers tablet:table-cell hidden ps-3">
+										Reg No
+									</th>
+									<th
+										scope="col"
+										class="table-headers">
+										Client Details
+									</th>
+									<th
+										scope="col"
+										class="table-headers">
+										<span class="font-bold">Installation &</span><br /><span
+											class="font-bold"
+											>Subscription</span
+										>
+									</th>
+									<th
+										scope="col"
+										class="table-headers desktop-4k:table-cell hidden">
+										Last Seen
+									</th>
+									<th
+										scope="col"
+										class="table-headers laptop:table-cell hidden">
+										Status
+									</th>
+									<th
+										scope="col"
+										class="table-headers laptop:table-cell hidden">
+										Latest Updates
+									</th>
+									<th
+										scope="col"
+										class="table-headers laptop:table-cell hidden">
+										Actions
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- loading state -->
+								<!-- <tr
+									class="border-b bg-white hover:bg-gray-100"
+									v-for="a in 10"
+									:key="a">
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>regenthq</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>regenthq</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>domain role</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>agency</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>authorizedby</span
+										>
+									</td>
+									<td
+										class="p-6 text-gray-300"
+										v-if="activeView == 'pending'">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookingstage</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookingstage</span
+										>
+									</td>
+									<td></td>
+								</tr> -->
+
+								<!-- the actual data -->
+								<tr
+									class="border-b bg-white text-sm hover:bg-gray-100"
+									v-for="a in 10"
+									:key="a">
+									<td
+										class="tablet:table-cell hidden py-5 ps-3 font-bold text-gray-700">
+										KDC 000A
+									</td>
+									<td class="tablet:table-cell py-5">
+										<p class="inline-flex w-fit items-center space-x-1">
+											<span
+												class="icon-[material-symbols-light--person-2-rounded] text-xl"></span>
+											<span class="text-gray-700">Jane Kasele Wangari</span>
+										</p>
+										<br />
+										<p class="inline-flex w-fit items-center space-x-1">
+											<span
+												class="icon-[material-symbols-light--settings-phone-sharp] text-xl"></span>
+											<span>07002000000</span>
+										</p>
+									</td>
+									<td class="tablet:table-cell py-5">
+										<p class="inline-flex w-fit space-x-2">
+											<span class="font-semibold text-gray-700"
+												>Installed:</span
+											>
+											<span>02-20-2023</span>
+										</p>
+										<br />
+										<p class="inline-flex w-fit space-x-2">
+											<span class="font-semibold text-gray-700"
+												>Expires:
+											</span>
+											<span>10-14-2025</span>
+										</p>
+									</td>
+									<td class="tablet:table-cell hidden py-5">
+										<p class="inline-flex items-center space-x-2">
+											<span
+												class="icon-[material-symbols-light--nest-clock-farsight-analog-outline] text-xl"></span>
+											<span>18-08-2025</span>
+										</p>
+									</td>
+									<td class="tablet:table-cell hidden py-5">
+										<p class="inline-flex items-center space-x-2">
+											<span
+												class="icon-[material-symbols-light--android-wifi-4-bar-off] text-xl text-red-600"></span>
+											<span
+												class="rounded-full border-[1px] border-red-500 bg-red-200 px-2 py-1 text-sm text-red-500"
+												>offline</span
+											>
+										</p>
+									</td>
+									<td
+										class="tablet:table-cell hidden w-[30rem] max-w-[30rem] py-5">
+										<p
+											class="inline-flex flex-col space-y-1 space-x-2 rounded-md bg-blue-100 p-2">
+											<span class="font-semibold text-gray-700"
+												>Account Manager</span
+											><span class="text-xs text-wrap text-gray-500"
+												>Lorem ipsum dolor sit amet consectetur adipisicing
+												elit. Repellendus nihil odit laborum corrupti?
+											</span>
+										</p>
+									</td>
+									<td class="tablet:table-cell hidden py-5 ps-3">
+										<button
+											class="rounded-md border-[1px] border-green-500 bg-green-100 px-2 py-1 text-green-500">
+											Add Comment
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- page controls -->
+				<div
+					class="tablet:flex-row tablet:min-h-12 tablet:h-12 my-5 flex h-16 min-h-16 flex-col items-center justify-between px-5">
+					<h1 class="text-sm font-semibold text-gray-500">
+						Showing {{ 1 }} of {{ 100 }} pages.
+					</h1>
+					<div
+						class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
+						<button class="table-page-buttons">Previous</button>
+						<button class="table-page-buttons">Next</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end of general vehicle data -->
+
+		<!-- watchlist vehicles -->
+		<div
+			class="divide-y-[2px] overflow-clip rounded-lg border border-gray-200 bg-white shadow-sm outline-none">
+			<div class="flex h-28 items-center justify-between bg-red-50 p-5 text-sm">
+				<div class="flex h-full items-center space-x-3">
 					<button
-						class="table-page-buttons"
-						@click="currentPage -= 1">
-						Previous
+						class="inline-flex h-[90%] w-16 items-center justify-center rounded-lg bg-red-500 outline-none">
+						<span
+							class="icon-[material-symbols-light--shield-outline] text-4xl text-slate-100"></span>
 					</button>
-					<button
-						class="table-page-buttons"
-						@click="currentPage += 1">
-						Next
-					</button>
+					<div>
+						<h1 class="text-xl font-semibold text-gray-700">Critical Watchlist</h1>
+						<h2 class="text-sm text-gray-500">
+							These vehicles are offline with uncooperative clients. Immediate bank
+							intervention may be required.
+						</h2>
+					</div>
+				</div>
+				<h2 class="text-sm text-red-600">10 vehicles requiring attention</h2>
+			</div>
+			<div class="bg-red-50">
+				<form class="flex h-fit w-full items-center justify-between p-5">
+					<input
+						type="text"
+						name="search-tracked-device"
+						id="search-tracked-device"
+						placeholder="Search by registration, client name or client number."
+						class="h-14 w-1/3 rounded-md ps-10 text-sm text-gray-700 outline-none placeholder:text-gray-500" />
+				</form>
+
+				<!-- table -->
+				<div class="flex-grow">
+					<div class="relative overflow-x-auto">
+						<table class="w-full text-left text-gray-500">
+							<thead class="bg-red-200 text-sm text-red-700 uppercase">
+								<tr>
+									<!-- Details will show client name and their contact -->
+
+									<th
+										scope="col"
+										class="table-headers tablet:table-cell hidden ps-3">
+										Reg No
+									</th>
+									<th
+										scope="col"
+										class="table-headers">
+										Client Details
+									</th>
+									<th
+										scope="col"
+										class="table-headers desktop-4k:table-cell hidden">
+										Offline Duration
+									</th>
+									<th
+										scope="col"
+										class="table-headers laptop:table-cell hidden">
+										Status
+									</th>
+									<th
+										scope="col"
+										class="table-headers laptop:table-cell hidden">
+										Latest Updates
+									</th>
+									<th
+										scope="col"
+										class="table-headers laptop:table-cell hidden">
+										Actions
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- loading state -->
+								<!-- <tr
+									class="border-b bg-white hover:bg-gray-100"
+									v-for="a in 10"
+									:key="a">
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>regenthq</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>domain role</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>agency</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>authorizedby</span
+										>
+									</td>
+									<td
+										class="p-6 text-gray-300"
+										v-if="activeView == 'pending'">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookingstage</span
+										>
+									</td>
+									<td class="p-6 text-gray-300">
+										<span class="animate-pulse rounded-lg bg-gray-300"
+											>bookingstage</span
+										>
+									</td>
+									<td></td>
+								</tr> -->
+
+								<!-- the actual data -->
+								<tr
+									class="border-b bg-white text-sm hover:bg-gray-100"
+									v-for="a in 10"
+									:key="a">
+									<td
+										class="tablet:table-cell hidden py-5 ps-3 font-bold text-gray-700">
+										KDC 000A
+									</td>
+									<td class="tablet:table-cell py-5">
+										<p class="inline-flex w-fit items-center space-x-1">
+											<span
+												class="icon-[material-symbols-light--person-2-rounded] text-xl"></span>
+											<span class="text-gray-700">Jane Kasele Wangari</span>
+										</p>
+										<br />
+										<p class="inline-flex w-fit items-center space-x-1">
+											<span
+												class="icon-[material-symbols-light--settings-phone-sharp] text-xl"></span>
+											<span>07002000000</span>
+										</p>
+									</td>
+									<td class="tablet:table-cell py-5">
+										<p class="inline-flex w-fit items-center space-x-2">
+											<span
+												class="icon-[material-symbols-light--android-wifi-4-bar-off] text-xl text-red-600"></span>
+											<span class="font-semibold text-red-600"
+												>5 days ago</span
+											>
+										</p>
+										<br />
+										<p class="inline-flex w-fit space-x-2">
+											<span
+												class="icon-[material-symbols-light--nest-clock-farsight-analog-outline] text-xl"></span>
+											<span class="inline-flex items-center space-x-1">
+												<span class="text-gray-700">Last Seen: </span
+												><span> 03-01-2021</span>
+											</span>
+										</p>
+									</td>
+									<td class="tablet:table-cell hidden py-5">
+										<p class="inline-flex items-center space-x-2">
+											<span
+												class="rounded-full border-[1px] border-red-500 bg-red-200 px-2 py-1 text-sm text-red-500"
+												>offline</span
+											>
+										</p>
+									</td>
+									<td
+										class="tablet:table-cell hidden w-[30rem] max-w-[30rem] py-5">
+										<p
+											class="inline-flex flex-col space-y-1 space-x-2 rounded-md bg-blue-100 p-2">
+											<span class="font-semibold text-gray-700"
+												>Account Manager</span
+											><span class="text-xs text-wrap text-gray-500"
+												>Lorem ipsum dolor sit amet consectetur adipisicing
+												elit. Repellendus nihil odit laborum corrupti?
+											</span>
+										</p>
+									</td>
+									<td class="tablet:table-cell hidden py-5 ps-3">
+										<div class="flex flex-col items-start space-y-1">
+											<button
+												class="w-[65%] rounded-md border-[1px] border-green-500 bg-green-100 px-2 py-1 text-center text-green-500">
+												Add Comment
+											</button>
+											<button
+												class="w-[65%] rounded-md border-[1px] border-gray-500 bg-gray-100 px-2 py-1 text-center text-gray-500">
+												Remove from Watchlist
+											</button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- page controls -->
+				<div
+					class="tablet:flex-row tablet:min-h-12 tablet:h-12 my-5 mt-5 flex h-16 min-h-16 flex-col items-center justify-between px-5">
+					<h1 class="text-sm font-semibold text-gray-500">
+						Showing {{ 1 }} of {{ 100 }} pages.
+					</h1>
+					<div
+						class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
+						<button class="table-page-buttons">Previous</button>
+						<button class="table-page-buttons">Next</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end of watchlist vehicles -->
+
+		<!-- ending analysis -->
+		<div class="grid h-[16rem] grid-cols-2 gap-10">
+			<div class="h-full rounded-lg border p-5 shadow-sm outline-none">
+				<h1 class="font-semibold text-gray-700">Vehicle Status Distribution</h1>
+				<!-- online vehicles -->
+				<div class="mt-5 space-y-2">
+					<div class="flex items-center justify-between">
+						<h1 class="inline-flex items-center space-x-2">
+							<div class="size-3 rounded-full bg-green-500"></div>
+							<span class="text-sm font-semibold text-gray-700">Online</span>
+						</h1>
+						<h2 class="inline-flex items-center space-x-2">
+							<span class="text-sm font-semibold text-green-500">1,190</span>
+							<span class="text-sm text-gray-500">(99.17%)</span>
+						</h2>
+					</div>
+					<div class="h-2.5 w-full rounded-full bg-gray-200">
+						<div
+							class="h-2.5 rounded-full bg-green-500"
+							style="width: 45%"></div>
+					</div>
+				</div>
+				<!-- offline vehicles  -->
+				<div class="mt-8 space-y-2">
+					<div class="flex items-center justify-between">
+						<h1 class="inline-flex items-center space-x-2">
+							<div class="size-3 rounded-full bg-red-500"></div>
+							<span class="text-sm font-semibold text-gray-700">Online</span>
+						</h1>
+						<h2 class="inline-flex items-center space-x-2">
+							<span class="text-sm font-semibold text-red-500">1,190</span>
+							<span class="text-sm text-gray-500">(99.17%)</span>
+						</h2>
+					</div>
+					<div class="h-2.5 w-full rounded-full bg-gray-200">
+						<div
+							class="h-2.5 rounded-full bg-red-500"
+							style="width: 45%"></div>
+					</div>
+				</div>
+			</div>
+			<div class="h-full rounded-lg border p-5 shadow-sm outline-none">
+				<h1 class="font-semibold text-gray-700">Crticial Alerts</h1>
+				<!-- critical alerts -->
+				<div
+					class="mt-5 flex h-20 items-center justify-between rounded-lg border border-red-200 bg-red-100 px-5 outline-none">
+					<div class="flex h-full items-center space-x-2">
+						<span
+							class="icon-[material-symbols-light--warning-outline] text-5xl text-red-500"></span>
+						<div>
+							<h1 class="text-lg font-semibold text-red-800">Traceability Report</h1>
+							<h2 class="text-sm text-red-800">
+								Real-time Vehicle Status and Monitoring
+							</h2>
+						</div>
+					</div>
+					<h1 class="text-xl font-semibold text-red-800">4</h1>
+				</div>
+
+				<!-- emergency vehicles -->
+				<div
+					class="mt-5 flex h-20 items-center justify-between rounded-lg border border-purple-200 bg-purple-100 px-5 outline-none">
+					<div class="flex h-full items-center space-x-2">
+						<span
+							class="icon-[material-symbols-light--nest-clock-farsight-analog] text-5xl text-purple-500"></span>
+						<div>
+							<h1 class="text-lg font-semibold text-purple-800">
+								Traceability Report
+							</h1>
+							<h2 class="text-sm text-purple-800">
+								Real-time Vehicle Status and Monitoring
+							</h2>
+						</div>
+					</div>
+					<h1 class="text-xl font-semibold text-purple-800">4</h1>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<!-- search and export button teleported to the navbar -->
-	<Teleport to="#custom-search-box">
-		<div class="flex h-full w-1/2 items-center space-x-2">
-			<form
-				@submit.prevent=""
-				class="relative size-full text-gray-500">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="1em"
-					height="1em"
-					viewBox="0 0 24 24"
-					class="absolute left-4 size-8 translate-y-3">
-					<path
-						fill="currentColor"
-						d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0s.41-1.08 0-1.49zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" />
-				</svg>
-
-				<input
-					type="text"
-					class="generic-input size-full rounded-2xl bg-gray-200 pl-14"
-					placeholder="Search report by Reg No..."
-					v-model="searchRegNo" />
-			</form>
-
-			<form
-				@submit.prevent="exportToExcel"
-				class="h-full min-h-full w-16 max-w-16">
-				<button
-					:class="[
-						'generic-form-submit max-w-full text-xl',
-						downloadReports && 'skeleton skeleton-animated',
-					]">
-					<svg
-						v-if="!downloadReports"
-						xmlns="http://www.w3.org/2000/svg"
-						width="48"
-						height="48"
-						viewBox="0 0 48 48">
-						<path
-							fill="currentColor"
-							fill-rule="evenodd"
-							d="M15 8c0-1.105.806-2 1.8-2h23.4c.994 0 1.8.895 1.8 2v32c0 1.105-.806 2-1.8 2H16.8c-.994 0-1.8-.895-1.8-2v-6H7.8c-.994 0-1.8-.895-1.8-2V16c0-1.105.806-2 1.8-2H15zm13 6V8H17v6zm2-6v6h10V8zm-2 8h-4v7h4zm2 7v-7h10v7zm-2 2h-4v7h4zm2 7v-7h10v7zm-2 2H17v6h11zm2 6v-6h10v6zm-8-24v16H7.8V16zm-10.774 3h2.147l1.743 3.754L16.957 19h2.006L16.2 24l2.827 5H16.91l-1.899-3.93l-1.89 3.93h-2.148l2.874-5.018z"
-							clip-rule="evenodd" />
-					</svg>
-				</button>
-			</form>
-		</div>
-	</Teleport>
 </template>
 
 <script setup lang="ts">
