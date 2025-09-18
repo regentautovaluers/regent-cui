@@ -5,13 +5,19 @@
 		data-modal-backdrop="static"
 		tabindex="-1"
 		aria-hidden="true"
-		class="h-modal fixed top-0 right-0 left-0 z-50 hidden w-full items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 md:h-full">
-		<div :class="['relative h-full w-full p-4', !props.fullScreen && 'max-w-xl md:h-auto']">
+		class="fixed top-0 right-0 left-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full overflow-x-hidden overflow-y-auto p-4 md:inset-0">
+		<div
+			:class="[
+				'relative h-full w-full',
+				props.modalSize == 'default' && 'max-w-xl md:h-auto',
+				props.modalSize == 'large' && 'max-w-4xl md:h-auto',
+				props.modalSize == 'xl' && 'max-w-7xl md:h-auto',
+			]">
 			<!-- Modal content -->
 			<div
 				:class="[
 					'relative rounded-lg bg-white p-4 shadow sm:p-5',
-					props.fullScreen && 'h-full',
+					props.modalSize == 'full-screen' && 'h-full',
 				]">
 				<!-- Modal header -->
 				<div class="mb-4 flex justify-between rounded-t sm:mb-5">
@@ -53,9 +59,10 @@
 		modalId: { required: true, type: String || Number },
 		modalTitle: { required: true, type: String },
 		class: { required: false, type: String },
-		fullScreen: {
+		modalSize: {
 			required: false,
-			default: false,
+			default: 'full-screen',
+			validator: (value: string) => ['default', 'large', 'xl', 'full-screen'].includes(value),
 		},
 	});
 	const emits = defineEmits(['close-modal']);
