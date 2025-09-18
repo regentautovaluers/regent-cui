@@ -61,7 +61,7 @@
 		class: { required: false, type: String },
 		modalSize: {
 			required: false,
-			default: 'full-screen',
+			default: 'default',
 			validator: (value: string) => ['default', 'large', 'xl', 'full-screen'].includes(value),
 		},
 	});
