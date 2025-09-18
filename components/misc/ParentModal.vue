@@ -21,8 +21,13 @@
 				]">
 				<!-- Modal header -->
 				<div class="mb-4 flex justify-between rounded-t sm:mb-5">
-					<div class="text-lg md:text-xl dark:text-white">
-						<h3 class="font-semibold text-gray-900">{{ props.modalTitle }}</h3>
+					<div>
+						<h2 class="font-semibold text-gray-700">{{ props.modalTitle }}</h2>
+						<h3
+							class="text-sm text-gray-500"
+							v-if="modalSubtitle">
+							{{ props.modalSubtitle }}
+						</h3>
 					</div>
 					<div>
 						<button
@@ -58,6 +63,7 @@
 	const props = defineProps({
 		modalId: { required: true, type: String || Number },
 		modalTitle: { required: true, type: String },
+		modalSubtitle: { required: false, type: String },
 		class: { required: false, type: String },
 		modalSize: {
 			required: false,
