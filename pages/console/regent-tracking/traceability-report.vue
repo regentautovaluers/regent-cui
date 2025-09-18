@@ -237,8 +237,8 @@
 								<!-- the actual data -->
 								<tr
 									class="border-b bg-white text-sm hover:bg-gray-100"
-									v-for="a in 10"
-									:key="a">
+									v-for="(_a, idx) in 10"
+									:key="idx">
 									<td
 										class="tablet:table-cell hidden py-5 ps-3 font-bold text-gray-700">
 										KDC 000A
@@ -302,7 +302,9 @@
 									</td>
 									<td class="tablet:table-cell hidden py-5 ps-3">
 										<button
-											class="rounded-md border-[1px] border-green-500 bg-green-100 px-2 py-1 text-green-500">
+											class="rounded-md border-[1px] border-green-500 bg-green-100 px-2 py-1 text-green-500"
+											:data-modal-target="`add-comment-tbl-${idx}`"
+											:data-modal-toggle="`add-comment-tbl-${idx}`">
 											Add Comment
 										</button>
 									</td>
@@ -611,6 +613,17 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- modal to add comment for first table -->
+		<ParentModal
+			v-for="(_a, idx) in 10"
+			:key="idx"
+			modal-title="Add Your Comment "
+			:modal-id="`add-comment-tbl-${idx}`"
+			modal-size="large"
+			modal-subtitle="Vehicle KCA 123A -  Justus Kamau Kamau">
+			<AddTraceabilityReportComment />
+		</ParentModal>
 	</div>
 </template>
 
