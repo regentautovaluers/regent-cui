@@ -1,6 +1,6 @@
 <template>
 	<div class="console-layout-spacing flex flex-col space-y-10">
-		Nesting areas: {{ nestingAreas }}
+		<!-- Nesting areas: {{ nestingAreas }} -->
 		<!-- top part with filters -->
 		<div
 			class="divide-y-[2px] rounded-lg border border-gray-200 bg-white shadow-sm outline-none">
@@ -218,7 +218,20 @@
 							<h1 class="font-bold text-gray-700">3 Locations</h1>
 						</div>
 					</div>
-					<div class="flex-grow rounded-md border border-gray-300 outline-none"></div>
+					<div
+						class="flex-grow overflow-clip rounded-lg border border-gray-300 outline-none">
+						<GoogleMap
+							ref="mapRef"
+							:api-key="googleMapsApiKey"
+							:styles="googleMapStyle"
+							style="width: 100%; height: 100%"
+							:map-type-control="false"
+							:zoom="12"
+							:zoom-control="true"
+							:fullscreen-control="false"
+							:street-view-control="true">
+						</GoogleMap>
+					</div>
 				</div>
 			</div>
 			<div
@@ -338,6 +351,10 @@
 </template>
 
 <script setup lang="ts">
+	import { type LocationCoords } from '~/types';
+	import { GoogleMap, InfoWindow, Polyline } from 'vue3-google-map';
+	import { googleMapStyle } from '~/config/ava-google-map-config';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 	definePageMeta({
 		name: 'regent-tracking-vehicle-history',
 		layout: 'console-layout',
@@ -352,4 +369,5 @@
 		nestingAreas,
 		setFilterPeriod,
 	} = await useRegentTrackingDeviceHistory();
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 </script>
