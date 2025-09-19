@@ -1,5 +1,17 @@
 <template>
-	<div class="relative flex-1 pt-[75px]">
+	<div class="relative h-screen flex-1 pt-[75px]">
+		<GoogleMap
+			ref="mapRef"
+			:api-key="googleMapsApiKey"
+			:styles="googleMapStyle"
+			style="width: 100%; height: 100vh; position: absolute;"
+			:map-type-control="false"
+			:zoom="12"
+			:zoom-control="true"
+			:fullscreen-control="false"
+			:street-view-control="true">
+		</GoogleMap>
+
 		<div
 			class="absolute left-5 flex h-[90%] w-[30rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300">
 			<div class="p-5">
@@ -122,7 +134,7 @@
 						<span class="inline-flex items-center space-x-1">
 							<span
 								class="icon-[material-symbols-light--person-2-outline-rounded] text-2xl"></span
-							><span>{{ device.driver_data.name ?? 'Driver name N/A' }}</span></span
+							><span>{{ device.driver_data.name ?? 'Name N/A' }}</span></span
 						>
 						<span>&vert;</span>
 						<span class="inline-flex items-center space-x-3">
@@ -261,10 +273,13 @@
 						</button>
 						<button
 							:class="[
-								'font-semibold',
+								'font-semibold disabled:bg-gray-100',
 								activeDeviceTab == 'history' && 'bg-blue-100',
 							]"
 							type="button"
+							:disabled="
+								activeDevice.online == 'offline' && activeDevice.timestamp == 0
+							"
 							@click="setActiveDeviceTab('history')">
 							History
 						</button>
@@ -411,14 +426,16 @@
 </template>
 
 <script setup lang="ts">
-	import { GoogleMap, CustomMarker, MarkerCluster, Polyline } from 'vue3-google-map';
-	import { googleMapStyle, googleMapsApiKey } from '~/config/ava-google-map-config';
-	import { useGeolocation } from '@vueuse/core';
+	import { type LocationCoords } from '~/types';
+	import { GoogleMap, InfoWindow, Polyline } from 'vue3-google-map';
+	import { googleMapStyle } from '~/config/ava-google-map-config';
+	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 	definePageMeta({
 		name: 'regent-tracking-home',
 		layout: 'console-layout',
 	});
 	const { getPrincipal } = useAuth();
+	const { googleMapsApiKey } = useGoogleMapsConfig();
 
 	const {
 		totalVehicles,
@@ -454,5 +471,4 @@
 		getDeviceHistoryLoading,
 		getDeviceHistory,
 	} = useTrackedDeviceCommandsAndHistory();
-	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
 </script>
