@@ -74,8 +74,6 @@
 					? 'laptop-lg:-translate-x-0 w-[65px] -translate-x-[65px]'
 					: 'w-68 -translate-x-0',
 			]">
-			<!-- <span class="icon-[solar--4k-broken] text-red-500 hover:text-2xl"></span> -->
-			<!-- links -->
 			<div>
 				<ul class="space-y-4">
 					<template
