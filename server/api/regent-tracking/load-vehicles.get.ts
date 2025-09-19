@@ -15,5 +15,5 @@ export default defineEventHandler(async (event) => {
 	);
 
 	// Simple transformation
-	return vehicleData[0].items as TrackedVehicles[];
+	return vehicleData.flatMap((vehicle) => vehicle.items as TrackedVehicles[]);
 });
