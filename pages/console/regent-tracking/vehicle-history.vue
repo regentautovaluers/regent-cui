@@ -14,7 +14,10 @@
 					<div class="inline-flex items-center space-x-2">
 						<span
 							class="icon-[material-symbols-light--nest-clock-farsight-analog-rounded] text-xl text-gray-500"></span>
-						<span class="text-gray-500">Last update: 2 Mins ago</span>
+						<span class="text-gray-500"
+							>Last tracker update:
+							{{ deviceHistory?.device.traccar.ack_time ?? 'Unknown ' }}</span
+						>
 					</div>
 				</div>
 			</div>
@@ -238,6 +241,66 @@
 							:zoom-control="true"
 							:fullscreen-control="false"
 							:street-view-control="true">
+							<InfoWindow
+								v-if="positionOnMap"
+								:options="{
+									position: { lat: positionOnMap.lat, lng: positionOnMap.lng },
+									minWidth: 350,
+								}">
+								<div
+									:class="[
+										'overflow-clip rounded-lg border bg-white text-white outline-none',
+									]">
+									<div class="border-b border-gray-200 p-3">
+										<h1 class="font-bold text-gray-700">
+											{{ query.vehicle_reg }}
+										</h1>
+									</div>
+									<div class="grid grid-cols-[25%_75%] gap-y-4 px-2 py-3">
+										<!-- location -->
+										<h3 class="font-semibold text-gray-700">Location</h3>
+										<p class="text-end text-gray-500">TBD</p>
+
+										<!-- Longitude -->
+										<h3 class="font-semibold text-gray-700">Longitude</h3>
+										<p class="text-end text-gray-500">
+											{{ positionOnMap.lng }}
+										</p>
+
+										<!-- Latitude -->
+										<h3 class="font-semibold text-gray-700">Latitude</h3>
+										<p class="text-end text-gray-500">
+											{{ positionOnMap.lat }}
+										</p>
+
+										<!-- Latitude -->
+										<h3 class="font-semibold text-gray-700">Latitude</h3>
+										<p class="text-end text-gray-500">
+											{{ positionOnMap.lat }}
+										</p>
+
+										<!-- time -->
+										<h3 class="font-semibold text-gray-700">Time</h3>
+										<p class="text-end text-gray-500">
+											{{ positionOnMap.time }}
+										</p>
+
+										<!-- event -->
+										<h3 class="font-semibold text-gray-700">Event</h3>
+										<p class="text-end text-gray-500">
+											{{ positionOnMap.event }}
+										</p>
+									</div>
+								</div>
+							</InfoWindow>
+							<Polyline
+								:options="{
+									path: polylineCoords,
+									geodesic: true,
+									strokeColor: '#ec4899',
+									strokeOpacity: 1.0,
+									strokeWeight: 5,
+								}" />
 						</GoogleMap>
 					</div>
 				</div>
@@ -263,7 +326,19 @@
 								v-for="(m, idx) in e.movement"
 								:key="idx">
 								<ol class="relative border-s border-green-500">
-									<li class="ms-4">
+									<li
+										class="ms-4 cursor-pointer rounded-lg outline-none hover:bg-gray-100"
+										@click="
+											() => {
+												setPolylineCoords(e);
+												setPositionOnMap({
+													lat: m.startAtLat,
+													lng: m.startAtLng,
+													event: 'start',
+													time: m.startedAt,
+												});
+											}
+										">
 										<div
 											class="absolute -start-2.5 size-5 rounded-full border border-white bg-green-500"></div>
 										<h1
@@ -322,7 +397,19 @@
 									</li>
 								</ol>
 								<ol class="relative border-s border-red-500">
-									<li class="ms-4">
+									<li
+										class="ms-4 cursor-pointer rounded-lg outline-none hover:bg-gray-100"
+										@click="
+											() => {
+												setPolylineCoords(e);
+												setPositionOnMap({
+													lat: m.stoppedAtLat,
+													lng: m.stoppedAtLng,
+													event: 'stop',
+													time: m.stoppedAt,
+												});
+											}
+										">
 										<div
 											class="absolute -start-2.5 size-5 rounded-full border border-white bg-red-500"></div>
 										<h1
@@ -428,7 +515,34 @@
 		errorFetchingDeviceHistory,
 		nestingAreas,
 		deviceMovement,
+		positionOnMap,
+		polylineCoords,
 		setFilterPeriod,
+		setPositionOnMap,
+		setPolylineCoords,
 	} = await useRegentTrackingDeviceHistory();
 	const { googleMapsApiKey } = useGoogleMapsConfig();
 </script>
+
+<style>
+	/* Styling the InfoWindow content */
+	.info-window {
+		font-family: Arial, sans-serif;
+		text-align: center;
+		width: 250px;
+	}
+	.info-window img {
+		width: 100%;
+		height: auto;
+		border-radius: 8px;
+	}
+	.info-window h3 {
+		margin: 10px 0 5px;
+		font-size: 18px;
+		color: #333;
+	}
+	.info-window p {
+		font-size: 14px;
+		color: #666;
+	}
+</style>

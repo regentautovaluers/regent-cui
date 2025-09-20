@@ -13,11 +13,33 @@ export async function useRegentTrackingDeviceHistory() {
 	const { query } = useRoute();
 	const filterPeriod: Ref<'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom'> =
 		ref('this-week');
+	const positionOnMap: Ref<{
+		lat: number;
+		lng: number;
+		event: 'start' | 'stop' | 'idle';
+		time: string;
+	} | null> = ref(null);
+	const polylineCoords: Ref<{ lat: number; lng: number }[] | null> = ref(null);
+
+	function setPolylineCoords(input: DayMovement) {
+		polylineCoords.value = input.pingHistory;
+	}
 
 	function setFilterPeriod(
 		period: 'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom',
 	) {
 		filterPeriod.value = period;
+	}
+
+	function setPositionOnMap(
+		position: {
+			lat: number;
+			lng: number;
+			event: 'start' | 'stop' | 'idle';
+			time: string;
+		} | null,
+	) {
+		positionOnMap.value = position;
 	}
 
 	const {
@@ -276,6 +298,10 @@ export async function useRegentTrackingDeviceHistory() {
 		errorFetchingDeviceHistory,
 		nestingAreas,
 		deviceMovement,
+		positionOnMap,
+		polylineCoords,
 		setFilterPeriod,
+		setPositionOnMap,
+		setPolylineCoords,
 	};
 }

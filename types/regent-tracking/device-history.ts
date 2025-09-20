@@ -9,9 +9,9 @@ export interface VehicleMovement {
 	startedAt: string;
 	startAtLat: number;
 	startAtLng: number;
-	stoppedAt: string | null;
-	stoppedAtLat: number | null;
-	stoppedAtLng: number | null;
+	stoppedAt: string;
+	stoppedAtLat: number;
+	stoppedAtLng: number;
 	totalDistance: number;
 	averageSpeed: number;
 	drivingDuration: string | null;
