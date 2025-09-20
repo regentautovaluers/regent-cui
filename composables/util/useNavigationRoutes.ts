@@ -104,7 +104,7 @@ export default function () {
 					id: 1,
 					screenName: 'Traceability Reports',
 					routeName: 'regent-tracking-traceability-report',
-					renderRoute: false,
+					renderRoute: true,
 				},
 			],
 		},
