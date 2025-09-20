@@ -16,7 +16,13 @@ export interface VehicleMovement {
 	averageSpeed: number;
 	drivingDuration: string | null;
 	totalIdleDuration: string | null;
-	idlePeriods: string[];
+	idlePeriods: IdlePeriods[];
+}
+
+export interface IdlePeriods {
+	startedAt: string;
+	stoppedAt: string;
+	durationInMinutes: number;
 }
 
 export interface DayMovement {

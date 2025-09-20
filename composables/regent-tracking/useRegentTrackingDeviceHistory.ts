@@ -4,6 +4,7 @@ import {
 	type Item2,
 	type VehicleMovement,
 	type DayMovement,
+	type IdlePeriods,
 } from '~/types/regent-tracking/device-history';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
 import { type VehiclePing, type AnalyzedLocation } from '~/types/regent-tracking/device-history';
@@ -75,9 +76,9 @@ export async function useRegentTrackingDeviceHistory() {
 					| 'drivingDuration'
 					| 'totalIdleDuration'
 					| 'idlePeriods'
-			  > & { idlePeriods: IdlePeriod[]; totalIdleDuration: number })
+			  > & { idlePeriods: IdlePeriods[]; totalIdleDuration: number })
 			| null = null;
-		let currentIdlePeriod: Omit<IdlePeriod, 'durationInMinutes'> | null = null;
+		let currentIdlePeriod: Omit<IdlePeriods, 'durationInMinutes'> | null = null;
 		let tripPings: Item2[] = [];
 
 		// Helper: Parse "motion" and "ignition" from other_arr

@@ -1,6 +1,5 @@
 <template>
 	<div class="console-layout-spacing flex flex-col space-y-10">
-		<!-- Nesting areas: {{ nestingAreas }} -->
 		<!-- top part with filters -->
 		<div
 			class="divide-y-[2px] rounded-lg border border-gray-200 bg-white shadow-sm outline-none">
@@ -81,7 +80,16 @@
 				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
 				<div class="flex-grow">
 					<h2 class="text-sm text-gray-500">Total Trips</h2>
-					<h1 class="text-lg font-semibold text-gray-700">156</h1>
+					<h1 class="text-lg font-semibold text-gray-700">
+						{{
+							deviceMovement.length == 0
+								? 'Unknown'
+								: deviceMovement.reduce(
+										(acc, curr) => acc + curr.movement.length,
+										0,
+									)
+						}}
+					</h1>
 				</div>
 				<button
 					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-green-300 bg-green-100">
@@ -243,55 +251,107 @@
 				<div class="thin-scrollbar h-[87%] max-h-[87%] space-y-5 overflow-y-auto p-5">
 					<div
 						class="h-fit divide-y-2 rounded-lg border outline-none"
-						v-for="a in 10"
-						:key="a">
+						v-for="(e, idx) in deviceMovement"
+						:key="idx">
 						<div class="flex h-14 items-center p-5">
-							<h1 class="text-sm font-bold">08/12/2025</h1>
+							<h1 class="text-sm font-bold">{{ e.date }}</h1>
 						</div>
 						<div class="p-5">
 							<!-- start of timeline -->
+							<template
+								v-if="e.movement.length > 0"
+								v-for="(m, idx) in e.movement"
+								:key="idx">
+								<ol class="relative border-s border-green-500">
+									<li class="ms-4">
+										<div
+											class="absolute -start-2.5 size-5 rounded-full border border-white bg-green-500"></div>
+										<h1
+											class="inline-flex space-x-3 text-sm leading-none text-gray-700">
+											<span class="font-semibold">Start</span>
+											<span>&VerticalBar;</span>
+											<time class="font-semibold">{{
+												m.startedAt.split(' ')[1].substring(0, 5)
+											}}</time>
+										</h1>
+										<p class="text-sm font-normal text-gray-500">
+											Kericho Road, Kahawa Sukari
+										</p>
+										<p class="mb-4 inline-flex items-center space-x-2 text-sm">
+											<span class="text-gray-700">Driving Duration</span>
+											<span class="text-2xl">&middot;</span>
+											<span class="text-gray-500">{{
+												m.drivingDuration
+											}}</span>
+										</p>
+									</li>
+								</ol>
+								<ol
+									class="relative border-s border-yellow-500"
+									v-if="m.idlePeriods.length > 0"
+									v-for="(i, idx) in m.idlePeriods"
+									:key="idx">
+									<li class="ms-4">
+										<div
+											class="absolute -start-2.5 size-5 rounded-full border border-white bg-yellow-500"></div>
+										<h1
+											class="inline-flex space-x-3 text-sm leading-none text-gray-700">
+											<span class="font-semibold">Idle</span>
+											<span>&VerticalBar;</span>
+											<span class="inline-flex items-center space-x-1">
+												<time class="font-semibold"
+													>{{ i.startedAt.split(' ')[1].substring(0, 5) }}
+												</time>
+												<span> - </span>
+												<time class="font-semibold"
+													>{{ i.stoppedAt.split(' ')[1].substring(0, 5) }}
+												</time>
+												<span class="text-gray-500"
+													>( {{ i.durationInMinutes }} min )</span
+												>
+											</span>
+										</h1>
 
-							<ol class="relative border-s border-green-500">
-								<li class="ms-4">
-									<div
-										class="absolute -start-2.5 size-5 rounded-full border border-white bg-green-500"></div>
-									<h1
-										class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-										<span class="font-semibold">Start</span>
-										<span>&VerticalBar;</span>
-										<time class="font-semibold">08:15</time>
-									</h1>
-									<p class="text-sm font-normal text-gray-500">
-										Kericho Road, Kahawa Sukari
+										<p class="mb-4 inline-flex items-center space-x-2 text-sm">
+											<span class="text-gray-700">Idle Duration</span>
+											<span class="text-2xl">&middot;</span>
+											<span class="text-gray-500">{{
+												m.totalIdleDuration
+											}}</span>
+										</p>
+									</li>
+								</ol>
+								<ol class="relative border-s border-red-500">
+									<li class="ms-4">
+										<div
+											class="absolute -start-2.5 size-5 rounded-full border border-white bg-red-500"></div>
+										<h1
+											class="inline-flex space-x-3 text-sm leading-none text-gray-700">
+											<span class="font-semibold">Stop</span>
+											<span>&VerticalBar;</span>
+											<time class="font-semibold">{{
+												m.stoppedAt.split(' ')[1].substring(0, 5)
+											}}</time>
+										</h1>
+										<p class="text-sm font-normal text-gray-500">
+											Kericho Road, Kahawa Sukari
+										</p>
+										<p class="mb-4 inline-flex items-center space-x-2 text-sm">
+											<span class="text-gray-700">Stop Duration</span>
+											<span class="text-2xl">&middot;</span>
+											<span class="text-gray-500">1hrs 10 min</span>
+										</p>
+									</li>
+								</ol>
+								<!-- end of timeline -->
+							</template>
+							<template v-else>
+								<div class="rounded-lg border border-yellow-300 bg-yellow-100 p-2">
+									<p class="text-sm text-yellow-500">
+										No movement history available for this day.
 									</p>
-									<p class="mb-4 inline-flex items-center space-x-2 text-sm">
-										<span class="text-gray-700">Driving Duration</span>
-										<span class="text-2xl">&middot;</span>
-										<span class="text-gray-500">1hrs 10 min</span>
-									</p>
-								</li>
-							</ol>
-							<ol class="relative border-s border-red-500">
-								<li class="ms-4">
-									<div
-										class="absolute -start-2.5 size-5 rounded-full border border-white bg-red-500"></div>
-									<h1
-										class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-										<span class="font-semibold">Stop</span>
-										<span>&VerticalBar;</span>
-										<time class="font-semibold">08:15</time>
-									</h1>
-									<p class="text-sm font-normal text-gray-500">
-										Kericho Road, Kahawa Sukari
-									</p>
-									<p class="mb-4 inline-flex items-center space-x-2 text-sm">
-										<span class="text-gray-700">Stop Duration</span>
-										<span class="text-2xl">&middot;</span>
-										<span class="text-gray-500">1hrs 10 min</span>
-									</p>
-								</li>
-							</ol>
-							<!-- end of timeline -->
+								</div>
+							</template>
 						</div>
 					</div>
 				</div>
@@ -367,6 +427,7 @@
 		fetchingDeviceHistory,
 		errorFetchingDeviceHistory,
 		nestingAreas,
+		deviceMovement,
 		setFilterPeriod,
 	} = await useRegentTrackingDeviceHistory();
 	const { googleMapsApiKey } = useGoogleMapsConfig();
