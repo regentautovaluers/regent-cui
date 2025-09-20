@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
 	// Set source context for response wrapper
 	event.context.source = 'regent-tracking-service';
-	let requestUrl = `${config.public.REGENT_TRACK_BASE_URL}/api/get_history?lang=en&user_api_hash=${query.api_hash}&device_id=${query.device_id}&from_date=${query.from_date}&from_time=${query.from_time}&to_date=${query.to_date}&to_time=${query.to_time}`;
+	let requestUrl = `${config.public.REGENT_TRACK_BASE_URL}/api/get_history?lang=en&user_api_hash=${query.api_hash}&device_id=${query.device_id}&from_date=${query.from_date}&from_time=${query.from_time}&to_date=${query.to_date}&to_time=${query.to_time}&snap_to_road=true`;
 
 	const deviceHistory = await makeProxyRequest<DeviceHistory>(requestUrl);
 
