@@ -5,6 +5,26 @@ export interface VehiclePing {
 	time_recorded: string; // ISO 8601 string, e.g., '2025-09-15 00:06:35'
 }
 
+export interface VehicleMovement {
+	startedAt: string;
+	startAtLat: number;
+	startAtLng: number;
+	stoppedAt: string | null;
+	stoppedAtLat: number | null;
+	stoppedAtLng: number | null;
+	totalDistance: number;
+	averageSpeed: number;
+	drivingDuration: string | null;
+	totalIdleDuration: string | null;
+	idlePeriods: string[];
+}
+
+export interface DayMovement {
+	date: string;
+	movement: VehicleMovement[];
+	pingHistory: { lat: number; lng: number }[];
+}
+
 // Interface for the final output object
 export interface AnalyzedLocation {
 	representative_lat: number;
