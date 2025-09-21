@@ -3,7 +3,7 @@ WORKDIR /app
 COPY ./package.json /app/package.json
 RUN npm install   
 COPY . /app
-RUN npm run build
+RUN npm run generate
 
 FROM node:20.19-slim as serve
 WORKDIR /app
@@ -11,5 +11,5 @@ WORKDIR /app
 COPY --from=build /app/.output /app/.output
 EXPOSE 3000
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["npx", "serve", ".output/public"]
 
