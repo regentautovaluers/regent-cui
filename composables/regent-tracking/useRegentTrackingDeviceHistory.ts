@@ -7,7 +7,8 @@ import {
 	type IdlePeriods,
 } from '~/types/regent-tracking/device-history';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
-import { type VehiclePing, type AnalyzedLocation } from '~/types/regent-tracking/device-history';
+import { type AnalyzedLocation } from '~/types/regent-tracking/device-history';
+import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 
 export async function useRegentTrackingDeviceHistory() {
 	const { query } = useRoute();
@@ -20,6 +21,9 @@ export async function useRegentTrackingDeviceHistory() {
 		time: string;
 	} | null> = ref(null);
 	const polylineCoords: Ref<{ lat: number; lng: number }[] | null> = ref(null);
+	const { name: routeName } = useRoute();
+	const fromDate: Ref<string | null> = ref(null);
+	const toDate: Ref<string | null> = ref(null);
 
 	function setPolylineCoords(input: DayMovement) {
 		polylineCoords.value = input.pingHistory;
@@ -29,6 +33,7 @@ export async function useRegentTrackingDeviceHistory() {
 		period: 'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom',
 	) {
 		filterPeriod.value = period;
+		executeFetchDeviceHistory();
 	}
 
 	function setPositionOnMap(
@@ -42,16 +47,87 @@ export async function useRegentTrackingDeviceHistory() {
 		positionOnMap.value = position;
 	}
 
+	function calculateDateRange(
+		timeframe: 'today' | 'this-week' | 'last-30-days ' | 'last-3-months',
+	): {
+		startDate: string;
+		endDate: string;
+	} {
+		const today = new Date();
+		const formatDate = (date: Date): string => {
+			return date.toISOString().split('T')[0]; // yyyy-MM-dd format
+		};
+
+		switch (timeframe) {
+			case 'today':
+				return {
+					startDate: formatDate(today),
+					endDate: formatDate(today),
+				};
+
+			case 'this-week': {
+				// Find the most recent Sunday (start of week)
+				const daysSinceSunday = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+				const startOfWeek = new Date(today);
+				startOfWeek.setDate(today.getDate() - daysSinceSunday);
+
+				return {
+					startDate: formatDate(startOfWeek),
+					endDate: formatDate(today),
+				};
+			}
+
+			case 'last-30-days': {
+				const startDate = new Date(today);
+				startDate.setDate(today.getDate() - 29); // 29 days ago + today = 30 days total
+
+				return {
+					startDate: formatDate(startDate),
+					endDate: formatDate(today),
+				};
+			}
+
+			case 'last-3-months': {
+				const startDate = new Date(today);
+				startDate.setMonth(today.getMonth() - 3);
+
+				return {
+					startDate: formatDate(startDate),
+					endDate: formatDate(today),
+				};
+			}
+
+			default:
+				throw new Error(`Unsupported timeframe: ${timeframe}`);
+		}
+	}
+
+	const computedURL: ComputedRef<string> = computed(() => {
+		let requestUrl = `/api/regent-tracking/device-history?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi&device_id=${routeName == 'regent-tracking-vehicle-history' ? query.device_id : getTrackedVehicle.value?.id}&from_time=00:00:00&to_time=23:59:59`;
+
+		if (filterPeriod.value == 'custom') {
+			// TODO: Sort this out
+		} else {
+			let dateRange = calculateDateRange(filterPeriod.value);
+			requestUrl =
+				requestUrl + `&from_date=${dateRange.startDate}&to_date=${dateRange.endDate}`;
+		}
+
+		return requestUrl;
+	});
+
 	const {
 		data: deviceHistory,
 		pending: fetchingDeviceHistory,
 		error: errorFetchingDeviceHistory,
+		execute: executeFetchDeviceHistory,
 	} = await useApiData<DeviceHistory, DeviceHistory>(
-		`device-history-${query.device_id}`,
-		`/api/regent-tracking/device-history?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi&device_id=${query.device_id}&from_date=2025-09-15&from_time=00:00:00&to_date=2025-09-19&to_time=12:00:00`,
+		`device-history-${routeName == 'regent-tracking-vehicle-history' ? query.device_id : getTrackedVehicle.value?.id}`,
+		computedURL,
 		{
 			method: 'GET',
 			server: false,
+			immediate: routeName == 'regent-tracking-vehicle-history' ? true : false,
 			transform: (response) => {
 				// Check if the API call was successful
 				if (response.success) {
@@ -64,7 +140,6 @@ export async function useRegentTrackingDeviceHistory() {
 					(response as StandardErrorResponse).metadata.message || 'Unknown error',
 				);
 			},
-			lazy: true,
 		},
 	);
 
@@ -172,7 +247,7 @@ export async function useRegentTrackingDeviceHistory() {
 					const idleDurationMs =
 						new Date(currentIdlePeriod.stoppedAt).getTime() -
 						new Date(currentIdlePeriod.startedAt).getTime();
-					currentTrip.idlePeriods.push({
+					currentTrip?.idlePeriods.push({
 						...currentIdlePeriod,
 						durationInMinutes: idleDurationMs / 60000,
 					});
@@ -243,8 +318,10 @@ export async function useRegentTrackingDeviceHistory() {
 
 		// Handle a trip that is still in progress at the end of the data stream
 		if (currentTrip && tripPings.length > 0) {
+			const lastPing = tripPings[tripPings.length - 1];
+			const date = lastPing.raw_time.split(' ')[0]; // Correctly get the date here
+
 			if (currentIdlePeriod) {
-				const lastPing = tripPings[tripPings.length - 1];
 				currentIdlePeriod.stoppedAt = lastPing.raw_time;
 				const idleDurationMs =
 					new Date(currentIdlePeriod.stoppedAt).getTime() -
@@ -256,7 +333,6 @@ export async function useRegentTrackingDeviceHistory() {
 				currentTrip.totalIdleDuration += idleDurationMs;
 			}
 
-			const lastPing = tripPings[tripPings.length - 1];
 			currentTrip.stoppedAt = lastPing.raw_time;
 			currentTrip.stoppedAtLat = Number(lastPing.lat);
 			currentTrip.stoppedAtLng = Number(lastPing.lng);
@@ -303,5 +379,6 @@ export async function useRegentTrackingDeviceHistory() {
 		setFilterPeriod,
 		setPositionOnMap,
 		setPolylineCoords,
+		executeFetchDeviceHistory,
 	};
 }
