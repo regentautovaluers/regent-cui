@@ -15,7 +15,7 @@
 						<span
 							class="icon-[material-symbols-light--nest-clock-farsight-analog-rounded] text-xl text-gray-500"></span>
 						<span class="text-gray-500"
-							>Last tracker update:
+							>Last update:
 							{{ deviceHistory?.device.traccar.ack_time ?? 'Unknown ' }}</span
 						>
 					</div>
@@ -117,7 +117,7 @@
 		</div>
 
 		<!-- nesting area, history replay e.t.c -->
-		<div class="flex h-[45rem] items-center gap-10">
+		<div class="flex h-[43rem] items-center gap-10">
 			<div
 				class="flex h-full w-[25%] flex-col divide-y-2 rounded-lg border bg-white shadow-xs outline-none">
 				<div class="h-[13%] p-5">
@@ -211,24 +211,6 @@
 				</div>
 				<div
 					class="thin-scrollbar flex h-[87%] max-h-[85%] flex-col space-y-3 overflow-y-auto p-5">
-					<div class="grid h-15 grid-cols-4 place-content-center place-items-center">
-						<div>
-							<h2 class="text-sm text-gray-500">Duration</h2>
-							<h1 class="font-bold text-gray-700">2hrs 15Min</h1>
-						</div>
-						<div>
-							<h2 class="text-sm text-gray-500">Distance</h2>
-							<h1 class="font-bold text-gray-700">87.3Km</h1>
-						</div>
-						<div>
-							<h2 class="text-sm text-gray-500">Average Speed</h2>
-							<h1 class="font-bold text-gray-700">38.9Km</h1>
-						</div>
-						<div>
-							<h2 class="text-sm text-gray-500">Stops</h2>
-							<h1 class="font-bold text-gray-700">3 Locations</h1>
-						</div>
-					</div>
 					<div
 						class="flex-grow overflow-clip rounded-lg border border-gray-300 outline-none">
 						<GoogleMap
@@ -382,7 +364,7 @@
 													>{{ i.stoppedAt.split(' ')[1].substring(0, 5) }}
 												</time>
 												<span class="text-gray-500"
-													>( {{ i.durationInMinutes }} min )</span
+													>({{ i.durationInMinutes.toFixed(2) }} min)</span
 												>
 											</span>
 										</h1>
