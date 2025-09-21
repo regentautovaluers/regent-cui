@@ -4,7 +4,7 @@
 			ref="mapRef"
 			:api-key="googleMapsApiKey"
 			:styles="googleMapStyle"
-			style="width: 100%; height: 100vh; position: absolute;"
+			style="width: 100%; height: 100vh; position: absolute"
 			:map-type-control="false"
 			:zoom="12"
 			:zoom-control="true"
@@ -123,7 +123,6 @@
 							@click="
 								() => {
 									setActiveDevice(device);
-									alertsActiveDevice = device;
 								}
 							">
 							<span
@@ -188,12 +187,14 @@
 		<Transition>
 			<!-- TODO: Add in animations later  -->
 			<div
-				class="absolute left-0 flex h-[90%] max-h-[90%] w-[27rem] translate-x-[31.2rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300"
-				v-if="activeDevice">
+				class="absolute left-0 flex h-[90%] max-h-[90%] w-[30rem] translate-x-[31.2rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300"
+				v-if="getTrackedVehicle">
 				<div class="p-5">
 					<div class="flex items-center justify-between">
 						<div>
-							<h1 class="font-semibold text-gray-600">{{ activeDevice.name }}</h1>
+							<h1 class="font-semibold text-gray-600">
+								{{ getTrackedVehicle?.name }}
+							</h1>
 							<h2 class="text-sm text-gray-500">Updated 1 minute ago</h2>
 						</div>
 						<button
@@ -208,38 +209,48 @@
 						<div
 							:class="[
 								'flex h-10 w-24 items-center justify-center space-x-2 rounded-lg border text-sm outline-none',
-								`bg-${deriveColor(activeDevice.online)}-100`,
-								`border-${deriveColor(activeDevice.online)}-200`,
+								`bg-${deriveColor(getTrackedVehicle?.online)}-100`,
+								`border-${deriveColor(getTrackedVehicle?.online)}-200`,
 							]">
 							<!-- tracker online -->
 							<span
-								v-if="['ack', 'engine', 'online'].includes(activeDevice.online)"
+								v-if="
+									['ack', 'engine', 'online'].includes(getTrackedVehicle?.online)
+								"
 								:class="[
 									'icon-[material-symbols-light--signal-wifi-4-bar] text-xl',
-									`text-${deriveColor(activeDevice.online)}-600`,
+									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
 								]"></span>
 							<!-- tracker offline -->
 							<span
 								:class="[
 									'icon-[material-symbols-light--signal-wifi-statusbar-not-connected] text-xl',
-									`text-${deriveColor(activeDevice.online)}-600`,
+									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
 								]"
-								v-else-if="activeDevice.online == 'offline'"></span>
+								v-else-if="getTrackedVehicle?.online == 'offline'"></span>
 
 							<!-- expired subscription -->
 							<span
 								:class="[
 									'icon-[material-symbols-light--signal-disconnected] text-xl',
-									`text-${deriveColor(activeDevice.online)}-600`,
+									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
 								]"
-								v-else-if="activeDevice.online == 'expired'"></span>
+								v-else-if="getTrackedVehicle?.online == 'expired'"></span>
 							<span
-								:class="['text-sm', `text-${deriveColor(activeDevice.online)}-600`]"
-								>{{ activeDevice.online }}</span
+								:class="[
+									'text-sm',
+									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
+								]"
+								>{{ getTrackedVehicle?.online }}</span
 							>
 						</div>
-						<span :class="['text-sm', `text-${deriveColor(activeDevice.online)}-600`]"
-							>{{ activeDevice.speed }} {{ activeDevice.distance_unit_hour }}</span
+						<span
+							:class="[
+								'text-sm',
+								`text-${deriveColor(getTrackedVehicle?.online)}-600`,
+							]"
+							>{{ getTrackedVehicle?.speed }}
+							{{ getTrackedVehicle?.distance_unit_hour }}</span
 						>
 					</div>
 					<!-- tab switcher -->
@@ -273,15 +284,24 @@
 						</button>
 						<button
 							:class="[
-								'font-semibold disabled:bg-gray-100',
+								'inline-flex items-center justify-center space-x-2 font-semibold disabled:bg-gray-100',
 								activeDeviceTab == 'history' && 'bg-blue-100',
 							]"
 							type="button"
 							:disabled="
-								activeDevice.online == 'offline' && activeDevice.timestamp == 0
+								getTrackedVehicle?.online == 'offline' &&
+								getTrackedVehicle?.timestamp == 0
 							"
-							@click="setActiveDeviceTab('history')">
-							History
+							@click="
+								() => {
+									executeFetchDeviceHistory();
+									setActiveDeviceTab('history');
+								}
+							">
+							<span
+								class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+								v-if="fetchingDeviceHistory"></span>
+							<span>History</span>
 						</button>
 					</div>
 				</div>
@@ -308,7 +328,7 @@
 									<span class="text-gray-500">Driver</span>
 								</h1>
 								<span class="text-end font-semibold text-gray-600">{{
-									activeDevice.driver_data.name ?? 'Name N/A'
+									getTrackedVehicle?.driver_data?.name ?? 'Name N/A'
 								}}</span>
 							</div>
 
@@ -320,7 +340,7 @@
 									<span class="text-gray-500">Current Status</span>
 								</h1>
 								<span class="text-end font-semibold text-gray-600"
-									>{{ activeDevice.online }}
+									>{{ getTrackedVehicle?.online }}
 								</span>
 							</div>
 
@@ -332,7 +352,7 @@
 									<span class="text-gray-500">Recent Ping</span>
 								</h1>
 								<span class="text-end font-semibold text-gray-600">{{
-									activeDevice.time.toString().replace(' ', ' | ')
+									getTrackedVehicle?.time?.toString().replace(' ', ' | ')
 								}}</span>
 							</div>
 						</div>
@@ -350,7 +370,7 @@
 								@click="
 									triggerDeviceCommand(
 										'stop',
-										activeDevice.id,
+										getTrackedVehicle?.id as number,
 										'Engine Stop',
 										'engineStop',
 									)
@@ -369,7 +389,7 @@
 								@click="
 									triggerDeviceCommand(
 										'start',
-										activeDevice.id,
+										getTrackedVehicle?.id as number,
 										'Engine Resume',
 										'engineResume',
 									)
@@ -407,17 +427,296 @@
 					</div>
 				</div>
 				<div
-					class="flex-grow space-y-5 p-5"
+					class="thin-scrollbar flex-grow space-y-5 overflow-y-auto p-5"
 					v-else-if="activeDeviceTab == 'history'">
+					<!-- the stats -->
+					<div class="grid grid-cols-2 gap-4">
+						<div
+							class="flex h-28 items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+							<div class="flex-grow text-sm">
+								<h2 class="text-gray-500">Total Distance</h2>
+								<h1 class="font-semibold text-gray-700">
+									{{ deviceHistory?.distance_sum ?? 'Unknown' }}
+								</h1>
+							</div>
+							<button
+								class="inline-flex size-[3rem] items-center justify-center rounded-md border border-blue-300 bg-blue-100">
+								<span
+									class="icon-[material-symbols-light--route-outline] text-2xl text-blue-600"></span>
+							</button>
+						</div>
+						<div
+							class="flex h-28 items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+							<div class="flex-grow text-sm">
+								<h2 class="text-gray-500">Total Trips</h2>
+								<h1 class="font-semibold text-gray-700">
+									{{
+										deviceMovement.length == 0
+											? 'Unknown'
+											: deviceMovement.reduce(
+													(acc, curr) => acc + curr.movement.length,
+													0,
+												)
+									}}
+								</h1>
+							</div>
+							<button
+								class="inline-flex size-[3rem] items-center justify-center rounded-md border border-green-300 bg-green-100">
+								<span
+									class="icon-[material-symbols-light--pin-drop] text-2xl text-green-600"></span>
+							</button>
+						</div>
+						<div
+							class="col-span-2 flex h-28 items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
+							<div class="flex-grow text-sm">
+								<h2 class="text-gray-500">Stop Duration</h2>
+								<h1 class="font-semibold text-gray-700">
+									{{ deviceHistory?.stop_duration ?? 'Unknown' }}
+								</h1>
+							</div>
+							<button
+								class="inline-flex size-[3rem] items-center justify-center rounded-md border border-yellow-300 bg-yellow-100">
+								<span
+									class="icon-[material-symbols-light--clock-loader-20] text-2xl text-yellow-600"></span>
+							</button>
+						</div>
+					</div>
+					<!-- nesting area, history replay e.t.c -->
+					<div
+						class="flex h-fit flex-col divide-y-2 rounded-lg border bg-white shadow-xs outline-none">
+						<div class="h-20 p-5">
+							<h1 class="font-bold text-gray-700">Nesting Area Prediction</h1>
+							<h2 class="text-sm text-gray-500">
+								Where were you most likely to find the vehicle?
+							</h2>
+						</div>
+						<div class="space-y-5 p-5">
+							<div
+								class="h-[10.5rem] rounded-lg border border-green-100 bg-gray-100 p-5 outline-none"
+								v-for="(e, idx) in nestingAreas"
+								:key="idx">
+								<div class="flex items-center justify-between">
+									<div>
+										<h1
+											class="font-semibold text-gray-700"
+											v-if="idx == 0">
+											Most Likely
+										</h1>
+										<h1
+											class="font-semibold text-gray-700"
+											v-else-if="idx == 1">
+											Medium Likely
+										</h1>
+										<h1
+											class="font-semibold text-gray-700"
+											v-else-if="idx == 2">
+											Least Likely
+										</h1>
+										<h1
+											class="font-semibold text-gray-700"
+											v-else>
+											Other Places
+										</h1>
+										<p class="text-sm text-gray-500">
+											Kericho Road, Kahawa Sukari, 4th Avenue
+										</p>
+									</div>
+									<div
+										v-if="[0, 1, 2].includes(idx)"
+										:class="[
+											'flex w-[25%] justify-center rounded-full border p-1 text-xs outline-none',
+											idx == 0 &&
+												'border-green-400 bg-green-100 text-green-500',
+											idx == 1 &&
+												'border-yellow-400 bg-yellow-100 text-yellow-500',
+											idx == 2 && 'border-red-400 bg-red-100 text-red-500',
+										]">
+										<span v-if="idx == 0">Very High</span>
+										<span v-else-if="idx == 1">Medium</span>
+										<span v-else-if="idx == 2">Low</span>
+									</div>
+								</div>
+								<div class="mt-2 flex items-center justify-between">
+									<div>
+										<h1 class="inline-flex items-center space-x-1">
+											<span
+												class="icon-[material-symbols-light--nest-clock-farsight-analog-rounded] text-gray-700"></span>
+											<span class="font-bold text-gray-700"
+												>{{ Math.ceil(e.location_time_hours) }}hrs</span
+											>
+										</h1>
+										<h2 class="text-sm text-gray-500">Time Spent</h2>
+									</div>
+									<div>
+										<h1 class="inline-flex items-center space-x-1">
+											<span
+												class="icon-[material-symbols-light--pie-chart-outline] text-xl text-gray-700"></span>
+											<span class="font-bold text-gray-700"
+												>~{{
+													e.location_time_hours_fraction.toFixed(1)
+												}}%</span
+											>
+										</h1>
+										<h2 class="text-sm text-gray-500">Of Time</h2>
+									</div>
+									<div>
+										<h1 class="inline-flex items-center space-x-1">
+											<span
+												class="icon-[material-symbols-light--pin-drop-outline] text-xl text-gray-700"></span>
+											<span class="font-bold text-gray-700">{{
+												e.appearances
+											}}</span>
+										</h1>
+										<h2 class="text-sm text-gray-500">Visits</h2>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="h-fit divide-y-2 rounded-lg border bg-white shadow-xs outline-none">
+						<div class="p-5">
+							<h1 class="font-bold text-gray-700">Trip History</h1>
+							<h2 class="text-sm text-gray-500">
+								Movement trail of the vehicle in this period
+							</h2>
+						</div>
+						<div class="space-y-5 p-5">
+							<div
+								class="h-fit divide-y-2 rounded-lg border outline-none"
+								v-for="(e, idx) in deviceMovement"
+								:key="idx">
+								<div class="flex h-14 items-center p-5">
+									<h1 class="text-sm font-bold">{{ e.date }}</h1>
+								</div>
+								<div class="p-5">
+									<!-- start of timeline -->
+									<template
+										v-if="e.movement.length > 0"
+										v-for="(m, idx) in e.movement"
+										:key="idx">
+										<ol class="relative border-s border-green-500">
+											<li class="ms-4">
+												<div
+													class="absolute -start-2.5 size-5 rounded-full border border-white bg-green-500"></div>
+												<h1
+													class="inline-flex space-x-3 text-sm leading-none text-gray-700">
+													<span class="font-semibold">Start</span>
+													<span>&VerticalBar;</span>
+													<time class="font-semibold">{{
+														m.startedAt.split(' ')[1].substring(0, 5)
+													}}</time>
+												</h1>
+												<p class="text-sm font-normal text-gray-500">
+													Kericho Road, Kahawa Sukari
+												</p>
+												<p
+													class="mb-4 inline-flex items-center space-x-2 text-sm">
+													<span class="text-gray-700"
+														>Driving Duration</span
+													>
+													<span class="text-2xl">&middot;</span>
+													<span class="text-gray-500">{{
+														m.drivingDuration
+													}}</span>
+												</p>
+											</li>
+										</ol>
+										<ol
+											class="relative border-s border-yellow-500"
+											v-if="m.idlePeriods.length > 0"
+											v-for="(i, idx) in m.idlePeriods"
+											:key="idx">
+											<li class="ms-4">
+												<div
+													class="absolute -start-2.5 size-5 rounded-full border border-white bg-yellow-500"></div>
+												<h1
+													class="inline-flex space-x-3 text-sm leading-none text-gray-700">
+													<span class="font-semibold">Idle</span>
+													<span>&VerticalBar;</span>
+													<span
+														class="inline-flex items-center space-x-1">
+														<time class="font-semibold"
+															>{{
+																i.startedAt
+																	.split(' ')[1]
+																	.substring(0, 5)
+															}}
+														</time>
+														<span> - </span>
+														<time class="font-semibold"
+															>{{
+																i.stoppedAt
+																	.split(' ')[1]
+																	.substring(0, 5)
+															}}
+														</time>
+														<span class="text-gray-500"
+															>({{ i.durationInMinutes.toFixed(2) }} min)</span
+														>
+													</span>
+												</h1>
+
+												<p
+													class="mb-4 inline-flex items-center space-x-2 text-sm">
+													<span class="text-gray-700">Idle Duration</span>
+													<span class="text-2xl">&middot;</span>
+													<span class="text-gray-500">{{
+														m.totalIdleDuration
+													}}</span>
+												</p>
+											</li>
+										</ol>
+										<ol class="relative border-s border-red-500">
+											<li class="ms-4">
+												<div
+													class="absolute -start-2.5 size-5 rounded-full border border-white bg-red-500"></div>
+												<h1
+													class="inline-flex space-x-3 text-sm leading-none text-gray-700">
+													<span class="font-semibold">Stop</span>
+													<span>&VerticalBar;</span>
+													<time class="font-semibold">{{
+														m.stoppedAt.split(' ')[1].substring(0, 5)
+													}}</time>
+												</h1>
+												<p class="text-sm font-normal text-gray-500">
+													Kericho Road, Kahawa Sukari
+												</p>
+												<p
+													class="mb-4 inline-flex items-center space-x-2 text-sm">
+													<span class="text-gray-700">Stop Duration</span>
+													<span class="text-2xl">&middot;</span>
+													<span class="text-gray-500">1hrs 10 min</span>
+												</p>
+											</li>
+										</ol>
+										<!-- end of timeline -->
+									</template>
+									<template v-else>
+										<div
+											class="rounded-lg border border-yellow-300 bg-yellow-100 p-2">
+											<p class="text-sm text-yellow-500">
+												No movement history available for this day.
+											</p>
+										</div>
+									</template>
+								</div>
+							</div>
+						</div>
+					</div>
 					<NuxtLink
 						:to="{
 							name: 'regent-tracking-vehicle-history',
-							query: { device_id: activeDevice.id, vehicle_reg: activeDevice.name },
+							query: {
+								device_id: getTrackedVehicle?.id,
+								vehicle_reg: getTrackedVehicle?.name,
+							},
 						}"
-						class="out inline-flex h-12 w-full items-center justify-center space-x-1 rounded-lg bg-blue-500 outline-none">
+						class="inline-flex h-14 min-h-14 w-full items-center justify-center space-x-1 rounded-lg bg-blue-600 transition-colors duration-150 outline-none hover:bg-blue-700">
 						<span
 							class="icon-[material-symbols-light--info-outline-rounded] text-xl text-slate-100"></span>
-						<span class="text-sm text-slate-100">View Detailed History</span>
+						<span class="text-sm font-semibold text-slate-100"
+							>View Detailed History</span
+						>
 					</NuxtLink>
 				</div>
 			</div>
@@ -444,7 +743,7 @@
 		deviceOnlineStatus,
 		fetchingClientVehicles,
 		errorFetchingClientVehicles,
-		activeDevice,
+		getTrackedVehicle,
 		activeDeviceTab,
 		deriveColor,
 		setDeviceOnlineStatus,
@@ -455,7 +754,6 @@
 		useRegentTrackingDeviceUtils();
 
 	const {
-		alertsActiveDevice,
 		dateFrom,
 		dateTo,
 		alerts,
@@ -465,10 +763,15 @@
 	} = await useRegentTrackingDeviceAlerts();
 
 	const {
-		startTimestamp,
+		filterPeriod,
 		deviceHistory,
-		endTimestamp,
-		getDeviceHistoryLoading,
-		getDeviceHistory,
-	} = useTrackedDeviceCommandsAndHistory();
+		fetchingDeviceHistory,
+		errorFetchingDeviceHistory,
+		nestingAreas,
+		deviceMovement,
+		setFilterPeriod,
+		setPositionOnMap,
+		setPolylineCoords,
+		executeFetchDeviceHistory,
+	} = await useRegentTrackingDeviceHistory();
 </script>
