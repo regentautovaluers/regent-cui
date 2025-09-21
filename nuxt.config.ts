@@ -91,8 +91,5 @@ export default defineNuxtConfig({
 		},
 		app: {},
 	},
-	nitro: {
-		preset: 'node-server',
-	},
 	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
 });
