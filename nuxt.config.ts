@@ -23,12 +23,6 @@ export default defineNuxtConfig({
 	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
 	vite: {
 		plugins: [tailwindcss()],
-		base: '/',
-		build: {
-			chunkSizeWarningLimit: 1500,
-			sourcemap: false,
-		},
-		assetsInclude: ['**/*.jpg', '**/*.png', '**/*.png'],
 	},
 	app: {
 		layoutTransition: { name: 'layout', mode: 'out-in' },
