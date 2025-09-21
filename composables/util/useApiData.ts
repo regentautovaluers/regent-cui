@@ -73,7 +73,7 @@ export const useStandardizedApi = () => {
  */
 export const useApiData = <T = unknown, R = T>(
 	key: string,
-	endpoint: string,
+	endpoint: string | Ref<string> | ComputedRef<string>, // Accept reactive endpoint,
 	options: Omit<AsyncDataOptions<ApiResponse<T>, R>, 'transform'> & {
 		query?: Record<string, any>;
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -88,7 +88,7 @@ export const useApiData = <T = unknown, R = T>(
 	return useAsyncData<ApiResponse<T>, StandardErrorResponse, R>(
 		key,
 		() =>
-			api.handleApiCall<T>(endpoint, {
+			api.handleApiCall<T>(unref(endpoint), {
 				method,
 				query,
 				body,
