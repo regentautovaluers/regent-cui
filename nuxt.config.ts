@@ -1,15 +1,14 @@
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
-	compatibilityDate: '2024-11-01',
+	compatibilityDate: '2025-07-15',
 	devtools: { enabled: true },
-	pages: true,
-	ssr: true,
-	build: {
-		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
+	css: ['~/assets/css/main.css'],
+	vite: {
+		plugins: [tailwindcss()],
 	},
-	devServer: {
-		port: 8000,
+	build: {
+		// transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
 	},
 	components: [
 		{
@@ -20,13 +19,10 @@ export default defineNuxtConfig({
 	imports: {
 		dirs: ['./utils/**', './composables/**'],
 	},
-	css: ['~/assets/css/main.css', '~/assets/css/icons.css'],
-	vite: {
-		plugins: [tailwindcss()],
-	},
+	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
 	app: {
-		layoutTransition: { name: 'layout', mode: 'out-in' },
-		pageTransition: { name: 'page', mode: 'out-in' },
+		// layoutTransition: { name: 'layout', mode: 'out-in' },
+		// pageTransition: { name: 'page', mode: 'out-in' },
 		head: {
 			title: 'Regent Group',
 			meta: [
@@ -91,5 +87,4 @@ export default defineNuxtConfig({
 		},
 		app: {},
 	},
-	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
 });

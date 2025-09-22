@@ -1,6 +1,6 @@
 <template>
 	<form @submit.prevent="attemptLogin">
-		<div class="mb-16 text-3xl laptop:text-4xl desktop:4k:text-5xl">
+		<div class="laptop:text-4xl desktop:4k:text-5xl mb-16 text-3xl">
 			<h1 class="font-bold">Hello,</h1>
 			<h2 class="font-bold whitespace-nowrap">Welcome Back</h2>
 		</div>
@@ -57,6 +57,7 @@
 	});
 
 	const revealPassword: Ref<boolean> = ref(false);
+	const { data } = await useFetch('/api/test');
 	const { email, password, loginAttemptLoading, attemptLogin } = useAuth();
 </script>
 
