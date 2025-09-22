@@ -30,34 +30,64 @@
 				<div
 					class="grid h-12 w-[45%] grid-cols-5 divide-x-[1.5px] overflow-clip rounded-lg border-[1px] text-xs text-gray-600">
 					<button
-						:class="['font-semibold', filterPeriod == 'today' && 'bg-blue-100']"
+						:class="[
+							'inline-flex items-center justify-center space-x-2 font-semibold',
+							filterPeriod == 'today' && 'bg-blue-100',
+						]"
 						type="button"
 						@click="setFilterPeriod('today')">
-						Today
+						<span
+							class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+							v-if="fetchingDeviceHistory && filterPeriod == 'today'"></span>
+						<span>Today</span>
 					</button>
 					<button
-						:class="['font-semibold', filterPeriod == 'this-week' && 'bg-blue-100']"
+						:class="[
+							'inline-flex items-center justify-center space-x-2 font-semibold',
+							filterPeriod == 'this-week' && 'bg-blue-100',
+						]"
 						type="button"
 						@click="setFilterPeriod('this-week')">
-						This Week
+						<span
+							class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+							v-if="fetchingDeviceHistory && filterPeriod == 'this-week'"></span>
+						<span>This Week</span>
 					</button>
 					<button
-						:class="['font-semibold', filterPeriod == 'last-30-days' && 'bg-blue-100']"
+						:class="[
+							'inline-flex items-center justify-center space-x-2 font-semibold',
+							filterPeriod == 'last-30-days' && 'bg-blue-100',
+						]"
 						type="button"
 						@click="setFilterPeriod('last-30-days')">
-						Last 30 Days
+						<span
+							class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+							v-if="fetchingDeviceHistory && filterPeriod == 'last-30-days'"></span>
+						<span>Last 30 Days</span>
 					</button>
 					<button
-						:class="['font-semibold', filterPeriod == 'last-3-months' && 'bg-blue-100']"
+						:class="[
+							'inline-flex items-center justify-center space-x-2 font-semibold',
+							filterPeriod == 'last-3-months' && 'bg-blue-100',
+						]"
 						type="button"
 						@click="setFilterPeriod('last-3-months')">
-						Last 3 Months
+						<span
+							class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+							v-if="fetchingDeviceHistory && filterPeriod == 'last-3-months'"></span>
+						<span>Last 3 Months</span>
 					</button>
 					<button
-						:class="['font-semibold', filterPeriod == 'custom' && 'bg-blue-100']"
+						:class="[
+							'inline-flex items-center justify-center space-x-2 font-semibold',
+							filterPeriod == 'custom' && 'bg-blue-100',
+						]"
 						type="button"
 						@click="setFilterPeriod('custom')">
-						Custom Range
+						<span
+							class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+							v-if="fetchingDeviceHistory && filterPeriod == 'custom'"></span>
+						<span>Custom</span>
 					</button>
 				</div>
 			</div>
@@ -364,7 +394,10 @@
 													>{{ i.stoppedAt.split(' ')[1].substring(0, 5) }}
 												</time>
 												<span class="text-gray-500"
-													>({{ i.durationInMinutes.toFixed(2) }} min)</span
+													>({{
+														i.durationInMinutes.toFixed(2)
+													}}
+													min)</span
 												>
 											</span>
 										</h1>
