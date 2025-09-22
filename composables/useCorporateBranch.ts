@@ -15,7 +15,7 @@ export const useCorporateBranch = () => {
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 		method: 'GET',
 		headers: {
-			Accept: 'application/json',
+			Accept: '',
 		},
 		query: {
 			corpId: getPrincipal.value.corpId,
@@ -41,8 +41,8 @@ export const useCorporateBranch = () => {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
+					Accept: '',
+					'Content-Type': '',
 				},
 				body: JSON.stringify({
 					branchName: branchName,
@@ -88,8 +88,8 @@ export const useCorporateBranch = () => {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
+					Accept: '',
+					'Content-Type': '',
 				},
 				body: JSON.stringify({
 					branchName: branchName,

@@ -319,7 +319,7 @@
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
 			headers: {
-				Accept: 'application/json',
+				Accept: '',
 			},
 			server: true,
 			transform: (report: any) => {

@@ -90,7 +90,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
 		method: 'GET',
 		headers: {
-			Accept: 'application/json',
+			Accept: '',
 		},
 		server: false,
 		lazy: true,
@@ -101,7 +101,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
 		method: 'GET',
 		headers: {
-			Accept: 'application/json',
+			Accept: '',
 		},
 		server: false,
 		lazy: true,

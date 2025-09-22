@@ -56,8 +56,8 @@ const useAuth = () => {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
+					Accept: '',
+					'Content-Type': '',
 				},
 				body: JSON.stringify({
 					email: email.value,
@@ -116,7 +116,7 @@ const useAuth = () => {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'GET',
 				headers: {
-					Accept: 'application/json',
+					Accept: '',
 				},
 				onResponse({ response }) {
 					if (response.ok) {

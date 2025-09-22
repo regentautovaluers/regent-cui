@@ -19,7 +19,7 @@ export const useRACharts = () => {
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: 'GET',
 			headers: {
-				Accept: 'application/json',
+				Accept: '',
 			},
 			server: false,
 			lazy: true,

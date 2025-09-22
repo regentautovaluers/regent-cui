@@ -22,7 +22,7 @@ const useUserAccounts = () => {
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
 			headers: {
-				Accept: 'application/json',
+				Accept: '',
 			},
 			server: false,
 			lazy: true,
@@ -63,8 +63,8 @@ const useUserAccounts = () => {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
+					Accept: '',
+					'Content-Type': '',
 				},
 				body: JSON.stringify({
 					username: username,
@@ -121,8 +121,8 @@ const useUserAccounts = () => {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'PUT',
 				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
+					Accept: '',
+					'Content-Type': '',
 				},
 				body: JSON.stringify({
 					userId: userId,

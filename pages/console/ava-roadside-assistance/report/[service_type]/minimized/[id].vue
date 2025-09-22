@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<button
-					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold uppercase text-white hover:bg-blue-700 disabled:bg-gray-300"
+					class="h-14 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white uppercase hover:bg-blue-700 disabled:bg-gray-300"
 					disabled>
 					Download Report
 				</button>
@@ -188,7 +188,7 @@
 								{{ serviceReport.vehicle_model }}</span
 							>
 						</div>
-						<h2 class="whitespace-nowrap font-semibold text-gray-700">
+						<h2 class="font-semibold whitespace-nowrap text-gray-700">
 							Tracking Id: {{ serviceReport.tracking_code }}
 						</h2>
 						<span class="font-semibold text-gray-500">
@@ -300,7 +300,7 @@
 			baseURL: runtimeConfig.public.AVA_BASE_URL,
 			method: 'GET',
 			headers: {
-				Accept: 'application/json',
+				Accept: '',
 			},
 			server: true,
 		},

@@ -83,7 +83,7 @@ export function useCollateralVerificiation() {
 		baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 		method: 'GET',
 		headers: {
-			Accept: 'application/json',
+			Accept: '',
 		},
 		server: false,
 		lazy: true,

@@ -27,7 +27,7 @@ export const useStandardizedApi = () => {
 		const response = await $fetch<ApiResponse<T>>(endpoint, {
 			...options,
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': '',
 				...options.headers,
 			},
 		});
