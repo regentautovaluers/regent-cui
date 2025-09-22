@@ -9,7 +9,7 @@ export default defineNuxtConfig({
 	css: ['~/assets/css/main.css'],
 	vite: {
 		plugins: [tailwindcss()],
-		base: "/"
+		base: '/',
 	},
 	build: {
 		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
@@ -54,7 +54,8 @@ export default defineNuxtConfig({
 				},
 				{
 					rel: 'manifest',
-					href: '/site.webmanifest',
+					href: '/manifest.json',
+					type: 'application/manifest+json',
 				},
 			],
 			script: [],
