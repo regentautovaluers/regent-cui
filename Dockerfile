@@ -15,10 +15,14 @@ WORKDIR /app
 COPY --from=build /app/.output /app/.output
 RUN ls -l /app/.output/public
 
-# Nuxt's server entry point is at `.output/server/index.mjs`
-# and the static files are at `.output/public`
-# This structure makes it easy to mount `.output/public` as a volume.
+# Create backup of public assets for initialization
+RUN cp -r /app/.output/public /app/.output/public-backup
+
+# Add entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 3000
 
-# The start command for your Nuxt app
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["node", ".output/server/index.mjs"]

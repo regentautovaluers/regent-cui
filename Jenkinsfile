@@ -65,8 +65,11 @@ EOT
                             echo "Contents of .env file:"
                             cat .env
 
+                            # Ensure host directory exists
+                            mkdir -p /var/www/valuation-portal/public-assets
+
                             echo "Running new container..."
-                            docker run -d --restart always --name valuation-portal --env-file .env -p 3000:3000 -v /var/www/valuation-portal/public-assets:/app/.output/public ${DOCKER_IMAGE}:${DOCKER_TAG}
+                            docker run -d --restart always --name valuation-portal --env-file .env -p 3000:3000 -v valuation-public:/var/www/valuation-portal/public-assets:/app/.output/public ${DOCKER_IMAGE}:${DOCKER_TAG}
 EOF
                         """
                     }
