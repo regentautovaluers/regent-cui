@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 		base: "/"
 	},
 	build: {
-		// transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
+		transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
 	},
 	components: [
 		{
