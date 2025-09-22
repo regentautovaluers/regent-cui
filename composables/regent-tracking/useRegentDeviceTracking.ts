@@ -1,6 +1,11 @@
 import { type TrackedVehicles, type Online } from '~/types/regent-tracking/tracked-vehicles';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
-import { getTrackedVehicle, setTrackedVehicle } from '~/stores/regent-tracking-devices-store';
+import {
+	getTrackedVehicle,
+	setTrackedVehicle,
+	cleanTrackedVehicle,
+} from '~/stores/regent-tracking-devices-store';
+import { useGeolocation } from '@vueuse/core';
 
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
@@ -8,6 +13,7 @@ export async function useRegentDeviceTracking() {
 	const deviceOnlineStatus: Ref<Online | null> = ref(null);
 	const searchString: Ref<string | null> = ref(null);
 	const activeDeviceTab: Ref<ActiveDeviceTab> = ref('details');
+	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
 
 	const {
 		data: vehicles,
@@ -66,6 +72,31 @@ export async function useRegentDeviceTracking() {
 		return filteredVehicles;
 	});
 
+	const mapCenter: ComputedRef<{ lat: number; lng: number }> = computed(() => {
+		if (!vehicles.value) {
+			if (geolocationSupported) {
+				return {
+					lat: coords.value.latitude,
+					lng: coords.value.longitude,
+				};
+			}
+		} else {
+			const firstActive = vehicles.value.find((v) =>
+				['ack', 'engine', 'online'].includes(v.online),
+			);
+
+			return {
+				lat: firstActive?.lat as number,
+				lng: firstActive?.lng as number,
+			};
+		}
+
+		return {
+			lat: -1.2686925224944912,
+			lng: 36.80951195575046,
+		};
+	});
+
 	function deriveColor(online_status: Online): string {
 		switch (online_status) {
 			case 'ack':
@@ -102,10 +133,12 @@ export async function useRegentDeviceTracking() {
 		errorFetchingClientVehicles,
 		getTrackedVehicle,
 		activeDeviceTab,
+		mapCenter,
 		deriveColor,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,
 		refetchClientVehicles,
+		cleanTrackedVehicle,
 	};
 }
