@@ -633,15 +633,15 @@
 		layout: 'console-layout',
 	});
 
-	const {
-		searchRegNo,
-		fetchTrackingCertificatesStatus,
-		size,
-		currentPage,
-		trackingCertificates,
-		totalPages,
-		downloadReports,
-		executeFetchTrackingCertificates,
-		exportToExcel,
-	} = useTrackingTraceabilityReports();
+	// const {
+	// 	searchRegNo,
+	// 	fetchTrackingCertificatesStatus,
+	// 	size,
+	// 	currentPage,
+	// 	trackingCertificates,
+	// 	totalPages,
+	// 	downloadReports,
+	// 	executeFetchTrackingCertificates,
+	// 	exportToExcel,
+	// } = useTrackingTraceabilityReports();
 </script>

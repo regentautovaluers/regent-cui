@@ -4,25 +4,14 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
-
-RUN ls -l .output/public
+RUN npm run generate
 
 # Stage 2: Create the production image with a shared volume
 FROM node:20.19-slim as serve
 WORKDIR /app
 
 COPY --from=build /app/.output /app/.output
-RUN ls -l /app/.output/public
-
-# Create backup of public assets for initialization
-RUN cp -r /app/.output/public /app/.output/public-backup
-
-# Add entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
 EXPOSE 3000
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["node", ".output/server/index.mjs"]
+CMD ["npx", "serve", ".output/public"]
