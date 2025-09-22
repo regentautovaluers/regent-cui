@@ -9,6 +9,7 @@ export default defineNuxtConfig({
 	css: ['~/assets/css/main.css'],
 	vite: {
 		plugins: [tailwindcss()],
+		base: "/"
 	},
 	build: {
 		// transpile: ['mosha-vue-toastify', '@googlemaps/js-api-loader'],
@@ -22,7 +23,7 @@ export default defineNuxtConfig({
 	imports: {
 		dirs: ['./utils/**', './composables/**'],
 	},
-	modules: ['@nuxtjs/harlem', '@nuxt/fonts'],
+	modules: ['@nuxtjs/harlem'],
 	app: {
 		// layoutTransition: { name: 'layout', mode: 'out-in' },
 		// pageTransition: { name: 'page', mode: 'out-in' },
