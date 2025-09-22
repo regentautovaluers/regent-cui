@@ -1,97 +1,125 @@
 export const googleMapStyle = [
 	{
-		featureType: 'road',
+		featureType: 'administrative',
+		elementType: 'all',
 		stylers: [
 			{
-				hue: '#5e00ff',
-			},
-			{
-				saturation: -79,
+				saturation: '-100',
 			},
 		],
 	},
 	{
-		featureType: 'poi',
+		featureType: 'administrative.province',
+		elementType: 'all',
 		stylers: [
-			{
-				saturation: -78,
-			},
-			{
-				hue: '#6600ff',
-			},
-			{
-				lightness: -47,
-			},
 			{
 				visibility: 'off',
 			},
 		],
 	},
 	{
-		featureType: 'road.local',
-		stylers: [
-			{
-				lightness: 22,
-			},
-		],
-	},
-	{
 		featureType: 'landscape',
+		elementType: 'all',
 		stylers: [
 			{
-				hue: '#6600ff',
+				saturation: -100,
 			},
 			{
-				saturation: -11,
+				lightness: 65,
+			},
+			{
+				visibility: 'on',
 			},
 		],
 	},
 	{
-		featureType: 'water',
+		featureType: 'poi',
+		elementType: 'all',
 		stylers: [
 			{
-				saturation: -65,
+				saturation: -100,
 			},
 			{
-				hue: '#1900ff',
+				lightness: '50',
 			},
 			{
-				lightness: 8,
+				visibility: 'simplified',
+			},
+		],
+	},
+	{
+		featureType: 'road',
+		elementType: 'all',
+		stylers: [
+			{
+				saturation: '-100',
+			},
+		],
+	},
+	{
+		featureType: 'road.highway',
+		elementType: 'all',
+		stylers: [
+			{
+				visibility: 'simplified',
+			},
+		],
+	},
+	{
+		featureType: 'road.arterial',
+		elementType: 'all',
+		stylers: [
+			{
+				lightness: '30',
 			},
 		],
 	},
 	{
 		featureType: 'road.local',
+		elementType: 'all',
 		stylers: [
 			{
-				weight: 1.3,
-			},
-			{
-				lightness: 30,
+				lightness: '40',
 			},
 		],
 	},
 	{
 		featureType: 'transit',
+		elementType: 'all',
 		stylers: [
 			{
+				saturation: -100,
+			},
+			{
 				visibility: 'simplified',
-			},
-			{
-				hue: '#5e00ff',
-			},
-			{
-				saturation: -16,
 			},
 		],
 	},
 	{
-		featureType: 'transit.line',
+		featureType: 'water',
+		elementType: 'geometry',
 		stylers: [
 			{
-				saturation: -72,
+				hue: '#ffff00',
+			},
+			{
+				lightness: -25,
+			},
+			{
+				saturation: -97,
 			},
 		],
 	},
-	{},
+	{
+		featureType: 'water',
+		elementType: 'labels',
+		stylers: [
+			{
+				lightness: -25,
+			},
+			{
+				saturation: -100,
+			},
+		],
+	},
 ];
