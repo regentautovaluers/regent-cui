@@ -5,11 +5,45 @@
 			:api-key="googleMapsApiKey"
 			:styles="googleMapStyle"
 			style="width: 100%; height: 100vh; position: absolute"
+			:center="mapCenter"
 			:map-type-control="false"
 			:zoom="12"
 			:zoom-control="true"
 			:fullscreen-control="false"
 			:street-view-control="true">
+			<Polyline
+				v-if="getTrackedVehicle"
+				:options="{
+					path: getTrackedVehicle.tail.map((e) => {
+						return { lat: parseFloat(e.lat), lng: parseFloat(e.lng) };
+					}),
+					geodesic: true,
+					strokeColor: '#ec4899',
+					strokeOpacity: 1.0,
+					strokeWeight: 5,
+				}" />
+
+			<MarkerCluster>
+				<CustomMarker
+					v-if="computedVehicles"
+					v-for="(v, idx) in computedVehicles"
+					:key="idx"
+					:options="{
+						position: { lat: v.lat, lng: v.lng },
+						anchorPoint: 'BOTTOM_CENTER',
+					}">
+					<div>
+						<p
+							class="size-fit h-fit rounded-lg border-[1px] border-gray-100 bg-white p-1 text-center font-bold">
+							{{ v.name.trim() }}
+						</p>
+						<img
+							src="/images/assets/maps-car.png"
+							width="50"
+							height="50" />
+					</div>
+				</CustomMarker>
+			</MarkerCluster>
 		</GoogleMap>
 
 		<div
@@ -198,7 +232,8 @@
 							<h2 class="text-sm text-gray-500">Updated 1 minute ago</h2>
 						</div>
 						<button
-							class="inline-flex size-11 items-center justify-center rounded-lg border-[1px]">
+							class="inline-flex size-11 items-center justify-center rounded-lg border-[1px]"
+							@click="cleanTrackedVehicle()">
 							<span
 								class="icon-[material-symbols-light--close-small] text-3xl text-gray-600"></span>
 						</button>
@@ -651,7 +686,10 @@
 															}}
 														</time>
 														<span class="text-gray-500"
-															>({{ i.durationInMinutes.toFixed(2) }} min)</span
+															>({{
+																i.durationInMinutes.toFixed(2)
+															}}
+															min)</span
 														>
 													</span>
 												</h1>
@@ -726,7 +764,7 @@
 
 <script setup lang="ts">
 	import { type LocationCoords } from '~/types';
-	import { GoogleMap, InfoWindow, Polyline } from 'vue3-google-map';
+	import { GoogleMap, InfoWindow, Polyline, CustomMarker, MarkerCluster } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
 	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
 	definePageMeta({
@@ -745,10 +783,12 @@
 		errorFetchingClientVehicles,
 		getTrackedVehicle,
 		activeDeviceTab,
+		mapCenter,
 		deriveColor,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,
+		cleanTrackedVehicle,
 	} = await useRegentDeviceTracking();
 	const { startDeviceCommandLoading, stopDeviceCommandLoading, triggerDeviceCommand } =
 		useRegentTrackingDeviceUtils();
