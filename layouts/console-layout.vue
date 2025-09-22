@@ -39,19 +39,6 @@
 				</svg>
 			</button>
 
-			<!-- chat button -->
-			<!-- <button
-					class="rounded-lg p-2 text-pink-500 transition-all duration-150 ease-linear hover:bg-pink-600 hover:text-slate-100"
-					type="button"
-					data-drawer-target="dashboard-chat-window"
-					data-drawer-show="dashboard-chat-window"
-					data-drawer-placement="right"
-					data-drawer-backdrop="false"
-					aria-controls="dashboard-chat-window">
-					
-					<ChatIcon />
-				</button> -->
-
 			<!-- user profile info -->
 			<div class="flex w-fit max-w-48 items-center space-x-3 px-2 py-1 md:max-w-48">
 				<UserAvatar />
@@ -300,7 +287,7 @@
 				<h3 class="text-lg font-semibold text-gray-500">Notifications</h3>
 			</div>
 			<div class="thin-scrollbar h-[90%] overflow-auto">
-				<div
+				<!-- <div
 					class="flex h-20 items-start space-x-3 p-3 hover:bg-gray-100"
 					v-for="(e, index) in notifications"
 					:key="index">
@@ -319,8 +306,7 @@
 							>
 						</h2>
 					</div>
-					<!-- <div class="flex h-full w-12 max-w-12 min-w-12 items-center bg-green-500"></div> -->
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</main>
@@ -345,50 +331,50 @@
 		appendTextTypeNode(message, 'Human');
 		userInput.value = '';
 	};
-	const {
-		user,
-		isAuthenticated,
-		dataList,
-		authError,
-		dataError,
-		signIn,
-		logOut,
-		fetchData,
-		// writeData,
-		deleteData,
-	} = useFirebaseRTDB();
+	// const {
+	// 	user,
+	// 	isAuthenticated,
+	// 	dataList,
+	// 	authError,
+	// 	dataError,
+	// 	signIn,
+	// 	logOut,
+	// 	fetchData,
+	// 	// writeData,
+	// 	deleteData,
+	// } = useFirebaseRTDB();
 
 	const config = useRuntimeConfig();
 
-	const notifications = computed(() =>
-		dataList.value
-			.sort((e1, e2) => {
-				if (e1.timestamp < e2.timestamp) {
-					return 1; // a comes after b
-				}
-				if (e1.timestamp > e2.timestamp) {
-					return -1; // a comes before b
-				}
-				return 0; // timestamps are equal
-			})
-			.map((e) => {
-				const timeMeta = calculateTimePassed(e.timestamp);
-				return { ...e, ...timeMeta };
-			}),
-	);
+	// const notifications = computed(() =>
+	// 	dataList.value
+	// 		.sort((e1, e2) => {
+	// 			if (e1.timestamp < e2.timestamp) {
+	// 				return 1; // a comes after b
+	// 			}
+	// 			if (e1.timestamp > e2.timestamp) {
+	// 				return -1; // a comes before b
+	// 			}
+	// 			return 0; // timestamps are equal
+	// 		})
+	// 		.map((e) => {
+	// 			const timeMeta = calculateTimePassed(e.timestamp);
+	// 			return { ...e, ...timeMeta };
+	// 		}),
+	// );
 
-	onMounted(() => {
-		// Fetch notifications only after Firebase authentication
-		watch(
-			isAuthenticated,
-			(isAuth) => {
-				if (isAuth && user.value) {
-					fetchData(`ERP/General/${getPrincipal.value.corpId}`);
-				} else {
-					signIn(config.public.FIREBASE_EMAIL, config.public.FIREBASE_PASSWORD);
-				}
-			},
-			{ immediate: true },
-		);
-	});
+	// onMounted(() => {
+	// 	// Fetch notifications only after Firebase authentication
+	// 	watch(
+	// 		isAuthenticated,
+	// 		(isAuth) => {
+	// 			if (isAuth && user.value) {
+	// 				fetchData(`ERP/General/${getPrincipal.value.corpId}`);
+	// 			} else {
+	// 				signIn(config.public.FIREBASE_EMAIL, config.public.FIREBASE_PASSWORD);
+	// 			}
+	// 		},
+	// 		{ immediate: true },
+	// 	);
+	// });
 </script>

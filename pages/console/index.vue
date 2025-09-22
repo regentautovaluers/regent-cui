@@ -30,8 +30,6 @@
 				Hi there! I am AVA, Regent's Smart Virtual Assistant. <br />
 				How can I help you today?
 			</p>
-			<!-- form to trigger the AI chat modal -->
-			<AIChatForm />
 
 			<div class="my-10 flex flex-col items-center space-y-5">
 				<button
