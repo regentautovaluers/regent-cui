@@ -34,10 +34,7 @@ function useCollateralVerificationTokensManagement() {
 			}
 
 			useToast('Token Pre-Check Failed!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
+				type: 'error',
 			});
 		},
 	});
@@ -93,10 +90,6 @@ function useCollateralVerificationTokensManagement() {
 					if (response.ok) {
 						useToast('Initiated succesfully!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					}
 				},
@@ -104,11 +97,7 @@ function useCollateralVerificationTokensManagement() {
 		} catch (err) {
 			console.log('Failed to initiate top up!', err);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			initiateTopUpRequestLoading.value = false;
@@ -283,17 +272,11 @@ function useCollateralVerificationInvoiceManagement() {
 			downloadedInvoice.value = URL.createObjectURL(pdfBlob);
 			useToast('Download successful!', {
 				type: 'success',
-				showIcon: false,
-				showCloseButton: false,
-				hideProgressBar: true,
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: false,
-				showCloseButton: false,
-				hideProgressBar: true,
+				type: 'error',
 			});
 		} finally {
 			invoiceDownloadLoading.value = false;

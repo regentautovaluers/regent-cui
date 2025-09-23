@@ -7,11 +7,7 @@ export const useClientGeolocation = () => {
 	const clientCoordinates: ComputedRef<LocationCoords> = computed(() => {
 		if (error.value) {
 			useToast('Geolocation Error!', {
-				type: 'warning',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'warn',
 			});
 
 			return {
@@ -199,11 +195,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				async onResponse({ response }) {
 					if (response.status === 404) {
 						useToast('Not Found. Try Again!', {
-							type: 'warning',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
+							type: 'warn',
 						});
 						vehicleRegistration.value = '';
 						return;
@@ -211,10 +203,6 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 
 					useToast('Vehicle Found!', {
 						type: 'success',
-						showIcon: true,
-						showCloseButton: false,
-						hideProgressBar: true,
-						transition: 'slide',
 					});
 
 					const registrationDetails = response._data;
@@ -242,11 +230,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			vehicleSearchLoading.value = false;
@@ -303,10 +287,6 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 					} else {
 						useToast('Request Made Successfully!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					}
 				},
@@ -314,11 +294,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		} catch (error) {
 			console.log('Service request error encountered. Reason: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			makeRequestLoading.value = false;

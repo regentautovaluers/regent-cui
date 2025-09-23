@@ -23,17 +23,11 @@ export function useRegentTrackingDeviceUtils() {
 			if (response.success) {
 				useToast('Success!', {
 					type: 'success',
-					showIcon: true,
-					showCloseButton: false,
-					hideProgressBar: true,
 				});
 			}
 		} catch (err: any) {
 			useToast('Error. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
+				type: 'error',
 			});
 		} finally {
 			if (commandType == 'start') {

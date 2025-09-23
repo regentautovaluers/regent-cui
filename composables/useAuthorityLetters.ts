@@ -118,11 +118,7 @@ const useAuthorityLetters = () => {
 		// the function
 		if (isPrincipalBroker() && agencyOrCorp.value.name.length === 0) {
 			useToast('Corporate is Required!', {
-				type: 'warning',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'bounce',
+				type: 'warn',
 			});
 
 			return;
@@ -168,10 +164,6 @@ const useAuthorityLetters = () => {
 					if (response.ok) {
 						useToast('Letter created successfully!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					}
 				},
@@ -179,11 +171,7 @@ const useAuthorityLetters = () => {
 		} catch (err) {
 			console.log('Failed to create authorization letter', err);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			createAuthorizationLetterLoading.value = false;
@@ -205,21 +193,13 @@ const useAuthorityLetters = () => {
 					onResponse({ response }) {
 						if (response.status === 404) {
 							useToast('Found No Letters!', {
-								type: 'warning',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
-								transition: 'slide',
+								type: 'warn',
 							});
 						}
 
 						if (response.ok) {
 							useToast('Success! Downloading Shortly!', {
 								type: 'success',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
-								transition: 'slide',
 							});
 
 							const url = window.URL.createObjectURL(new Blob([response._data]));
@@ -239,11 +219,7 @@ const useAuthorityLetters = () => {
 		} catch (err) {
 			console.log('Failed to export Excel document', err);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			exportAuthorityLettersLoading.value = false;

@@ -57,10 +57,6 @@ export const useFleets = () => {
 					if (response.status === 201) {
 						useToast('Fleet Created Successfully!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 						refeshFleets();
 					}
@@ -69,11 +65,7 @@ export const useFleets = () => {
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			createFleetLoading.value = false;
@@ -214,11 +206,7 @@ export const useBulkMemberRegistration = () => {
 			errorMessage.value = errorMss;
 
 			useToast('Parsing failed!', {
-				type: 'warning',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'warn',
 			});
 		}
 	};
@@ -255,21 +243,13 @@ export const useBulkMemberRegistration = () => {
 
 					useToast('Memberships Created Successfully!', {
 						type: 'success',
-						showIcon: true,
-						showCloseButton: false,
-						hideProgressBar: true,
-						transition: 'slide',
 					});
 				},
 			});
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			registerBulkMembershipsLoading.value = false;
@@ -358,11 +338,7 @@ export const useIndividualMembershipRegistration = () => {
 					} else if (response.status === 400) {
 						formErrorMessage.value = response._data.message;
 						useToast('Check Data Conflict!', {
-							type: 'warning',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
+							type: 'warn',
 						});
 						registerIndividualMemberLoading.value = false;
 					} else {
@@ -383,10 +359,6 @@ export const useIndividualMembershipRegistration = () => {
 							registerIndividualMemberLoading.value = false;
 							useToast('Membership Created Successfully!', {
 								type: 'success',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
-								transition: 'slide',
 							});
 						} else {
 							throw new Error('Something went wrong');
@@ -398,11 +370,7 @@ export const useIndividualMembershipRegistration = () => {
 			console.log('An error occured: ', err);
 			registerIndividualMemberLoading.value = false;
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		}
 	};

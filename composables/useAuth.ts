@@ -68,10 +68,7 @@ const useAuth = () => {
 					switch (response.status) {
 						case 401: {
 							useToast('Invalid Credentials', {
-								type: 'warning',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
+								type: 'warn',
 							});
 							break;
 						}
@@ -79,9 +76,6 @@ const useAuth = () => {
 						case 200: {
 							useToast('Login Successful', {
 								type: 'success',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
 							});
 
 							setCredentialsInBrowserStorage(response._data.data);
@@ -93,10 +87,7 @@ const useAuth = () => {
 		} catch (er) {
 			console.log('Error encountered. Reason: ', er);
 			useToast('Error. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
+				type: 'error',
 			});
 		} finally {
 			loginAttemptLoading.value = false;
@@ -130,10 +121,7 @@ const useAuth = () => {
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: false,
-				showCloseButton: false,
-				hideProgressBar: true,
+				type: 'error',
 			});
 		} finally {
 			searchCorpOrBrokerLoading.value = false;
@@ -189,9 +177,6 @@ const useAuth = () => {
 		csrfToken.value = '';
 		useToast('Logout Successful!', {
 			type: 'success',
-			showIcon: false,
-			showCloseButton: false,
-			hideProgressBar: true,
 		});
 
 		// redirect to the login page

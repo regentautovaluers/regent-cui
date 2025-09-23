@@ -104,10 +104,6 @@ export function useCollateralVerificiation() {
 					if (response.ok) {
 						useToast('Success!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 
 						if (checkType == 'verify-driving-license') {
@@ -122,11 +118,7 @@ export function useCollateralVerificiation() {
 			});
 		} catch (err) {
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			collateralCheckLoading.value = false;
@@ -172,11 +164,7 @@ export function useCollateralVerificiation() {
 			);
 		} catch (err) {
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			searchDefaulterLoading.value = false;

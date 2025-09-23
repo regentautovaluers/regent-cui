@@ -86,11 +86,7 @@ export const useAVAMemberships = () => {
 		} catch (err) {
 			console.log('Failed to fetch member vehicles. Err: ', err);
 			useToast('Failed to Fetch Vehicles!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			fetchMemberVehiclesLoading.value = false;
@@ -119,21 +115,13 @@ export const useAVAMemberships = () => {
 
 					useToast('Vehicle Added Sucessfully!', {
 						type: 'success',
-						showIcon: true,
-						showCloseButton: false,
-						hideProgressBar: true,
-						transition: 'slide',
 					});
 				},
 			});
 		} catch (err) {
 			console.log('Error encountered. Reason: ', err);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			addMemberVehicleLoading.value = false;
@@ -163,21 +151,13 @@ export const useAVAMemberships = () => {
 					}
 					useToast('Update Successful!', {
 						type: 'success',
-						showIcon: true,
-						showCloseButton: false,
-						hideProgressBar: true,
-						transition: 'slide',
 					});
 				},
 			});
 		} catch (error) {
 			console.log('Error encountered. Reason: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			updateMemberDetailsLoading.value = false;

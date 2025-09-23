@@ -60,10 +60,6 @@ export function useFraudDetection() {
 					if (response.ok) {
 						useToast('Onboarding Successful!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					}
 				},
@@ -71,11 +67,7 @@ export function useFraudDetection() {
 		} catch (err) {
 			console.log('Failed to onboard fraudster', err);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			onboardDefaulterLoading.value = false;
@@ -93,10 +85,6 @@ export function useFraudDetection() {
 					if (response.ok) {
 						useToast('Edit Successful!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					}
 				},
@@ -104,11 +92,7 @@ export function useFraudDetection() {
 		} catch (err) {
 			console.log('Failed to edit entry', err);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			editDefaulterLoading.value = false;
@@ -128,10 +112,6 @@ export function useFraudDetection() {
 					if (response.ok) {
 						useToast('Success. Reload page!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					}
 				},
@@ -139,11 +119,7 @@ export function useFraudDetection() {
 		} catch (err) {
 			console.log('Failed to delete fraud record', err);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			deleteDefaulterEntryLoading.value = false;
@@ -221,21 +197,13 @@ export function useFraudDetection() {
 						extractedLogbookInfo.value = response._data;
 						useToast('Success!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					}
 				},
 			});
 		} catch (e) {
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			extractionInProgress.value = false;
@@ -360,11 +328,7 @@ export function useBulkOnboardDefaulters() {
 			errorMessage.value = errorMss;
 
 			useToast('Parsing failed!', {
-				type: 'warning',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'warn',
 			});
 		}
 	};
@@ -409,10 +373,6 @@ export function useBulkOnboardDefaulters() {
 						if (response.status === 201) {
 							useToast('Onboarded Successfully!', {
 								type: 'success',
-								showIcon: true,
-								showCloseButton: false,
-								hideProgressBar: true,
-								transition: 'slide',
 							});
 						}
 					},
@@ -421,11 +381,7 @@ export function useBulkOnboardDefaulters() {
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			bulkOnboardingLoading.value = false;

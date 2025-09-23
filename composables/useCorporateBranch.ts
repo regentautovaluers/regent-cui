@@ -53,10 +53,6 @@ export const useCorporateBranch = () => {
 					if (response.ok) {
 						useToast('Branch Added Successfully!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 					} else {
 						throw new Error('Adding corporate branch failed. Try again!');
@@ -66,11 +62,7 @@ export const useCorporateBranch = () => {
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			addCorporateBranchLoading.value = false;
@@ -100,10 +92,6 @@ export const useCorporateBranch = () => {
 					if (response.ok) {
 						useToast('Updating Successful!', {
 							type: 'success',
-							showIcon: true,
-							showCloseButton: false,
-							hideProgressBar: true,
-							transition: 'slide',
 						});
 						reloadCorporateBranches();
 					} else {
@@ -114,11 +102,7 @@ export const useCorporateBranch = () => {
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed! Try Again', {
-				type: 'danger',
-				showIcon: true,
-				showCloseButton: false,
-				hideProgressBar: true,
-				transition: 'slide',
+				type: 'error',
 			});
 		} finally {
 			editCorporateBranchLoading.value = false;

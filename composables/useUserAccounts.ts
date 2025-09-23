@@ -81,9 +81,6 @@ const useUserAccounts = () => {
 					if (response.ok) {
 						useToast('Account Creation Successful!', {
 							type: 'success',
-							showIcon: false,
-							showCloseButton: false,
-							hideProgressBar: true,
 						});
 					} else {
 						throw new Error('Account creation failed. Try again!');
@@ -94,10 +91,7 @@ const useUserAccounts = () => {
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: false,
-				showCloseButton: false,
-				hideProgressBar: true,
+				type: 'error',
 			});
 		} finally {
 			addNewAccountLoading.value = false;
@@ -138,9 +132,6 @@ const useUserAccounts = () => {
 					if (response.ok) {
 						useToast('Update Successful!', {
 							type: 'success',
-							showIcon: false,
-							showCloseButton: false,
-							hideProgressBar: true,
 						});
 					} else {
 						throw new Error('Account updating failed. Try again!');
@@ -150,10 +141,7 @@ const useUserAccounts = () => {
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
-				type: 'danger',
-				showIcon: false,
-				showCloseButton: false,
-				hideProgressBar: true,
+				type: 'error',
 			});
 		} finally {
 			updateCorporateAccountLoading.value = false;
