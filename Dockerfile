@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run generate
+RUN npm run build
 
 # Stage 2: Create the production image with a shared volume
 FROM node:20.19-slim as serve
@@ -14,4 +14,4 @@ COPY --from=build /app/.output /app/.output
 
 EXPOSE 3000
 
-CMD ["npx", "serve", ".output/public"]
+CMD ["node", ".output/server/index.mjs"]
