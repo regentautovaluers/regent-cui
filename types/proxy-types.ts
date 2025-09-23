@@ -18,7 +18,9 @@ export interface StandardResponse {
 	};
 }
 
-export interface StandardErrorResponse extends StandardResponse {}
+export interface StandardErrorResponse extends StandardResponse {
+	statusCode: number;
+}
 
 export interface StandardSuccessResponse<T = unknown> extends StandardResponse {
 	data: T;

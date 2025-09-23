@@ -1,4 +1,6 @@
-import { ProxyError, ProxyRequestOptions } from '~/types/proxy-types';
+import { ProxyRequestOptions } from '~/types/proxy-types';
+import type { H3Event } from 'h3';
+import { ProxyError, StandardErrorResponse, StandardSuccessResponse } from '~/types/proxy-types';
 
 // Utility function to throw properly formatted errors from API endpoints
 export const createProxyError = (
@@ -22,31 +24,97 @@ export const makeProxyRequest = async <T = unknown>(
 ): Promise<T> => {
 	const { method, body, headers, timeout = 30000 } = options;
 
-	try {
-		return await $fetch<T>(endpoint, {
-			method,
-			headers: headers,
-			body: body ? JSON.stringify(body) : undefined,
-			timeout,
-		});
-	} catch (error: any) {
-		if (error.status) {
-			const proxyError = new Error('Remote API error') as any;
-			proxyError.statusCode = error.status;
-			proxyError.type = error.status >= 500 ? 'remote_api_error' : 'validation_error';
-			proxyError.data = { remoteStatus: error.status, endpoint };
-			throw proxyError;
-		}
-
-		// Network errors
-		if (error.code === 'NETWORK_ERROR' || error.code === 'TIMEOUT') {
-			const networkError = new Error('Remote service unavailable') as any;
-			networkError.type = 'network_error';
-			networkError.data = { endpoint, errorCode: error.code };
-			throw networkError;
-		}
-
-		// Re-throw other errors as-is
-		throw error;
-	}
+	return await $fetch<T>(endpoint, {
+		method,
+		headers: headers,
+		body: body ? JSON.stringify(body) : undefined,
+		timeout,
+	});
 };
+
+export function sendSuccessResponse(event: H3Event, data: any) {
+	const response: StandardSuccessResponse = {
+		data,
+		success: true,
+		metadata: {
+			message: 'Request handled successfully!',
+			timestamp: new Date().toISOString(),
+			source: 'api',
+		},
+	};
+	return response;
+}
+
+const getErrorType = (error: ProxyError): string => {
+	if (error.type) return error.type;
+	if (
+		error.cause &&
+		typeof error.cause === 'object' &&
+		(error.cause as any).code === 'NETWORK_ERROR'
+	)
+		return 'network_error';
+	if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500)
+		return 'validation_error';
+	if (error.statusCode && error.statusCode >= 500) return 'remote_api_error';
+	return 'internal_error';
+};
+
+export function sendErrorResponse(event: H3Event, error: any) {
+	// Determine appropriate status code
+	let statusCode = 500;
+	let errorMessage = 'Internal Server Error';
+	let errorCode = 'INTERNAL_ERROR';
+	const errorType = getErrorType(error);
+
+	switch (errorType) {
+		case 'network_error':
+			statusCode = 503;
+			errorMessage = 'Remote service unavailable';
+			errorCode = 'SERVICE_UNAVAILABLE';
+			break;
+
+		case 'remote_api_error':
+			statusCode = error.statusCode || 502;
+			errorMessage = error.statusMessage || 'Remote API error';
+			errorCode = 'REMOTE_API_ERROR';
+			break;
+
+		case 'validation_error':
+			statusCode = error.statusCode || 400;
+			errorMessage = error.statusMessage || error.message || 'Validation failed';
+			errorCode = 'VALIDATION_ERROR';
+			break;
+
+		case 'authentication_error':
+			statusCode = error.statusCode || 401;
+			errorMessage = error.statusMessage || error.message || 'Authentication failed';
+			errorCode = 'AUTHENTICATION_ERROR';
+			break;
+
+		case 'authorization_error':
+			statusCode = error.statusCode || 403;
+			errorMessage = error.statusMessage || error.message || 'Authorization failed';
+			errorCode = 'AUTHORIZATION_ERROR';
+			break;
+
+		case 'internal_error':
+		default:
+			statusCode = error.statusCode || 500;
+			errorMessage = error.statusMessage || 'Internal server error';
+			errorCode = 'INTERNAL_ERROR';
+			break;
+	}
+
+	const response: StandardErrorResponse = {
+		statusCode,
+		metadata: {
+			message: errorMessage,
+			code: errorCode,
+			timestamp: new Date().toISOString(),
+			type: errorType,
+		},
+		success: false,
+	};
+
+	return response;
+}
