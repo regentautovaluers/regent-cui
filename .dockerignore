@@ -1,1 +1,10 @@
 .env.*
+.node_modules
+.output
+.nuxt
+.vscode
+.github
+.dist
+.env
+Jenkinsfile
+README.*
