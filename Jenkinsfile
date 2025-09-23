@@ -86,7 +86,7 @@ pipeline {
     }
    post {
         success {
-          emailtext (
+          emailext (
             subject: "Jenkins Pipeline Success - Corporate Client Portal",
             body: "The deployment of the corporate client portal container (Build: ${BUILD_NUMBER}) to DigitalOcean was successful.",
             to: "${RECIPIENT_EMAIL}"
@@ -95,7 +95,7 @@ pipeline {
         }
 
         failure {
-          emailtext (
+          emailext (
             subject: "Jenkins Pipeline Failed - Corporate Client Portal",
             body: "The deployment of the corporate client portal container (Build: ${BUILD_NUMBER}) to DigitalOcean failed. Please check the Jenkins logs.",
             to: "${RECIPIENT_EMAIL}"
