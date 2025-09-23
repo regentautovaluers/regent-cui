@@ -67,8 +67,7 @@ pipeline {
 
                             echo "Running new container..."
                             docker run \
-                            -d --restart always \ 
-                            --name corporate-portal \
+                            -d --restart always -name corporate-portal \
                             -e "NUXT_PUBLIC_AVA_BASE_URL=https://apis.ava.ke" \
                             -e "NUXT_PUBLIC_VALUATION_BASE_URL=https://api.regentautovaluers.com" \
                             -e "NUXT_PUBLIC_FRAUD_DETECTION_BASE_URL=https://service.regentfraud.ava.ke" \
