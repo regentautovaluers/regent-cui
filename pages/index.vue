@@ -57,7 +57,6 @@
 	});
 
 	const revealPassword: Ref<boolean> = ref(false);
-	const { data } = await useFetch('/api/test');
 	const { email, password, loginAttemptLoading, attemptLogin } = useAuth();
 </script>
 
