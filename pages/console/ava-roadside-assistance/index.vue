@@ -76,7 +76,8 @@
 							title="Open Filters"
 							@click="() => (areFiltersOpen = !areFiltersOpen)"
 							class="group inline-flex h-[50px] w-14 cursor-pointer items-center justify-center rounded-lg border border-gray-400 p-1 outline-none hover:bg-gray-100">
-							<span class="mage--filter size-7 text-gray-400"></span>
+							<span
+								class="icon-[material-symbols-light--filter-alt-sharp] size-7 text-gray-400"></span>
 						</button>
 					</div>
 					<Transition name="fade-slide">
