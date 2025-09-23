@@ -83,16 +83,6 @@ export type IndividuaProcessedMembershipType = {
 	end_date: string;
 };
 
-export type ToastConfigOptions = {
-	timeout?: number;
-	type: string;
-	showCloseButton: boolean;
-	transition?: TransitionType;
-	hideProgressBar?: boolean;
-	showIcon?: boolean;
-	position?: Position;
-};
-
 export type RoadsideAssistanceAnalytics = {
 	jumpstarting: number;
 	fueldelivery: number;
