@@ -265,3 +265,35 @@
 .thin-scrollbar::-webkit-scrollbar-track {
 	background: none; /* Customize the track color */
 }
+
+/* styles for the notification */
+.notification-title {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.notification-content {
+	font-size: 13px;
+}
+
+.vue-notification-wrapper {
+	display: block;
+	overflow: hidden;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	min-width: 25rem;
+}
+
+.vue-notification {
+	display: block;
+	box-sizing: border-box;
+	text-align: left;
+	font-size: 12px;
+	padding: 10px;
+	margin: 0 5px 5px;
+	min-height: 50px;
+	color: white;
+	background: #44a4fc;
+	border: 8px;
+}
