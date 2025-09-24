@@ -54,9 +54,7 @@
 		<div
 			class="absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[30rem] flex-col border-[1px] bg-white shadow-md shadow-gray-300">
 			<div class="p-5">
-				<h1 class="font-semibold text-gray-600">
-					{{ getPrincipal.corpName }} Fleet
-				</h1>
+				<h1 class="font-semibold text-gray-600">{{ getPrincipal.corpName }} Fleet</h1>
 				<h2
 					class="mb-4 inline-flex h-10 w-full items-center justify-between text-sm text-gray-500">
 					<span>{{ totalVehicles }} Total Vehicles</span>
@@ -699,7 +697,7 @@
 		layout: 'console-layout',
 	});
 	const { getPrincipal } = useAuth();
-	const { googleMapsApiKey } = await useGoogleMaps();
+	const { googleMapsApiKey } = useGoogleMaps();
 
 	const {
 		totalVehicles,

@@ -112,7 +112,7 @@
 	});
 
 	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
-	const { googleMapsApiKey } = await useGoogleMaps();
+	const { googleMapsApiKey } = useGoogleMaps();
 	const currentRegForm: Ref<number> = ref(0);
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
 	const polylineCoords: Ref<any[]> = ref([]);

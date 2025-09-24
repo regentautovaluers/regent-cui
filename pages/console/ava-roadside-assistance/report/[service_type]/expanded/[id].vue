@@ -538,7 +538,7 @@
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
 	const mapRef: Ref<any> = ref(null);
-	const { googleMapsApiKey } = await useGoogleMaps();
+	const { googleMapsApiKey } = useGoogleMaps();
 
 	const { data: serviceReport } = (await useFetch(
 		`/api/v1/control-unit/get-user-requests/${route.params.service_type}/${route.params.id}`,

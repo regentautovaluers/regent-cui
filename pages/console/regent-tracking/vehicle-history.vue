@@ -534,7 +534,7 @@
 		setPositionOnMap,
 		setPolylineCoords,
 	} = await useRegentTrackingDeviceHistory();
-	const { googleMapsApiKey } = await useGoogleMaps();
+	const { googleMapsApiKey } = useGoogleMaps();
 </script>
 
 <style>

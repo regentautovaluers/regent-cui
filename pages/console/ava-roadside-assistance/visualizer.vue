@@ -132,7 +132,7 @@
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	const { googleMapsApiKey } = await useGoogleMaps();
+	const { googleMapsApiKey } = useGoogleMaps();
 
 	definePageMeta({
 		name: 'ra-visual-informer',
