@@ -53,10 +53,10 @@
 			</div>
 		</div>
 	</nav>
-	<main class="hide-scrollbar mt-[75px] flex min-h-screen flex-col overflow-x-scroll">
+	<main class="hide-scrollbar flex min-h-screen flex-col overflow-x-scroll">
 		<aside
 			:class="[
-				'hide-scrollbar fixed z-40 flex h-[calc(100vh-3.5rem)] max-h-[calc(100%-3.5rem)] flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white py-5',
+				'hide-scrollbar fixed z-40 mt-[75px] flex h-[calc(100vh-3.5rem)] max-h-[calc(100%-3.5rem)] flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white py-5',
 				!sidebarOpen
 					? 'laptop-lg:-translate-x-0 w-[65px] -translate-x-[65px]'
 					: 'w-68 -translate-x-0',
@@ -270,7 +270,7 @@
 		</aside>
 		<div
 			:class="[
-				'flex flex-1 flex-col bg-[#f8faf8]',
+				'mt-[75px] flex flex-1 flex-col bg-[#f8faf8]',
 				sidebarOpen
 					? 'laptop-lg:translate-x-0 laptop-lg:ml-68 translate-x-68'
 					: 'laptop-lg:ml-[65px]',
@@ -312,8 +312,7 @@
 	</main>
 </template>
 <script setup lang="ts">
-	const { navigationRoutes, currentScreenName, fuzzyRouteNameMatch, doesRouteNameMatch } =
-		useNavigationRoutes();
+	const { navigationRoutes, doesRouteNameMatch, fuzzyRouteNameMatch } = useNavigationRoutes();
 
 	const { getPrincipal, attemptLogout } = useAuth();
 	const sidebarOpen: Ref<boolean> = ref(false);

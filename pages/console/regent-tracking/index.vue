@@ -1,10 +1,11 @@
 <template>
-	<div class="relative h-screen flex-1 pt-[75px]">
+	<div class="relative flex-1">
+		<!-- the map -->
 		<GoogleMap
 			ref="mapRef"
 			:api-key="googleMapsApiKey"
 			:styles="googleMapStyle"
-			style="width: 100%; height: 100vh; position: absolute"
+			style="width: 100%; height: 100%"
 			:center="mapCenter"
 			:map-type-control="false"
 			:zoom="12"
@@ -51,7 +52,7 @@
 		</GoogleMap>
 
 		<div
-			class="absolute left-5 flex h-[90%] w-[30rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300">
+			class="absolute top-5 left-5 h-[calc(100%-2.5rem)] w-[30rem] border-[1px] bg-white shadow-md shadow-gray-300 flex flex-col">
 			<div class="p-5">
 				<h1 class="font-semibold text-gray-600">{{ getPrincipal.corpName }} Fleet</h1>
 				<h2
@@ -223,9 +224,8 @@
 
 		<!-- the sidekick panel -->
 		<Transition>
-			<!-- TODO: Add in animations later  -->
 			<div
-				class="absolute left-0 flex h-[90%] max-h-[90%] w-[30rem] translate-x-[31.2rem] translate-y-5 flex-col border-[1px] bg-white shadow-md shadow-gray-300"
+				class="absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[30rem] translate-x-[30rem] flex-col border-[1px] bg-white shadow-md shadow-gray-300"
 				v-if="getTrackedVehicle">
 				<div class="p-5">
 					<div class="flex items-center justify-between">
@@ -807,15 +807,11 @@
 	} = await useRegentTrackingDeviceAlerts();
 
 	const {
-		filterPeriod,
 		deviceHistory,
 		fetchingDeviceHistory,
 		errorFetchingDeviceHistory,
 		nestingAreas,
 		deviceMovement,
-		setFilterPeriod,
-		setPositionOnMap,
-		setPolylineCoords,
 		executeFetchDeviceHistory,
 	} = await useRegentTrackingDeviceHistory();
 </script>
