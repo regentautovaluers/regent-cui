@@ -88,5 +88,10 @@
 		},
 	});
 	const emits = defineEmits(['setActiveDevice']);
-	const deviceLocation: Ref<string> = ref('');
+	const deviceLocation: Ref<string> = ref('Location N/A');
+	const { gecodeLocation } = useGoogleMaps();
+
+	onMounted(async () => {
+		deviceLocation.value = await gecodeLocation(props.device.lat, props.device.lng);
+	});
 </script>
