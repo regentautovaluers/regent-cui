@@ -34,7 +34,11 @@
 					}">
 					<div>
 						<p
-							class="size-fit h-fit rounded-lg border-[1px] border-gray-100 bg-white p-1 text-center font-bold">
+							:class="[
+								'size-fit h-fit rounded-lg border-[1px] p-1 text-center font-bold',
+								`bg-${deriveColor(v.online)}-100`,
+								`border-${deriveColor(v.online)}-200`,
+							]">
 							{{ v.name.trim() }}
 						</p>
 						<img
