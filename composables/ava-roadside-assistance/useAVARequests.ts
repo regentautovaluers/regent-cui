@@ -74,7 +74,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 	const currentPercentage: ComputedRef<number> = computed(() => {
 		return (freeDistanceLeftForTowing.value * 100) / 20;
 	});
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { googleMapsApiKey } = await useGoogleMaps();
 
 	// load the towing price charges
 	const {

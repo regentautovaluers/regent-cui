@@ -103,7 +103,7 @@
 	const currentRegForm: Ref<number> = ref(0);
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
 	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { googleMapsApiKey } = await useGoogleMaps();
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
 		const index = extraLocationMarkers.value.findIndex((marker) => marker.id === markerInfo.id);

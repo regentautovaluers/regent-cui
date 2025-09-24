@@ -770,13 +770,13 @@
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow, Polyline, CustomMarker, MarkerCluster } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMapsConfig';
+	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMaps';
 	definePageMeta({
 		name: 'regent-tracking-home',
 		layout: 'console-layout',
 	});
 	const { getPrincipal } = useAuth();
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { googleMapsApiKey } = await useGoogleMaps();
 
 	const {
 		totalVehicles,

@@ -522,7 +522,7 @@
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow, Polyline } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMapsConfig';
+	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMaps';
 
 	definePageMeta({
 		name: 'ra-expanded-report',
@@ -539,7 +539,7 @@
 	const runtimeConfig = useRuntimeConfig();
 	const route = useRoute();
 	const mapRef: Ref<any> = ref(null);
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { googleMapsApiKey } = await useGoogleMaps();
 
 	const { data: serviceReport } = (await useFetch(
 		`/api/v1/control-unit/get-user-requests/${route.params.service_type}/${route.params.id}`,

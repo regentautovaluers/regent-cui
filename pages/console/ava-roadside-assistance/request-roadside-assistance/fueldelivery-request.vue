@@ -91,7 +91,7 @@
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
 	import { type MapCoordsMarker } from '~/types';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMapsConfig';
+	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMaps';
 	import { useGeolocation } from '@vueuse/core';
 
 	definePageMeta({
@@ -102,7 +102,7 @@
 	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
 	const currentRegForm: Ref<number> = ref(0);
 	const extraLocationMarkers: Ref<MapCoordsMarker[]> = ref([]);
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { googleMapsApiKey } = await useGoogleMaps();
 
 	const insertIntoExtraLocationMarkers = (markerInfo: MapCoordsMarker) => {
 		const index = extraLocationMarkers.value.findIndex((marker) => marker.id === markerInfo.id);

@@ -2,12 +2,12 @@
 	<div class="relative h-full overflow-clip border shadow-md">
 		<!-- services switch -->
 		<div
-			class="absolute left-3 top-3 z-10 flex flex-col items-center justify-center text-xs sm:text-sm">
+			class="absolute top-3 left-3 z-10 flex flex-col items-center justify-center text-xs sm:text-sm">
 			<button
 				id="dropdownBottomServiceTypeButton"
 				data-dropdown-toggle="dropdownBottomServiceType"
 				data-dropdown-placement="bottom"
-				class="mb-2 me-3 inline-flex h-[54px] w-[155px] items-center justify-between rounded-lg border bg-blue-700 px-2 py-2.5 text-center text-lg text-white hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+				class="me-3 mb-2 inline-flex h-[54px] w-[155px] items-center justify-between rounded-lg border bg-blue-700 px-2 py-2.5 text-center text-lg text-white hover:bg-blue-600 hover:text-white focus:ring-2 focus:ring-blue-300 focus:outline-none"
 				type="button">
 				<span>Service Type</span>
 				<svg
@@ -52,7 +52,7 @@
 		<!-- completion state switch -->
 		<!-- TODO: Figure out this completion state logic later -->
 		<div
-			class="absolute left-44 top-3 z-10 flex flex-col items-center justify-center text-xs sm:text-sm">
+			class="absolute top-3 left-44 z-10 flex flex-col items-center justify-center text-xs sm:text-sm">
 			<!-- <button
 				id="dropdownBottomCompletionStatusmButton"
 				data-dropdown-toggle="dropdownBottomCompletionStatus"
@@ -132,7 +132,7 @@
 <script setup lang="ts">
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { googleMapsApiKey } = await useGoogleMaps();
 
 	definePageMeta({
 		name: 'ra-visual-informer',

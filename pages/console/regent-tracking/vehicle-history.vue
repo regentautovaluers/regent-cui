@@ -516,7 +516,7 @@
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow, Polyline } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMapsConfig';
+	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMaps';
 	definePageMeta({
 		name: 'regent-tracking-vehicle-history',
 		layout: 'console-layout',
@@ -536,7 +536,7 @@
 		setPositionOnMap,
 		setPolylineCoords,
 	} = await useRegentTrackingDeviceHistory();
-	const { googleMapsApiKey } = useGoogleMapsConfig();
+	const { googleMapsApiKey } = await useGoogleMaps();
 </script>
 
 <style>
