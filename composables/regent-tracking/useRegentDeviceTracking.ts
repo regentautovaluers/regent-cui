@@ -114,21 +114,6 @@ export async function useRegentDeviceTracking() {
 		};
 	});
 
-	function deriveColor(online_status: Online): string {
-		switch (online_status) {
-			case 'ack':
-				return 'green';
-			case 'engine':
-				return 'green';
-			case 'online':
-				return 'green';
-			case 'offline':
-				return 'yellow';
-			case 'expired':
-				return 'red';
-		}
-	}
-
 	function setDeviceOnlineStatus(newStatus: Online | null) {
 		deviceOnlineStatus.value = newStatus;
 	}
@@ -157,7 +142,6 @@ export async function useRegentDeviceTracking() {
 		getTrackedVehicle,
 		activeDeviceTab,
 		mapCenter,
-		deriveColor,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,

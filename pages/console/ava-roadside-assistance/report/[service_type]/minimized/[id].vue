@@ -282,7 +282,6 @@
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMaps';
 
 	definePageMeta({
 		name: 'ra-minimized-report',

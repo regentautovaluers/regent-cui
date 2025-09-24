@@ -91,7 +91,6 @@
 	import { GoogleMap, CustomMarker } from 'vue3-google-map';
 	import { type MapCoordsMarker } from '~/types';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMaps';
 	import { useGeolocation } from '@vueuse/core';
 
 	definePageMeta({

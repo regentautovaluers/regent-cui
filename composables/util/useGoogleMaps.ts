@@ -6,23 +6,23 @@ export default async function useGoogleMaps() {
 		apiKey: apiKey,
 		version: 'weekly',
 	});
-	const Geocoding = await loader.importLibrary('geocoding');
+	// const Geocoding = await loader.importLibrary('geocoding');
 
 	function gecodeLocation(lat: number, lng: number): string {
 		let location = 'Geocoding...';
 
-		const geocoder = new Geocoding.Geocoder();
-		geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-			if (status === 'OK' && results) {
-				if (results[0]) {
-					location = results[0].formatted_address;
-				} else {
-					location = 'Geocoding failed!';
-				}
-			} else {
-				location = 'Geocoding failed!';
-			}
-		});
+		// const geocoder = new Geocoding.Geocoder();
+		// geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+		// 	if (status === 'OK' && results) {
+		// 		if (results[0]) {
+		// 			location = results[0].formatted_address;
+		// 		} else {
+		// 			location = 'Geocoding failed!';
+		// 		}
+		// 	} else {
+		// 		location = 'Geocoding failed!';
+		// 	}
+		// });
 
 		return location;
 	}
