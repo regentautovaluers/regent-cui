@@ -45,8 +45,8 @@ pipeline {
                         sh """
                             ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${SERVER_IP} << 'EOF'
                             echo "Stopping and removing existing container..."
-                            docker stop valuation-portal || true
-                            docker rm valuation-portal || true
+                            docker stop corporate-portal || true
+                            docker rm corporate-portal || true
             
                             echo "Removing existing image..."
                             docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true
