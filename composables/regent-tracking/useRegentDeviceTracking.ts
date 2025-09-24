@@ -10,6 +10,8 @@ import { useGeolocation } from '@vueuse/core';
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
 export async function useRegentDeviceTracking() {
+	const today = new Date();
+	const timeExpiredString = 'Expired';
 	const deviceOnlineStatus: Ref<Online | null> = ref(null);
 	const searchString: Ref<string | null> = ref(null);
 	const activeDeviceTab: Ref<ActiveDeviceTab> = ref('details');
@@ -51,9 +53,24 @@ export async function useRegentDeviceTracking() {
 		let filteredVehicles = vehicles.value;
 
 		// Filter by online status
-		if (deviceOnlineStatus.value === 'offline' || deviceOnlineStatus.value === 'expired') {
+		if (deviceOnlineStatus.value === 'offline') {
 			filteredVehicles = filteredVehicles.filter(
 				(v) => v.online === deviceOnlineStatus.value,
+			);
+		}
+
+		if (deviceOnlineStatus.value === 'expired') {
+			filteredVehicles = filteredVehicles.filter((v) => {
+				let expirationDate = v.device_data.expiration_date;
+				if (expirationDate) {
+					return isDateInThePast(expirationDate.toString());
+				}
+			});
+		}
+
+		if (deviceOnlineStatus.value === 'ack') {
+			filteredVehicles = filteredVehicles.filter((v) =>
+				['ack', 'engine', 'online'].includes(v.online),
 			);
 		}
 
@@ -122,6 +139,12 @@ export async function useRegentDeviceTracking() {
 
 	function setActiveDeviceTab(tab: ActiveDeviceTab) {
 		activeDeviceTab.value = tab;
+	}
+
+	function isDateInThePast(dateString: string): boolean {
+		const inputDate = new Date(dateString.replace(/-/g, '/'));
+
+		return inputDate.getTime() < today.getTime();
 	}
 
 	return {
