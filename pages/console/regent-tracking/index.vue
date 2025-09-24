@@ -52,7 +52,7 @@
 		</GoogleMap>
 
 		<div
-			class="absolute top-5 left-5 h-[calc(100%-2.5rem)] w-[30rem] border-[1px] bg-white shadow-md shadow-gray-300 flex flex-col">
+			class="absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[30rem] flex-col border-[1px] bg-white shadow-md shadow-gray-300">
 			<div class="p-5">
 				<h1 class="font-semibold text-gray-600">{{ getPrincipal.corpName }} Fleet</h1>
 				<h2
@@ -770,7 +770,7 @@
 	import { type LocationCoords } from '~/types';
 	import { GoogleMap, InfoWindow, Polyline, CustomMarker, MarkerCluster } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
-	import { useGoogleMapsConfig } from '~/composables/useGoogleMapsConfig';
+	import { useGoogleMapsConfig } from '~/composables/util/useGoogleMapsConfig';
 	definePageMeta({
 		name: 'regent-tracking-home',
 		layout: 'console-layout',

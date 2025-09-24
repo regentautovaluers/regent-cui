@@ -151,7 +151,7 @@
 										}}</span>
 									</div>
 								</td>
-								<td class=" py-4 pe-3">
+								<td class="py-4 pe-3">
 									<button
 										:id="'dropdownLeftButton' + index"
 										:data-dropdown-toggle="'dropdownLeft' + index"
@@ -245,7 +245,7 @@
 </template>
 
 <script setup lang="ts">
-	import useUserAccounts from '~/composables/useUserAccounts';
+	import useUserAccounts from '~/composables/vehicle-valuation/useUserAccounts';
 
 	definePageMeta({
 		name: 'vehicle-valuation-manage-user',
