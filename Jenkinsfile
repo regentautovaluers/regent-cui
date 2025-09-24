@@ -54,17 +54,6 @@ pipeline {
                             echo "Pulling new image..."
                             docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
 
-                            echo "Creating .env file..."
-                            cat <<EOT > .env
-
-                            GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
-                            VALUATION_BASE_URL=${VALUATION_BASE_URL}
-                            AVA_BASE_URL=${AVA_BASE_URL}
-                            EOT
-
-                            echo "Contents of .env file:"
-                            cat .env
-
                             echo "Running new container..."
                             docker run \
                             -d --restart always -name corporate-portal \
