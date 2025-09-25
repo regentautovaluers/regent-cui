@@ -4,7 +4,7 @@
 			<div class="flex w-[100%] space-x-4">
 				<button
 					:class="[
-						'inline-flex h-14 w-[17%] items-center justify-center rounded-lg shadow-md',
+						'inline-flex h-14 w-[16%] max-w-[16%] min-w-[16%] items-center justify-center rounded-lg shadow-md',
 						`bg-${deriveColor(device.online)}-500`,
 					]">
 					<span
@@ -14,7 +14,7 @@
 					<h1 class="font-semibold text-gray-700 uppercase">
 						{{ props.device.name }}
 					</h1>
-					<h2 class="text-sm text-gray-500">{{ deviceLocation }}</h2>
+					<h2 class="text-sm text-gray-500">Open to see location.</h2>
 				</div>
 			</div>
 			<button
@@ -88,10 +88,4 @@
 		},
 	});
 	const emits = defineEmits(['setActiveDevice']);
-	const deviceLocation: Ref<string> = ref('Location N/A');
-	const { gecodeLocation } = useGoogleMaps();
-
-	onMounted(async () => {
-		deviceLocation.value = await gecodeLocation(props.device.lat, props.device.lng);
-	});
 </script>
