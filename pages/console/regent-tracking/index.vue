@@ -158,7 +158,12 @@
 						</div>
 						<button
 							class="inline-flex size-11 items-center justify-center rounded-lg border-[1px]"
-							@click="cleanTrackedVehicle()">
+							@click="
+								() => {
+									cleanTrackedVehicleLocation();
+									cleanTrackedVehicle();
+								}
+							">
 							<span
 								class="icon-[material-symbols-light--close-small] text-3xl text-gray-600"></span>
 						</button>
@@ -240,7 +245,7 @@
 							<span
 								class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
 								v-if="fetchingDeviceAlerts"></span>
-							<span>Alerts</span>
+							<span>Alerts {{ fetchingDeviceAlerts }}</span>
 						</button>
 						<button
 							:class="[
@@ -273,10 +278,18 @@
 					<div
 						class="flex h-fit flex-col rounded-lg border border-gray-200 p-4 shadow-sm outline-none">
 						<h1 class="w-full font-bold text-gray-600">Vehicle Information</h1>
-						<div class="my-5 h-20 rounded-lg border border-green-200 bg-green-50 p-3">
+						<div
+							class="my-5 min-h-20 rounded-lg border border-green-200 bg-green-50 p-3">
 							<h1 class="text-sm font-semibold text-gray-500">Last Location</h1>
-							<span class="text-sm text-gray-400"
-								>Gataka Road, Nkaimurunya ward, Kajiado County</span
+							<span
+								class="text-sm text-gray-400"
+								v-if="loadingLocation"
+								>Loading location...</span
+							>
+							<span
+								class="text-sm text-gray-400"
+								v-else
+								>{{ getTrackedVehicleLocation }}</span
 							>
 						</div>
 						<div class="space-y-5 text-sm">
@@ -709,11 +722,15 @@
 		getTrackedVehicle,
 		activeDeviceTab,
 		mapCenter,
+		loadingLocation,
+		getTrackedVehicleLocation,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,
+		refetchClientVehicles,
 		cleanTrackedVehicle,
-	} = await useRegentDeviceTracking();
+		cleanTrackedVehicleLocation,
+	} = useRegentDeviceTracking();
 	const { startDeviceCommandLoading, stopDeviceCommandLoading, triggerDeviceCommand } =
 		useRegentTrackingDeviceUtils();
 

@@ -4,25 +4,30 @@ import {
 	getTrackedVehicle,
 	setTrackedVehicle,
 	cleanTrackedVehicle,
+	state,
+	cleanTrackedVehicleLocation,
+	getTrackedVehicleLocation,
+	setTrackedVehicleLocation,
 } from '~/stores/regent-tracking-devices-store';
 import { useGeolocation } from '@vueuse/core';
-
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
-export async function useRegentDeviceTracking() {
+export function useRegentDeviceTracking() {
 	const today = new Date();
 	const timeExpiredString = 'Expired';
 	const deviceOnlineStatus: Ref<Online | null> = ref(null);
 	const searchString: Ref<string | null> = ref(null);
 	const activeDeviceTab: Ref<ActiveDeviceTab> = ref('details');
 	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
+	const { gecodeLocation } = useGoogleMaps();
+	const loadingLocation: Ref<boolean> = ref(false);
 
 	const {
 		data: vehicles,
 		pending: fetchingClientVehicles,
 		error: errorFetchingClientVehicles,
 		execute: refetchClientVehicles,
-	} = await useApiData<TrackedVehicles[], TrackedVehicles[]>(
+	} = useApiData<TrackedVehicles[], TrackedVehicles[]>(
 		'client-devices',
 		'/api/regent-tracking/load-vehicles?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi',
 		{
@@ -114,6 +119,42 @@ export async function useRegentDeviceTracking() {
 		};
 	});
 
+	// watch the change in active device and only fetch vehicle on demand
+	watch(
+		() => state.activeTrackedVehicle,
+		async (newValue) => {
+			// clean location when expanded view is closed
+			if (!newValue) {
+				cleanTrackedVehicleLocation();
+			}
+
+			// use geocode functionality when expanded view is open
+			if (newValue) {
+				// for expired vehicles
+				let expirationDate = newValue.device_data.expiration_date;
+				if (expirationDate && isDateInThePast(expirationDate.toString())) {
+					setTrackedVehicleLocation('Subscription expired!');
+					return;
+				}
+
+				// for invalid vehicles, we don't show co-ordinates
+				if (newValue.online == 'offline' && newValue.timestamp == 0) {
+					setTrackedVehicleLocation('Location unfindable!');
+					return;
+				}
+
+				try {
+					loadingLocation.value = true;
+					let location = await gecodeLocation(newValue.lat, newValue.lng);
+					setTrackedVehicleLocation(location);
+					loadingLocation.value = false;
+				} catch (e) {
+					setTrackedVehicleLocation('Failed to load location!');
+				}
+			}
+		},
+	);
+
 	function setDeviceOnlineStatus(newStatus: Online | null) {
 		deviceOnlineStatus.value = newStatus;
 	}
@@ -142,10 +183,13 @@ export async function useRegentDeviceTracking() {
 		getTrackedVehicle,
 		activeDeviceTab,
 		mapCenter,
+		loadingLocation,
+		getTrackedVehicleLocation,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,
 		refetchClientVehicles,
 		cleanTrackedVehicle,
+		cleanTrackedVehicleLocation,
 	};
 }
