@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 		const vehicleData = await makeProxyRequest<
 			{ id: number; title: string; items: TrackedVehicles[] }[]
 		>(
-			`${config.public.REGENT_TRACK_BASE_URL}/api/get_devices?lang=en&user_api_hash=${query.api_hash}`,
+			`${config.REGENT_TRACK_BASE_URL}/api/get_devices?lang=en&user_api_hash=${query.api_hash}`,
 		);
 		return sendSuccessResponse(
 			event,
