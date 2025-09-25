@@ -245,7 +245,7 @@
 							<span
 								class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
 								v-if="fetchingDeviceAlerts"></span>
-							<span>Alerts {{ fetchingDeviceAlerts }}</span>
+							<span>Alerts</span>
 						</button>
 						<button
 							:class="[
