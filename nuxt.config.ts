@@ -65,6 +65,9 @@ export default defineNuxtConfig({
 		// private properties
 		GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
 		BOTPRESS_CLIENT_ID: process.env.BOTPRESS_CLIENT_ID,
+		TRACKING_CERTS_BASE_URL: process.env.REGENT_TRACKING_CERTS_BASE_URL,
+		REGENT_TRACK_BASE_URL: process.env.REGENT_TRACK_BASE_URL,
+		TRACKING_CERTS_API_KEY: process.env.TRACKING_CERTS_API_KEY,
 
 		// public properties
 		public: {
@@ -75,7 +78,6 @@ export default defineNuxtConfig({
 			APP_VERSION: '',
 			COPYRIGHT_YEAR: '',
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
-			REGENT_TRACK_CERTS_BASE_URL: '',
 			REGENT_AUTOMATIONS_BASE_URL: '',
 			REGENT_MEDIA_STORAGE_BASE_URL: '',
 
@@ -90,6 +92,5 @@ export default defineNuxtConfig({
 			FIREBASE_EMAIL: '',
 			FIREBASE_PASSWORD: '',
 		},
-		app: {},
 	},
 });

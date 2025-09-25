@@ -9,10 +9,8 @@ pipeline {
         SERVER_IP = '64.225.109.172'
         SSH_USERNAME = 'root'
         SSH_CREDENTIALS_ID = 'your-ssh-credentials-id'
-        GOOGLE_MAPS_API_KEY = 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY'
-        VALUATION_BASE_URL = 'http://64.226.89.245:8100'
-        AVA_BASE_URL = 'http://64.225.109.172:4000'
         RECIPIENT_EMAIL = 'martbikathi@gmail.com'
+        TRACKING_CERTS_API_KEY = credentials('tracking-certs-api-key')
     }
 
     stages {
@@ -60,35 +58,36 @@ pipeline {
                             -e "NUXT_PUBLIC_AVA_BASE_URL=https://apis.ava.ke" \
                             -e "NUXT_PUBLIC_VALUATION_BASE_URL=https://api.regentautovaluers.com" \
                             -e "NUXT_PUBLIC_FRAUD_DETECTION_BASE_URL=https://service.regentfraud.ava.ke" \
-                            -e "NUXT_PUBLIC_REGENT_TRACK_BASE_URL=https://regenttrack.com" \
                             -e "NUXT_PUBLIC_REGENT_TRACK_CERTS_BASE_URL=http://portal.regenttrack.co.ke" \
                             -e "NUXT_PUBLIC_REGENT_AUTOMATIONS_BASE_URL=https://automations.regentautovaluers.com" \
                             -e "NUXT_PUBLIC_REGENT_MEDIA_STORAGE_BASE_URL=https://media.regentautovaluers.com" \
+                            -e "REGENT_TRACK_BASE_URL=https://regenttrack.com" \
+                            -e "REGENT_TRACKING_CERTS_BASE_URL=https://portal.regenttrack.co.ke" \
                             -e "GOOGLE_MAPS_GEOFENCING_COUNTRY=ke" \
+                            -e "TRACKING_CERTS_API_KEY=${TRACKING_CERTS_API_KEY}" \
                             -p 3000:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
-                            EOF
                         """
                     }
                 }
             }
         }
     }
-   post {
+    post {
         success {
-          emailext (
-            subject: "Jenkins Pipeline Success - Corporate Client Portal",
-            body: "The deployment of the corporate client portal container (Build: ${BUILD_NUMBER}) to DigitalOcean was successful.",
-            to: "${RECIPIENT_EMAIL}"
+            emailext (
+                subject: "Jenkins Pipeline Success - Corporate Client Portal",
+                body: "The deployment of the corporate client portal container (Build: ${BUILD_NUMBER}) to DigitalOcean was successful.",
+                to: "${RECIPIENT_EMAIL}"
             )
             echo 'Deployment successful!'
         }
 
         failure {
-          emailext (
-            subject: "Jenkins Pipeline Failed - Corporate Client Portal",
-            body: "The deployment of the corporate client portal container (Build: ${BUILD_NUMBER}) to DigitalOcean failed. Please check the Jenkins logs.",
-            to: "${RECIPIENT_EMAIL}"
-        )
+            emailext (
+                subject: "Jenkins Pipeline Failed - Corporate Client Portal",
+                body: "The deployment of the corporate client portal container (Build: ${BUILD_NUMBER}) to DigitalOcean failed. Please check the Jenkins logs.",
+                to: "${RECIPIENT_EMAIL}"
+            )
             echo 'Deployment failed!'
         }
     }
