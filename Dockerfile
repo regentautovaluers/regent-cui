@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Create the production image with a shared volume
-FROM node:20.19-slim as serve
+FROM node:20.19-slim AS serve
 WORKDIR /app
 
 COPY --from=build /app/.output /app/.output
