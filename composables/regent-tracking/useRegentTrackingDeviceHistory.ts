@@ -13,7 +13,7 @@ import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 export async function useRegentTrackingDeviceHistory() {
 	const { query } = useRoute();
 	const filterPeriod: Ref<'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom'> =
-		ref('this-week');
+		ref('today');
 	const positionOnMap: Ref<{
 		lat: number;
 		lng: number;
