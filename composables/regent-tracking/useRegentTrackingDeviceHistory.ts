@@ -106,7 +106,7 @@ export async function useRegentTrackingDeviceHistory() {
 		let requestUrl = `/api/regent-tracking/device-history?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi&device_id=${routeName == 'regent-tracking-vehicle-history' ? query.device_id : getTrackedVehicle.value?.id}&from_time=00:00:00&to_time=23:59:59`;
 
 		if (filterPeriod.value == 'custom') {
-			// TODO: Sort this out
+			requestUrl = requestUrl + `&from_date=${fromDate.value}&to_date=${toDate.value}`;
 		} else {
 			let dateRange = calculateDateRange(filterPeriod.value);
 			requestUrl =
@@ -376,6 +376,8 @@ export async function useRegentTrackingDeviceHistory() {
 		deviceMovement,
 		positionOnMap,
 		polylineCoords,
+		fromDate,
+		toDate,
 		setFilterPeriod,
 		setPositionOnMap,
 		setPolylineCoords,
