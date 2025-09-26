@@ -61,10 +61,12 @@ pipeline {
                             -e "NUXT_PUBLIC_REGENT_TRACK_CERTS_BASE_URL=http://portal.regenttrack.co.ke" \
                             -e "NUXT_PUBLIC_REGENT_AUTOMATIONS_BASE_URL=https://automations.regentautovaluers.com" \
                             -e "NUXT_PUBLIC_REGENT_MEDIA_STORAGE_BASE_URL=https://media.regentautovaluers.com" \
-                            -e "REGENT_TRACK_BASE_URL=https://regenttrack.com" \
-                            -e "REGENT_TRACKING_CERTS_BASE_URL=https://portal.regenttrack.co.ke" \
-                            -e "GOOGLE_MAPS_GEOFENCING_COUNTRY=ke" \
-                            -e "TRACKING_CERTS_API_KEY=${TRACKING_CERTS_API_KEY}" \
+                            -e "NUXT_PUBLIC_GOOGLE_MAPS_GEOFENCING_COUNTRY=ke" \
+                            -e "NUXT_PUBLIC_APP_VERSION=0.55" \
+                            -e "NUXT_PUBLIC_COPYRIGHT_YEAR=2025" \
+                            -e "NUXT_REGENT_TRACK_BASE_URL=https://regenttrack.com" \
+                            -e "NUXT_REGENT_TRACKING_CERTS_BASE_URL=https://portal.regenttrack.co.ke" \
+                            -e "NUXT_TRACKING_CERTS_API_KEY=${TRACKING_CERTS_API_KEY}" \
                             -p 3000:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
                         """
                     }
