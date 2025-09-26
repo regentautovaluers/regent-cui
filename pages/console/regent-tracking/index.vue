@@ -1,13 +1,12 @@
 <template>
-	<div class="relative flex-1">
+	<div class="relative flex-1 ">
 		<!-- the map -->
 		<GoogleMap
 			ref="mapRef"
 			:api-key="googleMapsApiKey"
 			:styles="googleMapStyle"
-			style="width: 100%; height: 100%"
-			:center="mapCenter"
-			:map-type-control="false"
+			style="width: 100%; height: 100%; position: absolute"
+			:map-type-control="true"
 			:zoom="12"
 			:zoom-control="true"
 			:fullscreen-control="false"
