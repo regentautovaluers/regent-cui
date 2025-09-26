@@ -19,8 +19,8 @@ export interface Pagination {
 	pages: number;
 	has_prev: boolean;
 	has_next: boolean;
-	prev_page_url: any;
-	next_page_url: string;
+	prev_page_url?: string;
+	next_page_url?: string;
 }
 
 export interface Report {

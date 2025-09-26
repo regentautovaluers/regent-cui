@@ -9,6 +9,10 @@ export default defineEventHandler(async (event) => {
 	try {
 		const entries = await makeProxyRequest<Response>(endpoint);
 
+		// delete sensitive entries
+		delete entries.pagination.prev_page_url;
+		delete entries.pagination.next_page_url;
+
 		return sendSuccessResponse(event, entries);
 	} catch (err) {
 		return sendErrorResponse(event, err);
