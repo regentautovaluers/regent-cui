@@ -4,6 +4,7 @@ export function useRegentTrackingDeviceUtils() {
 	const { post } = useStandardizedApi();
 	const startDeviceCommandLoading: Ref<boolean> = ref(false);
 	const stopDeviceCommandLoading: Ref<boolean> = ref(false);
+	const { authToken } = useRegentTrackingAuth();
 
 	async function triggerDeviceCommand(
 		commandType: 'start' | 'stop',
@@ -11,7 +12,7 @@ export function useRegentTrackingDeviceUtils() {
 		message: string,
 		type: string,
 	) {
-		const url = `/api/regent-tracking/publish-command?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi&type=${type}&message=${message}&device_id=${deviceId}`;
+		const url = `/api/regent-tracking/publish-command?api_hash=${authToken.value}&type=${type}&message=${message}&device_id=${deviceId}`;
 		try {
 			if (commandType == 'start') {
 				startDeviceCommandLoading.value = true;

@@ -5,9 +5,10 @@ import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 export async function useRegentTrackingDeviceAlerts() {
 	const dateFrom: Ref<string | null> = ref(null);
 	const dateTo: Ref<string | null> = ref(null);
+	const { authToken } = useRegentTrackingAuth();
 
 	const computedURL: ComputedRef<string> = computed(() => {
-		let requestUrl = `/api/regent-tracking/device-alerts?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi&device_id=${getTrackedVehicle.value?.id}`;
+		let requestUrl = `/api/regent-tracking/device-alerts?api_hash=${authToken.value}&device_id=${getTrackedVehicle.value?.id}`;
 
 		if (dateFrom.value) {
 			requestUrl = requestUrl + `&date_from=${dateFrom.value}`;

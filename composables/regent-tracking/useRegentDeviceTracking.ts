@@ -9,44 +9,53 @@ import {
 	getTrackedVehicleLocation,
 	setTrackedVehicleLocation,
 } from '~/stores/regent-tracking-devices-store';
-import { useGeolocation } from '@vueuse/core';
+import { useGeolocation, watchImmediate } from '@vueuse/core';
+
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
 export function useRegentDeviceTracking() {
 	const today = new Date();
-	const timeExpiredString = 'Expired';
 	const deviceOnlineStatus: Ref<Online | null> = ref(null);
 	const searchString: Ref<string | null> = ref(null);
 	const activeDeviceTab: Ref<ActiveDeviceTab> = ref('details');
 	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
 	const { gecodeLocation } = useGoogleMaps();
+	const { authToken } = useRegentTrackingAuth();
 	const loadingLocation: Ref<boolean> = ref(false);
+	const defaultToLogin: ComputedRef<boolean> = computed(() => (!authToken.value ? true : false));
+
+	const computedURL: ComputedRef<string> = computed(
+		() => `/api/regent-tracking/load-vehicles?api_hash=${authToken.value}`,
+	);
 
 	const {
 		data: vehicles,
 		pending: fetchingClientVehicles,
 		error: errorFetchingClientVehicles,
 		execute: refetchClientVehicles,
-	} = useApiData<TrackedVehicles[], TrackedVehicles[]>(
-		'client-devices',
-		'/api/regent-tracking/load-vehicles?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi',
-		{
-			method: 'GET',
-			server: false,
-			transform: (response) => {
-				// Check if the API call was successful
-				if (response.success) {
-					// The response.data is correctly typed as TrackedVehicles[] here.
-					return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
-				}
+	} = useApiData<TrackedVehicles[], TrackedVehicles[]>('client-devices', computedURL.value, {
+		method: 'GET',
+		server: false,
+		immediate: false,
+		transform: (response) => {
+			// Check if the API call was successful
+			if (response.success) {
+				// The response.data is correctly typed as TrackedVehicles[] here.
+				return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
+			}
 
-				// If it failed, throw the error
-				throw new Error(
-					(response as StandardErrorResponse).metadata.message || 'Unknown error',
-				);
-			},
+			// If it failed, throw the error
+			throw new Error(
+				(response as StandardErrorResponse).metadata.message || 'Unknown error',
+			);
 		},
-	);
+	});
+
+	watchImmediate(authToken, async (newValue, oldValue) => {
+		if (oldValue || newValue) {
+			await refetchClientVehicles();
+		}
+	});
 
 	const totalVehicles: ComputedRef<number> = computed(() => vehicles.value?.length ?? 0);
 
@@ -185,6 +194,7 @@ export function useRegentDeviceTracking() {
 		mapCenter,
 		loadingLocation,
 		getTrackedVehicleLocation,
+		defaultToLogin,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,

@@ -24,6 +24,7 @@ export async function useRegentTrackingDeviceHistory() {
 	const { name: routeName } = useRoute();
 	const fromDate: Ref<string | null> = ref(null);
 	const toDate: Ref<string | null> = ref(null);
+	const { authToken } = useRegentTrackingAuth();
 
 	function setPolylineCoords(input: DayMovement) {
 		polylineCoords.value = input.pingHistory;
@@ -103,7 +104,7 @@ export async function useRegentTrackingDeviceHistory() {
 	}
 
 	const computedURL: ComputedRef<string> = computed(() => {
-		let requestUrl = `/api/regent-tracking/device-history?api_hash=$2y$10$VG5xofVqWW6B1gu2zLDFYezsoLkyUonucCKZyR5tAFqb7XV5Tx2yi&device_id=${routeName == 'regent-tracking-vehicle-history' ? query.device_id : getTrackedVehicle.value?.id}&from_time=00:00:00&to_time=23:59:59`;
+		let requestUrl = `/api/regent-tracking/device-history?api_hash=${authToken.value}&device_id=${routeName == 'regent-tracking-vehicle-history' ? query.device_id : getTrackedVehicle.value?.id}&from_time=00:00:00&to_time=23:59:59`;
 
 		if (filterPeriod.value == 'custom') {
 			requestUrl = requestUrl + `&from_date=${fromDate.value}&to_date=${toDate.value}`;
