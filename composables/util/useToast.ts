@@ -1,13 +1,14 @@
 interface ToastProps {
 	type: 'warn' | 'success' | 'error';
+	title?: string;
 }
 
-const useToast = (message: string, { type }: ToastProps) => {
+const useToast = (message: string, { type, title }: ToastProps) => {
 	const { notify } = useNotification();
 
 	notify({
 		type: type,
-		title: deriveTitle(type),
+		title: title || deriveTitle(type),
 		text: message,
 	});
 };
