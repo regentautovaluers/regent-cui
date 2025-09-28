@@ -9,7 +9,7 @@ import {
 	getTrackedVehicleLocation,
 	setTrackedVehicleLocation,
 } from '~/stores/regent-tracking-devices-store';
-import { useGeolocation, watchImmediate } from '@vueuse/core';
+import { useGeolocation } from '@vueuse/core';
 
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
@@ -32,27 +32,23 @@ export function useRegentDeviceTracking() {
 		pending: fetchingClientVehicles,
 		error: errorFetchingClientVehicles,
 		execute: refetchClientVehicles,
-	} = useApiData<TrackedVehicles[], TrackedVehicles[]>(
-		'client-devices',
-		`/api/regent-tracking/load-vehicles?api_hash=${authToken.value}`,
-		{
-			method: 'GET',
-			server: false,
-			immediate: false,
-			transform: (response) => {
-				// Check if the API call was successful
-				if (response.success) {
-					// The response.data is correctly typed as TrackedVehicles[] here.
-					return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
-				}
+	} = useApiData<TrackedVehicles[], TrackedVehicles[]>('client-devices', computedURL, {
+		method: 'GET',
+		server: false,
+		immediate: false,
+		transform: (response) => {
+			// Check if the API call was successful
+			if (response.success) {
+				// The response.data is correctly typed as TrackedVehicles[] here.
+				return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
+			}
 
-				// If it failed, throw the error
-				throw new Error(
-					(response as StandardErrorResponse).metadata.message || 'Unknown error',
-				);
-			},
+			// If it failed, throw the error
+			throw new Error(
+				(response as StandardErrorResponse).metadata.message || 'Unknown error',
+			);
 		},
-	);
+	});
 
 	watch(
 		authToken,
