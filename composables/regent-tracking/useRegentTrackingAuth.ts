@@ -3,7 +3,11 @@ import { type StandardResponse, type StandardSuccessResponse } from '~/types/pro
 import { type RegentTrackingLoginResponse } from '~/types/regent-tracking/client-auth';
 
 export function useRegentTrackingAuth() {
-	const authToken: CookieRef<string | null | undefined> = useCookie('tracking-auth-token');
+	const authToken: CookieRef<string | null | undefined> = useCookie('tracking-auth-token', {
+		default: () => null,
+		watch: true,
+		expires: new Date(Date.now() + 1209600000), // after 14 days
+	});
 	const email: Ref<string | null> = ref(null);
 	const password: Ref<string | null> = ref(null);
 	const loginLoading: Ref<boolean> = ref(false);
@@ -39,7 +43,7 @@ export function useRegentTrackingAuth() {
 			loginLoading.value = false;
 		}
 	}
-    
+
 	return {
 		authToken,
 		email,

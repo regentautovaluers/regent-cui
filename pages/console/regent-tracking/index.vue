@@ -52,7 +52,7 @@
 
 		<div
 			class="absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[30rem] flex-col border-[1px] bg-white shadow-md shadow-gray-300">
-			<template v-if="defaultToLogin">
+			<template v-if="!authToken">
 				<ClientLogin />
 			</template>
 			<template v-else>
@@ -865,7 +865,7 @@
 		mapCenter,
 		loadingLocation,
 		getTrackedVehicleLocation,
-		defaultToLogin,
+		authToken,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,
@@ -897,6 +897,4 @@
 		executeFetchDeviceHistory,
 		setFilterPeriod,
 	} = await useRegentTrackingDeviceHistory();
-
-	const { authToken } = useRegentTrackingAuth();
 </script>
