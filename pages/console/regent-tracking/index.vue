@@ -7,10 +7,11 @@
 			:styles="googleMapStyle"
 			style="width: 100%; height: 100%; position: absolute"
 			:map-type-control="true"
-			:zoom="12"
+			:zoom="8"
 			:zoom-control="true"
 			:fullscreen-control="false"
-			:street-view-control="true">
+			:street-view-control="true"
+			:center="mapCenter">
 			<Polyline
 				v-if="getTrackedVehicle"
 				:options="{
