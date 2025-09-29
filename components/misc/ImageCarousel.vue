@@ -26,7 +26,7 @@
 			<img
 				:src="image"
 				:alt="`Image ${index + 1}`"
-				class="h-full w-full" />
+				class="h-full w-full object-cover" />
 		</div>
 
 		<div
