@@ -8,6 +8,9 @@ import {
 	cleanTrackedVehicleLocation,
 	getTrackedVehicleLocation,
 	setTrackedVehicleLocation,
+	getClientDevices,
+	setClientDevices,
+	cleanClientDevices,
 } from '~/stores/regent-tracking-devices-store';
 import { useGeolocation } from '@vueuse/core';
 
@@ -28,7 +31,6 @@ export function useRegentDeviceTracking() {
 	);
 
 	const {
-		data: vehicles,
 		pending: fetchingClientVehicles,
 		error: errorFetchingClientVehicles,
 		execute: refetchClientVehicles,
@@ -48,6 +50,11 @@ export function useRegentDeviceTracking() {
 				(response as StandardErrorResponse).metadata.message || 'Unknown error',
 			);
 		},
+		onResponse({ response }) {
+			setClientDevices(
+				(response._data.data as TrackedVehicles[]),
+			);
+		},
 	});
 
 	watch(
@@ -60,14 +67,14 @@ export function useRegentDeviceTracking() {
 		{ immediate: true },
 	);
 
-	const totalVehicles: ComputedRef<number> = computed(() => vehicles.value?.length ?? 0);
+	const totalVehicles: ComputedRef<number> = computed(() => getClientDevices.value?.length ?? 0);
 
 	const computedVehicles: ComputedRef<TrackedVehicles[] | null> = computed(() => {
-		if (!vehicles.value) {
+		if (!getClientDevices.value) {
 			return null;
 		}
 
-		let filteredVehicles = vehicles.value;
+		let filteredVehicles = getClientDevices.value;
 
 		// Filter by online status
 		if (deviceOnlineStatus.value === 'offline') {
@@ -103,11 +110,11 @@ export function useRegentDeviceTracking() {
 			);
 		}
 
-		return filteredVehicles;
+		return filteredVehicles as TrackedVehicles[];
 	});
 
 	const mapCenter: ComputedRef<{ lat: number; lng: number }> = computed(() => {
-		if (!vehicles.value) {
+		if (!getClientDevices.value) {
 			if (geolocationSupported) {
 				return {
 					lat: coords.value.latitude,
@@ -115,7 +122,7 @@ export function useRegentDeviceTracking() {
 				};
 			}
 		} else {
-			const firstActive = vehicles.value.find((v) =>
+			const firstActive = getClientDevices.value.find((v) =>
 				['ack', 'engine', 'online'].includes(v.online),
 			);
 
