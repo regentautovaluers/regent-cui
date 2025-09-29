@@ -1,10 +1,26 @@
 import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
 
 export const { state, getter, mutation, action, ...store } = createStore('activeTrackedVehicle', {
+	clientDevices: null as TrackedVehicles[] | null,
 	activeTrackedVehicle: null as TrackedVehicles | null,
 	activeTrackedVehicleLocation: null as string | null,
 });
 
+// all tracked vehicles
+export const getClientDevices = getter('getClientDevices', (state) => state.clientDevices);
+
+export const setClientDevices = mutation(
+	'setClientDevices',
+	(state, devices: TrackedVehicles[] | null) => {
+		state.clientDevices = devices;
+	},
+);
+
+export const cleanClientDevices = mutation('cleanClientDevices', (state) => {
+	state.clientDevices = null;
+});
+
+// single tracked vehicle
 export const getTrackedVehicle = getter('getTrackedVehicle', (state) => state.activeTrackedVehicle);
 
 export const setTrackedVehicle = mutation(
