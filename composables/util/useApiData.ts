@@ -68,20 +68,38 @@ export const useStandardizedApi = () => {
  *
  * @param key A unique key for useAsyncData to enable caching.
  * @param endpoint The API endpoint URL.
- * @param options The options for the fetch request, including query, method, body, and transform.
+ * @param options The options for the fetch request, including query, method, body, transform, and response interceptors.
  * @returns The useAsyncData return object with data, pending, and error states.
  */
 export const useApiData = <T = unknown, R = T>(
 	key: string,
-	endpoint: string | Ref<string> | ComputedRef<string>, // Accept reactive endpoint,
+	endpoint: string | Ref<string> | ComputedRef<string>,
 	options: Omit<AsyncDataOptions<ApiResponse<T>, R>, 'transform'> & {
 		query?: Record<string, any>;
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 		body?: any;
 		transform?: (data: ApiResponse<T>) => R;
+		onResponse?: (context: {
+			request: any;
+			response: any;
+			options: any;
+		}) => void | Promise<void>;
+		onResponseError?: (context: {
+			request: any;
+			response: any;
+			options: any;
+		}) => void | Promise<void>;
 	} = {},
 ) => {
-	const { query, method = 'GET', body, transform, ...asyncDataOptions } = options;
+	const {
+		query,
+		method = 'GET',
+		body,
+		transform,
+		onResponse,
+		onResponseError,
+		...asyncDataOptions
+	} = options;
 
 	const api = useStandardizedApi();
 
@@ -92,6 +110,8 @@ export const useApiData = <T = unknown, R = T>(
 				method,
 				query,
 				body,
+				onResponse,
+				onResponseError,
 			}),
 		{
 			...asyncDataOptions,
