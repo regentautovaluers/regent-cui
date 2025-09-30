@@ -5,7 +5,7 @@
 		data-modal-backdrop="static"
 		tabindex="-1"
 		aria-hidden="true"
-		class="fixed top-0 right-0 left-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full overflow-x-hidden overflow-y-auto p-4 md:inset-0">
+		class="fixed top-0 right-0 left-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full overflow-x-hidden overflow-y-hidden p-4 md:inset-0">
 		<div
 			:class="[
 				'relative h-full w-full',
@@ -16,11 +16,11 @@
 			<!-- Modal content -->
 			<div
 				:class="[
-					'relative rounded-lg bg-white p-4 shadow sm:p-5',
+					'relative flex flex-col rounded-lg bg-white shadow',
 					props.modalSize == 'full-screen' && 'h-full',
 				]">
 				<!-- Modal header -->
-				<div class="mb-4 flex justify-between rounded-t sm:mb-5">
+				<div class="mb-4 flex justify-between rounded-t border-b p-4 sm:mb-5 sm:p-5">
 					<div>
 						<h2 class="font-semibold text-gray-700">{{ props.modalTitle }}</h2>
 						<h3
@@ -51,8 +51,12 @@
 					</div>
 				</div>
 
-				<!-- Modal body -->
-				<slot />
+				<div
+					class="thin-scrollbar overflow-y-auto p-4 sm:p-5"
+					id="report-modal-body">
+					<!-- Modal body -->
+					<slot />
+				</div>
 			</div>
 		</div>
 	</div>
