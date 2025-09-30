@@ -51,9 +51,7 @@ export function useRegentDeviceTracking() {
 			);
 		},
 		onResponse({ response }) {
-			setClientDevices(
-				(response._data.data as TrackedVehicles[]),
-			);
+			setClientDevices(response._data.data as TrackedVehicles[]);
 		},
 	});
 
@@ -205,6 +203,7 @@ export function useRegentDeviceTracking() {
 		loadingLocation,
 		getTrackedVehicleLocation,
 		authToken,
+		getClientDevices,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,
