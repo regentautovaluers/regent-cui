@@ -24,4 +24,12 @@ export default class SecurityUtil {
 		const encryptedHex = CryptoJS.enc.Hex.stringify(encrypted.ciphertext);
 		return `${ivHex}:${encryptedHex}`;
 	}
+
+	public static encodeBase64(str: string): string {
+		return btoa(encodeURIComponent(str));
+	}
+
+	public static base64Decode(base64: string): string {
+		return decodeURIComponent(atob(base64));
+	}
 }
