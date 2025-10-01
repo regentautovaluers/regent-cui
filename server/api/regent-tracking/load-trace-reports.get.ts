@@ -1,13 +1,19 @@
-import { Response } from '~/types/regent-tracking/trace-report';
+import { TraceabilityReport } from '~/types/regent-tracking/trace-report';
+import SecurityUtil from '~/utils/security-util';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query = getQuery(event);
 
-	const endpoint = `${config.TRACKING_CERTS_BASE_URL}/tracking/traceabilityB.php?api_key=${config.TRACKING_CERTS_API_KEY}&limit=${query.limit}&page=${query.page}`;
+	let endpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}`;
+	SecurityUtil.base64Decode(query.groupIds as string)
+		.split(',')
+		.forEach(e => endpoint = endpoint + `&device_id[]=${e}`);
+
+	console.log('endpoint: ', endpoint);
 
 	try {
-		const entries = await makeProxyRequest<Response>(endpoint);
+		const entries = await makeProxyRequest<TraceabilityReport>(endpoint);
 
 		// delete sensitive entries
 		delete entries.pagination.prev_page_url;
