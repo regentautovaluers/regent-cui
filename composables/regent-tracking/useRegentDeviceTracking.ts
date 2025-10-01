@@ -59,7 +59,11 @@ export function useRegentDeviceTracking() {
 		authToken,
 		async (newValue) => {
 			if (typeof newValue === 'string' && newValue.length > 0) {
-				await refetchClientVehicles();
+				const cached = getClientDevices.value;
+				// if data does not exist in the store
+				if (!cached) {
+					await refetchClientVehicles();
+				}
 			}
 		},
 		{ immediate: true },
