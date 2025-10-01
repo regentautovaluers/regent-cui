@@ -1,15 +1,7 @@
-export interface Response {
+export interface TraceabilityReport {
 	status: string;
-	stats: Stats;
 	pagination: Pagination;
-	devices: Report[];
-}
-
-export interface Stats {
-	total: string;
-	online: number;
-	offline: number;
-	expired: number;
+	results: Report[];
 }
 
 export interface Pagination {
@@ -24,21 +16,14 @@ export interface Pagination {
 }
 
 export interface Report {
-	id: string;
-	imei: string;
-	name: string;
-	sim_number: string;
-	expiration_date: string;
-	corporate_name: string;
-	time: string;
-	coordinates: string;
-	last_updated: string;
-	status: string;
-	group_id: string;
-	latest_comment: any;
-	clientName: string;
-	clientNo: string;
-	installationDate: string;
-	regno: string;
-	validity_days: string;
+	device_id: string;
+	comments: Comments[];
+}
+
+export interface Comments {
+	id: number;
+	comment: string;
+	username: string;
+	created_at: Date;
+	watchlist: 'Y' | 'N';
 }
