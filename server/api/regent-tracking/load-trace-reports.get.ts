@@ -8,9 +8,7 @@ export default defineEventHandler(async (event) => {
 	let endpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}`;
 	SecurityUtil.base64Decode(query.groupIds as string)
 		.split(',')
-		.forEach(e => endpoint = endpoint + `&device_id[]=${e}`);
-
-	console.log('endpoint: ', endpoint);
+		.forEach((e) => (endpoint = endpoint + `&device_id[]=${e}`));
 
 	try {
 		const entries = await makeProxyRequest<TraceabilityReport>(endpoint);
