@@ -1,3 +1,5 @@
+import { type TraceabilityReport, type Comments } from '~/types/regent-tracking/trace-report';
+
 export interface TrackedVehicles {
 	id: number;
 	alarm: number;
@@ -37,6 +39,7 @@ export interface TrackedVehicles {
 	inaccuracy: null;
 	sim_expiration_date: null;
 	device_data: DeviceData;
+	comment?: Comments[];
 }
 
 export enum Address {

@@ -313,16 +313,24 @@
 										</p>
 									</td>
 									<td
-										class="tablet:table-cell hidden w-[30rem] max-w-[30rem] py-5">
+										class="tablet:table-cell hidden w-[25rem] max-w-[25rem] py-5">
 										<p
-											class="inline-flex flex-col space-y-1 space-x-2 rounded-md bg-blue-100 p-2">
+											class="inline-flex flex-col space-y-1 space-x-2 rounded-md bg-blue-100 p-2"
+											v-if="v.comment"
+											v-for="c in v.comment">
 											<span class="font-semibold text-gray-700"
-												>Account Manager</span
+												>{{ c.username }}</span
 											><span class="text-xs text-wrap text-gray-500"
-												>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit. Repellendus nihil odit laborum corrupti?
+												>{{ c.comment }}
 											</span>
 										</p>
+										<div
+											v-else
+											class="flex items-center rounded-md bg-yellow-100 p-2">
+											<span class="text-xs text-gray-500"
+												>No comments for this device!</span
+											>
+										</div>
 									</td>
 									<td class="tablet:table-cell hidden py-5 ps-3">
 										<button
@@ -927,15 +935,7 @@
 		errorFetchingClientVehicles,
 		totalPages,
 		computedStatistics,
+		getDeviceReports,
+		loadingTraceabilityComments,
 	} = useDeviceTraceabilityReport();
-
-	// onMounted(() => {
-	// 	import('html2pdf.js').then((html2pdf) => {
-	// 		const el = document.getElementById('your-div-id');
-	// 		html2pdf
-	// 			.default()
-	// 			.from(el as HTMLElement)
-	// 			.save();
-	// 	});
-	// });
 </script>

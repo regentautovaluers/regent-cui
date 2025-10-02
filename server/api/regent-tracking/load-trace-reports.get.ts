@@ -1,14 +1,10 @@
 import { TraceabilityReport } from '~/types/regent-tracking/trace-report';
-import SecurityUtil from '~/utils/security-util';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query = getQuery(event);
 
-	let endpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}`;
-	SecurityUtil.base64Decode(query.groupIds as string)
-		.split(',')
-		.forEach((e) => (endpoint = endpoint + `&device_id[]=${e}`));
+	let endpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}&groupIds=${query.groupIds}&page=1&limit=${query.limit}`;
 
 	try {
 		const entries = await makeProxyRequest<TraceabilityReport>(endpoint);

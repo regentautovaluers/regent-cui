@@ -1,4 +1,12 @@
-import { type TrackedVehicles, type Online } from '~/types/regent-tracking/tracked-vehicles';
+import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
+import { type TraceabilityReport, type Comments } from '~/types/regent-tracking/trace-report';
+import SecurityUtil from '~/utils/security-util';
+import {
+	getDeviceReports,
+	setDeviceReports,
+	cleanDeviceReports,
+} from '~/stores/regent-tracking-traceability-reports';
+import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export default function useDeviceTraceabilityReport() {
 	const size: Ref<number> = ref(10);
@@ -6,6 +14,30 @@ export default function useDeviceTraceabilityReport() {
 	const { fetchingClientVehicles, errorFetchingClientVehicles, getClientDevices } =
 		useRegentDeviceTracking();
 	const searchString: Ref<string | null> = ref(null);
+	const loadingTraceabilityComments: Ref<boolean> = ref(false);
+	const { get } = useStandardizedApi();
+
+	watch(
+		getClientDevices,
+		async (newValue) => {
+			// if there are vehicles fetch their reports
+			if (newValue) {
+				try {
+					let results = await loadTraceabilityComments(
+						newValue.map((v) => {
+							return v.id;
+						}),
+					);
+					setDeviceReports(results.results);
+				} catch (_err) {
+					console.error('Failed to load report comments');
+				} finally {
+					loadingTraceabilityComments.value = false;
+				}
+			}
+		},
+		{ immediate: true },
+	);
 
 	const totalPages: ComputedRef<number> = computed(() => {
 		if (!getClientDevices.value) {
@@ -102,7 +134,12 @@ export default function useDeviceTraceabilityReport() {
 		const endIndex = (page.value + 1) * size.value;
 		const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex) as TrackedVehicles[];
 
-		return paginatedVehicles.length ? paginatedVehicles : null;
+		if (paginatedVehicles.length) {
+			paginatedVehicles.map((e) => (e.comment = retrieveComments(e.id)));
+			return paginatedVehicles;
+		} else {
+			return null;
+		}
 	});
 
 	function isLastMonth(dateStr: string | Date): boolean {
@@ -128,6 +165,33 @@ export default function useDeviceTraceabilityReport() {
 		return Number(((a * 100) / total).toFixed(2));
 	}
 
+	async function loadTraceabilityComments(device_ids: number[]): Promise<TraceabilityReport> {
+		let base64Encoded = SecurityUtil.encodeBase64(device_ids.join(','));
+		let response = await get<TraceabilityReport>(
+			`/api/regent-tracking/load-trace-reports?groupIds=${base64Encoded}&limit=${device_ids.length}`,
+		);
+
+		if (!response.success) {
+			useToast('Failed to load comments! Try Again!', {
+				type: 'error',
+				title: 'Error',
+			});
+			throw new Error('Failed to fetch comments!');
+		}
+
+		return (response as StandardSuccessResponse<TraceabilityReport>).data;
+	}
+
+	function retrieveComments(target_id: number): Comments[] | undefined {
+		let report = getDeviceReports.value?.find((e) => e.device_id == target_id);
+
+		if (!report || report.comments.length == 0) {
+			return undefined;
+		}
+
+		return report.comments as Comments[];
+	}
+
 	return {
 		page,
 		size,
@@ -137,5 +201,7 @@ export default function useDeviceTraceabilityReport() {
 		errorFetchingClientVehicles,
 		totalPages,
 		computedStatistics,
+		getDeviceReports,
+		loadingTraceabilityComments,
 	};
 }

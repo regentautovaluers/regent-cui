@@ -16,7 +16,7 @@ export interface Pagination {
 }
 
 export interface Report {
-	device_id: string;
+	device_id: number;
 	comments: Comments[];
 }
 
