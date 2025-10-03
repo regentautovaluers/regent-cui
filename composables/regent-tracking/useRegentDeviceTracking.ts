@@ -76,43 +76,33 @@ export function useRegentDeviceTracking() {
 			return null;
 		}
 
-		let filteredVehicles = getClientDevices.value;
-
-		// Filter by online status
-		if (deviceOnlineStatus.value === 'offline') {
-			filteredVehicles = filteredVehicles.filter(
-				(v) => v.online === deviceOnlineStatus.value,
-			);
+		// Return early if no filters
+		if (!deviceOnlineStatus.value && !searchString.value) {
+			return getClientDevices.value as TrackedVehicles[];
 		}
 
-		if (deviceOnlineStatus.value === 'expired') {
-			filteredVehicles = filteredVehicles.filter((v) => {
-				let expirationDate = v.device_data.expiration_date;
-				if (expirationDate) {
-					return isDateInThePast(expirationDate.toString());
-				}
-			});
-		}
+		const lowerCaseSearch = searchString.value?.toLowerCase();
 
-		if (deviceOnlineStatus.value === 'ack') {
-			filteredVehicles = filteredVehicles.filter((v) =>
-				['ack', 'engine', 'online'].includes(v.online),
-			);
-		}
+		return getClientDevices.value.filter((v) => {
+			// Online status filter
+			let statusMatch = true;
+			if (deviceOnlineStatus.value === 'offline') {
+				statusMatch = v.online === 'offline';
+			} else if (deviceOnlineStatus.value === 'expired') {
+				const expirationDate = v.device_data.expiration_date;
+				statusMatch = expirationDate ? isDateInThePast(expirationDate.toString()) : false;
+			} else if (deviceOnlineStatus.value === 'ack') {
+				statusMatch = ['ack', 'engine', 'online'].includes(v.online);
+			}
 
-		// Filter by search string
-		if (searchString.value) {
-			const lowerCaseSearch = searchString.value.toLowerCase();
-			filteredVehicles = filteredVehicles.filter(
-				(v) =>
-					// Check for a match in name, which is assumed to always exist
-					(v.name && v.name.toLowerCase().includes(lowerCaseSearch)) ||
-					// Use optional chaining for regNo to safely check if it exists before filtering
-					v.driver_data.name?.toLowerCase().includes(lowerCaseSearch),
-			);
-		}
+			// Search string filter
+			const searchMatch =
+				!lowerCaseSearch ||
+				v.name?.toLowerCase().includes(lowerCaseSearch) ||
+				v.driver_data.name?.toLowerCase().includes(lowerCaseSearch);
 
-		return filteredVehicles as TrackedVehicles[];
+			return statusMatch && searchMatch;
+		}) as TrackedVehicles[];
 	});
 
 	const mapCenter: ComputedRef<{ lat: number; lng: number }> = computed(() => {
