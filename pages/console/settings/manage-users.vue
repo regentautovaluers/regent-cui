@@ -18,7 +18,7 @@
 		<!-- div to show when there are no users -->
 		<div
 			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
-			v-else-if="fetchStatus === 'success' && usersList.length === 0">
+			v-else-if="fetchStatus === 'success' && usersList?.length === 0">
 			<BirdieNotFoundIcon />
 			<h1 class="font-semibold text-gray-500">Oops! Seems like you have no users!</h1>
 			<NuxtLink
@@ -145,7 +145,7 @@
 											:class="{
 												'bg-green-500': user.accountEnabled,
 												'bg-red-500': !user.accountEnabled,
-											}" />
+											}"></div>
 										<span>{{
 											user.accountEnabled ? 'Active' : 'Inactive'
 										}}</span>
@@ -171,20 +171,8 @@
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 													type="button"
 													data-modal-target="edit-user-modal"
-													data-modal-toggle="edit-user-modal"
-													@click="
-														() => {
-															selectedIndexToEdit = index;
-															isEditAccountModalOpen = true;
-														}
-													">
+													data-modal-toggle="edit-user-modal">
 													Edit Details
-												</button>
-												<!-- TODO: Implement logic to reset password -->
-												<button
-													class="disabled block w-full bg-gray-100 px-4 py-2 text-center"
-													type="button">
-													Reset Password
 												</button>
 											</li>
 										</ul>
@@ -223,23 +211,19 @@
 		<!-- Modal to edit user -->
 		<ParentModal
 			modal-title="Edit Account"
-			modal-id="edit-user-modal"
-			v-if="isEditAccountModalOpen"
-			@close-modal="
-				() => {
-					isEditAccountModalOpen = false;
-					selectedIndexToEdit = -1;
-				}
-			">
+			modal-id="edit-user-modal">
 			<EditUserAccount
-				:user-id="usersList[selectedIndexToEdit].userId"
-				:username="usersList[selectedIndexToEdit].username"
-				:email="usersList[selectedIndexToEdit].email"
-				:phone-number="usersList[selectedIndexToEdit].phoneNumber"
-				:role-in-organization="usersList[selectedIndexToEdit].roleInOrganization"
-				:branch-id="usersList[selectedIndexToEdit].branchId"
-				:is-account-enabled="usersList[selectedIndexToEdit].accountEnabled"
-				:user-role="usersList[selectedIndexToEdit].userRoles[0]" />
+				v-if="usersList"
+				v-for="(u, idx) in usersList"
+				:key="idx"
+				:user-id="u.userId"
+				:username="u.username"
+				:email="u.email"
+				:phone-number="u.phoneNumber"
+				:role-in-organization="u.roleInOrganization"
+				:branch-id="u.branchId"
+				:is-account-enabled="u.accountEnabled"
+				:user-role="u.userRoles[0]" />
 		</ParentModal>
 	</div>
 </template>
@@ -251,7 +235,5 @@
 		name: 'vehicle-valuation-manage-user',
 	});
 
-	const { page, pageSize, totalPages, usersList, fetchStatus } = useUserAccounts();
-	const selectedIndexToEdit: Ref<any> = ref(-1);
-	const isEditAccountModalOpen: Ref<boolean> = ref(false);
+	const { page, totalPages, usersList, fetchStatus } = useUserAccounts();
 </script>
