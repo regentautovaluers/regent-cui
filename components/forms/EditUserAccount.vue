@@ -101,7 +101,7 @@
 				</option>
 			</select>
 			<FormSubmissionLoader
-				class="mr-2 absolute top-[52%] right-7 size-5 animate-spin text-gray-500"
+				class="absolute top-[52%] right-7 mr-2 size-5 animate-spin text-gray-500"
 				v-if="fetchStatus === 'pending'" />
 		</div>
 		<div class="mt-3">
@@ -166,7 +166,7 @@
 		userRole: { required: true, type: String },
 	});
 
-	const { updateMyAccountDetails, updateCorporateAccountLoading } = useAuth();
+	const { updateMyAccountDetails, updateCorporateAccountLoading } = useUserAccounts();
 	const { corporateBranches, fetchStatus } = useCorporateBranch();
 	const firstName: Ref<string> = ref(props.username.split(' ')[0]);
 	const lastName: Ref<string> = ref(props.username.split(' ')[1]);
