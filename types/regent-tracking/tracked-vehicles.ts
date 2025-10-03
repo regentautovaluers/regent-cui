@@ -39,7 +39,8 @@ export interface TrackedVehicles {
 	inaccuracy: null;
 	sim_expiration_date: null;
 	device_data: DeviceData;
-	comment?: Comments[];
+	comment: Comments[];
+	on_watchlist: boolean;
 }
 
 export enum Address {

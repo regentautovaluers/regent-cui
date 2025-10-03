@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query = getQuery(event);
 
-	let endpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}&groupIds=${query.groupIds}&page=1&limit=${query.limit}`;
+	let endpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}&tracker_id=${query.tracker_id}&page=1&limit=${query.limit}`;
 
 	try {
 		const entries = await makeProxyRequest<TraceabilityReport>(endpoint);

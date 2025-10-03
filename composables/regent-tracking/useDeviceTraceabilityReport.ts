@@ -28,7 +28,17 @@ export default function useDeviceTraceabilityReport() {
 							return v.id;
 						}),
 					);
-					setDeviceReports(results.results);
+					// set the comments once -> less costly option
+					results.results.forEach((r) => {
+						let entry = newValue.find((e) => e.id == r.tracker_id) as TrackedVehicles;
+
+						// trace whether vehicle is on watchlist
+						if (r.comments.length > 0) {
+							const latest_comment = r.comments[0];
+							entry.on_watchlist = latest_comment.watchlist == 'Y' ? true : false;
+						}
+						entry.comment = r.comments;
+					});
 				} catch (_err) {
 					console.error('Failed to load report comments');
 				} finally {
@@ -135,7 +145,6 @@ export default function useDeviceTraceabilityReport() {
 		const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex) as TrackedVehicles[];
 
 		if (paginatedVehicles.length) {
-			paginatedVehicles.map((e) => (e.comment = retrieveComments(e.id)));
 			return paginatedVehicles;
 		} else {
 			return null;
@@ -168,7 +177,7 @@ export default function useDeviceTraceabilityReport() {
 	async function loadTraceabilityComments(device_ids: number[]): Promise<TraceabilityReport> {
 		let base64Encoded = SecurityUtil.encodeBase64(device_ids.join(','));
 		let response = await get<TraceabilityReport>(
-			`/api/regent-tracking/load-trace-reports?groupIds=${base64Encoded}&limit=${device_ids.length}`,
+			`/api/regent-tracking/load-trace-reports?tracker_id=${base64Encoded}&limit=${device_ids.length}`,
 		);
 
 		if (!response.success) {
@@ -180,16 +189,6 @@ export default function useDeviceTraceabilityReport() {
 		}
 
 		return (response as StandardSuccessResponse<TraceabilityReport>).data;
-	}
-
-	function retrieveComments(target_id: number): Comments[] | undefined {
-		let report = getDeviceReports.value?.find((e) => e.device_id == target_id);
-
-		if (!report || report.comments.length == 0) {
-			return undefined;
-		}
-
-		return report.comments as Comments[];
 	}
 
 	return {

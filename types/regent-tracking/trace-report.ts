@@ -16,12 +16,13 @@ export interface Pagination {
 }
 
 export interface Report {
-	device_id: number;
+	tracker_id: number;
 	comments: Comments[];
 }
 
 export interface Comments {
 	id: number;
+	device_id: number;
 	comment: string;
 	username: string;
 	created_at: Date;
