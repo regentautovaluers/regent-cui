@@ -98,36 +98,6 @@ const useAuth = () => {
 		return authenticatedPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
 	};
 
-	const searchCorporateOrBroker = async () => {
-		searchCorpOrBrokerResults.value = null;
-		searchCorpOrBrokerLoading.value = true;
-
-		try {
-			await $fetch(searchBrokerOrCorpURI.value, {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'GET',
-				headers: {
-					Accept: '',
-				},
-				onResponse({ response }) {
-					if (response.ok) {
-						const serverResponse = response._data.data;
-						searchCorpOrBrokerResults.value = serverResponse;
-					} else {
-						throw new Error('Search failed. Try again!');
-					}
-				},
-			});
-		} catch (error) {
-			console.log('An error occured: ', error);
-			useToast('Failed. Try Again!', {
-				type: 'error',
-			});
-		} finally {
-			searchCorpOrBrokerLoading.value = false;
-		}
-	};
-
 	const setCredentialsInBrowserStorage = (data: any) => {
 		// set the principal
 		const principal: LoggedInPrincipal = {
@@ -217,7 +187,6 @@ const useAuth = () => {
 		isPrincipalAdmin,
 		displayCookieConsent,
 		isPrincipalBroker,
-		searchCorporateOrBroker,
 		encryptCorporateClientId,
 	};
 };

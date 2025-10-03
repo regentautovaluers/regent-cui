@@ -141,18 +141,37 @@
 						v-model="policyNumber" />
 				</div>
 				<!-- Officer Name -->
-				<div class="w-full lg:w-1/3">
+				<div class="relative w-full lg:w-1/3">
 					<label class="generic-input-label">{{
 						isPrincipalBroker() ? 'Select Corporate' : 'Select Broker / Agency'
 					}}</label>
-					<button
-						type="button"
+					<input
+						type="text"
 						id="officer-name"
-						class="generic-input text-start"
-						data-modal-target="search-corp-brokers"
-						data-modal-toggle="search-corp-brokers">
-						{{ agencyOrCorp.name }}
-					</button>
+						class="generic-input peer"
+						:required="isPrincipalBroker()"
+						placeholder="Start typing to search"
+						v-model="agencyOrCorpName" />
+					<span
+						class="icon-[svg-spinners--ring-resize] absolute top-[42px] right-3 text-2xl text-gray-500"
+						v-if="fetchingCorporateClients"></span>
+
+					<!-- selectable entries  -->
+					<div
+						class="peer thin-scrollbar absolute -top-52 hidden h-52 max-h-52 w-full flex-col space-y-2 overflow-y-auto rounded-xl border border-gray-200 bg-white p-3 shadow-md peer-focus:flex hover:flex">
+						<button
+							class="w-full cursor-pointer rounded-md bg-gray-100 p-2 text-start text-gray-500 transition-colors duration-200 outline-none hover:bg-gray-300 hover:text-gray-700"
+							type="button"
+							v-for="(e, idx) in computedCorporateClients"
+							:key="idx"
+							@click.prevent="
+								() => {
+									((agencyOrCorpName = e.corpName), (agencyOrCorpId = e.corpId));
+								}
+							">
+							{{ e.corpName }}
+						</button>
+					</div>
 				</div>
 				<!-- Authorized By -->
 				<div class="w-full lg:w-1/3">
@@ -313,24 +332,6 @@
 				{{ createAuthorizationLetterLoading ? 'Please Wait...' : 'Submit Request' }}
 			</button>
 		</form>
-
-		<!-- Search Corp or Broker modal -->
-		<ParentModal
-			modal-id="export-to-excel"
-			modal-title="Export to Excel"
-			class="h-72"
-			v-if="isExportExcelModalOpen"
-			@close-modal="isExportExcelModalOpen = false">
-			<ExportAuthorityLetter />
-		</ParentModal>
-
-		<!-- Search Corp or Broker modal -->
-		<ParentModal
-			modal-id="search-corp-brokers"
-			:modal-title="isPrincipalBroker() ? 'Search Corporate' : 'Search From Brokers'"
-			class="h-112">
-			<SearchCorporateOrBroker />
-		</ParentModal>
 	</div>
 </template>
 
@@ -349,7 +350,8 @@
 		preferredBranch,
 		comments,
 		policyNumber,
-		agencyOrCorp,
+		agencyOrCorpName,
+		agencyOrCorpId,
 		createAuthorizationLetterLoading,
 		logbookUploaded,
 		kraPinUploaded,
@@ -358,8 +360,15 @@
 		letterUploaded,
 		createAuthorizationLetter,
 		handleFileUpload,
-		getSelectedCorpOrBroker,
+		computedCorporateClients,
+		fetchingCorporateClients,
+		errorFetchingCorporateClients,
+		getCorporateClients,
+		searchPhrase,
+		shouldTriggerFetch,
 	} = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
 	const isExportExcelModalOpen: Ref<boolean> = ref(false);
+
+	onMounted(async () => await shouldTriggerFetch());
 </script>

@@ -1,21 +1,25 @@
-import {
-	setSelectedCorpOrBroker,
-	getSelectedCorpOrBroker,
-} from '~/stores/authority-letter-on-behalf-of-store';
-
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal, isPrincipalBroker } = useAuth();
-
+	const { getPrincipal } = useAuth();
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
 	const clientPhone: Ref<string> = ref('');
 	const preferredBranch: Ref<string> = ref('');
 	const comments: Ref<string> = ref('');
 	const policyNumber: Ref<string> = ref('');
-	const agencyOrCorp = computed(() => getSelectedCorpOrBroker.value);
+	const agencyOrCorpName: Ref<string | null> = ref('');
+	const agencyOrCorpId: Ref<string | null> = ref('');
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const uploadedDocuments: Ref<any[]> = ref([]);
+	const {
+		computedCorporateClients,
+		fetchingCorporateClients,
+		errorFetchingCorporateClients,
+		getCorporateClients,
+		searchPhrase,
+		shouldTriggerFetch,
+	} = useCorporateClients();
+	const { isPrincipalBroker } = useAuth();
 
 	// for changing state of uploaded documents
 	const logbookUploaded: Ref<boolean> = ref(false);
@@ -40,6 +44,15 @@ const useAuthorityLetters = () => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
 			clientPhone.value = newNumber.replace(/^(\+254|0)/, '254');
 		}
+	});
+
+	// hack to sync search phrase here with search phrase in useCorporateClients
+	watch(agencyOrCorpName, (newValue) => {
+		if (newValue == '' || newValue == null) {
+			agencyOrCorpId.value = null;
+			return;
+		}
+		searchPhrase.value = newValue;
 	});
 
 	const {
@@ -116,9 +129,10 @@ const useAuthorityLetters = () => {
 		// if the logged in user is a broker and they have not
 		// filled the agencyOrCorpName show a warning toast and exit
 		// the function
-		if (isPrincipalBroker() && agencyOrCorp.value.name.length === 0) {
-			useToast('Corporate is Required!', {
+		if (isPrincipalBroker() && agencyOrCorpId.value) {
+			useToast('Missing. Select one by clicking from options!', {
 				type: 'warn',
+				title: 'Missing Data!',
 			});
 
 			return;
@@ -152,8 +166,8 @@ const useAuthorityLetters = () => {
 				}
 			}
 
-			if (agencyOrCorp.value.name.length > 0) {
-				formData.append('agencyName', agencyOrCorp.value.id);
+			if (agencyOrCorpId.value) {
+				formData.append('agencyName', agencyOrCorpId.value);
 			}
 
 			await $fetch('/api/v1/authority-letter/corp/create-authority-letter', {
@@ -241,7 +255,8 @@ const useAuthorityLetters = () => {
 		preferredBranch,
 		comments,
 		policyNumber,
-		agencyOrCorp,
+		agencyOrCorpName,
+		agencyOrCorpId,
 		createAuthorizationLetterLoading,
 		exportAuthorityLettersLoading,
 		logbookUploaded,
@@ -252,13 +267,17 @@ const useAuthorityLetters = () => {
 		fetchAuthorityLetterStatus,
 		fetchAuthorityLetterError,
 		authorityLetters,
+		computedCorporateClients,
+		fetchingCorporateClients,
+		errorFetchingCorporateClients,
+		getCorporateClients,
+		searchPhrase,
 		createAuthorizationLetter,
 		handleFileUpload,
-		setSelectedCorpOrBroker,
 		exportAuthorityLetter,
 		handleSearchTriggered,
 		executeGetAuthorityLetters,
-		getSelectedCorpOrBroker,
+		shouldTriggerFetch,
 	};
 };
 
