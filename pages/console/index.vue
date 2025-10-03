@@ -48,11 +48,12 @@
 					<span>Services</span>
 				</button>
 				<h1 class="text-3xl font-semibold">Our Services</h1>
-				<div class="tablet:grid-cols-2 laptop:grid-cols-4 tablet:p-0 grid w-full gap-4 p-4">
+				<!-- TODO: return these back to 4 grid cols -->
+				<div class="tablet:grid-cols-2 laptop:grid-cols-3 tablet:p-0 grid w-full gap-4 p-4">
 					<!-- vehicle valuation -->
 					<ServicesQuickLinks
 						:title="'Vehicle Valuation'"
-						:link="navigationRoutes[3].routeName"
+						:link="navigationRoutes[2].routeName"
 						:service-description="regentServices[2].shortDescription">
 						<span
 							class="icon-[material-symbols-light--garage-money] text-4xl text-[30px] text-white"></span>
@@ -61,24 +62,16 @@
 					<!-- Roadside assistance -->
 					<ServicesQuickLinks
 						:title="'Roadside Assistance'"
-						:link="navigationRoutes[2].routeName"
+						:link="navigationRoutes[1].routeName"
 						:service-description="regentServices[0].shortDescription">
 						<span
 							class="icon-[material-symbols-light--auto-towing] text-4xl text-white"></span>
 					</ServicesQuickLinks>
 
-					<!-- emergency evacuation -->
-					<ServicesQuickLinks
-						:title="'Emergency Evacuation'"
-						:link="navigationRoutes[2].routeName"
-						:service-description="regentServices[1].shortDescription">
-						<EmergencyRescueIcon color="white" />
-					</ServicesQuickLinks>
-
 					<!-- collateral verification -->
 					<ServicesQuickLinks
 						:title="'Collateral Verification'"
-						:link="navigationRoutes[4].routeName"
+						:link="navigationRoutes[3].routeName"
 						:service-description="regentServices[1].shortDescription">
 						<span
 							class="icon-[material-symbols-light--shield-question-outline-rounded] text-4xl text-[30px] text-white"></span>
