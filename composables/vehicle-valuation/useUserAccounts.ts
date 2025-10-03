@@ -1,7 +1,7 @@
 const useUserAccounts = () => {
 	// for when loading users
 	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
-	const usersList: ComputedRef<any[]> = computed(() => fetchedData.value?.users);
+	const usersList: ComputedRef<any[] | null> = computed(() => fetchedData.value?.users);
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
 	const { getPrincipal } = useAuth();
