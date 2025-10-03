@@ -318,8 +318,9 @@
 											class="inline-flex flex-col space-y-1 space-x-2 rounded-md bg-blue-100 p-2"
 											v-if="v.comment"
 											v-for="c in v.comment">
-											<span class="font-semibold text-gray-700"
-												>{{ c.username }}</span
+											<span class="font-semibold text-gray-700">{{
+												c.username
+											}}</span
 											><span class="text-xs text-wrap text-gray-500"
 												>{{ c.comment }}
 											</span>
@@ -446,13 +447,18 @@
 
 		<!-- modal to add comment for first table -->
 		<ParentModal
-			v-for="(_a, idx) in 10"
+			v-if="!fetchingClientVehicles && computedVehicles && computedVehicles.length > 0"
+			v-for="(v, idx) in computedVehicles"
 			:key="idx"
 			modal-title="Add Your Comment "
 			:modal-id="`add-comment-tbl-${idx}`"
 			modal-size="large"
-			modal-subtitle="Vehicle KCA 123A -  Justus Kamau Kamau">
-			<AddTraceabilityReportComment />
+			:modal-subtitle="`Vehicle ${v.name} - ${v.driver_data?.name ?? 'Name N/A'}`">
+			<AddTraceabilityReportComment
+				:reg-no="v.name"
+				:client-phone="v.driver_data?.name ?? 'Name N/A'"
+				:client-name="v.driver_data?.phone ?? 'Phone N/A'"
+				:device-status="v.online" />
 		</ParentModal>
 
 		<!-- modal for exporting to pdf -->

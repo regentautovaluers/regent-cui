@@ -12,7 +12,7 @@
 					<span class="text-sm text-gray-500">Registration</span>
 				</h2>
 				<span class="text-gray-400">&VerticalBar;</span>
-				<h3 class="text-sm font-semibold text-gray-700">KCA 123A</h3>
+				<h3 class="text-sm font-semibold text-gray-700">{{ props.regNo }}</h3>
 			</div>
 			<div class="flex h-12 items-center space-x-3">
 				<h2 class="inline-flex items-center space-x-1">
@@ -21,7 +21,7 @@
 					<span class="text-sm text-gray-500">Phone</span>
 				</h2>
 				<span class="text-gray-400">&VerticalBar;</span>
-				<h3 class="text-sm font-semibold text-gray-700">0723892617</h3>
+				<h3 class="text-sm font-semibold text-gray-700">{{ props.clientPhone }}</h3>
 			</div>
 			<div class="flex h-12 items-center space-x-3">
 				<h2 class="inline-flex items-center space-x-1">
@@ -30,7 +30,7 @@
 					<span class="text-sm text-gray-500">Client Name</span>
 				</h2>
 				<span class="text-gray-400">&VerticalBar;</span>
-				<h3 class="text-sm font-semibold text-gray-700">John Doe</h3>
+				<h3 class="text-sm font-semibold text-gray-700">{{ clientName }}</h3>
 			</div>
 			<div class="flex h-12 items-center space-x-3">
 				<h2 class="inline-flex items-center space-x-1">
@@ -39,7 +39,7 @@
 					<span class="text-sm text-gray-500">Status</span>
 				</h2>
 				<span class="text-gray-400">&VerticalBar;</span>
-				<h3 class="text-sm font-semibold text-gray-700">offline</h3>
+				<h3 class="text-sm font-semibold text-gray-700">{{ props.deviceStatus }}</h3>
 			</div>
 		</div>
 
@@ -92,4 +92,23 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+	const props = defineProps({
+		regNo: {
+			type: String,
+			required: true,
+		},
+		clientPhone: {
+			type: String,
+			required: true,
+		},
+		clientName: {
+			type: String,
+			required: true,
+		},
+		deviceStatus: {
+			type: String,
+			required: true,
+		},
+	});
+</script>
