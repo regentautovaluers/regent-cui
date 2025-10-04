@@ -1,11 +1,7 @@
 import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
 import { type TraceabilityReport, type Comments } from '~/types/regent-tracking/trace-report';
 import SecurityUtil from '~/utils/security-util';
-import {
-	getDeviceReports,
-	setDeviceReports,
-	cleanDeviceReports,
-} from '~/stores/regent-tracking-traceability-reports';
+import { getDeviceReports } from '~/stores/regent-tracking-traceability-reports';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export default function useDeviceTraceabilityReport() {
@@ -15,6 +11,7 @@ export default function useDeviceTraceabilityReport() {
 		useRegentDeviceTracking();
 	const searchString: Ref<string | null> = ref(null);
 	const loadingTraceabilityComments: Ref<boolean> = ref(false);
+	const onlyOnWatchlist: Ref<boolean> = ref(false);
 	const { get } = useStandardizedApi();
 
 	watch(
@@ -61,6 +58,7 @@ export default function useDeviceTraceabilityReport() {
 		new_installations: number;
 		expires_soon: number;
 		total_devices: number;
+		total_on_watchlist: number;
 		dist: {
 			online_dist: number;
 			offline_dist: number;
@@ -73,6 +71,7 @@ export default function useDeviceTraceabilityReport() {
 				new_installations: 0,
 				expires_soon: 0,
 				total_devices: 0,
+				total_on_watchlist: 0,
 				dist: {
 					online_dist: 0,
 					offline_dist: 0,
@@ -94,6 +93,7 @@ export default function useDeviceTraceabilityReport() {
 								? 1
 								: 0),
 					total_devices: acc.total_devices + 1,
+					total_on_watchlist: acc.total_on_watchlist + (v.on_watchlist ? 1 : 0),
 					dist: {
 						online_dist: 0,
 						offline_dist: 0,
@@ -105,6 +105,7 @@ export default function useDeviceTraceabilityReport() {
 					new_installations: 0,
 					expires_soon: 0,
 					total_devices: 0,
+					total_on_watchlist: 0,
 					dist: {
 						online_dist: 0,
 						offline_dist: 0,
@@ -121,34 +122,30 @@ export default function useDeviceTraceabilityReport() {
 	});
 
 	const computedVehicles: ComputedRef<TrackedVehicles[] | null> = computed(() => {
-		if (!getClientDevices.value) {
-			return null;
+		if (!getClientDevices.value) return null;
+
+		let filtered = getClientDevices.value;
+
+		// Filter by watchlist
+		if (onlyOnWatchlist.value) {
+			filtered = filtered.filter((v) => v.on_watchlist);
 		}
 
-		let filteredVehicles = getClientDevices.value;
-
-		// Filter by search string
+		// Filter by search
 		if (searchString.value) {
-			const lowerCaseSearch = searchString.value.toLowerCase();
-			filteredVehicles = filteredVehicles.filter(
+			const search = searchString.value.toLowerCase();
+			filtered = filtered.filter(
 				(v) =>
-					// Check for a match in name, which is assumed to always exist
-					(v.name && v.name.toLowerCase().includes(lowerCaseSearch)) ||
-					// Use optional chaining for regNo to safely check if it exists before filtering
-					v.driver_data.name?.toLowerCase().includes(lowerCaseSearch),
+					v.name?.toLowerCase().includes(search) ||
+					v.driver_data.name?.toLowerCase().includes(search),
 			);
 		}
 
-		// Paginate the filtered results
-		const startIndex = page.value * size.value;
-		const endIndex = (page.value + 1) * size.value;
-		const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex) as TrackedVehicles[];
+		// Paginate
+		const start = page.value * size.value;
+		const paginated = filtered.slice(start, start + size.value) as TrackedVehicles[];
 
-		if (paginatedVehicles.length) {
-			return paginatedVehicles;
-		} else {
-			return null;
-		}
+		return paginated.length ? paginated : null;
 	});
 
 	function isLastMonth(dateStr: string | Date): boolean {
@@ -199,6 +196,7 @@ export default function useDeviceTraceabilityReport() {
 		fetchingClientVehicles,
 		errorFetchingClientVehicles,
 		totalPages,
+		onlyOnWatchlist,
 		computedStatistics,
 		getDeviceReports,
 		loadingTraceabilityComments,

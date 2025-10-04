@@ -130,16 +130,29 @@
 						{{ computedStatistics.total_devices }} Vehicles Found
 					</h2>
 				</div>
+				<label class="inline-flex cursor-pointer items-center">
+					<input
+						type="checkbox"
+						value=""
+						class="peer sr-only"
+						v-model="onlyOnWatchlist" />
+					<div
+						class="peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full"></div>
+					<span class="ms-3 text-sm font-semibold text-gray-700">Only On Watchlist</span>
+				</label>
 			</div>
 			<div class>
-				<form class="flex w-full items-center justify-between p-5">
+				<div class="relative flex w-full items-center justify-between p-5">
+					<span
+						class="icon-[material-symbols-light--search] absolute translate-x-1 text-2xl text-gray-700"></span>
 					<input
 						type="text"
 						name="search-tracked-device"
 						id="search-tracked-device"
 						placeholder="Search by registration, client name or client number."
-						class="h-14 w-1/3 rounded-md ps-10 text-sm text-gray-700 outline-none placeholder:text-gray-500" />
-				</form>
+						class="h-14 w-1/3 rounded-md ps-8 text-sm text-gray-700 outline-none placeholder:text-gray-500"
+						v-model.trim="searchString" />
+				</div>
 
 				<!-- table -->
 				<div class="flex-grow">
@@ -433,22 +446,41 @@
 					</div>
 				</div>
 			</div>
-			<div
-				class="flex h-full flex-col items-center justify-center space-y-5 rounded-lg border bg-white p-5 shadow-sm outline-none">
-				<img
-					src="/images/app-logo.png"
-					class="tablet:h-16 h-14"
-					alt="Flowbite Logo" />
-				<h1 class="font-bold text-gray-700">
-					Powered by
-					<a
-						href="https://regenttrack.co.ke/"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="text-blue-700 underline"
-						>Regent Tracking</a
-					>
-				</h1>
+
+			<!-- stats -->
+			<div class="h-full rounded-lg border bg-white p-5 shadow-sm outline-none">
+				<h1 class="font-semibold text-gray-700">Crticial Alerts</h1>
+				<!-- critical alerts -->
+				<div
+					class="mt-5 flex h-20 items-center justify-between rounded-lg border border-red-200 bg-red-100 px-5 outline-none">
+					<div class="flex h-full items-center space-x-2">
+						<span
+							class="icon-[material-symbols-light--warning-outline] text-4xl text-red-500"></span>
+						<div>
+							<h1 class="font-semibold text-red-800">Watchlist Vehicles</h1>
+							<h2 class="text-sm text-red-800">
+								These vehicles are offline with uncooperative clients.
+							</h2>
+						</div>
+					</div>
+					<h1 class="font-semibold text-red-800">{{ computedStatistics.total_on_watchlist  }}</h1>
+				</div>
+
+				<!-- emergency vehicles -->
+				<div
+					class="mt-5 flex h-20 items-center justify-between rounded-lg border border-purple-200 bg-purple-100 px-5 outline-none">
+					<div class="flex h-full items-center space-x-2">
+						<span
+							class="icon-[material-symbols-light--nest-clock-farsight-analog] text-4xl text-purple-500"></span>
+						<div>
+							<h1 class="font-semibold text-purple-800">Expiring Subscriptions</h1>
+							<h2 class="text-sm text-purple-800">Renewal required within 30 days</h2>
+						</div>
+					</div>
+					<h1 class="font-semibold text-purple-800">
+						{{ computedStatistics.expires_soon }}
+					</h1>
+				</div>
 			</div>
 		</div>
 
@@ -497,5 +529,6 @@
 		computedStatistics,
 		getDeviceReports,
 		loadingTraceabilityComments,
+		onlyOnWatchlist,
 	} = useDeviceTraceabilityReport();
 </script>
