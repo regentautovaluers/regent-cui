@@ -4,7 +4,7 @@ import SecurityUtil from '~/utils/security-util';
 import { getDeviceReports } from '~/stores/regent-tracking-traceability-reports';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 
-export default function useDeviceTraceabilityReport() {
+export function useDeviceTraceabilityReport() {
 	const size: Ref<number> = ref(10);
 	const page: Ref<number> = ref(0);
 	const { fetchingClientVehicles, errorFetchingClientVehicles, getClientDevices } =
@@ -45,12 +45,6 @@ export default function useDeviceTraceabilityReport() {
 		},
 		{ immediate: true },
 	);
-
-	const totalPages: ComputedRef<number> = computed(() => {
-		if (!getClientDevices.value) {
-			return 0;
-		} else return Math.ceil(getClientDevices.value.length / size.value);
-	});
 
 	const computedStatistics: ComputedRef<{
 		total_online: number;
@@ -122,30 +116,16 @@ export default function useDeviceTraceabilityReport() {
 	});
 
 	const computedVehicles: ComputedRef<TrackedVehicles[] | null> = computed(() => {
-		if (!getClientDevices.value) return null;
+		const filtered = getFilteredVehicles();
+		if (!filtered.length) return null;
 
-		let filtered = getClientDevices.value;
-
-		// Filter by watchlist
-		if (onlyOnWatchlist.value) {
-			filtered = filtered.filter((v) => v.on_watchlist);
-		}
-
-		// Filter by search
-		if (searchString.value) {
-			const search = searchString.value.toLowerCase();
-			filtered = filtered.filter(
-				(v) =>
-					v.name?.toLowerCase().includes(search) ||
-					v.driver_data.name?.toLowerCase().includes(search),
-			);
-		}
-
-		// Paginate
 		const start = page.value * size.value;
-		const paginated = filtered.slice(start, start + size.value) as TrackedVehicles[];
+		return filtered.slice(start, start + size.value) as TrackedVehicles[];
+	});
 
-		return paginated.length ? paginated : null;
+	const totalPages = computed(() => {
+		const filtered = getFilteredVehicles();
+		return Math.ceil(filtered.length / size.value) || 1;
 	});
 
 	function isLastMonth(dateStr: string | Date): boolean {
@@ -169,6 +149,27 @@ export default function useDeviceTraceabilityReport() {
 	function deriveDistribution(a: number, b: number): number {
 		const total = a + b;
 		return Number(((a * 100) / total).toFixed(2));
+	}
+
+	function getFilteredVehicles() {
+		if (!getClientDevices.value) return [];
+
+		let filtered = getClientDevices.value;
+
+		if (onlyOnWatchlist.value) {
+			filtered = filtered.filter((v) => v.on_watchlist);
+		}
+
+		if (searchString.value) {
+			const search = searchString.value.toLowerCase();
+			filtered = filtered.filter(
+				(v) =>
+					v.name?.toLowerCase().includes(search) ||
+					v.driver_data.name?.toLowerCase().includes(search),
+			);
+		}
+
+		return filtered;
 	}
 
 	async function loadTraceabilityComments(device_ids: number[]): Promise<TraceabilityReport> {
@@ -200,5 +201,29 @@ export default function useDeviceTraceabilityReport() {
 		computedStatistics,
 		getDeviceReports,
 		loadingTraceabilityComments,
+	};
+}
+
+export function useTraceabilityReportComments() {
+	const newComment: Ref<string | null> = ref(null);
+	const { post } = useStandardizedApi();
+
+	async function addNewComment(id: number) {
+		let response = await post<any>('/api/regent-tracking/add-device-comment', {
+			id,
+			comment: newComment.value,
+		});
+
+		if (!response.success) {
+			useToast('Failed to add comment! Try Again!', {
+				type: 'error',
+				title: 'Error',
+			});
+			throw new Error('Failed to fetch comments!');
+		}
+	}
+	return {
+		newComment,
+		addNewComment,
 	};
 }

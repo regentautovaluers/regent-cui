@@ -463,7 +463,9 @@
 							</h2>
 						</div>
 					</div>
-					<h1 class="font-semibold text-red-800">{{ computedStatistics.total_on_watchlist  }}</h1>
+					<h1 class="font-semibold text-red-800">
+						{{ computedStatistics.total_on_watchlist }}
+					</h1>
 				</div>
 
 				<!-- emergency vehicles -->
@@ -494,10 +496,12 @@
 			modal-size="large"
 			:modal-subtitle="`Vehicle ${v.name} - ${v.driver_data?.name ?? 'Name N/A'}`">
 			<AddTraceabilityReportComment
+				:id="v.id"
 				:reg-no="v.name"
 				:client-phone="v.driver_data?.name ?? 'Name N/A'"
 				:client-name="v.driver_data?.phone ?? 'Phone N/A'"
-				:device-status="v.online" />
+				:device-status="v.online"
+				:comments="v.comment" />
 		</ParentModal>
 
 		<!-- modal for exporting to pdf -->

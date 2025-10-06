@@ -47,38 +47,44 @@
 		<div
 			class="borer-blue-200 min-h-32 space-y-2 rounded-lg border bg-blue-100 p-4 outline-none">
 			<div
-				v-for="a in 3"
-				:key="a"
+				v-if="props.comments.length > 0"
+				v-for="(c, idx) in props.comments"
+				:key="idx"
 				class="flex items-start space-x-3">
 				<div class="flex items-center space-x-1">
 					<span
 						class="icon-[material-symbols-light--person] text-2xl text-gray-700"></span>
 					<h3 class="text-sm font-semibold whitespace-nowrap text-gray-700">
-						Bank Officer
+						{{ c.username }}
 					</h3>
 				</div>
 				<span class="text-gray-700">&VerticalBar;</span>
 				<p class="text-sm text-gray-600">
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam eum unde fugiat
-					consequuntur molestias accusantium molestiae vitae reprehenderit ipsa porro,
-					ipsam corporis, culpa tempore quia totam neque! Eligendi, quia ducimus.
+					{{ c.comment }}
 				</p>
 			</div>
+			<p
+				v-else
+				class="text-xs text-gray-500">
+				No previous comments for this device!
+			</p>
 		</div>
 
 		<!-- comment form -->
-		<form>
+		<form @submit.prevent="addNewComment(props.id)">
 			<div class="my-5">
 				<label
 					for="comments-box"
 					class="generic-input-label"
-					>Comments</label
+					>Your Comment</label
 				>
 				<textarea
 					id="comments-box"
 					class="block w-full rounded-lg border-gray-200 px-4 py-3 text-sm text-gray-600 focus:border-blue-500 focus:ring-blue-500"
 					rows="8"
-					placeholder="What would you like to say about this issue?"></textarea>
+					placeholder="What would you like to say about this device?"
+					v-model="newComment"
+					required></textarea>
 			</div>
 			<div class="flex justify-end">
 				<!-- submit button -->
@@ -93,7 +99,13 @@
 </template>
 
 <script setup lang="ts">
+	import { type Comments } from '~/types/regent-tracking/trace-report';
+
 	const props = defineProps({
+		id: {
+			type: Number,
+			required: true,
+		},
 		regNo: {
 			type: String,
 			required: true,
@@ -110,5 +122,11 @@
 			type: String,
 			required: true,
 		},
+		comments: {
+			type: Object as () => Comments[],
+			required: true,
+		},
 	});
+
+	const { newComment, addNewComment } = useTraceabilityReportComments();
 </script>
