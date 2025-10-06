@@ -1,5 +1,5 @@
 import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
-import { type TraceabilityReport, type Comments } from '~/types/regent-tracking/trace-report';
+import { type TraceabilityReport } from '~/types/regent-tracking/trace-report';
 import SecurityUtil from '~/utils/security-util';
 import { getDeviceReports } from '~/stores/regent-tracking-traceability-reports';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
@@ -200,6 +200,7 @@ export function useDeviceTraceabilityReport() {
 		onlyOnWatchlist,
 		computedStatistics,
 		getDeviceReports,
+		getClientDevices,
 		loadingTraceabilityComments,
 	};
 }

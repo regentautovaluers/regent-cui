@@ -508,14 +508,18 @@
 		<ParentModal
 			modal-title="Report Preview"
 			modal-id="export-report-pdf-modal"
-			modal-size="full-screen">
-			<h1>Hello world</h1>
+			modal-size="full-screen"
+			v-if="getClientDevices && getClientDevices.length > 0">
+			<!-- prettier-ignore -->
+			<DownloadTraceabilityReportPDF
+				:stats="computedStatistics"
+				:vehicles="(getClientDevices as TrackedVehicles[])" />
 		</ParentModal>
 	</div>
 </template>
 
 <script setup lang="ts">
-	// import html2pdf from 'html2pdf.js';
+	import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
 
 	definePageMeta({
 		name: 'regent-tracking-traceability-report',
@@ -532,6 +536,7 @@
 		totalPages,
 		computedStatistics,
 		getDeviceReports,
+		getClientDevices,
 		loadingTraceabilityComments,
 		onlyOnWatchlist,
 	} = useDeviceTraceabilityReport();
