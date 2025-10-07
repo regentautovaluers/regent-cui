@@ -250,7 +250,7 @@
 							<span
 								class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
 								v-if="fetchingDeviceAlerts"></span>
-							<span>Alerts</span>
+							<span>Events</span>
 						</button>
 						<button
 							:class="[
@@ -384,22 +384,100 @@
 					</div>
 				</div>
 				<div
-					class="thin-scrollbar relative flex-grow overflow-y-auto pt-24"
+					class="thin-scrollbar flex-grow space-y-5 overflow-y-auto px-5 pb-5"
 					v-else-if="activeDeviceTab == 'alerts'">
-					<div class="absolute top-0 my-3 h-20 w-full bg-red-500 p-2"></div>
+					<button
+						id="filter-alerts-dd-btn"
+						data-dropdown-toggle="alerts-dd"
+						class="inline-flex h-14 w-full items-center justify-between rounded-lg border border-gray-200 px-5 py-2.5 text-center text-sm font-bold text-gray-500 outline-none hover:bg-gray-200"
+						type="button">
+						<span>Filter Time</span>
+						<span
+							class="icon-[material-symbols-light--keyboard-arrow-down] size-[25px] text-gray-500"></span>
+					</button>
+					<!-- Dropdown menu -->
 					<div
-						v-for="(a, index) in alerts"
-						:key="index"
+						id="alerts-dd"
+						class="z-10 hidden w-[90%] divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white shadow-sm">
+						<ul
+							class="w-full space-y-2 p-2 text-sm text-gray-700"
+							aria-labelledby="dropdownDefaultButton">
+							<li
+								class="w-full"
+								v-for="(e, idx) in availablePeriodButtons"
+								:key="idx">
+								<button
+									type="button"
+									:class="[
+										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
+									]"
+									@click="setAlertsFilterPeriod(e.period as any)">
+									<span
+										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+										v-if="
+											fetchingDeviceAlerts && alertsFilterPeriod == e.period
+										"></span>
+									<span>{{ e.name }}</span>
+								</button>
+							</li>
+
+							<!-- only shown when type is custom  -->
+							<form
+								@submit.prevent="executeFetchDeviceAlerts()"
+								class="flex w-full flex-col space-y-1 rounded-md bg-gray-100 p-2"
+								v-show="filterPeriod == 'custom'">
+								<div>
+									<label
+										for="history-starts-from"
+										class="generic-input-label"
+										>Starting From</label
+									>
+									<input
+										type="date"
+										id="history-starts-from"
+										class="generic-input h-[50px]"
+										placeholder="start date"
+										pattern="\d{4}-\d{2}-\d{2}"
+										required
+										v-model="fromDate" />
+								</div>
+								<div>
+									<label
+										for="history-ends-at"
+										class="generic-input-label"
+										>Ending At</label
+									>
+									<input
+										type="date"
+										id="history-ends-at"
+										class="generic-input h-[50px]"
+										placeholder="start date"
+										pattern="\d{4}-\d{2}-\d{2}"
+										required
+										v-model="toDate" />
+								</div>
+								<button
+									type="submit"
+									class="p-0 text-sm text-blue-700 hover:underline">
+									Filter
+								</button>
+							</form>
+						</ul>
+					</div>
+
+					<div
+						v-for="(e, idx) in events"
+						:key="idx"
 						class="mx-5 mb-4 h-28 rounded-lg border border-gray-300 p-5 shadow-sm">
-						<h1 class="font-bold text-gray-600">{{ a.type }}</h1>
+						<h1 class="font-bold text-gray-600">{{ e.type }}</h1>
 						<p class="text-sm font-medium text-gray-500">
-							{{ a.name }}
+							{{ e.message }}
 						</p>
 						<p class="inline-flex items-center space-x-3 text-sm text-gray-400">
 							<span>&iacute;</span>
 							<span
-								>{{ a.created_at.split(' ')[0] }} |
-								{{ a.created_at.split(' ')[1] }}</span
+								>{{ e.created_at.split(' ')[0] }} |
+								{{ e.created_at.split(' ')[1] }}</span
 							>
 						</p>
 					</div>
@@ -424,82 +502,24 @@
 						<ul
 							class="w-full space-y-2 p-2 text-sm text-gray-700"
 							aria-labelledby="dropdownDefaultButton">
-							<li class="w-full">
+							<li
+								class="w-full"
+								v-for="(e, idx) in availablePeriodButtons"
+								:key="idx">
 								<button
 									type="button"
 									:class="[
 										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
 									]"
-									@click="setFilterPeriod('today')">
+									@click="setFilterPeriod(e.period as any)">
 									<span
 										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
 										v-if="
-											fetchingDeviceHistory && filterPeriod == 'today'
+											fetchingDeviceHistory && filterPeriod == e.period
 										"></span>
-									<span>Today</span>
+									<span>{{ e.name }}</span>
 								</button>
 							</li>
-							<li class="w-full">
-								<button
-									type="button"
-									:class="[
-										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
-									]"
-									@click="setFilterPeriod('this-week')">
-									<span
-										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
-										v-if="
-											fetchingDeviceHistory && filterPeriod == 'this-week'
-										"></span>
-									<span>This Week</span>
-								</button>
-							</li>
-							<li class="w-full">
-								<button
-									type="button"
-									:class="[
-										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
-									]"
-									@click="setFilterPeriod('last-30-days')">
-									<span
-										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
-										v-if="
-											fetchingDeviceHistory && filterPeriod == 'last-30-days'
-										"></span>
-									<span>Last 30 Days</span>
-								</button>
-							</li>
-							<li class="w-full">
-								<button
-									type="button"
-									:class="[
-										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
-									]"
-									@click="setFilterPeriod('last-3-months')">
-									<span
-										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
-										v-if="
-											fetchingDeviceHistory && filterPeriod == 'last-3-months'
-										"></span>
-									<span>Last 3 Months</span>
-								</button>
-							</li>
-							<li class="w-full">
-								<button
-									type="button"
-									:class="[
-										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
-									]"
-									@click="setFilterPeriod('custom')">
-									<span
-										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
-										v-if="
-											fetchingDeviceHistory && filterPeriod == 'custom'
-										"></span>
-									<span>Custom</span>
-								</button>
-							</li>
-
 							<!-- only shown when type is custom  -->
 							<form
 								@submit.prevent="executeFetchDeviceHistory()"
@@ -596,7 +616,7 @@
 							</button>
 						</div>
 					</div>
-					<!-- nesting area, history replay e.t.c -->
+					<!-- nesting area e.t.c -->
 					<div
 						class="flex h-fit flex-col divide-y-2 rounded-lg border bg-white shadow-xs outline-none">
 						<div class="h-20 p-5">
@@ -688,6 +708,8 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- trip history -->
 					<div class="h-fit divide-y-2 rounded-lg border bg-white shadow-xs outline-none">
 						<div class="p-5">
 							<h1 class="font-bold text-gray-700">Trip History</h1>
@@ -880,11 +902,13 @@
 	const {
 		dateFrom,
 		dateTo,
-		alerts,
+		events,
+		alertsFilterPeriod,
 		fetchingDeviceAlerts,
 		errorFetchingDeviceAlerts,
 		executeFetchDeviceAlerts,
-	} = await useRegentTrackingDeviceAlerts();
+		setAlertsFilterPeriod,
+	} = useRegentTrackingDeviceEvents();
 
 	const {
 		filterPeriod,
@@ -897,5 +921,28 @@
 		toDate,
 		executeFetchDeviceHistory,
 		setFilterPeriod,
-	} = await useRegentTrackingDeviceHistory();
+	} = useRegentTrackingDeviceHistory();
+
+	const availablePeriodButtons = reactive([
+		{
+			name: 'Today',
+			period: 'today',
+		},
+		{
+			name: 'This Week',
+			period: 'this-week',
+		},
+		{
+			name: 'Last 30 Days',
+			period: 'last-30-days',
+		},
+		{
+			name: 'Last 3 Months',
+			period: 'last-3-months',
+		},
+		{
+			name: 'Custom',
+			period: 'custom',
+		},
+	]);
 </script>

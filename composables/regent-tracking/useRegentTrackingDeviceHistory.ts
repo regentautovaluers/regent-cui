@@ -10,7 +10,7 @@ import { type StandardSuccessResponse, type StandardErrorResponse } from '~/type
 import { type AnalyzedLocation } from '~/types/regent-tracking/device-history';
 import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 
-export async function useRegentTrackingDeviceHistory() {
+export function useRegentTrackingDeviceHistory() {
 	const { query } = useRoute();
 	const filterPeriod: Ref<'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom'> =
 		ref('today');
@@ -122,7 +122,7 @@ export async function useRegentTrackingDeviceHistory() {
 		pending: fetchingDeviceHistory,
 		error: errorFetchingDeviceHistory,
 		execute: executeFetchDeviceHistory,
-	} = await useApiData<DeviceHistory, DeviceHistory>(
+	} = useApiData<DeviceHistory, DeviceHistory>(
 		`device-history-${routeName == 'regent-tracking-vehicle-history' ? query.device_id : getTrackedVehicle.value?.id}`,
 		computedURL,
 		{

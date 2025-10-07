@@ -1,14 +1,16 @@
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
-import { type DeviceAlerts } from '~/types/regent-tracking/device-alerts';
+import { type DeviceEvent } from '~/types/regent-tracking/device-event';
 import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 
-export async function useRegentTrackingDeviceAlerts() {
+export function useRegentTrackingDeviceEvents() {
 	const dateFrom: Ref<string | null> = ref(null);
 	const dateTo: Ref<string | null> = ref(null);
 	const { authToken } = useRegentTrackingAuth();
+	const alertsFilterPeriod: Ref<'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom'> =
+		ref('today');
 
 	const computedURL: ComputedRef<string> = computed(() => {
-		let requestUrl = `/api/regent-tracking/device-alerts?api_hash=${authToken.value}&device_id=${getTrackedVehicle.value?.id}`;
+		let requestUrl = `/api/regent-tracking/device-event?api_hash=${authToken.value}&device_id=${getTrackedVehicle.value?.id}`;
 
 		if (dateFrom.value) {
 			requestUrl = requestUrl + `&date_from=${dateFrom.value}`;
@@ -22,11 +24,11 @@ export async function useRegentTrackingDeviceAlerts() {
 	});
 
 	const {
-		data: alerts,
+		data: events,
 		pending: fetchingDeviceAlerts,
 		error: errorFetchingDeviceAlerts,
 		execute: executeFetchDeviceAlerts,
-	} = await useApiData<DeviceAlerts[], DeviceAlerts[]>(
+	} = useApiData<DeviceEvent[], DeviceEvent[]>(
 		`device-alerts-${getTrackedVehicle.value?.id}`,
 		computedURL,
 		{
@@ -37,7 +39,7 @@ export async function useRegentTrackingDeviceAlerts() {
 				// Check if the API call was successful
 				if (response.success) {
 					// The response.data is correctly typed as TrackedVehicles[] here.
-					return (response as StandardSuccessResponse<DeviceAlerts[]>).data;
+					return (response as StandardSuccessResponse<DeviceEvent[]>).data;
 				}
 
 				// If it failed, throw the error
@@ -48,12 +50,21 @@ export async function useRegentTrackingDeviceAlerts() {
 		},
 	);
 
+	function setAlertsFilterPeriod(
+		period: 'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom',
+	) {
+		alertsFilterPeriod.value = period;
+		executeFetchDeviceAlerts();
+	}
+
 	return {
 		dateFrom,
 		dateTo,
-		alerts,
+		events,
+		alertsFilterPeriod,
 		fetchingDeviceAlerts,
 		errorFetchingDeviceAlerts,
 		executeFetchDeviceAlerts,
+		setAlertsFilterPeriod,
 	};
 }
