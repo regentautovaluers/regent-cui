@@ -126,7 +126,7 @@
 
 								<td class="table-cell space-y-2 py-5">
 									<template
-										v-if="v.comment.length > 0"
+										v-if="v.comment && v.comment.length > 0"
 										v-for="c in v.comment">
 										<p class="inline-flex w-full space-x-2">
 											<span class="text-sm font-semibold text-gray-700"
@@ -153,7 +153,7 @@
 		<!-- all vehicles -->
 		<div class="my-8 inline-flex items-center space-x-4">
 			<span
-				class="icon-[material-symbols-light--warning-outline] text-4xl text-red-500"></span>
+				class="icon-[material-symbols-light--list-alt-rounded] text-4xl text-blue-500"></span>
 			<h1 class="font-semibold text-gray-700">All Vehicles</h1>
 		</div>
 
@@ -237,7 +237,7 @@
 							</td>
 							<td class="table-cell space-y-2 py-5">
 								<template
-									v-if="v.comment.length > 0"
+									v-if="v.comment && v.comment.length > 0"
 									v-for="c in v.comment">
 									<p class="inline-flex w-full space-x-2">
 										<span class="text-sm font-semibold text-gray-700"
