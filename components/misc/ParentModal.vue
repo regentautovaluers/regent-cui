@@ -29,7 +29,9 @@
 							{{ props.modalSubtitle }}
 						</h3>
 					</div>
-					<div>
+					<div class="flex items-center space-x-2">
+						<!-- an optional action button -->
+						<slot name="action-btn"></slot>
 						<button
 							type="button"
 							class="inline-flex rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"

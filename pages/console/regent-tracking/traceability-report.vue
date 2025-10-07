@@ -510,6 +510,14 @@
 			modal-id="export-report-pdf-modal"
 			modal-size="full-screen"
 			v-if="getClientDevices && getClientDevices.length > 0">
+			<template v-slot:action-btn>
+				<button
+					class="inline-flex h-12 w-44 items-center justify-center space-x-4 rounded-lg bg-blue-600 p-1.5">
+					<span
+						class="icon-[material-symbols-light--download-for-offline] text-2xl text-slate-100"></span>
+					<span class="text-sm text-slate-100">Download PDF</span>
+				</button>
+			</template>
 			<!-- prettier-ignore -->
 			<DownloadTraceabilityReportPDF
 				:stats="computedStatistics"
