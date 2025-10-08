@@ -189,6 +189,53 @@ export function useDeviceTraceabilityReport() {
 		return (response as StandardSuccessResponse<TraceabilityReport>).data;
 	}
 
+	function printReport(contentId: string) {
+		// Get HTML to print from element
+		const prtHtml = document.getElementById(contentId)?.innerHTML;
+
+		// Get all stylesheets HTML
+		let stylesHtml = '';
+		for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+			stylesHtml += node.outerHTML;
+		}
+
+		// Create hidden iframe
+		const iframe = document.createElement('iframe');
+		iframe.style.position = 'absolute';
+		iframe.style.width = '0';
+		iframe.style.height = '0';
+		iframe.style.border = 'none';
+
+		document.body.appendChild(iframe);
+
+		const iframeDoc = iframe.contentDocument || (iframe.contentWindow?.document as Document);
+
+		iframeDoc.open();
+		iframeDoc.write(`
+			<!DOCTYPE html>
+			<html>
+			<head>
+				${stylesHtml}
+			</head>
+			<body>
+				${prtHtml}
+			</body>
+			</html>
+		`);
+		iframeDoc.close();
+
+		// Wait for content to load, then print
+		iframe.onload = () => {
+			iframe.contentWindow?.focus();
+			iframe.contentWindow?.print();
+
+			// Clean up after printing
+			setTimeout(() => {
+				document.body.removeChild(iframe);
+			}, 100);
+		};
+	}
+
 	return {
 		page,
 		size,
@@ -202,6 +249,7 @@ export function useDeviceTraceabilityReport() {
 		getDeviceReports,
 		getClientDevices,
 		loadingTraceabilityComments,
+		printReport,
 	};
 }
 

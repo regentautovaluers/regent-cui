@@ -14,20 +14,13 @@
 					<h2 class="text-sm text-gray-500">Real-time Vehicle Status and Monitoring</h2>
 				</div>
 			</div>
-			<div class="flex items-center space-x-4">
-				<button
-					class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-green-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-green-600">
-					<span class="icon-[material-symbols-light--download-rounded] text-2xl"></span>
-					<span>Export Excel</span></button
-				><button
-					class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-red-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-red-600"
-					data-modal-target="export-report-pdf-modal"
-					data-modal-toggle="export-report-pdf-modal">
-					<span
-						class="icon-[material-symbols-light--table-convert-outline] text-2xl"></span>
-					<span>Export PDF</span>
-				</button>
-			</div>
+			<button
+				class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-red-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-red-600"
+				data-modal-target="export-report-pdf-modal"
+				data-modal-toggle="export-report-pdf-modal">
+				<span class="icon-[material-symbols-light--table-convert-outline] text-2xl"></span>
+				<span>Export PDF</span>
+			</button>
 		</div>
 
 		<!-- the stats -->
@@ -512,10 +505,11 @@
 			v-if="getClientDevices && getClientDevices.length > 0">
 			<template v-slot:action-btn>
 				<button
+					@click="printReport('traceability-report-content')"
 					class="inline-flex h-12 w-44 items-center justify-center space-x-4 rounded-lg bg-blue-600 p-1.5">
 					<span
-						class="icon-[material-symbols-light--download-for-offline] text-2xl text-slate-100"></span>
-					<span class="text-sm text-slate-100">Download PDF</span>
+						class="icon-[material-symbols-light--print-rounded] text-2xl text-slate-100"></span>
+					<span class="text-sm text-slate-100">Print PDF</span>
 				</button>
 			</template>
 			<!-- prettier-ignore -->
@@ -547,5 +541,6 @@
 		getClientDevices,
 		loadingTraceabilityComments,
 		onlyOnWatchlist,
+		printReport,
 	} = useDeviceTraceabilityReport();
 </script>
