@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="w-full"
-		id="download-as-pdf">
+		id="traceability-report-content">
 		<div class="flex h-full items-center space-x-3">
 			<button
 				class="inline-flex h-[50px] w-[50px] items-center justify-center rounded-lg bg-red-500 outline-none">
@@ -259,6 +259,19 @@
 				</table>
 			</div>
 		</div>
+
+		<!-- footer -->
+		<footer
+			class="footer-content fixed bottom-0 hidden h-fit w-full items-center justify-between border-t-[1px] border-blue-200 bg-white p-2 text-xs">
+			<img
+				src="/images/app-logo.png"
+				alt="Regent Company Logo"
+				class="w-44 lg:w-60" />
+			<p class="text-right text-gray-800">
+				Powered by Regent Auto Valuers Limited &copy; 2025
+				<span id="currentYear"></span>. All Rights Reserved
+			</p>
+		</footer>
 	</div>
 </template>
 
@@ -287,3 +300,16 @@
 		() => props.vehicles.filter((v) => v.on_watchlist == true) as TrackedVehicles[],
 	);
 </script>
+
+<style lang="css">
+	@media print {
+		.page-break {
+			page-break-before: always;
+			break-before: page; /* Modern browsers */
+		}
+
+		.footer-content {
+			display: flex;
+		}
+	}
+</style>
