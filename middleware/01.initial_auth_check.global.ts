@@ -1,7 +1,7 @@
 import { type LoggedInPrincipal } from '~/types';
 import { setPrincipal } from '~/stores/authenticated-principal';
 
-export default defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware(async (to) => {
 	const nuxtApp = useNuxtApp();
 	const runtimeConfig = useRuntimeConfig();
 
@@ -24,7 +24,7 @@ export default defineNuxtRouteMiddleware((to) => {
 			//we try to get user details to set in store
 			let principalDetails: LoggedInPrincipal | null = null;
 			try {
-				$fetch('/api/v1/auth/corporate-account/get-principal-credentials', {
+				await $fetch('/api/v1/auth/corporate-account/get-principal-credentials', {
 					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 					method: 'GET',
 					headers: {
@@ -50,13 +50,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
 							setPrincipal(principalDetails as unknown as LoggedInPrincipal);
 
-							// if the user is on the login page, take them to the console
-							if (to.name == 'exterior-home') {
-								return navigateTo({ name: 'mobivaluer-home' });
-							} else {
-								// else if they're on the console, proceed with the navigation
-								return;
-							}
+							return;
 						} else {
 							throw new Error('Principal data retrieval failed. Try again!');
 						}
