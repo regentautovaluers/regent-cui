@@ -10,7 +10,7 @@ export const useCorporateBranch = () => {
 		status: fetchStatus,
 		error: fetchError,
 		refresh: refreshBranches,
-	} = useFetch(`/api/v1/corporate-branch/get-all?corpId=${getPrincipal.value.corpId}`, {
+	} = useFetch(`/api/v1/corporate-branch/get-all?corpId=${getPrincipal.value?.corpId}`, {
 		key: 'corp-branches',
 		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 		method: 'GET',
@@ -18,7 +18,7 @@ export const useCorporateBranch = () => {
 			Accept: '',
 		},
 		query: {
-			corpId: getPrincipal.value.corpId,
+			corpId: getPrincipal.value?.corpId,
 		},
 		server: false,
 		lazy: true,
@@ -47,7 +47,7 @@ export const useCorporateBranch = () => {
 				body: JSON.stringify({
 					branchName: branchName,
 					branchLocation: branchLocation,
-					corpId: getPrincipal.value.corpId,
+					corpId: getPrincipal.value?.corpId,
 				}),
 				onResponse({ response }) {
 					if (response.ok) {

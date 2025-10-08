@@ -25,16 +25,16 @@ export default defineNuxtPlugin(() => {
 
 			// if the request us going to Fraud Detection
 			if (options.baseURL == runtimeConfig.FRAUD_DETECTION_BASE_URL) {
-				headers['X-Client-Id'] = encryptCorporateClientId(getPrincipal.value.corpId);
+				headers['X-Client-Id'] = encryptCorporateClientId(getPrincipal.value?.corpId);
 
 				// API-key
-				const USERNAME = getPrincipal.value.corpId;
+				const USERNAME = getPrincipal.value?.corpId;
 				const PASSWORD = 'k8#F$j2!L9@qW7%zX5^pR3&vN6*';
 				headers['X-Api-Key'] = SecurityUtil.generateApiKey(USERNAME, PASSWORD);
 
 				// if we are paying up for tokens -> not via invoice
 				if (route.name == 'collateral-verification-home') {
-					headers['Entity-Token'] = encryptCorporateClientId(getPrincipal.value.corpId);
+					headers['Entity-Token'] = encryptCorporateClientId(getPrincipal.value?.corpId);
 				}
 			}
 

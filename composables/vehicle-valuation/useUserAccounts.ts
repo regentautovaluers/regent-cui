@@ -16,7 +16,7 @@ const useUserAccounts = () => {
 		error: fetchError,
 		data: fetchedData,
 	} = useFetch(
-		`/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`,
+		`/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`,
 		{
 			key: 'corporate-users',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
@@ -72,7 +72,7 @@ const useUserAccounts = () => {
 					phoneNumber: phoneNumber,
 					password: password,
 					profilePicture: null,
-					corporateId: getPrincipal.value.corpId,
+					corporateId: getPrincipal.value?.corpId,
 					corpBranchId: corporateBranchId,
 					roleInOrganization: roleInOrganization,
 					userRoles: roles,

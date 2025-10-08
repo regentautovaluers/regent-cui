@@ -44,6 +44,6 @@
 
 	onMounted(async () => {
 		// set the profile picture
-		profilePicture.value = getPrincipal.value.profilePicture;
+		profilePicture.value = getPrincipal.value?.profilePicture;
 	});
 </script>

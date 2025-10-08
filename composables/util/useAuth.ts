@@ -66,7 +66,7 @@ const useAuth = () => {
 	};
 
 	const isPrincipalAdmin = (): boolean => {
-		return getPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
+		return getPrincipal.value?.roles.includes('role_corp_admin'.toUpperCase()) as boolean;
 	};
 
 	const attemptLogout = () => {
@@ -89,7 +89,7 @@ const useAuth = () => {
 	};
 
 	const isPrincipalBroker = (): boolean => {
-		return getPrincipal.value.isBroker;
+		return getPrincipal.value?.isBroker as boolean;
 	};
 
 	function encryptCorporateClientId(clientId: string) {

@@ -13,7 +13,7 @@ export function useValuationFleets() {
 		execute: executeFetchFleets,
 		error: fetchFleetsError,
 	} = useFetch(
-		`/api/v1/valuation/fleets/get-all?page=${fleetPage.value}&size=${fleetPageSize}&corpId=${getPrincipal.value.corpId}`,
+		`/api/v1/valuation/fleets/get-all?page=${fleetPage.value}&size=${fleetPageSize}&corpId=${getPrincipal.value?.corpId}`,
 		{
 			key: 'corporate-fleets',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,

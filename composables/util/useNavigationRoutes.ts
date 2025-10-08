@@ -98,7 +98,7 @@ export default function () {
 			id: 4,
 			screenName: 'Regent Tracking',
 			routeName: 'regent-tracking-home',
-			renderRoute: ['BANK', 'MICRO_FINANCE'].includes(getPrincipal.value.corpType!),
+			renderRoute: ['BANK', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType!),
 			childRoutes: [
 				{
 					id: 1,
@@ -112,7 +112,7 @@ export default function () {
 			id: 5,
 			screenName: 'Insurance Telematics',
 			routeName: 'insurance-telematics-all-vehicles',
-			renderRoute: getPrincipal.value.corpType == 'INSURANCE',
+			renderRoute: getPrincipal.value?.corpType == 'INSURANCE',
 			childRoutes: [
 				{
 					id: 1,

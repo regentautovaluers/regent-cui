@@ -102,11 +102,11 @@
 
 	const { getPrincipal } = useAuth();
 	const { updateMyAccountDetails, updateCorporateAccountLoading } = useUserAccounts();
-	const firstName: Ref<string> = ref(getPrincipal.value.username.split(' ')[0]);
-	const lastName: Ref<string> = ref(getPrincipal.value.username.split(' ')[1]);
-	const email: Ref<string> = ref(getPrincipal.value.email);
-	const phoneNumber: Ref<string> = ref(getPrincipal.value.phonenumber);
-	const roleInOrganization: Ref<string> = ref(getPrincipal.value.roleInOrganization);
+	const firstName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[0]);
+	const lastName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[1]);
+	const email: Ref<string> = ref(getPrincipal.value?.email);
+	const phoneNumber: Ref<string> = ref(getPrincipal.value?.phonenumber);
+	const roleInOrganization: Ref<string> = ref(getPrincipal.value?.roleInOrganization);
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {

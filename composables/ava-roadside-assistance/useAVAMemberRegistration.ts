@@ -19,7 +19,7 @@ export const useFleets = () => {
 		data: corporateFleetData,
 		pending: retrievingFleetList,
 		refresh: refeshFleets,
-	} = useFetch(`/api/v1/fleets/corporate/${getPrincipal.value.corpId}`, {
+	} = useFetch(`/api/v1/fleets/corporate/${getPrincipal.value?.corpId}`, {
 		key: 'fleets',
 		baseURL: runtimeConfig.public.AVA_BASE_URL,
 		method: 'GET',
@@ -45,12 +45,12 @@ export const useFleets = () => {
 			await $fetch(`${runtimeConfig.public.AVA_BASE_URL}/api/v1/fleets`, {
 				method: 'POST',
 				body: JSON.stringify({
-					corporate: getPrincipal.value.corpId,
+					corporate: getPrincipal.value?.corpId,
 					fleetname: fleetName.value,
 					contact_full_name: contactFullName.value,
 					contact_phone_number: contactPhoneNumber.value,
 					contact_email: contactEmail.value,
-					recordedBy: getPrincipal.value.userId,
+					recordedBy: getPrincipal.value?.userId,
 				}),
 
 				onResponse({ response }) {
@@ -169,11 +169,11 @@ export const useBulkMemberRegistration = () => {
 			data.forEach((item: any, index: number) => {
 				if (index === 0) return;
 				processedFleetData.value.push({
-					corpName: getPrincipal.value.corpName,
+					corpName: getPrincipal.value?.corpName,
 					full_name: stringToSentenceCase(item[0]),
 					phone_number: `254${item[1]}`,
 					userEmail: item[2],
-					corporateId: getPrincipal.value.corpId,
+					corporateId: getPrincipal.value?.corpId,
 					membershipTypeId: Number(route.query.membershipType_id),
 					available_free_distance: route.query.freeDistance,
 					registration: item[3],
@@ -184,7 +184,7 @@ export const useBulkMemberRegistration = () => {
 					color: 'N/A',
 					payment_status: 'paid',
 					membership_status: 'active',
-					recordedBy: getPrincipal.value.userId,
+					recordedBy: getPrincipal.value?.userId,
 					category: 'corporate',
 					fleetId: selectedFleetId.value,
 				});
@@ -281,7 +281,7 @@ export const useIndividualMembershipRegistration = () => {
 	const registerIndividualMemberLoading = ref(false);
 	const memberVehicles: Ref<IndividuaProcessedMembershipType[]> = ref([
 		{
-			corpName: getPrincipal.value.corpName,
+			corpName: getPrincipal.value?.corpName,
 			membershipTypeId: Number(route.query.membershipType_id),
 			registration: '',
 			make: '',
@@ -302,7 +302,7 @@ export const useIndividualMembershipRegistration = () => {
 
 	const addNewVehicle = (): void => {
 		memberVehicles.value.push({
-			corpName: getPrincipal.value.corpName,
+			corpName: getPrincipal.value?.corpName,
 			membershipTypeId: Number(route.query.membershipType_id),
 			registration: '',
 			make: '',
@@ -327,9 +327,9 @@ export const useIndividualMembershipRegistration = () => {
 					full_name: clientFullName.value,
 					phone_number: clientPhoneNumber.value,
 					userEmail: clientEmail.value,
-					corporateId: getPrincipal.value.corpId,
+					corporateId: getPrincipal.value?.corpId,
 					category: 'individual',
-					recordedBy: getPrincipal.value.userId,
+					recordedBy: getPrincipal.value?.userId,
 				}),
 
 				async onResponse({ response }) {

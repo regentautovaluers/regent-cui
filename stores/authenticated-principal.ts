@@ -1,7 +1,7 @@
 import { type LoggedInPrincipal } from '~/types';
 
 export const { state, getter, mutation, action, ...store } = createStore('authenticatedPrincipal', {
-	principal: {} as LoggedInPrincipal,
+	principal: null as LoggedInPrincipal | null,
 });
 
 export const getPrincipal = getter('getAuthenticatedPrincipal', (state) => state.principal);

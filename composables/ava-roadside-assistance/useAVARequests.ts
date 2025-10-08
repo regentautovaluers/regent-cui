@@ -190,7 +190,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				method: 'GET',
 				query: {
 					registration: vehicleRegistration.value,
-					corporateId: getPrincipal.value.corpId,
+					corporateId: getPrincipal.value?.corpId,
 				},
 				async onResponse({ response }) {
 					if (response.status === 404) {
@@ -249,7 +249,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 				method: 'POST',
 				body: JSON.stringify({
 					appUserName: userName.value,
-					corporate_client: getPrincipal.value.corpId,
+					corporate_client: getPrincipal.value?.corpId,
 					appUserPhone: userPhoneNumber.value,
 					...(userEmail.value !== undefined ? { appUserEmail: userEmail.value } : {}),
 					appServiceType: backendServiceName,
