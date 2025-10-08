@@ -1,7 +1,9 @@
-import { useStorage, type RemovableRef } from '@vueuse/core';
-import { type LoggedInPrincipal } from '~/types';
 import type { CookieRef } from '#app';
 import crypto from 'crypto-js';
+import {
+	getAuthenticatedPrincipal,
+	setAuthenticatedPrincipal,
+} from '~/stores/authenticated-principal';
 
 const useAuth = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -12,41 +14,11 @@ const useAuth = () => {
 	const updateProfilePictureLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
-
-	const authenticatedPrincipal: RemovableRef<LoggedInPrincipal> = useStorage(
-		'authenticated-principal',
-		{
-			userId: '',
-			username: '',
-			email: '',
-			phonenumber: '',
-			roles: [],
-			profilePicture: '',
-			corpId: '',
-			branchId: '',
-			corpName: '',
-			roleInOrganization: '',
-			isBroker: false,
-			corpType: null,
-		},
-	);
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
 	const csrfToken: CookieRef<string | null | undefined> = useCookie('csrf-token');
 
-	const getPrincipal: ComputedRef<LoggedInPrincipal> = computed(() => {
-		return authenticatedPrincipal.value;
-	});
-
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
 		return authToken.value;
-	});
-
-	const getCsrfToken: ComputedRef<string | null | undefined> = computed(() => {
-		return csrfToken.value;
-	});
-
-	const searchBrokerOrCorpURI: ComputedRef<string> = computed(() => {
-		return `/api/v1/corporate-organization/get-all?searchKey=${corpOrBrokerSearchTerm.value}&isBroker=${isPrincipalBroker() ? false : true}`;
 	});
 
 	const attemptLogin = async () => {
@@ -78,7 +50,7 @@ const useAuth = () => {
 								type: 'success',
 							});
 
-							setCredentialsInBrowserStorage(response._data.data);
+							setAuthenticatedPrincipal(response._data.data);
 							navigateTo({ name: 'mobivaluer-home' });
 						}
 					}
@@ -95,53 +67,10 @@ const useAuth = () => {
 	};
 
 	const isPrincipalAdmin = (): boolean => {
-		return authenticatedPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
-	};
-
-	const setCredentialsInBrowserStorage = (data: any) => {
-		// set the principal
-		const principal: LoggedInPrincipal = {
-			userId: data.userId,
-			username: data.username,
-			email: data.email,
-			phonenumber: data.phoneNumber,
-			roles: data.userRoles,
-			profilePicture:
-				data.profilePicture === null
-					? '/images/profile-pic-placeholder.png'
-					: data.profilePicture,
-			corpId: data.corpId,
-			branchId: data.branchId,
-			corpName: data.corpName,
-			roleInOrganization: data.roleInOrganization,
-			isBroker: data.isBroker,
-			corpType: data.corpType,
-		};
-
-		authenticatedPrincipal.value = principal;
-
-		// set the auth and csrf tokens
-		authToken.value = data.jwtToken;
-		csrfToken.value = data.xsrfToken;
+		return getAuthenticatedPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
 	};
 
 	const attemptLogout = () => {
-		// unset the principal
-		authenticatedPrincipal.value = {
-			userId: '',
-			username: '',
-			email: '',
-			phonenumber: '',
-			roles: [],
-			profilePicture: '',
-			corpId: '',
-			branchId: '',
-			corpName: '',
-			roleInOrganization: '',
-			isBroker: false,
-			corpType: null,
-		};
-
 		// unset the auth token and csrf token
 		authToken.value = '';
 		csrfToken.value = '';
@@ -154,7 +83,7 @@ const useAuth = () => {
 	};
 
 	const displayCookieConsent = (): boolean => {
-		if (!authToken.value || !csrfToken.value || !authenticatedPrincipal.value) {
+		if (!authToken.value || !csrfToken.value || !getAuthenticatedPrincipal.value) {
 			return true;
 		}
 
@@ -162,7 +91,7 @@ const useAuth = () => {
 	};
 
 	const isPrincipalBroker = (): boolean => {
-		return authenticatedPrincipal.value.isBroker;
+		return getAuthenticatedPrincipal.value.isBroker;
 	};
 
 	function encryptCorporateClientId(clientId: string) {
@@ -179,9 +108,7 @@ const useAuth = () => {
 		updateProfilePictureLoading,
 		searchCorpOrBrokerLoading,
 		searchCorpOrBrokerResults,
-		getPrincipal,
 		getAuthToken,
-		getCsrfToken,
 		attemptLogin,
 		attemptLogout,
 		isPrincipalAdmin,
