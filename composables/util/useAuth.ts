@@ -1,6 +1,7 @@
 import type { CookieRef } from '#app';
 import crypto from 'crypto-js';
 import { getPrincipal, setPrincipal } from '~/stores/authenticated-principal';
+import type { LoggedInPrincipal } from '~/types';
 
 const useAuth = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -12,7 +13,6 @@ const useAuth = () => {
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
-	const csrfToken: CookieRef<string | null | undefined> = useCookie('csrf-token');
 
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
 		return authToken.value;
@@ -47,7 +47,9 @@ const useAuth = () => {
 								type: 'success',
 							});
 
-							setPrincipal(response._data.data);
+							setPrincipal(response._data.data as LoggedInPrincipal);
+							// set the auth and csrf tokens
+							authToken.value = response._data.data.jwtToken;
 							navigateTo({ name: 'mobivaluer-home' });
 						}
 					}
@@ -70,7 +72,6 @@ const useAuth = () => {
 	const attemptLogout = () => {
 		// unset the auth token and csrf token
 		authToken.value = '';
-		csrfToken.value = '';
 		useToast('Logout Successful!', {
 			type: 'success',
 		});
@@ -80,7 +81,7 @@ const useAuth = () => {
 	};
 
 	const displayCookieConsent = (): boolean => {
-		if (!authToken.value || !csrfToken.value || !getPrincipal.value) {
+		if (!authToken.value || !getPrincipal.value) {
 			return true;
 		}
 

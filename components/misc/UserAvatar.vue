@@ -10,6 +10,6 @@
 <script setup lang="ts">
 	const { getPrincipal } = useAuth();
 	const firstLetter: ComputedRef<string> = computed(() =>
-		getPrincipal.value.username.substring(0, 1),
+		getPrincipal.value.username?.substring(0, 1),
 	);
 </script>

@@ -15,7 +15,6 @@ export type LoggedInPrincipal = {
 	email: string;
 	phonenumber: string;
 	roles: string[];
-	profilePicture: string;
 	corpId: string;
 	branchId: string;
 	corpName: string;
