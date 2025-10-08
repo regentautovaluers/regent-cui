@@ -3,7 +3,7 @@ export const useAVAMembershipsCharts = () => {
 	const { getPrincipal } = useAuth();
 
 	const { data: avaMembersDistribution, status: fetchAvaMembersDistributionStatus } = useFetch(
-		() => `/api/v1/corp/reports/donut-graph-data?corporateId=${getPrincipal.value.corpId}`,
+		() => `/api/v1/corp/reports/donut-graph-data?corporateId=${getPrincipal.value?.corpId}`,
 		{
 			key: 'ava-members-distribution',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,

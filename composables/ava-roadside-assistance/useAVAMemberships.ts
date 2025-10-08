@@ -25,7 +25,7 @@ export const useAVAMemberships = () => {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/memberships?corporateId=${getPrincipal.value.corpId}&page=${currentPage.value}&size=${size}`;
+			let requestURL = `/api/v1/memberships?corporateId=${getPrincipal.value?.corpId}&page=${currentPage.value}&size=${size}`;
 
 			if (searchTerm.value !== '') {
 				requestURL = requestURL + `&searchTerm=${searchTerm.value}`;

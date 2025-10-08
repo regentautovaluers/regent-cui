@@ -172,7 +172,7 @@ export function useCollateralVerificiation() {
 	};
 
 	function generateSearchDefaulterURI(type: string, ...searchPhrases: string[]): string | never {
-		const sharedURISubstring: string = `searchType=valuation&searcherEmail=${getPrincipal.value.email}&searcherPhone=${getPrincipal.value.phonenumber}&searcherName=${getPrincipal.value.username}&searcherOrganisation=${getPrincipal.value.corpName}`;
+		const sharedURISubstring: string = `searchType=valuation&searcherEmail=${getPrincipal.value?.email}&searcherPhone=${getPrincipal.value?.phonenumber}&searcherName=${getPrincipal.value?.username}&searcherOrganisation=${getPrincipal.value?.corpName}`;
 
 		switch (type) {
 			case 'defaulter-db':

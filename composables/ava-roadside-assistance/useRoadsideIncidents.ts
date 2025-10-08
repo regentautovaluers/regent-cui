@@ -78,7 +78,7 @@ const useRoadsideIncidents = () => {
 	};
 
 	const { status: fetchRoadsideIncidentsStatus } = useFetch(
-		`/api/v1/corp/reports/services/corporate/${getPrincipal.value.corpId}`,
+		`/api/v1/corp/reports/services/corporate/${getPrincipal.value?.corpId}`,
 		{
 			key: 'roadside-incidents',
 			baseURL: runtimeConfig.public.AVA_BASE_URL,

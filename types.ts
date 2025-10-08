@@ -1,5 +1,3 @@
-import { type TransitionType, type Position } from 'mosha-vue-toastify';
-
 export interface NavigationRoute {
 	id: number;
 	screenName: string;
@@ -17,7 +15,6 @@ export type LoggedInPrincipal = {
 	email: string;
 	phonenumber: string;
 	roles: string[];
-	profilePicture: string;
 	corpId: string;
 	branchId: string;
 	corpName: string;

@@ -44,10 +44,10 @@
 				<UserAvatar />
 				<div class="hidden h-full flex-col overflow-hidden text-sm md:flex">
 					<h1 class="overflow-clip text-ellipsis whitespace-nowrap">
-						{{ getPrincipal.username }}
+						{{ getPrincipal?.username }}
 					</h1>
 					<h2 class="overflow-clip text-ellipsis whitespace-nowrap">
-						{{ getPrincipal.corpName }}
+						{{ getPrincipal?.corpName }}
 					</h2>
 				</div>
 			</div>
@@ -368,7 +368,7 @@
 	// 		isAuthenticated,
 	// 		(isAuth) => {
 	// 			if (isAuth && user.value) {
-	// 				fetchData(`ERP/General/${getPrincipal.value.corpId}`);
+	// 				fetchData(`ERP/General/${getPrincipal.value?.corpId}`);
 	// 			} else {
 	// 				signIn(config.public.FIREBASE_EMAIL, config.public.FIREBASE_PASSWORD);
 	// 			}

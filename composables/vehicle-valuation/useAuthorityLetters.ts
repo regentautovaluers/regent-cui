@@ -62,7 +62,7 @@ const useAuthorityLetters = () => {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&searchSlug=${searchRegNo.value}`;
@@ -145,7 +145,7 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-			formData.append('authorizedBy', getPrincipal.value.userId);
+			formData.append('authorizedBy', getPrincipal.value?.userId);
 
 			if (preferredBranch.value.length > 0) {
 				formData.append('regentBranch', preferredBranch.value);
@@ -200,7 +200,7 @@ const useAuthorityLetters = () => {
 				{
 					method: 'GET',
 					query: {
-						corpId: getPrincipal.value.corpId,
+						corpId: getPrincipal.value?.corpId,
 						startDate: startDate,
 						endDate: endDate,
 					},
@@ -221,7 +221,7 @@ const useAuthorityLetters = () => {
 							link.href = url;
 							link.setAttribute(
 								'download',
-								`authority-letters-${getPrincipal.value.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
+								`authority-letters-${getPrincipal.value?.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
 							);
 							document.body.appendChild(link);
 							link.click();
