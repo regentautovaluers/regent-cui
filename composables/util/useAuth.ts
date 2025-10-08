@@ -1,9 +1,6 @@
 import type { CookieRef } from '#app';
 import crypto from 'crypto-js';
-import {
-	getAuthenticatedPrincipal,
-	setAuthenticatedPrincipal,
-} from '~/stores/authenticated-principal';
+import { getPrincipal, setPrincipal } from '~/stores/authenticated-principal';
 
 const useAuth = () => {
 	const runtimeConfig = useRuntimeConfig();
@@ -50,7 +47,7 @@ const useAuth = () => {
 								type: 'success',
 							});
 
-							setAuthenticatedPrincipal(response._data.data);
+							setPrincipal(response._data.data);
 							navigateTo({ name: 'mobivaluer-home' });
 						}
 					}
@@ -67,7 +64,7 @@ const useAuth = () => {
 	};
 
 	const isPrincipalAdmin = (): boolean => {
-		return getAuthenticatedPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
+		return getPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
 	};
 
 	const attemptLogout = () => {
@@ -83,7 +80,7 @@ const useAuth = () => {
 	};
 
 	const displayCookieConsent = (): boolean => {
-		if (!authToken.value || !csrfToken.value || !getAuthenticatedPrincipal.value) {
+		if (!authToken.value || !csrfToken.value || !getPrincipal.value) {
 			return true;
 		}
 
@@ -91,7 +88,7 @@ const useAuth = () => {
 	};
 
 	const isPrincipalBroker = (): boolean => {
-		return getAuthenticatedPrincipal.value.isBroker;
+		return getPrincipal.value.isBroker;
 	};
 
 	function encryptCorporateClientId(clientId: string) {
@@ -109,6 +106,7 @@ const useAuth = () => {
 		searchCorpOrBrokerLoading,
 		searchCorpOrBrokerResults,
 		getAuthToken,
+		getPrincipal,
 		attemptLogin,
 		attemptLogout,
 		isPrincipalAdmin,

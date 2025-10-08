@@ -1,17 +1,14 @@
 import { type LoggedInPrincipal } from '~/types';
 
 export const { state, getter, mutation, action, ...store } = createStore('authenticatedPrincipal', {
-	authenticatedPrincipal: {} as LoggedInPrincipal,
+	principal: {} as LoggedInPrincipal,
 });
 
-export const getAuthenticatedPrincipal = getter(
-	'getAuthenticatedPrincipal',
-	(state) => state.authenticatedPrincipal,
-);
+export const getPrincipal = getter('getAuthenticatedPrincipal', (state) => state.principal);
 
-export const setAuthenticatedPrincipal = mutation(
+export const setPrincipal = mutation(
 	'setAuthenticatedPrincipal',
 	(state, authenticatedPrincipal: LoggedInPrincipal) => {
-		state.authenticatedPrincipal = authenticatedPrincipal;
+		state.principal = authenticatedPrincipal;
 	},
 );
