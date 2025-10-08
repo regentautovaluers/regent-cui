@@ -17,7 +17,7 @@
 					alt="Flowbite Logo" />
 			</div>
 			<div class="tablet:px-16 laptop:px-24 flex-grow px-4 py-4">
-				<slot />
+				<slot></slot>
 			</div>
 			<div
 				class="laptop:mb-10 flex flex-col items-center justify-center p-2 text-xs sm:text-sm">
