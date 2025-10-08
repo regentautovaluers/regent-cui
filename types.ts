@@ -1,5 +1,3 @@
-import { type TransitionType, type Position } from 'mosha-vue-toastify';
-
 export interface NavigationRoute {
 	id: number;
 	screenName: string;
