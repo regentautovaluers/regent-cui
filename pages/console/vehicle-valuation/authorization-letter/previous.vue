@@ -53,7 +53,8 @@
 						type="button"
 						class="group inline-flex h-[50px] w-14 cursor-pointer items-center justify-center rounded-lg border border-gray-400 p-1 outline-none hover:bg-gray-100"
 						@click.prevent="isExportExcelModalOpen = true">
-						<span class="ph--microsoft-excel-logo-thin size-7 text-gray-400"></span>
+						<span
+							class="icon-[material-symbols-light--sheets-rtl] size-7 text-gray-400"></span>
 					</button>
 				</div>
 				<button

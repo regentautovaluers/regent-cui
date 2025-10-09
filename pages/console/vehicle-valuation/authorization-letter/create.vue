@@ -1,11 +1,12 @@
 <template>
-	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
+	<div class="laptop:p-4 laptop-tablet:p-8 flex flex-1 flex-col p-2">
 		<form
 			@submit.prevent="createAuthorizationLetter"
 			class="flex flex-1 flex-col">
-			<div class="flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
+			<div
+				class="tablet:flex-row tablet:space-y-0 tablet:space-x-4 flex flex-col space-y-4 space-x-0">
 				<!-- Registration Number -->
-				<div class="w-full lg:w-1/3">
+				<div class="tablet:w-1/3 w-full">
 					<label
 						for="registration-number"
 						class="generic-input-label generic-input-required-label"
@@ -20,7 +21,7 @@
 						v-model="registrationNumber" />
 				</div>
 				<!-- Client Name -->
-				<div class="w-full lg:w-1/3">
+				<div class="tablet:w-1/3 w-full">
 					<label
 						for="client-name"
 						class="generic-input-label generic-input-required-label"
@@ -35,7 +36,7 @@
 						v-model="clientName" />
 				</div>
 				<!-- Client Phone Number -->
-				<div class="w-full lg:w-1/3">
+				<div class="tablet:w-1/3 w-full">
 					<label
 						for="client-phone"
 						class="generic-input-label generic-input-required-label"
@@ -82,33 +83,66 @@
 					</button>
 				</div>
 			</div>
-			<div class="relative mt-2 flex w-full flex-col">
-				<label
-					for="preffered-branch"
-					class="generic-input-label"
-					>Preferred Regent Branch</label
-				>
-				<select
-					class="generic-input"
-					id="preffered-branch"
-					v-model="preferredBranch">
-					<option
-						:value="''"
-						selected>
-						Send to Customer Care
-					</option>
-					<!-- TODO: Re-enable this later -->
-					<!-- <option
+
+			<div
+				class="tablet:flex-row tablet:space-y-0 tablet:space-x-4 flex flex-col space-y-4 space-x-0">
+				<!-- select regent branch -->
+				<div class="tablet:w-1/2 relative mt-2 flex w-full flex-col">
+					<label
+						for="preffered-branch"
+						class="generic-input-label"
+						>Preferred Regent Branch</label
+					>
+					<select
+						class="generic-input"
+						id="preffered-branch"
+						v-model="preferredBranch">
+						<option
+							:value="''"
+							selected>
+							Send to Customer Care
+						</option>
+						<!-- TODO: Re-enable this later -->
+						<!-- <option
 					v-for="(branch, index) in regentBranches"
 					:key="index"
 					:value="branch.branchId">
 					{{ branch.branchName }}
 				</option> -->
-				</select>
-				<FormSubmissionLoader
-					class="absolute top-[52%] right-6 mr-2 size-5 animate-spin text-gray-500"
-					v-if="fetchStatus === 'pending'" />
+					</select>
+					<span
+						class="icon-[svg-spinners--ring-resize] absolute top-[42px] right-8 text-2xl text-gray-500"
+						v-if="fetchStatus"></span>
+				</div>
+
+				<!-- select their own branch -->
+				<div class="tablet:w-1/2 relative mt-2 flex w-full flex-col">
+					<label
+						for="corporate-branch"
+						class="generic-input-label"
+						>Select A Branch</label
+					>
+					<select
+						class="generic-input"
+						id="corporate-branch"
+						v-model="corporateBranch">
+						<option
+							v-for="(branch, index) in corporateBranches"
+							:key="index"
+							:value="branch.branchId"
+							:selected="
+								getPrincipal?.branchId != null &&
+								getPrincipal?.branchId == branch.branchId
+							">
+							{{ branch.branchName }}
+						</option>
+					</select>
+					<span
+						class="icon-[svg-spinners--ring-resize] absolute top-[42px] right-8 text-2xl text-gray-500"
+						v-if="loadingCorporateBranchesStatus == 'pending'"></span>
+				</div>
 			</div>
+
 			<!-- comments -->
 			<div class="mt-5">
 				<label
@@ -125,9 +159,9 @@
 			</div>
 			<!-- data below the comments box -->
 			<div
-				class="mt-5 flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
+				class="tablet:flex-row tablet:space-y-0 tablet:space-x-4 mt-5 flex flex-col space-y-4 space-x-0">
 				<!-- Policy Number -->
-				<div class="w-full lg:w-1/3">
+				<div class="tablet:w-1/3 w-full">
 					<label
 						for="policy-number"
 						class="generic-input-label"
@@ -141,9 +175,9 @@
 						v-model="policyNumber" />
 				</div>
 				<!-- Officer Name -->
-				<div class="relative w-full lg:w-1/3">
+				<div class="tablet:w-1/3 relative w-full">
 					<label class="generic-input-label">{{
-						isPrincipalBroker() ? 'Select Corporate' : 'Select Broker / Agency'
+						isPrincipalBroker() ? 'Select Corporate' : 'Select Broker / Agent'
 					}}</label>
 					<input
 						type="text"
@@ -174,7 +208,7 @@
 					</div>
 				</div>
 				<!-- Authorized By -->
-				<div class="w-full lg:w-1/3">
+				<div class="tablet:w-1/3 w-full">
 					<label
 						for="authorized-by"
 						class="generic-input-label"
@@ -185,7 +219,7 @@
 						id="authorized-by"
 						class="generic-input"
 						disabled
-						:value="getPrincipal.username" />
+						:value="getPrincipal?.username" />
 				</div>
 			</div>
 
@@ -341,8 +375,8 @@
 		layout: 'console-layout',
 	});
 
-	const { regentBranches, fetchStatus, fetchError, refreshRegentBranches } = useRegentBranches();
-	const { getPrincipal } = useAuth();
+	const { fetchStatus, refreshRegentBranches } = useRegentBranches();
+	const { getPrincipal, isPrincipalBroker } = useAuth();
 	const {
 		registrationNumber,
 		clientName,
@@ -358,17 +392,14 @@
 		natIdUploaded,
 		certUploaded,
 		letterUploaded,
+		corporateBranch,
 		createAuthorizationLetter,
 		handleFileUpload,
 		computedCorporateClients,
 		fetchingCorporateClients,
-		errorFetchingCorporateClients,
-		getCorporateClients,
-		searchPhrase,
 		shouldTriggerFetch,
 	} = useAuthorityLetters();
-	const { isPrincipalBroker } = useAuth();
-	const isExportExcelModalOpen: Ref<boolean> = ref(false);
+	const { corporateBranches, fetchStatus: loadingCorporateBranchesStatus } = useCorporateBranch();
 
 	onMounted(async () => await shouldTriggerFetch());
 </script>
