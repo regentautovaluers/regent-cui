@@ -1,10 +1,11 @@
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getPrincipal, isPrincipalAdmin } = useAuth();
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
 	const clientPhone: Ref<string> = ref('');
 	const preferredBranch: Ref<string> = ref('');
+	const corporateBranch: Ref<string | undefined> = ref(getPrincipal?.value?.branchId);
 	const comments: Ref<string> = ref('');
 	const policyNumber: Ref<string> = ref('');
 	const agencyOrCorpName: Ref<string | null> = ref('');
@@ -68,10 +69,16 @@ const useAuthorityLetters = () => {
 				requestURL = requestURL + `&searchSlug=${searchRegNo.value}`;
 			}
 
+			if (!isPrincipalAdmin) {
+				if (getPrincipal.value?.branchId) {
+					requestURL = requestURL + `&corpBranchId=${getPrincipal.value?.branchId}`;
+				}
+			}
+
 			return requestURL;
 		},
 		{
-			key: 'authority-letters',
+			key: computed(() => `authority-letters-${page.value}`).value,
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
 			headers: {
@@ -145,10 +152,14 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-			formData.append('authorizedBy', getPrincipal.value?.userId);
+			formData.append('authorizedBy', getPrincipal.value?.userId as string);
 
 			if (preferredBranch.value.length > 0) {
 				formData.append('regentBranch', preferredBranch.value);
+			}
+
+			if (corporateBranch.value.length > 0) {
+				formData.append('corpBranchId', corporateBranch.value);
 			}
 
 			if (policyNumber.value.length > 0) {
@@ -272,6 +283,7 @@ const useAuthorityLetters = () => {
 		errorFetchingCorporateClients,
 		getCorporateClients,
 		searchPhrase,
+		corporateBranch,
 		createAuthorizationLetter,
 		handleFileUpload,
 		exportAuthorityLetter,

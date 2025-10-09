@@ -1,6 +1,6 @@
 export const useCorporateValuations = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getPrincipal, isPrincipalAdmin } = useAuth();
 	const { name: routeName } = useRoute();
 
 	const activeView: Ref<'pending' | 'complete'> = ref('pending');
@@ -61,10 +61,16 @@ export const useCorporateValuations = () => {
 				requestURL = requestURL + `&paymentMethod=${paymentMethod.value}`;
 			}
 
+			if (!isPrincipalAdmin) {
+				if (getPrincipal.value?.branchId) {
+					requestURL = requestURL + `&corpBranchId=${getPrincipal.value?.branchId}`;
+				}
+			}
+
 			return requestURL;
 		},
 		{
-			key: 'corporate-valuations',
+			key: computed(() => `corporate-valuations-${page.value}`),
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
 			headers: {

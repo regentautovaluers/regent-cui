@@ -17,9 +17,6 @@ export const useCorporateBranch = () => {
 		headers: {
 			Accept: '',
 		},
-		query: {
-			corpId: getPrincipal.value?.corpId,
-		},
 		server: false,
 		lazy: true,
 		transform(data: any) {
