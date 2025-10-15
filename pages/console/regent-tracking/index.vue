@@ -11,7 +11,8 @@
 			:zoom-control="true"
 			:fullscreen-control="false"
 			:street-view-control="true"
-			:center="mapCenter">
+			:center="mapCenter"
+			map-id="tracking-google-maps">
 			<Polyline
 				v-if="getTrackedVehicle"
 				:options="{
@@ -58,7 +59,7 @@
 			</template>
 			<template v-else>
 				<div class="p-5">
-					<h1 class="font-semibold text-gray-600">{{ getPrincipal.corpName }} Fleet</h1>
+					<h1 class="font-semibold text-gray-600">{{ getPrincipal?.corpName }} Fleet</h1>
 					<h2
 						class="mb-4 inline-flex h-10 w-full items-center justify-between text-sm text-gray-500">
 						<span>{{ totalVehicles }} Total Vehicles</span>
@@ -131,7 +132,7 @@
 				<!-- when loading vehicles -->
 				<div
 					class="flex flex-grow items-center justify-center"
-					v-if="fetchingClientVehicles">
+					v-if="fetchingClientVehiclesStatus == 'pending'">
 					<h1>Loading...</h1>
 				</div>
 
@@ -881,7 +882,7 @@
 		computedVehicles,
 		searchString,
 		deviceOnlineStatus,
-		fetchingClientVehicles,
+		fetchingClientVehiclesStatus,
 		errorFetchingClientVehicles,
 		getTrackedVehicle,
 		activeDeviceTab,

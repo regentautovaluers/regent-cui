@@ -7,7 +7,7 @@ import type { StandardSuccessResponse } from '~/types/proxy-types';
 export function useDeviceTraceabilityReport() {
 	const size: Ref<number> = ref(10);
 	const page: Ref<number> = ref(0);
-	const { fetchingClientVehicles, errorFetchingClientVehicles, getClientDevices } =
+	const { fetchingClientVehiclesStatus, errorFetchingClientVehicles, getClientDevices } =
 		useRegentDeviceTracking();
 	const searchString: Ref<string | null> = ref(null);
 	const loadingTraceabilityComments: Ref<boolean> = ref(false);
@@ -241,7 +241,7 @@ export function useDeviceTraceabilityReport() {
 		size,
 		searchString,
 		computedVehicles,
-		fetchingClientVehicles,
+		fetchingClientVehiclesStatus,
 		errorFetchingClientVehicles,
 		totalPages,
 		onlyOnWatchlist,
@@ -256,11 +256,13 @@ export function useDeviceTraceabilityReport() {
 export function useTraceabilityReportComments() {
 	const newComment: Ref<string | null> = ref(null);
 	const { post } = useStandardizedApi();
+	const { getPrincipal } = useAuth();
 
 	async function addNewComment(id: number) {
 		let response = await post<any>('/api/regent-tracking/add-device-comment', {
 			id,
-			comment: newComment.value,
+			corporate_comment: newComment.value,
+			corporateUser: getPrincipal?.value?.username,
 		});
 
 		if (!response.success) {

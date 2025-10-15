@@ -1,7 +1,7 @@
 import { Loader } from '@googlemaps/js-api-loader';
 
 export default function useGoogleMaps() {
-	const apiKey: string = 'AIzaSyDMGtdKrUaAiV_xXpNv4Ktshpe-NbDUpjY';
+	const apiKey: string = 'AIzaSyDhyCdA3SMUJzR65blB1oBGMR_SXq2mMnc';
 
 	async function gecodeLocation(lat: number, lng: number): Promise<string> {
 		return new Promise<string>((resolve) => {

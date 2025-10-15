@@ -196,7 +196,7 @@
 									class="border-b bg-white hover:bg-gray-100"
 									v-for="a in 10"
 									:key="a"
-									v-if="fetchingClientVehicles">
+									v-if="fetchingClientVehiclesStatus == 'pending'">
 									<td class="p-6 text-gray-300">
 										<span class="animate-pulse rounded-lg bg-gray-300"
 											>regenthq</span
@@ -233,7 +233,7 @@
 								<!-- the actual data -->
 								<tr
 									v-else-if="
-										!fetchingClientVehicles &&
+										fetchingClientVehiclesStatus == 'success' &&
 										computedVehicles &&
 										computedVehicles.length > 0
 									"
@@ -481,7 +481,11 @@
 
 		<!-- modal to add comment for first table -->
 		<ParentModal
-			v-if="!fetchingClientVehicles && computedVehicles && computedVehicles.length > 0"
+			v-if="
+				fetchingClientVehiclesStatus == 'success' &&
+				computedVehicles &&
+				computedVehicles.length > 0
+			"
 			v-for="(v, idx) in computedVehicles"
 			:key="idx"
 			modal-title="Add Your Comment "
@@ -533,7 +537,7 @@
 		size,
 		searchString,
 		computedVehicles,
-		fetchingClientVehicles,
+		fetchingClientVehiclesStatus,
 		errorFetchingClientVehicles,
 		totalPages,
 		computedStatistics,

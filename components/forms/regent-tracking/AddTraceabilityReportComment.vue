@@ -47,7 +47,7 @@
 		<div
 			class="borer-blue-200 min-h-32 space-y-2 rounded-lg border bg-blue-100 p-4 outline-none">
 			<div
-				v-if="props.comments.length > 0"
+				v-if="props.comments?.length > 0"
 				v-for="(c, idx) in props.comments"
 				:key="idx"
 				class="flex items-start space-x-3">

@@ -31,9 +31,10 @@ export function useRegentDeviceTracking() {
 	);
 
 	const {
-		pending: fetchingClientVehicles,
+		status: fetchingClientVehiclesStatus,
 		error: errorFetchingClientVehicles,
 		execute: refetchClientVehicles,
+		data: clientVehicles,
 	} = useApiData<TrackedVehicles[], TrackedVehicles[]>('client-devices', computedURL, {
 		method: 'GET',
 		server: false,
@@ -41,7 +42,6 @@ export function useRegentDeviceTracking() {
 		transform: (response) => {
 			// Check if the API call was successful
 			if (response.success) {
-				// The response.data is correctly typed as TrackedVehicles[] here.
 				return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
 			}
 
@@ -50,9 +50,10 @@ export function useRegentDeviceTracking() {
 				(response as StandardErrorResponse).metadata.message || 'Unknown error',
 			);
 		},
-		onResponse({ response }) {
-			setClientDevices(response._data.data as TrackedVehicles[]);
-		},
+	});
+
+	watch(clientVehicles, (newDevices) => {
+		if (newDevices) setClientDevices(newDevices);
 	});
 
 	watch(
@@ -189,7 +190,7 @@ export function useRegentDeviceTracking() {
 		computedVehicles,
 		searchString,
 		deviceOnlineStatus,
-		fetchingClientVehicles,
+		fetchingClientVehiclesStatus,
 		errorFetchingClientVehicles,
 		getTrackedVehicle,
 		activeDeviceTab,
