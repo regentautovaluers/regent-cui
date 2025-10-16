@@ -12,3 +12,7 @@ export const setPrincipal = mutation(
 		state.principal = authenticatedPrincipal;
 	},
 );
+
+export const cleanPrincipal = mutation('cleanAuthenticatedPrincipal', (state) => {
+	state.principal = null;
+});

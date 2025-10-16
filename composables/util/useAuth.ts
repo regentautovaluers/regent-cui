@@ -1,6 +1,6 @@
 import type { CookieRef } from '#app';
 import crypto from 'crypto-js';
-import { getPrincipal, setPrincipal } from '~/stores/authenticated-principal';
+import { getPrincipal, setPrincipal, cleanPrincipal } from '~/stores/authenticated-principal';
 import type { LoggedInPrincipal } from '~/types';
 
 const useAuth = () => {
@@ -70,8 +70,10 @@ const useAuth = () => {
 	};
 
 	const attemptLogout = () => {
-		// unset the auth token and csrf token
-		authToken.value = '';
+		// unset the auth token and stored principal
+		authToken.value = null;
+		cleanPrincipal();
+
 		useToast('Logout Successful!', {
 			type: 'success',
 		});
