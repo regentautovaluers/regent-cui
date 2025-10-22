@@ -315,3 +315,7 @@ export enum UnitOfCapacity {
 export enum UnitOfDistance {
 	KM = 'Km',
 }
+
+export type ForReport = Pick<TrackedVehicles, 'name' | 'comment' | 'online'> & {
+	driver: Pick<DriverData, 'phone'>;
+} & { device_data: Pick<DeviceData, 'expiration_date' | 'created_at'> };

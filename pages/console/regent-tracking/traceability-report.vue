@@ -15,11 +15,16 @@
 				</div>
 			</div>
 			<button
-				class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-red-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-red-600"
-				data-modal-target="export-report-pdf-modal"
-				data-modal-toggle="export-report-pdf-modal">
-				<span class="icon-[material-symbols-light--table-convert-outline] text-2xl"></span>
-				<span>Export PDF</span>
+				class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-blue-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-blue-600"
+				@click="() => reportToExcel()"
+				type="button">
+				<span
+					class="icon-[material-symbols-light--sim-card-download-outline] text-lg"
+					v-if="loadingReportExport"></span>
+				<span
+					class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+					v-else></span>
+				<span>{{ loadingReportExport }}Download Report</span>
 			</button>
 		</div>
 
@@ -479,7 +484,7 @@
 			</div>
 		</div>
 
-		<!-- modal to add comment for first table -->
+		<!-- modal to add comment for table entry -->
 		<ParentModal
 			v-if="!fetchingClientVehicles && computedVehicles && computedVehicles.length > 0"
 			v-for="(v, idx) in computedVehicles"
@@ -496,33 +501,10 @@
 				:device-status="v.online"
 				:comments="v.comment" />
 		</ParentModal>
-
-		<!-- modal for exporting to pdf -->
-		<ParentModal
-			modal-title="Report Preview"
-			modal-id="export-report-pdf-modal"
-			modal-size="full-screen"
-			v-if="getClientDevices && getClientDevices.length > 0">
-			<template v-slot:action-btn>
-				<button
-					@click="printReport('traceability-report-content')"
-					class="inline-flex h-12 w-44 items-center justify-center space-x-4 rounded-lg bg-blue-600 p-1.5">
-					<span
-						class="icon-[material-symbols-light--print-rounded] text-2xl text-slate-100"></span>
-					<span class="text-sm text-slate-100">Print PDF</span>
-				</button>
-			</template>
-			<!-- prettier-ignore -->
-			<DownloadTraceabilityReportPDF
-				:stats="computedStatistics"
-				:vehicles="(getClientDevices as TrackedVehicles[])" />
-		</ParentModal>
 	</div>
 </template>
 
 <script setup lang="ts">
-	import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
-
 	definePageMeta({
 		name: 'regent-tracking-traceability-report',
 		layout: 'console-layout',
@@ -530,17 +512,13 @@
 
 	const {
 		page,
-		size,
 		searchString,
 		computedVehicles,
 		fetchingClientVehicles,
-		errorFetchingClientVehicles,
 		totalPages,
 		computedStatistics,
-		getDeviceReports,
-		getClientDevices,
-		loadingTraceabilityComments,
 		onlyOnWatchlist,
-		printReport,
+		loadingReportExport,
+		reportToExcel,
 	} = useDeviceTraceabilityReport();
 </script>
