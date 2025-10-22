@@ -317,5 +317,5 @@ export enum UnitOfDistance {
 }
 
 export type ForReport = Pick<TrackedVehicles, 'name' | 'comment' | 'online'> & {
-	driver: Pick<DriverData, 'phone'>;
+	driver: Pick<DriverData, 'phone' | 'name'>;
 } & { device_data: Pick<DeviceData, 'expiration_date' | 'created_at'> };

@@ -13,8 +13,9 @@ export function useDeviceTraceabilityReport() {
 	const searchString: Ref<string | null> = ref(null);
 	const loadingTraceabilityComments: Ref<boolean> = ref(false);
 	const onlyOnWatchlist: Ref<boolean> = ref(false);
-	const { getBlob, post } = useStandardizedApi();
+	const { getBlob } = useStandardizedApi();
 	const loadingReportExport: Ref<boolean> = ref(false);
+	const { getPrincipal } = useAuth();
 
 	watch(
 		getClientDevices,
@@ -182,18 +183,20 @@ export function useDeviceTraceabilityReport() {
 				onlineVehicles: number;
 				expiredVehicles: number;
 				totalVehicles: number;
-				entries: ForReport;
+				corporateName: string;
+				entries: ForReport[];
 			} = {
 				offlineVehicles: computedStatistics.value.total_offline,
 				onlineVehicles: computedStatistics.value.total_online,
 				expiredVehicles: computedStatistics.value.expires_soon,
 				totalVehicles: computedStatistics.value.total_devices,
+				corporateName: getPrincipal.value?.corpName as string,
 				entries: getClientDevices.value?.map((e) => {
 					return {
 						name: e.name,
 						comment: e.comment,
 						online: e.online,
-						driver: { phone: e.driver_data.phone },
+						driver: { phone: e.driver_data.phone, name: e.device_data.name },
 						device_data: {
 							expiration_date: e.device_data.expiration_date,
 							created_at: e.device_data.created_at,
