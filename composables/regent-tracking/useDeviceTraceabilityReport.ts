@@ -3,6 +3,7 @@ import { type TraceabilityReport } from '~/types/regent-tracking/trace-report';
 import SecurityUtil from '~/utils/security-util';
 import { getDeviceReports } from '~/stores/regent-tracking-traceability-reports';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
+import { type ForReport } from '~/types/regent-tracking/tracked-vehicles';
 
 export function useDeviceTraceabilityReport() {
 	const size: Ref<number> = ref(10);
@@ -12,7 +13,8 @@ export function useDeviceTraceabilityReport() {
 	const searchString: Ref<string | null> = ref(null);
 	const loadingTraceabilityComments: Ref<boolean> = ref(false);
 	const onlyOnWatchlist: Ref<boolean> = ref(false);
-	const { get } = useStandardizedApi();
+	const { getBlob, post } = useStandardizedApi();
+	const loadingReportExport: Ref<boolean> = ref(false);
 
 	watch(
 		getClientDevices,
@@ -172,6 +174,57 @@ export function useDeviceTraceabilityReport() {
 		return filtered;
 	}
 
+	async function reportToExcel(): Promise<void> {
+		try {
+			loadingReportExport.value = true;
+			let requestBody: {
+				offlineVehicles: number;
+				onlineVehicles: number;
+				expiredVehicles: number;
+				totalVehicles: number;
+				entries: ForReport;
+			} = {
+				offlineVehicles: computedStatistics.value.total_offline,
+				onlineVehicles: computedStatistics.value.total_online,
+				expiredVehicles: computedStatistics.value.expires_soon,
+				totalVehicles: computedStatistics.value.total_devices,
+				entries: getClientDevices.value?.map((e) => {
+					return {
+						name: e.name,
+						comment: e.comment,
+						online: e.online,
+						driver: { phone: e.driver_data.phone },
+						device_data: {
+							expiration_date: e.device_data.expiration_date,
+							created_at: e.device_data.created_at,
+						},
+					};
+				}),
+			};
+			const blob = await getBlob('/api/regent-tracking/export-excel-report', {
+				method: 'POST',
+				body: requestBody,
+			});
+
+			const url = window.URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'export.xlsx');
+			document.body.appendChild(link);
+			link.click();
+			link.parentNode?.removeChild(link);
+			window.URL.revokeObjectURL(url); // Clean up memory
+		} catch (ex) {
+			console.log(ex);
+			useToast('Export failed! Try Again!', {
+				type: 'error',
+				title: 'Error',
+			});
+		} finally {
+			loadingReportExport.value = false;
+		}
+	}
+
 	async function loadTraceabilityComments(device_ids: number[]): Promise<TraceabilityReport> {
 		let base64Encoded = SecurityUtil.encodeBase64(device_ids.join(','));
 		let response = await get<TraceabilityReport>(
@@ -189,53 +242,6 @@ export function useDeviceTraceabilityReport() {
 		return (response as StandardSuccessResponse<TraceabilityReport>).data;
 	}
 
-	function printReport(contentId: string) {
-		// Get HTML to print from element
-		const prtHtml = document.getElementById(contentId)?.innerHTML;
-
-		// Get all stylesheets HTML
-		let stylesHtml = '';
-		for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
-			stylesHtml += node.outerHTML;
-		}
-
-		// Create hidden iframe
-		const iframe = document.createElement('iframe');
-		iframe.style.position = 'absolute';
-		iframe.style.width = '0';
-		iframe.style.height = '0';
-		iframe.style.border = 'none';
-
-		document.body.appendChild(iframe);
-
-		const iframeDoc = iframe.contentDocument || (iframe.contentWindow?.document as Document);
-
-		iframeDoc.open();
-		iframeDoc.write(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				${stylesHtml}
-			</head>
-			<body>
-				${prtHtml}
-			</body>
-			</html>
-		`);
-		iframeDoc.close();
-
-		// Wait for content to load, then print
-		iframe.onload = () => {
-			iframe.contentWindow?.focus();
-			iframe.contentWindow?.print();
-
-			// Clean up after printing
-			setTimeout(() => {
-				document.body.removeChild(iframe);
-			}, 100);
-		};
-	}
-
 	return {
 		page,
 		size,
@@ -249,7 +255,8 @@ export function useDeviceTraceabilityReport() {
 		getDeviceReports,
 		getClientDevices,
 		loadingTraceabilityComments,
-		printReport,
+		loadingReportExport,
+		reportToExcel,
 	};
 }
 
@@ -268,7 +275,7 @@ export function useTraceabilityReportComments() {
 				type: 'error',
 				title: 'Error',
 			});
-			throw new Error('Failed to fetch comments!');
+			throw new Error('Failed to add  comment!');
 		}
 	}
 	return {

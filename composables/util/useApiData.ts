@@ -40,6 +40,14 @@ export const useStandardizedApi = () => {
 	const get = <T = unknown>(endpoint: string, query?: Record<string, any>) =>
 		handleApiCall<T>(endpoint, { method: 'GET', query });
 
+	// New method for blob responses
+	const getBlob = async (endpoint: string, options: Parameters<typeof $fetch>[1] = {}): Promise<Blob> => {
+		return await $fetch<Blob>(endpoint, {
+			...options,
+			responseType: 'blob', // Key difference
+		});
+	};
+
 	const post = <T = unknown>(endpoint: string, body?: any) =>
 		handleApiCall<T>(endpoint, { method: 'POST', body });
 
@@ -58,6 +66,7 @@ export const useStandardizedApi = () => {
 		put,
 		delete: del,
 		patch,
+		getBlob,
 	};
 };
 
