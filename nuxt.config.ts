@@ -74,7 +74,6 @@ export default defineNuxtConfig({
 			VALUATION_BASE_URL: '',
 			AVA_BASE_URL: '',
 			FRAUD_DETECTION_BASE_URL: '',
-			REGENT_TRACK_BASE_URL: '',
 			APP_VERSION: '',
 			COPYRIGHT_YEAR: '',
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
