@@ -16,15 +16,17 @@
 			</div>
 			<button
 				class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-blue-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-blue-600"
-				@click="() => reportToExcel()"
+				@click.prevent="() => reportToExcel()"
 				type="button">
 				<span
-					class="icon-[material-symbols-light--sim-card-download-outline] text-lg"
-					v-if="loadingReportExport"></span>
-				<span
-					class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
-					v-else></span>
-				<span>{{ loadingReportExport }}Download Report</span>
+					:class="[
+						'text-lg',
+						loadingReportExport
+							? 'icon-[svg-spinners--ring-resize]'
+							: 'icon-[material-symbols-light--sim-card-download-outline]',
+					]"
+					>Download Report</span
+				>
 			</button>
 		</div>
 

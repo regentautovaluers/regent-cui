@@ -107,7 +107,7 @@ export default defineEventHandler(async (event) => {
 		editSpecificCell(
 			worksheet,
 			`J${intialRow}`,
-			entry.comment.length > 0 ? entry.comment[0].comment : '',
+			entry.comment && entry.comment.length > 0 ? entry.comment[0].comment : '',
 		);
 
 		intialRow += 1;

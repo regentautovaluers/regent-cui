@@ -13,7 +13,7 @@ export function useDeviceTraceabilityReport() {
 	const searchString: Ref<string | null> = ref(null);
 	const loadingTraceabilityComments: Ref<boolean> = ref(false);
 	const onlyOnWatchlist: Ref<boolean> = ref(false);
-	const { getBlob } = useStandardizedApi();
+	const { getBlob, get } = useStandardizedApi();
 	const loadingReportExport: Ref<boolean> = ref(false);
 	const { getPrincipal } = useAuth();
 
