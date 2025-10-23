@@ -67,6 +67,7 @@ const useAuth = () => {
 
 	const isPrincipalAdmin: ComputedRef<boolean> = computed(() => {
 		if (!getPrincipal.value) return false;
+		if (!getPrincipal.value.roles) return false;
 		return getPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
 	});
 
@@ -93,7 +94,7 @@ const useAuth = () => {
 
 	const isPrincipalBroker: ComputedRef<boolean> = computed(() => {
 		if (!getPrincipal.value) return false;
-		return getPrincipal.value.isBroker;
+		return getPrincipal.value.isBroker ?? false;
 	});
 
 	function encryptCorporateClientId(clientId: string) {
