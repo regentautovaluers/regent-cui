@@ -61,6 +61,7 @@ export function useDeviceTraceabilityReport() {
 	const computedStatistics: ComputedRef<{
 		total_online: number;
 		total_offline: number;
+		total_expired: number;
 		new_installations: number;
 		expires_soon: number;
 		total_devices: number;
@@ -74,6 +75,7 @@ export function useDeviceTraceabilityReport() {
 			return {
 				total_online: 0,
 				total_offline: 0,
+				total_expired: 0,
 				new_installations: 0,
 				expires_soon: 0,
 				total_devices: 0,
@@ -89,6 +91,7 @@ export function useDeviceTraceabilityReport() {
 					total_online:
 						acc.total_online + (['ack', 'engine', 'online'].includes(v.online) ? 1 : 0),
 					total_offline: acc.total_offline + (v.online == 'offline' ? 1 : 0),
+					total_expired: acc.total_expired + (v.online == 'expired' ? 1 : 0),
 					new_installations:
 						acc.new_installations + (isLastMonth(v.device_data.created_at) ? 1 : 0),
 					expires_soon:
@@ -108,6 +111,7 @@ export function useDeviceTraceabilityReport() {
 				{
 					total_online: 0,
 					total_offline: 0,
+					total_expired: 0,
 					new_installations: 0,
 					expires_soon: 0,
 					total_devices: 0,
@@ -198,7 +202,7 @@ export function useDeviceTraceabilityReport() {
 			} = {
 				offlineVehicles: computedStatistics.value.total_offline,
 				onlineVehicles: computedStatistics.value.total_online,
-				expiredVehicles: computedStatistics.value.expires_soon,
+				expiredVehicles: computedStatistics.value.total_expired,
 				totalVehicles: computedStatistics.value.total_devices,
 				corporateName: getPrincipal.value?.corpName as string,
 				entries: getClientDevices.value?.map((e) => {
@@ -206,7 +210,7 @@ export function useDeviceTraceabilityReport() {
 						name: e.name,
 						comment: e.comment,
 						online: e.online,
-						driver: { phone: e.driver_data.phone, name: e.device_data.name },
+						driver: { phone: e.driver_data.phone, name: e.driver_data.name },
 						device_data: {
 							expiration_date: e.device_data.expiration_date,
 							created_at: e.device_data.created_at,
