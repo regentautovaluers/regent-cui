@@ -65,9 +65,11 @@ const useAuth = () => {
 		}
 	};
 
-	const isPrincipalAdmin = (): boolean => {
-		return getPrincipal.value?.roles.includes('role_corp_admin'.toUpperCase()) as boolean;
-	};
+	const isPrincipalAdmin: ComputedRef<boolean> = computed(
+		() =>
+			getPrincipal.value?.roles.includes('role_corp_admin'.toUpperCase()) ??
+			(false as boolean),
+	);
 
 	const attemptLogout = () => {
 		// unset the auth token and stored principal
