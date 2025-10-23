@@ -17,6 +17,13 @@ export function useDeviceTraceabilityReport() {
 	const loadingReportExport: Ref<boolean> = ref(false);
 	const { getPrincipal } = useAuth();
 
+	watch([onlyOnWatchlist, searchString], () => {
+		// Only reset if the current page is NOT already 0
+		if (page.value !== 0) {
+			page.value = 0;
+		}
+	});
+
 	watch(
 		getClientDevices,
 		async (newValue) => {
@@ -158,9 +165,6 @@ export function useDeviceTraceabilityReport() {
 	}
 
 	function getFilteredVehicles() {
-		// reset the page
-		page.value = 0;
-
 		if (!getClientDevices.value) return [];
 
 		const vehicles = getClientDevices.value;
