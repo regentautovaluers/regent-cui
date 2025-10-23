@@ -143,13 +143,13 @@
 				<!-- Officer Name -->
 				<div class="relative w-full lg:w-1/3">
 					<label class="generic-input-label">{{
-						isPrincipalBroker() ? 'Select Corporate' : 'Select Broker / Agency'
+						isPrincipalBroker.value ? 'Select Corporate' : 'Select Broker / Agency'
 					}}</label>
 					<input
 						type="text"
 						id="officer-name"
 						class="generic-input peer"
-						:required="isPrincipalBroker()"
+						:required="isPrincipalBroker.value"
 						placeholder="Start typing to search"
 						v-model="agencyOrCorpName" />
 					<span

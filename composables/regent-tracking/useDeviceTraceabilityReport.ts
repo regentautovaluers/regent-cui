@@ -36,6 +36,8 @@ export function useDeviceTraceabilityReport() {
 						if (r.comments.length > 0) {
 							const latest_comment = r.comments[0];
 							entry.on_watchlist = latest_comment.watchlist == 'Y' ? true : false;
+						} else {
+							entry.on_watchlist = false;
 						}
 						entry.comment = r.comments;
 					});
@@ -118,17 +120,18 @@ export function useDeviceTraceabilityReport() {
 		}
 	});
 
-	const computedVehicles: ComputedRef<TrackedVehicles[] | null> = computed(() => {
+	const computedVehicles: ComputedRef<{
+		vehicles: TrackedVehicles[] | null;
+		totalPages: number;
+	}> = computed(() => {
 		const filtered = getFilteredVehicles();
-		if (!filtered.length) return null;
-
 		const start = page.value * size.value;
-		return filtered.slice(start, start + size.value) as TrackedVehicles[];
-	});
-
-	const totalPages = computed(() => {
-		const filtered = getFilteredVehicles();
-		return Math.ceil(filtered.length / size.value) || 1;
+		return {
+			vehicles: !filtered.length
+				? null
+				: (filtered.slice(start, start + size.value) as TrackedVehicles[]),
+			totalPages: Math.ceil(filtered.length / size.value) || 1,
+		};
 	});
 
 	function isLastMonth(dateStr: string | Date): boolean {
@@ -155,24 +158,27 @@ export function useDeviceTraceabilityReport() {
 	}
 
 	function getFilteredVehicles() {
+		// reset the page
+		page.value = 0;
+
 		if (!getClientDevices.value) return [];
 
-		let filtered = getClientDevices.value;
+		const vehicles = getClientDevices.value;
+		const search = searchString.value ? searchString.value.toLowerCase() : '';
 
-		if (onlyOnWatchlist.value) {
-			filtered = filtered.filter((v) => v.on_watchlist);
-		}
+		return vehicles.filter((v) => {
+			// 1. Watchlist Filter
+			const passesWatchlistFilter = !onlyOnWatchlist.value || v.on_watchlist;
 
-		if (searchString.value) {
-			const search = searchString.value.toLowerCase();
-			filtered = filtered.filter(
-				(v) =>
-					v.name?.toLowerCase().includes(search) ||
-					v.driver_data.name?.toLowerCase().includes(search),
-			);
-		}
+			// 2. Search Filter
+			const passesSearchFilter =
+				!search ||
+				v.name?.toLowerCase().includes(search) ||
+				v.driver_data.name?.toLowerCase().includes(search);
 
-		return filtered;
+			// A vehicle must pass BOTH filters to be included
+			return passesWatchlistFilter && passesSearchFilter;
+		});
 	}
 
 	async function reportToExcel(): Promise<void> {
@@ -252,7 +258,6 @@ export function useDeviceTraceabilityReport() {
 		computedVehicles,
 		fetchingClientVehicles,
 		errorFetchingClientVehicles,
-		totalPages,
 		onlyOnWatchlist,
 		computedStatistics,
 		getDeviceReports,

@@ -26,7 +26,7 @@
 <script setup lang="ts">
 	const { doesRouteNameMatch, doesRoutePathInclude } = useNavigationRoutes();
 	const { isPrincipalAdmin } = useAuth();
-	const routeEntries = [
+	const routeEntries: Ref<{ to: string; name: string; shouldShow: boolean }[]> = ref([
 		{
 			to: 'collateral-verification-home',
 			name: 'Homepage',
@@ -62,7 +62,7 @@
 			name: 'Payments',
 			shouldShow: isPrincipalAdmin.value,
 		},
-	];
+	]);
 
 	definePageMeta({
 		layout: 'console-layout',

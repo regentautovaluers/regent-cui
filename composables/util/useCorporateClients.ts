@@ -18,7 +18,7 @@ export default function useCorporateClient() {
 		'corporate-clients',
 		computed(
 			() =>
-				`/api/vehicle-valuation/corporate-clients?api_key=${getAuthToken.value}&is_broker=${isPrincipalBroker() ? false : true}`,
+				`/api/vehicle-valuation/corporate-clients?api_key=${getAuthToken.value}&is_broker=${isPrincipalBroker.value ? false : true}`,
 		),
 		{
 			method: 'GET',

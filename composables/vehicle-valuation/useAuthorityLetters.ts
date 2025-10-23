@@ -129,7 +129,7 @@ const useAuthorityLetters = () => {
 		// if the logged in user is a broker and they have not
 		// filled the agencyOrCorpName show a warning toast and exit
 		// the function
-		if (isPrincipalBroker() && agencyOrCorpId.value) {
+		if (isPrincipalBroker.value && agencyOrCorpId.value) {
 			useToast('Missing. Select one by clicking from options!', {
 				type: 'warn',
 				title: 'Missing Data!',

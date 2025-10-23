@@ -240,10 +240,10 @@
 								<tr
 									v-else-if="
 										!fetchingClientVehicles &&
-										computedVehicles &&
-										computedVehicles.length > 0
+										computedVehicles.vehicles &&
+										computedVehicles.vehicles.length > 0
 									"
-									v-for="(v, idx) in computedVehicles"
+									v-for="(v, idx) in computedVehicles.vehicles"
 									:key="idx"
 									:class="[
 										'border-b text-sm',
@@ -370,20 +370,23 @@
 				<div
 					class="tablet:flex-row tablet:min-h-12 tablet:h-12 my-5 flex h-16 min-h-16 flex-col items-center justify-between px-5">
 					<h1 class="text-sm font-semibold text-gray-500">
-						Showing {{ page + 1 }} of {{ totalPages }} pages.
+						Showing {{ page + 1 }} of {{ computedVehicles.totalPages }} pages.
 					</h1>
 					<div
 						class="tablet:w-fit tablet:block flex h-full w-full justify-center space-x-2 md:space-x-4">
 						<button
 							class="table-page-buttons"
 							@click="page -= 1"
-							:disabled="page === 0 || totalPages == 1">
+							:disabled="page === 0 || computedVehicles.totalPages == 1">
 							Previous
 						</button>
 						<button
 							class="table-page-buttons"
 							@click="page += 1"
-							:disabled="page === totalPages - 1 || totalPages == 1">
+							:disabled="
+								page === computedVehicles.totalPages - 1 ||
+								computedVehicles.totalPages == 1
+							">
 							Next
 						</button>
 					</div>
@@ -487,8 +490,12 @@
 
 		<!-- modal to add comment for table entry -->
 		<ParentModal
-			v-if="!fetchingClientVehicles && computedVehicles && computedVehicles.length > 0"
-			v-for="(v, idx) in computedVehicles"
+			v-if="
+				!fetchingClientVehicles &&
+				computedVehicles.vehicles &&
+				computedVehicles.vehicles.length > 0
+			"
+			v-for="(v, idx) in computedVehicles.vehicles"
 			:key="idx"
 			modal-title="Add Your Comment "
 			:modal-id="`add-comment-tbl-${idx}`"
@@ -516,7 +523,6 @@
 		searchString,
 		computedVehicles,
 		fetchingClientVehicles,
-		totalPages,
 		computedStatistics,
 		onlyOnWatchlist,
 		loadingReportExport,

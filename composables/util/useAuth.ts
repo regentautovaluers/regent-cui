@@ -65,11 +65,10 @@ const useAuth = () => {
 		}
 	};
 
-	const isPrincipalAdmin: ComputedRef<boolean> = computed(
-		() =>
-			getPrincipal.value?.roles.includes('role_corp_admin'.toUpperCase()) ??
-			(false as boolean),
-	);
+	const isPrincipalAdmin: ComputedRef<boolean> = computed(() => {
+		if (!getPrincipal.value) return false;
+		return getPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
+	});
 
 	const attemptLogout = () => {
 		// unset the auth token and stored principal
@@ -92,9 +91,10 @@ const useAuth = () => {
 		return false;
 	};
 
-	const isPrincipalBroker = (): boolean => {
-		return getPrincipal.value?.isBroker as boolean;
-	};
+	const isPrincipalBroker: ComputedRef<boolean> = computed(() => {
+		if (!getPrincipal.value) return false;
+		return getPrincipal.value.isBroker;
+	});
 
 	function encryptCorporateClientId(clientId: string) {
 		const ENCRYPTION_KEY = '7x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H+';
