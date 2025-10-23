@@ -20,13 +20,12 @@
 				type="button">
 				<span
 					:class="[
-						'text-lg',
+						'text-xl',
 						loadingReportExport
 							? 'icon-[svg-spinners--ring-resize]'
 							: 'icon-[material-symbols-light--sim-card-download-outline]',
-					]"
-					>Download Report</span
-				>
+					]"></span>
+				<span>Download Report</span>
 			</button>
 		</div>
 

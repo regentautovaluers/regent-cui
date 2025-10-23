@@ -47,7 +47,7 @@
 		<div
 			class="borer-blue-200 min-h-32 space-y-2 rounded-lg border bg-blue-100 p-4 outline-none">
 			<div
-				v-if="props.comments?.length > 0"
+				v-if="props.comments && props.comments?.length > 0"
 				v-for="(c, idx) in props.comments"
 				:key="idx"
 				class="flex items-start space-x-3">
@@ -101,32 +101,14 @@
 <script setup lang="ts">
 	import { type Comments } from '~/types/regent-tracking/trace-report';
 
-	const props = defineProps({
-		id: {
-			type: Number,
-			required: true,
-		},
-		regNo: {
-			type: String,
-			required: true,
-		},
-		clientPhone: {
-			type: String,
-			required: true,
-		},
-		clientName: {
-			type: String,
-			required: true,
-		},
-		deviceStatus: {
-			type: String,
-			required: true,
-		},
-		comments: {
-			type: Object as () => Comments[],
-			required: true,
-		},
-	});
+	const props = defineProps<{
+		id: number;
+		regNo: String;
+		clientPhone: String;
+		clientName: String;
+		deviceStatus: String;
+		comments?: Comments[];
+	}>();
 
 	const { newComment, addNewComment } = useTraceabilityReportComments();
 </script>
