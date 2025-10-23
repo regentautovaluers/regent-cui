@@ -1,4 +1,4 @@
-import { ForReport } from '~/types/regent-tracking/tracked-vehicles';
+import { ForReport, type Online } from '~/types/regent-tracking/tracked-vehicles';
 import ExcelJS from 'exceljs';
 
 type ReportDataBody = {
@@ -10,13 +10,14 @@ type ReportDataBody = {
 	entries: ForReport[];
 };
 
+const RED_COLOR = 'FFFF0000';
+const GREEN_COLOR = 'FF00CC00';
+const BLUE_COLOR = 'FF0066FF';
+const YELLOW_COLOR = 'FFFFFF00';
+
 export default defineEventHandler(async (event) => {
 	const body: ReportDataBody = await readBody(event);
-	const RED_COLOR = 'FFFF0000';
-	const GREEN_COLOR = 'FF00CC00';
-	const BLUE_COLOR = 'FF0066FF';
-	const YELLOW_COLOR = 'FFFFFF00';
-	const dateToday = new Date();
+
 	const map = new Map();
 	map.set(0, 'A');
 	map.set(1, 'B');
@@ -26,8 +27,6 @@ export default defineEventHandler(async (event) => {
 	map.set(5, 'F');
 	map.set(6, 'G');
 	map.set(7, 'H');
-	map.set(8, 'I');
-	map.set(9, 'J');
 
 	const workbook = new ExcelJS.Workbook();
 	const worksheet = workbook.addWorksheet('My Tracked Devices');
@@ -48,7 +47,7 @@ export default defineEventHandler(async (event) => {
 	editSpecificCell(worksheet, 'A4', 'Total Vehicles', BLUE_COLOR);
 	editSpecificCell(worksheet, 'B4', body.totalVehicles.toString(), BLUE_COLOR);
 
-	// corporate client name
+	// corporate client namec
 	// editSpecificCell(worksheet, 'C1', body.corporateName, undefined, 'J10');
 
 	// title row
@@ -56,17 +55,15 @@ export default defineEventHandler(async (event) => {
 		'Client Name',
 		'Vehicle Registration',
 		'Client Number',
-		'Device Sim',
 		'Destination',
 		'Installation Date',
 		'Expiry Date',
-		'Expiry Status',
 		'Tracker Status',
 		'Comment',
 	].forEach((e, idx) => editSpecificCell(worksheet, `${map.get(idx)}4`, e));
 
 	// actual data
-	let intialRow = 7;
+	let intialRow = 5;
 	for (const entry of body.entries) {
 		// client name
 		editSpecificCell(worksheet, `A${intialRow}`, entry.driver.name as unknown as string);
@@ -77,37 +74,28 @@ export default defineEventHandler(async (event) => {
 		// client number
 		editSpecificCell(worksheet, `C${intialRow}`, entry.driver.phone as unknown as string);
 
-		// device sim
-		editSpecificCell(worksheet, `D${intialRow}`, '-');
-
 		// destination
-		editSpecificCell(worksheet, `E${intialRow}`, body.corporateName.toUpperCase());
+		editSpecificCell(worksheet, `D${intialRow}`, body.corporateName.toUpperCase());
 
 		// installation date
-		editSpecificCell(
-			worksheet,
-			`F${intialRow}`,
-			entry.device_data.created_at.toString().split(' ')[0],
-		);
+		editSpecificCell(worksheet, `E${intialRow}`, entry.device_data.created_at?.toString());
 
 		// expiry date
 		editSpecificCell(
 			worksheet,
-			`G${intialRow}`,
-			entry.device_data.expiration_date?.toString().split(' ')[0] as string,
+			`F${intialRow}`,
+			entry.device_data.expiration_date?.toString() ?? '-',
 		);
 
-		// expiry status
-		editSpecificCell(worksheet, `H${intialRow}`, '-');
-
 		// tracker status
-		editSpecificCell(worksheet, `I${intialRow}`, entry.online);
+		let { color, text } = deduceTrackerStatus(entry.online);
+		editSpecificCell(worksheet, `G${intialRow}`, text, color);
 
 		// comments
 		editSpecificCell(
 			worksheet,
-			`J${intialRow}`,
-			entry.comment && entry.comment.length > 0 ? entry.comment[0].comment : '',
+			`H${intialRow}`,
+			entry.comment && entry.comment.length > 0 ? entry.comment[0].comment : '-',
 		);
 
 		intialRow += 1;
@@ -156,4 +144,33 @@ function editSpecificCell(
 	if (mergeYToCell) {
 		workSheet.mergeCells(`${cellName}:${mergeYToCell}`);
 	}
+}
+
+function deduceTrackerStatus(online: Online): { color: string; text: string } {
+	if (['ack', 'engine', 'online'].includes(online)) {
+		return {
+			color: GREEN_COLOR,
+			text: 'Online',
+		};
+	}
+
+	if (online == 'expired') {
+		return {
+			color: RED_COLOR,
+			text: 'Expired',
+		};
+	}
+
+	if (online == 'offline') {
+		return {
+			color: YELLOW_COLOR,
+			text: 'Offline',
+		};
+	}
+
+	// this should never happen as all vehicles have a tracker status
+	return {
+		color: BLUE_COLOR,
+		text: '-',
+	};
 }
