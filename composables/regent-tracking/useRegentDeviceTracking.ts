@@ -12,7 +12,6 @@ import {
 	setClientDevices,
 	cleanClientDevices,
 } from '~/stores/regent-tracking-devices-store';
-import { useGeolocation } from '@vueuse/core';
 
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
@@ -21,39 +20,38 @@ export function useRegentDeviceTracking() {
 	const deviceOnlineStatus: Ref<Online | null> = ref(null);
 	const searchString: Ref<string | null> = ref(null);
 	const activeDeviceTab: Ref<ActiveDeviceTab> = ref('details');
-	const { coords, error: geolocationError, isSupported: geolocationSupported } = useGeolocation();
 	const { gecodeLocation } = useGoogleMaps();
 	const { authToken } = useRegentTrackingAuth();
 	const loadingLocation: Ref<boolean> = ref(false);
-
-	const computedURL: ComputedRef<string> = computed(
-		() => `/api/regent-tracking/load-vehicles?api_hash=${authToken.value}`,
-	);
 
 	const {
 		pending: fetchingClientVehicles,
 		error: errorFetchingClientVehicles,
 		execute: refetchClientVehicles,
-	} = useApiData<TrackedVehicles[], TrackedVehicles[]>('client-devices', computedURL, {
-		method: 'GET',
-		server: false,
-		immediate: false,
-		transform: (response) => {
-			// Check if the API call was successful
-			if (response.success) {
-				// The response.data is correctly typed as TrackedVehicles[] here.
-				return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
-			}
+	} = useApiData<TrackedVehicles[], TrackedVehicles[]>(
+		'client-devices',
+		computed(() => `/api/regent-tracking/load-vehicles?api_hash=${authToken.value}`),
+		{
+			method: 'GET',
+			server: false,
+			immediate: false,
+			transform: (response) => {
+				// Check if the API call was successful
+				if (response.success) {
+					// The response.data is correctly typed as TrackedVehicles[] here.
+					return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
+				}
 
-			// If it failed, throw the error
-			throw new Error(
-				(response as StandardErrorResponse).metadata.message || 'Unknown error',
-			);
+				// If it failed, throw the error
+				throw new Error(
+					(response as StandardErrorResponse).metadata.message || 'Unknown error',
+				);
+			},
+			onResponse({ response }) {
+				setClientDevices(response._data.data as TrackedVehicles[]);
+			},
 		},
-		onResponse({ response }) {
-			setClientDevices(response._data.data as TrackedVehicles[]);
-		},
-	});
+	);
 
 	watch(
 		authToken,
@@ -72,47 +70,58 @@ export function useRegentDeviceTracking() {
 	const totalVehicles: ComputedRef<number> = computed(() => getClientDevices.value?.length ?? 0);
 
 	const computedVehicles: ComputedRef<TrackedVehicles[] | null> = computed(() => {
-		if (!getClientDevices.value) {
+		// Initial Null Check
+		const vehicles = getClientDevices.value;
+		if (!vehicles) {
 			return null;
 		}
 
-		// Return early if no filters
-		if (!deviceOnlineStatus.value && !searchString.value) {
-			return getClientDevices.value as TrackedVehicles[];
-		}
+		// Pre-calculate search term
+		const lowerCaseSearch = searchString.value?.toLowerCase() || '';
 
-		const lowerCaseSearch = searchString.value?.toLowerCase();
+		// Pre-calculate active status filter
+		const activeStatusFilter = deviceOnlineStatus.value;
 
-		return getClientDevices.value.filter((v) => {
-			// Online status filter
+		return vehicles.filter((v) => {
 			let statusMatch = true;
-			if (deviceOnlineStatus.value === 'offline') {
-				statusMatch = v.online === 'offline';
-			} else if (deviceOnlineStatus.value === 'expired') {
-				const expirationDate = v.device_data.expiration_date;
-				statusMatch = expirationDate ? isDateInThePast(expirationDate.toString()) : false;
-			} else if (deviceOnlineStatus.value === 'ack') {
-				statusMatch = ['ack', 'engine', 'online'].includes(v.online);
+
+			if (activeStatusFilter) {
+				switch (activeStatusFilter) {
+					case 'offline':
+						statusMatch = v.online === 'offline';
+						break;
+					case 'expired':
+						const expirationDate = v.device_data.expiration_date;
+						// Note: If expiration_date is null/undefined, it can't be expired, so default to false.
+						statusMatch =
+							!!expirationDate && isDateInThePast(expirationDate.toString());
+						break;
+					case 'ack':
+						statusMatch = ['ack', 'engine', 'online'].includes(v.online);
+						break;
+					default:
+						// If deviceOnlineStatus.value is set but isn't one of the filter options (e.g., 'all' or empty string)
+						statusMatch = true;
+						break;
+				}
 			}
 
-			// Search string filter
 			const searchMatch =
 				!lowerCaseSearch ||
 				v.name?.toLowerCase().includes(lowerCaseSearch) ||
 				v.driver_data.name?.toLowerCase().includes(lowerCaseSearch);
 
+			// Vehicle must pass BOTH filters
 			return statusMatch && searchMatch;
 		}) as TrackedVehicles[];
 	});
 
 	const mapCenter: ComputedRef<{ lat: number; lng: number }> = computed(() => {
 		if (!getClientDevices.value) {
-			if (geolocationSupported) {
-				return {
-					lat: coords.value.latitude,
-					lng: coords.value.longitude,
-				};
-			}
+			return {
+				lat: -1.2686925224944912,
+				lng: 36.80951195575046,
+			};
 		} else {
 			const firstActive = getClientDevices.value.find((v) =>
 				['ack', 'engine', 'online'].includes(v.online),
@@ -123,11 +132,6 @@ export function useRegentDeviceTracking() {
 				lng: firstActive?.lng as number,
 			};
 		}
-
-		return {
-			lat: -1.2686925224944912,
-			lng: 36.80951195575046,
-		};
 	});
 
 	// watch the change in active device and only fetch vehicle on demand
