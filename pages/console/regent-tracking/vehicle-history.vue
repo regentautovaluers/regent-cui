@@ -147,7 +147,7 @@
 		</div>
 
 		<!-- nesting area, history replay e.t.c -->
-		<div class="flex h-[43rem] items-center gap-10">
+		<div class="flex h-[43rem] flex-grow items-center gap-10">
 			<div
 				class="flex h-full w-[25%] flex-col divide-y-2 rounded-lg border bg-white shadow-xs outline-none">
 				<div class="h-[13%] p-5">
@@ -274,9 +274,14 @@
 								v-for="(m, idx) in e.movement"
 								:key="idx">
 								<ol class="relative border-s border-green-500">
-									<li
-										class="ms-4 cursor-pointer rounded-lg outline-none hover:bg-gray-100"
-										@click="
+									<RegentTrackingDeviceTripHistoryCard
+										event-type="Start"
+										vehicle-event-type="Driving"
+										:event-duration="m.drivingDuration"
+										:event-started-at="m.startedAt"
+										:event-lat="m.startAtLat"
+										:event-lng="m.startAtLng"
+										@entry-clicked="
 											() => {
 												setPolylineCoords(e);
 												setPositionOnMap({
@@ -286,71 +291,31 @@
 													time: m.startedAt,
 												});
 											}
-										">
-										<div
-											class="absolute -start-2.5 size-5 rounded-full border border-white bg-green-500"></div>
-										<h1
-											class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-											<span class="font-semibold">Start</span>
-											<span>&VerticalBar;</span>
-											<time class="font-semibold">{{
-												m.startedAt.split(' ')[1].substring(0, 5)
-											}}</time>
-										</h1>
-										<p class="text-sm font-normal text-gray-500">
-											Kericho Road, Kahawa Sukari
-										</p>
-										<p class="mb-4 inline-flex items-center space-x-2 text-sm">
-											<span class="text-gray-700">Driving Duration</span>
-											<span class="text-2xl">&middot;</span>
-											<span class="text-gray-500">{{
-												m.drivingDuration
-											}}</span>
-										</p>
-									</li>
+										" />
 								</ol>
 								<ol
 									class="relative border-s border-yellow-500"
 									v-if="m.idlePeriods.length > 0"
 									v-for="(i, idx) in m.idlePeriods"
 									:key="idx">
-									<li class="ms-4">
-										<div
-											class="absolute -start-2.5 size-5 rounded-full border border-white bg-yellow-500"></div>
-										<h1
-											class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-											<span class="font-semibold">Idle</span>
-											<span>&VerticalBar;</span>
-											<span class="inline-flex items-center space-x-1">
-												<time class="font-semibold"
-													>{{ i.startedAt.split(' ')[1].substring(0, 5) }}
-												</time>
-												<span> - </span>
-												<time class="font-semibold"
-													>{{ i.stoppedAt.split(' ')[1].substring(0, 5) }}
-												</time>
-												<span class="text-gray-500"
-													>({{
-														i.durationInMinutes.toFixed(2)
-													}}
-													min)</span
-												>
-											</span>
-										</h1>
-
-										<p class="mb-4 inline-flex items-center space-x-2 text-sm">
-											<span class="text-gray-700">Idle Duration</span>
-											<span class="text-2xl">&middot;</span>
-											<span class="text-gray-500">{{
-												m.totalIdleDuration
-											}}</span>
-										</p>
-									</li>
+									<RegentTrackingDeviceTripHistoryCard
+										event-type="Idle"
+										vehicle-event-type="Idle"
+										:event-duration="m.totalIdleDuration"
+										:event-started-at="i.startedAt"
+										:event-lat="m.startAtLat"
+										:event-lng="m.startAtLng" />
 								</ol>
 								<ol class="relative border-s border-red-500">
-									<li
-										class="ms-4 cursor-pointer rounded-lg outline-none hover:bg-gray-100"
-										@click="
+									<!-- TODO: Event duratiom for a stop is still pending -->
+									<RegentTrackingDeviceTripHistoryCard
+										event-type="Stop"
+										vehicle-event-type="Stop"
+										:event-duration="'1hrs 10 min'"
+										:event-started-at="m.startedAt"
+										:event-lat="m.stoppedAtLat"
+										:event-lng="m.stoppedAtLng"
+										@entry-clicked="
 											() => {
 												setPolylineCoords(e);
 												setPositionOnMap({
@@ -360,26 +325,7 @@
 													time: m.stoppedAt,
 												});
 											}
-										">
-										<div
-											class="absolute -start-2.5 size-5 rounded-full border border-white bg-red-500"></div>
-										<h1
-											class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-											<span class="font-semibold">Stop</span>
-											<span>&VerticalBar;</span>
-											<time class="font-semibold">{{
-												m.stoppedAt.split(' ')[1].substring(0, 5)
-											}}</time>
-										</h1>
-										<p class="text-sm font-normal text-gray-500">
-											Kericho Road, Kahawa Sukari
-										</p>
-										<p class="mb-4 inline-flex items-center space-x-2 text-sm">
-											<span class="text-gray-700">Stop Duration</span>
-											<span class="text-2xl">&middot;</span>
-											<span class="text-gray-500">1hrs 10 min</span>
-										</p>
-									</li>
+										" />
 								</ol>
 								<!-- end of timeline -->
 							</template>
@@ -392,56 +338,6 @@
 							</template>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- page actions -->
-		<div
-			class="divide-y-[2px] rounded-lg border border-gray-200 bg-white shadow-sm outline-none">
-			<div class="h-24 p-5">
-				<h1 class="text-xl font-bold text-gray-700">Export & Share</h1>
-				<h2 class="text-sm text-gray-500">
-					Download this report or share dashboard access to this report
-				</h2>
-			</div>
-			<div class="grid h-28 grid-cols-3 place-content-center gap-10 px-5 py-2">
-				<div class="flex h-20 items-center rounded-lg border p-5">
-					<div class="flex-grow">
-						<h1 class="font-semibold text-gray-700">PDF Report</h1>
-						<h2 class="text-xs text-gray-500">
-							Comprehensive reports with charts and analysis
-						</h2>
-					</div>
-					<button
-						class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-red-300 bg-red-100">
-						<span
-							class="icon-[material-symbols-light--book-2-outline] text-2xl text-red-600"></span>
-					</button>
-				</div>
-				<div class="flex h-20 items-center rounded-lg border p-5">
-					<div class="flex-grow">
-						<h1 class="font-semibold text-gray-700">Screenshot Page</h1>
-						<h2 class="text-xs text-gray-500">Capture a screenshot of this page</h2>
-					</div>
-					<button
-						class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-red-300 bg-red-100">
-						<span
-							class="icon-[material-symbols-light--screenshot-tablet-rounded] text-2xl text-red-600"></span>
-					</button>
-				</div>
-				<div class="flex h-20 items-center rounded-lg border p-5">
-					<div class="flex-grow">
-						<h1 class="font-semibold text-gray-700">Share Link</h1>
-						<h2 class="text-xs text-gray-500">
-							Generate a shareable link for this report
-						</h2>
-					</div>
-					<button
-						class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-blue-300 bg-blue-100">
-						<span
-							class="icon-[material-symbols-light--share] text-2xl text-blue-600"></span>
-					</button>
 				</div>
 			</div>
 		</div>
