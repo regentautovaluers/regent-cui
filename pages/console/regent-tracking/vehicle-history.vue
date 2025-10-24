@@ -157,80 +157,16 @@
 					</h2>
 				</div>
 				<div class="thin-scrollbar h-[87%] max-h-[85%] space-y-5 overflow-y-auto p-5">
-					<div
-						class="h-[10.5rem] rounded-lg border border-green-100 bg-gray-100 p-5 outline-none"
+					<RegentTrackDeviceNestingAreaCard
 						v-for="(e, idx) in nestingAreas"
-						:key="idx">
-						<div class="flex items-center justify-between">
-							<div>
-								<h1
-									class="font-semibold text-gray-700"
-									v-if="idx == 0">
-									Most Likely
-								</h1>
-								<h1
-									class="font-semibold text-gray-700"
-									v-else-if="idx == 1">
-									Medium Likely
-								</h1>
-								<h1
-									class="font-semibold text-gray-700"
-									v-else-if="idx == 2">
-									Least Likely
-								</h1>
-								<h1
-									class="font-semibold text-gray-700"
-									v-else>
-									Other Places
-								</h1>
-								<p class="text-sm text-gray-500">
-									Kericho Road, Kahawa Sukari, 4th Avenue
-								</p>
-							</div>
-							<div
-								v-if="[0, 1, 2].includes(idx)"
-								:class="[
-									'flex w-[25%] justify-center rounded-full border p-1 text-xs outline-none',
-									idx == 0 && 'border-green-400 bg-green-100 text-green-500',
-									idx == 1 && 'border-yellow-400 bg-yellow-100 text-yellow-500',
-									idx == 2 && 'border-red-400 bg-red-100 text-red-500',
-								]">
-								<span v-if="idx == 0">Very High</span>
-								<span v-else-if="idx == 1">Medium</span>
-								<span v-else-if="idx == 2">Low</span>
-							</div>
-						</div>
-						<div class="mt-2 flex items-center justify-between">
-							<div>
-								<h1 class="inline-flex items-center space-x-1">
-									<span
-										class="icon-[material-symbols-light--nest-clock-farsight-analog-rounded] text-gray-700"></span>
-									<span class="font-bold text-gray-700"
-										>{{ Math.ceil(e.location_time_hours) }}hrs</span
-									>
-								</h1>
-								<h2 class="text-sm text-gray-500">Time Spent</h2>
-							</div>
-							<div>
-								<h1 class="inline-flex items-center space-x-1">
-									<span
-										class="icon-[material-symbols-light--pie-chart-outline] text-xl text-gray-700"></span>
-									<span class="font-bold text-gray-700"
-										>~{{ e.location_time_hours_fraction.toFixed(1) }}%</span
-									>
-								</h1>
-								<h2 class="text-sm text-gray-500">Of Time</h2>
-							</div>
-							<div>
-								<h1 class="inline-flex items-center space-x-1">
-									<span
-										class="icon-[material-symbols-light--pin-drop-outline] text-xl text-gray-700"></span>
-									<span class="font-bold text-gray-700">{{ e.appearances }}</span>
-								</h1>
-								<h2 class="text-sm text-gray-500">Visits</h2>
-							</div>
-						</div>
-					</div>
+						:key="idx"
+						:entry-index="idx"
+						:location-lat="e.representative_lat"
+						:location-lng="e.representative_lng"
+						:number-of-appearances="e.appearances"
+						:time-at-location="e.location_time_hours"
+						:time-at-location-fraction="e.location_time_hours_fraction">
+					</RegentTrackDeviceNestingAreaCard>
 				</div>
 			</div>
 			<div
@@ -533,7 +469,7 @@
 		setFilterPeriod,
 		setPositionOnMap,
 		setPolylineCoords,
-	} = await useRegentTrackingDeviceHistory();
+	} = useRegentTrackingDeviceHistory();
 	const { googleMapsApiKey } = useGoogleMaps();
 </script>
 
