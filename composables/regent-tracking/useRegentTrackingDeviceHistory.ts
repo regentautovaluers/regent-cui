@@ -12,7 +12,7 @@ import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 
 export function useRegentTrackingDeviceHistory() {
 	const { query } = useRoute();
-	const filterPeriod: Ref<'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom'> =
+	const filterPeriod: Ref<'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'custom'> =
 		ref('today');
 	const positionOnMap: Ref<{
 		lat: number;
@@ -31,7 +31,7 @@ export function useRegentTrackingDeviceHistory() {
 	}
 
 	function setFilterPeriod(
-		period: 'today' | 'this-week' | 'last-30-days ' | 'last-3-months' | 'custom',
+		period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'custom',
 	) {
 		filterPeriod.value = period;
 		executeFetchDeviceHistory();
@@ -49,7 +49,7 @@ export function useRegentTrackingDeviceHistory() {
 	}
 
 	function calculateDateRange(
-		timeframe: 'today' | 'this-week' | 'last-30-days ' | 'last-3-months',
+		timeframe: 'today' | 'this-week' | 'last-30-days' | 'last-3-months',
 	): {
 		startDate: string;
 		endDate: string;
