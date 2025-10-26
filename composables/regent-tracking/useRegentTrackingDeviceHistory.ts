@@ -146,15 +146,10 @@ export function useRegentTrackingDeviceHistory() {
 
 	const nestingAreas: ComputedRef<AnalyzedLocation[]> = computed(() => {
 		if (deviceHistory.value) {
-			return analyzeVehicleStops(
-				deviceHistory.value.items.map((item) => ({
-					lat: item.items[0].lat,
-					lng: item.items[0].lng,
-					time_recorded: item.items[0].time,
-				})),
-				100,
-				2,
-			);
+			let result = analyzeNestingAreas(deviceHistory.value);
+			result = calculateLocationTimeFractions(result);
+
+			return result;
 		}
 
 		return [];

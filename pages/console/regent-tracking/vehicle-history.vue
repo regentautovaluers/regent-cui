@@ -300,7 +300,7 @@
 									:key="idx">
 									<RegentTrackingDeviceTripHistoryCard
 										event-type="Idle"
-										vehicle-event-type="Idle"
+										vehicle-event-type="Idling"
 										:event-duration="m.totalIdleDuration"
 										:event-started-at="i.startedAt"
 										:event-lat="m.startAtLat"
@@ -310,7 +310,7 @@
 									<!-- TODO: Event duratiom for a stop is still pending -->
 									<RegentTrackingDeviceTripHistoryCard
 										event-type="Stop"
-										vehicle-event-type="Stop"
+										vehicle-event-type="Stopping"
 										:event-duration="'1hrs 10 min'"
 										:event-started-at="m.startedAt"
 										:event-lat="m.stoppedAtLat"

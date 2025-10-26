@@ -1,6 +1,9 @@
 <template>
 	<li
-		class="ms-4 cursor-pointer rounded-lg outline-none hover:bg-gray-100 p-2"
+		:class="[
+			'ms-4 rounded-lg p-2 outline-none hover:bg-gray-100',
+			eventType != 'Idle' && 'cursor-pointer',
+		]"
 		ref="entry"
 		@click="$emit('entryClicked')">
 		<div
@@ -33,7 +36,7 @@
 	const { eventType, vehicleEventType, eventDuration, eventStartedAt, eventLat, eventLng } =
 		defineProps<{
 			eventType: 'Start' | 'Idle' | 'Stop';
-			vehicleEventType: 'Driving' | 'Stop' | 'Idle';
+			vehicleEventType: 'Driving' | 'Stopping' | 'Idling';
 			eventDuration: string | null;
 			eventStartedAt: string;
 			eventLat?: number;
