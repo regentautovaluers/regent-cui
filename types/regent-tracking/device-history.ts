@@ -61,7 +61,7 @@ export interface DeviceHistory {
 
 export interface Item {
 	status: number;
-	time?: string;
+	time: string | null;
 	show: string;
 	raw_time: string;
 	distance: number;
@@ -80,7 +80,7 @@ export interface Item {
 }
 
 export interface Item2 {
-	id?: number;
+	id: number;
 	device_id?: number;
 	item_id?: string;
 	time: string;
