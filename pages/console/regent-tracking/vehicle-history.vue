@@ -188,7 +188,8 @@
 							:zoom="12"
 							:zoom-control="true"
 							:fullscreen-control="false"
-							:street-view-control="true">
+							:street-view-control="true"
+							:center="{ lat: -1.2686925224944912, lng: 36.80951195575046 }">
 							<InfoWindow
 								v-if="positionOnMap"
 								:options="{
@@ -207,7 +208,9 @@
 									<div class="grid grid-cols-[25%_75%] gap-y-4 px-2 py-3">
 										<!-- location -->
 										<h3 class="font-semibold text-gray-700">Location</h3>
-										<p class="text-end text-gray-500">TBD</p>
+										<p class="text-end text-gray-500">
+											{{ positionOnMap.location }}
+										</p>
 
 										<!-- Longitude -->
 										<h3 class="font-semibold text-gray-700">Longitude</h3>
@@ -283,7 +286,7 @@
 										:event-lng="m.startAtLng"
 										@entry-clicked="
 											(location: string | null) => {
-												setPolylineCoords(e);
+												setPolylineCoords(m.tripRoute);
 												setPositionOnMap({
 													lat: m.startAtLat,
 													lng: m.startAtLng,
@@ -298,13 +301,13 @@
 								<ol class="relative border-s border-red-500">
 									<RegentTrackingDeviceTripHistoryCard
 										:event-type="'Stop'"
-										:driving-duration="m.stopDuration"
+										:stop-duration="m.stopDuration"
 										:event-started-at="m.stoppedAt"
 										:event-lat="m.stoppedAtLat"
 										:event-lng="m.stoppedAtLng"
 										@entry-clicked="
 											(location: string | null) => {
-												setPolylineCoords(e);
+												setPolylineCoords(m.tripRoute);
 												setPositionOnMap({
 													lat: m.stoppedAtLat,
 													lng: m.stoppedAtLng,

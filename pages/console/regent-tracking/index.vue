@@ -674,7 +674,7 @@
 										<ol class="relative border-s border-red-500">
 											<RegentTrackingDeviceTripHistoryCard
 												:event-type="'Stop'"
-												:driving-duration="m.stopDuration"
+												:stop-duration="m.stopDuration"
 												:event-started-at="m.stoppedAt"
 												:event-lat="m.stoppedAtLat"
 												:event-lng="m.stoppedAtLng" />

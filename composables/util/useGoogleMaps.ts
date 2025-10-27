@@ -1,5 +1,3 @@
-import { Loader } from '@googlemaps/js-api-loader';
-
 export default function useGoogleMaps() {
 	const apiKey: string = 'AIzaSyAfiZC3ThO1RVxsag0Dn2XzYu9oEux7VDI';
 
