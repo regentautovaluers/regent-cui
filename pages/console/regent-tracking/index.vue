@@ -132,7 +132,6 @@
 				<div
 					class="flex flex-grow items-center justify-center"
 					v-if="fetchingClientVehicles && computedVehicles == null">
-					{{ fetchingClientVehicles }}
 					<h1>Loading...</h1>
 				</div>
 
@@ -662,103 +661,23 @@
 										v-if="e.movement.length > 0"
 										v-for="(m, idx) in e.movement"
 										:key="idx">
+										<!-- render the start: has a driving duration -->
 										<ol class="relative border-s border-green-500">
-											<li class="ms-4">
-												<div
-													class="absolute -start-2.5 size-5 rounded-full border border-white bg-green-500"></div>
-												<h1
-													class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-													<span class="font-semibold">Start</span>
-													<span>&VerticalBar;</span>
-													<time class="font-semibold">{{
-														m.startedAt.split(' ')[1].substring(0, 5)
-													}}</time>
-												</h1>
-												<p class="text-sm font-normal text-gray-500">
-													Kericho Road, Kahawa Sukari
-												</p>
-												<p
-													class="mb-4 inline-flex items-center space-x-2 text-sm">
-													<span class="text-gray-700"
-														>Driving Duration</span
-													>
-													<span class="text-2xl">&middot;</span>
-													<span class="text-gray-500">{{
-														m.drivingDuration
-													}}</span>
-												</p>
-											</li>
+											<RegentTrackingDeviceTripHistoryCard
+												:event-type="'Start'"
+												:driving-duration="m.drivingDuration"
+												:event-started-at="m.startedAt"
+												:event-lat="m.startAtLat"
+												:event-lng="m.startAtLng" />
 										</ol>
-										<ol
-											class="relative border-s border-yellow-500"
-											v-if="m.idlePeriods.length > 0"
-											v-for="(i, idx) in m.idlePeriods"
-											:key="idx">
-											<li class="ms-4">
-												<div
-													class="absolute -start-2.5 size-5 rounded-full border border-white bg-yellow-500"></div>
-												<h1
-													class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-													<span class="font-semibold">Idle</span>
-													<span>&VerticalBar;</span>
-													<span
-														class="inline-flex items-center space-x-1">
-														<time class="font-semibold"
-															>{{
-																i.startedAt
-																	.split(' ')[1]
-																	.substring(0, 5)
-															}}
-														</time>
-														<span> - </span>
-														<time class="font-semibold"
-															>{{
-																i.stoppedAt
-																	.split(' ')[1]
-																	.substring(0, 5)
-															}}
-														</time>
-														<span class="text-gray-500"
-															>({{
-																i.durationInMinutes.toFixed(2)
-															}}
-															min)</span
-														>
-													</span>
-												</h1>
-
-												<p
-													class="mb-4 inline-flex items-center space-x-2 text-sm">
-													<span class="text-gray-700">Idle Duration</span>
-													<span class="text-2xl">&middot;</span>
-													<span class="text-gray-500">{{
-														m.totalIdleDuration
-													}}</span>
-												</p>
-											</li>
-										</ol>
+										<!-- render the stop: has a stoping duration -->
 										<ol class="relative border-s border-red-500">
-											<li class="ms-4">
-												<div
-													class="absolute -start-2.5 size-5 rounded-full border border-white bg-red-500"></div>
-												<h1
-													class="inline-flex space-x-3 text-sm leading-none text-gray-700">
-													<span class="font-semibold">Stop</span>
-													<span>&VerticalBar;</span>
-													<time class="font-semibold">{{
-														m.stoppedAt.split(' ')[1].substring(0, 5)
-													}}</time>
-												</h1>
-												<p class="text-sm font-normal text-gray-500">
-													Kericho Road, Kahawa Sukari
-												</p>
-												<p
-													class="mb-4 inline-flex items-center space-x-2 text-sm">
-													<span class="text-gray-700">Stop Duration</span>
-													<span class="text-2xl">&middot;</span>
-													<span class="text-gray-500">1hrs 10 min</span>
-												</p>
-											</li>
+											<RegentTrackingDeviceTripHistoryCard
+												:event-type="'Stop'"
+												:driving-duration="m.stopDuration"
+												:event-started-at="m.stoppedAt"
+												:event-lat="m.stoppedAtLat"
+												:event-lng="m.stoppedAtLng" />
 										</ol>
 										<!-- end of timeline -->
 									</template>

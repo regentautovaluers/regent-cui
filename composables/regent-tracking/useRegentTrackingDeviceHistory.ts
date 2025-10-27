@@ -1,11 +1,4 @@
-import {
-	type DeviceHistory,
-	type Item,
-	type Item2,
-	type VehicleMovement,
-	type DayMovement,
-	type IdlePeriods,
-} from '~/types/regent-tracking/device-history';
+import { type DeviceHistory, type DayMovement } from '~/types/regent-tracking/device-history';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
 import { type AnalyzedLocation } from '~/types/regent-tracking/device-history';
 import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
@@ -19,6 +12,7 @@ export function useRegentTrackingDeviceHistory() {
 		lng: number;
 		event: 'start' | 'stop' | 'idle';
 		time: string;
+		location: string | null;
 	} | null> = ref(null);
 	const polylineCoords: Ref<{ lat: number; lng: number }[] | null> = ref(null);
 	const { name: routeName } = useRoute();
@@ -43,6 +37,7 @@ export function useRegentTrackingDeviceHistory() {
 			lng: number;
 			event: 'start' | 'stop' | 'idle';
 			time: string;
+			location: string | null;
 		} | null,
 	) {
 		positionOnMap.value = position;
@@ -160,207 +155,10 @@ export function useRegentTrackingDeviceHistory() {
 			return [];
 		}
 
-		const movementsByDay: Record<string, DayMovement> = {};
-		let currentTrip:
-			| (Omit<
-					VehicleMovement,
-					| 'totalDistance'
-					| 'averageSpeed'
-					| 'drivingDuration'
-					| 'totalIdleDuration'
-					| 'idlePeriods'
-			  > & { idlePeriods: IdlePeriods[]; totalIdleDuration: number })
-			| null = null;
-		let currentIdlePeriod: Omit<IdlePeriods, 'durationInMinutes'> | null = null;
-		let tripPings: Item2[] = [];
+		let result = analyzeVehicleTripHistory(deviceHistory.value);
+		console.log(result);
 
-		// Helper: Parse "motion" and "ignition" from other_arr
-		const getMotionAndIgnition = (
-			otherArr: string[] = [],
-		): { motion: boolean; ignition: boolean } => {
-			const motion =
-				otherArr
-					.find((item) => item.startsWith('motion:'))
-					?.split(':')[1]
-					.trim() === 'true';
-			const ignition =
-				otherArr
-					.find((item) => item.startsWith('ignition:'))
-					?.split(':')[1]
-					.trim() === 'true';
-			return { motion, ignition };
-		};
-
-		// Sort the pings by time to ensure correct sequential processing
-		const sortedPings = deviceHistory.value.items.sort((a, b) => {
-			return (
-				new Date(a.items[0].raw_time).getTime() - new Date(b.items[0].raw_time).getTime()
-			);
-		});
-
-		sortedPings.forEach((item: Item) => {
-			const ping = item.items[0];
-			if (!ping || !ping.raw_time) return;
-
-			const date = ping.raw_time.split(' ')[0];
-			const { motion, ignition } = getMotionAndIgnition(ping.other_arr);
-
-			// Initialize the daily entry if it doesn't exist
-			if (!movementsByDay[date]) {
-				movementsByDay[date] = {
-					date,
-					movement: [],
-					pingHistory: [],
-				};
-			}
-
-			// Add to ping history, ensuring valid coordinates
-			if (ping.lat != null && ping.lng != null) {
-				movementsByDay[date].pingHistory.push({
-					lat: Number(ping.lat),
-					lng: Number(ping.lng),
-				});
-			}
-
-			// --- Core Trip Logic ---
-			if (motion && ignition) {
-				// Start of a trip or continuation of a trip
-				if (!currentTrip) {
-					currentTrip = {
-						startedAt: ping.raw_time,
-						startAtLat: Number(ping.lat),
-						startAtLng: Number(ping.lng),
-						stoppedAt: null,
-						stoppedAtLat: null,
-						stoppedAtLng: null,
-						idlePeriods: [],
-						totalIdleDuration: 0,
-					};
-				}
-				// End any current idle period
-				if (currentIdlePeriod) {
-					currentIdlePeriod.stoppedAt = ping.raw_time;
-					const idleDurationMs =
-						new Date(currentIdlePeriod.stoppedAt).getTime() -
-						new Date(currentIdlePeriod.startedAt).getTime();
-					currentTrip?.idlePeriods.push({
-						...currentIdlePeriod,
-						durationInMinutes: idleDurationMs / 60000,
-					});
-					currentTrip.totalIdleDuration += idleDurationMs;
-					currentIdlePeriod = null;
-				}
-				tripPings.push(ping);
-			} else if (!motion && ignition) {
-				// Vehicle is idling
-				if (currentTrip && !currentIdlePeriod) {
-					currentIdlePeriod = {
-						startedAt: ping.raw_time,
-						stoppedAt: null,
-					};
-				}
-				tripPings.push(ping);
-			} else if (currentTrip) {
-				// End of a trip (engine turned off)
-				// First, end any existing idle period
-				if (currentIdlePeriod) {
-					currentIdlePeriod.stoppedAt = ping.raw_time;
-					const idleDurationMs =
-						new Date(currentIdlePeriod.stoppedAt).getTime() -
-						new Date(currentIdlePeriod.startedAt).getTime();
-					currentTrip.idlePeriods.push({
-						...currentIdlePeriod,
-						durationInMinutes: idleDurationMs / 60000,
-					});
-					currentTrip.totalIdleDuration += idleDurationMs;
-					currentIdlePeriod = null;
-				}
-
-				// Then, close the trip
-				currentTrip.stoppedAt = ping.raw_time;
-				currentTrip.stoppedAtLat = Number(ping.lat);
-				currentTrip.stoppedAtLng = Number(ping.lng);
-				tripPings.push(ping); // Include the last ping in the trip calculation
-
-				// Calculate and finalize the trip
-				const totalDistance = tripPings.reduce((sum, p) => sum + (p.distance || 0), 0);
-				const averageSpeed =
-					tripPings.reduce((sum, p) => sum + (p.speed || 0), 0) / tripPings.length;
-
-				const start = new Date(currentTrip.startedAt);
-				const end = new Date(currentTrip.stoppedAt);
-				const totalTripDurationMs = end.getTime() - start.getTime();
-
-				const drivingDurationMs = totalTripDurationMs - currentTrip.totalIdleDuration;
-				const drivingDurationHours = drivingDurationMs / (1000 * 60 * 60);
-				const drivingDuration = `${Math.floor(drivingDurationHours)}h ${Math.floor((drivingDurationHours % 1) * 60)}m`;
-
-				const totalIdleDurationHours = currentTrip.totalIdleDuration / (1000 * 60 * 60);
-				const totalIdleDuration = `${Math.floor(totalIdleDurationHours)}h ${Math.floor((totalIdleDurationHours % 1) * 60)}m`;
-
-				movementsByDay[date].movement.push({
-					...currentTrip,
-					totalDistance: Number(totalDistance.toFixed(2)),
-					averageSpeed: Number(averageSpeed.toFixed(2)),
-					drivingDuration,
-					totalIdleDuration,
-				});
-
-				// Reset for the next trip
-				currentTrip = null;
-				tripPings = [];
-			}
-		});
-
-		// Handle a trip that is still in progress at the end of the data stream
-		if (currentTrip && tripPings.length > 0) {
-			const lastPing = tripPings[tripPings.length - 1];
-			const date = lastPing.raw_time.split(' ')[0]; // Correctly get the date here
-
-			if (currentIdlePeriod) {
-				currentIdlePeriod.stoppedAt = lastPing.raw_time;
-				const idleDurationMs =
-					new Date(currentIdlePeriod.stoppedAt).getTime() -
-					new Date(currentIdlePeriod.startedAt).getTime();
-				currentTrip.idlePeriods.push({
-					...currentIdlePeriod,
-					durationInMinutes: idleDurationMs / 60000,
-				});
-				currentTrip.totalIdleDuration += idleDurationMs;
-			}
-
-			currentTrip.stoppedAt = lastPing.raw_time;
-			currentTrip.stoppedAtLat = Number(lastPing.lat);
-			currentTrip.stoppedAtLng = Number(lastPing.lng);
-
-			const totalDistance = tripPings.reduce((sum, p) => sum + (p.distance || 0), 0);
-			const averageSpeed =
-				tripPings.reduce((sum, p) => sum + (p.speed || 0), 0) / tripPings.length;
-
-			const start = new Date(currentTrip.startedAt);
-			const end = new Date(currentTrip.stoppedAt);
-			const totalTripDurationMs = end.getTime() - start.getTime();
-
-			const drivingDurationMs = totalTripDurationMs - currentTrip.totalIdleDuration;
-			const drivingDurationHours = drivingDurationMs / (1000 * 60 * 60);
-			const drivingDuration = `${Math.floor(drivingDurationHours)}h ${Math.floor((drivingDurationHours % 1) * 60)}m`;
-
-			const totalIdleDurationHours = currentTrip.totalIdleDuration / (1000 * 60 * 60);
-			const totalIdleDuration = `${Math.floor(totalIdleDurationHours)}h ${Math.floor((totalIdleDurationHours % 1) * 60)}m`;
-
-			movementsByDay[date].movement.push({
-				...currentTrip,
-				totalDistance: Number(totalDistance.toFixed(2)),
-				averageSpeed: Number(averageSpeed.toFixed(2)),
-				drivingDuration,
-				totalIdleDuration,
-			});
-		}
-
-		// Sort days by date
-		return Object.values(movementsByDay).sort(
-			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-		);
+		return analyzeVehicleTripHistory(deviceHistory.value);
 	});
 
 	return {

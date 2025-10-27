@@ -273,56 +273,44 @@
 								v-if="e.movement.length > 0"
 								v-for="(m, idx) in e.movement"
 								:key="idx">
+								<!-- render the start: has a driving duration -->
 								<ol class="relative border-s border-green-500">
 									<RegentTrackingDeviceTripHistoryCard
-										event-type="Start"
-										vehicle-event-type="Driving"
-										:event-duration="m.drivingDuration"
+										:event-type="'Start'"
+										:driving-duration="m.drivingDuration"
 										:event-started-at="m.startedAt"
 										:event-lat="m.startAtLat"
 										:event-lng="m.startAtLng"
 										@entry-clicked="
-											() => {
+											(location: string | null) => {
 												setPolylineCoords(e);
 												setPositionOnMap({
 													lat: m.startAtLat,
 													lng: m.startAtLng,
 													event: 'start',
 													time: m.startedAt,
+													location,
 												});
 											}
 										" />
 								</ol>
-								<ol
-									class="relative border-s border-yellow-500"
-									v-if="m.idlePeriods.length > 0"
-									v-for="(i, idx) in m.idlePeriods"
-									:key="idx">
-									<RegentTrackingDeviceTripHistoryCard
-										event-type="Idle"
-										vehicle-event-type="Idling"
-										:event-duration="m.totalIdleDuration"
-										:event-started-at="i.startedAt"
-										:event-lat="m.startAtLat"
-										:event-lng="m.startAtLng" />
-								</ol>
+								<!-- render the stop: has a stoping duration -->
 								<ol class="relative border-s border-red-500">
-									<!-- TODO: Event duratiom for a stop is still pending -->
 									<RegentTrackingDeviceTripHistoryCard
-										event-type="Stop"
-										vehicle-event-type="Stopping"
-										:event-duration="'1hrs 10 min'"
-										:event-started-at="m.startedAt"
+										:event-type="'Stop'"
+										:driving-duration="m.stopDuration"
+										:event-started-at="m.stoppedAt"
 										:event-lat="m.stoppedAtLat"
 										:event-lng="m.stoppedAtLng"
 										@entry-clicked="
-											() => {
+											(location: string | null) => {
 												setPolylineCoords(e);
 												setPositionOnMap({
 													lat: m.stoppedAtLat,
 													lng: m.stoppedAtLng,
 													event: 'stop',
-													time: m.stoppedAt,
+													time: m.startedAt,
+													location,
 												});
 											}
 										" />
