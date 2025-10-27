@@ -126,7 +126,9 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 					totalDistance: parseFloat(tempTripData.totalDistanceAcc.toFixed(2)),
 					drivingDuration: formatSecondsToDuration(drivingDurationSeconds),
 					stopDuration: null, // Will be filled in Pass 2
-					tripRoute: tempTripData.tripRoutePings,
+					tripRoute: tempTripData.tripRoutePings.map((e) => {
+						return { lat: Number(e.lat), lng: Number(e.lng) };
+					}),
 				};
 
 				dayMovement.movement.push(completedTrip);
@@ -137,27 +139,40 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 		}
 	}
 
-	// --- PASS 2: Calculate and Assign Stop Durations ---
+	// --- PASS 2: Calculate Stop Durations and Summary Fields (totalTrips, cummTotalDistance) ---
 	for (const dayMovement of dailyHistory.values()) {
 		const movement = dayMovement.movement;
+		let cumulativeDistance = 0;
 
-		// Iterate through all trips except the last one
-		for (let i = 0; i < movement.length - 1; i++) {
+		// Iterate through all trips
+		for (let i = 0; i < movement.length; i++) {
 			const currentTrip = movement[i];
-			const nextTrip = movement[i + 1];
 
-			// Stop duration is the time between the current trip's 'Ignition off' and the next trip's 'Ignition on'
-			const stopDurationSeconds = calculateTimeDifferenceSeconds(
-				nextTrip.startedAt,
-				currentTrip.stoppedAt,
-			);
+			// A) Calculate Stop Duration (Look Ahead)
+			if (i < movement.length - 1) {
+				const nextTrip = movement[i + 1];
 
-			// Assign the calculated stop duration to the *current* trip
-			currentTrip.stopDuration =
-				stopDurationSeconds > 0 ? formatSecondsToDuration(stopDurationSeconds) : null;
+				// Stop duration is the time between the current trip's 'Ignition off' and the next trip's 'Ignition on'
+				const stopDurationSeconds = calculateTimeDifferenceSeconds(
+					nextTrip.startedAt,
+					currentTrip.stoppedAt,
+				);
 
-			// The last trip (i = movement.length - 1) automatically retains its null stopDuration.
+				// Assign the calculated stop duration to the *current* trip
+				currentTrip.stopDuration =
+					stopDurationSeconds > 0 ? formatSecondsToDuration(stopDurationSeconds) : null;
+			} else {
+				// The last trip always has a null stop duration
+				currentTrip.stopDuration = null;
+			}
+
+			// B) Accumulate Total Distance for summary
+			cumulativeDistance += currentTrip.totalDistance;
 		}
+
+		// C) Fill in DayMovement Summary Fields
+		dayMovement.totalTrips = movement.length;
+		dayMovement.cummTotalDistance = parseFloat(cumulativeDistance.toFixed(2));
 	}
 
 	return Array.from(dailyHistory.values());

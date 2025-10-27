@@ -571,7 +571,14 @@
 							<div class="flex-grow text-sm">
 								<h2 class="text-gray-500">Total Distance</h2>
 								<h1 class="font-semibold text-gray-700">
-									{{ deviceHistory?.distance_sum ?? 'Unknown' }}
+									{{
+										deviceMovement.length > 0
+											? deviceMovement.reduce(
+													(acc, e) => (acc += e.cummTotalDistance),
+													0,
+												)
+											: 'Unknown'
+									}}
 								</h1>
 							</div>
 							<button
@@ -586,12 +593,12 @@
 								<h2 class="text-gray-500">Total Trips</h2>
 								<h1 class="font-semibold text-gray-700">
 									{{
-										deviceMovement.length == 0
-											? 'Unknown'
-											: deviceMovement.reduce(
-													(acc, curr) => acc + curr.movement.length,
+										deviceMovement.length > 0
+											? deviceMovement.reduce(
+													(acc, e) => (acc += e.totalTrips),
 													0,
 												)
+											: 'Unknown'
 									}}
 								</h1>
 							</div>

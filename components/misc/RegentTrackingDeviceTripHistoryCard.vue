@@ -29,7 +29,7 @@
 			class="mb-4 inline-flex items-center space-x-2 text-sm">
 			<span class="text-gray-700">Stop Duration</span>
 			<span class="text-2xl">&middot;</span>
-			<span class="text-gray-500">{{ stopDuration?.replace(/\s*\d+s$/, '') }}</span>
+			<span class="text-gray-500">{{ stopDuration?.replace(/\s*\d+s$/, '') ?? '-' }}</span>
 		</p>
 	</li>
 </template>

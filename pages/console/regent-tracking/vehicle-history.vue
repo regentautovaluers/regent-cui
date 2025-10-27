@@ -100,7 +100,11 @@
 				<div class="flex-grow">
 					<h2 class="text-sm text-gray-500">Total Distance</h2>
 					<h1 class="text-lg font-semibold text-gray-700">
-						{{ deviceHistory?.distance_sum ?? 'Unknown' }}
+						{{
+							deviceMovement.length > 0
+								? deviceMovement.reduce((acc, e) => (acc += e.cummTotalDistance), 0)
+								: 'Unknown'
+						}}
 					</h1>
 				</div>
 				<button
@@ -115,12 +119,9 @@
 					<h2 class="text-sm text-gray-500">Total Trips</h2>
 					<h1 class="text-lg font-semibold text-gray-700">
 						{{
-							deviceMovement.length == 0
-								? 'Unknown'
-								: deviceMovement.reduce(
-										(acc, curr) => acc + curr.movement.length,
-										0,
-									)
+							deviceMovement.length > 0
+								? deviceMovement.reduce((acc, e) => (acc += e.totalTrips), 0)
+								: 'Unknown'
 						}}
 					</h1>
 				</div>
@@ -288,8 +289,8 @@
 											(location: string | null) => {
 												setPolylineCoords(m.tripRoute);
 												setPositionOnMap({
-													lat: m.startAtLat,
-													lng: m.startAtLng,
+													lat: Number(m.startAtLat),
+													lng: Number(m.startAtLng),
 													event: 'start',
 													time: m.startedAt,
 													location,
@@ -309,8 +310,8 @@
 											(location: string | null) => {
 												setPolylineCoords(m.tripRoute);
 												setPositionOnMap({
-													lat: m.stoppedAtLat,
-													lng: m.stoppedAtLng,
+													lat: Number(m.stoppedAtLat),
+													lng: Number(m.stoppedAtLng),
 													event: 'stop',
 													time: m.startedAt,
 													location,

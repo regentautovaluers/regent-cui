@@ -20,8 +20,8 @@ export function useRegentTrackingDeviceHistory() {
 	const toDate: Ref<string | null> = ref(null);
 	const { authToken } = useRegentTrackingAuth();
 
-	function setPolylineCoords(input: DayMovement) {
-		polylineCoords.value = input.pingHistory;
+	function setPolylineCoords(input: { lat: number; lng: number }[]) {
+		polylineCoords.value = input;
 	}
 
 	function setFilterPeriod(
@@ -154,9 +154,6 @@ export function useRegentTrackingDeviceHistory() {
 		if (!deviceHistory.value || !Array.isArray(deviceHistory.value.items)) {
 			return [];
 		}
-
-		let result = analyzeVehicleTripHistory(deviceHistory.value);
-		console.log(result);
 
 		return analyzeVehicleTripHistory(deviceHistory.value);
 	});
