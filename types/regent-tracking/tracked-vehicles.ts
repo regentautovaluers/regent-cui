@@ -244,9 +244,9 @@ export interface DriverData {
 	id: null;
 	user_id: null;
 	device_id: null;
-	name: null;
+	name: string | null;
 	rfid: null;
-	phone: null;
+	phone: string | null;
 	email: null;
 	description: null;
 	created_at: null;

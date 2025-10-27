@@ -46,7 +46,11 @@ export function useDeviceTraceabilityReport() {
 						} else {
 							entry.on_watchlist = false;
 						}
+
+						// set the comment, and driver name and phone number
 						entry.comment = r.comments;
+						entry.driver_data.name = r.clientName;
+						entry.driver_data.phone = r.clientNo;
 					});
 				} catch (_err) {
 					console.error('Failed to load report comments');

@@ -17,6 +17,8 @@ export interface Pagination {
 
 export interface Report {
 	tracker_id: number;
+	clientName: string;
+	clientNo: string;
 	comments: Comments[];
 }
 
