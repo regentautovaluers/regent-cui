@@ -5,43 +5,6 @@ import {
 	type Item,
 } from '~/types/regent-tracking/device-history';
 
-// utils/vehicle-movement-history.ts
-
-/**
- * A raw ping data point from the tracker.
- */
-interface PingItem {
-	time: string;
-	lat: number;
-	lng: number;
-}
-
-// --- HELPER FUNCTIONS FOR DURATION AGGREGATION ---
-
-/**
- * Converts a duration string (e.g., "1h 12min 57s") into total seconds.
- */
-function parseDurationToSeconds(duration: string | null): number {
-	if (!duration) return 0;
-	// Regex to match one or more digits followed by 'h', 'min', or 's'
-	const parts = duration.match(/(\d+)(h|min|s)/g);
-	let totalSeconds = 0;
-
-	if (parts) {
-		for (const part of parts) {
-			const value = parseInt(part);
-			if (part.includes('h')) {
-				totalSeconds += value * 3600;
-			} else if (part.includes('min')) {
-				totalSeconds += value * 60;
-			} else if (part.includes('s')) {
-				totalSeconds += value;
-			}
-		}
-	}
-	return totalSeconds;
-}
-
 /**
  * Formats a total number of seconds back into a clean "HHh MMmin SSs" string.
  */
@@ -80,28 +43,28 @@ function calculateTimeDifferenceSeconds(end: string, start: string): number {
  * @returns An array of DayMovement objects, one for each unique day in the data.
  */
 export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
+	if (!data.items || data.items.length === 0) {
+		return [];
+	}
+
 	const dailyHistory = new Map<string, DayMovement>();
 
-	// Object to buffer trip-specific accumulation data
 	interface TempTripData {
 		startedAt: string;
 		startAtLat: number;
 		startAtLng: number;
 		totalDistanceAcc: number;
-		durationSecondsAcc: number;
 		tripRoutePings: { lat: number; lng: number }[];
-		// Storing stopDuration here allows us to pass it to the end event
-		stopDuration: string | null;
 		isActive: boolean;
 	}
 	let tempTripData: TempTripData | null = null;
-	let previousTripStoppedAt: string | null = null;
 
+	// --- PASS 1: Identify Trips, Collect Data, and Build Ping History ---
 	for (const eventItem of data.items as Item[]) {
 		const date = eventItem.show.substring(0, 10);
 		const firstPing = eventItem.items[0];
 
-		// 1. Initialize DayMovement for the date if it doesn't exist
+		// Initialize DayMovement for the date
 		if (!dailyHistory.has(date)) {
 			dailyHistory.set(date, {
 				date: date,
@@ -113,45 +76,32 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 		}
 		const dayMovement = dailyHistory.get(date)!;
 
-		// 2. Append all raw pings for the full polyline history
+		// Append all raw pings for the full polyline history
 		for (const ping of eventItem.items) {
 			dayMovement.pingHistory.push({ lat: ping.lat, lng: ping.lng });
 		}
 
-		// 3. Trip Construction Logic
+		// Trip Construction Logic
 		const isIgnitionEvent = eventItem.status === 5;
 		const message = isIgnitionEvent ? eventItem.message : '';
 
-		// --- PHASE 1: START TRIP ---
+		// PHASE 1A: START TRIP (Ignition on)
 		if (!tempTripData?.isActive && isIgnitionEvent && message === 'Ignition on') {
-			const stopDurationSeconds = previousTripStoppedAt
-				? calculateTimeDifferenceSeconds(eventItem.show, previousTripStoppedAt)
-				: 0;
-
-			// Initialize the buffer for a new trip
 			tempTripData = {
 				startedAt: eventItem.show,
 				startAtLat: firstPing?.lat ?? 0,
 				startAtLng: firstPing?.lng ?? 0,
 				totalDistanceAcc: 0,
-				durationSecondsAcc: 0,
 				tripRoutePings: [],
 				isActive: true,
-				stopDuration:
-					stopDurationSeconds > 0 ? formatSecondsToDuration(stopDurationSeconds) : null,
 			};
-
-			// NOTE: We do NOT use 'continue' here. The 'Ignition on' event data (distance/time/pings)
-			// will be processed immediately in the accumulation block below.
 		}
 
-		// --- PHASE 2: ACCUMULATE & END TRIP ---
+		// PHASE 1B: ACCUMULATE & END TRIP
 		if (tempTripData?.isActive) {
-			// Accumulate data for the CURRENT event item (including the 'Ignition on' event itself)
+			// Accumulate Distance and Pings
 			tempTripData.totalDistanceAcc += eventItem.distance;
-			tempTripData.durationSecondsAcc += parseDurationToSeconds(eventItem.time);
 
-			// Add all pings from this event to the trip route
 			for (const ping of eventItem.items) {
 				tempTripData.tripRoutePings.push({ lat: ping.lat, lng: ping.lng });
 			}
@@ -159,6 +109,12 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 			// Handle TRIP END: Ignition off
 			if (isIgnitionEvent && message === 'Ignition off') {
 				const stoppedAtTime = eventItem.show;
+
+				// Driving Duration: Calculated as ELAPSED TIME (StoppedAt - StartedAt)
+				const drivingDurationSeconds = calculateTimeDifferenceSeconds(
+					stoppedAtTime,
+					tempTripData.startedAt,
+				);
 
 				const completedTrip: VehicleMovement = {
 					startedAt: tempTripData.startedAt,
@@ -168,32 +124,41 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 					stoppedAtLat: firstPing?.lat ?? 0,
 					stoppedAtLng: firstPing?.lng ?? 0,
 					totalDistance: parseFloat(tempTripData.totalDistanceAcc.toFixed(2)),
-					drivingDuration: formatSecondsToDuration(tempTripData.durationSecondsAcc),
-					stopDuration: tempTripData.stopDuration,
+					drivingDuration: formatSecondsToDuration(drivingDurationSeconds),
+					stopDuration: null, // Will be filled in Pass 2
 					tripRoute: tempTripData.tripRoutePings,
 				};
 
-				// Add the completed trip to the day's movement history
 				dayMovement.movement.push(completedTrip);
-
-				// Update the time for calculating the next stop duration
-				previousTripStoppedAt = stoppedAtTime;
 
 				// Reset trip state
 				tempTripData = null;
 			}
 		}
-
-		// before moving on, count the total trips for each day
-		dayMovement.totalTrips = dayMovement.movement.length;
-
-		// and cummulative total distance
-		dayMovement.cummTotalDistance += dayMovement.movement.reduce(
-			(acc, m) => acc + m.totalDistance,
-			0,
-		);
 	}
 
-	// Convert the Map values (DayMovement objects) into the final array
+	// --- PASS 2: Calculate and Assign Stop Durations ---
+	for (const dayMovement of dailyHistory.values()) {
+		const movement = dayMovement.movement;
+
+		// Iterate through all trips except the last one
+		for (let i = 0; i < movement.length - 1; i++) {
+			const currentTrip = movement[i];
+			const nextTrip = movement[i + 1];
+
+			// Stop duration is the time between the current trip's 'Ignition off' and the next trip's 'Ignition on'
+			const stopDurationSeconds = calculateTimeDifferenceSeconds(
+				nextTrip.startedAt,
+				currentTrip.stoppedAt,
+			);
+
+			// Assign the calculated stop duration to the *current* trip
+			currentTrip.stopDuration =
+				stopDurationSeconds > 0 ? formatSecondsToDuration(stopDurationSeconds) : null;
+
+			// The last trip (i = movement.length - 1) automatically retains its null stopDuration.
+		}
+	}
+
 	return Array.from(dailyHistory.values());
 }
