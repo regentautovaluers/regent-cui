@@ -6,27 +6,26 @@ export interface VehiclePing {
 }
 
 export interface VehicleMovement {
-	startedAt: string;
-	startAtLat: number;
-	startAtLng: number;
-	stoppedAt: string;
-	stoppedAtLat: number;
-	stoppedAtLng: number;
-	totalDistance: number;
-	averageSpeed: number;
-	drivingDuration: string | null;
-	totalIdleDuration: string | null;
-	idlePeriods: IdlePeriods[];
-}
+	// vehicle starts (ignition on)
+	startedAt: string; // time of start ping
+	startAtLat: number; // lat of start
+	startAtLng: number; // lng of start
 
-export interface IdlePeriods {
-	startedAt: string;
-	stoppedAt: string;
-	durationInMinutes: number;
+	// vehicle stops (ignition off)
+	stoppedAt: string; // time of stop ping
+	stoppedAtLat: number; // lat of start stop
+	stoppedAtLng: number; // lng of stop
+
+	totalDistance: number; // total distance covered between start and stop -> as accurate as possible
+	drivingDuration: string | null; // duration between a start and stop
+	stopDuration: string | null;
+	tripRoute: { lat: number; lng: number }[];
 }
 
 export interface DayMovement {
 	date: string;
+	totalTrips: number;
+	cummTotalDistance: number;
 	movement: VehicleMovement[];
 	pingHistory: { lat: number; lng: number }[];
 }
