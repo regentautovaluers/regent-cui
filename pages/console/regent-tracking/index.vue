@@ -143,7 +143,13 @@
 						v-for="(device, index) in computedVehicles"
 						:key="index"
 						:device="device"
-						@set-active-device="(device: TrackedVehicles) => setActiveDevice(device)" />
+						@set-active-device="
+							(device: TrackedVehicles) => {
+								// reset the tab
+								setActiveDeviceTab('details');
+								setActiveDevice(device);
+							}
+						" />
 				</div>
 			</template>
 		</div>
