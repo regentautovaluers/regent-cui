@@ -190,7 +190,12 @@
 							:zoom-control="true"
 							:fullscreen-control="false"
 							:street-view-control="true"
-							:center="{ lat: -1.2686925224944912, lng: 36.80951195575046 }">
+							:center="
+								deviceMovement.length > 0 &&
+								deviceMovement[0].pingHistory.length > 0
+									? deviceMovement[0].pingHistory[0]
+									: { lat: -1.2686925224944912, lng: 36.80951195575046 }
+							">
 							<InfoWindow
 								v-if="positionOnMap"
 								:options="{
@@ -245,11 +250,24 @@
 									</div>
 								</div>
 							</InfoWindow>
+
+							<!-- polyline for each trip -->
 							<Polyline
 								:options="{
 									path: polylineCoords,
 									geodesic: true,
-									strokeColor: '#ec4899',
+									strokeColor: '#e60076',
+									strokeOpacity: 1.0,
+									strokeWeight: 10,
+								}" />
+
+							<!-- polyline for all trips combined -->
+							<Polyline
+								v-if="combinedDeviceMovement"
+								:options="{
+									path: combinedDeviceMovement,
+									geodesic: true,
+									strokeColor: '#155dfc',
 									strokeOpacity: 1.0,
 									strokeWeight: 5,
 								}" />
@@ -350,6 +368,7 @@
 		deviceHistory,
 		fetchingDeviceHistory,
 		errorFetchingDeviceHistory,
+		combinedDeviceMovement,
 		nestingAreas,
 		deviceMovement,
 		positionOnMap,

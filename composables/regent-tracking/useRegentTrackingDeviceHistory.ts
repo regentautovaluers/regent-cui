@@ -158,6 +158,13 @@ export function useRegentTrackingDeviceHistory() {
 		return analyzeVehicleTripHistory(deviceHistory.value);
 	});
 
+	const combinedDeviceMovement: ComputedRef<{ lat: number; lng: number }[] | null> = computed(
+		() =>
+			deviceMovement.value.length == 0
+				? null
+				: deviceMovement.value.flatMap((e) => e.pingHistory),
+	);
+
 	return {
 		filterPeriod,
 		deviceHistory,
@@ -169,6 +176,7 @@ export function useRegentTrackingDeviceHistory() {
 		polylineCoords,
 		fromDate,
 		toDate,
+		combinedDeviceMovement,
 		setFilterPeriod,
 		setPositionOnMap,
 		setPolylineCoords,

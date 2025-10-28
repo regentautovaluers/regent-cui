@@ -78,7 +78,7 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 
 		// Append all raw pings for the full polyline history
 		for (const ping of eventItem.items) {
-			dayMovement.pingHistory.push({ lat: ping.lat, lng: ping.lng });
+			dayMovement.pingHistory.push({ lat: Number(ping.lat), lng: Number(ping.lng) });
 		}
 
 		// Trip Construction Logic
@@ -103,7 +103,7 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 			tempTripData.totalDistanceAcc += eventItem.distance;
 
 			for (const ping of eventItem.items) {
-				tempTripData.tripRoutePings.push({ lat: ping.lat, lng: ping.lng });
+				tempTripData.tripRoutePings.push({ lat: Number(ping.lat), lng: Number(ping.lng) });
 			}
 
 			// Handle TRIP END: Ignition off
@@ -118,11 +118,11 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 
 				const completedTrip: VehicleMovement = {
 					startedAt: tempTripData.startedAt,
-					startAtLat: tempTripData.startAtLat,
-					startAtLng: tempTripData.startAtLng,
+					startAtLat: Number(tempTripData.startAtLat),
+					startAtLng: Number(tempTripData.startAtLng),
 					stoppedAt: stoppedAtTime,
-					stoppedAtLat: firstPing?.lat ?? 0,
-					stoppedAtLng: firstPing?.lng ?? 0,
+					stoppedAtLat: Number(firstPing?.lat) ?? 0,
+					stoppedAtLng: Number(firstPing?.lng) ?? 0,
 					totalDistance: parseFloat(tempTripData.totalDistanceAcc.toFixed(2)),
 					drivingDuration: formatSecondsToDuration(drivingDurationSeconds),
 					stopDuration: null, // Will be filled in Pass 2
@@ -139,7 +139,7 @@ export function analyzeVehicleTripHistory(data: DeviceHistory): DayMovement[] {
 		}
 	}
 
-	// --- PASS 2: Calculate Stop Durations and Summary Fields (totalTrips, cummTotalDistance) ---
+	// --- PHASE 2: Calculate Stop Durations and Summary Fields (totalTrips, cummTotalDistance) ---
 	for (const dayMovement of dailyHistory.values()) {
 		const movement = dayMovement.movement;
 		let cumulativeDistance = 0;
