@@ -117,6 +117,7 @@ export function useRegentTrackingDeviceHistory() {
 		pending: fetchingDeviceHistory,
 		error: errorFetchingDeviceHistory,
 		execute: executeFetchDeviceHistory,
+		clear: clearDeviceHistory,
 	} = useApiData<DeviceHistory, DeviceHistory>(
 		`device-history-${routeName == 'regent-tracking-vehicle-history' ? query.device_id : getTrackedVehicle.value?.id}`,
 		computedURL,
@@ -181,5 +182,6 @@ export function useRegentTrackingDeviceHistory() {
 		setPositionOnMap,
 		setPolylineCoords,
 		executeFetchDeviceHistory,
+		clearDeviceHistory,
 	};
 }

@@ -117,12 +117,19 @@ export function useRegentDeviceTracking() {
 	});
 
 	const mapCenter: ComputedRef<{ lat: number; lng: number }> = computed(() => {
+		// if we have a tracked device, it's position takes priority
+		if (getTrackedVehicle.value) {
+			return { lat: getTrackedVehicle.value.lat, lng: getTrackedVehicle.value.lng };
+		}
+
+		// if there are no tracked devices we return a generic center
 		if (!getClientDevices.value) {
 			return {
 				lat: -1.2686925224944912,
 				lng: 36.80951195575046,
 			};
 		} else {
+			// else we return the position of the first online vehicle
 			const firstActive = getClientDevices.value.find((v) =>
 				['ack', 'engine', 'online'].includes(v.online),
 			);

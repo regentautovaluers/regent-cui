@@ -7,24 +7,55 @@
 			:styles="googleMapStyle"
 			style="width: 100%; height: 100%; position: absolute"
 			:map-type-control="true"
-			:zoom="8"
+			:zoom="!getTrackedVehicle ? 8 : 10"
 			:zoom-control="true"
 			:fullscreen-control="false"
 			:street-view-control="true"
 			:center="mapCenter">
+			<!-- polyline for each trip -->
 			<Polyline
-				v-if="getTrackedVehicle"
+				v-if="deviceHistory"
 				:options="{
-					path: getTrackedVehicle.tail.map((e) => {
-						return { lat: parseFloat(e.lat), lng: parseFloat(e.lng) };
-					}),
+					path: polylineCoords,
 					geodesic: true,
-					strokeColor: '#ec4899',
+					strokeColor: '#e60076',
+					strokeOpacity: 1.0,
+					strokeWeight: 10,
+				}" />
+
+			<!-- polyline for all trips combined -->
+			<Polyline
+				v-if="combinedDeviceMovement"
+				:options="{
+					path: combinedDeviceMovement,
+					geodesic: true,
+					strokeColor: '#155dfc',
 					strokeOpacity: 1.0,
 					strokeWeight: 5,
 				}" />
 
-			<MarkerCluster>
+			<CustomMarker
+				v-if="getTrackedVehicle"
+				:options="{
+					position: { lat: getTrackedVehicle.lat, lng: getTrackedVehicle.lng },
+					anchorPoint: 'BOTTOM_CENTER',
+				}">
+				<div>
+					<p
+						:class="[
+							'size-fit h-fit rounded-lg border-[1px] p-1 text-center font-bold',
+							`bg-${deriveColor(getTrackedVehicle.online)}-100`,
+							`border-${deriveColor(getTrackedVehicle.online)}-200`,
+						]">
+						{{ getTrackedVehicle.name.trim() }}
+					</p>
+					<img
+						src="/images/assets/maps-car.png"
+						width="50"
+						height="50" />
+				</div>
+			</CustomMarker>
+			<MarkerCluster v-else>
 				<CustomMarker
 					v-if="computedVehicles"
 					v-for="(v, idx) in computedVehicles"
@@ -147,6 +178,10 @@
 							(device: TrackedVehicles) => {
 								// reset the tab
 								setActiveDeviceTab('details');
+
+								// clear the device history if any
+								clearDeviceHistory();
+
 								setActiveDevice(device);
 							}
 						" />
@@ -173,6 +208,11 @@
 								() => {
 									cleanTrackedVehicleLocation();
 									cleanTrackedVehicle();
+									// reset the tab
+									setActiveDeviceTab('details');
+
+									// clear the device history if any
+									clearDeviceHistory();
 								}
 							">
 							<span
@@ -773,16 +813,21 @@
 	} = useRegentTrackingDeviceEvents();
 
 	const {
+		fromDate,
+		toDate,
 		filterPeriod,
 		deviceHistory,
 		fetchingDeviceHistory,
 		errorFetchingDeviceHistory,
+		combinedDeviceMovement,
 		nestingAreas,
 		deviceMovement,
-		fromDate,
-		toDate,
-		executeFetchDeviceHistory,
+		polylineCoords,
 		setFilterPeriod,
+		setPositionOnMap,
+		setPolylineCoords,
+		clearDeviceHistory,
+		executeFetchDeviceHistory,
 	} = useRegentTrackingDeviceHistory();
 
 	const availablePeriodButtons = reactive([
