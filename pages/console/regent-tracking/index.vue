@@ -10,8 +10,7 @@
 			:zoom="!getTrackedVehicle ? 8 : 10"
 			:zoom-control="true"
 			:fullscreen-control="false"
-			:street-view-control="true"
-			:center="mapCenter">
+			:street-view-control="true">
 			<!-- polyline for each trip -->
 			<Polyline
 				v-if="deviceHistory"
@@ -55,15 +54,18 @@
 						height="50" />
 				</div>
 			</CustomMarker>
-			<MarkerCluster v-else>
+			<MarkerCluster ref="markerCluster">
+				<!-- to avoid rendering fragment components -->
 				<CustomMarker
-					v-if="computedVehicles"
-					v-for="(v, idx) in computedVehicles"
-					:key="idx"
+					v-if="getClientDevices"
+					v-for="v in getClientDevices"
+					:key="v.id"
 					:options="{
 						position: { lat: v.lat, lng: v.lng },
 						anchorPoint: 'BOTTOM_CENTER',
-					}">
+						visible: false,
+					}"
+					:style="{ display: !getTrackedVehicle ? 'block' : 'none' }">
 					<div>
 						<p
 							:class="[
@@ -83,7 +85,7 @@
 		</GoogleMap>
 
 		<div
-			class="absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[30rem] flex-col border-[1px] bg-white shadow-md shadow-gray-300">
+			class="shadow-gray280 absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[27rem] flex-col border-[1px] bg-white shadow-md">
 			<template v-if="!authToken">
 				<ClientLogin />
 			</template>
@@ -171,8 +173,8 @@
 					class="thin-scrollbar flex-grow overflow-y-auto p-5"
 					v-else>
 					<RegentTrackingVehicleEntry
-						v-for="(device, index) in computedVehicles"
-						:key="index"
+						v-for="device in computedVehicles"
+						:key="device.id"
 						:device="device"
 						@set-active-device="
 							(device: TrackedVehicles) => {
@@ -192,7 +194,7 @@
 		<!-- the sidekick panel -->
 		<Transition>
 			<div
-				class="absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[30rem] translate-x-[30rem] flex-col border-[1px] bg-white shadow-md shadow-gray-300"
+				class="absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[28rem] translate-x-[27rem] flex-col border-[1px] bg-white shadow-md shadow-gray-300"
 				v-if="getTrackedVehicle">
 				<div class="p-5">
 					<div class="flex items-center justify-between">
@@ -771,12 +773,15 @@
 	import { GoogleMap, Polyline, CustomMarker, MarkerCluster } from 'vue3-google-map';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
 	import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
+
 	definePageMeta({
 		name: 'regent-tracking-home',
 		layout: 'console-layout',
 	});
 	const { getPrincipal } = useAuth();
 	const { googleMapsApiKey } = useGoogleMaps();
+	const mapRef: Ref<any> = ref(null);
+	const markerCluster: Ref<any> = ref(null);
 
 	const {
 		totalVehicles,
@@ -786,8 +791,8 @@
 		fetchingClientVehicles,
 		errorFetchingClientVehicles,
 		getTrackedVehicle,
+		getClientDevices,
 		activeDeviceTab,
-		mapCenter,
 		loadingLocation,
 		getTrackedVehicleLocation,
 		authToken,
@@ -852,4 +857,41 @@
 			period: 'custom',
 		},
 	]);
+
+	watch(
+		[() => mapRef.value?.ready, () => getClientDevices.value, () => getTrackedVehicle.value],
+		(
+			[newReady, newDevices, newActiveTrackedDevice],
+			[_oldReady, _oldDevices, _oldActiveTrackedDevice],
+		) => {
+			if (!newReady || !newDevices) {
+				return;
+			} else {
+				if (newActiveTrackedDevice) {
+					// TODO: Figure out how to remove marker cluster
+					// markerCluster.value.markerCluster.clearMarkers(true);
+
+					// pan to the active device if there is one
+					// the offset so that the vehicle never appears behind the floating panel
+					mapRef.value.map.panTo({
+						lat: newActiveTrackedDevice?.lat as number,
+						lng: newActiveTrackedDevice?.lng as number,
+					});
+
+					mapRef.value.map.panBy(-50, 0);
+					return;
+				}
+
+				// else we return the position of the first online vehicle
+				const firstActive = newDevices?.find((v) =>
+					['ack', 'engine', 'online'].includes(v.online),
+				);
+				mapRef.value.map.panTo({
+					lat: firstActive?.lat as number,
+					lng: firstActive?.lng as number,
+				});
+				return;
+			}
+		},
+	);
 </script>
