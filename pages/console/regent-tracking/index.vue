@@ -864,33 +864,30 @@
 			[newReady, newDevices, newActiveTrackedDevice],
 			[_oldReady, _oldDevices, _oldActiveTrackedDevice],
 		) => {
-			if (!newReady || !newDevices) {
-				return;
+			if (!newReady || !newDevices) return;
+
+			if (newActiveTrackedDevice) {
+				// Hide cluster markers without destroying them
+				markerCluster.value.markerCluster.setMap(null);
+
+				mapRef.value.map.panTo({
+					lat: newActiveTrackedDevice.lat,
+					lng: newActiveTrackedDevice.lng,
+				});
+				mapRef.value.map.panBy(-50, 0);
 			} else {
-				if (newActiveTrackedDevice) {
-					// TODO: Figure out how to remove marker cluster
-					// markerCluster.value.markerCluster.clearMarkers(true);
+				// Show cluster markers again
+				markerCluster.value.markerCluster.setMap(mapRef.value.map);
 
-					// pan to the active device if there is one
-					// the offset so that the vehicle never appears behind the floating panel
-					mapRef.value.map.panTo({
-						lat: newActiveTrackedDevice?.lat as number,
-						lng: newActiveTrackedDevice?.lng as number,
-					});
-
-					mapRef.value.map.panBy(-50, 0);
-					return;
-				}
-
-				// else we return the position of the first online vehicle
-				const firstActive = newDevices?.find((v) =>
+				const firstActive = newDevices.find((v) =>
 					['ack', 'engine', 'online'].includes(v.online),
 				);
-				mapRef.value.map.panTo({
-					lat: firstActive?.lat as number,
-					lng: firstActive?.lng as number,
-				});
-				return;
+				if (firstActive) {
+					mapRef.value.map.panTo({
+						lat: firstActive.lat,
+						lng: firstActive.lng,
+					});
+				}
 			}
 		},
 	);
