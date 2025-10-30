@@ -81,11 +81,6 @@
 <script setup lang="ts">
 	import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
 
-	const props = defineProps({
-		device: {
-			required: true,
-			type: Object as () => TrackedVehicles,
-		},
-	});
+	const props = defineProps<{ device: TrackedVehicles }>();
 	const emits = defineEmits(['setActiveDevice']);
 </script>
