@@ -612,6 +612,22 @@
 						</ul>
 					</div>
 
+					<NuxtLink
+						:to="{
+							name: 'regent-tracking-vehicle-history',
+							query: {
+								device_id: getTrackedVehicle?.id,
+								vehicle_reg: getTrackedVehicle?.name,
+							},
+						}"
+						class="inline-flex h-14 min-h-14 w-full items-center justify-center space-x-1 rounded-lg bg-blue-600 transition-colors duration-150 outline-none hover:bg-blue-700">
+						<span
+							class="icon-[material-symbols-light--info-outline-rounded] text-xl text-slate-100"></span>
+						<span class="text-sm font-semibold text-slate-100"
+							>View Detailed History</span
+						>
+					</NuxtLink>
+
 					<!-- the stats -->
 					<div class="grid grid-cols-2 gap-4">
 						<div
@@ -748,21 +764,6 @@
 							</div>
 						</div>
 					</div>
-					<NuxtLink
-						:to="{
-							name: 'regent-tracking-vehicle-history',
-							query: {
-								device_id: getTrackedVehicle?.id,
-								vehicle_reg: getTrackedVehicle?.name,
-							},
-						}"
-						class="inline-flex h-14 min-h-14 w-full items-center justify-center space-x-1 rounded-lg bg-blue-600 transition-colors duration-150 outline-none hover:bg-blue-700">
-						<span
-							class="icon-[material-symbols-light--info-outline-rounded] text-xl text-slate-100"></span>
-						<span class="text-sm font-semibold text-slate-100"
-							>View Detailed History</span
-						>
-					</NuxtLink>
 				</div>
 			</div>
 		</Transition>
@@ -868,7 +869,7 @@
 
 			if (newActiveTrackedDevice) {
 				// Hide cluster markers without destroying them
-				markerCluster.value.markerCluster.setMap(null);
+				markerCluster.value.markerCluster?.setMap(null);
 
 				mapRef.value.map.panTo({
 					lat: newActiveTrackedDevice.lat,
