@@ -83,12 +83,58 @@
 							filterPeriod == 'custom' && 'bg-blue-100',
 						]"
 						type="button"
-						@click="setFilterPeriod('custom')">
+						@click="setFilterPeriod('custom')"
+						data-dropdown-toggle="custom-time-dd">
 						<span
 							class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
 							v-if="fetchingDeviceHistory && filterPeriod == 'custom'"></span>
 						<span>Custom</span>
 					</button>
+
+					<div
+						id="custom-time-dd"
+						class="z-10 w-64 hidden divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white shadow-sm">
+						<form
+							@submit.prevent="executeFetchDeviceHistory()"
+							class="flex w-full flex-col space-y-1 rounded-md bg-gray-100 p-2"
+							v-show="filterPeriod == 'custom'">
+							<div>
+								<label
+									for="history-starts-from"
+									class="generic-input-label"
+									>Starting From</label
+								>
+								<input
+									type="date"
+									id="history-starts-from"
+									class="generic-input h-[50px]"
+									placeholder="start date"
+									pattern="\d{4}-\d{2}-\d{2}"
+									required
+									v-model="fromDate" />
+							</div>
+							<div>
+								<label
+									for="history-ends-at"
+									class="generic-input-label"
+									>Ending At</label
+								>
+								<input
+									type="date"
+									id="history-ends-at"
+									class="generic-input h-[50px]"
+									placeholder="start date"
+									pattern="\d{4}-\d{2}-\d{2}"
+									required
+									v-model="toDate" />
+							</div>
+							<button
+								type="submit"
+								class="p-0 text-sm text-blue-700 hover:underline">
+								Filter
+							</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -369,6 +415,8 @@
 		fetchingDeviceHistory,
 		errorFetchingDeviceHistory,
 		combinedDeviceMovement,
+		fromDate,
+		toDate,
 		nestingAreas,
 		deviceMovement,
 		positionOnMap,
@@ -376,6 +424,7 @@
 		setFilterPeriod,
 		setPositionOnMap,
 		setPolylineCoords,
+		executeFetchDeviceHistory,
 	} = useRegentTrackingDeviceHistory();
 	const { googleMapsApiKey } = useGoogleMaps();
 </script>
