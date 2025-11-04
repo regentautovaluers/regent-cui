@@ -10,7 +10,6 @@ import {
 	setTrackedVehicleLocation,
 	getClientDevices,
 	setClientDevices,
-	cleanClientDevices,
 } from '~/stores/regent-tracking-devices-store';
 
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';

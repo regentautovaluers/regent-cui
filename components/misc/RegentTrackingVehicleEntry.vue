@@ -1,10 +1,11 @@
 <template>
-	<div class="mb-4 h-[12rem] rounded-lg border border-gray-200 p-5 shadow-sm outline-none">
-		<div class="flex h-3/6 items-center justify-between">
-			<div class="flex w-[100%] space-x-4">
+	<div
+		class="mb-4 flex h-[14rem] flex-col justify-between rounded-lg border border-gray-200 p-5 shadow-sm outline-none">
+		<div class="flex h-2/6 items-center justify-between">
+			<div class="flex w-full space-x-4">
 				<button
 					:class="[
-						'inline-flex h-14 w-[16%] max-w-[16%] min-w-[16%] items-center justify-center rounded-lg shadow-md',
+						'inline-flex h-14 w-[20%] max-w-[20%] min-w-[20%] items-center justify-center rounded-lg shadow-md',
 						`bg-${deriveColor(device.online)}-500`,
 					]">
 					<span
@@ -25,20 +26,19 @@
 					class="icon-[material-symbols-light--double-arrow-rounded] text-2xl text-gray-600"></span>
 			</button>
 		</div>
-		<div class="flex h-1/6 items-center space-x-3 text-sm text-gray-600">
-			<span class="inline-flex items-center space-x-1">
+		<div class="h-fit space-y-3 text-sm text-gray-600">
+			<span class="inline-flex w-full items-center space-x-1">
 				<span
 					class="icon-[material-symbols-light--person-2-outline-rounded] text-2xl"></span
 				><span>{{ props.device.driver_data.name ?? 'Name N/A' }}</span></span
 			>
-			<span>&vert;</span>
-			<span class="inline-flex items-center space-x-3">
+			<span class="inline-flex w-full items-center space-x-3">
 				<span
 					class="icon-[material-symbols-light--nest-clock-farsight-analog-rounded] text-xl"></span
 				><span>{{ props.device.time.toString().replace(' ', '-') }}</span>
 			</span>
 		</div>
-		<div class="flex h-2/6 items-end justify-between">
+		<div class="flex h-1/6 items-end justify-between">
 			<div
 				:class="[
 					'flex h-10 w-24 items-center justify-center space-x-2 rounded-lg border text-sm outline-none',

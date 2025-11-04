@@ -1,8 +1,5 @@
 import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
-import { type TraceabilityReport } from '~/types/regent-tracking/trace-report';
-import SecurityUtil from '~/utils/security-util';
 import { getDeviceReports } from '~/stores/regent-tracking-traceability-reports';
-import type { StandardSuccessResponse } from '~/types/proxy-types';
 import { type ForReport } from '~/types/regent-tracking/tracked-vehicles';
 
 export function useDeviceTraceabilityReport() {
@@ -11,9 +8,8 @@ export function useDeviceTraceabilityReport() {
 	const { fetchingClientVehicles, errorFetchingClientVehicles, getClientDevices } =
 		useRegentDeviceTracking();
 	const searchString: Ref<string | null> = ref(null);
-	const loadingTraceabilityComments: Ref<boolean> = ref(false);
 	const onlyOnWatchlist: Ref<boolean> = ref(false);
-	const { getBlob, get } = useStandardizedApi();
+	const { getBlob } = useStandardizedApi();
 	const loadingReportExport: Ref<boolean> = ref(false);
 	const { getPrincipal } = useAuth();
 
@@ -23,44 +19,6 @@ export function useDeviceTraceabilityReport() {
 			page.value = 0;
 		}
 	});
-
-	watch(
-		getClientDevices,
-		async (newValue) => {
-			// if there are vehicles fetch their reports
-			if (newValue) {
-				try {
-					let results = await loadTraceabilityComments(
-						newValue.map((v) => {
-							return v.id;
-						}),
-					);
-					// set the comments once -> less costly option
-					results.results.forEach((r) => {
-						let entry = newValue.find((e) => e.id == r.tracker_id) as TrackedVehicles;
-
-						// trace whether vehicle is on watchlist
-						if (r.comments.length > 0) {
-							const latest_comment = r.comments[0];
-							entry.on_watchlist = latest_comment.watchlist == 'Y' ? true : false;
-						} else {
-							entry.on_watchlist = false;
-						}
-
-						// set the comment, and driver name and phone number
-						entry.comment = r.comments;
-						entry.driver_data.name = r.clientName;
-						entry.driver_data.phone = r.clientNo;
-					});
-				} catch (_err) {
-					console.error('Failed to load report comments');
-				} finally {
-					loadingTraceabilityComments.value = false;
-				}
-			}
-		},
-		{ immediate: true },
-	);
 
 	const computedStatistics: ComputedRef<{
 		total_online: number;
@@ -246,23 +204,6 @@ export function useDeviceTraceabilityReport() {
 		}
 	}
 
-	async function loadTraceabilityComments(device_ids: number[]): Promise<TraceabilityReport> {
-		let base64Encoded = SecurityUtil.encodeBase64(device_ids.join(','));
-		let response = await get<TraceabilityReport>(
-			`/api/regent-tracking/load-trace-reports?tracker_id=${base64Encoded}&limit=${device_ids.length}`,
-		);
-
-		if (!response.success) {
-			useToast('Failed to load comments! Try Again!', {
-				type: 'error',
-				title: 'Error',
-			});
-			throw new Error('Failed to fetch comments!');
-		}
-
-		return (response as StandardSuccessResponse<TraceabilityReport>).data;
-	}
-
 	return {
 		page,
 		size,
@@ -274,7 +215,6 @@ export function useDeviceTraceabilityReport() {
 		computedStatistics,
 		getDeviceReports,
 		getClientDevices,
-		loadingTraceabilityComments,
 		loadingReportExport,
 		reportToExcel,
 	};
