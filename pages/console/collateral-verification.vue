@@ -60,7 +60,7 @@
 		{
 			to: 'collateral-verification-payments-regular',
 			name: 'Payments',
-			shouldShow: isPrincipalAdmin.value ?? false,
+			shouldShow: isPrincipalAdmin?.value ?? false,
 		},
 	]);
 

@@ -2,7 +2,7 @@
 	<form
 		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2"
 		@submit.prevent="createFraudsterEntry">
-		<div
+		<!-- <div
 			id="alert-additional-content-4"
 			class="mb-5 rounded-lg border border-blue-300 bg-blue-50 p-4 text-blue-800"
 			role="alert">
@@ -56,7 +56,7 @@
 						v-if="extractionInProgress" />
 				</label>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
 			<!-- Registration Number -->
