@@ -1,6 +1,6 @@
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getPrincipal, isPrincipalAdmin } = useAuth();
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
 	const clientPhone: Ref<string> = ref('');
@@ -66,6 +66,15 @@ const useAuthorityLetters = () => {
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&searchSlug=${searchRegNo.value}`;
+			}
+
+			// for finance valuation
+			if (
+				['BANK', 'SACCO', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType as string)
+			) {
+				if (!isPrincipalAdmin && getPrincipal.value?.corpId) {
+					requestURL = requestURL + `&corpBranchId=${getPrincipal.value?.corpId}`;
+				}
 			}
 
 			return requestURL;
@@ -145,7 +154,7 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-			formData.append('authorizedBy', getPrincipal.value?.userId);
+			formData.append('authorizedBy', getPrincipal.value?.userId as string);
 
 			if (preferredBranch.value.length > 0) {
 				formData.append('regentBranch', preferredBranch.value);

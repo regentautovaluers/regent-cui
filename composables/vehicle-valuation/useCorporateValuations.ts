@@ -1,6 +1,6 @@
 export const useCorporateValuations = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal } = useAuth();
+	const { getPrincipal, isPrincipalAdmin } = useAuth();
 	const { name: routeName } = useRoute();
 
 	const activeView: Ref<'pending' | 'complete'> = ref('pending');
@@ -59,6 +59,15 @@ export const useCorporateValuations = () => {
 
 			if (paymentMethod.value !== null) {
 				requestURL = requestURL + `&paymentMethod=${paymentMethod.value}`;
+			}
+
+			// for finance valuation
+			if (
+				['BANK', 'SACCO', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType as string)
+			) {
+				if (!isPrincipalAdmin && getPrincipal.value?.corpId) {
+					requestURL = requestURL + `&corpBranchId=${getPrincipal.value?.corpId}`;
+				}
 			}
 
 			return requestURL;
