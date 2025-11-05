@@ -172,10 +172,10 @@ function useCollateralVerificationInvoiceManagement() {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const collateralVerificationInvoices: ComputedRef<any[]> = computed(
-		() => collateralVerificationInvoiceList.value?.invoices,
+		() => collateralVerificationInvoiceList.value?.invoices ?? [],
 	);
 	const totalPages: ComputedRef<number> = computed(
-		() => collateralVerificationInvoiceList.value?.totalPages,
+		() => collateralVerificationInvoiceList.value?.totalPages ?? 0,
 	);
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
