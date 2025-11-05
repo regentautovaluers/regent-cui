@@ -91,11 +91,11 @@
 						class="flex h-fit w-full items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
 						<input
 							id="show-tampered-vehicles"
-							type="radio"
+							type="checkbox"
 							:value="true"
 							v-model="showTampered"
 							name="bordered-radio"
-							class="size-5 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+							class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
 						<label
 							for="show-tampered-vehicles"
 							class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
@@ -104,23 +104,59 @@
 					</div>
 
 					<!-- payment status -->
-					<div class="laptop:mt-0 mt-2 w-full space-y-2">
+					<div class="laptop:mt-0 mt-2 w-full items-center space-y-2">
 						<label
 							for="payment-status"
 							class="generic-input-label"
-							>Payment Status</label
-						>
-						<select
-							class="generic-input"
-							id="payment-status"
-							v-model="paymentStatus">
-							<option
-								v-for="(type, i) in ['paid', 'not-paid']"
-								:key="i"
-								:value="type">
-								{{ type }}
-							</option>
-						</select>
+							>Payment Status
+						</label>
+						<div class="flex w-full items-center space-x-2">
+							<div
+								class="flex h-fit w-1/3 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
+								<input
+									id="payment-status-paid"
+									type="radio"
+									value="paid"
+									v-model="paymentStatus"
+									name="payment_status"
+									class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+								<label
+									for="payment-status-paid"
+									class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
+									>Only Paid</label
+								>
+							</div>
+							<div
+								class="flex h-fit w-1/3 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
+								<input
+									id="payment-status-not-paid"
+									type="radio"
+									value="not-paid"
+									v-model="paymentStatus"
+									name="payment_status"
+									class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+								<label
+									for="payment-status-not-paid"
+									class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
+									>Not Paid</label
+								>
+							</div>
+							<div
+								class="flex h-fit w-1/3 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
+								<input
+									id="payment-status-none"
+									type="radio"
+									:value="null"
+									v-model="paymentStatus"
+									name="payment_status"
+									class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+								<label
+									for="payment-status-none"
+									class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
+									>All</label
+								>
+							</div>
+						</div>
 					</div>
 
 					<!-- start date -->
@@ -155,7 +191,7 @@
 							v-model="endDate" />
 					</div>
 
-					<div class="mt-2 flex items-center justify-center space-x-2">
+					<div class="mt-2 flex w-full justify-center space-x-3">
 						<!-- submit button -->
 						<button
 							type="submit"
