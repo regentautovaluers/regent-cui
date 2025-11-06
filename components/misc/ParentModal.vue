@@ -3,9 +3,11 @@
 	<div
 		:id="props.modalId"
 		data-modal-backdrop="static"
+		modal-backdrop
 		tabindex="-1"
 		aria-hidden="true"
-		class="fixed top-0 right-0 left-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full overflow-x-hidden overflow-y-hidden p-4 md:inset-0">
+		class="fixed top-0 right-0 left-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full overflow-x-hidden overflow-y-hidden p-4 md:inset-0"
+		ref="customModal">
 		<div
 			:class="[
 				'relative h-full w-full',
@@ -20,7 +22,7 @@
 					props.modalSize == 'full-screen' && 'h-full',
 				]">
 				<!-- Modal header -->
-				<div class="mb-4 flex justify-between rounded-t border-b p-4 sm:mb-5 sm:p-5">
+				<div class="mb-2 flex justify-between rounded-t border-b px-4 py-3">
 					<div>
 						<h2 class="font-semibold text-gray-700">{{ props.modalTitle }}</h2>
 						<h3
@@ -36,7 +38,8 @@
 							type="button"
 							class="inline-flex rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
 							:data-modal-toggle="props.modalId"
-							@click="emits('close-modal')">
+							ref="closeModalButton"
+							@click="$emit('close-modal')">
 							<svg
 								aria-hidden="true"
 								class="h-5 w-5"
@@ -54,7 +57,7 @@
 				</div>
 
 				<div
-					class="thin-scrollbar overflow-y-auto p-4 sm:p-5"
+					class="thin-scrollbar overflow-y-auto px-4 py-3"
 					id="report-modal-body">
 					<!-- Modal body -->
 					<slot />
@@ -78,4 +81,14 @@
 		},
 	});
 	const emits = defineEmits(['close-modal']);
+	const closeButtonModal: Ref<HTMLButtonElement | null> = useTemplateRef('closeModalButton');
+
+	const close = () => {
+		// this is a sketchy solution to get the modal to properly close without leaving the dark backdrop
+		// FIND A BETTER WAY TO DO THIS!
+		if (closeButtonModal.value) {
+			closeButtonModal.value.click();
+		}
+	};
+	defineExpose({ close });
 </script>

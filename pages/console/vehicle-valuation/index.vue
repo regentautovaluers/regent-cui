@@ -58,7 +58,7 @@
 					<input
 						type="text"
 						class="generic-input h-full"
-						placeholder="Enter Reg or Booking No."
+						placeholder="Search registration number."
 						v-model="searchRegNo" />
 					<button
 						type="submit"
@@ -68,166 +68,14 @@
 				</form>
 
 				<button
-					title="Open Filters"
-					@click="() => (areFiltersOpen = !areFiltersOpen)"
-					class="group inline-flex h-[50px] w-14 cursor-pointer items-center justify-center rounded-lg border border-gray-400 p-1 outline-none hover:bg-gray-100">
+					class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
+					data-modal-target="corporate-valuation-filters"
+					data-modal-toggle="corporate-valuation-filters">
+					<span class="text-gray-400">Filters</span>
 					<span
 						class="icon-[material-symbols-light--filter-alt-sharp] size-7 text-gray-400"></span>
 				</button>
 			</div>
-
-			<Transition name="fade-slide">
-				<form
-					@submit.prevent="
-						() => {
-							areFiltersOpen = false;
-							executeFetchValuations();
-						}
-					"
-					class="laptop:grid-cols-4 my-2 grid w-full grid-cols-1 place-items-center gap-4 rounded-lg border bg-white p-4 shadow-sm"
-					v-show="areFiltersOpen">
-					<!-- show tampered vehicles -->
-					<div
-						class="flex h-fit w-full items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
-						<input
-							id="show-tampered-vehicles"
-							type="checkbox"
-							:value="true"
-							v-model="showTampered"
-							name="bordered-radio"
-							class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-						<label
-							for="show-tampered-vehicles"
-							class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
-							>Also Include Tampered Vehicles</label
-						>
-					</div>
-
-					<!-- payment status -->
-					<div class="laptop:mt-0 mt-2 w-full items-center space-y-2">
-						<label
-							for="payment-status"
-							class="generic-input-label"
-							>Payment Status
-						</label>
-						<div class="flex w-full items-center space-x-2">
-							<div
-								class="flex h-fit w-1/3 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
-								<input
-									id="payment-status-paid"
-									type="radio"
-									value="paid"
-									v-model="paymentStatus"
-									name="payment_status"
-									class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-								<label
-									for="payment-status-paid"
-									class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
-									>Only Paid</label
-								>
-							</div>
-							<div
-								class="flex h-fit w-1/3 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
-								<input
-									id="payment-status-not-paid"
-									type="radio"
-									value="not-paid"
-									v-model="paymentStatus"
-									name="payment_status"
-									class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-								<label
-									for="payment-status-not-paid"
-									class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
-									>Not Paid</label
-								>
-							</div>
-							<div
-								class="flex h-fit w-1/3 items-center rounded-lg border border-gray-200 ps-4 hover:bg-gray-200">
-								<input
-									id="payment-status-none"
-									type="radio"
-									:value="null"
-									v-model="paymentStatus"
-									name="payment_status"
-									class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-								<label
-									for="payment-status-none"
-									class="ms-2 w-full py-4 text-sm font-medium text-gray-600"
-									>All</label
-								>
-							</div>
-						</div>
-					</div>
-
-					<!-- start date -->
-					<div class="laptop:mt-0 mt-2 w-full space-y-2">
-						<label
-							for="cover-period-starts"
-							class="generic-input-label"
-							>Start Date</label
-						>
-						<input
-							type="date"
-							id="cover-period-starts"
-							class="generic-input"
-							placeholder="Select"
-							pattern="\d{4}-\d{2}-\d{2}"
-							v-model="startDate" />
-					</div>
-
-					<!-- end date -->
-					<div class="laptop:mt-0 mt-2 w-full space-y-2">
-						<label
-							for="cover-period-ends"
-							class="generic-input-label"
-							>End Date</label
-						>
-						<input
-							type="date"
-							id="cover-period-ends"
-							class="generic-input"
-							placeholder="Select"
-							pattern="\d{4}-\d{2}-\d{2}"
-							v-model="endDate" />
-					</div>
-
-					<div class="mt-2 flex w-full justify-center space-x-3">
-						<!-- submit button -->
-						<button
-							type="submit"
-							v-if="
-								startDate ||
-								endDate ||
-								paymentStatus ||
-								paymentMethod ||
-								showTampered
-							"
-							class="generic-form-submit m-0">
-							Apply
-						</button>
-
-						<!-- clear filters -->
-						<button
-							type="button"
-							@click="
-								() => {
-									areFiltersOpen = false;
-									clearFilters();
-								}
-							"
-							v-if="
-								startDate ||
-								endDate ||
-								paymentStatus ||
-								paymentMethod ||
-								showTampered
-							"
-							class="generic-form-submit m-0 border bg-white text-gray-500 shadow-none hover:bg-white">
-							Clear Filters
-						</button>
-					</div>
-				</form>
-			</Transition>
 
 			<div class="my-3 flex-grow">
 				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -464,6 +312,132 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- modal to add comment for table entry -->
+		<ParentModal
+			modal-title="Filters"
+			modal-id="corporate-valuation-filters"
+			modal-subtitle="Customize your results"
+			ref="corporateModalFiltersRef">
+			<form
+				@submit.prevent="
+					() => {
+						manuallyCloseModal();
+						executeFetchValuations();
+					}
+				"
+				class="w-full space-y-3">
+				<div
+					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
+					<h1 class="mb-2 text-xs font-semibold text-gray-500">Tampered Vehicles</h1>
+					<div class="flex h-fit w-full items-center py-2">
+						<input
+							id="show-tampered-vehicles"
+							type="checkbox"
+							:value="true"
+							v-model="showTampered"
+							name="bordered-radio"
+							class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+						<label
+							for="show-tampered-vehicles"
+							class="3 ms-2 w-full text-sm font-medium text-gray-600"
+							>Also Include Tampered Vehicles</label
+						>
+					</div>
+				</div>
+
+				<div
+					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
+					<h1 class="mb-2 text-xs font-semibold text-gray-500">Payment Status</h1>
+					<div
+						class="tablet:flex-row tablet:space-y-0 tablet:space-x-2 flex w-full flex-col space-y-2">
+						<div
+							class="tablet:w-1/3 flex h-fit w-full py-2 ps-2"
+							v-for="e in ['paid', 'not-paid', 'none']"
+							:key="e">
+							<input
+								:id="`payment-status-${e}`"
+								type="radio"
+								:value="e == 'none' ? null : e"
+								v-model="paymentStatus"
+								name="payment_status"
+								class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+							<label
+								for="payment-status-paid"
+								class="ms-2 w-full text-sm font-medium text-gray-600"
+								>{{ deriveRdBtnName(e) }}</label
+							>
+						</div>
+					</div>
+				</div>
+				<div
+					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
+					<h1 class="mb-2 text-xs font-semibold text-gray-500">Report Period</h1>
+					<div
+						class="tablet:flex-row tablet:space-y-0 tablet:space-x-2 flex w-full flex-col space-y-2">
+						<!-- start date -->
+						<div class="tablet:w-1/2 w-full space-y-2">
+							<label
+								for="cover-period-starts"
+								class="generic-input-label text-xs"
+								>Start Date</label
+							>
+							<input
+								type="date"
+								id="cover-period-starts"
+								class="generic-input"
+								placeholder="Select"
+								pattern="\d{4}-\d{2}-\d{2}"
+								v-model="startDate" />
+						</div>
+
+						<!-- end date -->
+						<div class="tablet:w-1/2 w-full space-y-2">
+							<label
+								for="cover-period-ends"
+								class="generic-input-label text-xs"
+								>End Date</label
+							>
+							<input
+								type="date"
+								id="cover-period-ends"
+								class="generic-input"
+								placeholder="Select"
+								pattern="\d{4}-\d{2}-\d{2}"
+								v-model="endDate" />
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-2 flex w-full justify-center space-x-3">
+					<!-- submit button -->
+					<button
+						type="submit"
+						v-if="
+							startDate || endDate || paymentStatus || paymentMethod || showTampered
+						"
+						class="generic-form-submit w-1/2">
+						Apply
+					</button>
+
+					<!-- clear filters -->
+					<button
+						type="button"
+						@click="
+							() => {
+								manuallyCloseModal();
+								clearFilters();
+							}
+						"
+						v-if="
+							startDate || endDate || paymentStatus || paymentMethod || showTampered
+						"
+						class="generic-form-submit w-1/2 border bg-white text-gray-500 shadow-none hover:bg-white">
+						Clear Filters
+					</button>
+				</div>
+			</form>
+		</ParentModal>
 	</div>
 </template>
 
@@ -472,8 +446,27 @@
 		name: 'vehicle-valuation-home',
 		layout: 'console-layout',
 	});
+	const corporateModalFiltersRef = useTemplateRef<{ modalElement: HTMLElement }>(
+		'corporateModalFiltersRef',
+	);
 
-	const areFiltersOpen: Ref<boolean> = ref(false);
+	function manuallyCloseModal(): void {
+		corporateModalFiltersRef.value?.close();
+	}
+
+	function deriveRdBtnName(option: 'paid' | 'not-paid' | 'none'): string {
+		switch (option) {
+			case 'paid':
+				return 'Only Paid';
+			case 'not-paid':
+				return 'Not Paid';
+			case 'none':
+				return 'Show All';
+			default:
+				return '';
+		}
+	}
+
 	const {
 		activeView,
 		fetchValuationsStatus,
