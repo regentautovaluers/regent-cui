@@ -1,68 +1,48 @@
 <template>
-	<nav
-		class="fixed top-0 z-40 flex h-[75px] min-h-[75px] w-full items-center justify-between border-b-[1px] bg-white">
-		<div class="flex items-center space-x-2">
-			<button
-				class="inline-flex size-10 items-center justify-center rounded-full outline-none"
-				@click="() => (sidebarOpen = !sidebarOpen)">
-				<MenuButtonIcon />
-			</button>
-			<img
-				src="/images/app-logo.png"
-				class="tablet:h-11 h-8"
-				alt="Regent Logo" />
-		</div>
-
-		<div class="flex items-center space-x-2">
-			<!-- notification button -->
-			<button
-				class="rounded-full p-2 text-gray-500 transition-all duration-100 ease-linear hover:bg-blue-600 hover:text-slate-100"
-				type="button"
-				data-popover-target="notification-popover"
-				data-popover-trigger="click">
-				<!-- notification bell -->
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					class="size-8 text-inherit">
-					<g
-						fill="none"
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="1.5"
-						color="currentColor">
-						<path
-							d="M2.53 14.77c-.213 1.394.738 2.361 1.902 2.843c4.463 1.85 10.673 1.85 15.136 0c1.164-.482 2.115-1.45 1.902-2.843c-.13-.857-.777-1.57-1.256-2.267c-.627-.924-.689-1.931-.69-3.003C19.525 5.358 16.157 2 12 2S4.475 5.358 4.475 9.5c0 1.072-.062 2.08-.69 3.003c-.478.697-1.124 1.41-1.255 2.267" />
-						<path d="M8 19c.458 1.725 2.076 3 4 3c1.925 0 3.541-1.275 4-3" />
-					</g>
-				</svg>
-			</button>
-
-			<!-- user profile info -->
-			<div class="flex w-fit max-w-48 items-center space-x-3 px-2 py-1 md:max-w-48">
-				<UserAvatar />
-				<div class="hidden h-full flex-col overflow-hidden text-sm md:flex">
-					<h1 class="overflow-clip text-ellipsis whitespace-nowrap">
-						{{ getPrincipal?.username }}
-					</h1>
-					<h2 class="overflow-clip text-ellipsis whitespace-nowrap">
-						{{ getPrincipal?.corpName }}
-					</h2>
-				</div>
-			</div>
-		</div>
-	</nav>
-	<main class="hide-scrollbar flex min-h-screen flex-col overflow-x-scroll">
+	<main class="hide-scrollbar flex min-h-screen flex-col overflow-y-scroll">
+		<!-- button to open/close sidebar -->
+		<button
+			:class="[
+				'fixed top-1/2 z-50 inline-flex size-7 translate-y-1/2 cursor-pointer items-center justify-center rounded-lg border bg-gray-100 shadow-sm',
+				!sidebarOpen ? 'left-[50px]' : 'left-[235px]',
+			]"
+			@click="() => (sidebarOpen = !sidebarOpen)">
+			<span
+				:class="[
+					'icon-[material-symbols-light--keyboard-double-arrow-right-rounded] text-xl text-gray-500 transition-transform duration-300 ease-linear',
+					sidebarOpen ? 'rotate-180' : 'rotate-0',
+				]"></span>
+		</button>
 		<aside
 			:class="[
-				'hide-scrollbar fixed z-40 mt-[75px] flex h-[calc(100vh-3.5rem)] max-h-[calc(100%-3.5rem)] flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white py-5',
+				'hide-scrollbar fixed z-30 flex h-screen max-h-screen flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white',
 				!sidebarOpen
 					? 'laptop-lg:-translate-x-0 w-[65px] -translate-x-[65px]'
-					: 'w-68 -translate-x-0',
+					: 'w-[250px] -translate-x-0',
 			]">
 			<div>
-				<ul class="space-y-4">
+				<!-- user profile info -->
+				<div
+					:class="[
+						'mx-2 mt-2 flex items-center rounded-lg py-2',
+						sidebarOpen && 'space-x-3 bg-gray-200 px-2',
+					]">
+					<UserAvatar />
+					<div
+						class="hidden h-full flex-col overflow-hidden md:flex"
+						v-show="sidebarOpen">
+						<h1
+							class="overflow-clip text-sm text-ellipsis whitespace-nowrap text-gray-500">
+							{{ getPrincipal?.username }}
+						</h1>
+						<h2
+							class="overflow-clip text-xs font-semibold text-ellipsis whitespace-nowrap text-gray-500">
+							{{ getPrincipal?.corpName }}
+						</h2>
+					</div>
+				</div>
+
+				<ul class="mt-4 space-y-4">
 					<template
 						v-for="(link, index) in navigationRoutes.filter((r) => r.renderRoute)"
 						:key="index">
@@ -217,62 +197,83 @@
 								to: 'https://regenttrack.co.ke/product/70mai-a400-dash-cam/',
 							},
 						]"
-						carousel-height="h-72"
+						carousel-height="h-[250px]"
 						control-buttons-position="top-4" />
 				</ClientOnly>
 			</div>
 
-			<!-- logout and settings -->
-			<ul class="w-full px-2 py-5">
-				<!-- settings -->
-				<li
-					class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-					<NuxtLink
-						:to="{ name: 'settings-my-account' }"
-						class="inline-flex size-full items-center justify-start space-x-3"
-						:class="!sidebarOpen && 'w-19 justify-center'">
-						<SettingsIcon classes="size-6 text-inherit" />
-						<span
-							class="text-sm transition-all duration-200 ease-out"
-							:class="sidebarOpen ? 'block' : 'hidden'"
-							>Settings</span
-						>
-					</NuxtLink>
-				</li>
-
-				<!-- logout -->
-				<li
-					class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-					<button
-						class="inline-flex size-full items-center space-x-3"
-						:class="!sidebarOpen && 'w-19 justify-center'"
-						@click="attemptLogout">
-						<LogoutIcon classes="size-5 text-inherit" />
-						<span
-							class="text-sm transition-all duration-200 ease-out"
-							:class="sidebarOpen ? 'block' : 'hidden'"
-							>Logout</span
-						>
-					</button>
-				</li>
-			</ul>
-
 			<!-- sidebar footer -->
-			<footer
-				class="h-12 w-full px-5 pb-5 text-sm text-gray-600"
-				v-show="sidebarOpen">
-				<h1>Regent Auto Valuers</h1>
-				<h2>
-					<span>&copy; 2025.</span>
-					<span> All Rights Reserved</span>
-				</h2>
+			<footer class="h-fit w-full space-y-5 pb-5 text-sm text-gray-600">
+				<!-- notifs, logout and settings -->
+				<ul class="w-full px-2">
+					<!-- notifs -->
+					<li
+						class="flex h-12 w-full items-center justify-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<button
+							class="inline-flex size-full cursor-pointer items-center space-x-3"
+							:class="!sidebarOpen && 'w-19 justify-center'"
+							@click="attemptLogout">
+							<span
+								class="icon-[material-symbols-light--notifications-rounded] size-7 text-inherit"></span>
+							<span
+								class="text-sm transition-all duration-200 ease-out"
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								>Notifications</span
+							>
+						</button>
+					</li>
+
+					<!-- settings -->
+					<li
+						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<NuxtLink
+							:to="{ name: 'settings-my-account' }"
+							:class="[
+								'inline-flex size-full items-center justify-start',
+								!sidebarOpen ? 'w-19 justify-center' : 'space-x-3',
+							]">
+							<SettingsIcon classes="size-6 text-inherit" />
+							<span
+								class="text-sm transition-all duration-200 ease-out"
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								>Settings</span
+							>
+						</NuxtLink>
+					</li>
+
+					<!-- logout -->
+					<li
+						class="flex h-12 w-full items-center justify-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<button
+							class="inline-flex size-full cursor-pointer items-center space-x-3"
+							:class="!sidebarOpen && 'w-19 justify-center'"
+							@click="attemptLogout">
+							<LogoutIcon classes="size-6 text-inherit" />
+							<span
+								class="text-sm transition-all duration-200 ease-out"
+								:class="sidebarOpen ? 'block' : 'hidden'"
+								>Logout</span
+							>
+						</button>
+					</li>
+				</ul>
+
+				<div
+					v-show="sidebarOpen"
+					class="text-center">
+					<h1>Regent Auto Valuers</h1>
+					<h2>
+						<span>&copy; 2025.</span>
+						<span> All Rights Reserved</span>
+					</h2>
+				</div>
 			</footer>
 		</aside>
 		<div
 			:class="[
-				'mt-[75px] flex flex-1 flex-col bg-[#f8faf8]',
+				'ease-liner flex flex-1 flex-col bg-[#f8faf8] transition-all duration-300',
 				sidebarOpen
-					? 'laptop-lg:translate-x-0 laptop-lg:ml-68 translate-x-68'
+					? 'laptop-lg:translate-x-0 laptop-lg:ml-[250px] translate-x-[250px]'
 					: 'laptop-lg:ml-[65px]',
 			]">
 			<NuxtPage />
@@ -314,10 +315,11 @@
 <script setup lang="ts">
 	const { navigationRoutes, doesRouteNameMatch, fuzzyRouteNameMatch } = useNavigationRoutes();
 
-	const { getPrincipal, attemptLogout } = useAuth();
+	const { attemptLogout } = useAuth();
 	const sidebarOpen: Ref<boolean> = ref(false);
 	const userInput: Ref<string> = ref('');
 	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();
+	const { getPrincipal } = useAuth();
 
 	const handleConvFormSubmitted = () => {
 		sendBotpressMessage(userInput.value);

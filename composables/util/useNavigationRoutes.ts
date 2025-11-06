@@ -64,7 +64,7 @@ export default function () {
 		},
 		{
 			id: 3,
-			screenName: 'Collateral Verification Hub',
+			screenName: 'Collateral Verification',
 			routeName: 'collateral-verification-query-collateral',
 			renderRoute: true,
 			childRoutes: [
