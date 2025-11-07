@@ -169,11 +169,11 @@ export const useBulkMemberRegistration = () => {
 			data.forEach((item: any, index: number) => {
 				if (index === 0) return;
 				processedFleetData.value.push({
-					corpName: getPrincipal.value?.corpName,
+					corpName: getPrincipal.value?.corpName!,
 					full_name: stringToSentenceCase(item[0]),
 					phone_number: `254${item[1]}`,
 					userEmail: item[2],
-					corporateId: getPrincipal.value?.corpId,
+					corporateId: getPrincipal.value?.corpId!,
 					membershipTypeId: Number(route.query.membershipType_id),
 					available_free_distance: route.query.freeDistance,
 					registration: item[3],
@@ -184,7 +184,7 @@ export const useBulkMemberRegistration = () => {
 					color: 'N/A',
 					payment_status: 'paid',
 					membership_status: 'active',
-					recordedBy: getPrincipal.value?.userId,
+					recordedBy: getPrincipal.value?.userId!,
 					category: 'corporate',
 					fleetId: selectedFleetId.value,
 				});
@@ -281,7 +281,7 @@ export const useIndividualMembershipRegistration = () => {
 	const registerIndividualMemberLoading = ref(false);
 	const memberVehicles: Ref<IndividuaProcessedMembershipType[]> = ref([
 		{
-			corpName: getPrincipal.value?.corpName,
+			corpName: getPrincipal.value?.corpName!,
 			membershipTypeId: Number(route.query.membershipType_id),
 			registration: '',
 			make: '',
@@ -302,7 +302,7 @@ export const useIndividualMembershipRegistration = () => {
 
 	const addNewVehicle = (): void => {
 		memberVehicles.value.push({
-			corpName: getPrincipal.value?.corpName,
+			corpName: getPrincipal.value?.corpName!,
 			membershipTypeId: Number(route.query.membershipType_id),
 			registration: '',
 			make: '',
@@ -314,6 +314,10 @@ export const useIndividualMembershipRegistration = () => {
 			end_date: '',
 		});
 	};
+
+	function removeVehicle(index: number) {
+		memberVehicles.value.splice(index, 1);
+	}
 
 	const registerIndividualMember = async (): Promise<void> => {
 		registerIndividualMemberLoading.value = true;
@@ -384,5 +388,6 @@ export const useIndividualMembershipRegistration = () => {
 		memberVehicles,
 		registerIndividualMember,
 		addNewVehicle,
+		removeVehicle,
 	};
 };

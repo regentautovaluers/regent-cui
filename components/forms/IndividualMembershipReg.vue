@@ -62,12 +62,27 @@
 		<!-- Vehicle Details & Payment & Status -->
 		<div
 			v-for="(vehicle, index) in memberVehicles"
-			:key="index">
-			<!-- this field is hidden. it holds the data for membershipTypeId -->
-			<input
-				type="text"
-				hidden
-				v-model="vehicle.membershipTypeId" />
+			:key="index"
+			class="laptop-lg:p-4 mb-4 rounded-lg bg-gray-100 p-2 outline-none">
+			<div class="flex h-fit justify-end">
+				<!-- this field is hidden. it holds the data for membershipTypeId -->
+				<input
+					type="text"
+					hidden
+					v-model="vehicle.membershipTypeId" />
+
+				<button
+					class="cursor-pointer rounded-full border bg-red-200 px-2 py-1 text-sm text-red-600 transition-all duration-200 ease-in-out hover:bg-red-300 hover:text-red-700"
+					v-if="index > 0"
+					type="button"
+					@click.prevent="
+						{
+							removeVehicle(index);
+						}
+					">
+					Remove
+				</button>
+			</div>
 
 			<div
 				class="tablet:flex-row tablet:space-y-0 tablet:space-x-3 flex flex-col items-center justify-between space-y-3 space-x-0">
@@ -266,5 +281,6 @@
 		memberVehicles,
 		registerIndividualMember,
 		addNewVehicle,
+		removeVehicle,
 	} = useIndividualMembershipRegistration();
 </script>
