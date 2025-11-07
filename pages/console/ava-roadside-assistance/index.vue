@@ -369,7 +369,7 @@
 									<button
 										class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 										type="button"
-										@click.prevent="activeDescriptionIndex = 0">
+										@click.prevent="activeDescriptionIndex = 1">
 										Roadside Assistance
 									</button>
 								</li>
@@ -377,7 +377,7 @@
 									<button
 										class="block w-full px-4 py-2 text-center whitespace-nowrap hover:bg-gray-100"
 										type="button"
-										@click.prevent="activeDescriptionIndex = 1">
+										@click.prevent="activeDescriptionIndex = 6">
 										Emergency Evacuation
 									</button>
 								</li>
@@ -394,12 +394,12 @@
 						<div class="my-2 w-full text-center">
 							<h1 class="text-center text-xl font-bold">Our Services</h1>
 							<h2 class="text-center font-bold text-gray-500">
-								{{ regentServices[activeDescriptionIndex].name }}
+								{{ navigationRoutes[activeDescriptionIndex].screenName ?? '' }}
 							</h2>
 						</div>
 
 						<p class="text-sm text-gray-500">
-							{{ regentServices[activeDescriptionIndex].description }}
+							{{ navigationRoutes[activeDescriptionIndex].description ?? '' }}
 						</p>
 					</div>
 					<a
@@ -588,19 +588,18 @@
 </template>
 
 <script setup lang="ts">
-	import { regentServices } from '~/config/regent-services';
 	import { useScroll } from '@vueuse/core';
 
 	definePageMeta({
 		name: 'ava-memberships-home',
 		layout: 'console-layout',
 	});
-
+	const { navigationRoutes } = useNavigationRoutes();
 	const scrollEl = ref<HTMLElement | null>(null);
 	const { x, arrivedState } = useScroll(scrollEl, {
 		behavior: 'smooth',
 	});
-	const activeDescriptionIndex: Ref<number> = ref(0);
+	const activeDescriptionIndex: Ref<number> = ref(1);
 	const { getPrincipal } = useAuth();
 	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const {

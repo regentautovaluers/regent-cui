@@ -48,33 +48,17 @@
 					<span>Services</span>
 				</button>
 				<h1 class="text-3xl font-semibold">Our Services</h1>
-				<!-- TODO: return these back to 4 grid cols -->
-				<div class="tablet:grid-cols-2 laptop:grid-cols-3 tablet:p-0 grid w-full gap-4 p-4">
-					<!-- vehicle valuation -->
+				<div
+					class="tablet:grid-cols-2 laptop:grid-cols-3 laptop-lg:grid-cols-4 tablet:p-0 grid w-full gap-4 p-4">
 					<ServicesQuickLinks
-						:title="'Vehicle Valuation'"
-						:link="navigationRoutes[2].routeName"
-						:service-description="regentServices[2].shortDescription">
-						<span
-							class="icon-[material-symbols-light--garage-money] text-4xl text-[30px] text-white"></span>
-					</ServicesQuickLinks>
-
-					<!-- Roadside assistance -->
-					<ServicesQuickLinks
-						:title="'Roadside Assistance'"
-						:link="navigationRoutes[1].routeName"
-						:service-description="regentServices[0].shortDescription">
-						<span
-							class="icon-[material-symbols-light--auto-towing] text-4xl text-white"></span>
-					</ServicesQuickLinks>
-
-					<!-- collateral verification -->
-					<ServicesQuickLinks
-						:title="'Collateral Verification'"
-						:link="navigationRoutes[3].routeName"
-						:service-description="regentServices[1].shortDescription">
-						<span
-							class="icon-[material-symbols-light--shield-question-outline-rounded] text-4xl text-[30px] text-white"></span>
+						v-for="n in navigationRoutes.filter(
+							(e) => e.renderRoute && e.screenName != 'Home',
+						)"
+						:key="n.id"
+						:title="n.screenName"
+						:link="n.routeName"
+						:service-description="n.shortDescription ?? ''">
+						<span :class="['text-[30px] text-slate-100', n.icon]"></span>
 					</ServicesQuickLinks>
 				</div>
 			</div>
@@ -184,14 +168,17 @@
 
 				<!-- grid 2 -->
 				<div class="">
-					<h1 class="text-2xl font-bold">Quick Links.</h1>
+					<h1 class="text-2xl font-bold">Our Services</h1>
 					<div class="mt-2 flex flex-col space-y-2">
-						<NuxtLink class="font-light">Request Valuation</NuxtLink>
-						<NuxtLink class="font-light">Roadside Assistance</NuxtLink>
-						<NuxtLink class="font-light">Accident Management</NuxtLink>
-						<NuxtLink class="font-light">Emergency Evacuation</NuxtLink>
-						<NuxtLink class="font-light">AVA Memberships</NuxtLink>
-						<NuxtLink class="font-light">Contact Us</NuxtLink>
+						<NuxtLink
+							class="font-light"
+							v-for="n in navigationRoutes.filter(
+								(e) => e.renderRoute && e.screenName != 'Home',
+							)"
+							:key="n.id"
+							:to="{ name: n.routeName }"
+							>{{ n.screenName }}</NuxtLink
+						>
 					</div>
 				</div>
 
@@ -296,8 +283,6 @@
 </template>
 
 <script setup lang="ts">
-	import { regentServices } from '~/config/regent-services';
-
 	definePageMeta({
 		name: 'mobivaluer-home',
 		layout: 'console-layout',

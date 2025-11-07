@@ -4,7 +4,7 @@
 		<button
 			:class="[
 				'fixed top-1/2 z-50 inline-flex size-7 translate-y-1/2 cursor-pointer items-center justify-center rounded-lg border bg-gray-100 shadow-sm',
-				!sidebarOpen ? 'left-[50px]' : 'left-[235px]',
+				!sidebarOpen ? 'laptop-lg:left-[50px] left-[10px]' : 'left-[235px]',
 			]"
 			@click="() => (sidebarOpen = !sidebarOpen)">
 			<span
@@ -67,55 +67,7 @@
 										: 'w-full flex-row items-center justify-center space-x-2',
 								]">
 								<span class="place-self-center">
-									<template v-if="link.routeName == 'mobivaluer-home'">
-										<span
-											class="icon-[material-symbols-light--home-outline-rounded] text-[30px]"></span>
-									</template>
-									<template v-else-if="link.routeName == 'ava-memberships-home'">
-										<span
-											class="icon-[material-symbols-light--auto-towing] text-[30px]"></span>
-									</template>
-									<template
-										v-else-if="link.routeName == 'vehicle-valuation-home'">
-										<span
-											class="icon-[material-symbols-light--garage-money] text-[30px]"></span>
-									</template>
-									<template
-										v-else-if="
-											link.routeName ==
-											'collateral-verification-query-collateral'
-										">
-										<span
-											class="icon-[material-symbols-light--shield-question-outline-rounded] text-[30px]"></span>
-									</template>
-									<template v-else-if="link.routeName == 'regent-tracking-home'">
-										<span
-											class="icon-[material-symbols-light--globe-location-pin] text-[30px]"></span>
-									</template>
-									<template
-										v-else-if="
-											link.routeName == 'insurance-telematics-all-vehicles'
-										">
-										<span
-											class="icon-[material-symbols-light--map-outline-rounded] text-[30px]"></span>
-									</template>
-									<!-- 
-									<template
-										v-else-if="link.routeName == 'emergency-evacuation-home'">
-										<EmergencyRescueIcon classes="size-[25px] text-inherit" />
-									</template>
-									<template
-										v-else-if="link.routeName == 'accident-management-home'">
-										<AccidentManagementIcon
-											classes="size-[25px] text-inherit" />
-									</template>
-									<template v-else-if="link.routeName == 'garage-home'">
-										<GarageIcon classes="size-[25px] text-inherit" />
-									</template>
-									<template v-else-if="link.routeName == 'parts-home'">
-										<PartsIcon classes="size-[25px] text-inherit" />
-									</template>
-									 -->
+									<span :class="['text-[30px]', link.icon]"></span>
 								</span>
 								<span :class="['flex-grow text-sm', !sidebarOpen && 'hidden']"
 									>{{ link.screenName }}

@@ -3,6 +3,9 @@ export interface NavigationRoute {
 	screenName: string;
 	routeName: string;
 	renderRoute: boolean;
+	description?: string;
+	shortDescription?: string;
+	icon?: string;
 }
 
 export interface CoreRoute extends NavigationRoute {
