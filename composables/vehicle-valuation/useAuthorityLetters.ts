@@ -1,6 +1,7 @@
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal, isPrincipalAdmin } = useAuth();
+	const consentProvided: Ref<boolean> = ref(false);
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
 	const clientPhone: Ref<string> = ref('');
@@ -281,6 +282,7 @@ const useAuthorityLetters = () => {
 		errorFetchingCorporateClients,
 		getCorporateClients,
 		searchPhrase,
+		consentProvided,
 		createAuthorizationLetter,
 		handleFileUpload,
 		exportAuthorityLetter,

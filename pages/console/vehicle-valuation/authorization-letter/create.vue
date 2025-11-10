@@ -119,8 +119,8 @@
 				<textarea
 					id="comments"
 					class="generic-text-area"
-					rows="8"
-					placeholder="Provide optional comments for this request."
+					rows="6"
+					placeholder="Provide optional instructions for this request."
 					v-model="comments"></textarea>
 			</div>
 			<!-- data below the comments box -->
@@ -143,17 +143,17 @@
 				<!-- Officer Name -->
 				<div class="relative w-full lg:w-1/3">
 					<label class="generic-input-label">{{
-						isPrincipalBroker.value ? 'Select Corporate' : 'Select Broker / Agency'
+						isPrincipalBroker ? 'Select Corporate' : 'Select Broker / Agency'
 					}}</label>
 					<input
 						type="text"
 						id="officer-name"
 						class="generic-input peer"
-						:required="isPrincipalBroker.value"
+						:required="isPrincipalBroker"
 						placeholder="Start typing to search"
 						v-model="agencyOrCorpName" />
 					<span
-						class="icon-[svg-spinners--ring-resize] absolute top-[42px] right-3 text-2xl text-gray-500"
+						class="icon-[svg-spinners--ring-resize] absolute top-[37px] right-3 text-2xl text-gray-500"
 						v-if="fetchingCorporateClients"></span>
 
 					<!-- selectable entries  -->
@@ -185,7 +185,7 @@
 						id="authorized-by"
 						class="generic-input"
 						disabled
-						:value="getPrincipal.username" />
+						:value="getPrincipal?.username" />
 				</div>
 			</div>
 
@@ -322,9 +322,49 @@
 				</label>
 			</div>
 
+			<!-- Preffered Regent Branch -->
+			<div
+				class="mt-4 rounded-lg border border-blue-300 bg-blue-50 p-4 text-blue-800"
+				role="alert">
+				<div class="flex items-center">
+					<svg
+						class="me-2 h-4 w-4 shrink-0"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="currentColor"
+						viewBox="0 0 20 20">
+						<path
+							d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+					</svg>
+					<span class="sr-only">Info</span>
+					<h3 class="text-sm font-semibold">Data Protection Consent Notice</h3>
+				</div>
+
+				<p class="mt-2 mb-4 text-sm">
+					By proceeding, I consent to Regent Automobile Valuers & Assessors Limited
+					collecting, processing, and storing my personal or corporate data for purposes
+					related to vehicle valuation, tracking, road rescue, accident management, and
+					related automotive services, in accordance with the Kenya Data Protection Act,
+					2019 and the company’s Privacy Policy.
+				</p>
+				<div class="flex items-center">
+					<input
+						id="consent-checkbox"
+						type="checkbox"
+						v-model="consentProvided"
+						class="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+					<label
+						for="consent-checkbox"
+						class="ms-2 text-sm font-medium text-blue-800"
+						>I agree.
+					</label>
+				</div>
+			</div>
+
 			<!-- submit button -->
 			<button
 				type="submit"
+				:disabled="!consentProvided"
 				:class="[
 					'generic-form-submit mt-4 w-full md:w-1/3',
 					createAuthorizationLetterLoading && 'skeleton skeleton-animated',
@@ -362,9 +402,7 @@
 		handleFileUpload,
 		computedCorporateClients,
 		fetchingCorporateClients,
-		errorFetchingCorporateClients,
-		getCorporateClients,
-		searchPhrase,
+		consentProvided,
 		shouldTriggerFetch,
 	} = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
