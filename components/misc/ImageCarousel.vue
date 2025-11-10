@@ -1,7 +1,7 @@
 <template>
 	<div
 		:class="[
-			'relative w-full max-w-full overflow-hidden rounded-lg border-[.5px] bg-white shadow-lg',
+			'relative w-full max-w-full overflow-hidden border-[.5px] bg-white shadow-lg',
 			props.carouselHeight,
 		]">
 		<div
@@ -20,7 +20,7 @@
 				:href="props.links[index].to"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="absolute bottom-4 w-[85%] translate-x-[18px] rounded-lg border-[.5px] bg-slate-100 p-3 text-center text-sm font-bold shadow-md"
+				class="absolute bottom-4 w-[85%] translate-x-[18px] border-[.5px] bg-slate-100 p-3 text-center text-xs font-bold shadow-md"
 				>{{ props.links[index].text }}</a
 			>
 			<img

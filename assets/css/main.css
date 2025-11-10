@@ -54,7 +54,7 @@
 }
 
 @utility generic-form-submit {
-	@apply mb-2 inline-flex h-[50px] w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-gray-400 hover:bg-blue-700 disabled:bg-gray-200;
+	@apply mb-2 inline-flex h-[50px] w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-slate-100 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400;
 }
 
 @utility generic-nuxt-link {
