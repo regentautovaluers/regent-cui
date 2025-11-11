@@ -1,5 +1,6 @@
 <template>
-	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none">
 		<form
 			@submit.prevent="createAuthorizationLetter"
 			class="flex flex-1 flex-col">
@@ -119,7 +120,7 @@
 				<textarea
 					id="comments"
 					class="generic-text-area"
-					rows="6"
+					rows="8"
 					placeholder="Provide optional instructions for this request."
 					v-model="comments"></textarea>
 			</div>

@@ -145,6 +145,12 @@ export default function () {
 			screenName: 'Insurance Telematics',
 			routeName: 'insurance-telematics-all-vehicles',
 			renderRoute: getPrincipal && getPrincipal.value?.corpType == 'INSURANCE',
+			description:
+				'Gain instant and reliable insights into driver\'s behaviour analysis and risk assessment. Our simple \
+				classification algorithm uses various metrics to intricately classify drives into categories depending on various measurable \
+				metrics like harsh acceleration and braking.',
+			shortDescription:
+				'Gain instant and reliable insights into driver\'s behaviour analysis and risk assessment.',
 			icon: 'icon-[material-symbols-light--map-outline-rounded]',
 			childRoutes: [
 				{

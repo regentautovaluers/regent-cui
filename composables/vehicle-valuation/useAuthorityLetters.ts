@@ -33,10 +33,13 @@ const useAuthorityLetters = () => {
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
 	const authorityLetters: ComputedRef<any[]> = computed(
-		() => fetchedData.value?.authorityLetters,
+		() => fetchedData.value?.authorityLetters ?? [],
 	);
 	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 	const searchRegNo: Ref<string> = ref('');
+	const startDate: Ref<string | null> = ref(null);
+	const endDate: Ref<string | null> = ref(null);
+	const onlyOngoing: Ref<boolean | null> = ref(null);
 
 	// for exporting authority letters
 	const exportAuthorityLettersLoading: Ref<boolean> = ref(false);
@@ -67,6 +70,18 @@ const useAuthorityLetters = () => {
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&searchSlug=${searchRegNo.value}`;
+			}
+
+			if (startDate.value !== null) {
+				requestURL = requestURL + `&startDate=${startDate.value}`;
+			}
+
+			if (endDate.value !== null) {
+				requestURL = requestURL + `&endDate=${endDate.value}`;
+			}
+
+			if (onlyOngoing.value !== null) {
+				requestURL = requestURL + `&ongoing=${onlyOngoing.value}`;
 			}
 
 			// for finance valuation
@@ -255,10 +270,23 @@ const useAuthorityLetters = () => {
 		searchRegNo.value = searchSlug;
 	};
 
+	function clearFilters(): void {
+		searchRegNo.value = '';
+		startDate.value = null;
+		endDate.value = null;
+		onlyOngoing.value = null;
+
+		// ecxecute the request
+		executeGetAuthorityLetters();
+	}
+
 	return {
 		page,
 		totalPages,
 		searchRegNo,
+		startDate,
+		endDate,
+		onlyOngoing,
 		registrationNumber,
 		clientName,
 		clientPhone,
@@ -289,6 +317,7 @@ const useAuthorityLetters = () => {
 		handleSearchTriggered,
 		executeGetAuthorityLetters,
 		shouldTriggerFetch,
+		clearFilters,
 	};
 };
 

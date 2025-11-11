@@ -1,5 +1,6 @@
 <template>
-	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none">
 		<!-- div to show when there is a fetch error -->
 		<div
 			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
@@ -22,6 +23,12 @@
 			<h1 class="font-semibold text-gray-500">
 				Oops! Seems like you have no authority letters!
 			</h1>
+			<NuxtLink
+				:to="{ name: 'vehicle-valuation-create-authorization-letter' }"
+				class="inline-flex items-center space-x-1 rounded-full bg-blue-600 p-2 text-sm font-semibold text-white outline-none">
+				<span class="icon-[material-symbols-light--add-2-rounded] size-5 text-white"></span>
+				<span>Create One</span>
+			</NuxtLink>
 		</div>
 
 		<!-- div to show when there are authority letters -->
@@ -34,39 +41,40 @@
 					class="tablet:space-x-0 mt-2 flex h-fit items-center justify-between space-x-2">
 					<form
 						class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
-						@submit.prevent="handleSearchTriggered(searchPhrase)">
+						@submit.prevent="handleSearchTriggered(searchRegNo)">
 						<input
 							type="text"
 							class="generic-input h-full"
 							placeholder="Search Registration"
 							required
-							v-model="searchPhrase" />
+							v-model="searchRegNo" />
 						<button
 							type="submit"
 							class="generic-search-submit-button">
 							<SearchIcon />
 						</button>
 					</form>
-					<button
-						data-modal-target="export-authority-letters-modal"
-						data-modal-toggle="export-authority-letters-modal"
-						type="button"
-						class="group inline-flex h-[50px] w-14 cursor-pointer items-center justify-center rounded-lg border border-gray-400 p-1 outline-none hover:bg-gray-100"
-						@click.prevent="isExportExcelModalOpen = true">
-						<span class="ph--microsoft-excel-logo-thin size-7 text-gray-400"></span>
-					</button>
+					<div class="laptop:w-fit w-full space-x-2">
+						<button
+							data-modal-target="search-authority-letters-filter-modal"
+							data-modal-toggle="search-authority-letters-filter-modal"
+							type="button"
+							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100">
+							<span
+								class="icon-[material-symbols-light--filter-alt-sharp] size-8 text-gray-400"></span>
+							<span class="text-gray-400">Filters</span>
+						</button>
+						<button
+							data-modal-target="export-authority-letters-modal"
+							data-modal-toggle="export-authority-letters-modal"
+							type="button"
+							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100">
+							<span
+								class="icon-[material-symbols-light--arrow-downward-rounded] size-8 text-gray-400"></span>
+							<span class="text-gray-400">Export Report</span>
+						</button>
+					</div>
 				</div>
-				<button
-					v-if="searchRegNo !== ''"
-					@click="
-						() => {
-							searchRegNo = '';
-							searchPhrase = '';
-						}
-					"
-					class="w-fit rounded-full border border-gray-500 bg-transparent px-2 py-1 text-sm font-semibold text-gray-500 shadow hover:bg-gray-200">
-					Clear Filters
-				</button>
 			</div>
 
 			<div class="my-2 flex-grow">
@@ -160,9 +168,9 @@
 								v-else
 								v-for="(letter, index) in authorityLetters"
 								:key="index">
-								<td class="py-4 ps-3">
+								<td class="w-52 py-4 ps-3">
 									<span
-										class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+										class="w-fit rounded-lg border-[1px] border-pink-300 bg-pink-200 px-1 text-sm text-pink-600"
 										>{{ letter.registrationNumber }}</span
 									>
 									<br />
@@ -172,16 +180,16 @@
 									<span>{{ letter.clientName }}</span>
 									<br />
 									<span
-										class="w-fit rounded-lg bg-blue-200 px-1 text-sm text-blue-600"
+										class="w-fit rounded-lg border-[1px] border-blue-300 bg-blue-200 px-1 text-sm text-blue-600"
 										>{{ letter.clientPhone }}</span
 									>
 								</td>
-								<td class="tablet:table-cell hidden py-4">
+								<td class="tablet:table-cell hidden w-72 py-4 text-wrap">
 									{{ letter.agencyName ?? 'N/A' }}
 								</td>
 								<td class="tablet:table-cell hidden py-4">
 									<span
-										class="w-fit rounded-lg bg-pink-200 px-1 text-sm text-pink-600"
+										class="w-fit rounded-lg border-[1px] border-yellow-300 bg-yellow-200 px-1 text-sm text-yellow-600"
 										>{{ letter.authorizedBy.username }}</span
 									>
 									<br />
@@ -274,10 +282,109 @@
 			</div>
 		</div>
 
+		<!--  export letters -->
 		<ParentModal
 			modal-id="export-authority-letters-modal"
 			modal-title="Export Letters">
 			<ExportAuthorityLetter />
+		</ParentModal>
+
+		<!-- filter modal -->
+		<ParentModal
+			modal-title="Filters"
+			modal-id="search-authority-letters-filter-modal"
+			modal-subtitle="Customize your results"
+			ref="authorityLettersModalFiltersRef">
+			<form
+				@submit.prevent="
+					() => {
+						manuallyCloseModal();
+						executeGetAuthorityLetters();
+					}
+				"
+				class="w-full space-y-3">
+				<div
+					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
+					<h1 class="mb-2 text-xs font-semibold text-gray-500">With Valuations</h1>
+					<div class="flex h-fit w-full items-center py-2">
+						<input
+							id="show-tampered-vehicles"
+							type="checkbox"
+							:value="true"
+							v-model="onlyOngoing"
+							name="bordered-radio"
+							class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
+						<label
+							for="show-tampered-vehicles"
+							class="3 ms-2 w-full text-sm font-medium text-gray-600"
+							>Only include letters where valuation has started or has ended</label
+						>
+					</div>
+				</div>
+
+				<div
+					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
+					<h1 class="mb-2 text-xs font-semibold text-gray-500">Report Period</h1>
+					<div
+						class="tablet:flex-row tablet:space-y-0 tablet:space-x-2 flex w-full flex-col space-y-2">
+						<!-- start date -->
+						<div class="tablet:w-1/2 w-full space-y-2">
+							<label
+								for="cover-period-starts"
+								class="generic-input-label text-xs"
+								>Start Date</label
+							>
+							<input
+								type="date"
+								id="cover-period-starts"
+								class="generic-input"
+								placeholder="Select"
+								pattern="\d{4}-\d{2}-\d{2}"
+								v-model="startDate" />
+						</div>
+
+						<!-- end date -->
+						<div class="tablet:w-1/2 w-full space-y-2">
+							<label
+								for="cover-period-ends"
+								class="generic-input-label text-xs"
+								>End Date</label
+							>
+							<input
+								type="date"
+								id="cover-period-ends"
+								class="generic-input"
+								placeholder="Select"
+								pattern="\d{4}-\d{2}-\d{2}"
+								v-model="endDate" />
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-2 flex w-full justify-center space-x-3">
+					<!-- submit button -->
+					<button
+						type="submit"
+						v-if="startDate || endDate || onlyOngoing"
+						class="generic-form-submit w-1/2">
+						Apply
+					</button>
+
+					<!-- clear filters -->
+					<button
+						type="button"
+						@click="
+							() => {
+								manuallyCloseModal();
+								clearFilters();
+							}
+						"
+						v-if="startDate || endDate || onlyOngoing"
+						class="generic-form-submit w-1/2 border bg-white text-gray-500 shadow-none hover:bg-white">
+						Clear Filters
+					</button>
+				</div>
+			</form>
 		</ParentModal>
 	</div>
 </template>
@@ -288,8 +395,14 @@
 		layout: 'console-layout',
 	});
 
-	const searchPhrase: Ref<string> = ref('');
-	const isExportExcelModalOpen: Ref<boolean> = ref(false);
+	const authorityLettersModalFiltersRef = useTemplateRef<{ modalElement: HTMLElement }>(
+		'authorityLettersModalFiltersRef',
+	);
+
+	function manuallyCloseModal(): void {
+		authorityLettersModalFiltersRef.value?.close();
+	}
+
 	const {
 		page,
 		totalPages,
@@ -297,6 +410,11 @@
 		fetchAuthorityLetterError,
 		authorityLetters,
 		searchRegNo,
+		startDate,
+		endDate,
+		onlyOngoing,
 		handleSearchTriggered,
+		executeGetAuthorityLetters,
+		clearFilters,
 	} = useAuthorityLetters();
 </script>
