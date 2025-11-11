@@ -1,5 +1,6 @@
 <template>
-	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none">
 		<!-- members listing -->
 		<!-- div to show when there is a fetch error -->
 		<div
@@ -35,11 +36,13 @@
 			<!-- search & filter controls -->
 			<div class="flex h-fit items-center justify-between">
 				<form
-					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
+					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between"
+					@submit.prevent="executeFetchUsers()">
 					<input
 						type="text"
 						class="generic-input"
-						placeholder="Search Name, Email or Phone" />
+						placeholder="Search Name, Email or Phone"
+						v-model.trim="searchSlug" />
 					<button
 						type="submit"
 						class="generic-search-submit-button">
@@ -170,8 +173,8 @@
 												<button
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 													type="button"
-													data-modal-target="edit-user-modal"
-													data-modal-toggle="edit-user-modal">
+													:data-modal-target="`edit-user-${user.userId}-modal`"
+													:data-modal-toggle="`edit-user-${user.userId}-modal`">
 													Edit Details
 												</button>
 											</li>
@@ -209,6 +212,27 @@
 		</div>
 
 		<!-- Modal to edit user -->
+		<template
+			v-if="usersList && usersList.length > 0"
+			v-for="(u, idx) in usersList"
+			:key="idx">
+			<ParentModal
+				modal-title="Edit Account"
+				:modal-id="`edit-user-${u.userId}-modal`">
+				<EditUserAccount
+					:key="idx"
+					:user-id="u.userId"
+					:username="u.username"
+					:email="u.email"
+					:phone-number="u.phoneNumber"
+					:role-in-organization="u.roleInOrganization"
+					:branch-id="u.branchId"
+					:is-account-enabled="u.accountEnabled"
+					:user-role="u.userRoles[0]" />
+			</ParentModal>
+		</template>
+
+		<!-- edit user account -->
 		<ParentModal
 			modal-title="Edit Account"
 			modal-id="edit-user-modal">
@@ -229,11 +253,10 @@
 </template>
 
 <script setup lang="ts">
-	import useUserAccounts from '~/composables/vehicle-valuation/useUserAccounts';
-
 	definePageMeta({
 		name: 'vehicle-valuation-manage-user',
 	});
 
-	const { page, totalPages, usersList, fetchStatus } = useUserAccounts();
+	const { page, totalPages, usersList, fetchStatus, executeFetchUsers, searchSlug } =
+		useUserAccounts();
 </script>

@@ -1,7 +1,7 @@
 const useUserAccounts = () => {
 	// for when loading users
 	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
-	const usersList: ComputedRef<any[] | null> = computed(() => fetchedData.value?.users);
+	const usersList: ComputedRef<any[] | null> = computed(() => fetchedData.value?.users ?? []);
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
 	const { getPrincipal } = useAuth();
@@ -11,12 +11,21 @@ const useUserAccounts = () => {
 	const addNewAccountLoading: Ref<boolean> = ref(false);
 	const updateCorporateAccountLoading: Ref<boolean> = ref(false);
 
+	const searchSlug: Ref<string | null> = ref(null);
+
 	const {
 		status: fetchStatus,
 		error: fetchError,
 		data: fetchedData,
+		execute: executeFetchUsers,
 	} = useFetch(
-		`/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`,
+		() => {
+			let requestURL = `/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
+			if (searchSlug.value != null) {
+				requestURL = requestURL + `&searchSlug=${searchSlug.value}`;
+			}
+			return requestURL;
+		},
 		{
 			key: 'corporate-users',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
@@ -157,7 +166,9 @@ const useUserAccounts = () => {
 		updateMyAccountDetails,
 		updateCorporateAccountLoading,
 		addNewAccountLoading,
+		searchSlug,
 		addNewAccount,
+		executeFetchUsers,
 	};
 };
 

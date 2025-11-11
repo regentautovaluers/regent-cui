@@ -1,6 +1,7 @@
 <template>
 	<!-- members listing -->
-	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none">
 		<!-- div to show when there is a fetch error -->
 		<div
 			class="flex h-full flex-1 flex-col items-center justify-center space-y-4 text-sm"
@@ -35,28 +36,16 @@
 		<div
 			class="h-full"
 			v-else>
-			<!-- search & filter controls -->
 			<div class="flex h-10 items-center justify-between space-x-2">
 				<button
-					class="h-[50px] text-sm font-semibold text-blue-600 hover:text-blue-600"
+					class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
 					type="button"
 					data-modal-target="add-corporate-branch-modal"
 					data-modal-toggle="add-corporate-branch-modal">
-					Add New Branch
+					<span
+						class="icon-[material-symbols-light--add-location-rounded] size-8 text-gray-400"></span>
+					<span class="text-gray-400">Add New Branch</span>
 				</button>
-
-				<form
-					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative mt-2 flex w-full items-center justify-between">
-					<input
-						type="text"
-						class="generic-input h-[50px]"
-						placeholder="Search Name, Email or Phone" />
-					<button
-						type="submit"
-						class="generic-search-submit-button">
-						<SearchIcon />
-					</button>
-				</form>
 			</div>
 
 			<!-- the table itself -->
@@ -67,12 +56,12 @@
 							<tr>
 								<th
 									scope="col"
-									class="table-headers">
+									class="table-headers ps-3">
 									Branch Name
 								</th>
 								<th
 									scope="col"
-									class="table-headers">
+									class="table-headers laptop:table-cell hidden">
 									Branch Location
 								</th>
 								<th
@@ -106,21 +95,18 @@
 								v-else>
 								<td
 									scope="row"
-									class="p-6 font-semibold whitespace-nowrap text-pink-600">
+									class="py-4 ps-3 font-semibold whitespace-nowrap text-pink-600">
 									{{ branch.branchName }}
 								</td>
-								<td class="p-6">{{ branch.branchLocation }}</td>
-								<td class="flex items-center justify-end p-6">
+								<td class="laptop:table-cell hidden py-4">
+									{{ branch.branchLocation }}
+								</td>
+								<td class="flex items-center justify-end px-4 py-4">
 									<button
 										type="button"
-										class="text-blue-600 hover:font-semibold hover:text-blue-700"
-										data-modal-target="edit-corporate-branch-modal"
-										data-modal-toggle="edit-corporate-branch-modal"
-										@click="
-											() => {
-												selectedIndexToEdit = index;
-											}
-										">
+										class="cursor-pointer text-blue-600 hover:font-semibold hover:text-blue-700"
+										:data-modal-target="`edit-corporate-branch-${branch.branchId}-modal`"
+										:data-modal-toggle="`edit-corporate-branch-${branch.branchId}-modal`">
 										Edit
 									</button>
 								</td>
@@ -156,20 +142,18 @@
 			</div>
 		</div>
 		<!-- Modal to edit corporate branch -->
-		<ParentModal
-			modal-title="Edit Branch"
-			modal-id="edit-corporate-branch-modal"
-			@close-modal="
-				() => {
-					selectedIndexToEdit = -1;
-				}
-			">
-			<EditCorporateBranch
-				v-if="corporateBranches && selectedIndexToEdit > -1"
-				:branch-id="corporateBranches[selectedIndexToEdit].branchId"
-				:branch-name="corporateBranches[selectedIndexToEdit].branchName"
-				:branch-location="corporateBranches[selectedIndexToEdit].branchLocation" />
-		</ParentModal>
+		<template
+			v-if="corporateBranches && corporateBranches.length > 0"
+			v-for="branch in corporateBranches">
+			<ParentModal
+				modal-title="Edit Branch"
+				:modal-id="`edit-corporate-branch-${branch.branchId}-modal`">
+				<EditCorporateBranch
+					:branch-id="branch.branchId"
+					:branch-name="branch.branchName"
+					:branch-location="branch.branchLocation" />
+			</ParentModal>
+		</template>
 
 		<!-- Modal to add corporate branch -->
 		<ParentModal
@@ -185,7 +169,6 @@
 		name: 'corp-branches',
 	});
 
-	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const { corporateBranches, fetchStatus, fetchError, reloadCorporateBranches } =
 		useCorporateBranch();
 </script>

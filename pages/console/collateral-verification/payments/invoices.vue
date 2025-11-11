@@ -368,7 +368,7 @@
 
 		<!-- Pay for Invoice modal -->
 		<template
-			v-if="collateralVerificationInvoices && collateralVerificationInvoices.length"
+			v-if="collateralVerificationInvoices && collateralVerificationInvoices.length > 0"
 			v-for="(invoice, idx) in collateralVerificationInvoices"
 			:key="idx">
 			<ParentModal

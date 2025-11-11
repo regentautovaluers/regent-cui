@@ -1,16 +1,16 @@
 <template>
 	<form
-		class="laptop:p-4 laptop-lg:p-8 h-full flex-1 p-2"
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none"
 		@submit.prevent="
 			updateMyAccountDetails(
-				getPrincipal.userId,
+				getPrincipal?.userId!,
 				firstName,
 				lastName,
 				email,
 				phoneNumber,
 				roleInOrganization,
 				true,
-				getPrincipal.branchId,
+				getPrincipal?.branchId!,
 			)
 		">
 		<div class="flex flex-col">
@@ -102,9 +102,9 @@
 
 	const { getPrincipal } = useAuth();
 	const { updateMyAccountDetails, updateCorporateAccountLoading } = useUserAccounts();
-	const firstName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[0]);
-	const lastName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[1]);
-	const email: Ref<string> = ref(getPrincipal.value?.email);
+	const firstName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[0]!);
+	const lastName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[1]!);
+	const email: Ref<string> = ref(getPrincipal.value?.email!);
 	const phoneNumber: Ref<string> = ref(getPrincipal.value?.phonenumber);
 	const roleInOrganization: Ref<string> = ref(getPrincipal.value?.roleInOrganization);
 
