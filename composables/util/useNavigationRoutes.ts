@@ -80,7 +80,7 @@ export default function () {
 		{
 			id: 3,
 			screenName: 'Collateral Verification',
-			routeName: 'collateral-verification-query-collateral',
+			routeName: 'collateral-verification-home',
 			renderRoute: true,
 			icon: 'icon-[material-symbols-light--shield-question-outline-rounded]',
 			description:
