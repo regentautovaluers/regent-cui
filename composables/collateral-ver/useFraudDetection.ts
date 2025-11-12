@@ -33,12 +33,9 @@ export function useFraudDetection() {
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const fraudsterEntries: ComputedRef<any[]> = computed(() => fetchedData.value?.entries);
+	const fraudsterEntries: ComputedRef<any[]> = computed(() => fetchedData.value?.entries ?? []);
 	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 	const searchRegNo: Ref<string> = ref('');
-
-	// deleting fraud entry
-	const activeEntryIndex: Ref<number> = ref(-1);
 
 	const handleAppendingRelevantLink = () => {
 		if (relevantLink.value) onboardDefaulter.relevantLinks?.push(relevantLink.value);
@@ -99,10 +96,10 @@ export function useFraudDetection() {
 		}
 	};
 
-	const deleteFraudRecord = async () => {
+	async function deleteFraudRecord(entryId: number) {
 		deleteDefaulterEntryLoading.value = true;
 		try {
-			await $fetch(`/api/v1/fraud/${fraudsterEntries.value[activeEntryIndex.value].id}`, {
+			await $fetch(`/api/v1/fraud/${entryId}`, {
 				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 				method: 'DELETE',
 				body: JSON.stringify({
@@ -124,7 +121,7 @@ export function useFraudDetection() {
 		} finally {
 			deleteDefaulterEntryLoading.value = false;
 		}
-	};
+	}
 
 	const {
 		status: fetchFraudsterListStatus,
@@ -214,7 +211,6 @@ export function useFraudDetection() {
 		onboardDefaulter,
 		onboardDefaulterLoading,
 		relevantLink,
-		activeEntryIndex,
 		deleteDefaulterEntryLoading,
 		fetchFraudsterListStatus,
 		executeFetchFraudsterList,

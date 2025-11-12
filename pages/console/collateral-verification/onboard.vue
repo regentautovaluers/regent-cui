@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2"
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none"
 		@submit.prevent="createFraudsterEntry">
 		<!-- <div
 			id="alert-additional-content-4"

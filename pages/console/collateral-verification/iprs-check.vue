@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="laptop:grid-cols-[20%_80%] laptop:p-4 laptop-lg:p-8 laptop:flex-1 grid grid-cols-1 p-2">
+		class="laptop:grid-cols-[20%_80%] laptop:p-4 laptop:flex-1 grid grid-cols-1 rounded-lg border-2 bg-white p-2 outline-none">
 		<div
 			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full h-fit border-b-[1px] p-2">
 			<h1 class="text-sm font-semibold text-blue-600">What are you looking to verify?</h1>

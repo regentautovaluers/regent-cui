@@ -1,6 +1,8 @@
 <template>
-	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
-		<div class="laptop:w-1/2 place-self-center">
+	<div
+		class="laptop:grid-cols-[20%_80%] laptop:p-4 laptop:flex-1 grid grid-cols-1 rounded-lg border-2 bg-white p-2 outline-none">
+		<div
+			class="laptop-lg:border-b-0 laptop-lg:border-r-[1px] laptop:h-full h-fit border-b-[1px] p-2">
 			<div
 				id="alert-additional-content-4"
 				class="my-5 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
@@ -32,72 +34,85 @@
 					}
 				" />
 		</div>
+		<div class="flex flex-1 flex-col p-2">
+			<div
+				class="flex size-full flex-col items-center justify-center text-sm text-gray-500"
+				v-if="
+					!iaVehicleDetails ||
+					!iaVehicleOwnerDetails ||
+					!iaVehicleCollateralDetails ||
+					!ravDefaulterDetails
+				">
+				<h1 class="italic">Use the form on the left to search.</h1>
+				<h2 class="italic">Your results will appear here!</h2>
+			</div>
 
-		<!-- IA Vehicle Details results -->
-		<div
-			v-if="iaVehicleDetails"
-			class="border-b border-dashed border-gray-300 py-5">
-			<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
-				Showing Result From Identify Africa Database
-			</h1>
-			<IAVehicleDetailsResultsCard
-				:reg-no="iaVehicleDetails.regNo"
-				:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
-				:vehicle-make="iaVehicleDetails.carMake"
-				:vehicle-model="iaVehicleDetails.carModel"
-				:chassis-number="iaVehicleDetails.ChassisNo"
-				:engine-number="iaVehicleDetails.engineNumber"
-				:vehicle-color="iaVehicleDetails.color"
-				:fuel-type="iaVehicleDetails.fuel_type"
-				:passenger-capacity="iaVehicleDetails.passengerCapacity" />
+			<!-- IA Vehicle Details results -->
+			<div
+				v-if="iaVehicleDetails"
+				class="border-b border-dashed border-gray-300 py-5">
+				<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+					Showing Result From Identify Africa Database
+				</h1>
+				<IAVehicleDetailsResultsCard
+					:reg-no="iaVehicleDetails.regNo"
+					:year-of-manufacture="iaVehicleDetails.yearOfManufacture"
+					:vehicle-make="iaVehicleDetails.carMake"
+					:vehicle-model="iaVehicleDetails.carModel"
+					:chassis-number="iaVehicleDetails.ChassisNo"
+					:engine-number="iaVehicleDetails.engineNumber"
+					:vehicle-color="iaVehicleDetails.color"
+					:fuel-type="iaVehicleDetails.fuel_type"
+					:passenger-capacity="iaVehicleDetails.passengerCapacity" />
+			</div>
+
+			<!-- vehicle owner results -->
+			<div
+				v-if="iaVehicleOwnerDetails"
+				class="border-b border-dashed border-gray-300 pb-5">
+				<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+					Details of owner to whom vehicle was registered
+				</h1>
+				<IAVehicleOwnerDetails
+					:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
+					:id-number="iaVehicleOwnerDetails.ID_NUMBER"
+					:address="iaVehicleOwnerDetails.ADDRESS"
+					:phone-numer="iaVehicleOwnerDetails.TELNO"
+					:town="iaVehicleOwnerDetails.TOWN"
+					:owner-type="iaVehicleOwnerDetails.OWNER_TYPE" />
+			</div>
+
+			<!-- collateral results -->
+			<div
+				v-if="iaVehicleCollateralDetails"
+				class="border-b border-dashed border-gray-300 pb-5">
+				<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
+					Where this vehicle been used as collateral
+				</h1>
+				<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
+			</div>
+
+			<!-- RAV fraud results -->
+			<template v-if="ravDefaulterDetails && ravDefaulterDetails.length > 0">
+				<RAVDatabaseFraudResultsCard
+					v-for="(r, idx) in ravDefaulterDetails"
+					:key="idx"
+					:reg-no="r.registrationNumber"
+					:year-of-manufacture="r.yearOfManufacture"
+					:vehicle-make="r.make"
+					:vehicle-model="r.model"
+					:chassis-number="r.chassisNumber"
+					:engine-number="r.engineNumber"
+					:vehicle-color="r.color"
+					:defaulted-amount="r.amountDefaulted"
+					:incident-date="r.dateOfIncident"
+					:defrauded-institution="r.corporateClientName"
+					:contact-person-name="r.corporateClientName"
+					:contact-person-email="r.corpClientEmail"
+					:contact-person-phone="r.corpClientPhoneNumber"
+					:incident-description="r.description" />
+			</template>
 		</div>
-
-		<!-- vehicle owner results -->
-		<div
-			v-if="iaVehicleOwnerDetails"
-			class="border-b border-dashed border-gray-300 pb-5">
-			<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
-				Details of owner to whom vehicle was registered
-			</h1>
-			<IAVehicleOwnerDetails
-				:name="`${iaVehicleOwnerDetails.FIRSTNAME} ${iaVehicleOwnerDetails.LASTNAME}`"
-				:id-number="iaVehicleOwnerDetails.ID_NUMBER"
-				:address="iaVehicleOwnerDetails.ADDRESS"
-				:phone-numer="iaVehicleOwnerDetails.TELNO"
-				:town="iaVehicleOwnerDetails.TOWN"
-				:owner-type="iaVehicleOwnerDetails.OWNER_TYPE" />
-		</div>
-
-		<!-- collateral results -->
-		<div
-			v-if="iaVehicleCollateralDetails"
-			class="border-b border-dashed border-gray-300 pb-5">
-			<h1 class="mt-8 mb-4 font-semibold text-yellow-500">
-				Where this vehicle been used as collateral
-			</h1>
-			<IAVehicleColateralResultsCard :entries="iaVehicleCollateralDetails" />
-		</div>
-
-		<!-- RAV fraud results -->
-		<template v-if="ravDefaulterDetails && ravDefaulterDetails.length > 0">
-			<RAVDatabaseFraudResultsCard
-				v-for="(r, idx) in ravDefaulterDetails"
-				:key="idx"
-				:reg-no="r.registrationNumber"
-				:year-of-manufacture="r.yearOfManufacture"
-				:vehicle-make="r.make"
-				:vehicle-model="r.model"
-				:chassis-number="r.chassisNumber"
-				:engine-number="r.engineNumber"
-				:vehicle-color="r.color"
-				:defaulted-amount="r.amountDefaulted"
-				:incident-date="r.dateOfIncident"
-				:defrauded-institution="r.corporateClientName"
-				:contact-person-name="r.corporateClientName"
-				:contact-person-email="r.corpClientEmail"
-				:contact-person-phone="r.corpClientPhoneNumber"
-				:incident-description="r.description" />
-		</template>
 	</div>
 </template>
 

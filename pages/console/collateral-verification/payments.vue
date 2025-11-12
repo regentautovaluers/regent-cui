@@ -1,6 +1,7 @@
 <template>
 	<!-- new UI -->
-	<div class="flex flex-1 flex-col">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none">
 		<!-- links strip -->
 		<div class="flex border-b py-5">
 			<NuxtLink

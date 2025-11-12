@@ -1,42 +1,71 @@
 <template>
-	<div class="laptop:p-4 laptop-lg:p-8 laptop:justify-center flex flex-1 flex-col gap-y-4">
-		<div
-			class="laptop:flex-row laptop:space-y-0 laptop:space-x-5 flex h-fit flex-col space-y-5">
+	<div class="laptop:p-0 flex flex-1 flex-col gap-y-10 p-2">
+		<div class="laptop:grid-cols-3 grid h-fit grid-cols-1 gap-10">
 			<div
-				class="laptop:w-1/3 flex h-72 w-full flex-col items-center justify-center space-y-3 rounded-lg border p-4 text-gray-600 shadow-sm">
-				<h1 class="mb-2 font-semibold text-gray-500">Most Used</h1>
-				<h2 class="text-sm">{{ mostSearched.searchType }}</h2>
-			</div>
-			<div
-				class="laptop:w-1/3 flex h-72 w-full flex-col items-center justify-center space-y-3 rounded-lg border p-4 text-gray-600 shadow-sm">
-				<h1 class="text-5xl font-bold">
-					{{
-						searchDistribution.reduce(
-							(accumulator, currentValue) => accumulator + currentValue.totalSearches,
-							0,
-						)
-					}}
-				</h1>
-				<h1 class="mb-2 font-semibold text-gray-500">Total Searches</h1>
-			</div>
-			<div
-				class="laptop:w-1/3 flex h-72 w-full flex-col items-center justify-center space-y-3 rounded-lg border text-gray-600 shadow-sm">
-				<h1 class="text-5xl font-bold">
-					{{ getCollateralVerificationTokenInfo?.balance ?? 'N/A' }}
-				</h1>
-				<h2 class="text-sm">Tokens Available</h2>
+				class="flex h-36 items-center justify-center rounded-lg border border-green-300 bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Most Used</h2>
+					<h1 class="text-lg font-semibold text-gray-700">
+						{{ mostSearched.searchType }}
+					</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm">
+						<span class="font-bold text-green-500">{{ 10 }}%</span
+						><span class="text-gray-500">of total searches</span>
+					</h3>
+				</div>
 				<button
-					class="generic-form-submit w-1/3 text-sm shadow-none"
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-green-300 bg-green-100">
+					<span
+						class="icon-[material-symbols-light--document-search-rounded] text-3xl text-green-600"></span>
+				</button>
+			</div>
+			<div
+				class="flex h-36 items-center justify-center rounded-lg border border-blue-300 bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">You Made</h2>
+					<h1 class="text-lg font-semibold text-gray-700">
+						{{
+							searchDistribution.reduce(
+								(accumulator, currentValue) =>
+									accumulator + currentValue.totalSearches,
+								0,
+							)
+						}}
+					</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm text-gray-500">
+						Total Searches
+					</h3>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-blue-300 bg-blue-100">
+					<span
+						class="icon-[material-symbols-light--equal-rounded] text-3xl text-blue-600"></span>
+				</button>
+			</div>
+			<div
+				class="flex h-36 items-center justify-center rounded-lg border border-yellow-300 bg-white p-5 shadow-xs outline-none">
+				<div class="flex-grow">
+					<h2 class="text-sm text-gray-500">Tokens Available</h2>
+					<h1 class="text-lg font-semibold text-gray-700">
+						{{ getCollateralVerificationTokenInfo?.balance ?? 0 }}
+					</h1>
+					<h3 class="inline-flex items-center space-x-1 text-sm text-gray-500">
+						Click the '+' button to top up.
+					</h3>
+				</div>
+				<button
+					class="inline-flex size-[3.2rem] cursor-pointer items-center justify-center rounded-md border border-yellow-300 bg-yellow-100"
 					data-modal-target="topup-tokens-modal"
 					data-modal-toggle="topup-tokens-modal">
-					Top Up ({{ getCollateralVerificationTokenInfo?.billingType }})
+					<span
+						class="icon-[material-symbols-light--add-circle-rounded] text-3xl text-yellow-600"></span>
 				</button>
 			</div>
 		</div>
 		<div
-			class="laptop:flex-row laptop:space-y-0 laptop:space-x-5 flex h-fit flex-col space-y-5">
+			class="laptop:flex-row laptop:space-y-0 laptop:space-x-10 flex h-fit flex-col space-y-10">
 			<div
-				class="laptop:w-2/3 flex h-[28rem] w-full flex-col rounded-lg border p-4 shadow-sm">
+				class="laptop:w-2/3 flex h-[33rem] w-full flex-col rounded-lg border-2 bg-white p-4">
 				<h1 class="mb-2 font-semibold text-gray-500">Recent Searches</h1>
 				<div class="flex-grow">
 					<CollateralVerificationSearchesBarChart
@@ -66,14 +95,14 @@
 			</div>
 
 			<div
-				class="laptop:w-1/3 h-[28rem] w-full rounded-lg border p-4 text-gray-600 shadow-sm">
+				class="laptop:w-1/3 h-[33rem] w-full rounded-lg border-2 bg-white p-4 text-gray-600">
 				<h1 class="mb-2 font-semibold text-gray-500">Recent Activity</h1>
 				<div
-					class="h-fit space-y-1 rounded-lg py-3 text-sm hover:bg-gray-100"
+					class="h-fit space-y-1 p-3 text-sm hover:bg-gray-100"
 					v-for="(e, idx) in history"
 					:key="idx">
-					<h1><span class="font-semibold">Search made:</span> {{ e.searchType }}</h1>
 					<h1>{{ e.date.split('T')[0] }}</h1>
+					<h1><span class="font-semibold">Search made:</span> {{ e.searchType }}</h1>
 				</div>
 			</div>
 		</div>

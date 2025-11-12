@@ -1,7 +1,7 @@
 <template>
 	<form
 		@submit.prevent="uploadBulkData"
-		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none">
 		<!-- Download Excel document -->
 		<h1 class="mt-5 font-semibold text-gray-500">Download Excel Template</h1>
 		<div class="flex flex-col">

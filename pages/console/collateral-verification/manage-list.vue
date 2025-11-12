@@ -1,5 +1,6 @@
 <template>
-	<div class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col p-2">
+	<div
+		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none">
 		<!-- div to show when there is a fetch error -->
 		<div
 			v-if="fetchFraudsterListStatus === 'error'"
@@ -164,19 +165,46 @@
 								</td>
 								<th class="inline-flex items-center space-x-2 py-4 pe-3">
 									<button
-										class="inline-flex h-9 w-9 items-center justify-center rounded-full border-none bg-green-300 p-2 text-green-600 transition-colors duration-200 outline-none hover:bg-green-400"
-										data-modal-target="view-entry-modal"
-										data-modal-toggle="view-entry-modal"
-										@click="activeEntryIndex = index">
-										<span class="oui--expand size-5"></span>
+										:id="'dropdownLeftButton' + index"
+										:data-dropdown-toggle="'dropdownLeft' + index"
+										data-dropdown-placement="left"
+										type="button">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="1em"
+											height="1em"
+											viewBox="0 0 16 16"
+											class="size-6">
+											<MenuKebabIcon />
+										</svg>
 									</button>
-									<button
-										class="inline-flex h-9 w-9 items-center justify-center rounded-full border-none bg-red-300 p-2 text-red-600 transition-colors duration-200 outline-none hover:bg-red-400"
-										data-modal-target="delete-entry-modal"
-										data-modal-toggle="delete-entry-modal"
-										@click="activeEntryIndex = index">
-										<span class="weui--delete-on-filled size-5"></span>
-									</button>
+									<!-- Dropdown menu -->
+									<div
+										:id="'dropdownLeft' + index"
+										class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+										<ul
+											class="py-2 text-sm text-gray-500"
+											aria-labelledby="dropdownLeftButton">
+											<li>
+												<button
+													class="block w-full bg-gray-100 px-4 py-2 text-center"
+													:data-modal-target="`view-entry-${index}-modal`"
+													:data-modal-toggle="`view-entry-${index}-modal`"
+													type="button">
+													Edit Entry
+												</button>
+											</li>
+											<li>
+												<button
+													class="block w-full bg-red-200 px-4 py-2 text-center text-white hover:bg-red-300"
+													:data-modal-target="`delete-entry-${index}-modal`"
+													:data-modal-toggle="`delete-entry-${index}-modal`"
+													type="button">
+													Delete Entry
+												</button>
+											</li>
+										</ul>
+									</div>
 								</th>
 							</tr>
 						</tbody>
@@ -210,40 +238,34 @@
 	</div>
 
 	<!-- Delete Entry Modal -->
-	<ParentModal
-		modal-id="delete-entry-modal"
-		modal-title="Delete Entry Modal"
-		@close-modal="
-			() => {
-				activeEntryIndex = -1;
-			}
-		">
-		<form
-			@submit.prevent="deleteFraudRecord()"
-			class="flex flex-col items-center justify-center">
-			<p class="text-center text-gray-500">Are you sure you want to delete entry?</p>
-			<button
-				class="generic-form-submit tablet:w-1/2 mt-4 h-[50px] w-full rounded-full border border-red-600 bg-red-200 text-red-500 hover:bg-red-200 hover:text-red-500">
-				<FormSubmissionLoader
-					class="mr-2 size-6 animate-spin text-red-500"
-					v-if="deleteDefaulterEntryLoading" />
-				<span v-else>Proceed</span>
-			</button>
-		</form>
-	</ParentModal>
-	<ParentModal
-		modal-id="view-entry-modal"
-		modal-title="Collateral Entry"
-		@close-modal="
-			() => {
-				activeEntryIndex = -1;
-			}
-		">
-		<EditFraudster
-			v-if="fraudsterEntries && activeEntryIndex > -1"
-			:collateral-entry="fraudsterEntries[activeEntryIndex]"
-			:entry-id="fraudsterEntries[activeEntryIndex].id" />
-	</ParentModal>
+	<template v-if="fraudsterEntries.length > 0">
+		<ParentModal
+			v-for="(entry, index) in fraudsterEntries"
+			:modal-id="`delete-entry-${index}-modal`"
+			modal-title="Delete Entry Modal">
+			<form
+				@submit.prevent="deleteFraudRecord(entry.id)"
+				class="flex flex-col items-center justify-center">
+				<p class="text-center text-gray-500">Are you sure you want to delete entry?</p>
+				<button
+					class="generic-form-submit tablet:w-1/2 mt-4 h-[50px] w-full rounded-full border border-red-600 bg-red-200 text-red-500 hover:bg-red-200 hover:text-red-500">
+					<FormSubmissionLoader
+						class="mr-2 size-6 animate-spin text-red-500"
+						v-if="deleteDefaulterEntryLoading" />
+					<span v-else>Proceed</span>
+				</button>
+			</form>
+		</ParentModal>
+
+		<ParentModal
+			v-for="(entry, index) in fraudsterEntries"
+			:modal-id="`view-entry-${index}-modal`"
+			modal-title="Collateral Entry">
+			<EditFraudster
+				:collateral-entry="entry"
+				:entry-id="entry.id" />
+		</ParentModal>
+	</template>
 </template>
 
 <script setup lang="ts">
@@ -258,7 +280,6 @@
 		fetchFraudsterListError,
 		fraudsterEntries,
 		deleteDefaulterEntryLoading,
-		activeEntryIndex,
 		totalPages,
 		page,
 		deleteFraudRecord,

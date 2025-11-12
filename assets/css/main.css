@@ -42,7 +42,7 @@
 }
 
 @utility generic-input-label {
-	@apply mb-1 block text-sm font-medium text-gray-500;
+	@apply mb-1 block text-sm font-semibold text-gray-500;
 }
 
 @utility generic-quick-link {
