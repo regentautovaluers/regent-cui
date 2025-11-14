@@ -359,7 +359,8 @@
 				</div>
 			</div>
 
-			<div class="laptop:ml-10 ml-0 flex h-full laptop:min-h-[55rem] flex-col justify-between">
+			<div
+				class="laptop:ml-10 laptop:min-h-[55rem] ml-0 flex h-full flex-col justify-between">
 				<!-- the table itself -->
 				<div class="my-4 flex-grow">
 					<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -476,7 +477,7 @@
 										<!-- Dropdown menu -->
 										<div
 											:id="'dropdownLeft' + index"
-											class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+											class="z-10 hidden w-44 rounded-lg border bg-white shadow-md">
 											<ul
 												class="py-2 text-gray-500"
 												aria-labelledby="dropdownLeftButton">

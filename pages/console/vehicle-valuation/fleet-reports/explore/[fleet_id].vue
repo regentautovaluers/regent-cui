@@ -231,7 +231,7 @@
 									<!-- Dropdown menu -->
 									<div
 										:id="'dropdownLeft' + index"
-										class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+										class="z-10 hidden w-44 rounded-lg border bg-white shadow-md">
 										<ul
 											class="py-2 text-sm text-gray-500"
 											aria-labelledby="dropdownLeftButton">
