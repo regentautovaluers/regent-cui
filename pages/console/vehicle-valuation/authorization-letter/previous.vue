@@ -225,10 +225,19 @@
 									<!-- Dropdown menu -->
 									<div
 										:id="'dropdownLeft' + index"
-										class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border bg-white shadow-md">
+										class="z-10 hidden w-44 rounded-lg border bg-white shadow-md">
 										<ul
-											class="py-2 text-sm text-gray-500"
+											class="space-y-1 divide-y-[1px] divide-gray-300 py-2 text-sm text-gray-500"
 											aria-labelledby="dropdownLeftButton">
+											<li>
+												<button
+													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+													type="button"
+													:data-modal-target="`extended-letter-${letter.letterId}`"
+													:data-modal-toggle="`extended-letter-${letter.letterId}`">
+													View Details
+												</button>
+											</li>
 											<li v-if="letter.reportURL == null">
 												<button
 													class="block w-full bg-gray-100 px-4 py-2 text-center"
@@ -386,6 +395,19 @@
 				</div>
 			</form>
 		</ParentModal>
+
+		<!-- extra info on auth -->
+		<template v-if="authorityLetters.length > 0">
+			<ParentModal
+				v-for="(letter, index) in authorityLetters"
+				modal-title="Autority Letter"
+				:key="index"
+				:modal-id="`extended-letter-${letter.letterId}`"
+				:modal-subtitle="`For vehicle ${letter.registrationNumber}`"
+				modal-size="large">
+				<AuthorityLetterDetailsForm :authority-letter="letter" />
+			</ParentModal>
+		</template>
 	</div>
 </template>
 

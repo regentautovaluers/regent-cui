@@ -128,6 +128,8 @@ const useAuthorityLetters = () => {
 							createdOn: data.createdOn,
 							assessmentStage: data.assessmentStage,
 							reportURL: data.reportURL,
+							feedbackTrail: data.feedbackTrail,
+							uploadedDocuments: data.uploadedDocuments,
 						})),
 						totalPages: response.requestExtras?.totalPages || 0,
 					};
