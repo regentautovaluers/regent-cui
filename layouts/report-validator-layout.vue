@@ -1,7 +1,7 @@
 <template>
 	<main class="flex h-screen items-center justify-center">
 		<div
-			class="flex h-120 w-[95%] flex-col items-center space-y-4 rounded-lg border-[.5px] border-gray-300 py-5 shadow-sm md:w-[25%]">
+			class="tablet:w-[50%] laptop-lg:w-[35%] desktop-4k:w-[25%] flex h-fit w-[95%] flex-col items-center space-y-4 rounded-lg border-2 border-gray-300 py-5 shadow-xs">
 			<img
 				src="/images/app-logo.png"
 				class="h-14"
