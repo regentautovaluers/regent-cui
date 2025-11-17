@@ -94,6 +94,10 @@
 		@apply whitespace-nowrap;
 	}
 
+	button {
+		cursor: pointer;
+	}
+
 	p,
 	h1,
 	h2,
