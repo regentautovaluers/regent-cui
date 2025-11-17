@@ -1,16 +1,5 @@
 import { type TrackedVehicles, type Online } from '~/types/regent-tracking/tracked-vehicles';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
-import {
-	getTrackedVehicle,
-	setTrackedVehicle,
-	cleanTrackedVehicle,
-	state,
-	cleanTrackedVehicleLocation,
-	getTrackedVehicleLocation,
-	setTrackedVehicleLocation,
-	getClientDevices,
-	setClientDevices,
-} from '~/stores/regent-tracking-devices-store';
 
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
@@ -117,7 +106,7 @@ export function useRegentDeviceTracking() {
 
 	// watch the change in active device and only fetch vehicle on demand
 	watch(
-		() => state.activeTrackedVehicle,
+		() => getTrackedVehicle.value,
 		async (newValue) => {
 			// clean location when expanded view is closed
 			if (!newValue) {
@@ -169,6 +158,10 @@ export function useRegentDeviceTracking() {
 		return inputDate.getTime() < today.getTime();
 	}
 
+	function isDeviceSubscriptionExpired(vehicle: TrackedVehicles): boolean {
+		return vehicle?.online == 'offline' && vehicle?.timestamp == 0;
+	}
+
 	return {
 		totalVehicles,
 		computedVehicles,
@@ -188,5 +181,6 @@ export function useRegentDeviceTracking() {
 		refetchClientVehicles,
 		cleanTrackedVehicle,
 		cleanTrackedVehicleLocation,
+		isDeviceSubscriptionExpired,
 	};
 }
