@@ -21,7 +21,7 @@ export default defineNuxtConfig({
 		},
 	],
 	imports: {
-		dirs: ['./utils/**', './composables/**'],
+		dirs: ['./utils/**', './composables/**', './stores/**'],
 	},
 	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts'],
 	app: {
