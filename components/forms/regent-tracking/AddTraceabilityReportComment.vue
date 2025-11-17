@@ -1,5 +1,5 @@
 <template>
-	<div class="space-y-8">
+	<div class="space-y-5">
 		<!-- preliminary info -->
 		<div class="grid h-fit grid-cols-2 gap-2 rounded-lg bg-gray-200/80 p-4 outline-none">
 			<div class="col-span-2">
@@ -43,6 +43,7 @@
 			</div>
 		</div>
 
+		<h1 class="font-bold text-gray-700">Request Information</h1>
 		<!-- comment -->
 		<div
 			class="borer-blue-200 min-h-32 space-y-2 rounded-lg border bg-blue-100 p-4 outline-none">

@@ -356,7 +356,8 @@
 										<button
 											class="rounded-md border-[1px] border-green-500 bg-green-100 px-2 py-1 text-green-500"
 											:data-modal-target="`add-comment-tbl-${idx}`"
-											:data-modal-toggle="`add-comment-tbl-${idx}`">
+											:data-modal-toggle="`add-comment-tbl-${idx}`"
+											@click="setSidebarCollapsedState(false)">
 											Add Comment
 										</button>
 									</td>

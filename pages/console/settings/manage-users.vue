@@ -174,7 +174,8 @@
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 													type="button"
 													:data-modal-target="`edit-user-${user.userId}-modal`"
-													:data-modal-toggle="`edit-user-${user.userId}-modal`">
+													:data-modal-toggle="`edit-user-${user.userId}-modal`"
+													@click="setSidebarCollapsedState(false)">
 													Edit Details
 												</button>
 											</li>

@@ -298,6 +298,7 @@
 													type="button"
 													@click="
 														() => {
+															setSidebarCollapsedState(false);
 															downloadInvoice(invoice.id);
 														}
 													"
@@ -311,7 +312,8 @@
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 													type="button"
 													:data-modal-target="`pay-invoice-${invoice.id}-modal`"
-													:data-modal-toggle="`pay-invoice-${invoice.id}-modal`">
+													:data-modal-toggle="`pay-invoice-${invoice.id}-modal`"
+													@click="setSidebarCollapsedState(false)">
 													Pay Invoice
 												</button>
 											</li>

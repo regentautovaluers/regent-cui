@@ -56,7 +56,8 @@
 				<button
 					class="inline-flex size-[3.2rem] cursor-pointer items-center justify-center rounded-md border border-yellow-300 bg-yellow-100"
 					data-modal-target="topup-tokens-modal"
-					data-modal-toggle="topup-tokens-modal">
+					data-modal-toggle="topup-tokens-modal"
+					@click="setSidebarCollapsedState(false)">
 					<span
 						class="icon-[material-symbols-light--add-circle-rounded] text-3xl text-yellow-600"></span>
 				</button>

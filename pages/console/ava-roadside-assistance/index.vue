@@ -274,6 +274,7 @@
 														@click="
 															() => {
 																selectedIndexToEdit = index;
+																setSidebarCollapsedState(false);
 															}
 														"
 														data-modal-target="edit-member-details-modal"
@@ -288,6 +289,7 @@
 														type="button"
 														@click="
 															() => {
+																setSidebarCollapsedState(false);
 																selectedIndexToEdit = index;
 																getMemberVehicles(member.id);
 															}
@@ -305,6 +307,7 @@
 														data-modal-toggle="add-member-vehicles-modal"
 														@click="
 															() => {
+																setSidebarCollapsedState(false);
 																selectedIndexToEdit = index;
 															}
 														">

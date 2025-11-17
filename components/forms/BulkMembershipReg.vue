@@ -28,7 +28,8 @@
 					type="button"
 					class="me-2 inline-flex items-center rounded-lg bg-yellow-800 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-yellow-900 focus:ring-4 focus:ring-yellow-300 focus:outline-none"
 					data-modal-target="add-fleet-modal"
-					data-modal-toggle="add-fleet-modal">
+					data-modal-toggle="add-fleet-modal"
+					@click="setSidebarCollapsedState(false)">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="2em"

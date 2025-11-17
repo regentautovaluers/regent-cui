@@ -59,7 +59,8 @@
 							data-modal-target="search-authority-letters-filter-modal"
 							data-modal-toggle="search-authority-letters-filter-modal"
 							type="button"
-							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100">
+							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
+							@click="setSidebarCollapsedState(false)">
 							<span
 								class="icon-[material-symbols-light--filter-alt-sharp] size-8 text-gray-400"></span>
 							<span class="text-gray-400">Filters</span>
@@ -68,7 +69,8 @@
 							data-modal-target="export-authority-letters-modal"
 							data-modal-toggle="export-authority-letters-modal"
 							type="button"
-							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100">
+							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
+							@click="setSidebarCollapsedState(false)">
 							<span
 								class="icon-[material-symbols-light--arrow-downward-rounded] size-8 text-gray-400"></span>
 							<span class="text-gray-400">Export Report</span>
@@ -234,7 +236,8 @@
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 													type="button"
 													:data-modal-target="`extended-letter-${letter.letterId}`"
-													:data-modal-toggle="`extended-letter-${letter.letterId}`">
+													:data-modal-toggle="`extended-letter-${letter.letterId}`"
+													@click="setSidebarCollapsedState(false)">
 													View Details
 												</button>
 											</li>

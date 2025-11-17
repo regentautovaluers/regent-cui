@@ -70,7 +70,9 @@
 				<button
 					class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
 					data-modal-target="corporate-valuation-filters"
-					data-modal-toggle="corporate-valuation-filters">
+					data-modal-toggle="corporate-valuation-filters"
+					type="button"
+					@click="setSidebarCollapsedState(false)">
 					<span class="text-gray-400">Filters</span>
 					<span
 						class="icon-[material-symbols-light--filter-alt-sharp] size-7 text-gray-400"></span>

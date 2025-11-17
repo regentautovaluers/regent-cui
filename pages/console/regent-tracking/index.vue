@@ -306,10 +306,7 @@
 								activeDeviceTab == 'history' && 'bg-blue-100',
 							]"
 							type="button"
-							:disabled="
-								getTrackedVehicle?.online == 'offline' &&
-								getTrackedVehicle?.timestamp == 0
-							"
+							:disabled="isDeviceSubscriptionExpired(getTrackedVehicle as any)"
 							@click="
 								() => {
 									executeFetchDeviceHistory();
@@ -803,6 +800,7 @@
 		refetchClientVehicles,
 		cleanTrackedVehicle,
 		cleanTrackedVehicleLocation,
+		isDeviceSubscriptionExpired,
 	} = useRegentDeviceTracking();
 	const { startDeviceCommandLoading, stopDeviceCommandLoading, triggerDeviceCommand } =
 		useRegentTrackingDeviceUtils();

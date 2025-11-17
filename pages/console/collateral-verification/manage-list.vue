@@ -190,7 +190,8 @@
 													class="block w-full bg-gray-100 px-4 py-2 text-center"
 													:data-modal-target="`view-entry-${index}-modal`"
 													:data-modal-toggle="`view-entry-${index}-modal`"
-													type="button">
+													type="button"
+													@click="setSidebarCollapsedState(false)">
 													Edit Entry
 												</button>
 											</li>
@@ -199,7 +200,8 @@
 													class="block w-full bg-red-200 px-4 py-2 text-center text-white hover:bg-red-300"
 													:data-modal-target="`delete-entry-${index}-modal`"
 													:data-modal-toggle="`delete-entry-${index}-modal`"
-													type="button">
+													type="button"
+													@click="setSidebarCollapsedState(false)">
 													Delete Entry
 												</button>
 											</li>

@@ -27,7 +27,8 @@
 				class="generic-nuxt-link text-sm"
 				type="button"
 				data-modal-target="add-corporate-branch-modal"
-				data-modal-toggle="add-corporate-branch-modal">
+				data-modal-toggle="add-corporate-branch-modal"
+				@click="setSidebarCollapsedState(false)">
 				Add New Branch
 			</button>
 		</div>
@@ -41,7 +42,8 @@
 					class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
 					type="button"
 					data-modal-target="add-corporate-branch-modal"
-					data-modal-toggle="add-corporate-branch-modal">
+					data-modal-toggle="add-corporate-branch-modal"
+					@click="setSidebarCollapsedState(false)">
 					<span
 						class="icon-[material-symbols-light--add-location-rounded] size-8 text-gray-400"></span>
 					<span class="text-gray-400">Add New Branch</span>
@@ -106,7 +108,8 @@
 										type="button"
 										class="cursor-pointer text-blue-600 hover:font-semibold hover:text-blue-700"
 										:data-modal-target="`edit-corporate-branch-${branch.branchId}-modal`"
-										:data-modal-toggle="`edit-corporate-branch-${branch.branchId}-modal`">
+										:data-modal-toggle="`edit-corporate-branch-${branch.branchId}-modal`"
+										@clik="setSidebarCollapsedState(false)">
 										Edit
 									</button>
 								</td>

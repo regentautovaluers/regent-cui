@@ -3,20 +3,20 @@
 		<!-- button to open/close sidebar -->
 		<button
 			:class="[
-				'fixed top-1/2 z-50 inline-flex size-7 translate-y-1/2 cursor-pointer items-center justify-center rounded-lg border bg-gray-100 shadow-sm',
-				!sidebarOpen ? 'laptop-lg:left-[50px] left-[10px]' : 'left-[235px]',
+				'fixed top-1/2 z-30 inline-flex size-7 translate-y-1/2 cursor-pointer items-center justify-center rounded-lg border bg-gray-100 shadow-sm',
+				!getSidebarCollapsedState ? 'laptop-lg:left-[50px] left-[10px]' : 'left-[235px]',
 			]"
-			@click="() => (sidebarOpen = !sidebarOpen)">
+			@click="toggleSidebarCollapsedState()">
 			<span
 				:class="[
 					'icon-[material-symbols-light--keyboard-double-arrow-right-rounded] text-xl text-gray-500 transition-transform duration-300 ease-linear',
-					sidebarOpen ? 'rotate-180' : 'rotate-0',
+					getSidebarCollapsedState ? 'rotate-180' : 'rotate-0',
 				]"></span>
 		</button>
 		<aside
 			:class="[
-				'hide-scrollbar fixed z-30 flex h-screen max-h-screen flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white',
-				!sidebarOpen
+				'hide-scrollbar fixed z-10 flex h-screen max-h-screen flex-col justify-between overflow-y-scroll border-r-[.5px] bg-white',
+				!getSidebarCollapsedState
 					? 'laptop-lg:-translate-x-0 w-[65px] -translate-x-[65px]'
 					: 'w-[250px] -translate-x-0',
 			]">
@@ -25,12 +25,12 @@
 				<div
 					:class="[
 						'mx-2 mt-2 flex items-center rounded-lg py-2',
-						sidebarOpen && 'space-x-3 bg-gray-200 px-2',
+						getSidebarCollapsedState && 'space-x-3 bg-gray-200 px-2',
 					]">
 					<UserAvatar />
 					<div
 						class="hidden h-full flex-col overflow-hidden md:flex"
-						v-show="sidebarOpen">
+						v-show="getSidebarCollapsedState">
 						<h1
 							class="overflow-clip text-sm text-ellipsis whitespace-nowrap text-gray-500">
 							{{ getPrincipal?.username }}
@@ -62,14 +62,18 @@
 								:to="{ name: link.routeName }"
 								:class="[
 									'inline-flex size-full max-h-12 max-w-full justify-center',
-									!sidebarOpen
+									!getSidebarCollapsedState
 										? 'w-19'
 										: 'w-full flex-row items-center justify-center space-x-2',
 								]">
 								<span class="place-self-center">
 									<span :class="['text-[30px]', link.icon]"></span>
 								</span>
-								<span :class="['flex-grow text-sm', !sidebarOpen && 'hidden']"
+								<span
+									:class="[
+										'flex-grow text-sm',
+										!getSidebarCollapsedState && 'hidden',
+									]"
 									>{{ link.screenName }}
 								</span>
 							</NuxtLink>
@@ -79,7 +83,9 @@
 									link.childRoutes?.filter((x) => x.renderRoute).length > 0
 								"
 								:class="
-									sidebarOpen ? 'block rounded-full pr-4 outline-none' : 'hidden'
+									getSidebarCollapsedState
+										? 'block rounded-full pr-4 outline-none'
+										: 'hidden'
 								"
 								type="button"
 								:aria-controls="`${link.routeName}-dropdown`"
@@ -91,7 +97,7 @@
 							v-if="link.childRoutes"
 							:id="`${link.routeName}-dropdown`"
 							class="ml-5 hidden space-y-2"
-							:class="sidebarOpen ? 'block' : 'hidden'">
+							:class="getSidebarCollapsedState ? 'block' : 'hidden'">
 							<ol class="border-s border-gray-400">
 								<li
 									class="group relative ms-4 mb-7"
@@ -129,7 +135,7 @@
 			<div class="h-fit px-5">
 				<ClientOnly>
 					<ImageCarousel
-						v-show="sidebarOpen"
+						v-show="getSidebarCollapsedState"
 						:images="[
 							'/images/slides/sidebar/1.jpg',
 							'/images/slides/sidebar/2.jpg',
@@ -163,13 +169,13 @@
 						class="flex h-12 w-full items-center justify-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<button
 							class="inline-flex size-full cursor-pointer items-center space-x-3"
-							:class="!sidebarOpen && 'w-19 justify-center'"
+							:class="!getSidebarCollapsedState && 'w-19 justify-center'"
 							@click="attemptLogout">
 							<span
 								class="icon-[material-symbols-light--notifications-rounded] size-7 text-inherit"></span>
 							<span
 								class="text-sm transition-all duration-200 ease-out"
-								:class="sidebarOpen ? 'block' : 'hidden'"
+								:class="getSidebarCollapsedState ? 'block' : 'hidden'"
 								>Notifications</span
 							>
 						</button>
@@ -182,12 +188,12 @@
 							:to="{ name: 'settings-my-account' }"
 							:class="[
 								'inline-flex size-full items-center justify-start',
-								!sidebarOpen ? 'w-19 justify-center' : 'space-x-3',
+								!getSidebarCollapsedState ? 'w-19 justify-center' : 'space-x-3',
 							]">
 							<SettingsIcon classes="size-6 text-inherit" />
 							<span
 								class="text-sm transition-all duration-200 ease-out"
-								:class="sidebarOpen ? 'block' : 'hidden'"
+								:class="getSidebarCollapsedState ? 'block' : 'hidden'"
 								>Settings</span
 							>
 						</NuxtLink>
@@ -198,12 +204,12 @@
 						class="flex h-12 w-full items-center justify-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<button
 							class="inline-flex size-full cursor-pointer items-center space-x-3"
-							:class="!sidebarOpen && 'w-19 justify-center'"
+							:class="!getSidebarCollapsedState && 'w-19 justify-center'"
 							@click="attemptLogout">
 							<LogoutIcon classes="size-6 text-inherit" />
 							<span
 								class="text-sm transition-all duration-200 ease-out"
-								:class="sidebarOpen ? 'block' : 'hidden'"
+								:class="getSidebarCollapsedState ? 'block' : 'hidden'"
 								>Logout</span
 							>
 						</button>
@@ -211,7 +217,7 @@
 				</ul>
 
 				<div
-					v-show="sidebarOpen"
+					v-show="getSidebarCollapsedState"
 					class="text-center">
 					<h1>Regent Auto Valuers</h1>
 					<h2>
@@ -224,7 +230,7 @@
 		<div
 			:class="[
 				'ease-liner flex flex-1 flex-col bg-[#f8faf8] transition-all duration-300',
-				sidebarOpen
+				getSidebarCollapsedState
 					? 'laptop-lg:translate-x-0 laptop-lg:ml-[250px] translate-x-[250px]'
 					: 'laptop-lg:ml-[65px]',
 			]">
@@ -268,7 +274,6 @@
 	const { navigationRoutes, doesRouteNameMatch, fuzzyRouteNameMatch } = useNavigationRoutes();
 
 	const { attemptLogout } = useAuth();
-	const sidebarOpen: Ref<boolean> = ref(false);
 	const userInput: Ref<string> = ref('');
 	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();
 	const { getPrincipal } = useAuth();
