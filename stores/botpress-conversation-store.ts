@@ -1,6 +1,6 @@
 import { type ActionGroupNode, type TextNode } from '~/types';
 
-export const { state, getter, mutation, action, ...store } = createStore('', {
+const { state, getter, mutation, action, ...store } = createStore('', {
 	conversationId: '' as string,
 	conversation: [] as any, // TODO: fix this
 });

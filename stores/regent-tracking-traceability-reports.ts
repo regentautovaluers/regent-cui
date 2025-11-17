@@ -1,6 +1,6 @@
 import { type Report } from '~/types/regent-tracking/trace-report';
 
-export const { state, getter, mutation, action, ...store } = createStore('activeTrackedVehicle', {
+const { state, getter, mutation, action, ...store } = createStore('activeTrackedVehicle', {
 	deviceReports: null as Report[] | null,
 });
 

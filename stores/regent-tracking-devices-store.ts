@@ -1,6 +1,6 @@
 import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
 
-export const { state, getter, mutation, action, ...store } = createStore('activeTrackedVehicle', {
+const { state, getter, mutation, action, ...store } = createStore('activeTrackedVehicle', {
 	clientDevices: null as TrackedVehicles[] | null,
 	activeTrackedVehicle: null as TrackedVehicles | null,
 	activeTrackedVehicleLocation: null as string | null,

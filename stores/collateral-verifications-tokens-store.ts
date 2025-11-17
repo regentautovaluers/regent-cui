@@ -1,6 +1,6 @@
 import { type CollateralVerificationsTokens } from '~/types';
 
-export const { state, getter, mutation, action, ...store } = createStore(
+const { state, getter, mutation, action, ...store } = createStore(
 	'collateral-verifications-tokens-store',
 	{
 		tokensMetadata: null as CollateralVerificationsTokens | null,

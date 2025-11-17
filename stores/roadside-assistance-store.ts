@@ -1,10 +1,13 @@
 // Roadside Assistance Incidents Analytics
 import { type RoadsideAssistanceAnalytics } from '~/types';
 
-export const { state, getter, mutation, action, ...store } = createStore('ra-and-memberships-chart-store', {
-	raAnalytics: {} as RoadsideAssistanceAnalytics,
-	totalCompleted: 0,
-});
+const { state, getter, mutation, action, ...store } = createStore(
+	'ra-and-memberships-chart-store',
+	{
+		raAnalytics: {} as RoadsideAssistanceAnalytics,
+		totalCompleted: 0,
+	},
+);
 
 export const getRAAnalytics = getter('getRAAnalytics', (state) => state.raAnalytics);
 

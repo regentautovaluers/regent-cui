@@ -1,4 +1,4 @@
-export const { state, getter, mutation, action, ...store } = createStore('roadsideIncidents', {
+const { state, getter, mutation, action, ...store } = createStore('roadsideIncidents', {
 	roadsideIncidents: [] as any[],
 });
 

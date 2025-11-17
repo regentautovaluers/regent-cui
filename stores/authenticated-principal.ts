@@ -1,6 +1,6 @@
 import { type LoggedInPrincipal } from '~/types';
 
-export const { state, getter, mutation, action, ...store } = createStore('authenticatedPrincipal', {
+const { state, getter, mutation, action, ...store } = createStore('authenticatedPrincipal', {
 	principal: null as LoggedInPrincipal | null,
 });
 

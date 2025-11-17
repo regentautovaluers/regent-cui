@@ -1,5 +1,5 @@
 import { type CorporateClient } from '~/types/utils/corporate-clients';
-export const { state, getter, mutation, action, ...store } = createStore('corporate-clients', {
+const { state, getter, mutation, action, ...store } = createStore('corporate-clients', {
 	corporateClients: [] as CorporateClient[],
 });
 
