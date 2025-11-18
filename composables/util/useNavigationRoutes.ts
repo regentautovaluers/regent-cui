@@ -49,7 +49,7 @@ export default function () {
 			screenName: 'Vehicle Valuation',
 			routeName: 'vehicle-valuation-home',
 			renderRoute: true,
-			icon: 'icon-[material-symbols-light--garage-money]',
+			icon: 'icon-[material-symbols-light--garage-money-outline-rounded]',
 			description:
 				'With over 20 years of experience, we offer fair and data-driven vehicle assessments you can trust. \
 			 	Access all your reports as well as request for valuations from our new AVA app available on the Google \
@@ -82,7 +82,7 @@ export default function () {
 			screenName: 'Collateral Verification',
 			routeName: 'collateral-verification-home',
 			renderRoute: true,
-			icon: 'icon-[material-symbols-light--shield-question-outline-rounded]',
+			icon: 'icon-[material-symbols-light--document-search-outline]',
 			description:
 				'Introducing our newest addition to our range of services. Our collateral verification \
 				system tracks various vehicles used as loan collaterals, alongside verification of various \
