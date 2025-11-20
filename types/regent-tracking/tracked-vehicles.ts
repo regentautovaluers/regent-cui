@@ -1,4 +1,5 @@
-import { type TraceabilityReport, type Comments } from '~/types/regent-tracking/trace-report';
+import { type Comments } from '~/types/regent-tracking/trace-report';
+import { type DriverRiskScore } from '../insurance-telematics/driver-behaviour';
 
 export interface TrackedVehicles {
 	id: number;
@@ -41,6 +42,9 @@ export interface TrackedVehicles {
 	device_data: DeviceData;
 	comment: Comments[];
 	on_watchlist: boolean;
+
+	// for driver behaviour
+	driverRiskScore?: DriverRiskScore;
 }
 
 export enum Address {

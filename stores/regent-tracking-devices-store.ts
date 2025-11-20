@@ -1,3 +1,4 @@
+import type { DriverRiskScore } from '~/types/insurance-telematics/driver-behaviour';
 import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
 
 const { state, getter, mutation, action, ...store } = createStore('activeTrackedVehicle', {
@@ -8,6 +9,21 @@ const { state, getter, mutation, action, ...store } = createStore('activeTracked
 
 // all tracked vehicles
 export const getClientDevices = getter('getClientDevices', (state) => state.clientDevices);
+
+// tracked device by some id
+export const setDeviceDriverBehaviour = action(
+	'setDeviceDriverBehaviour',
+	async (driverBehaviour: DriverRiskScore, mutate) => {
+		const deviceId = driverBehaviour.deviceId;
+		mutate((state) => {
+			let toEdit = state.clientDevices?.findIndex((e) => e.id == deviceId)!;
+			(state.clientDevices as TrackedVehicles[])[toEdit] = {
+				...(state.clientDevices as TrackedVehicles[])[toEdit],
+				driverRiskScore: driverBehaviour,
+			};
+		});
+	},
+);
 
 export const setClientDevices = mutation(
 	'setClientDevices',

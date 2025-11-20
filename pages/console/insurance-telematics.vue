@@ -3,7 +3,7 @@
 	<div class="console-layout-spacing">
 		<!-- links strip -->
 		<div
-			class="hide-scrollbar h-fit space-x-4 divide-y-2 overflow-x-scroll rounded-lg border-2 bg-white whitespace-nowrap">
+			class="hide-scrollbar mb-5 h-fit space-x-4 divide-y-2 overflow-x-scroll rounded-lg border-2 bg-white whitespace-nowrap">
 			<div class="inline-flex h-28 w-full items-center justify-between p-5 outline-none">
 				<div class="flex h-full items-center space-x-3">
 					<button

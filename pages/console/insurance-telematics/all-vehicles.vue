@@ -163,19 +163,23 @@
 									</p>
 								</td>
 
-								<td class="tablet:table-cell py-4">{{ 890 }} Km</td>
+								<td class="tablet:table-cell py-4">
+									{{ v.driverRiskScore?.totalDistanceTraveled ?? '-' }} Km
+								</td>
 								<td class="tablet:table-cell hidden py-4">
 									<span
 										:class="[
 											'rounded-full border-[1px] px-2 py-1 text-sm',
-											'offline' == v.online &&
+											!v.driverRiskScore && 'text-gray-500',
+											v.driverRiskScore?.averageScore! > 5 &&
 												'border-red-500 bg-red-200 text-red-500',
-											'expired' == v.online &&
+											v.driverRiskScore?.averageScore! >= 2 &&
+												v.driverRiskScore?.averageScore! <= 4 &&
 												'border-yellow-500 bg-yellow-200 text-yellow-500',
-											['ack', 'engine', 'online'].includes(v.online) &&
+											v.driverRiskScore?.averageScore! < 2 &&
 												'border-green-500 bg-green-200 text-green-500',
 										]"
-										>{{ v.online }}</span
+										>{{ v.driverRiskScore?.averageScore ?? '-' }}</span
 									>
 								</td>
 								<td class="tablet:table-cell hidden space-y-2 py-4">
@@ -185,13 +189,25 @@
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
 											v-if="computingDriverRiskLevel && !v.driverRiskScore"
-											class="icon-[svg-spinners--3-dots-scale] size-3 text-red-500"></span>
+											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
-											class="font-semibold text-red-500"
+											:class="[
+												'font-semibold',
+												!v.driverRiskScore && 'text-gray-500',
+												v.driverRiskScore?.overspeedScore
+													?.percentageScore! > 5 && 'text-red-500',
+												v.driverRiskScore?.overspeedScore
+													?.percentageScore! >= 2 &&
+													v.driverRiskScore?.overspeedScore
+														?.percentageScore! <= 4 &&
+													'text-yellow-500',
+												v.driverRiskScore?.overspeedScore
+													?.percentageScore! < 2 && 'text-green-500',
+											]"
 											v-else
 											>{{
 												v.driverRiskScore?.overspeedScore
-													?.percentageScore ?? 0
+													?.percentageScore ?? '-'
 											}}</span
 										>
 									</span>
@@ -201,14 +217,26 @@
 										<span class="text-sm text-gray-600">Harsh Accel.</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && v.driverRiskScore"
-											class="icon-[svg-spinners--3-dots-scale] size-3 text-green-500"></span>
+											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
-											class="font-semibold text-green-500"
+											:class="[
+												'font-semibold',
+												!v.driverRiskScore && 'text-gray-500',
+												v.driverRiskScore?.harshAccelerationScore
+													?.percentageScore! > 5 && 'text-red-500',
+												v.driverRiskScore?.harshAccelerationScore
+													?.percentageScore! >= 2 &&
+													v.driverRiskScore?.harshAccelerationScore
+														?.percentageScore! <= 4 &&
+													'text-yellow-500',
+												v.driverRiskScore?.harshAccelerationScore
+													?.percentageScore! < 2 && 'text-green-500',
+											]"
 											v-else
 											>{{
 												v.driverRiskScore?.harshAccelerationScore
-													?.percentageScore ?? 0
+													?.percentageScore ?? '-'
 											}}</span
 										>
 									</span>
@@ -218,23 +246,36 @@
 										<span class="text-sm text-gray-600">Harsh Brake</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && v.driverRiskScore"
-											class="icon-[svg-spinners--3-dots-scale] size-3 text-yellow-500"></span>
+											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
-											class="font-semibold text-yellow-500"
+											:class="[
+												'font-semibold',
+												!v.driverRiskScore && 'text-gray-500',
+												v.driverRiskScore?.brakingScore?.percentageScore! >
+													5 && 'text-red-500',
+												v.driverRiskScore?.brakingScore?.percentageScore! >=
+													2 &&
+													v.driverRiskScore?.brakingScore
+														?.percentageScore! <= 4 &&
+													'text-yellow-500',
+												v.driverRiskScore?.brakingScore?.percentageScore! <
+													2 && 'text-green-500',
+											]"
 											v-else
 											>{{
 												v.driverRiskScore?.brakingScore?.percentageScore ??
-												0
+												'-'
 											}}</span
 										>
 									</span>
 								</td>
 								<td class="tablet:table-cell hidden py-4 ps-3">
 									<button
-										class="rounded-md border-[1px] border-green-500 bg-green-100 px-2 py-1 text-green-500"
+										class="rounded-md border-[1px] border-blue-500 bg-blue-100 px-2 py-1 text-blue-500"
 										:data-modal-target="`add-comment-tbl-${idx}`"
-										:data-modal-toggle="`add-comment-tbl-${idx}`">
+										:data-modal-toggle="`add-comment-tbl-${idx}`"
+										@click="setSidebarCollapsedState(false)">
 										View Details
 									</button>
 								</td>

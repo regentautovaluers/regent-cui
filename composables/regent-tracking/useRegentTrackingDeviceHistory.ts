@@ -19,6 +19,7 @@ export function useRegentTrackingDeviceHistory() {
 	const fromDate: Ref<string | null> = ref(null);
 	const toDate: Ref<string | null> = ref(null);
 	const { authToken } = useRegentTrackingAuth();
+	const { get } = useStandardizedApi();
 
 	function setPolylineCoords(input: { lat: number; lng: number }[]) {
 		polylineCoords.value = input;
@@ -166,6 +167,42 @@ export function useRegentTrackingDeviceHistory() {
 				: deviceMovement.value.flatMap((e) => e.pingHistory),
 	);
 
+	async function fetchMultipleDeviceHistory(deviceIds: number[]): Promise<DeviceHistory[]> {
+		let requests = deviceIds.map((id) => {
+			let requestUrl = `/api/regent-tracking/device-history?api_hash=${authToken.value}&device_id=${id}&from_time=00:00:00&to_time=23:59:59&from_date=2025-11-18&to_date=2025-11-18`;
+
+			/*
+				if (filterPeriod.value == 'custom') {
+					requestUrl =
+						requestUrl + `&from_date=${fromDate.value}&to_date=${toDate.value}`;
+				} else {
+					let dateRange = calculateDateRange(filterPeriod.value);
+					requestUrl =
+						requestUrl +
+						`&from_date=${dateRange.startDate}&to_date=${dateRange.endDate}`;
+				}
+				*/
+			return get<DeviceHistory>(requestUrl);
+		});
+		const responses = await Promise.allSettled(requests);
+
+		return responses
+			.filter(
+				(
+					result,
+				): result is PromiseFulfilledResult<StandardSuccessResponse<DeviceHistory>> => {
+					// First check if promise fulfilled
+					if (result.status !== 'fulfilled') {
+						return false;
+					}
+
+					// Then check if response is a success response
+					return result.value.success === true && 'data' in result.value;
+				},
+			)
+			.map((result) => result.value.data);
+	}
+
 	return {
 		filterPeriod,
 		deviceHistory,
@@ -183,5 +220,6 @@ export function useRegentTrackingDeviceHistory() {
 		setPolylineCoords,
 		executeFetchDeviceHistory,
 		clearDeviceHistory,
+		fetchMultipleDeviceHistory,
 	};
 }
