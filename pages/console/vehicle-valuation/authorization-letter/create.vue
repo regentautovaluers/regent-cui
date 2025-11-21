@@ -365,7 +365,7 @@
 			<!-- submit button -->
 			<button
 				type="submit"
-				:disabled="!consentProvided"
+				:disabled="!consentProvided || createAuthorizationLetterLoading"
 				:class="[
 					'generic-form-submit mt-4 w-full md:w-1/3',
 					createAuthorizationLetterLoading && 'skeleton skeleton-animated',

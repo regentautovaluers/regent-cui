@@ -182,7 +182,6 @@
 		phoneNumber.value = '';
 		password.value = '';
 		companyRole.value = '';
-		userRole.value = '';
 	};
 
 	const { addNewAccountLoading, addNewAccount } = useUserAccounts();

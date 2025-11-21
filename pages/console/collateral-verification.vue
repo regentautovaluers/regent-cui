@@ -89,7 +89,7 @@
 		{
 			to: 'collateral-verification-payments-regular',
 			name: 'Payments',
-			shouldShow: isPrincipalAdmin,
+			shouldShow: isPrincipalAdmin.value,
 			icon: 'icon-[material-symbols-light--money-bag]',
 		},
 	];

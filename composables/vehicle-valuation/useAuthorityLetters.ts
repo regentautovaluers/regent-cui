@@ -206,6 +206,18 @@ const useAuthorityLetters = () => {
 						useToast('Letter created successfully!', {
 							type: 'success',
 						});
+
+						// clear the fields
+						registrationNumber.value = '';
+						clientName.value = '';
+						clientPhone.value = '';
+						preferredBranch.value = '';
+						policyNumber.value = '';
+						comments.value = '';
+						uploadedDocuments.value = [];
+						consentProvided.value = false;
+						agencyOrCorpName.value = '';
+						agencyOrCorpId.value = '';
 					}
 				},
 			});
