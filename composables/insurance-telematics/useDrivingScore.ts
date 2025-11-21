@@ -74,11 +74,11 @@ export function useDrivingScore() {
 				const appearanceMetrics: {
 					harshAccelerationAppearances: number;
 					harshBrakingAppearances: number;
-					overspeedingAppearance: number;
+					harshTurningAppearances: number;
 				} = {
 					harshAccelerationAppearances: 0,
 					harshBrakingAppearances: 0,
-					overspeedingAppearance: 0,
+					harshTurningAppearances: 0,
 				};
 				for (let v of h.items) {
 					// 1. Access the inner Item2 object(s)
@@ -100,16 +100,18 @@ export function useDrivingScore() {
 										appearanceMetrics.harshAccelerationAppearances += 1;
 									} else if (value === '2') {
 										appearanceMetrics.harshBrakingAppearances += 1;
+									} else if (value === '3') {
+										appearanceMetrics.harshTurningAppearances += 1;
 									}
 								}
 
-								// similarly check for overspeed occurances
-								const overspeeedEventString = v2.other_arr.find((str) =>
-									str.includes('io255'),
-								);
-								if (overspeeedEventString) {
-									appearanceMetrics.overspeedingAppearance += 1;
-								}
+								// // similarly check for overspeed occurances
+								// const overspeeedEventString = v2.other_arr.find((str) =>
+								// 	str.includes('io255'),
+								// );
+								// if (overspeeedEventString) {
+								// 	appearanceMetrics.overspeedingAppearance += 1;
+								// }
 							}
 						}
 					}
@@ -136,15 +138,27 @@ export function useDrivingScore() {
 					riskLevel: calculateRiskLevel(harshAcclerationPercentageScore),
 					percentageScore: harshAcclerationPercentageScore,
 				};
+
+				// for the harsh turning
+				const harshTruningPercentageScore = calculateHarshTurningScore(
+					appearanceMetrics.harshTurningAppearances,
+					totalDistanceTraveled,
+				);
+				analysis.harshCornering = {
+					rawScore: appearanceMetrics.harshTurningAppearances,
+					riskLevel: calculateRiskLevel(harshTruningPercentageScore),
+					percentageScore: harshTruningPercentageScore,
+				};
+
+				// for the overspeed
+				// const overspeedPercentageScore = calculateOverspeedScore;
+
+				// for the averages
 				const averageRiskScore = calculateAverageRiskScore(
 					harshAcclerationPercentageScore,
 					brakingPercentageScore,
-					0,
+					harshTruningPercentageScore,
 				);
-
-				// for the overspeed
-				const overspeedPercentageScore = calculateOverspeedScore;
-
 				analysis.averageScore = averageRiskScore;
 				analysis.averageRiskLevel = calculateRiskLevel(averageRiskScore);
 
@@ -193,6 +207,10 @@ export function useDrivingScore() {
 		return Number(((breakingCount / distanceDriven) * 100).toFixed(2));
 	}
 
+	function calculateHarshTurningScore(harshTurningCount: number, distanceDriven: number): number {
+		return Number(((harshTurningCount / distanceDriven) * 100).toFixed(2));
+	}
+
 	function calculateOverspeedScore(overspeedDuration: number, distanceDriven: number): number {
 		return (overspeedDuration / 10 / distanceDriven) * 100;
 	}
@@ -207,12 +225,8 @@ export function useDrivingScore() {
 		}
 	}
 
-	function calculateAverageRiskScore(
-		harshAccelerationScore: number,
-		brakingScore: number,
-		overspeedScore: number,
-	): number {
-		return Number(((harshAccelerationScore + brakingScore + overspeedScore) / 3).toFixed(2));
+	function calculateAverageRiskScore(...entries: number[]): number {
+		return Number((entries.reduce((acc, curr) => acc + curr, 0) / 3).toFixed(2));
 	}
 
 	function setFilterPeriod(period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months') {

@@ -249,7 +249,7 @@
 								<td class="tablet:table-cell hidden space-y-2 py-4">
 									<span
 										class="inline-flex w-40 items-center justify-between space-x-1">
-										<span class="text-sm text-gray-600">Overspeed</span>
+										<span class="text-sm text-gray-600">Harsh Corn.</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
 											v-if="computingDriverRiskLevel && !v.driverRiskScore"
