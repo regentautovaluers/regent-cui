@@ -436,7 +436,13 @@
 						data-dropdown-toggle="alerts-dd"
 						class="inline-flex h-14 w-full items-center justify-between rounded-lg border border-gray-200 px-5 py-2.5 text-center text-sm font-bold text-gray-500 outline-none hover:bg-gray-200"
 						type="button">
-						<span>Filter Time</span>
+						<span v-if="!filterPeriod">Filter Time</span>
+						<span v-else-if="filterPeriod == 'today'">Today</span>
+						<span v-else-if="filterPeriod == 'this-week'">This Week</span>
+						<span v-else-if="filterPeriod == 'last-30-days'">This Month</span>
+						<span v-else-if="filterPeriod == 'last-3-months'">Last Three Months</span>
+						<span v-else-if="filterPeriod == 'last-6-months'">Last Six Months</span>
+						<span v-else-if="filterPeriod == 'custom'">Custom Time</span>
 						<span
 							class="icon-[material-symbols-light--keyboard-arrow-down] size-[25px] text-gray-500"></span>
 					</button>
@@ -602,8 +608,8 @@
 								</div>
 								<button
 									type="submit"
-									class="p-0 text-sm text-blue-700 hover:underline">
-									Filter
+									class="my-2 w-full border border-blue-500 bg-blue-100 py-2 text-center text-sm text-white hover:bg-blue-200 hover:underline">
+									Apply Filter
 								</button>
 							</form>
 						</ul>
@@ -850,6 +856,10 @@
 		{
 			name: 'Last 3 Months',
 			period: 'last-3-months',
+		},
+		{
+			name: 'Last 6 Months',
+			period: 'last-6-months',
 		},
 		{
 			name: 'Custom',
