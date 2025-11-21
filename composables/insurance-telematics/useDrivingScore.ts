@@ -3,9 +3,12 @@ import {
 	type RiskLevel,
 	type DriverRiskScore,
 } from '~/types/insurance-telematics/driver-behaviour';
-import { type DeviceHistory, type Item2 } from '~/types/regent-tracking/device-history';
+import { type DeviceHistory } from '~/types/regent-tracking/device-history';
 
-export type driverBehaviour = '' | '' | '';
+type ComputedVehicles = {
+	vehicles: TrackedVehicles[] | null;
+	totalPages: number;
+};
 export function useDrivingScore() {
 	const size: Ref<number> = ref(10);
 	const page: Ref<number> = ref(0);
@@ -19,15 +22,14 @@ export function useDrivingScore() {
 	const { fromDate, toDate, fetchMultipleDeviceHistory } = useRegentTrackingDeviceHistory();
 	const activeRiskLevel: Ref<RiskLevel | null> = ref(null);
 	const computingDriverRiskLevel: Ref<boolean> = ref(false);
-
 	const totalVehicles: ComputedRef<number> = computed(() =>
 		!getClientDevices.value ? 0 : getClientDevices.value.length,
 	);
+	const filterPeriod: Ref<
+		'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'last-6-months'
+	> = ref('this-week');
 
-	const computedVehicles: ComputedRef<{
-		vehicles: TrackedVehicles[] | null;
-		totalPages: number;
-	}> = computed(() => {
+	const computedVehicles: ComputedRef<ComputedVehicles> = computed(() => {
 		const filtered = getFilteredVehicles();
 		const start = page.value * size.value;
 		return {
@@ -38,103 +40,121 @@ export function useDrivingScore() {
 		};
 	});
 
-	watch(
-		computedVehicles,
-		async (newList) => {
-			// filter the small list for viable entries
-			let viable: TrackedVehicles[] | undefined = newList.vehicles?.filter(
-				(v: TrackedVehicles) => !isDeviceSubscriptionExpired(v) && !v.driverRiskScore,
+	watch(computedVehicles, async (newList) => await deriveDriverBehaviour(newList), {
+		immediate: true,
+	});
+
+	async function deriveDriverBehaviour(newList: ComputedVehicles): Promise<void> {
+		// filter the small list for viable entries
+		let viable: TrackedVehicles[] | undefined = newList.vehicles?.filter(
+			(v: TrackedVehicles) => !isDeviceSubscriptionExpired(v) && !v.driverRiskScore,
+		);
+
+		if (viable && viable?.length > 0) {
+			computingDriverRiskLevel.value = true;
+			const histories: DeviceHistory[] = await fetchMultipleDeviceHistory(
+				viable.map((e) => e.id),
+				filterPeriod.value,
 			);
 
-			if (viable && viable?.length > 0) {
-				computingDriverRiskLevel.value = true;
-				const histories: DeviceHistory[] = await fetchMultipleDeviceHistory(
-					viable.map((e) => e.id),
-				);
+			// compute results
+			histories.forEach((h) => {
+				const deviceId: number = h.device.id;
+				const totalDistanceTraveled = Number(h.distance_sum.split(' ')[0]);
+				let analysis: DriverRiskScore | null = {
+					deviceId,
+					totalDistanceTraveled,
+					harshAccelerationScore: null,
+					brakingScore: null,
+					harshCornering: null,
+					averageScore: 0,
+					averageRiskLevel: null,
+				};
 
-				// compute results
-				histories.forEach((h) => {
-					const deviceId: number = h.device.id;
-					const totalDistanceTraveled = Number(h.distance_sum.split(' ')[0]);
-					let analysis: DriverRiskScore | null = {
-						deviceId,
-						totalDistanceTraveled,
-						harshAccelerationScore: null,
-						brakingScore: null,
-						overspeedScore: null,
-						averageScore: 0,
-					};
+				const appearanceMetrics: {
+					harshAccelerationAppearances: number;
+					harshBrakingAppearances: number;
+					overspeedingAppearance: number;
+				} = {
+					harshAccelerationAppearances: 0,
+					harshBrakingAppearances: 0,
+					overspeedingAppearance: 0,
+				};
+				for (let v of h.items) {
+					// 1. Access the inner Item2 object(s)
+					if (v.items && v.items.length > 0) {
+						for (let v2 of v.items) {
+							// Check if the Item2 object and its other_arr exist
+							if (v2.other_arr) {
+								// 2. Find the string whose name part is "io253"
+								const eventString = v2.other_arr.find((str) =>
+									str.includes('io253'),
+								);
 
-					const appearanceMetrics: {
-						harshAccelerationAppearances: number;
-						harshBrakingAppearances: number;
-					} = {
-						harshAccelerationAppearances: 0,
-						harshBrakingAppearances: 0,
-					};
-					for (let v of h.items) {
-						// 1. Access the inner Item2 object(s)
-						if (v.items && v.items.length > 0) {
-							for (let v2 of v.items) {
-								// Check if the Item2 object and its other_arr exist
-								if (v2.other_arr) {
-									// 2. Find the string whose name part is "io253"
-									const eventString = v2.other_arr.find((str) =>
-										str.includes('io253'),
-									);
+								if (eventString) {
+									// Extract the value part (after the colon)
+									const value = eventString.split(':')[1]?.trim();
 
-									if (eventString) {
-										// Extract the value part (after the colon)
-										const value = eventString.split(':')[1]?.trim();
-
-										// 3. Update appearances based on the value
-										if (value === '1') {
-											appearanceMetrics.harshAccelerationAppearances += 1;
-										} else if (value === '2') {
-											appearanceMetrics.harshBrakingAppearances += 1;
-										}
+									// 3. Update appearances based on the value
+									if (value === '1') {
+										appearanceMetrics.harshAccelerationAppearances += 1;
+									} else if (value === '2') {
+										appearanceMetrics.harshBrakingAppearances += 1;
 									}
+								}
+
+								// similarly check for overspeed occurances
+								const overspeeedEventString = v2.other_arr.find((str) =>
+									str.includes('io255'),
+								);
+								if (overspeeedEventString) {
+									appearanceMetrics.overspeedingAppearance += 1;
 								}
 							}
 						}
 					}
+				}
 
-					// for the braking score
-					const brakingPercentageScore = calculateBrakingScore(
-						appearanceMetrics.harshBrakingAppearances,
-						totalDistanceTraveled,
-					);
-					analysis.brakingScore = {
-						rawScore: appearanceMetrics.harshBrakingAppearances,
-						riskLevel: calculateRiskLevel(brakingPercentageScore),
-						percentageScore: brakingPercentageScore,
-					};
+				// for the braking score
+				const brakingPercentageScore = calculateBrakingScore(
+					appearanceMetrics.harshBrakingAppearances,
+					totalDistanceTraveled,
+				);
+				analysis.brakingScore = {
+					rawScore: appearanceMetrics.harshBrakingAppearances,
+					riskLevel: calculateRiskLevel(brakingPercentageScore),
+					percentageScore: brakingPercentageScore,
+				};
 
-					// for the harsh acceleration
-					const harshAcclerationPercentageScore = calculateHarshAccelerationScore(
-						appearanceMetrics.harshAccelerationAppearances,
-						totalDistanceTraveled,
-					);
-					analysis.harshAccelerationScore = {
-						rawScore: appearanceMetrics.harshAccelerationAppearances,
-						riskLevel: calculateRiskLevel(harshAcclerationPercentageScore),
-						percentageScore: harshAcclerationPercentageScore,
-					};
-					analysis.averageScore = calculateAverageRiskScore(
-						harshAcclerationPercentageScore,
-						brakingPercentageScore,
-						0,
-					);
+				// for the harsh acceleration
+				const harshAcclerationPercentageScore = calculateHarshAccelerationScore(
+					appearanceMetrics.harshAccelerationAppearances,
+					totalDistanceTraveled,
+				);
+				analysis.harshAccelerationScore = {
+					rawScore: appearanceMetrics.harshAccelerationAppearances,
+					riskLevel: calculateRiskLevel(harshAcclerationPercentageScore),
+					percentageScore: harshAcclerationPercentageScore,
+				};
+				const averageRiskScore = calculateAverageRiskScore(
+					harshAcclerationPercentageScore,
+					brakingPercentageScore,
+					0,
+				);
 
-					console.log('appearance metrics:', appearanceMetrics, 'analysis:', analysis);
-					setDeviceDriverBehaviour(analysis);
-				});
-			}
+				// for the overspeed
+				const overspeedPercentageScore = calculateOverspeedScore;
 
-			computingDriverRiskLevel.value = false;
-		},
-		{ immediate: true },
-	);
+				analysis.averageScore = averageRiskScore;
+				analysis.averageRiskLevel = calculateRiskLevel(averageRiskScore);
+
+				// console.log('appearance metrics:', appearanceMetrics, 'analysis:', analysis);
+				setDeviceDriverBehaviour(analysis);
+			});
+		}
+
+		computingDriverRiskLevel.value = false;
+	}
 
 	function getFilteredVehicles() {
 		if (!getClientDevices.value) return [];
@@ -178,12 +198,12 @@ export function useDrivingScore() {
 	}
 
 	function calculateRiskLevel(percentageScore: number): RiskLevel {
-		if (percentageScore >= 80) {
-			return 'high';
-		} else if (percentageScore >= 60 && percentageScore <= 79) {
-			return 'medium';
+		if (percentageScore >= 5) {
+			return 'High Risk';
+		} else if (percentageScore >= 2 && percentageScore <= 4) {
+			return 'Medium Risk';
 		} else {
-			return 'low';
+			return 'Low Risk';
 		}
 	}
 
@@ -193,6 +213,10 @@ export function useDrivingScore() {
 		overspeedScore: number,
 	): number {
 		return Number(((harshAccelerationScore + brakingScore + overspeedScore) / 3).toFixed(2));
+	}
+
+	function setFilterPeriod(period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months') {
+		filterPeriod.value = period;
 	}
 
 	return {
@@ -207,6 +231,8 @@ export function useDrivingScore() {
 		fromDate,
 		toDate,
 		computingDriverRiskLevel,
+		filterPeriod,
 		setRiskLevel,
+		setFilterPeriod,
 	};
 }

@@ -18,7 +18,7 @@
 			<!-- Modal content -->
 			<div
 				:class="[
-					'relative flex flex-col rounded-lg bg-white shadow',
+					'relative flex flex-col rounded-lg bg-white shadow-xs border',
 					props.modalSize == 'full-screen' && 'h-full',
 				]">
 				<!-- Modal header -->

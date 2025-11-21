@@ -6,6 +6,21 @@
 			<div class="tablet:w-1/2 w-full">
 				<h1 class="text-lg font-bold text-gray-700">All Vehicles</h1>
 				<h2 class="text-sm text-gray-500">{{ totalVehicles }} Vehicles Found</h2>
+				<div class="flex w-fit items-center space-x-3">
+					<h1 class="font-semibold text-gray-600">Guide:</h1>
+					<div class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-green-500"> </span>
+						<span class="test-sm text-gray-500"> Low Risk </span>
+					</div>
+					<div class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-yellow-500"> </span>
+						<span class="test-sm text-gray-500"> Medium Risk </span>
+					</div>
+					<div class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-red-500"> </span>
+						<span class="test-sm text-gray-500"> High Risk </span>
+					</div>
+				</div>
 			</div>
 			<!-- tab switcher -->
 			<div
@@ -19,43 +34,92 @@
 				<button
 					:class="[
 						'inline-flex items-center justify-center space-x-2 font-semibold',
-						activeRiskLevel == 'low' && 'bg-blue-100',
+						activeRiskLevel == 'Low Risk' && 'bg-blue-100',
 					]"
 					type="button"
-					@click="setRiskLevel('low')">
+					@click="setRiskLevel('Low Risk')">
 					Low Risk
 				</button>
 				<button
 					:class="[
 						'inline-flex items-center justify-center space-x-2 font-semibold',
-						activeRiskLevel == 'medium' && 'bg-blue-100',
+						activeRiskLevel == 'Medium Risk' && 'bg-blue-100',
 					]"
 					type="button"
-					@click="setRiskLevel('medium')">
+					@click="setRiskLevel('Medium Risk')">
 					Medium Risk
 				</button>
 				<button
 					:class="[
 						'inline-flex items-center justify-center space-x-2 font-semibold disabled:bg-gray-100',
-						activeRiskLevel == 'high' && 'bg-blue-100',
+						activeRiskLevel == 'High Risk' && 'bg-blue-100',
 					]"
 					type="button"
-					@click="setRiskLevel('high')">
+					@click="setRiskLevel('High Risk')">
 					High Risk
 				</button>
 			</div>
 		</div>
-		<div class="">
-			<div class="relative flex w-full items-center justify-between p-5">
-				<span
-					class="icon-[material-symbols-light--search] absolute translate-x-1 text-2xl text-gray-700"></span>
-				<input
-					type="text"
-					name="search-tracked-device"
-					id="search-tracked-device"
-					placeholder="Search by registration, client name or client number."
-					class="h-14 w-1/3 rounded-md ps-8 text-sm text-gray-700 outline-none placeholder:text-gray-500"
-					v-model.trim="searchString" />
+		<div>
+			<div
+				class="tablet:flex-row tablet:space-y-0 tablet:p-5 flex w-full flex-col items-center justify-between space-y-2 p-3">
+				<div
+					class="tablet:w-[75%] laptop:w-[85%] relative flex w-full items-center justify-between">
+					<span
+						class="icon-[material-symbols-light--search] absolute translate-x-1 text-2xl text-gray-700"></span>
+					<input
+						type="text"
+						name="search-tracked-device"
+						id="search-tracked-device"
+						placeholder="Search by registration, client name or client number."
+						class="h-14 w-1/3 rounded-md ps-8 text-sm text-gray-700 outline-none placeholder:text-gray-500"
+						v-model.trim="searchString" />
+				</div>
+
+				<div
+					class="thin-scrollbar tablet:w-[25%] laptop:w-[15%] w-full space-y-5 overflow-y-auto">
+					<button
+						id="filter-filters-dd-btn"
+						data-dropdown-toggle="filters-dd"
+						class="inline-flex h-14 w-full items-center justify-between rounded-lg border border-gray-200 px-5 py-2.5 text-center text-sm font-bold text-gray-500 outline-none hover:bg-gray-200"
+						type="button">
+						<span v-if="!filterPeriod">Select Time Period</span>
+						<span v-else-if="filterPeriod == 'today'">Today</span>
+						<span v-else-if="filterPeriod == 'this-week'">This Week</span>
+						<span v-else-if="filterPeriod == 'last-30-days'">This Month</span>
+						<span v-else-if="filterPeriod == 'last-3-months'">Last Three Months</span>
+						<span v-else-if="filterPeriod == 'last-6-months'">Last Six Months</span>
+						<span
+							class="icon-[material-symbols-light--keyboard-arrow-down] size-[25px] text-gray-500"></span>
+					</button>
+					<!-- Dropdown menu -->
+					<div
+						id="filters-dd"
+						class="laptop:-translate-x-10 tablet:w-1/2 laptop:w-96 z-10 hidden w-full divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white shadow-sm">
+						<ul
+							class="w-full space-y-2 p-2 text-sm text-gray-700"
+							aria-labelledby="dropdownDefaultButton">
+							<li
+								class="w-full"
+								v-for="(e, idx) in availablePeriodButtons"
+								:key="idx">
+								<button
+									type="button"
+									:class="[
+										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
+									]"
+									@click="setFilterPeriod(e.period as any)">
+									<span
+										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
+										v-if="
+											computingDriverRiskLevel && filterPeriod == e.period
+										"></span>
+									<span>{{ e.name }}</span>
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 
 			<!-- table -->
@@ -194,19 +258,19 @@
 											:class="[
 												'font-semibold',
 												!v.driverRiskScore && 'text-gray-500',
-												v.driverRiskScore?.overspeedScore
+												v.driverRiskScore?.harshCornering
 													?.percentageScore! > 5 && 'text-red-500',
-												v.driverRiskScore?.overspeedScore
+												v.driverRiskScore?.harshCornering
 													?.percentageScore! >= 2 &&
-													v.driverRiskScore?.overspeedScore
+													v.driverRiskScore?.harshCornering
 														?.percentageScore! <= 4 &&
 													'text-yellow-500',
-												v.driverRiskScore?.overspeedScore
+												v.driverRiskScore?.harshCornering
 													?.percentageScore! < 2 && 'text-green-500',
 											]"
 											v-else
 											>{{
-												v.driverRiskScore?.overspeedScore
+												v.driverRiskScore?.harshCornering
 													?.percentageScore ?? '-'
 											}}</span
 										>
@@ -272,9 +336,10 @@
 								</td>
 								<td class="tablet:table-cell hidden py-4 ps-3">
 									<button
-										class="rounded-md border-[1px] border-blue-500 bg-blue-100 px-2 py-1 text-blue-500"
-										:data-modal-target="`add-comment-tbl-${idx}`"
-										:data-modal-toggle="`add-comment-tbl-${idx}`"
+										class="rounded-md border-[1px] border-blue-500 bg-blue-100 px-2 py-1 text-blue-500 disabled:border-gray-500 disabled:bg-gray-100 disabled:text-gray-500"
+										:data-modal-target="`driving-score-${idx}-modal`"
+										:data-modal-toggle="`driving-score-${idx}-modal`"
+										:disabled="computingDriverRiskLevel && !v.driverRiskScore"
 										@click="setSidebarCollapsedState(false)">
 										View Details
 									</button>
@@ -311,6 +376,28 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- modal to add comment for table entry -->
+		<ParentModal
+			v-if="
+				!fetchingClientVehicles &&
+				computedVehicles.vehicles &&
+				computedVehicles.vehicles.length > 0
+			"
+			v-for="(v, idx) in computedVehicles.vehicles"
+			:key="idx"
+			modal-title="Driving Score "
+			:modal-id="`driving-score-${idx}-modal`"
+			modal-size="large"
+			:modal-subtitle="`Vehicle ${v.name} - ${v.driver_data?.name ?? 'Name N/A'}`">
+			<DrivingBehaviourExpandedView
+				:id="v.id"
+				:reg-no="v.name"
+				:client-phone="v.driver_data?.name ?? 'Name N/A'"
+				:client-name="v.driver_data?.phone ?? 'Phone N/A'"
+				:device-status="v.online"
+				:driver-risk-score="v.driverRiskScore" />
+		</ParentModal>
 	</div>
 </template>
 
@@ -328,8 +415,33 @@
 		fetchingClientVehicles,
 		activeRiskLevel,
 		totalVehicles,
+		filterPeriod,
 		errorFetchingClientVehicles,
 		computingDriverRiskLevel,
 		setRiskLevel,
+		setFilterPeriod,
 	} = useDrivingScore();
+
+	const availablePeriodButtons = reactive([
+		{
+			name: 'Today',
+			period: 'today',
+		},
+		{
+			name: 'This Week',
+			period: 'this-week',
+		},
+		{
+			name: 'Last 30 Days',
+			period: 'last-30-days',
+		},
+		{
+			name: 'Last 3 Months',
+			period: 'last-3-months',
+		},
+		{
+			name: 'Last 6 Months',
+			period: 'last-6-months',
+		},
+	]);
 </script>

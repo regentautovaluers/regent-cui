@@ -5,8 +5,9 @@ import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 
 export function useRegentTrackingDeviceHistory() {
 	const { query } = useRoute();
-	const filterPeriod: Ref<'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'custom'> =
-		ref('today');
+	const filterPeriod: Ref<
+		'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'last-6-months' | 'custom'
+	> = ref('today');
 	const positionOnMap: Ref<{
 		lat: number;
 		lng: number;
@@ -45,7 +46,13 @@ export function useRegentTrackingDeviceHistory() {
 	}
 
 	function calculateDateRange(
-		timeframe: 'today' | 'this-week' | 'last-30-days' | 'last-3-months',
+		timeframe:
+			| 'today'
+			| 'this-week'
+			| 'last-30-days'
+			| 'last-3-months'
+			| 'last-6-months'
+			| 'custom',
 	): {
 		startDate: string;
 		endDate: string;
@@ -87,6 +94,16 @@ export function useRegentTrackingDeviceHistory() {
 			case 'last-3-months': {
 				const startDate = new Date(today);
 				startDate.setMonth(today.getMonth() - 3);
+
+				return {
+					startDate: formatDate(startDate),
+					endDate: formatDate(today),
+				};
+			}
+
+			case 'last-6-months': {
+				const startDate = new Date(today);
+				startDate.setMonth(today.getMonth() - 6);
 
 				return {
 					startDate: formatDate(startDate),
@@ -167,21 +184,17 @@ export function useRegentTrackingDeviceHistory() {
 				: deviceMovement.value.flatMap((e) => e.pingHistory),
 	);
 
-	async function fetchMultipleDeviceHistory(deviceIds: number[]): Promise<DeviceHistory[]> {
+	async function fetchMultipleDeviceHistory(
+		deviceIds: number[],
+		period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'last-6-months',
+	): Promise<DeviceHistory[]> {
 		let requests = deviceIds.map((id) => {
-			let requestUrl = `/api/regent-tracking/device-history?api_hash=${authToken.value}&device_id=${id}&from_time=00:00:00&to_time=23:59:59&from_date=2025-11-18&to_date=2025-11-18`;
+			let requestUrl = `/api/regent-tracking/device-history?api_hash=${authToken.value}&device_id=${id}&from_time=00:00:00&to_time=23:59:59`;
 
-			/*
-				if (filterPeriod.value == 'custom') {
-					requestUrl =
-						requestUrl + `&from_date=${fromDate.value}&to_date=${toDate.value}`;
-				} else {
-					let dateRange = calculateDateRange(filterPeriod.value);
-					requestUrl =
-						requestUrl +
-						`&from_date=${dateRange.startDate}&to_date=${dateRange.endDate}`;
-				}
-				*/
+			let dateRange = calculateDateRange(period);
+			requestUrl =
+				requestUrl + `&from_date=${dateRange.startDate}&to_date=${dateRange.endDate}`;
+
 			return get<DeviceHistory>(requestUrl);
 		});
 		const responses = await Promise.allSettled(requests);

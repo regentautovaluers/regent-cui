@@ -1,12 +1,13 @@
-export type RiskLevel = 'low' | 'medium' | 'high';
+export type RiskLevel = 'Low Risk' | 'Medium Risk' | 'High Risk';
 
 export interface DriverRiskScore {
 	deviceId: number;
 	totalDistanceTraveled: number;
 	harshAccelerationScore: PerformanceMetric | null;
 	brakingScore: PerformanceMetric | null;
-	overspeedScore: PerformanceMetric | null;
+	harshCornering: PerformanceMetric | null;
 	averageScore: number;
+	averageRiskLevel: RiskLevel | null;
 }
 
 export interface PerformanceMetric {
