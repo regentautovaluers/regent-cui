@@ -5,6 +5,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	const nuxtApp = useNuxtApp();
 	const runtimeConfig = useRuntimeConfig();
 
+	if(to.name == 'external-test-page') {
+		return;
+	}
+
 	// will run only on initial client load
 	if (import.meta.client && nuxtApp.isHydrating) {
 		const authToken = useCookie('auth-token');
