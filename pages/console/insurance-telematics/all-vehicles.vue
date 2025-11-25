@@ -95,7 +95,7 @@
 					<!-- Dropdown menu -->
 					<div
 						id="filters-dd"
-						class="laptop:-translate-x-10 tablet:w-1/2 laptop:w-96 z-10 hidden w-full divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white shadow-sm">
+						class="laptop:-translate-x-10 tablet:w-1/2 laptop:w-96 z-10 hidden w-full divide-y divide-gray-100 rounded-lg border-2 border-gray-200 bg-white shadow-xs">
 						<ul
 							class="w-full space-y-2 p-2 text-sm text-gray-700"
 							aria-labelledby="dropdownDefaultButton">
@@ -106,7 +106,8 @@
 								<button
 									type="button"
 									:class="[
-										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-100',
+										'inline-flex w-full items-center space-x-2 rounded-md px-4 py-2 text-start hover:bg-gray-200',
+										filterPeriod == e.period && 'bg-blue-200',
 									]"
 									@click="setFilterPeriod(e.period as any)">
 									<span
@@ -233,15 +234,15 @@
 								<td class="tablet:table-cell hidden py-4">
 									<span
 										:class="[
-											'rounded-full border-[1px] px-2 py-1 text-sm',
+											'rounded-full px-2 py-1 text-sm',
 											!v.driverRiskScore && 'text-gray-500',
 											v.driverRiskScore?.averageScore! > 5 &&
-												'border-red-500 bg-red-200 text-red-500',
+												'border-[1px] border-red-500 bg-red-200 text-red-500',
 											v.driverRiskScore?.averageScore! >= 2 &&
 												v.driverRiskScore?.averageScore! <= 4 &&
-												'border-yellow-500 bg-yellow-200 text-yellow-500',
+												'border-[1px] border-yellow-500 bg-yellow-200 text-yellow-500',
 											v.driverRiskScore?.averageScore! < 2 &&
-												'border-green-500 bg-green-200 text-green-500',
+												'border-[1px] border-green-500 bg-green-200 text-green-500',
 										]"
 										>{{ v.driverRiskScore?.averageScore ?? '-' }}</span
 									>
