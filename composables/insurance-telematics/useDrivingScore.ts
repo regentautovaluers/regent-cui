@@ -104,14 +104,6 @@ export function useDrivingScore() {
 										appearanceMetrics.harshTurningAppearances += 1;
 									}
 								}
-
-								// // similarly check for overspeed occurances
-								// const overspeeedEventString = v2.other_arr.find((str) =>
-								// 	str.includes('io255'),
-								// );
-								// if (overspeeedEventString) {
-								// 	appearanceMetrics.overspeedingAppearance += 1;
-								// }
 							}
 						}
 					}
@@ -150,9 +142,6 @@ export function useDrivingScore() {
 					percentageScore: harshTruningPercentageScore,
 				};
 
-				// for the overspeed
-				// const overspeedPercentageScore = calculateOverspeedScore;
-
 				// for the averages
 				const averageRiskScore = calculateAverageRiskScore(
 					harshAcclerationPercentageScore,
@@ -162,7 +151,7 @@ export function useDrivingScore() {
 				analysis.averageScore = averageRiskScore;
 				analysis.averageRiskLevel = calculateRiskLevel(averageRiskScore);
 
-				// console.log('appearance metrics:', appearanceMetrics, 'analysis:', analysis);
+				console.log('appearance metrics:', appearanceMetrics, 'analysis:', analysis);
 				setDeviceDriverBehaviour(analysis);
 			});
 		}
@@ -200,19 +189,18 @@ export function useDrivingScore() {
 		accelerationCount: number,
 		distanceDriven: number,
 	): number {
+		if (distanceDriven == 0) return 0;
 		return Number(((accelerationCount / distanceDriven) * 100).toFixed(2));
 	}
 
 	function calculateBrakingScore(breakingCount: number, distanceDriven: number): number {
+		if (distanceDriven == 0) return 0;
 		return Number(((breakingCount / distanceDriven) * 100).toFixed(2));
 	}
 
 	function calculateHarshTurningScore(harshTurningCount: number, distanceDriven: number): number {
+		if (distanceDriven == 0) return 0;
 		return Number(((harshTurningCount / distanceDriven) * 100).toFixed(2));
-	}
-
-	function calculateOverspeedScore(overspeedDuration: number, distanceDriven: number): number {
-		return (overspeedDuration / 10 / distanceDriven) * 100;
 	}
 
 	function calculateRiskLevel(percentageScore: number): RiskLevel {
