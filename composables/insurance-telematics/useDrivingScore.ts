@@ -40,15 +40,32 @@ export function useDrivingScore() {
 		};
 	});
 
-	watch(computedVehicles, async (newList) => await deriveDriverBehaviour(newList), {
-		immediate: true,
-	});
+	watch(
+		[() => computedVehicles.value, () => filterPeriod.value],
+		async ([newList, newFilterPeriod], [oldList, oldFilterPeriod]) => {
+			// when the filter period changes
+			if (newFilterPeriod != oldFilterPeriod) {
+				let viable: TrackedVehicles[] | null = newList.vehicles;
+				await deriveDriverBehaviour(viable);
+			}
 
-	async function deriveDriverBehaviour(newList: ComputedVehicles): Promise<void> {
+			// when the page changes but under the same filter period
+			if (newFilterPeriod == oldFilterPeriod && newList != oldList) {
+				let viable: TrackedVehicles[] | undefined = newList.vehicles?.filter(
+					(v: TrackedVehicles) => !isDeviceSubscriptionExpired(v) && !v.driverRiskScore,
+				);
+				await deriveDriverBehaviour(viable);
+			}
+		},
+		{
+			immediate: true,
+		},
+	);
+
+	async function deriveDriverBehaviour(
+		viable: TrackedVehicles[] | null | undefined,
+	): Promise<void> {
 		// filter the small list for viable entries
-		let viable: TrackedVehicles[] | undefined = newList.vehicles?.filter(
-			(v: TrackedVehicles) => !isDeviceSubscriptionExpired(v) && !v.driverRiskScore,
-		);
 
 		if (viable && viable?.length > 0) {
 			computingDriverRiskLevel.value = true;
