@@ -69,7 +69,7 @@ const useAuthorityLetters = () => {
 			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (searchRegNo.value !== '') {
-				requestURL = requestURL + `&searchSlug=${searchRegNo.value}`;
+				requestURL = requestURL + `&searchTerm=${searchRegNo.value}`;
 			}
 
 			if (startDate.value !== null) {
