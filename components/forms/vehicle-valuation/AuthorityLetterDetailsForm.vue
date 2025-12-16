@@ -106,6 +106,76 @@
 				</a>
 			</div>
 		</div>
+
+		<h1 class="font-bold text-gray-700">Update Details</h1>
+		<form
+			@submit.prevent="
+				updateAuthorizationLetter(
+					registrationNumber,
+					clientName,
+					clientPhone,
+					authorityLetter.letterId,
+				)
+			">
+			<div class="flex flex-col space-y-4 space-x-0 lg:flex-row lg:space-y-0 lg:space-x-4">
+				<!-- Registration Number -->
+				<div class="w-full lg:w-1/3">
+					<label
+						for="registration-number"
+						class="generic-input-label generic-input-required-label"
+						>Registration Number</label
+					>
+					<input
+						type="text"
+						id="registration-number"
+						class="generic-input"
+						placeholder="e.g KDH 908Y"
+						required
+						v-model="registrationNumber" />
+				</div>
+				<!-- Client Name -->
+				<div class="w-full lg:w-1/3">
+					<label
+						for="client-name"
+						class="generic-input-label generic-input-required-label"
+						>Client Name</label
+					>
+					<input
+						type="text"
+						id="client-name"
+						class="generic-input"
+						placeholder="e.g Janet Wangari Thuo"
+						required
+						v-model="clientName" />
+				</div>
+				<!-- Client Phone Number -->
+				<div class="w-full lg:w-1/3">
+					<label
+						for="client-phone"
+						class="generic-input-label generic-input-required-label"
+						>Client Phone Number</label
+					>
+					<input
+						type="text"
+						id="client-phone"
+						class="generic-input"
+						placeholder="e.g 254789261947"
+						required
+						v-model="clientPhone" />
+				</div>
+			</div>
+
+			<!-- submit button -->
+			<button
+				type="submit"
+				:disabled="updateAuthorizationLetterLoading"
+				:class="[
+					'generic-form-submit mt-4 w-full md:w-1/3',
+					updateAuthorizationLetterLoading && 'skeleton skeleton-animated',
+				]">
+				{{ updateAuthorizationLetterLoading ? 'Please Wait...' : 'Submit Request' }}
+			</button>
+		</form>
 	</div>
 </template>
 
@@ -113,4 +183,9 @@
 	const { authorityLetter } = defineProps<{
 		authorityLetter: any;
 	}>();
+
+	const registrationNumber: Ref<string> = ref(authorityLetter.registrationNumber);
+	const clientName: Ref<string> = ref(authorityLetter.clientName);
+	const clientPhone: Ref<string> = ref(authorityLetter.clientPhone);
+	const { updateAuthorizationLetterLoading, updateAuthorizationLetter } = useAuthorityLetters();
 </script>

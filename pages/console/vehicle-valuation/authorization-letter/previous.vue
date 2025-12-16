@@ -229,7 +229,7 @@
 										:id="'dropdownLeft' + index"
 										class="z-10 hidden w-44 rounded-lg border bg-white shadow-md">
 										<ul
-											class="space-y-1 divide-y-[1px] divide-gray-300 py-2 text-sm text-gray-500"
+											class="space-y-2 divide-y-[1px] divide-gray-300 py-2 text-sm text-gray-500"
 											aria-labelledby="dropdownLeftButton">
 											<li>
 												<button
@@ -238,7 +238,7 @@
 													:data-modal-target="`extended-letter-${letter.letterId}`"
 													:data-modal-toggle="`extended-letter-${letter.letterId}`"
 													@click="setSidebarCollapsedState(false)">
-													View Details
+													Edit Details
 												</button>
 											</li>
 											<li v-if="letter.reportURL == null">
