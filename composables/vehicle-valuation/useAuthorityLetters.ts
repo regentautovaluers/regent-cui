@@ -11,6 +11,7 @@ const useAuthorityLetters = () => {
 	const agencyOrCorpName: Ref<string | null> = ref('');
 	const agencyOrCorpId: Ref<string | null> = ref('');
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
+	const updateAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const uploadedDocuments: Ref<any[]> = ref([]);
 	const {
 		computedCorporateClients,
@@ -231,6 +232,43 @@ const useAuthorityLetters = () => {
 		}
 	};
 
+	const updateAuthorizationLetter = async (
+		regNo: string,
+		clientName: string,
+		clientPhone: string,
+		letterId: string,
+	) => {
+		updateAuthorizationLetterLoading.value = true;
+		try {
+			// create the form data
+			const formData = new FormData();
+			formData.append('regNo', regNo);
+			formData.append('clientName', clientName);
+			formData.append('clientPhone', clientPhone);
+			formData.append('letterId', letterId);
+
+			await $fetch('/api/v1/authority-letter/corp/update-authority-letter', {
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				method: 'PATCH',
+				body: formData,
+				onResponse({ response }) {
+					if (response.ok) {
+						useToast('Letter updated successfully!', {
+							type: 'success',
+						});
+					}
+				},
+			});
+		} catch (err) {
+			console.log('Failed to update authorization letter', err);
+			useToast('Failed. Try Again!', {
+				type: 'error',
+			});
+		} finally {
+			updateAuthorizationLetterLoading.value = false;
+		}
+	};
+
 	const exportAuthorityLetter = async (startDate: string, endDate: string) => {
 		try {
 			exportAuthorityLettersLoading.value = true;
@@ -325,6 +363,7 @@ const useAuthorityLetters = () => {
 		getCorporateClients,
 		searchPhrase,
 		consentProvided,
+		updateAuthorizationLetterLoading,
 		createAuthorizationLetter,
 		handleFileUpload,
 		exportAuthorityLetter,
@@ -332,6 +371,7 @@ const useAuthorityLetters = () => {
 		executeGetAuthorityLetters,
 		shouldTriggerFetch,
 		clearFilters,
+		updateAuthorizationLetter,
 	};
 };
 
