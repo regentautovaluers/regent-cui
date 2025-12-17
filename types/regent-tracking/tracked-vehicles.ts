@@ -1,5 +1,6 @@
 import { type Comments } from '~/types/regent-tracking/trace-report';
 import { type DriverRiskScore } from '../insurance-telematics/driver-behaviour';
+import type { AccidentAnalytics } from '~/types/insurance-telematics/accident-record';
 
 export interface TrackedVehicles {
 	id: number;
@@ -45,6 +46,9 @@ export interface TrackedVehicles {
 
 	// for driver behaviour
 	driverRiskScore?: DriverRiskScore;
+
+	// for latest recorded accident
+	latestAccident?: AccidentAnalytics;
 }
 
 export enum Address {

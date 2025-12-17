@@ -1,5 +1,6 @@
 import type { DriverRiskScore } from '~/types/insurance-telematics/driver-behaviour';
 import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
+import type { AccidentAnalytics } from '~/types/insurance-telematics/accident-record';
 
 const { state, getter, mutation, action, ...store } = createStore('activeTrackedVehicle', {
 	clientDevices: null as TrackedVehicles[] | null,
@@ -20,6 +21,20 @@ export const setDeviceDriverBehaviour = action(
 			(state.clientDevices as TrackedVehicles[])[toEdit] = {
 				...(state.clientDevices as TrackedVehicles[])[toEdit],
 				driverRiskScore: driverBehaviour,
+			};
+		});
+	},
+);
+
+export const setLastDeviceAccident = action(
+	'setLastDeviceAccient',
+	async (accidentRecord: AccidentAnalytics, mutate) => {
+		const deviceId = accidentRecord.deviceId;
+		mutate((state) => {
+			let toEdit = state.clientDevices?.findIndex((e) => e.id == deviceId)!;
+			(state.clientDevices as TrackedVehicles[])[toEdit] = {
+				...(state.clientDevices as TrackedVehicles[])[toEdit],
+				latestAccident: accidentRecord,
 			};
 		});
 	},
