@@ -82,11 +82,5 @@
 			shouldShow: true,
 			icon: 'icon-[material-symbols-light--bolt-outline-rounded]',
 		},
-		{
-			to: 'insurance-telematics-analytics',
-			name: 'Analytics',
-			shouldShow: true,
-			icon: 'icon-[material-symbols-light--chart-data-outline-rounded]',
-		},
 	];
 </script>
