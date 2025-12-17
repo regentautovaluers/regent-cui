@@ -168,7 +168,6 @@ export function useDrivingScore() {
 				analysis.averageScore = averageRiskScore;
 				analysis.averageRiskLevel = calculateRiskLevel(averageRiskScore);
 
-				console.log('appearance metrics:', appearanceMetrics, 'analysis:', analysis);
 				setDeviceDriverBehaviour(analysis);
 			});
 		}
