@@ -394,8 +394,8 @@
 			<DrivingBehaviourExpandedView
 				:id="v.id"
 				:reg-no="v.name"
-				:client-phone="v.driver_data?.name ?? 'Name N/A'"
-				:client-name="v.driver_data?.phone ?? 'Phone N/A'"
+				:client-phone="v.driver_data?.phone ?? 'Name N/A'"
+				:client-name="v.driver_data?.name ?? 'Phone N/A'"
 				:device-status="v.online"
 				:driver-risk-score="v.driverRiskScore" />
 		</ParentModal>
