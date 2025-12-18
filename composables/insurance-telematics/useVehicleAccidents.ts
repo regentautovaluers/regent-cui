@@ -11,6 +11,7 @@ type ComputedVehicles = {
 	totalPages: number;
 };
 export function useVehicleAccidents() {
+	const G_FORCE_MULTIPLIER = 0.01;
 	const size: Ref<number> = ref(10);
 	const page: Ref<number> = ref(0);
 	const searchString: Ref<string | null> = ref(null);
@@ -29,6 +30,7 @@ export function useVehicleAccidents() {
 	const filterPeriod: Ref<
 		'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'last-6-months'
 	> = ref('this-week');
+	const { gecodeLocation } = useGoogleMaps();
 
 	const computedVehicles: ComputedRef<ComputedVehicles> = computed(() => {
 		const filtered = getFilteredVehicles();
@@ -48,7 +50,7 @@ export function useVehicleAccidents() {
 	async function deriveDriverBehaviour(newList: ComputedVehicles): Promise<void> {
 		// filter the small list for viable entries
 		let viable: TrackedVehicles[] | undefined = newList.vehicles?.filter(
-			(v: TrackedVehicles) => !isDeviceSubscriptionExpired(v) && !v.driverRiskScore,
+			(v: TrackedVehicles) => !isDeviceSubscriptionExpired(v) && !v.latestAccident,
 		);
 
 		if (viable && viable?.length > 0) {
@@ -59,7 +61,7 @@ export function useVehicleAccidents() {
 			);
 
 			// compute results
-			histories.forEach((h) => {
+			histories.forEach(async (h) => {
 				const deviceId: number = h.device.id;
 				let analysis: AccidentAnalytics = {
 					deviceId,
@@ -88,15 +90,38 @@ export function useVehicleAccidents() {
 										lat: v.items[x].lat,
 										lng: v.items[x].lng,
 									};
-									analysis.geoCodeLocation = 'To Be Set'; // TODO: Firgure this out
+									analysis.geoCodeLocation = await gecodeLocation(
+										v.items[x].lat,
+										v.items[x].lng,
+									);
 									analysis.time = v.items[x].device_time as string;
-									analysis.speedBeforeCrash = v.items[x].speed ?? 0; // TODO: Firgure this out
+									analysis.speedBeforeCrash = v.items[x].speed ?? null;
 									analysis.speedUnits = 'Km/h';
 
 									setLastDeviceAccident(analysis);
 
 									// short circuit the loop
 									continue coreLoop;
+								}
+
+								// 3. Find the string whose name part is io 254
+								const gForceString = other_arr.find((str) => str.includes('io254'));
+								if (gForceString) {
+									const force: number = gForceString
+										.split(':')[1]
+										.trim() as unknown as number;
+									analysis.impactForce = force * G_FORCE_MULTIPLIER;
+								}
+
+								// 4. Check for harsh braking
+								const harshBrakingEventString = other_arr.find((str) =>
+									str.includes('io253'),
+								);
+								if (harshBrakingEventString) {
+									const value = harshBrakingEventString.split(':')[1]?.trim();
+									if (value === '2') {
+										analysis.harshBrakingBeforeCrash = true;
+									}
 								}
 							}
 						}

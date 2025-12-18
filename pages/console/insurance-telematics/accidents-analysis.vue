@@ -3,23 +3,25 @@
 	<div class="flex flex-1 flex-col rounded-lg border-2 bg-white outline-none">
 		<div
 			class="laptop:p-4 tablet:flex-row tablet:space-y-0 flex h-24 flex-col items-center justify-between space-y-2 border-b p-2">
-			<h1 class="text-lg font-bold text-gray-700">All Accidents</h1>
-			<h2 class="text-sm text-gray-500">
-				{{ totalVehicles }} Shows most recent accident within selected timeframe
-			</h2>
-			<div class="flex w-fit items-center space-x-3">
-				<h1 class="font-semibold text-gray-600">Guide:</h1>
-				<div class="inline-flex items-center space-x-1">
-					<span class="size-3 rounded-full bg-green-500"> </span>
-					<span class="test-sm text-gray-500"> Low Risk </span>
-				</div>
-				<div class="inline-flex items-center space-x-1">
-					<span class="size-3 rounded-full bg-yellow-500"> </span>
-					<span class="test-sm text-gray-500"> Medium Risk </span>
-				</div>
-				<div class="inline-flex items-center space-x-1">
-					<span class="size-3 rounded-full bg-red-500"> </span>
-					<span class="test-sm text-gray-500"> High Risk </span>
+			<div class="tablet:w-1/2 w-full">
+				<h1 class="text-lg font-bold text-gray-700">All Accidents</h1>
+				<h2 class="text-sm text-gray-500">
+					Shows most recent accident within selected timeframe
+				</h2>
+				<div class="flex w-fit items-center space-x-3">
+					<h1 class="font-semibold text-gray-600">Guide:</h1>
+					<div class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-green-500"> </span>
+						<span class="test-sm text-gray-500"> Low Risk </span>
+					</div>
+					<div class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-yellow-500"> </span>
+						<span class="test-sm text-gray-500"> Medium Risk </span>
+					</div>
+					<div class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-red-500"> </span>
+						<span class="test-sm text-gray-500"> High Risk </span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -34,7 +36,7 @@
 						type="text"
 						name="search-tracked-device"
 						id="search-tracked-device"
-						placeholder="Search by registration, client name or client number."
+						placeholder="Search by registration or client name"
 						class="h-14 w-1/3 rounded-md ps-8 text-sm text-gray-700 outline-none placeholder:text-gray-500"
 						v-model.trim="searchString" />
 				</div>
@@ -195,16 +197,19 @@
 									<span
 										:class="[
 											'rounded-full px-2 py-1 text-sm',
-											!v.driverRiskScore && 'text-gray-500',
-											v.driverRiskScore?.averageScore! > 5 &&
+											!v.latestAccident && 'text-gray-500',
+											v.latestAccident?.speedBeforeCrash &&
+												v.latestAccident?.speedBeforeCrash > 80 &&
 												'border-[1px] border-red-500 bg-red-200 text-red-500',
-											v.driverRiskScore?.averageScore! >= 2 &&
-												v.driverRiskScore?.averageScore! <= 4 &&
-												'border-[1px] border-yellow-500 bg-yellow-200 text-yellow-500',
-											v.driverRiskScore?.averageScore! < 2 &&
+											v.latestAccident?.speedBeforeCrash &&
+												v.latestAccident?.speedBeforeCrash < 80 &&
 												'border-[1px] border-green-500 bg-green-200 text-green-500',
 										]"
-										>{{ v.driverRiskScore?.averageScore ?? '-' }}</span
+										>{{
+											!v.latestAccident || !v.latestAccident?.speedBeforeCrash
+												? '-'
+												: `${v.latestAccident?.speedBeforeCrash} ${v.latestAccident?.speedUnits}`
+										}}</span
 									>
 								</td>
 								<td class="tablet:table-cell py-4 ps-3">
@@ -212,14 +217,14 @@
 										<span
 											class="icon-[material-symbols-light--person-2-rounded] text-xl"></span>
 										<span class="text-gray-700">{{
-											v.driver_data?.name ?? 'Name N/A'
+											v.latestAccident?.geoCodeLocation ?? 'Location N/A'
 										}}</span>
 									</p>
 									<br />
 									<p class="inline-flex w-fit items-center space-x-1">
 										<span
 											class="icon-[material-symbols-light--settings-phone-sharp] text-xl"></span>
-										<span>{{ v.driver_data?.phone ?? 'Phone N/A' }}</span>
+										<span>{{ v.latestAccident?.time ?? 'Time N/A' }}</span>
 									</p>
 								</td>
 								<td class="tablet:table-cell hidden space-y-2 py-4">
@@ -283,6 +288,24 @@
 											}}</span
 										>
 									</span>
+									<br />
+									<span
+										class="inline-flex w-40 items-center justify-between space-x-1">
+										<span class="text-sm text-gray-600">Weather</span>
+										<span class="text-gray-500">&VerticalBar;</span>
+										<span
+											v-if="
+												computingIncidentAnalyticsMetrics &&
+												!v.latestAccident
+											"
+											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
+										<span
+											class="text-gray-500"
+											v-else
+											>{{ v.latestAccident?.weather ?? '-' }}</span
+										>
+									</span>
+									<br />
 								</td>
 								<td class="tablet:table-cell hidden py-4 ps-3">
 									<button
