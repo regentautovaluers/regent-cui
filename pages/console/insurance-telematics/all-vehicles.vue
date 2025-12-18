@@ -22,43 +22,6 @@
 					</div>
 				</div>
 			</div>
-			<!-- tab switcher -->
-			<div
-				class="tablet:w-1/2 laptop:w-1/3 grid h-12 w-full grid-cols-4 divide-x-[1.5px] overflow-clip rounded-lg border-[1px] text-xs text-gray-600">
-				<button
-					:class="['font-semibold', !activeRiskLevel && 'bg-blue-100']"
-					type="button"
-					@click="setRiskLevel(null)">
-					All Vehicles
-				</button>
-				<button
-					:class="[
-						'inline-flex items-center justify-center space-x-2 font-semibold',
-						activeRiskLevel == 'Low Risk' && 'bg-blue-100',
-					]"
-					type="button"
-					@click="setRiskLevel('Low Risk')">
-					Low Risk
-				</button>
-				<button
-					:class="[
-						'inline-flex items-center justify-center space-x-2 font-semibold',
-						activeRiskLevel == 'Medium Risk' && 'bg-blue-100',
-					]"
-					type="button"
-					@click="setRiskLevel('Medium Risk')">
-					Medium Risk
-				</button>
-				<button
-					:class="[
-						'inline-flex items-center justify-center space-x-2 font-semibold disabled:bg-gray-100',
-						activeRiskLevel == 'High Risk' && 'bg-blue-100',
-					]"
-					type="button"
-					@click="setRiskLevel('High Risk')">
-					High Risk
-				</button>
-			</div>
 		</div>
 		<div>
 			<div
@@ -71,7 +34,7 @@
 						type="text"
 						name="search-tracked-device"
 						id="search-tracked-device"
-						placeholder="Search by registration, client name or client number."
+						placeholder="Search by registration or client name"
 						class="h-14 w-1/3 rounded-md ps-8 text-sm text-gray-700 outline-none placeholder:text-gray-500"
 						v-model.trim="searchString" />
 				</div>
