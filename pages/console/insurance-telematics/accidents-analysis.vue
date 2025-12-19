@@ -310,8 +310,8 @@
 								<td class="tablet:table-cell hidden py-4 ps-3">
 									<button
 										class="rounded-md border-[1px] border-blue-500 bg-blue-100 px-2 py-1 text-blue-500 disabled:border-gray-500 disabled:bg-gray-100 disabled:text-gray-500"
-										:data-modal-target="`impact-analysis-${idx}-modal`"
-										:data-modal-toggle="`impact-analysis-${idx}-modal`"
+										:data-modal-target="`incident-analysis-${idx}-modal`"
+										:data-modal-toggle="`incident-analysis-${idx}-modal`"
 										:disabled="
 											computingIncidentAnalyticsMetrics && !v.latestAccident
 										"
@@ -361,17 +361,17 @@
 			"
 			v-for="(v, idx) in computedVehicles.vehicles"
 			:key="idx"
-			modal-title="Driving Score "
-			:modal-id="`impact-analysis-${idx}-modal`"
+			modal-title="Incident Analysis"
+			:modal-id="`incident-analysis-${idx}-modal`"
 			modal-size="large"
-			:modal-subtitle="`Vehicle ${v.name} - ${v.driver_data?.name ?? 'Name N/A'}`">
-			<DrivingBehaviourExpandedView
+			:modal-subtitle="`Generated on ${new Date().toLocaleDateString()}`">
+			<IncidentAnalysisExpandedView
 				:id="v.id"
 				:reg-no="v.name"
 				:client-phone="v.driver_data?.phone ?? 'Name N/A'"
 				:client-name="v.driver_data?.name ?? 'Phone N/A'"
 				:device-status="v.online"
-				:driver-risk-score="v.driverRiskScore" />
+				:latest-accident="v.latestAccident" />
 		</ParentModal>
 	</div>
 </template>

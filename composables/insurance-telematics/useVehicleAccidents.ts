@@ -111,6 +111,9 @@ export function useVehicleAccidents() {
 										.split(':')[1]
 										.trim() as unknown as number;
 									analysis.impactForce = force * G_FORCE_MULTIPLIER;
+									analysis.severity = deriveIncidentSeverity(
+										force * G_FORCE_MULTIPLIER,
+									);
 								}
 
 								// 4. Check for harsh braking
@@ -156,6 +159,16 @@ export function useVehicleAccidents() {
 
 	function setFilterPeriod(period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months') {
 		filterPeriod.value = period;
+	}
+
+	function deriveIncidentSeverity(gForceValue: number): AccidentSeverity {
+		if (gForceValue > 8) {
+			return 'Severe';
+		} else if (gForceValue >= 4 && gForceValue <= 8) {
+			return 'Moderate';
+		} else {
+			return 'Minor';
+		}
 	}
 
 	return {

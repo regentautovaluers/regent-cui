@@ -66,7 +66,7 @@
 			<!-- detailed analysis -->
 			<div class="tablet:grid-cols-2 laptop:gap-5 grid grid-cols-1 gap-4">
 				<!--harsh acceleration analysis  -->
-				<div class="h-[9.5rem] rounded-lg bg-gray-200/80 p-4 outline-none">
+				<div class="h-[10rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 text-sm font-semibold text-gray-700">Harsh Accel. Analysis</h1>
 					<div class="grid grid-cols-[40%_60%] gap-2">
 						<div class="border-r border-r-gray-400">
@@ -127,7 +127,7 @@
 				</div>
 
 				<!--harsh braking analysis  -->
-				<div class="h-[9.5rem] rounded-lg bg-gray-200/80 p-4 outline-none">
+				<div class="h-[10rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 text-sm font-semibold text-gray-700">Harsh Braking Analysis</h1>
 					<div class="grid grid-cols-[40%_60%] gap-2">
 						<div class="border-r border-r-gray-400">
@@ -180,7 +180,7 @@
 				</div>
 
 				<!--harsh cornering analysis  -->
-				<div class="h-[9.5rem] rounded-lg bg-gray-200/80 p-4 outline-none">
+				<div class="h-[10rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 text-sm font-semibold text-gray-700">
 						Harsh Cornering Analysis
 					</h1>
@@ -235,7 +235,7 @@
 				</div>
 
 				<!--risk assessment  -->
-				<div class="h-[9.5rem] rounded-lg bg-gray-200/80 p-4 outline-none">
+				<div class="h-[10rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 text-sm font-semibold text-gray-700">Risk Assessment</h1>
 					<div class="grid grid-cols-[40%_60%] gap-2">
 						<div class="border-r border-r-gray-400">

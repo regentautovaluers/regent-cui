@@ -32,6 +32,7 @@ export default defineEventHandler(async (event) => {
 				return v.id;
 			});
 			let base64Encoded = SecurityUtil.encodeBase64(deviceIds.join(','));
+			/*
 			const userDetailsEndpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}&tracker_id=${base64Encoded}&page=1&limit=${query.limit}`;
 			const results = await makeProxyRequest<TraceabilityReport>(userDetailsEndpoint);
 			results.results.forEach((r) => {
@@ -53,6 +54,7 @@ export default defineEventHandler(async (event) => {
 				entry.driver_data.name = r.clientName;
 				entry.driver_data.phone = r.clientNo;
 			});
+			*/
 
 			return sendSuccessResponse(event, combinedVehicleData);
 		} else {
