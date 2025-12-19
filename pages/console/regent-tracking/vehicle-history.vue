@@ -276,12 +276,6 @@
 											{{ positionOnMap.lat }}
 										</p>
 
-										<!-- Latitude -->
-										<h3 class="font-semibold text-gray-700">Latitude</h3>
-										<p class="text-end text-gray-500">
-											{{ positionOnMap.lat }}
-										</p>
-
 										<!-- time -->
 										<h3 class="font-semibold text-gray-700">Time</h3>
 										<p class="text-end text-gray-500">

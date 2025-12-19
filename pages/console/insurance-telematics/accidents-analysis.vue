@@ -367,7 +367,7 @@
 			:modal-subtitle="`Generated on ${new Date().toLocaleDateString()}`">
 			<IncidentAnalysisExpandedView
 				:id="v.id"
-				:reg-no="v.name"
+				:reg-no="v.name"a
 				:client-phone="v.driver_data?.phone ?? 'Name N/A'"
 				:client-name="v.driver_data?.name ?? 'Phone N/A'"
 				:device-status="v.online"

@@ -174,7 +174,49 @@
 							:center="{
 								lat: latestAccident?.coords?.lat,
 								lng: latestAccident?.coords?.lng,
-							}"></GoogleMap>
+							}"
+							><InfoWindow
+								v-if="latestAccident?.coords"
+								:options="{
+									position: {
+										lat: latestAccident?.coords?.lat,
+										lng: latestAccident?.coords?.lng,
+									},
+									minWidth: 350,
+								}">
+								<div
+									:class="[
+										'overflow-clip rounded-lg border bg-white text-white outline-none',
+									]">
+									<div class="border-b border-gray-200 p-3">
+										<h1 class="font-bold text-gray-700">
+											{{ regNo }}
+										</h1>
+									</div>
+									<div class="grid grid-cols-[25%_75%] gap-y-4 px-2 py-3">
+										<!-- location -->
+										<h3 class="font-semibold text-gray-700">Location</h3>
+										<p class="text-end text-gray-500">
+											{{ latestAccident?.geoCodeLocation }}
+										</p>
+
+										<!-- Longitude -->
+										<h3 class="font-semibold text-gray-700">Longitude</h3>
+										<p class="text-end text-gray-500">
+											{{ latestAccident?.coords?.lng }}
+										</p>
+
+										<!-- Latitude -->
+										<h3 class="font-semibold text-gray-700">Latitude</h3>
+										<p class="text-end text-gray-500">
+											{{ latestAccident?.coords?.lat }}
+										</p>
+
+										
+									</div>
+								</div>
+							</InfoWindow></GoogleMap
+						>
 					</div>
 				</div>
 			</div>
