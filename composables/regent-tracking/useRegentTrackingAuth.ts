@@ -1,5 +1,5 @@
 import type { CookieRef } from '#app';
-import { type StandardResponse, type StandardSuccessResponse } from '~/types/proxy-types';
+import { type StandardSuccessResponse } from '~/types/proxy-types';
 import { type RegentTrackingLoginResponse } from '~/types/regent-tracking/client-auth';
 
 export function useRegentTrackingAuth() {
@@ -12,6 +12,7 @@ export function useRegentTrackingAuth() {
 	const password: Ref<string | null> = ref(null);
 	const loginLoading: Ref<boolean> = ref(false);
 	const { post } = useStandardizedApi();
+	const { getPrincipal } = useAuth();
 
 	async function attemptLogin() {
 		const url = `/api/regent-tracking/client-login?email=${email.value}&password=${password.value}`;
@@ -27,6 +28,16 @@ export function useRegentTrackingAuth() {
 					type: 'success',
 					title: 'Success!',
 				});
+
+				// redirect to the correct page
+				if (getPrincipal && getPrincipal.value?.corpType == 'INSURANCE') {
+					return navigateTo({ name: 'insurance-telematics-all-vehicles' });
+				} else if (
+					getPrincipal &&
+					['BANK', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType!)
+				) {
+					return navigateTo({ name: 'regent-tracking-home' });
+				}
 
 				return;
 			}
@@ -44,11 +55,16 @@ export function useRegentTrackingAuth() {
 		}
 	}
 
+	function bypassRegentTrackingLogin(): boolean {
+		return !!authToken.value;
+	}
+
 	return {
 		authToken,
 		email,
 		password,
 		loginLoading,
 		attemptLogin,
+		bypassRegentTrackingLogin,
 	};
 }

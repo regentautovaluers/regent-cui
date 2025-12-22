@@ -22,7 +22,7 @@
 			<div
 				class="laptop:mb-10 flex flex-col items-center justify-center p-2 text-xs sm:text-sm">
 				<h6>
-					&copy; 2024. All Rights Reserved.
+					&copy; 2025. All Rights Reserved.
 					<span class="font-semibold text-pink-500">Regent Auto Valuers</span>
 				</h6>
 			</div>

@@ -3,6 +3,8 @@ import { type CoreRoute } from '~/types';
 export default function () {
 	const route = useRoute();
 	const { getPrincipal } = useAuth();
+	const { bypassRegentTrackingLogin } = useRegentTrackingAuth();
+
 	const navigationRoutes = reactive([
 		{
 			id: 0,
@@ -120,7 +122,7 @@ export default function () {
 		{
 			id: 4,
 			screenName: 'Regent Tracking',
-			routeName: 'regent-tracking-home',
+			routeName: bypassRegentTrackingLogin() ? 'regent-tracking-home' : 'regent-track-auth',
 			renderRoute:
 				getPrincipal && ['BANK', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType!),
 			icon: 'icon-[material-symbols-light--globe-location-pin]',
@@ -143,14 +145,16 @@ export default function () {
 		{
 			id: 5,
 			screenName: 'Insurance Telematics',
-			routeName: 'insurance-telematics-all-vehicles',
+			routeName: bypassRegentTrackingLogin()
+				? 'insurance-telematics-all-vehicles'
+				: 'regent-track-auth',
 			renderRoute: getPrincipal && getPrincipal.value?.corpType == 'INSURANCE',
 			description:
-				'Gain instant and reliable insights into driver\'s behaviour analysis and risk assessment. Our simple \
+				"Gain instant and reliable insights into driver's behaviour analysis and risk assessment. Our simple \
 				classification algorithm uses various metrics to intricately classify drives into categories depending on various measurable \
-				metrics like harsh acceleration and braking.',
+				metrics like harsh acceleration and braking.",
 			shortDescription:
-				'Gain instant and reliable insights into driver\'s behaviour analysis and risk assessment.',
+				"Gain instant and reliable insights into driver's behaviour analysis and risk assessment.",
 			icon: 'icon-[material-symbols-light--map-outline-rounded]',
 			childRoutes: [
 				{

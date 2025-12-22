@@ -86,109 +86,104 @@
 
 		<div
 			class="shadow-gray280 absolute top-5 left-5 flex h-[calc(100%-2.5rem)] w-[27rem] flex-col border-[1px] bg-white shadow-md">
-			<template v-if="!authToken">
-				<ClientLogin />
-			</template>
-			<template v-else>
-				<div class="p-5">
-					<h1 class="font-semibold text-gray-600">{{ getPrincipal?.corpName }} Fleet</h1>
-					<h2
-						class="mb-4 inline-flex h-10 w-full items-center justify-between text-sm text-gray-500">
-						<span>{{ totalVehicles }} Total Vehicles</span>
-						<span class="inline-flex items-center space-x-1">
-							<span class="size-3 rounded-full bg-green-500"> </span>
-							<span> Online </span>
-						</span>
-						<span class="inline-flex items-center space-x-1">
-							<span class="size-3 rounded-full bg-yellow-500"> </span>
-							<span> Offline </span>
-						</span>
-						<span class="inline-flex items-center space-x-1">
-							<span class="size-3 rounded-full bg-red-500"> </span>
-							<span> Expired </span>
-						</span>
-					</h2>
-					<!-- filters -->
-					<div>
-						<form @submit.prevent="">
-							<input
-								type="text"
-								name="search-devices"
-								id="search-devices"
-								class="mb-4 h-12 w-full rounded-lg bg-gray-100 text-sm text-gray-500 outline-none"
-								placeholder="Start typing to search vehicles or drivers"
-								v-model="searchString" />
+			<div class="p-5">
+				<h1 class="font-semibold text-gray-600">{{ getPrincipal?.corpName }} Fleet</h1>
+				<h2
+					class="mb-4 inline-flex h-10 w-full items-center justify-between text-sm text-gray-500">
+					<span>{{ totalVehicles }} Total Vehicles</span>
+					<span class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-green-500"> </span>
+						<span> Online </span>
+					</span>
+					<span class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-yellow-500"> </span>
+						<span> Offline </span>
+					</span>
+					<span class="inline-flex items-center space-x-1">
+						<span class="size-3 rounded-full bg-red-500"> </span>
+						<span> Expired </span>
+					</span>
+				</h2>
+				<!-- filters -->
+				<div>
+					<form>
+						<input
+							type="text"
+							name="search-devices"
+							id="search-devices"
+							class="mb-4 h-12 w-full rounded-lg bg-gray-100 text-sm text-gray-500 outline-none"
+							placeholder="Start typing to search vehicles or drivers"
+							v-model="searchString" />
 
-							<div
-								class="grid h-10 grid-cols-4 divide-x-[1.5px] overflow-clip rounded-lg border-[1px] text-xs text-gray-600">
-								<button
-									:class="[
-										'font-semibold',
-										deviceOnlineStatus == null && 'bg-blue-100',
-									]"
-									type="button"
-									@click="setDeviceOnlineStatus(null)">
-									All Vehicles
-								</button>
-								<button
-									:class="[
-										'font-semibold',
-										deviceOnlineStatus == 'ack' && 'bg-blue-100',
-									]"
-									type="button"
-									@click="setDeviceOnlineStatus('ack')">
-									Online
-								</button>
-								<button
-									:class="[
-										'font-semibold',
-										deviceOnlineStatus == 'offline' && 'bg-blue-100',
-									]"
-									type="button"
-									@click="setDeviceOnlineStatus('offline')">
-									Offline
-								</button>
-								<button
-									:class="[
-										'font-semibold',
-										deviceOnlineStatus == 'expired' && 'bg-blue-100',
-									]"
-									type="button"
-									@click="setDeviceOnlineStatus('expired')">
-									Expired
-								</button>
-							</div>
-						</form>
-					</div>
+						<div
+							class="grid h-10 grid-cols-4 divide-x-[1.5px] overflow-clip rounded-lg border-[1px] text-xs text-gray-600">
+							<button
+								:class="[
+									'font-semibold',
+									deviceOnlineStatus == null && 'bg-blue-100',
+								]"
+								type="button"
+								@click="setDeviceOnlineStatus(null)">
+								All Vehicles
+							</button>
+							<button
+								:class="[
+									'font-semibold',
+									deviceOnlineStatus == 'ack' && 'bg-blue-100',
+								]"
+								type="button"
+								@click="setDeviceOnlineStatus('ack')">
+								Online
+							</button>
+							<button
+								:class="[
+									'font-semibold',
+									deviceOnlineStatus == 'offline' && 'bg-blue-100',
+								]"
+								type="button"
+								@click="setDeviceOnlineStatus('offline')">
+								Offline
+							</button>
+							<button
+								:class="[
+									'font-semibold',
+									deviceOnlineStatus == 'expired' && 'bg-blue-100',
+								]"
+								type="button"
+								@click="setDeviceOnlineStatus('expired')">
+								Expired
+							</button>
+						</div>
+					</form>
 				</div>
-				<!-- when loading vehicles -->
-				<div
-					class="flex flex-grow items-center justify-center"
-					v-if="fetchingClientVehicles && computedVehicles == null">
-					<h1>Loading...</h1>
-				</div>
+			</div>
+			<!-- when loading vehicles -->
+			<div
+				class="flex flex-grow items-center justify-center"
+				v-if="fetchingClientVehicles && computedVehicles == null">
+				<h1>Loading...</h1>
+			</div>
 
-				<!-- The vehicle entries -->
-				<div
-					class="thin-scrollbar flex-grow overflow-y-auto p-5"
-					v-else>
-					<RegentTrackingVehicleEntry
-						v-for="device in computedVehicles"
-						:key="device.id"
-						:device="device"
-						@set-active-device="
-							(device: TrackedVehicles) => {
-								// reset the tab
-								setActiveDeviceTab('details');
+			<!-- The vehicle entries -->
+			<div
+				class="thin-scrollbar flex-grow overflow-y-auto p-5"
+				v-else>
+				<RegentTrackingVehicleEntry
+					v-for="device in computedVehicles"
+					:key="device.id"
+					:device="device"
+					@set-active-device="
+						(device: TrackedVehicles) => {
+							// reset the tab
+							setActiveDeviceTab('details');
 
-								// clear the device history if any
-								clearDeviceHistory();
+							// clear the device history if any
+							clearDeviceHistory();
 
-								setActiveDevice(device);
-							}
-						" />
-				</div>
-			</template>
+							setActiveDevice(device);
+						}
+					" />
+			</div>
 		</div>
 
 		<!-- the sidekick panel -->
