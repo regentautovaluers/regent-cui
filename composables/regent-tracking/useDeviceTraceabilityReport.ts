@@ -223,23 +223,34 @@ export function useDeviceTraceabilityReport() {
 export function useTraceabilityReportComments() {
 	const newComment: Ref<string | null> = ref(null);
 	const { post } = useStandardizedApi();
+	const addNewCommentLoading: Ref<boolean> = ref(false);
 
 	async function addNewComment(id: number) {
-		let response = await post<any>('/api/regent-tracking/add-device-comment', {
-			id,
-			comment: newComment.value,
-		});
+		try {
+			addNewCommentLoading.value = true;
+			let response = await post<any>('/api/regent-tracking/add-device-comment', {
+				id,
+				comment: newComment.value,
+			});
 
-		if (!response.success) {
+			if (response.success) {
+				useToast('Comment Added Successfully. Kindly Reload!', {
+					type: 'success',
+					title: 'Success',
+				});
+			}
+		} catch (ex) {
 			useToast('Failed to add comment! Try Again!', {
 				type: 'error',
 				title: 'Error',
 			});
-			throw new Error('Failed to add  comment!');
+		} finally {
+			addNewCommentLoading.value = false;
 		}
 	}
 	return {
 		newComment,
+		addNewCommentLoading,
 		addNewComment,
 	};
 }

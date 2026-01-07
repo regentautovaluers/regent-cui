@@ -91,8 +91,11 @@
 				<!-- submit button -->
 				<button
 					type="submit"
-					:class="['generic-form-submit mt-3 w-1/3', ,]">
-					Save Comment
+					:class="[
+						'generic-form-submit mt-4 w-1/3',
+						addNewCommentLoading && 'skeleton skeleton-animated',
+					]">
+					{{ addNewCommentLoading ? 'Please Wait...' : 'Add Comment' }}
 				</button>
 			</div>
 		</form>
@@ -111,5 +114,5 @@
 		comments?: Comments[];
 	}>();
 
-	const { newComment, addNewComment } = useTraceabilityReportComments();
+	const { newComment, addNewCommentLoading, addNewComment } = useTraceabilityReportComments();
 </script>

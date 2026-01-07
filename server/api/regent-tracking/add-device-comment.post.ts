@@ -7,18 +7,18 @@ export default defineEventHandler(async (event) => {
 		// extract JSON body
 		const body: {
 			id: number | string;
-			corporate_comment: string;
+			comment: string;
 		} = await readBody(event);
 
 		// put fields in the JSON onto api url (query params)
-		endpoint = endpoint + `&tracker_id=${body.id}&corporate_comment=${body.corporate_comment}`;
+		endpoint = endpoint + `&tracker_id=${body.id}&corporate_comment=${body.comment}`;
 
 		await makeProxyRequest<any>(endpoint, {
 			method: 'POST',
 		});
-
 		return sendSuccessResponse(event, null);
 	} catch (err) {
+		console.log(err);
 		return sendErrorResponse(event, err);
 	}
 });
