@@ -11,7 +11,7 @@ export function useRegentTrackingDeviceHistory() {
 	const positionOnMap: Ref<{
 		lat: number;
 		lng: number;
-		event: 'start' | 'stop' | 'idle';
+		event: 'start' | 'stop' | 'idle' | '-';
 		time: string;
 		location: string | null;
 	} | null> = ref(null);
