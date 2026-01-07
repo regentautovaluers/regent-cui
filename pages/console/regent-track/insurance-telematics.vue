@@ -18,7 +18,7 @@
 						</h2>
 					</div>
 				</div>
-				<button
+				<!-- <button
 					class="inline-flex h-12 w-40 items-center justify-center space-x-1 rounded-md bg-blue-500 text-sm text-slate-100 transition-colors duration-200 ease-in-out outline-none hover:bg-blue-600"
 					type="button">
 					<span
@@ -29,7 +29,7 @@
 								: 'icon-[material-symbols-light--sim-card-download-outline]',
 						]"></span>
 					<span>Download Report</span>
-				</button>
+				</button> -->
 			</div>
 			<div
 				class="hide-scrollbar h-20 space-x-10 overflow-x-scroll px-5 pt-5 whitespace-nowrap">
@@ -79,7 +79,7 @@
 		{
 			to: 'insurance-telematics-panic-alerts',
 			name: 'Panic Alerts',
-			shouldShow: true,
+			shouldShow: false,
 			icon: 'icon-[material-symbols-light--bolt-outline-rounded]',
 		},
 	];

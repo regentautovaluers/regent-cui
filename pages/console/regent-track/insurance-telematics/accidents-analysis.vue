@@ -53,7 +53,6 @@
 						<span v-else-if="filterPeriod == 'this-week'">This Week</span>
 						<span v-else-if="filterPeriod == 'last-30-days'">This Month</span>
 						<span v-else-if="filterPeriod == 'last-3-months'">Last Three Months</span>
-						<span v-else-if="filterPeriod == 'last-6-months'">Last Six Months</span>
 						<span
 							class="icon-[material-symbols-light--keyboard-arrow-down] size-[25px] text-gray-500"></span>
 					</button>
@@ -414,10 +413,6 @@
 		{
 			name: 'Last 3 Months',
 			period: 'last-3-months',
-		},
-		{
-			name: 'Last 6 Months',
-			period: 'last-6-months',
 		},
 	]);
 </script>
