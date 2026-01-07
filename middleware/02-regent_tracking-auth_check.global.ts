@@ -1,7 +1,9 @@
 export default defineNuxtRouteMiddleware(async (to) => {
 	const { bypassRegentTrackingLogin } = useRegentTrackingAuth();
+	const toRouteName = to.name as string;
+	const toRoutePath = to.path as string;
 
-	if (to.name == 'insurance-telematics-all-vehicles' || to.name == 'regent-tracking-home') {
+	if (toRoutePath.includes('/regent-track') && toRouteName != 'regent-track-auth') {
 		if (bypassRegentTrackingLogin()) {
 			return;
 		} else {
