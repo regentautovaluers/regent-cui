@@ -1,7 +1,16 @@
 <template>
 	<div
-		class="h-[10.5rem] rounded-lg border border-green-100 bg-gray-100 p-5 outline-none"
-		ref="entryCard">
+		class="ease-liner h-[10.5rem] cursor-pointer rounded-lg border border-green-100 bg-gray-100 p-5 transition-colors duration-200 outline-none hover:bg-gray-200"
+		ref="entryCard"
+		@click="
+			emits('card-clicked', {
+				lat: locationLat,
+				lng: locationLng,
+				time: timeAtLocationFraction.toString(),
+				location: deviceLocation,
+				event: '-',
+			})
+		">
 		<div class="flex items-center justify-between">
 			<div>
 				<h1
@@ -86,6 +95,7 @@
 			locationLng: number;
 		}>();
 	const deviceLocation: ShallowRef<string | null> = shallowRef(null);
+	const emits = defineEmits(['card-clicked']);
 	const { gecodeLocation } = useGoogleMaps();
 	const entryCard = useTemplateRef<HTMLDivElement>('entryCard');
 	const { stop } = useIntersectionObserver(

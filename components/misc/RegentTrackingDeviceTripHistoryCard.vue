@@ -1,6 +1,6 @@
 <template>
 	<li
-		:class="['ms-4 rounded-lg p-2 outline-none hover:bg-gray-100']"
+		:class="['ms-4 rounded-lg p-2 outline-none hover:bg-gray-100 transition-colors duration-200 ease-linear cursor-pointer']"
 		ref="entry"
 		@click="$emit('entryClicked', location)">
 		<div
