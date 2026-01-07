@@ -332,7 +332,7 @@
 										class="tablet:table-cell hidden w-[25rem] max-w-[25rem] space-y-2 py-5">
 										<template
 											v-if="v.comment && v.comment.length > 0"
-											v-for="c in v.comment">
+											v-for="c in v.comment.slice(0, 2)">
 											<p
 												class="inline-flex w-full flex-col space-y-1 space-x-2 rounded-md bg-blue-100 p-2">
 												<span class="font-semibold text-gray-700">{{

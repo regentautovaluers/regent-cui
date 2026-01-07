@@ -32,35 +32,43 @@ export default defineEventHandler(async (event) => {
 				return v.id;
 			});
 			let base64Encoded = SecurityUtil.encodeBase64(deviceIds.join(','));
-			/*
-			const userDetailsEndpoint = `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?api_key=${config.TRACKING_CERTS_API_KEY}&tracker_id=${base64Encoded}&page=1&limit=${query.limit}`;
-			const results = await makeProxyRequest<TraceabilityReport>(userDetailsEndpoint);
-			results.results.forEach((r) => {
-				let entry = combinedVehicleData.find(
-					(e) => e.id == r.tracker_id,
-				) as TrackedVehicles;
+			const userDetailsEndpoint =
+				`${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?
+					api_key=${config.TRACKING_CERTS_API_KEY}
+					&tracker_id=${base64Encoded}
+					&page=1
+					&limit=${deviceIds.length}`.trim();
+			try {
+				const results = await makeProxyRequest<TraceabilityReport>(userDetailsEndpoint);
+				results.results.forEach((r) => {
+					let entry = combinedVehicleData.find(
+						(e) => e.id == r.tracker_id,
+					) as TrackedVehicles;
 
-				// trace whether vehicle is on watchlist
-				if (r.comments.length > 0) {
-					const latest_comment = r.comments[0];
-					entry.on_watchlist = latest_comment.watchlist == 'Y' ? true : false;
-				} else {
-					entry.on_watchlist = false;
-				}
+					// trace whether vehicle is on watchlist
+					if (r.comments.length > 0) {
+						const latest_comment = r.comments[0];
+						entry.on_watchlist = latest_comment.watchlist == 'Y' ? true : false;
+					} else {
+						entry.on_watchlist = false;
+					}
 
-				// set the comment, and driver name and phone number
-				entry.comment = r.comments;
+					// set the comment, and driver name and phone number
+					entry.comment = r.comments;
 
-				entry.driver_data.name = r.clientName;
-				entry.driver_data.phone = r.clientNo;
-			});
-			*/
+					entry.driver_data.name = r.clientName;
+					entry.driver_data.phone = r.clientNo;
+				});
+			} catch (error) {
+				console.error('Failed to fetch traceability details. Cause: ', error);
+			}
 
 			return sendSuccessResponse(event, combinedVehicleData);
 		} else {
 			return sendSuccessResponse(event, [] as TrackedVehicles[]);
 		}
 	} catch (err) {
+		console.log(err);
 		return sendErrorResponse(event, err);
 	}
 });

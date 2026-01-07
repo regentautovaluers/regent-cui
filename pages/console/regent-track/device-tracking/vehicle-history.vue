@@ -93,7 +93,7 @@
 
 					<div
 						id="custom-time-dd"
-						class="z-10 w-64 hidden divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white shadow-sm">
+						class="z-10 hidden w-64 divide-y divide-gray-100 rounded-lg border border-gray-100 bg-white shadow-sm">
 						<form
 							@submit.prevent="executeFetchDeviceHistory()"
 							class="flex w-full flex-col space-y-1 rounded-md bg-gray-100 p-2"
@@ -212,7 +212,8 @@
 						:location-lng="e.representative_lng"
 						:number-of-appearances="e.appearances"
 						:time-at-location="e.location_time_hours"
-						:time-at-location-fraction="e.location_time_hours_fraction">
+						:time-at-location-fraction="e.location_time_hours_fraction"
+						@card-clicked="(data) => setPositionOnMap(data)">
 					</RegentTrackDeviceNestingAreaCard>
 				</div>
 			</div>
