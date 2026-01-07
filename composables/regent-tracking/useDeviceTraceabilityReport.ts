@@ -231,6 +231,7 @@ export function useTraceabilityReportComments() {
 			let response = await post<any>('/api/regent-tracking/add-device-comment', {
 				id,
 				comment: newComment.value,
+				corp_client: getPrincipal?.value?.corpName ?? 'Unknown',
 			});
 
 			if (response.success) {
