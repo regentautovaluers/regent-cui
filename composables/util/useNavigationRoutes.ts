@@ -124,7 +124,8 @@ export default function () {
 			screenName: 'Regent Tracking',
 			routeName: bypassRegentTrackingLogin() ? 'regent-tracking-home' : 'regent-track-auth',
 			renderRoute:
-				getPrincipal && ['BANK', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType!),
+				getPrincipal &&
+				['BANK', 'MICRO_FINANCE', 'SACCO'].includes(getPrincipal.value?.corpType!),
 			icon: 'icon-[material-symbols-light--globe-location-pin]',
 			description:
 				'Our vehicle and fleet tracking services ensure that you have real-time visibility over your assets. \
