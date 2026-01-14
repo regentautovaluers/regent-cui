@@ -7,6 +7,7 @@
 				lastName,
 				email,
 				phoneNumber,
+				newPassword,
 				roleInOrganization,
 				isAccountEnabled,
 				corporateBranch,
@@ -57,7 +58,7 @@
 					v-model="phoneNumber" />
 			</div>
 		</div>
-		<!-- <div class="mt-3 flex flex-col">
+		<div class="mt-3 flex flex-col">
 			<label class="generic-input-label">Password</label>
 			<div class="flex flex-grow">
 				<input
@@ -65,9 +66,10 @@
 					id="new-password"
 					class="generic-input"
 					placeholder="gnarly_squirell@123"
-					v-model="password" />
+					v-model="newPassword"
+					autocomplete="off" />
 			</div>
-		</div> -->
+		</div>
 		<div class="mt-3 flex flex-col">
 			<label class="generic-input-label">Role In Company</label>
 			<div class="flex flex-grow">
@@ -175,6 +177,7 @@
 	const roleInOrganization: Ref<string> = ref(props.roleInOrganization);
 	const userRole: Ref<string> = ref(props.userRole.toLowerCase());
 	const isAccountEnabled: Ref<boolean> = ref(props.isAccountEnabled);
+	const newPassword: Ref<string | null> = ref(null);
 	const corporateBranch: Ref<string> = ref(props.branchId);
 
 	watch(phoneNumber, (newNumber) => {

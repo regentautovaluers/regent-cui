@@ -8,6 +8,7 @@
 				lastName,
 				email,
 				phoneNumber,
+				newPassword,
 				roleInOrganization,
 				true,
 				getPrincipal?.branchId!,
@@ -57,7 +58,7 @@
 					v-model="phoneNumber" />
 			</div>
 		</div>
-		<!-- <div class="mt-3 flex flex-col">
+		<div class="mt-3 flex flex-col">
 			<label class="generic-input-label">Password</label>
 			<div class="flex flex-grow">
 				<input
@@ -65,9 +66,10 @@
 					id="new-password"
 					class="generic-input"
 					placeholder="gnarly_squirell@123"
-					v-model="password" />
+					v-model="newPassword"
+					autocomplete="off" />
 			</div>
-		</div> -->
+		</div>
 		<div class="mt-3 flex flex-col">
 			<label class="generic-input-label">Role In Company</label>
 			<div class="flex flex-grow">
@@ -105,12 +107,14 @@
 	const firstName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[0]!);
 	const lastName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[1]!);
 	const email: Ref<string> = ref(getPrincipal.value?.email!);
-	const phoneNumber: Ref<string> = ref(getPrincipal.value?.phonenumber);
-	const roleInOrganization: Ref<string> = ref(getPrincipal.value?.roleInOrganization);
+	const phoneNumber: Ref<string> = ref(getPrincipal.value?.phonenumber as string);
+	const newPassword: Ref<string | null> = ref(null);
+	const roleInOrganization: Ref<string> = ref(getPrincipal.value?.roleInOrganization as string);
 
 	watch(phoneNumber, (newNumber) => {
-		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
-			phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
-		}
+		if (newNumber)
+			if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
+				phoneNumber.value = newNumber.replace(/^(\+254|0)/, '254');
+			}
 	});
 </script>
