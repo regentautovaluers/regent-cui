@@ -13,6 +13,7 @@ const useAuth = () => {
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
 	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
+	// const { authToken: trackingAuthToken } = useRegentTrackingAuth();
 
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
 		return authToken.value;
@@ -75,6 +76,12 @@ const useAuth = () => {
 		// unset the auth token and stored principal
 		authToken.value = null;
 		cleanPrincipal();
+
+		// clean the vehicles loaded by tracking
+		cleanClientDevices();
+
+		// delete the users tracking token
+		// trackingAuthToken.value = null;
 
 		useToast('Logout Successful!', {
 			type: 'success',
