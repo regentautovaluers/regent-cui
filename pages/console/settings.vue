@@ -53,7 +53,7 @@
 	});
 
 	const { doesRouteNameMatch } = useNavigationRoutes();
-	const { isPrincipalAdmin } = useAuth();
+	const { isPrincipalAdmin, getPrincipal } = useAuth();
 	const routeEntries = [
 		{
 			to: 'settings-my-account',
@@ -64,19 +64,19 @@
 		{
 			to: 'vehicle-valuation-manage-user',
 			name: 'Manage Users',
-			shouldShow: isPrincipalAdmin.value,
+			shouldShow: isPrincipalAdmin?.value,
 			icon: 'icon-[material-symbols-light--manage-accounts]',
 		},
 		{
 			to: 'vehicle-valuation-add-user',
 			name: 'New Account',
-			shouldShow: isPrincipalAdmin.value,
+			shouldShow: isPrincipalAdmin?.value,
 			icon: 'icon-[material-symbols-light--group-add]',
 		},
 		{
 			to: 'corp-branches',
 			name: 'Your Branches',
-			shouldShow: isPrincipalAdmin.value,
+			shouldShow: isPrincipalAdmin?.value,
 			icon: 'icon-[material-symbols-light--home-pin-rounded]',
 		},
 	];
