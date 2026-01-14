@@ -41,7 +41,10 @@ export const useStandardizedApi = () => {
 		handleApiCall<T>(endpoint, { method: 'GET', query });
 
 	// New method for blob responses
-	const getBlob = async (endpoint: string, options: Parameters<typeof $fetch>[1] = {}): Promise<Blob> => {
+	const getBlob = async (
+		endpoint: string,
+		options: Parameters<typeof $fetch>[1] = {},
+	): Promise<Blob> => {
 		return await $fetch<Blob>(endpoint, {
 			...options,
 			responseType: 'blob', // Key difference
@@ -87,7 +90,8 @@ export const useApiData = <T = unknown, R = T>(
 		query?: Record<string, any>;
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 		body?: any;
-		transform?: (data: ApiResponse<T>) => R;
+		transform?: (data: ApiResponse<T>) => R | Promise<R>;
+		getCachedData?: (key: string) => R | undefined;
 		onResponse?: (context: {
 			request: any;
 			response: any;
@@ -124,6 +128,7 @@ export const useApiData = <T = unknown, R = T>(
 			}),
 		{
 			...asyncDataOptions,
+			getCachedData: options.getCachedData,
 			transform: transform as AsyncDataOptions<ApiResponse<T>, R>['transform'],
 		},
 	);

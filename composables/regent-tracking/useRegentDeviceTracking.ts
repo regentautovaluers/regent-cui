@@ -22,7 +22,10 @@ export function useRegentDeviceTracking() {
 		{
 			method: 'GET',
 			server: false,
-			immediate: false,
+			getCachedData(_key) {
+				const cached = getClientDevices.value;
+				if (cached) return cached as TrackedVehicles[];
+			},
 			transform: (response) => {
 				// Check if the API call was successful
 				if (response.success) {
@@ -39,20 +42,6 @@ export function useRegentDeviceTracking() {
 				setClientDevices(response._data.data as TrackedVehicles[]);
 			},
 		},
-	);
-
-	watch(
-		authToken,
-		async (newValue) => {
-			if (typeof newValue === 'string' && newValue.length > 0) {
-				const cached = getClientDevices.value;
-				// if data does not exist in the store
-				if (!cached) {
-					await refetchClientVehicles();
-				}
-			}
-		},
-		{ immediate: true },
 	);
 
 	const totalVehicles: ComputedRef<number> = computed(() => getClientDevices.value?.length ?? 0);
