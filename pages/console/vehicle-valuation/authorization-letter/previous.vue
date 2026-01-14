@@ -178,7 +178,7 @@
 									<br />
 									<span class="text-sm">{{ letter.policyNumber ?? 'N/A' }}</span>
 								</td>
-								<td class="mobile-lg:table-cell hidden py-4">
+								<td class="mobile-lg:table-cell hidden py-4 w-64">
 									<span>{{ letter.clientName }}</span>
 									<br />
 									<span
@@ -189,7 +189,7 @@
 								<td class="tablet:table-cell hidden w-72 py-4 text-wrap">
 									{{ letter.agencyName ?? 'N/A' }}
 								</td>
-								<td class="tablet:table-cell hidden py-4">
+								<td class="tablet:table-cell hidden py-4 w-64">
 									<span
 										class="w-fit rounded-lg border-[1px] border-yellow-300 bg-yellow-200 px-1 text-sm text-yellow-600"
 										>{{ letter.authorizedBy.username }}</span
@@ -198,7 +198,7 @@
 									<span>{{ letter.createdOn.split(' ')[0] }}</span>
 								</td>
 								<td
-									class="laptop:table-cell hidden max-w-24 overflow-hidden py-4 text-wrap text-gray-600">
+									class="laptop:table-cell hidden overflow-hidden py-4 text-wrap text-gray-600 w-44">
 									{{
 										(letter.assessmentStage as string)
 											?.toLowerCase()
@@ -206,10 +206,10 @@
 									}}
 								</td>
 								<td
-									class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
+									class="laptop:table-cell hidden py-4 text-sm text-wrap">
 									{{ letter.feedback ?? 'N/A' }}
 								</td>
-								<td>
+								<td class="w-20">
 									<button
 										:id="'dropdownLeftButton' + index"
 										:data-dropdown-toggle="'dropdownLeft' + index"
