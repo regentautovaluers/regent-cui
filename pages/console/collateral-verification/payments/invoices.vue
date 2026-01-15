@@ -364,7 +364,6 @@
 					:src="downloadedInvoice"
 					class="h-[650px] w-full rounded-lg border-none outline-none"
 					title="PDF Preview"></iframe>
-				{{ fileName }}
 			</ParentModal>
 		</template>
 

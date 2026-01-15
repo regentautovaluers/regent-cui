@@ -232,24 +232,6 @@
 					:user-role="u.userRoles[0]" />
 			</ParentModal>
 		</template>
-
-		<!-- edit user account -->
-		<ParentModal
-			modal-title="Edit Account"
-			modal-id="edit-user-modal">
-			<EditUserAccount
-				v-if="usersList"
-				v-for="(u, idx) in usersList"
-				:key="idx"
-				:user-id="u.userId"
-				:username="u.username"
-				:email="u.email"
-				:phone-number="u.phoneNumber"
-				:role-in-organization="u.roleInOrganization"
-				:branch-id="u.branchId"
-				:is-account-enabled="u.accountEnabled"
-				:user-role="u.userRoles[0]" />
-		</ParentModal>
 	</div>
 </template>
 

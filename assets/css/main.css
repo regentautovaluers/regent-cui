@@ -29,6 +29,10 @@
 	}
 }
 
+@utility ai-chat-button {
+	@apply inline-flex w-32 cursor-pointer items-center justify-center space-x-2 rounded-full bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 px-1 py-2 font-semibold;
+}
+
 @utility generic-input {
 	@apply block h-[50px] w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-sm text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
 }
