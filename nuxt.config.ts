@@ -68,6 +68,7 @@ export default defineNuxtConfig({
 		REGENT_TRACK_CERTS_BASE_URL: process.env.REGENT_TRACK_CERTS_BASE_URL,
 		REGENT_TRACK_BASE_URL: process.env.REGENT_TRACK_BASE_URL,
 		TRACKING_CERTS_API_KEY: process.env.TRACKING_CERTS_API_KEY,
+		AI_CHAT_BASE_URL: process.env.AI_CHAT_BASE_URL,
 
 		// public properties
 		public: {
