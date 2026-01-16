@@ -4,7 +4,12 @@ export interface InitializeChatReponseStruct {
 	session_id: string;
 	booking_id: string;
 	status: ChatStatus;
-	message?: string;
-	estimated_processing_time?: number;
-	existing_chat_messages?: number;
+}
+
+export interface GetChatSessionStatusStruct {
+	session_id: string;
+	booking_id: null | string;
+	status: ChatStatus;
+	report_url: string;
+	report_type: string;
 }
