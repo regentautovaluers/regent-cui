@@ -13,3 +13,16 @@ export interface GetChatSessionStatusStruct {
 	report_url: string;
 	report_type: string;
 }
+
+export interface ChatMessage {
+	answer: string;
+	sources: SourceQuote[];
+	total_messages: number;
+}
+
+interface SourceQuote {
+	page: string;
+	has_table: boolean;
+	content_preview: string;
+	relevance_score: any;
+}

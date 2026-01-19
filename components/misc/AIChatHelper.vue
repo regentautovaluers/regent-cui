@@ -1,12 +1,12 @@
 <template>
 	<form
 		class="flex h-full flex-col"
-		@submit.prevent="">
+		@submit.prevent="requestAnswer()">
 		<!-- header -->
-		<div class="flex h-fit items-center justify-between border-b px-2 py-3">
+		<div class="flex h-fit items-center justify-between border-b p-3">
 			<div>
 				<button
-					class="ai-chat-button w-fit px-2"
+					class="ai-chat-button w-fit cursor-auto px-2"
 					type="button"
 					disabled>
 					<svg
@@ -26,6 +26,7 @@
 					<span class="text-sm text-slate-100">AVA Assistant</span>
 				</button>
 			</div>
+			<h2 class="text-sm text-gray-500">{{ computedSessionId }}</h2>
 			<div class="flex w-fit items-center space-x-2">
 				<button class="size-fit">
 					<span
@@ -38,34 +39,60 @@
 			</div>
 		</div>
 		<!-- chat window -->
-		<div class="flex-grow p-2"></div>
+		<div class="flex-grow p-3"></div>
 
 		<!-- chat suggestions -->
-		<div class="flex flex-wrap">
+		<div class="flex flex-wrap p-3">
 			<button
 				class="ai-suggestion-button"
 				v-for="(entry, id) in sampleQuestions"
-				:key="id">
+				:key="id"
+				type="button"
+				@click="requestAnswer(entry)">
 				{{ entry }}
 			</button>
 		</div>
 
 		<!-- bottom bar -->
-		<div class="relative h-fit border-t px-2 py-3">
+		<div class="relative h-fit border-t p-3">
 			<input
 				type="text"
 				name="chat-input-send-btn"
 				id="chat-input-send-btn"
 				class="generic-input"
 				placeholder="Ask anything about this report..." />
-			<button class="absolute right-4 size-fit -translate-y-[120%]">
+			<button
+				class="absolute right-4 size-fit -translate-y-[120%]"
+				:disabled="initializingChatOrAwaitingAnswer">
 				<span
-					class="icon-[material-symbols-light--send-rounded] size-[25px] text-gray-500 transition-colors duration-200 ease-in-out hover:text-gray-700"></span>
+					class="icon-[material-symbols-light--send-rounded] size-[25px] text-gray-500 transition-colors duration-200 ease-in-out hover:text-gray-700"
+					v-if="!initializingChatOrAwaitingAnswer"></span>
+				<span
+					class="icon-[svg-spinners--90-ring] size-[25px] text-gray-500"
+					v-else></span>
 			</button>
 		</div>
 	</form>
 </template>
 
 <script setup lang="ts">
-	const { sampleQuestions } = useAIChat();
+	const {
+		sampleQuestions,
+		userQuery,
+		initializingChatOrAwaitingAnswer,
+		computedSessionId,
+		initializeChat,
+		getChatSession,
+		requestAnswer,
+	} = useAIChat();
+	const { report_url, booking_id, report_type } = defineProps<{
+		report_url: string;
+		booking_id: string;
+		report_type: string;
+	}>();
+
+	onMounted(async () => {
+		console.log('chat window opened...');
+		await initializeChat(report_url, booking_id, report_type);
+	});
 </script>

@@ -30,7 +30,7 @@
 							valuationReport.vehicleMake
 						}}</span>
 						<span class="text-gray-500">{{ valuationReport.vehicleType }}</span>
-						<span class="text-gray-500">{{ valuationReport.policyNumber }}</span>
+						<span class="text-gray-500">{{ valuationReport.policyNumber ?? '' }}</span>
 					</div>
 				</div>
 				<div class="grid grid-cols-4 gap-x-2 px-10 py-5">
@@ -270,6 +270,42 @@
 					:class="imageStretched && 'object-cover'" />
 			</div>
 		</div>
+
+		<!-- chat with AI button -->
+
+		<!-- chat trigger button -->
+		<button
+			class="ai-chat-button fixed right-8 bottom-8"
+			type="button"
+			@click="isChatOpen = !isChatOpen">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				class="text-slate-100">
+				<g fill="none">
+					<path
+						d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"></path>
+					<path
+						fill="currentColor"
+						d="M9.107 5.448c.598-1.75 3.016-1.803 3.725-.159l.06.16l.807 2.36a4 4 0 0 0 2.276 2.411l.217.081l2.36.806c1.75.598 1.803 3.016.16 3.725l-.16.06l-2.36.807a4 4 0 0 0-2.412 2.276l-.081.216l-.806 2.361c-.598 1.75-3.016 1.803-3.724.16l-.062-.16l-.806-2.36a4 4 0 0 0-2.276-2.412l-.216-.081l-2.36-.806c-1.751-.598-1.804-3.016-.16-3.724l.16-.062l2.36-.806A4 4 0 0 0 8.22 8.025l.081-.216zM19 2a1 1 0 0 1 .898.56l.048.117l.35 1.026l1.027.35a1 1 0 0 1 .118 1.845l-.118.048l-1.026.35l-.35 1.027a1 1 0 0 1-1.845.117l-.048-.117l-.35-1.026l-1.027-.35a1 1 0 0 1-.118-1.845l.118-.048l1.026-.35l.35-1.027A1 1 0 0 1 19 2"></path>
+				</g>
+			</svg>
+			<span class="text-slate-100">Ask AVA</span>
+		</button>
+
+		<!-- chat interface -->
+		<div
+			:class="[
+				'fixed right-8 bottom-22 h-[32rem] w-96 rounded-lg border-2 border-gray-500 bg-white shadow-sm outline-none',
+			]"
+			v-if="isChatOpen">
+			<AIChatHelper
+				:booking_id="valuationReport.valuationId"
+				:report_url="valuationReport.reportURL"
+				report_type="VALUATION" />
+		</div>
 	</div>
 </template>
 
@@ -279,109 +315,6 @@
 		layout: 'console-layout',
 	});
 
-	const { params: routeParams } = useRoute();
-	const runtimeConfig = useRuntimeConfig();
-	const imageStretched: Ref<boolean> = ref(true);
-	const activeImage: Ref<number> = ref(0);
-
-	const collateInspectionPictures = (
-		frontPhotos: string[],
-		enginePhotos: string[],
-		windscreenPhotos: string[],
-		rightPhotos: string[],
-		backPhotos: string[],
-		bootPhotos: [],
-		leftPhotos: any[],
-		chassisPhotos: string[],
-		tyrePhotos: string[],
-		upholsteryPhotos: string[],
-		odometerPhotos: [],
-	): string[] => {
-		return [
-			...frontPhotos,
-			...enginePhotos,
-			...windscreenPhotos,
-			...rightPhotos,
-			...backPhotos,
-			...bootPhotos,
-			...leftPhotos,
-			...chassisPhotos,
-			...tyrePhotos,
-			...upholsteryPhotos,
-			...odometerPhotos,
-		];
-	};
-
-	const { data: valuationReport } = (await useFetch(
-		`/api/v1/final/get-inspection-details?valuationId=${routeParams.valuation_id}`,
-		{
-			key: 'valuation-report',
-			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-			method: 'GET',
-			headers: {
-				Accept: '',
-			},
-			server: true,
-			transform: (report: any) => {
-				const reportData = report.data;
-				const valuationBooking = reportData.valuationBooking;
-				return {
-					reportURL: valuationBooking.reportURL,
-					insurer: reportData.engineAndWindscreenFinal.insurerName,
-					valuationId: valuationBooking.valuationId,
-					regNo: valuationBooking.regNo,
-					clientName: valuationBooking.clientName,
-					vehicleMake: valuationBooking.vehicleMake,
-					vehicleType: valuationBooking.vehicleType,
-					engineNumber: reportData.engineAndWindscreenFinal.engineNumber,
-					chassisNumber: reportData.tyreAndChassisFinal.chassisNumber,
-					policyNumber: reportData.engineAndWindscreenFinal.policyNumber,
-					vehiclePhotos: collateInspectionPictures(
-						reportData.frontFinal.frontPhotos,
-						reportData.engineAndWindscreenFinal.enginePhotos,
-						reportData.engineAndWindscreenFinal.windscreenPhotos,
-						reportData.rightSideFinal.rightSidePhotos,
-						reportData.backSideFinal.backPhotos,
-						reportData.backSideFinal.bootPhotos,
-						reportData.leftSideFinal.leftSidePhotos,
-						reportData.tyreAndChassisFinal.chassisPhotos,
-						reportData.tyreAndChassisFinal.tyrePhotos,
-						reportData.interiorFinal.upholsteryPhotos,
-						reportData.interiorFinal.odometerPhotos,
-					),
-					inspection: {
-						frontSectionComment: reportData.frontFinal.generatedComment,
-						engineSectionComment:
-							reportData.engineAndWindscreenFinal.engineGeneratedComment,
-						windscreenSectionComment:
-							reportData.engineAndWindscreenFinal.windscreenGeneratedComment,
-						leftSideComment: reportData.leftSideFinal.generatedComment,
-						rightSideComment: reportData.rightSideFinal.generatedComment,
-						backSideComment: reportData.backSideFinal.generatedComment,
-						mechanicalSectionComment:
-							reportData.mechanicalAndElectricalFinal.mechanicalGeneratedComment,
-						electicalSectionComment:
-							reportData.mechanicalAndElectricalFinal.electricalGeneratedComment,
-						vehicleExtras: reportData.extras,
-						tyreCondition: reportData.tyreAndChassisFinal.tyreGeneratedComment,
-						chassisCondition: reportData.tyreAndChassisFinal.chassisGeneratedComment,
-						interiorComment: reportData.interiorFinal.interiorGeneratedComment,
-						dashboardComment: reportData.interiorFinal.dashboardGeneratedComment,
-						mileage: {
-							reading: reportData.interiorFinal.odometerCurrentReading,
-							units: reportData.interiorFinal.odometerReadingUnits,
-						},
-						generalCondition: reportData.generalCondition,
-						remedy: reportData.remedy,
-					},
-					awardedValues: {
-						assessedValue: valuationBooking.vehicleValue.assessedValue,
-						marketValue: valuationBooking.vehicleValue.marketValue,
-						forcedValue: valuationBooking.vehicleValue.forcedSaleValue,
-						windscreenValue: valuationBooking.vehicleValue.windscreenValue,
-					},
-				};
-			},
-		},
-	)) as any;
+	const { valuationReport, activeImage, imageStretched } = useValuationReportDownloader();
+	const { isChatOpen } = useAIChat();
 </script>
