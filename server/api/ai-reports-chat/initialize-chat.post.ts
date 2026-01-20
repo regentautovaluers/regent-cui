@@ -5,9 +5,8 @@ export default defineEventHandler(async (event) => {
 
 	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/chat/initiate`;
 	try {
-		const body: { report_url: string; booking_id: string; report_type: string } =
+		const body: { report_url: string; booking_id: string; report_type: string, user_id: string } =
 			await readBody(event);
-		console.log(body);
 		const response = await makeProxyRequest<InitializeChatReponseStruct>(endpoint, {
 			body,
 			method: 'POST',

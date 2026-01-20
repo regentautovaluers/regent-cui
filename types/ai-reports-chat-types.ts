@@ -1,4 +1,5 @@
 export type ChatStatus = 'RESUMED' | 'PROCESSING' | 'READY';
+export type MessageOrigin = 'user' | 'assistant';
 
 export interface InitializeChatReponseStruct {
 	session_id: string;
@@ -15,9 +16,11 @@ export interface GetChatSessionStatusStruct {
 }
 
 export interface ChatMessage {
-	answer: string;
-	sources: SourceQuote[];
-	total_messages: number;
+	timestamp: string;
+	origin: MessageOrigin;
+	answer?: string;
+	sources?: SourceQuote[];
+	question?: string;
 }
 
 interface SourceQuote {

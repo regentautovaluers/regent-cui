@@ -4,9 +4,9 @@ import type {
 	ChatMessage,
 } from '~/types/ai-reports-chat-types';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
-import * as aiChatStore from '~/stores/ai-report-chart-store';
+import { useAiReportChatStore } from '~/stores/ai-report-chart-store';
 
-export default function () {
+export default function (reportId: string) {
 	const sampleQuestions: readonly string[] = [
 		'When was this report produced?',
 		'Who is the owner of the vehicle in this report?',
@@ -15,31 +15,34 @@ export default function () {
 		'Is the vehicle interior in good condition?',
 	];
 	const { post, get } = useStandardizedApi();
-	const initializingChatOrAwaitingAnswer: Ref<boolean> = ref(false);
+	const initializingChat: Ref<boolean> = ref(false);
+	const awaitingAnswer: Ref<boolean> = ref(false);
 	const userQuery: Ref<string | null> = ref(null);
 	const isChatOpen: Ref<boolean> = ref(false);
+	const { setSessionContext, getSessionContext, setChatMessage } = useAiReportChatStore();
+	const { getPrincipal } = useAuth();
 
-	const computedSessionId: ComputedRef<string | undefined> = computed(
-		() => aiChatStore.getSessionContext.value?.session_id,
-	);
-
-	// const getConversation = computed(() => aiChatStore.getMessagesBySession.value.)
+	const computedChatSession = computed(() => {
+		return getSessionContext(reportId);
+	});
 
 	async function initializeChat(report_url: string, booking_id: string, report_type: string) {
 		const endpoint = '/api/ai-reports-chat/initialize-chat';
 
-		initializingChatOrAwaitingAnswer.value = true;
+		initializingChat.value = true;
 		try {
 			let response = await post<InitializeChatReponseStruct>(endpoint, {
 				report_url,
 				booking_id,
 				report_type,
+				user_id: getPrincipal.value?.userId,
 			});
 
 			if (response.success) {
 				const data = (response as StandardSuccessResponse<InitializeChatReponseStruct>)
 					.data;
-				aiChatStore.setSessionContext(data);
+				setSessionContext(data);
+				isChatOpen.value = true;
 			}
 		} catch (ex) {
 			useToast('Failed to start chat! Try Again!', {
@@ -47,7 +50,7 @@ export default function () {
 				title: 'Error',
 			});
 		} finally {
-			initializingChatOrAwaitingAnswer.value = false;
+			initializingChat.value = false;
 		}
 	}
 
@@ -56,7 +59,7 @@ export default function () {
 
 		try {
 			let response = await get(endpoint, {
-				session_id: computedSessionId.value,
+				session_id: computedChatSession.value?.sessionId,
 			});
 
 			if (response.success) {
@@ -72,19 +75,24 @@ export default function () {
 
 	async function requestAnswer(question?: string) {
 		const endpoint = '/api/ai-reports-chat/ask-question';
-		initializingChatOrAwaitingAnswer.value = true;
+		awaitingAnswer.value = true;
+
 		try {
 			let response = await post(endpoint, {
-				session_id: computedSessionId.value,
+				session_id: computedChatSession.value?.sessionId,
 				question: !question ? (userQuery.value as string) : question,
+			});
+
+			// set the user's question into the chat
+			setChatMessage(computedChatSession.value?.sessionId as string, {
+				origin: 'user',
+				question,
+				timestamp: new Date().toISOString(),
 			});
 
 			if (response.success) {
 				const data = (response as StandardSuccessResponse<ChatMessage>).data;
-				aiChatStore.setChatMessage({
-					session_id: computedSessionId.value as string,
-					newMessage: data,
-				});
+				setChatMessage(computedChatSession.value?.sessionId as string, data);
 			}
 		} catch (ex) {
 			useToast('Failed get answer! Try again!', {
@@ -92,7 +100,7 @@ export default function () {
 				title: 'Error',
 			});
 		} finally {
-			initializingChatOrAwaitingAnswer.value = false;
+			awaitingAnswer.value = false;
 		}
 	}
 
@@ -100,8 +108,9 @@ export default function () {
 		isChatOpen,
 		sampleQuestions,
 		userQuery,
-		initializingChatOrAwaitingAnswer,
-		computedSessionId,
+		initializingChat,
+		awaitingAnswer,
+		computedChatSession,
 		initializeChat,
 		getChatSession,
 		requestAnswer,
