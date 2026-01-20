@@ -23,7 +23,10 @@ export default defineNuxtConfig({
 	imports: {
 		dirs: ['./utils/**', './composables/**', './stores/**'],
 	},
-	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts'],
+	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts', '@pinia/nuxt'],
+	pinia: {
+		storesDir: ['stores'],
+	},
 	app: {
 		// layoutTransition: { name: 'layout', mode: 'out-in' },
 		// pageTransition: { name: 'page', mode: 'out-in' },
@@ -69,6 +72,7 @@ export default defineNuxtConfig({
 		REGENT_TRACK_BASE_URL: process.env.REGENT_TRACK_BASE_URL,
 		TRACKING_CERTS_API_KEY: process.env.TRACKING_CERTS_API_KEY,
 		AI_CHAT_BASE_URL: process.env.AI_CHAT_BASE_URL,
+		VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 
 		// public properties
 		public: {
