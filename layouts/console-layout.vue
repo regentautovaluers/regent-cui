@@ -275,20 +275,7 @@
 
 	const { attemptLogout } = useAuth();
 	const userInput: Ref<string> = ref('');
-	const { getConversation, appendTextTypeNode, sendBotpressMessage } = useAssistantConversation();
 	const { getPrincipal } = useAuth();
-
-	const handleConvFormSubmitted = () => {
-		sendBotpressMessage(userInput.value);
-		appendTextTypeNode(userInput.value, 'Human');
-		userInput.value = '';
-	};
-
-	const handleConvActionSelected = (message: string) => {
-		sendBotpressMessage(message);
-		appendTextTypeNode(message, 'Human');
-		userInput.value = '';
-	};
 	// const {
 	// 	user,
 	// 	isAuthenticated,
