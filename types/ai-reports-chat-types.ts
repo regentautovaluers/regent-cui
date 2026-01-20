@@ -17,7 +17,7 @@ export interface GetChatSessionStatusStruct {
 
 export interface ChatMessage {
 	timestamp: string;
-	origin: MessageOrigin;
+	role: MessageOrigin;
 	answer?: string;
 	sources?: SourceQuote[];
 	question?: string;

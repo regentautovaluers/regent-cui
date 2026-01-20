@@ -5,6 +5,7 @@ import type {
 } from '~/types/ai-reports-chat-types';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 import { useAiReportChatStore } from '~/stores/ai-report-chart-store';
+import { marked } from 'marked';
 
 export default function (reportId: string) {
 	const sampleQuestions: readonly string[] = [
@@ -23,7 +24,9 @@ export default function (reportId: string) {
 	const { getPrincipal } = useAuth();
 
 	const computedChatSession = computed(() => {
-		return getSessionContext(reportId);
+		let context = getSessionContext(reportId);
+		console.log(context);
+		return context;
 	});
 
 	async function initializeChat(report_url: string, booking_id: string, report_type: string) {
@@ -78,16 +81,16 @@ export default function (reportId: string) {
 		awaitingAnswer.value = true;
 
 		try {
+			// set the user's question into the chat
+			setChatMessage(computedChatSession.value?.sessionId as string, {
+				role: 'user',
+				question: !question ? (userQuery.value as string) : question,
+				timestamp: new Date().toISOString(),
+			});
+
 			let response = await post(endpoint, {
 				session_id: computedChatSession.value?.sessionId,
 				question: !question ? (userQuery.value as string) : question,
-			});
-
-			// set the user's question into the chat
-			setChatMessage(computedChatSession.value?.sessionId as string, {
-				origin: 'user',
-				question,
-				timestamp: new Date().toISOString(),
 			});
 
 			if (response.success) {
@@ -104,6 +107,12 @@ export default function (reportId: string) {
 		}
 	}
 
+	function renderMarkdown(mdtext: string) {
+		if (!mdtext) return '';
+		// 'marked.parse' converts the markdown string to HTML
+		return marked.parse(mdtext);
+	}
+
 	return {
 		isChatOpen,
 		sampleQuestions,
@@ -114,5 +123,6 @@ export default function (reportId: string) {
 		initializeChat,
 		getChatSession,
 		requestAnswer,
+		renderMarkdown,
 	};
 }

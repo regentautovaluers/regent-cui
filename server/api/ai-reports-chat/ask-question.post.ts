@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 		const body: { session_id: string; question: string } = await readBody(event);
 		const chatResponse = await makeProxyRequest<ChatMessage>(requestUrl, {
 			body: {
-				include_sources: true,
+				include_sources: false,
 				include_history: false,
 				session_id: body.session_id,
 				question: body.question,
