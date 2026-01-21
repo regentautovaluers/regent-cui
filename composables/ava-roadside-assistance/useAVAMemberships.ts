@@ -12,9 +12,6 @@ export const useAVAMemberships = () => {
 	);
 	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
 
-	// member vehicles
-	const fetchMemberVehiclesLoading: Ref<boolean> = ref(false);
-	const memberVehicles: Ref<any[]> = ref([]);
 	const updateMemberDetailsLoading: Ref<boolean> = ref(false);
 	const addMemberVehicleLoading: Ref<boolean> = ref(false);
 	const membershipType: Ref<'roadside-assistance' | 'emergency-evacuation' | null> = ref(null);
@@ -69,29 +66,6 @@ export const useAVAMemberships = () => {
 			watch: [currentPage],
 		},
 	);
-
-	const getMemberVehicles = async (dbId: number) => {
-		try {
-			fetchMemberVehiclesLoading.value = true;
-			await $fetch(`/api/v1/membershipVehicles/membership/${dbId}`, {
-				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: 'GET',
-				onResponse({ response }) {
-					if (response.status !== 200) {
-						throw new Error("Failed to retrieve corporate's members");
-					}
-					memberVehicles.value = response._data;
-				},
-			});
-		} catch (err) {
-			console.log('Failed to fetch member vehicles. Err: ', err);
-			useToast('Failed to Fetch Vehicles!', {
-				type: 'error',
-			});
-		} finally {
-			fetchMemberVehiclesLoading.value = false;
-		}
-	};
 
 	const addMemberVehicles = async (
 		membershipId: number,
@@ -172,11 +146,8 @@ export const useAVAMemberships = () => {
 		searchTerm,
 		membershipType,
 		fetchMembershipsStatus,
-		fetchMemberVehiclesLoading,
 		updateMemberDetailsLoading,
 		addMemberVehicleLoading,
-		memberVehicles,
-		getMemberVehicles,
 		updateMemberDetails,
 		addMemberVehicles,
 		executeFetchMemberships,

@@ -15,10 +15,13 @@ export function useRegentTrackingAuth() {
 	const { getPrincipal } = useAuth();
 
 	async function attemptLogin() {
-		const url = `/api/regent-tracking/client-login?email=${email.value}&password=${password.value}`;
+		const url = `/api/regent-tracking/client-login`;
 		try {
 			loginLoading.value = false;
-			const response = await post<RegentTrackingLoginResponse>(url);
+			const response = await post<RegentTrackingLoginResponse>(url, {
+				email: email.value,
+				password: password.value,
+			});
 			if (response.success) {
 				authToken.value = (
 					response as StandardSuccessResponse<RegentTrackingLoginResponse>
@@ -34,7 +37,7 @@ export function useRegentTrackingAuth() {
 					return navigateTo({ name: 'insurance-telematics-all-vehicles' });
 				} else if (
 					getPrincipal &&
-					['BANK', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType!)
+					['BANK', 'MICRO_FINANCE', 'SACCO'].includes(getPrincipal.value?.corpType!)
 				) {
 					return navigateTo({ name: 'regent-tracking-home' });
 				}

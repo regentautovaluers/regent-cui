@@ -1,28 +1,28 @@
 <template>
 	<div
-		class="flex h-fit w-88 min-w-88 flex-col overflow-clip rounded-lg bg-blue-600 transition-colors duration-300 hover:bg-blue-700">
-		<div class="flex h-12 items-center pl-4 text-xl font-extrabold text-white">
+		class="flex h-fit flex-col overflow-clip rounded-lg bg-slate-600 transition-colors duration-300 hover:bg-blue-700">
+		<div class="flex h-10 items-center pl-4 text-xl font-extrabold text-white">
 			<h1>{{ props.regNo }}</h1>
 		</div>
-		<div class="my-4 px-4 text-white">
-			<h1 class="mb-2 text-lg font-semibold">{{ props.membershipType }}</h1>
+		<div class="my-2 px-4 text-white">
+			<h1 class="mb-2 font-semibold">{{ props.membershipType }}</h1>
 			<div class="grid grid-cols-2">
 				<div>
-					<h1 class="w-fit text-gray-400">Joined</h1>
-					<h2 class="font-semibold">{{ props.dateRegistered }}</h2>
+					<h1 class="w-fit text-sm text-gray-300">Joined</h1>
+					<h2 class="text-sm font-semibold">{{ props.dateRegistered }}</h2>
 				</div>
 				<div>
-					<h1 class="w-fit text-gray-400">Expiry Date</h1>
-					<h2 class="font-semibold">{{ props.expirationDate }}</h2>
+					<h1 class="w-fit text-sm text-gray-300">Expiry Date</h1>
+					<h2 class="text-sm font-semibold">{{ props.expirationDate }}</h2>
 				</div>
 			</div>
 		</div>
 		<div
-			class="flex h-12 items-center space-x-2 rounded-b-lg bg-gray-600 pl-4 font-semibold text-white backdrop-opacity-40">
+			class="flex h-8 items-center space-x-2 rounded-b-lg border-t border-t-gray-500 pl-4 font-semibold text-white backdrop-opacity-40">
 			<div
-				class="size-3 rounded-full"
+				class="size-2 rounded-full"
 				:class="props.membershipStatus === 'Active' ? 'bg-green-500' : 'bg-red-500'" />
-			<h1>{{ props.membershipStatus }}</h1>
+			<h1 class="text-sm">{{ props.membershipStatus }}</h1>
 		</div>
 	</div>
 </template>

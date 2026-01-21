@@ -1,7 +1,7 @@
 <template>
 	<!-- Main modal -->
 	<div
-		:id="props.modalId"
+		:id="modalId"
 		data-modal-backdrop="static"
 		modal-backdrop
 		tabindex="-1"
@@ -11,24 +11,24 @@
 		<div
 			:class="[
 				'relative h-full w-full',
-				props.modalSize == 'default' && 'max-w-xl md:h-auto',
-				props.modalSize == 'large' && 'max-w-4xl md:h-auto',
-				props.modalSize == 'xl' && 'max-w-7xl md:h-auto',
+				modalSize == 'default' && 'max-w-xl md:h-auto',
+				modalSize == 'large' && 'max-w-4xl md:h-auto',
+				modalSize == 'xl' && 'max-w-7xl md:h-auto',
 			]">
 			<!-- Modal content -->
 			<div
 				:class="[
-					'relative flex flex-col rounded-lg bg-white shadow-xs border',
-					props.modalSize == 'full-screen' && 'h-full',
+					'relative flex flex-col rounded-lg border bg-white shadow-xs',
+					modalSize == 'full-screen' && 'h-full',
 				]">
 				<!-- Modal header -->
 				<div class="mb-2 flex justify-between rounded-t border-b px-4 py-3">
 					<div>
-						<h2 class="font-semibold text-gray-700">{{ props.modalTitle }}</h2>
+						<h2 class="font-semibold text-gray-700">{{ modalTitle }}</h2>
 						<h3
 							class="text-sm text-gray-500"
 							v-if="modalSubtitle">
-							{{ props.modalSubtitle }}
+							{{ modalSubtitle }}
 						</h3>
 					</div>
 					<div class="flex items-center space-x-2">
@@ -37,7 +37,7 @@
 						<button
 							type="button"
 							class="inline-flex rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-							:data-modal-toggle="props.modalId"
+							:data-modal-toggle="modalId"
 							ref="closeModalButton"
 							@click="$emit('close-modal')">
 							<svg
@@ -69,23 +69,25 @@
 </template>
 
 <script setup lang="ts">
-	const props = defineProps({
-		modalId: { required: true, type: String || Number },
-		modalTitle: { required: true, type: String },
-		modalSubtitle: { required: false, type: String },
-		class: { required: false, type: String },
-		modalSize: {
-			required: false,
-			default: 'default',
-			validator: (value: string) => ['default', 'large', 'xl', 'full-screen'].includes(value),
-		},
-	});
+	interface Props {
+		modalId: string | number;
+		modalTitle: string;
+		modalSubtitle?: string;
+		class?: string;
+		modalSize?: 'default' | 'large' | 'xl' | 'full-screen';
+	}
+
+	const {
+		modalId,
+		modalTitle,
+		modalSubtitle,
+		class: className,
+		modalSize = 'default',
+	} = defineProps<Props>();
 	const emits = defineEmits(['close-modal']);
 	const closeButtonModal: Ref<HTMLButtonElement | null> = useTemplateRef('closeModalButton');
 
 	const close = () => {
-		// this is a sketchy solution to get the modal to properly close without leaving the dark backdrop
-		// FIND A BETTER WAY TO DO THIS!
 		if (closeButtonModal.value) {
 			closeButtonModal.value.click();
 		}
