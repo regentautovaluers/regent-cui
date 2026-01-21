@@ -2,9 +2,10 @@ import { type RegentTrackingLoginResponse } from '~/types/regent-tracking/client
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
-	const query = getQuery(event);
+	const body: { email: string; password: string } = await readBody(event);
+	const params = new URLSearchParams(body);
 
-	const endpoint = `${config.REGENT_TRACK_BASE_URL}/api/login?email=${query.email}&password=${query.password}`;
+	const endpoint = `${config.REGENT_TRACK_BASE_URL}/api/login?${params.toString()}`;
 	try {
 		const discoveredAlerts = await makeProxyRequest<RegentTrackingLoginResponse>(endpoint);
 		// remove the unnecesary fields
@@ -12,6 +13,7 @@ export default defineEventHandler(async (event) => {
 
 		return sendSuccessResponse(event, discoveredAlerts);
 	} catch (err) {
+		console.log(err);
 		return sendErrorResponse(event, err);
 	}
 });
