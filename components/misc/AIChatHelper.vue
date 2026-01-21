@@ -3,7 +3,7 @@
 		<form
 			class="tablet:w-3/4 laptop:w-[40vw] laptop-lg:w-[30vw] fixed right-8 bottom-20 z-50 flex h-[calc(100vh-15%)] w-full flex-col rounded-lg border-2 bg-white shadow-md"
 			@submit.prevent="requestAnswer()"
-			v-show="isChatOpen">
+			v-show="isChatOpen && computedChatSession && computedChatSession.isVisible">
 			<!-- header -->
 			<div class="flex h-fit items-center justify-between border-b p-3">
 				<h1
@@ -14,13 +14,32 @@
 					{{ computedChatSession?.sessionId }}
 				</h2>
 				<div class="flex w-fit items-center space-x-2">
-					<button class="size-fit">
+					<button
+						class="jusitfy-center inline-flex size-8 items-center rounded-lg p-1 hover:bg-gray-200"
+						type="button"
+						@click="deleteChat()">
 						<span
-							class="icon-[material-symbols-light--download-rounded] size-[25px] text-gray-500 transition-colors duration-200 ease-in-out hover:text-gray-700"></span>
+							class="icon-[material-symbols-light--delete-rounded] size-[23px] text-red-600 transition-colors duration-200 ease-in-out"
+							v-if="!deleteChatRequestLoading"></span>
+						<span
+							class="icon-[svg-spinners--90-ring] size-[23px] text-red-600"
+							v-else></span>
 					</button>
-					<button class="size-fit">
-						<span
-							class="icon-[material-symbols-light--delete-rounded] size-[25px] text-red-600 transition-colors duration-200 ease-in-out hover:text-red-700"></span>
+					<button
+						class="jusitfy-center inline-flex items-center rounded-lg bg-gray-200 p-1 hover:bg-gray-300"
+						type="button"
+						@click="renderSessionAsHidden()">
+						<svg
+							aria-hidden="true"
+							class="size-[20px]"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+							xmlns="http://www.w3.org/2000/svg">
+							<path
+								fill-rule="evenodd"
+								d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+								clip-rule="evenodd"></path>
+						</svg>
 					</button>
 				</div>
 			</div>
@@ -89,7 +108,7 @@
 		<button
 			class="ai-chat-button"
 			type="button"
-			@click="initializeChat(report_url, booking_id, 'VALUATION')">
+			@click="initializeChat(report_url, booking_id, report_type)">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -119,10 +138,13 @@
 		initializingChat,
 		awaitingAnswer,
 		computedChatSession,
+		deleteChatRequestLoading,
 		initializeChat,
 		getChatSession,
 		requestAnswer,
 		renderMarkdown,
+		deleteChat,
+		renderSessionAsHidden,
 	} = useAIChat(booking_id);
 </script>
 

@@ -15,17 +15,24 @@ export default function (reportId: string) {
 		'Does the vehicle have any defects of concern?',
 		'Is the vehicle interior in good condition?',
 	];
-	const { post, get } = useStandardizedApi();
+	const { post, get, delete: del } = useStandardizedApi();
 	const initializingChat: Ref<boolean> = ref(false);
 	const awaitingAnswer: Ref<boolean> = ref(false);
 	const userQuery: Ref<string | null> = ref(null);
 	const isChatOpen: Ref<boolean> = ref(false);
-	const { setSessionContext, getSessionContext, setChatMessage } = useAiReportChatStore();
+	const {
+		setSessionContext,
+		getSessionContext,
+		setChatMessage,
+		deleteChatSession,
+		markSessionAsHidden,
+		markSessionAsVisible,
+	} = useAiReportChatStore();
 	const { getPrincipal } = useAuth();
+	const deleteChatRequestLoading: Ref<boolean> = ref(false);
 
 	const computedChatSession = computed(() => {
 		let context = getSessionContext(reportId);
-		console.log(context);
 		return context;
 	});
 
@@ -34,19 +41,22 @@ export default function (reportId: string) {
 
 		initializingChat.value = true;
 		try {
-			let response = await post<InitializeChatReponseStruct>(endpoint, {
-				report_url,
-				booking_id,
-				report_type,
-				user_id: getPrincipal.value?.userId,
-			});
+			if (!markSessionAsVisible(booking_id)) {
+				let response = await post<InitializeChatReponseStruct>(endpoint, {
+					report_url,
+					booking_id,
+					report_type,
+					user_id: getPrincipal.value?.userId,
+				});
 
-			if (response.success) {
-				const data = (response as StandardSuccessResponse<InitializeChatReponseStruct>)
-					.data;
-				setSessionContext(data);
-				isChatOpen.value = true;
+				if (response.success) {
+					const data = (response as StandardSuccessResponse<InitializeChatReponseStruct>)
+						.data;
+					setSessionContext(data);
+				}
 			}
+
+			isChatOpen.value = true;
 		} catch (ex) {
 			useToast('Failed to start chat! Try Again!', {
 				type: 'error',
@@ -94,6 +104,7 @@ export default function (reportId: string) {
 			});
 
 			if (response.success) {
+				userQuery.value = null;
 				const data = (response as StandardSuccessResponse<ChatMessage>).data;
 				setChatMessage(computedChatSession.value?.sessionId as string, data);
 			}
@@ -107,10 +118,41 @@ export default function (reportId: string) {
 		}
 	}
 
+	async function deleteChat() {
+		const endpoint = `/api/ai-reports-chat/drop-session?session_id=${computedChatSession.value?.sessionId as string}`;
+
+		deleteChatRequestLoading.value = true;
+		try {
+			const response = await del<null>(endpoint);
+			if (response.success) {
+				// client-side cleanup
+				isChatOpen.value = false;
+				deleteChatSession(computedChatSession.value?.sessionId as string, reportId);
+
+				useToast('Successfully purged session!', {
+					type: 'success',
+					title: 'Succesfully Deleted Session!',
+				});
+			}
+		} catch (ex) {
+			useToast('Request failed! Try Again!', {
+				type: 'error',
+				title: 'Error',
+			});
+		} finally {
+			deleteChatRequestLoading.value = false;
+		}
+	}
+
 	function renderMarkdown(mdtext: string) {
 		if (!mdtext) return '';
 		// 'marked.parse' converts the markdown string to HTML
 		return marked.parse(mdtext);
+	}
+
+	function renderSessionAsHidden() {
+		markSessionAsHidden(computedChatSession.value?.sessionId as string, reportId);
+		isChatOpen.value = false;
 	}
 
 	return {
@@ -120,9 +162,12 @@ export default function (reportId: string) {
 		initializingChat,
 		awaitingAnswer,
 		computedChatSession,
+		deleteChatRequestLoading,
 		initializeChat,
 		getChatSession,
 		requestAnswer,
 		renderMarkdown,
+		deleteChat,
+		renderSessionAsHidden,
 	};
 }
