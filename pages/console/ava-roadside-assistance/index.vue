@@ -271,14 +271,9 @@
 													<button
 														class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 														type="button"
-														@click="
-															() => {
-																selectedIndexToEdit = index;
-																setSidebarCollapsedState(false);
-															}
-														"
-														data-modal-target="edit-member-details-modal"
-														data-modal-toggle="edit-member-details-modal">
+														@click="setSidebarCollapsedState(false)"
+														:data-modal-target="`edit-member-${member.full_name}-modal`"
+														:data-modal-toggle="`edit-member-${member.full_name}-modal`">
 														Edit Details
 													</button>
 												</li>
@@ -287,15 +282,9 @@
 														v-if="member.membershipVehicleCount > 0"
 														class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 														type="button"
-														@click="
-															() => {
-																setSidebarCollapsedState(false);
-																selectedIndexToEdit = index;
-																getMemberVehicles(member.id);
-															}
-														"
-														data-modal-target="view-member-vehicles-modal"
-														data-modal-toggle="view-member-vehicles-modal">
+														@click="setSidebarCollapsedState(false)"
+														:data-modal-target="`view-member-${member.id}-vehicles-modal`"
+														:data-modal-toggle="`view-member-${member.id}-vehicles-modal`">
 														View Vehicles
 													</button>
 												</li>
@@ -303,14 +292,9 @@
 													<button
 														class="block w-full px-4 py-2 text-center hover:bg-gray-100"
 														type="button"
-														data-modal-target="add-member-vehicles-modal"
-														data-modal-toggle="add-member-vehicles-modal"
-														@click="
-															() => {
-																setSidebarCollapsedState(false);
-																selectedIndexToEdit = index;
-															}
-														">
+														:data-modal-target="`add-member-${member.id}vehicles-modal`"
+														:data-modal-toggle="`add-member-${member.id}vehicles-modal`"
+														@click="setSidebarCollapsedState(false)">
 														Add Vehicle
 													</button>
 												</li>
@@ -458,153 +442,70 @@
 	</div>
 
 	<!-- Edit Member details modal -->
-	<ParentModal
-		modalId="edit-member-details-modal"
-		modalTitle="Edit Member Details"
-		modalPlacement="center-center"
-		@close-modal="
-			() => {
-				selectedIndexToEdit = -1;
-			}
-		">
-		<EditAVAMemberDetails
-			v-if="corporateMemberships && selectedIndexToEdit > -1"
-			:member-id="corporateMemberships[selectedIndexToEdit].id"
-			:member-name="corporateMemberships[selectedIndexToEdit].full_name"
-			:member-email="corporateMemberships[selectedIndexToEdit].userEmail"
-			:member-phone="corporateMemberships[selectedIndexToEdit].phone_number" />
-	</ParentModal>
+	<template v-if="corporateMemberships && corporateMemberships.length > 0">
+		<ParentModal
+			modal-title="Edit Member Details"
+			v-for="(member, index) in corporateMemberships"
+			:modal-subtitle="`Adding Vehicle For ${member.full_name}`"
+			:modal-id="`edit-member-${member.full_name}-modal`"
+			:key="index">
+			<EditAVAMemberDetails
+				:member-id="member.id"
+				:member-name="member.full_name"
+				:member-email="member.userEmail"
+				:member-phone="member.phone_number" />
+		</ParentModal>
+	</template>
 
 	<!-- Add Vehicles -->
-	<ParentModal
-		modalId="add-member-vehicles-modal"
-		modalTitle="Add Vehicles"
-		modalPlacement="center-center"
-		@close-modal="
-			() => {
-				selectedIndexToEdit = -1;
-			}
-		">
-		<AddMemberVehicle
-			v-if="corporateMemberships && selectedIndexToEdit > -1"
-			:membership-id="corporateMemberships[selectedIndexToEdit].id" />
-	</ParentModal>
+	<template v-if="corporateMemberships && corporateMemberships.length > 0">
+		<ParentModal
+			modal-title="Add Vehicles"
+			v-for="(member, index) in corporateMemberships"
+			:modal-subtitle="`Adding Vehicle For ${member.full_name}`"
+			:modal-id="`add-member-${member.id}vehicles-modal`"
+			modal-size="large"
+			:key="index">
+			<AddMemberVehicle :membership-id="member.id" />
+		</ParentModal>
+	</template>
 
 	<!-- View Member Vehicles modal -->
-	<ParentModal
-		modalId="view-member-vehicles-modal"
-		modalPlacement="center-center"
-		modalTitle="Member Vehicles"
-		class="relative p-3 py-2 md:p-4"
-		@close-modal="
-			() => {
-				memberVehicles = [];
-				selectedIndexToEdit = -1;
-			}
-		">
-		<div
-			class="flex h-fit space-x-3 overflow-x-auto"
-			ref="scrollEl"
-			style="
-				::-webkit-scrollbar-thumb {
-					border-radius: 10px;
-				}
-
-				/* Hide scrollbar for Chrome, Safari and Opera */
-				::-webkit-scrollbar {
-					display: none;
-				}
-
-				/* Hide scrollbar for IE, Edge and Firefox */
-				.no-scrollbar {
-					-ms-overflow-style: none; /* IE and Edge */
-					scrollbar-width: none; /* Firefox */
-				}
-			">
-			<MemberVehiclesLoader
-				v-if="fetchMemberVehiclesLoading"
-				v-for="a in 2"
-				:key="a" />
-			<MemberVehiclesCard
-				v-else
-				v-for="(vehicle, index) in memberVehicles"
-				:key="index"
-				:membership-id="vehicle.id"
-				:reg-no="vehicle.registration"
-				:membership-type="stringToSentenceCase(vehicle.membershipType.membership_name)"
-				:date-registered="formatServerProvidedDate(vehicle.start_date)"
-				:expiration-date="formatServerProvidedDate(vehicle.end_date)"
-				:membership-status="stringToTitleCase(vehicle.membership_status)" />
-		</div>
-		<!-- left button -->
-		<button
-			type="button"
-			class="group absolute start-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-			@click="x -= 352"
-			:class="arrivedState.left ? 'disabled' : null"
-			v-if="memberVehicles.length > 1">
-			<span
-				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 ring-white outline-none group-focus:ring-4">
-				<svg
-					class="h-4 w-4 text-white rtl:rotate-180"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 6 10">
-					<path
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M5 1 1 5l4 4" />
-				</svg>
-				<span class="sr-only">Scroll Left</span>
-			</span>
-		</button>
-
-		<!-- right button -->
-		<button
-			type="button"
-			class="group absolute end-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-			:class="arrivedState.right ? 'disabled' : null"
-			@click="x += 352"
-			v-if="memberVehicles.length > 1">
-			<span
-				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 ring-white outline-none group-focus:ring-4">
-				<svg
-					class="h-4 w-4 text-white rtl:rotate-180"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 6 10">
-					<path
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="m1 9 4-4-4-4" />
-				</svg>
-				<span class="sr-only">Scroll Right</span>
-			</span>
-		</button>
-	</ParentModal>
+	<template v-if="corporateMemberships && corporateMemberships.length > 0">
+		<template
+			v-for="(member, index) in corporateMemberships"
+			:key="index">
+			<ParentModal
+				v-if="member.membershipVehicles && member.membershipVehicles.length > 0"
+				modal-title="Member Vehicles"
+				:modal-subtitle="`Viewing ${member.membershipVehicles.length ?? 0} Vehicles`"
+				:modal-id="`view-member-${member.id}-vehicles-modal`">
+				<div class="tablet:grid-cols-2 grid grid-cols-1 gap-3">
+					<MemberVehiclesCard
+						v-for="(vehicle, index) in member.membershipVehicles"
+						:key="index"
+						:membership-id="vehicle.id"
+						:reg-no="vehicle.registration"
+						:membership-type="
+							stringToSentenceCase(vehicle.membershipType.membership_name)
+						"
+						:date-registered="formatServerProvidedDate(vehicle.start_date)"
+						:expiration-date="formatServerProvidedDate(vehicle.end_date)"
+						:membership-status="stringToTitleCase(vehicle.membership_status)" />
+				</div>
+			</ParentModal>
+		</template>
+	</template>
 </template>
 
 <script setup lang="ts">
-	import { useScroll } from '@vueuse/core';
-
 	definePageMeta({
 		name: 'ava-memberships-home',
 		layout: 'console-layout',
 	});
 	const { navigationRoutes } = useNavigationRoutes();
-	const scrollEl = ref<HTMLElement | null>(null);
-	const { x, arrivedState } = useScroll(scrollEl, {
-		behavior: 'smooth',
-	});
 	const activeDescriptionIndex: Ref<number> = ref(1);
 	const { getPrincipal } = useAuth();
-	const selectedIndexToEdit: Ref<any> = ref(-1);
 	const {
 		currentPage: page,
 		corporateMemberships,
@@ -613,9 +514,6 @@
 		searchTerm,
 		membershipType,
 		fetchMembershipsStatus,
-		fetchMemberVehiclesLoading,
-		memberVehicles,
-		getMemberVehicles,
 		executeFetchMemberships,
 	} = useAVAMemberships();
 	const areFiltersOpen: Ref<boolean> = ref(false);
