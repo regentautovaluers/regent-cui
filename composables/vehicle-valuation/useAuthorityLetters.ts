@@ -272,41 +272,39 @@ const useAuthorityLetters = () => {
 	const exportAuthorityLetter = async (startDate: string, endDate: string) => {
 		try {
 			exportAuthorityLettersLoading.value = true;
-			await $fetch(
-				`${runtimeConfig.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/export-report`,
-				{
-					method: 'GET',
-					query: {
-						corpId: getPrincipal.value?.corpId,
-						startDate: startDate,
-						endDate: endDate,
-					},
-					onResponse({ response }) {
-						if (response.status === 404) {
-							useToast('Found No Letters!', {
-								type: 'warn',
-							});
-						}
-
-						if (response.ok) {
-							useToast('Success! Downloading Shortly!', {
-								type: 'success',
-							});
-
-							const url = window.URL.createObjectURL(new Blob([response._data]));
-							const link = document.createElement('a');
-							link.href = url;
-							link.setAttribute(
-								'download',
-								`authority-letters-${getPrincipal.value?.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
-							);
-							document.body.appendChild(link);
-							link.click();
-							link.remove();
-						}
-					},
+			await $fetch(`/api/v1/authority-letter/corp/export-report`, {
+				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+				method: 'GET',
+				query: {
+					corpId: getPrincipal.value?.corpId,
+					startDate: startDate,
+					endDate: endDate,
 				},
-			);
+				onResponse({ response }) {
+					if (response.status === 404) {
+						useToast('Found No Letters!', {
+							type: 'warn',
+						});
+					}
+
+					if (response.ok) {
+						useToast('Success! Downloading Shortly!', {
+							type: 'success',
+						});
+
+						const url = window.URL.createObjectURL(new Blob([response._data]));
+						const link = document.createElement('a');
+						link.href = url;
+						link.setAttribute(
+							'download',
+							`authority-letters-${getPrincipal.value?.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
+						);
+						document.body.appendChild(link);
+						link.click();
+						link.remove();
+					}
+				},
+			});
 		} catch (err) {
 			console.log('Failed to export Excel document', err);
 			useToast('Failed. Try Again!', {
