@@ -2,7 +2,7 @@
 	<div
 		class="tablet:justify-center flex h-screen flex-col bg-gray-400 bg-[url('/images/helicopter-image.jpg')] bg-cover bg-no-repeat bg-blend-multiply">
 		<h1
-			class="text-2xl laptop:text-4xl mb-4 text-center leading-none font-extrabold tracking-tight text-white">
+			class="laptop:text-4xl mb-4 text-center text-2xl leading-none font-extrabold tracking-tight text-white">
 			Membership Types
 		</h1>
 		<div
@@ -24,9 +24,7 @@
 					<ul class="space-y-1 group-hover:text-white">
 						<li
 							class="flex items-center space-x-3"
-							v-for="(benefit, index) in cleanupMembershipBenefits(
-								membership.benefits,
-							)"
+							v-for="(benefit, index) in membership.benefits"
 							:key="index">
 							<svg
 								class="mt-0.5 size-4 shrink-0 text-black group-hover:text-white"
@@ -83,5 +81,6 @@
 		layout: 'console-layout',
 	});
 
-	const { membershipTypes, cleanupMembershipBenefits } = useAVAMembershipTypes();
+	const { membershipTypes, fetchingMembershipTypes, errorFetchingMembershipTypes } =
+		useAVAMembershipTypes();
 </script>

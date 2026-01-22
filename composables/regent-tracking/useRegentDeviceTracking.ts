@@ -26,20 +26,14 @@ export function useRegentDeviceTracking() {
 				const cached = getClientDevices.value;
 				if (cached) return cached as TrackedVehicles[];
 			},
-			transform: (response) => {
-				// Check if the API call was successful
-				if (response.success) {
-					// The response.data is correctly typed as TrackedVehicles[] here.
-					return (response as StandardSuccessResponse<TrackedVehicles[]>).data;
-				}
-
-				// If it failed, throw the error
-				throw new Error(
-					(response as StandardErrorResponse).metadata.message || 'Unknown error',
-				);
-			},
-			onResponse({ response }) {
+			onResponse: ({ response }) => {
 				setClientDevices(response._data.data as TrackedVehicles[]);
+			},
+			onResponseError: (_e) => {
+				useToast('Failed to vehicles! Try Again', {
+					type: 'error',
+					title: 'Unable to load devices!',
+				});
 			},
 		},
 	);
