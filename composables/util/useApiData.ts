@@ -90,7 +90,7 @@ export const useApiData = <T = unknown, R = T>(
 		query?: Record<string, any>;
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 		body?: any;
-		transform?: (data: ApiResponse<T>) => R | Promise<R>;
+		transform?: (data: StandardSuccessResponse<T>) => R | Promise<R>;
 		getCachedData?: (key: string) => R | undefined;
 		onResponse?: (context: {
 			request: any;
@@ -116,20 +116,30 @@ export const useApiData = <T = unknown, R = T>(
 
 	const api = useStandardizedApi();
 
-	return useAsyncData<ApiResponse<T>, StandardErrorResponse, R>(
+	return useAsyncData<StandardSuccessResponse<T>, StandardErrorResponse, R>(
 		key,
-		() =>
-			api.handleApiCall<T>(unref(endpoint), {
+		async () => {
+			const response = await api.handleApiCall<T>(unref(endpoint), {
 				method,
 				query,
 				body,
-				onResponse,
-				onResponseError,
-			}),
+				// Pass callbacks down to the underlying $fetch/ofetch call
+				onResponse: options.onResponse,
+				onResponseError: options.onResponseError,
+			});
+
+			// If the API indicates failure via the 'success' flag
+			if (!response.success) {
+				// Throwing here populates the 'error' ref in useAsyncData
+				throw response as StandardErrorResponse;
+			}
+
+			// Return the FULL response so 'transform' can access metadata if needed
+			return response as StandardSuccessResponse<T>;
+		},
 		{
 			...asyncDataOptions,
-			getCachedData: options.getCachedData,
-			transform: transform as AsyncDataOptions<ApiResponse<T>, R>['transform'],
+			transform: transform,
 		},
 	);
 };
