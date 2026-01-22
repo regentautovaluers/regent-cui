@@ -6,7 +6,11 @@ export default defineEventHandler(async (event) => {
 
 	const endpoint = `$${config.AI_CHAT_BASE_URL}/api/v1/sessions/${query.session_id}`;
 	try {
-		const response = await makeProxyRequest<GetChatSessionStatusStruct>(endpoint);
+		const response = await makeProxyRequest<GetChatSessionStatusStruct>(endpoint, {
+			headers: {
+				'x-api-key': config.AI_CHAT_API_KEY,
+			},
+		});
 		if (response.session_id !== query.session_id) {
 			throw new Error('Session IDs No Match !');
 		}

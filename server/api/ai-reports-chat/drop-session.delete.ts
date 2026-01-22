@@ -6,6 +6,9 @@ export default defineEventHandler(async (event) => {
 	try {
 		await makeProxyRequest<any>(requestUrl, {
 			method: 'DELETE',
+			headers: {
+				'x-api-key': config.AI_CHAT_API_KEY,
+			},
 		});
 		return sendSuccessResponse(event, null);
 	} catch (err) {

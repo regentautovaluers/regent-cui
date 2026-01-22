@@ -14,6 +14,9 @@ export default defineEventHandler(async (event) => {
 				question: body.question,
 			},
 			method: 'POST',
+			headers: {
+				'x-api-key': config.AI_CHAT_API_KEY,
+			},
 		});
 		return sendSuccessResponse(event, chatResponse);
 	} catch (err) {
