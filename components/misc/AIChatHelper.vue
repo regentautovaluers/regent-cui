@@ -88,7 +88,8 @@
 					class="generic-input"
 					placeholder="Ask anything about this report..."
 					autocomplete="off"
-					v-model="userQuery" />
+					v-model="userQuery"
+					:disabled="awaitingAnswer || initializingChat" />
 				<button
 					class="absolute right-5 size-fit -translate-y-[121%]"
 					:disabled="awaitingAnswer">
@@ -101,7 +102,7 @@
 				</button>
 			</div>
 			<p class="text-center text-xs text-gray-500">
-				AVA can make mistakes. Double check its responses!
+				AVA AI can make mistakes. Double check its responses!
 			</p>
 		</form>
 

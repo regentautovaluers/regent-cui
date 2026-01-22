@@ -11,7 +11,7 @@ export const useAiReportChatStore = defineStore('ai-report-chat-store', () => {
 			sessionId: newSession.session_id,
 			bookingId: newSession.booking_id,
 			isVisible: true,
-			messages: [],
+			messages: newSession.history as ChatMessage[],
 		});
 	}
 

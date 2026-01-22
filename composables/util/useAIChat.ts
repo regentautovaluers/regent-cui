@@ -2,7 +2,9 @@ import type {
 	InitializeChatReponseStruct,
 	GetChatSessionStatusStruct,
 	ChatMessage,
+	ChatHistoryEntry,
 } from '~/types/ai-reports-chat-types';
+import { chatHistoryToChatMessage } from '~/types/ai-reports-chat-types';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 import { useAiReportChatStore } from '~/stores/ai-report-chart-store';
 import { marked } from 'marked';
@@ -52,6 +54,13 @@ export default function (reportId: string) {
 				if (response.success) {
 					const data = (response as StandardSuccessResponse<InitializeChatReponseStruct>)
 						.data;
+
+					// convert the ChatHistoryEntry[] to ChatMessage[]
+					if (data.history.length > 0) {
+						data.history = data.history.map((h) =>
+							chatHistoryToChatMessage(h as ChatHistoryEntry),
+						);
+					}
 					setSessionContext(data);
 				}
 			}
