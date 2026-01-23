@@ -12,9 +12,6 @@ export default defineEventHandler(async (event) => {
 			delete e.createdAt;
 			delete e.memberCount;
 			delete e.corporate;
-			delete e.contact_full_name;
-			delete e.contact_email;
-			delete e.contact_phone_number;
 		});
 
 		return sendSuccessResponse(event, response);

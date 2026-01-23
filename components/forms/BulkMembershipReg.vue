@@ -17,7 +17,7 @@
 				<span class="sr-only">Info</span>
 				<h3 class="text-sm font-medium">Notice On Client Fleets</h3>
 			</div>
-			<p class="mt-2 mb-4 text-sm">
+			<p class="mt-2 mb-4 text-sm text-wrap">
 				You must have a fleet before you can add members. The members you onboard using this
 				form will be linked to that fleet. If you have no fleet, click the 'Add Fleet'
 				button below to add to your fleets. If your fleet is not showing up here, please
@@ -99,7 +99,7 @@
 						type="text"
 						id="contact-person-name"
 						disabled
-						v-model="contactFullName"
+						:value="computedFleetDetails?.contact_full_name"
 						class="generic-input"
 						placeholder="John Doe" />
 				</div>
@@ -115,7 +115,7 @@
 						type="text"
 						id="contact-person-phone"
 						disabled
-						v-model="contactPhoneNumber"
+						:value="computedFleetDetails?.contact_email"
 						class="generic-input"
 						placeholder="254704080056" />
 				</div>
@@ -131,7 +131,7 @@
 						type="email"
 						id="contact-person-email"
 						disabled
-						v-model="contactEmail"
+						:value="computedFleetDetails?.contact_email"
 						class="generic-input"
 						placeholder="youremail@co.ke" />
 				</div>
@@ -148,7 +148,7 @@
 					href="https://media.regentautovaluers.com/media/download/utility-media/ava-roadside-assistance/onboarding_template.xlsx"
 					target="_top"
 					type="button"
-					class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-300 px-4 py-3 text-sm text-pink-500 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
+					class="mt-3 inline-flex h-16 w-full items-center justify-between rounded-lg border-[1.9px] border-dashed bg-pink-300 px-4 py-3 text-sm text-pink-700 backdrop-opacity-50 disabled:pointer-events-none disabled:opacity-50">
 					<span> Click here to intiate excel template download </span>
 					<DownloadIcon />
 				</a>
@@ -163,8 +163,8 @@
 				<div>
 					<label
 						for="dropzone-file"
-						class="mt-3 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-300 bg-blue-400 px-4 py-3 text-sm backdrop-opacity-50">
-						<div class="flex w-full items-center justify-between text-blue-500">
+						class="mt-3 flex h-16 cursor-pointer flex-col items-center justify-between rounded-lg border-[1.9px] border-dashed border-gray-300 bg-blue-300 px-4 py-3 text-sm backdrop-opacity-50">
+						<div class="flex w-full items-center justify-between text-blue-700">
 							<span> Click here to upload the completed Excel document </span>
 							<UploadIcon />
 						</div>
@@ -185,20 +185,6 @@
 					v-if="errorMessage"
 					>{{ errorMessage.message }}</span
 				>
-				<div
-					class="flex h-3 w-full overflow-hidden rounded-full bg-gray-200"
-					role="progressbar"
-					aria-valuenow="1"
-					aria-valuemin="0"
-					aria-valuemax="100">
-					<div
-						class="flex flex-col justify-center overflow-hidden rounded-full bg-blue-600 text-center text-xs whitespace-nowrap text-white transition duration-500"
-						:style="{ width: currentProgress }" />
-				</div>
-				<div class="flex w-full items-center justify-between text-end text-gray-500">
-					<span class="uppercase">File Parsing Progress</span>
-					<span>{{ currentProgress }}</span>
-				</div>
 			</div>
 
 			<!-- submit button -->
@@ -208,10 +194,88 @@
 					'generic-form-submit laptop:w-1/3 mt-3 w-full',
 					registerBulkMembershipsLoading && 'skeleton skeleton-animated',
 				]"
-				:disabled="errorMessage?.type == 'error'">
+				:disabled="errorMessage?.type == 'error' || processedFleetData.length == 0">
 				{{ registerBulkMembershipsLoading ? 'Please Wait...' : 'Onboard Members' }}
 			</button>
 		</form>
+
+		<p
+			class="font-sbold mt-4 text-sm font-semibold text-gray-500"
+			v-if="processedFleetData.length < 1">
+			Your Data Will Show Up Here
+		</p>
+		<p
+			class="font-sbold mt-4 text-sm font-semibold text-red-500"
+			v-else-if="processedFleetData.length < 1">
+			{{ errorMessage }}
+		</p>
+		<div
+			v-else
+			class="mt-4 flex h-fit flex-grow">
+			<div class="my-2 flex-grow">
+				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+					<h1 class="font-bold text-gray-500">
+						Discovered {{ processedFleetData.length }} vehicles.
+					</h1>
+					<table class="w-full text-left text-gray-500">
+						<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
+							<tr>
+								<th
+									scope="col"
+									class="table-headers ps-3">
+									Client Name.
+								</th>
+								<th
+									scope="col"
+									class="table-headers">
+									Contacts
+								</th>
+								<th
+									scope="col"
+									class="table-headers">
+									Reg No.
+								</th>
+								<th
+									scope="col"
+									class="table-headers">
+									Start Date
+								</th>
+								<th
+									scope="col"
+									class="table-headers">
+									End Date
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- the actual data -->
+							<tr
+								class="border-b bg-white hover:bg-gray-100"
+								v-for="(entry, index) in processedFleetData"
+								:key="index">
+								<td class="generic-table-cell py-5 ps-3 text-gray-600">
+									{{ entry.full_name }}
+								</td>
+								<td class="generic-table-cell py-5">
+									<span>{{ entry.phone_number }}</span
+									><br /><span>{{ entry.userEmail }}</span>
+								</td>
+
+								<td class="generic-table-cell py-5 font-semibold text-pink-600">
+									{{ entry.registration }}
+								</td>
+								<th class="generic-table-cell inline-flex space-x-1 py-5">
+									{{ entry.start_date }}
+								</th>
+								<td class="generic-table-cell py-5">
+									{{ entry.end_date }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
 		<!-- Add Fleet modal -->
 		<ParentModal
@@ -226,13 +290,11 @@
 	const { corporateFleetData, retrievingFleetList, refeshFleets } = useFleets();
 	const {
 		selectedFleetId,
-		contactFullName,
-		contactPhoneNumber,
-		contactEmail,
-		currentProgress,
+		computedFleetDetails,
 		errorMessage,
 		registerBulkMembershipsLoading,
+		processedFleetData,
 		parseUploadedExcelFile,
 		registerMembersInBulk,
-	} = useBulkMemberRegistration();
+	} = useBulkMembershipRegistration();
 </script>
