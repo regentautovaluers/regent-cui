@@ -67,7 +67,6 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		// private properties
 		GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-		BOTPRESS_CLIENT_ID: process.env.BOTPRESS_CLIENT_ID,
 		REGENT_TRACK_CERTS_BASE_URL: process.env.REGENT_TRACK_CERTS_BASE_URL,
 		REGENT_TRACK_BASE_URL: process.env.REGENT_TRACK_BASE_URL,
 		TRACKING_CERTS_API_KEY: process.env.TRACKING_CERTS_API_KEY,
