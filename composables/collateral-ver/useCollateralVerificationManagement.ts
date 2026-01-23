@@ -5,10 +5,6 @@ import {
 import type { CollateralVerificationsTokens, CollateralVerificationsCheckType } from '~/types';
 import * as tokenCharges from '~/config/collateral-verification-config';
 
-interface Headers {
-	[key: string]: string;
-}
-
 function useCollateralVerificationTokensManagement() {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();

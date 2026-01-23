@@ -116,5 +116,9 @@ export function sendErrorResponse(event: H3Event, error: any) {
 		success: false,
 	};
 
-	return response;
+	throw createError({
+		status: response.statusCode,
+		data: response,
+		stack: '',
+	});
 }

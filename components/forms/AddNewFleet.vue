@@ -28,7 +28,7 @@
 					type="text"
 					id="contact-person-phone"
 					class="generic-input h-[50px]"
-					placeholder="e.g +254704080056"
+					placeholder="e.g 254704080056"
 					required
 					v-model="contactPhoneNumber" />
 			</div>
@@ -60,7 +60,7 @@
 				type="text"
 				id="contact-person-name"
 				class="generic-input h-[50px]"
-				placeholder="e.g John Mwangi"
+				placeholder="e.g John Doe"
 				required
 				v-model="contactFullName" />
 		</div>

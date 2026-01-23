@@ -1,34 +1,37 @@
+import type { AVAMembershipType } from '~/types/ava-roadside-assistance/memebership-types';
+
 const useAVAMembershipTypes = () => {
-	const runtimeConfig = useRuntimeConfig();
 	const nuxtApp = useNuxtApp();
 
-	const { status: fetchmembershipTypesStatus, data: membershipTypes } = useFetch(
-		'/api/v1/control-unit/membershiptypes',
+	const {
+		pending: fetchingMembershipTypes,
+		error: errorFetchingMembershipTypes,
+		data: membershipTypes,
+	} = useApiData<AVAMembershipType[], AVAMembershipType[]>(
+		'AVA-membership-types',
+		computed(() => '/api/roadside-assistance/get-membership-types'),
 		{
-			key: 'AVA-membership-types',
-			baseURL: runtimeConfig.public.AVA_BASE_URL,
+			server: false,
 			method: 'GET',
 			getCachedData(key) {
 				return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
 			},
+			transform: (response) => {
+				return response.data;
+			},
+			onResponseError: (_e) => {
+				useToast('Failed to load memberships! Try Again', {
+					type: 'error',
+					title: 'Unable to load memberships!',
+				});
+			},
 		},
-	) as any;
-
-	const cleanupMembershipBenefits = (inputString: string): any[] => {
-		let array = JSON.parse(inputString);
-		let cleanedArray: any[] = array.map((item: string) => {
-			let cleanedItem = item.replace(/\\/g, '');
-			cleanedItem = cleanedItem.charAt(0).toUpperCase() + cleanedItem.slice(1);
-			return cleanedItem;
-		});
-
-		return cleanedArray;
-	};
+	);
 
 	return {
 		membershipTypes,
-		fetchmembershipTypesStatus,
-		cleanupMembershipBenefits,
+		fetchingMembershipTypes,
+		errorFetchingMembershipTypes,
 	};
 };
 

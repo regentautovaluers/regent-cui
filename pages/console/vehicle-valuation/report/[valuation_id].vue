@@ -30,7 +30,7 @@
 							valuationReport.vehicleMake
 						}}</span>
 						<span class="text-gray-500">{{ valuationReport.vehicleType }}</span>
-						<span class="text-gray-500">{{ valuationReport.policyNumber }}</span>
+						<span class="text-gray-500">{{ valuationReport.policyNumber ?? '' }}</span>
 					</div>
 				</div>
 				<div class="grid grid-cols-4 gap-x-2 px-10 py-5">
@@ -270,6 +270,12 @@
 					:class="imageStretched && 'object-cover'" />
 			</div>
 		</div>
+
+		<!-- chat interface -->
+		<AIChatHelper
+			:booking_id="valuationReport.valuationId"
+			:report_url="valuationReport.reportURL"
+			report_type="VALUATION" />
 	</div>
 </template>
 
@@ -279,109 +285,5 @@
 		layout: 'console-layout',
 	});
 
-	const { params: routeParams } = useRoute();
-	const runtimeConfig = useRuntimeConfig();
-	const imageStretched: Ref<boolean> = ref(true);
-	const activeImage: Ref<number> = ref(0);
-
-	const collateInspectionPictures = (
-		frontPhotos: string[],
-		enginePhotos: string[],
-		windscreenPhotos: string[],
-		rightPhotos: string[],
-		backPhotos: string[],
-		bootPhotos: [],
-		leftPhotos: any[],
-		chassisPhotos: string[],
-		tyrePhotos: string[],
-		upholsteryPhotos: string[],
-		odometerPhotos: [],
-	): string[] => {
-		return [
-			...frontPhotos,
-			...enginePhotos,
-			...windscreenPhotos,
-			...rightPhotos,
-			...backPhotos,
-			...bootPhotos,
-			...leftPhotos,
-			...chassisPhotos,
-			...tyrePhotos,
-			...upholsteryPhotos,
-			...odometerPhotos,
-		];
-	};
-
-	const { data: valuationReport } = (await useFetch(
-		`/api/v1/final/get-inspection-details?valuationId=${routeParams.valuation_id}`,
-		{
-			key: 'valuation-report',
-			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-			method: 'GET',
-			headers: {
-				Accept: '',
-			},
-			server: true,
-			transform: (report: any) => {
-				const reportData = report.data;
-				const valuationBooking = reportData.valuationBooking;
-				return {
-					reportURL: valuationBooking.reportURL,
-					insurer: reportData.engineAndWindscreenFinal.insurerName,
-					valuationId: valuationBooking.valuationId,
-					regNo: valuationBooking.regNo,
-					clientName: valuationBooking.clientName,
-					vehicleMake: valuationBooking.vehicleMake,
-					vehicleType: valuationBooking.vehicleType,
-					engineNumber: reportData.engineAndWindscreenFinal.engineNumber,
-					chassisNumber: reportData.tyreAndChassisFinal.chassisNumber,
-					policyNumber: reportData.engineAndWindscreenFinal.policyNumber,
-					vehiclePhotos: collateInspectionPictures(
-						reportData.frontFinal.frontPhotos,
-						reportData.engineAndWindscreenFinal.enginePhotos,
-						reportData.engineAndWindscreenFinal.windscreenPhotos,
-						reportData.rightSideFinal.rightSidePhotos,
-						reportData.backSideFinal.backPhotos,
-						reportData.backSideFinal.bootPhotos,
-						reportData.leftSideFinal.leftSidePhotos,
-						reportData.tyreAndChassisFinal.chassisPhotos,
-						reportData.tyreAndChassisFinal.tyrePhotos,
-						reportData.interiorFinal.upholsteryPhotos,
-						reportData.interiorFinal.odometerPhotos,
-					),
-					inspection: {
-						frontSectionComment: reportData.frontFinal.generatedComment,
-						engineSectionComment:
-							reportData.engineAndWindscreenFinal.engineGeneratedComment,
-						windscreenSectionComment:
-							reportData.engineAndWindscreenFinal.windscreenGeneratedComment,
-						leftSideComment: reportData.leftSideFinal.generatedComment,
-						rightSideComment: reportData.rightSideFinal.generatedComment,
-						backSideComment: reportData.backSideFinal.generatedComment,
-						mechanicalSectionComment:
-							reportData.mechanicalAndElectricalFinal.mechanicalGeneratedComment,
-						electicalSectionComment:
-							reportData.mechanicalAndElectricalFinal.electricalGeneratedComment,
-						vehicleExtras: reportData.extras,
-						tyreCondition: reportData.tyreAndChassisFinal.tyreGeneratedComment,
-						chassisCondition: reportData.tyreAndChassisFinal.chassisGeneratedComment,
-						interiorComment: reportData.interiorFinal.interiorGeneratedComment,
-						dashboardComment: reportData.interiorFinal.dashboardGeneratedComment,
-						mileage: {
-							reading: reportData.interiorFinal.odometerCurrentReading,
-							units: reportData.interiorFinal.odometerReadingUnits,
-						},
-						generalCondition: reportData.generalCondition,
-						remedy: reportData.remedy,
-					},
-					awardedValues: {
-						assessedValue: valuationBooking.vehicleValue.assessedValue,
-						marketValue: valuationBooking.vehicleValue.marketValue,
-						forcedValue: valuationBooking.vehicleValue.forcedSaleValue,
-						windscreenValue: valuationBooking.vehicleValue.windscreenValue,
-					},
-				};
-			},
-		},
-	)) as any;
+	const { valuationReport, activeImage, imageStretched } = useValuationReportDownloader();
 </script>

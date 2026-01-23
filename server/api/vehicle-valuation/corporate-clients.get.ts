@@ -1,4 +1,5 @@
-import { type Response, type CorporateClient } from '~/types/utils/corporate-clients';
+import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
+import { type CorporateClient } from '~/types/corporate-valuations/corporate-clients';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
@@ -7,12 +8,12 @@ export default defineEventHandler(async (event) => {
 	let endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/corporate-organization/get-all?isBroker=${query.is_broker}`;
 
 	try {
-		const response = await makeProxyRequest<Response>(endpoint, {
+		const response = await makeProxyRequest<GenericResponse<CorporateClient[]>>(endpoint, {
 			headers: {
 				Authorization: `Bearer ${query.api_key}`,
 			},
 		});
-		return sendSuccessResponse(event, response.data as CorporateClient[]);
+		return sendSuccessResponse(event, response.data);
 	} catch (err) {
 		return sendErrorResponse(event, err);
 	}

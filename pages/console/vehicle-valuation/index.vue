@@ -315,7 +315,7 @@
 			</div>
 		</div>
 
-		<!-- modal to add comment for table entry -->
+		<!-- modal to add filters for table entry -->
 		<ParentModal
 			modal-title="Filters"
 			modal-id="corporate-valuation-filters"
@@ -482,7 +482,10 @@
 		showTampered,
 		paymentMethod,
 		searchRegNo,
+		reportDownloading,
+		downloadedReport,
 		executeFetchValuations,
 		clearFilters,
+		downloadReport,
 	} = useCorporateValuations();
 </script>

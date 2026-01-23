@@ -23,7 +23,10 @@ export default defineNuxtConfig({
 	imports: {
 		dirs: ['./utils/**', './composables/**', './stores/**'],
 	},
-	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts'],
+	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts', '@pinia/nuxt'],
+	pinia: {
+		storesDir: ['stores'],
+	},
 	app: {
 		// layoutTransition: { name: 'layout', mode: 'out-in' },
 		// pageTransition: { name: 'page', mode: 'out-in' },
@@ -64,10 +67,13 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		// private properties
 		GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-		BOTPRESS_CLIENT_ID: process.env.BOTPRESS_CLIENT_ID,
 		REGENT_TRACK_CERTS_BASE_URL: process.env.REGENT_TRACK_CERTS_BASE_URL,
 		REGENT_TRACK_BASE_URL: process.env.REGENT_TRACK_BASE_URL,
 		TRACKING_CERTS_API_KEY: process.env.TRACKING_CERTS_API_KEY,
+		AI_CHAT_BASE_URL: process.env.AI_CHAT_BASE_URL,
+		AI_CHAT_API_KEY: process.env.AI_CHAT_API_KEY,
+		VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
+		AVA_BASE_URL: process.env.AVA_BASE_URL,
 
 		// public properties
 		public: {

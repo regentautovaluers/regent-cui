@@ -29,6 +29,14 @@
 	}
 }
 
+@utility ai-chat-button {
+	@apply fixed right-8 bottom-5 z-50 flex items-center gap-2 rounded-full bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 px-6 py-3 shadow-lg transition-transform hover:scale-105 active:scale-95;
+}
+
+@utility ai-suggestion-button {
+	@apply m-1 w-fit rounded-full border border-blue-600 px-2 py-1 text-xs text-blue-600 transition-colors duration-150 ease-in-out hover:bg-blue-600 hover:text-slate-100;
+}
+
 @utility generic-input {
 	@apply block h-[50px] w-full rounded-xl border border-gray-300 bg-gray-50 p-3 text-sm text-gray-600 placeholder:text-gray-500 focus:border-blue-600 focus:ring-blue-600 disabled:bg-gray-200;
 }
@@ -54,7 +62,7 @@
 }
 
 @utility generic-form-submit {
-	@apply mb-2 inline-flex h-[50px] w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-slate-100 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400;
+	@apply mb-2 inline-flex h-[50px] w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-slate-100 transition-transform hover:bg-blue-700 active:scale-95 disabled:bg-gray-200 disabled:text-gray-400;
 }
 
 @utility generic-nuxt-link {

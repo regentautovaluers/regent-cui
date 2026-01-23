@@ -1,4 +1,4 @@
-import { type CorporateClient } from '~/types/utils/corporate-clients';
+import { type CorporateClient } from '~/types/corporate-valuations/corporate-clients';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
 import {
 	getCorporateClients,
@@ -16,14 +16,15 @@ export default function useCorporateClient() {
 		execute: refetchCorporateClients,
 	} = useApiData<CorporateClient[], CorporateClient[]>(
 		'corporate-clients',
-		computed(
-			() =>
-				`/api/vehicle-valuation/corporate-clients?api_key=${getAuthToken.value}&is_broker=${isPrincipalBroker.value ? false : true}`,
-		),
+		computed(() => `/api/vehicle-valuation/corporate-clients`),
 		{
 			method: 'GET',
 			server: false,
 			immediate: false,
+			query: {
+				api_key: getAuthToken.value,
+				is_broker: isPrincipalBroker.value,
+			},
 			transform: (response) => {
 				// Check if the API call was successful
 				if (response.success) {
