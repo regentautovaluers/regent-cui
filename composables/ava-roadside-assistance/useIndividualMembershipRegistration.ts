@@ -53,6 +53,8 @@ export default function () {
 	}
 
 	async function registerIndividualMember() {
+		registerIndividualMemberLoading.value = true;
+
 		try {
 			const response = await post('/api/roadside-assistance/reg-individual-ava-member', {
 				full_name: clientFullName.value,
