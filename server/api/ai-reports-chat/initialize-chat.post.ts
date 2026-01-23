@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
 				'x-api-key': config.AI_CHAT_API_KEY,
 			},
 		});
+		console.log('Init response: ', response);
 
 		// attempt to get any history if possible
 		const getHistoryEndpoint = `/api/ai-reports-chat/get-chat-history?session_id=${response.session_id}`;
@@ -32,6 +33,8 @@ export default defineEventHandler(async (event) => {
 			},
 		);
 
+		console.log('available histories: ', availableHistories);
+
 		if (availableHistories.data.history.length > 0) {
 			response.history = availableHistories.data.history;
 		} else {
@@ -39,6 +42,7 @@ export default defineEventHandler(async (event) => {
 		}
 		return sendSuccessResponse(event, response);
 	} catch (err) {
+		console.error(err);
 		return sendErrorResponse(event, err);
 	}
 });

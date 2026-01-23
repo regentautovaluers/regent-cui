@@ -1,4 +1,4 @@
-export type ChatStatus = 'RESUMED' | 'PROCESSING' | 'READY';
+export type ChatStatus = 'RESUMED' | 'PROCESSING' | 'READY' | 'AWAITING'; // AWAITING is a custom status only for consumption on UI
 export type MessageOrigin = 'user' | 'assistant';
 
 export interface InitializeChatReponseStruct {

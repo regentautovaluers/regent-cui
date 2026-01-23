@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query = getQuery(event);
 
-	const endpoint = `$${config.AI_CHAT_BASE_URL}/api/v1/sessions/${query.session_id}`;
+	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/sessions/${query.session_id}`;
 	try {
 		const response = await makeProxyRequest<GetChatSessionStatusStruct>(endpoint, {
 			headers: {

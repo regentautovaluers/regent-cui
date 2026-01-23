@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query = getQuery(event);
 
-	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/chat/${query.session_id}/history?limit=20`;
+	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/chat/${query.session_id}/history`;
 	try {
 		// attach session id
 		const chatHistory = await makeProxyRequest<ChatHistory>(endpoint, {

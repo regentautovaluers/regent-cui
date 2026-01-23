@@ -5,14 +5,34 @@
 			@submit.prevent="requestAnswer()"
 			v-show="isChatOpen && computedChatSession && computedChatSession.isVisible">
 			<!-- header -->
-			<div class="flex h-fit items-center justify-between border-b p-3">
+			<div
+				:class="[
+					'flex h-fit items-center justify-between border-b p-3',
+					computedChatSession?.chatStatus == 'PROCESSING' && 'bg-yellow-300',
+					computedChatSession?.chatStatus == 'READY' ||
+						(computedChatSession?.chatStatus == 'RESUMED' && 'bg-white'),
+				]">
 				<h1
 					class="bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-2xl font-bold text-transparent">
 					AVA AI
 				</h1>
-				<h2 class="text-xs font-semibold text-gray-600">
-					{{ computedChatSession?.sessionId }}
-				</h2>
+				<div class="flex size-fit items-center space-x-2 font-semibold">
+					<div
+						:class="[
+							'size-2 rounded-full',
+							computedChatSession?.chatStatus === 'READY' && 'bg-green-600',
+							computedChatSession?.chatStatus === 'PROCESSING' && 'bg-yellow-600',
+						]" />
+					<h1 class="text-sm font-semibold text-gray-600">
+						<span
+							v-if="
+								computedChatSession?.chatStatus === 'READY' ||
+								computedChatSession?.chatStatus === 'RESUMED'
+							"
+							>Ready</span
+						><span v-else>Processing</span>
+					</h1>
+				</div>
 				<div class="flex w-fit items-center space-x-2">
 					<button
 						class="jusitfy-center inline-flex size-8 items-center rounded-lg p-1 hover:bg-gray-200"
@@ -92,7 +112,7 @@
 					:disabled="awaitingAnswer || initializingChat" />
 				<button
 					class="absolute right-5 size-fit -translate-y-[121%]"
-					:disabled="awaitingAnswer">
+					:disabled="awaitingAnswer || initializingChat">
 					<span
 						class="icon-[material-symbols-light--send-rounded] size-[25px] text-gray-500 transition-colors duration-200 ease-in-out hover:text-gray-700"
 						v-if="!awaitingAnswer"></span>

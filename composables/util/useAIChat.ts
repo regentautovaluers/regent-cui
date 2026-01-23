@@ -3,6 +3,7 @@ import type {
 	GetChatSessionStatusStruct,
 	ChatMessage,
 	ChatHistoryEntry,
+	ChatStatus,
 } from '~/types/ai-reports-chat-types';
 import { chatHistoryToChatMessage } from '~/types/ai-reports-chat-types';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
@@ -29,6 +30,7 @@ export default function (reportId: string) {
 		deleteChatSession,
 		markSessionAsHidden,
 		markSessionAsVisible,
+		updateChatReadinessStatus,
 	} = useAiReportChatStore();
 	const { getPrincipal } = useAuth();
 	const deleteChatRequestLoading: Ref<boolean> = ref(false);
@@ -37,6 +39,11 @@ export default function (reportId: string) {
 		let context = getSessionContext(reportId);
 		return context;
 	});
+
+	// Helper to pause execution
+	async function delay(ms: number) {
+		new Promise((res) => setTimeout(res, ms));
+	}
 
 	async function initializeChat(report_url: string, booking_id: string, report_type: string) {
 		const endpoint = '/api/ai-reports-chat/initialize-chat';
@@ -66,6 +73,20 @@ export default function (reportId: string) {
 			}
 
 			isChatOpen.value = true;
+
+			// checking the chat status
+			while (computedChatSession.value?.chatStatus == 'PROCESSING') {
+				// Wait 5 seconds before the next check
+				await delay(5000);
+
+				const status = await getChatSession();
+				if (status) {
+					updateChatReadinessStatus(reportId, status);
+				}
+
+				// Safety: If chat is closed by user during polling, you might want to break
+				if (!isChatOpen.value) break;
+			}
 		} catch (ex) {
 			useToast('Failed to start chat! Try Again!', {
 				type: 'error',
@@ -76,7 +97,7 @@ export default function (reportId: string) {
 		}
 	}
 
-	async function getChatSession() {
+	async function getChatSession(): Promise<ChatStatus | undefined> {
 		const endpoint = '/api/ai-reports-chat/read-session-status';
 
 		try {
@@ -86,6 +107,7 @@ export default function (reportId: string) {
 
 			if (response.success) {
 				const data = (response as StandardSuccessResponse<GetChatSessionStatusStruct>).data;
+				return data.status;
 			}
 		} catch (ex) {
 			useToast('Failed to verify session!!', {

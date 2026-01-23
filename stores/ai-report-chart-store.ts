@@ -1,9 +1,19 @@
 import { defineStore } from 'pinia';
-import type { ChatMessage, InitializeChatReponseStruct } from '~/types/ai-reports-chat-types';
+import type {
+	ChatMessage,
+	InitializeChatReponseStruct,
+	ChatStatus,
+} from '~/types/ai-reports-chat-types';
 
 export const useAiReportChatStore = defineStore('ai-report-chat-store', () => {
 	const chatMessages = ref<
-		{ sessionId: string; bookingId: string; isVisible: boolean; messages: ChatMessage[] }[]
+		{
+			sessionId: string;
+			bookingId: string;
+			isVisible: boolean;
+			chatStatus: ChatStatus;
+			messages: ChatMessage[];
+		}[]
 	>([]);
 
 	function setSessionContext(newSession: InitializeChatReponseStruct) {
@@ -11,6 +21,7 @@ export const useAiReportChatStore = defineStore('ai-report-chat-store', () => {
 			sessionId: newSession.session_id,
 			bookingId: newSession.booking_id,
 			isVisible: true,
+			chatStatus: newSession.status,
 			messages: newSession.history as ChatMessage[],
 		});
 	}
@@ -24,6 +35,16 @@ export const useAiReportChatStore = defineStore('ai-report-chat-store', () => {
 		if (session) {
 			session.messages.push(newMessage);
 		}
+	}
+
+	function updateChatReadinessStatus(report_id: string, newStatus: ChatStatus): boolean {
+		const index = chatMessages.value.findIndex((e) => e.bookingId == report_id);
+		if (index !== -1) {
+			chatMessages.value[index].chatStatus = newStatus;
+			return true;
+		}
+
+		return false;
 	}
 
 	function deleteChatSession(session_id: string, bookingId: string) {
@@ -62,5 +83,6 @@ export const useAiReportChatStore = defineStore('ai-report-chat-store', () => {
 		deleteChatSession,
 		markSessionAsHidden,
 		markSessionAsVisible,
+		updateChatReadinessStatus,
 	};
 });
