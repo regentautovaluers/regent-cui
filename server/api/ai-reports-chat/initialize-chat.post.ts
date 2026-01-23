@@ -1,5 +1,6 @@
 import type { InitializeChatReponseStruct } from '~/types/ai-reports-chat-types';
 import type { ChatHistory } from '~/types/ai-reports-chat-types';
+import { StandardSuccessResponse } from '~/types/proxy-types';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
@@ -22,20 +23,22 @@ export default defineEventHandler(async (event) => {
 
 		// attempt to get any history if possible
 		const getHistoryEndpoint = `/api/ai-reports-chat/get-chat-history?session_id=${response.session_id}`;
-		const availableHistories = await makeProxyRequest<ChatHistory>(getHistoryEndpoint, {
-			headers: {
-				'x-api-key': config.AI_CHAT_API_KEY,
+		const availableHistories = await makeProxyRequest<StandardSuccessResponse<ChatHistory>>(
+			getHistoryEndpoint,
+			{
+				headers: {
+					'x-api-key': config.AI_CHAT_API_KEY,
+				},
 			},
-		});
+		);
 
-		if (availableHistories.history.length > 0) {
-			response.history = availableHistories.history;
+		if (availableHistories.data.history.length > 0) {
+			response.history = availableHistories.data.history;
 		} else {
 			response.history = [];
 		}
 		return sendSuccessResponse(event, response);
 	} catch (err) {
-		console.log(err);
 		return sendErrorResponse(event, err);
 	}
 });
