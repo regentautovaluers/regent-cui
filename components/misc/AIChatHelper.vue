@@ -106,7 +106,11 @@
 					name="chat-input-send-btn"
 					id="chat-input-send-btn"
 					class="generic-input"
-					placeholder="Ask anything about this report..."
+					:placeholder="
+						awaitingAnswer || initializingChat
+							? 'Plese wait...'
+							: 'Ask about this report...'
+					"
 					autocomplete="off"
 					v-model="userQuery"
 					:disabled="awaitingAnswer || initializingChat" />
