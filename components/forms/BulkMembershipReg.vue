@@ -46,9 +46,7 @@
 				<button
 					type="button"
 					class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-sm font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
-					data-dismiss-target="#alert-additional-content-4"
-					aria-label="Close"
-					@click="reloadFleets">
+					@click="refeshFleets()">
 					Refresh List
 				</button>
 			</div>
@@ -225,7 +223,7 @@
 </template>
 
 <script setup lang="ts">
-	const { corporateFleetData, retrievingFleetList, reloadFleets } = useFleets();
+	const { corporateFleetData, retrievingFleetList, refeshFleets } = useFleets();
 	const {
 		selectedFleetId,
 		contactFullName,
