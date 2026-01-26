@@ -17,7 +17,7 @@
 		<div class="flex flex-col">
 			<label class="generic-input-label">Full Name</label>
 			<div
-				class="flex w-full flex-col space-y-3 space-x-0 md:flex-row md:space-y-0 md:space-x-4">
+				class="flex w-full flex-col space-y-3 space-x-0 md:flex-row md:items-center md:space-y-0 md:space-x-4">
 				<input
 					type="text"
 					id="first-name"
@@ -34,9 +34,9 @@
 					v-model="lastName" />
 			</div>
 		</div>
-		<div class="mt-3 flex flex-col">
-			<label class="generic-input-label">Email</label>
-			<div class="flex flex-grow">
+		<div class="mt-3 flex flex-col space-y-3 space-x-0 md:flex-row md:space-y-0 md:space-x-4">
+			<div class="w-1/2">
+				<label class="generic-input-label">Email</label>
 				<input
 					type="email"
 					id="email"
@@ -45,17 +45,17 @@
 					required
 					v-model="email" />
 			</div>
-		</div>
-		<div class="mt-3 flex flex-col">
-			<label class="generic-input-label">Phone Number</label>
-			<div class="flex flex-grow">
-				<input
-					type="text"
-					id="phone"
-					class="generic-input"
-					placeholder="254712345678"
-					required
-					v-model="phoneNumber" />
+			<div class="w-1/2">
+				<label class="generic-input-label">Phone No.</label>
+				<div class="flex flex-grow">
+					<input
+						type="text"
+						id="phone"
+						class="generic-input"
+						placeholder="254712345678"
+						required
+						v-model="phoneNumber" />
+				</div>
 			</div>
 		</div>
 		<div class="mt-3 flex flex-col">
@@ -151,7 +151,7 @@
 				'generic-form-submit mt-3',
 				updateCorporateAccountLoading && 'skeleton skeleton-animated',
 			]">
-			{{ updateCorporateAccountLoading ? 'Please Wait...' : 'Update' }}
+			{{ updateCorporateAccountLoading ? 'Please Wait...' : 'Update Details' }}
 		</button>
 	</form>
 </template>

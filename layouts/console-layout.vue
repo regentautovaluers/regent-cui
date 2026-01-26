@@ -165,7 +165,7 @@
 				<!-- notifs, logout and settings -->
 				<ul class="w-full px-2">
 					<!-- notifs -->
-					<li
+					<!-- <li
 						class="flex h-12 w-full items-center justify-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<button
 							class="inline-flex size-full cursor-pointer items-center space-x-3"
@@ -179,7 +179,7 @@
 								>Notifications</span
 							>
 						</button>
-					</li>
+					</li> -->
 
 					<!-- settings -->
 					<li
@@ -218,8 +218,11 @@
 
 				<div
 					v-show="getSidebarCollapsedState"
-					class="text-center">
-					<h1>Regent Auto Valuers</h1>
+					class="px-2">
+					<h1 class="inline-flex items-center space-x-1">
+						<span>Regent Auto Valuers</span><span class="text-xl">&middot;</span
+						><span>{{ publicConfigs.BUILD_TAG }}</span>
+					</h1>
 					<h2>
 						<span>&copy; 2025.</span>
 						<span> All Rights Reserved</span>
@@ -273,6 +276,7 @@
 <script setup lang="ts">
 	const { navigationRoutes, doesRouteNameMatch, fuzzyRouteNameMatch } = useNavigationRoutes();
 
+	const { public: publicConfigs } = useRuntimeConfig();
 	const { attemptLogout } = useAuth();
 	const userInput: Ref<string> = ref('');
 	const { getPrincipal } = useAuth();

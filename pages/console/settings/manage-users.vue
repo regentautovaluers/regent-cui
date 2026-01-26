@@ -215,13 +215,12 @@
 		<!-- Modal to edit user -->
 		<template
 			v-if="usersList && usersList.length > 0"
-			v-for="(u, idx) in usersList"
-			:key="idx">
+			v-for="u in usersList"
+			:key="u.userId">
 			<ParentModal
 				modal-title="Edit Account"
 				:modal-id="`edit-user-${u.userId}-modal`">
 				<EditUserAccount
-					:key="idx"
 					:user-id="u.userId"
 					:username="u.username"
 					:email="u.email"

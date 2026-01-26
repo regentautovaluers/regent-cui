@@ -108,7 +108,7 @@
 					class="generic-input"
 					:placeholder="
 						awaitingAnswer || initializingChat
-							? 'Plese wait...'
+							? 'Please wait...'
 							: 'Ask about this report...'
 					"
 					autocomplete="off"

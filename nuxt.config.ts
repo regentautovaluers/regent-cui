@@ -80,7 +80,7 @@ export default defineNuxtConfig({
 			VALUATION_BASE_URL: '',
 			AVA_BASE_URL: '',
 			FRAUD_DETECTION_BASE_URL: '',
-			APP_VERSION: '',
+			BUILD_TAG: '',
 			COPYRIGHT_YEAR: '',
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
 			REGENT_AUTOMATIONS_BASE_URL: '',

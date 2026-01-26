@@ -71,6 +71,7 @@ pipeline {
                             -e "NUXT_AI_CHAT_API_KEY=${AVA_CHAT_API_KEY}" \
                             -e "NUXT_VALUATION_BASE_URL=https://api.regentautovaluers.com" \
                             -e "NUXT_AVA_BASE_URL=https://apis.ava.ke" \
+                            -e "NUXT_PUBLIC_BUILD_TAG=${DOCKER_TAG}" \
                             -p 3000:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
                         """
                     }
