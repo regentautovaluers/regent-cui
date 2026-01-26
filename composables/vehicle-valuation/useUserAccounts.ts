@@ -10,7 +10,6 @@ const useUserAccounts = () => {
 	// adding / updating user accounts
 	const addNewAccountLoading: Ref<boolean> = ref(false);
 	const updateCorporateAccountLoading: Ref<boolean> = ref(false);
-
 	const searchSlug: Ref<string | null> = ref(null);
 
 	const {
@@ -19,13 +18,13 @@ const useUserAccounts = () => {
 		data: fetchedData,
 		execute: executeFetchUsers,
 	} = useFetch(
-		() => {
+		computed(() => {
 			let requestURL = `/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
 			if (searchSlug.value != null) {
 				requestURL = requestURL + `&searchSlug=${searchSlug.value}`;
 			}
 			return requestURL;
-		},
+		}),
 		{
 			key: 'corporate-users',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
