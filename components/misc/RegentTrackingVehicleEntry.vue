@@ -6,7 +6,8 @@
 				<button
 					:class="[
 						'inline-flex h-14 w-[20%] max-w-[20%] min-w-[20%] items-center justify-center rounded-lg shadow-md',
-						`bg-${deriveColor(device.online)}-500`,
+						// TODO: This is a fucking dumb way of calling this function (param2), fix it!
+						`bg-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-500`,
 					]">
 					<span
 						class="icon-[material-symbols-light--delivery-truck-speed-outline-rounded] text-4xl text-slate-100"></span>
@@ -42,21 +43,21 @@
 			<div
 				:class="[
 					'flex h-10 w-24 items-center justify-center space-x-2 rounded-lg border text-sm outline-none',
-					`bg-${deriveColor(device.online)}-100`,
-					`border-${deriveColor(device.online)}-200`,
+					`bg-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-100`,
+					`border-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-200`,
 				]">
 				<!-- tracker online -->
 				<span
 					v-if="['ack', 'engine', 'online'].includes(device.online)"
 					:class="[
 						'icon-[material-symbols-light--signal-wifi-4-bar] text-xl',
-						`text-${deriveColor(device.online)}-600`,
+						`text-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-600`,
 					]"></span>
 				<!-- tracker offline -->
 				<span
 					:class="[
 						'icon-[material-symbols-light--signal-wifi-statusbar-not-connected] text-xl',
-						`text-${deriveColor(device.online)}-600`,
+						`text-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-600`,
 					]"
 					v-else-if="device.online == 'offline'"></span>
 
@@ -64,14 +65,22 @@
 				<span
 					:class="[
 						'icon-[material-symbols-light--signal-disconnected] text-xl',
-						`text-${deriveColor(device.online)}-600`,
+						`text-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-600`,
 					]"
 					v-else-if="device.online == 'expired'"></span>
-				<span :class="['text-sm', `text-${deriveColor(device.online)}-600`]">{{
-					device.online
-				}}</span>
+				<span
+					:class="[
+						'text-sm',
+						`text-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-600`,
+					]"
+					>{{ device.online }}</span
+				>
 			</div>
-			<span :class="['text-sm', `text-${deriveColor(device.online)}-600`]"
+			<span
+				:class="[
+					'text-sm',
+					`text-${deriveProperTrackerStatus(device.online, device.device_data.expiration_date).prefered_color}-600`,
+				]"
 				>{{ device.speed }} {{ device.distance_unit_hour }}</span
 			>
 		</div>

@@ -43,8 +43,8 @@
 					<p
 						:class="[
 							'size-fit h-fit rounded-lg border-[1px] p-1 text-center font-bold',
-							`bg-${deriveColor(getTrackedVehicle.online)}-100`,
-							`border-${deriveColor(getTrackedVehicle.online)}-200`,
+							`bg-${deriveProperTrackerStatus(getTrackedVehicle.online, getTrackedVehicle.device_data.expiration_date).prefered_color}-100`,
+							`border-${deriveProperTrackerStatus(getTrackedVehicle.online, getTrackedVehicle.device_data.expiration_date).prefered_color}-200`,
 						]">
 						{{ getTrackedVehicle.name.trim() }}
 					</p>
@@ -70,8 +70,8 @@
 						<p
 							:class="[
 								'size-fit h-fit rounded-lg border-[1px] p-1 text-center font-bold',
-								`bg-${deriveColor(v.online)}-100`,
-								`border-${deriveColor(v.online)}-200`,
+								`bg-${deriveProperTrackerStatus(v.online, v.device_data.expiration_date).prefered_color}-100`,
+								`border-${deriveProperTrackerStatus(v.online, v.device_data.expiration_date).prefered_color}-200`,
 							]">
 							{{ v.name.trim() }}
 						</p>
@@ -222,8 +222,8 @@
 						<div
 							:class="[
 								'flex h-10 w-24 items-center justify-center space-x-2 rounded-lg border text-sm outline-none',
-								`bg-${deriveColor(getTrackedVehicle?.online)}-100`,
-								`border-${deriveColor(getTrackedVehicle?.online)}-200`,
+								`bg-${deriveProperTrackerStatus(getTrackedVehicle?.online, getTrackedVehicle?.device_data.expiration_date).prefered_color}-100`,
+								`border-${deriveProperTrackerStatus(getTrackedVehicle?.online, getTrackedVehicle?.device_data.expiration_date).prefered_color}-200`,
 							]">
 							<!-- tracker online -->
 							<span
@@ -232,13 +232,13 @@
 								"
 								:class="[
 									'icon-[material-symbols-light--signal-wifi-4-bar] text-xl',
-									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
+									`text-${deriveProperTrackerStatus(getTrackedVehicle?.online, getTrackedVehicle?.device_data.expiration_date).prefered_color}-600`,
 								]"></span>
 							<!-- tracker offline -->
 							<span
 								:class="[
 									'icon-[material-symbols-light--signal-wifi-statusbar-not-connected] text-xl',
-									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
+									`text-${deriveProperTrackerStatus(getTrackedVehicle?.online, getTrackedVehicle?.device_data.expiration_date).prefered_color}-600`,
 								]"
 								v-else-if="getTrackedVehicle?.online == 'offline'"></span>
 
@@ -246,13 +246,13 @@
 							<span
 								:class="[
 									'icon-[material-symbols-light--signal-disconnected] text-xl',
-									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
+									`text-${deriveProperTrackerStatus(getTrackedVehicle?.online, getTrackedVehicle?.device_data.expiration_date).prefered_color}-600`,
 								]"
 								v-else-if="getTrackedVehicle?.online == 'expired'"></span>
 							<span
 								:class="[
 									'text-sm',
-									`text-${deriveColor(getTrackedVehicle?.online)}-600`,
+									`text-${deriveProperTrackerStatus(getTrackedVehicle?.online, getTrackedVehicle?.device_data.expiration_date).prefered_color}-600`,
 								]"
 								>{{ getTrackedVehicle?.online }}</span
 							>
@@ -260,7 +260,7 @@
 						<span
 							:class="[
 								'text-sm',
-								`text-${deriveColor(getTrackedVehicle?.online)}-600`,
+								`text-${deriveProperTrackerStatus(getTrackedVehicle?.online, getTrackedVehicle?.device_data.expiration_date).prefered_color}-600`,
 							]"
 							>{{ getTrackedVehicle?.speed }}
 							{{ getTrackedVehicle?.distance_unit_hour }}</span

@@ -1,4 +1,8 @@
-import { ForReport, type Online } from '~/types/regent-tracking/tracked-vehicles';
+import {
+	ForReport,
+	type Online,
+	type TrackerStatusWrapperName,
+} from '~/types/regent-tracking/tracked-vehicles';
 import ExcelJS from 'exceljs';
 
 type ReportDataBody = {
@@ -17,6 +21,7 @@ const YELLOW_COLOR = 'FFFFFF00';
 
 export default defineEventHandler(async (event) => {
 	const body: ReportDataBody = await readBody(event);
+	const query: { return_full: boolean } = getQuery(event);
 
 	const map = new Map();
 	map.set(0, 'A');
@@ -47,23 +52,50 @@ export default defineEventHandler(async (event) => {
 	editSpecificCell(worksheet, 'A4', 'Total Vehicles', BLUE_COLOR);
 	editSpecificCell(worksheet, 'B4', body.totalVehicles.toString(), BLUE_COLOR);
 
-	// corporate client namec
-	// editSpecificCell(worksheet, 'C1', body.corporateName, undefined, 'J10');
+	// corporate client name
+	editSpecificCell(worksheet, 'A5', 'Corporate Client', GREEN_COLOR);
+	editSpecificCell(worksheet, 'B5', body.corporateName, GREEN_COLOR);
 
 	// title row
 	[
-		'Client Name',
-		'Vehicle Registration',
-		'Client Number',
-		'Destination',
-		'Installation Date',
-		'Expiry Date',
-		'Tracker Status',
-		'Comment',
-	].forEach((e, idx) => editSpecificCell(worksheet, `${map.get(idx)}4`, e));
+		{ content: 'Client Name', cellLetter: 'A' },
+		{ content: 'Vehicle Registration', cellLetter: 'B' },
+		{ content: 'Client Number', cellLetter: 'C' },
+		{ content: 'Destination', cellLetter: 'D' },
+		{ content: 'Installation Date', cellLetter: 'E' },
+		{ content: 'Expiry Date', cellLetter: 'F' },
+		{ content: 'Tracker Status', cellLetter: 'G' },
+		{ content: 'Comment', cellLetter: 'H' },
+		// from here, everything should not appear on the client-facing document
+		{ content: 'Recent Trail', cellLetter: 'I' },
+		{ content: 'Current Co-Ordinates', cellLetter: 'J' },
+		{ content: 'Stop Duration (Sec)', cellLetter: 'K' },
+		{ content: 'Moved Timestamp', cellLetter: 'L' },
+		{ content: 'Total Distance', cellLetter: 'M' },
+		{ content: 'Protocol', cellLetter: 'N' },
+		{ content: 'Traccar Moved At', cellLetter: 'O' },
+		{ content: 'Traccar Stopped At', cellLetter: 'P' },
+		{ content: 'Traccar Move Begin At', cellLetter: 'Q' },
+		{ content: 'Traccar Stop Begin At', cellLetter: 'R' },
+		{ content: 'Traccar Parked End At', cellLetter: 'S' },
+		{ content: 'Traccar Engine On At', cellLetter: 'T' },
+		{ content: 'Traccar Engine Off At', cellLetter: 'U' },
+		{ content: 'Traccar Engine Changed At', cellLetter: 'V' },
+		{ content: 'Traccar Updated At', cellLetter: 'W' },
+		{ content: 'Traccar Course', cellLetter: 'X' },
+		{ content: 'Traccar Speed', cellLetter: 'Y' },
+	].forEach((e, idx) => {
+		if (idx <= 7) {
+			editSpecificCell(worksheet, `${e.cellLetter}6`, e.content);
+		}
+
+		if (idx >= 8 && query.return_full && query.return_full) {
+			editSpecificCell(worksheet, `${e.cellLetter}6`, e.content);
+		}
+	});
 
 	// actual data
-	let intialRow = 5;
+	let intialRow = 7;
 	for (const entry of body.entries) {
 		// client name
 		editSpecificCell(worksheet, `A${intialRow}`, entry.driver.name as unknown as string);
@@ -88,7 +120,7 @@ export default defineEventHandler(async (event) => {
 		);
 
 		// tracker status
-		let { color, text } = deduceTrackerStatus(entry.online);
+		let { color, text } = deduceTrackerStatus(entry.wrapped_status);
 		editSpecificCell(worksheet, `G${intialRow}`, text, color);
 
 		// comments
@@ -97,6 +129,77 @@ export default defineEventHandler(async (event) => {
 			`H${intialRow}`,
 			entry.comment && entry.comment.length > 0 ? entry.comment[0].comment : '-',
 		);
+		if (query.return_full && query.return_full) {
+			// from here, everything should not appear on the client-facing document
+			// tail
+			editSpecificCell(
+				worksheet,
+				`I${intialRow}`,
+				entry.tail && entry.tail.length > 0
+					? entry.tail.map((e) => `${e.lat},${e.lng}`).join(',')
+					: '-',
+			);
+
+			// current coordinates
+			editSpecificCell(worksheet, `J${intialRow}`, `${entry.lat},${entry.lng}`);
+
+			// stop duration
+			editSpecificCell(worksheet, `K${intialRow}`, entry.stop_duration_sec?.toString());
+
+			// moved timestamp
+			editSpecificCell(worksheet, `L${intialRow}`, entry.moved_timestamp?.toString() ?? '-');
+
+			// total distance
+			editSpecificCell(worksheet, `M${intialRow}`, entry.total_distance?.toString() ?? '0');
+
+			// protocol
+			editSpecificCell(worksheet, `N${intialRow}`, entry.protocol ?? '-');
+
+			// traccar nested data
+			editSpecificCell(worksheet, `O${intialRow}`, entry.traccar.moved_at?.toString() ?? '-');
+			editSpecificCell(
+				worksheet,
+				`P${intialRow}`,
+				entry.traccar.stoped_at?.toString() ?? '-',
+			);
+			editSpecificCell(
+				worksheet,
+				`Q${intialRow}`,
+				entry.traccar.move_begin_at?.toString() ?? '-',
+			);
+			editSpecificCell(
+				worksheet,
+				`R${intialRow}`,
+				entry.traccar.stop_begin_at?.toString() ?? '-',
+			);
+			editSpecificCell(
+				worksheet,
+				`S${intialRow}`,
+				entry.traccar.parked_end_at?.toString() ?? '-',
+			);
+			editSpecificCell(
+				worksheet,
+				`T${intialRow}`,
+				entry.traccar.engine_on_at?.toString() ?? '-',
+			);
+			editSpecificCell(
+				worksheet,
+				`U${intialRow}`,
+				entry.traccar.engine_off_at?.toString() ?? '-',
+			);
+			editSpecificCell(
+				worksheet,
+				`V${intialRow}`,
+				entry.traccar.engine_changed_at?.toString() ?? '-',
+			);
+			editSpecificCell(
+				worksheet,
+				`W${intialRow}`,
+				entry.traccar.updated_at?.toString() ?? '-',
+			);
+			editSpecificCell(worksheet, `X${intialRow}`, entry.traccar.course?.toString() ?? '0');
+			editSpecificCell(worksheet, `Y${intialRow}`, entry.traccar.speed?.toString() ?? '0');
+		}
 
 		intialRow += 1;
 	}
@@ -146,25 +249,25 @@ function editSpecificCell(
 	}
 }
 
-function deduceTrackerStatus(online: Online): { color: string; text: string } {
-	if (['ack', 'engine', 'online'].includes(online)) {
+function deduceTrackerStatus(online: TrackerStatusWrapperName): { color: string; text: string } {
+	if (online == 'Online') {
 		return {
 			color: GREEN_COLOR,
-			text: 'Online',
+			text: online,
 		};
 	}
 
-	if (online == 'expired') {
-		return {
-			color: RED_COLOR,
-			text: 'Expired',
-		};
-	}
-
-	if (online == 'offline') {
+	if (online == 'Expired') {
 		return {
 			color: YELLOW_COLOR,
-			text: 'Offline',
+			text: online,
+		};
+	}
+
+	if (online == 'Offline') {
+		return {
+			color: RED_COLOR,
+			text: online,
 		};
 	}
 

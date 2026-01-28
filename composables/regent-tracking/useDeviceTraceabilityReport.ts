@@ -172,14 +172,40 @@ export function useDeviceTraceabilityReport() {
 						name: e.name,
 						comment: e.comment,
 						online: e.online,
+						tail: e.tail,
+						lat: e.lat,
+						lng: e.lng,
+						stop_duration_sec: e.stop_duration_sec,
+						moved_timestamp: e.moved_timestamp,
+						total_distance: e.total_distance,
+						protocol: e.protocol,
 						driver: { phone: e.driver_data.phone, name: e.driver_data.name },
 						device_data: {
 							expiration_date: e.device_data.expiration_date,
 							created_at: e.device_data.created_at,
 						},
+						traccar: {
+							moved_at: e.device_data.traccar.moved_at,
+							stoped_at: e.device_data.traccar.stoped_at,
+							move_begin_at: e.device_data.traccar.move_begin_at,
+							stop_begin_at: e.device_data.traccar.stop_begin_at,
+							parked_end_at: e.device_data.traccar.parked_end_at,
+							engine_on_at: e.device_data.traccar.engine_on_at,
+							engine_off_at: e.device_data.traccar.engine_off_at,
+							engine_changed_at: e.device_data.traccar.engine_changed_at,
+							updated_at: e.device_data.traccar.updated_at,
+							course: e.device_data.traccar.course,
+							speed: e.device_data.traccar.speed,
+						},
+						wrapped_status: deriveProperTrackerStatus(
+							e.online,
+							e.device_data.expiration_date,
+						).proper_status,
 					};
 				}),
 			};
+
+			console.log(requestBody.entries[0]);
 			const blob = await getBlob('/api/regent-tracking/export-excel-report', {
 				method: 'POST',
 				body: requestBody,

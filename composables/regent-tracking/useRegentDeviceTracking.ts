@@ -55,20 +55,21 @@ export function useRegentDeviceTracking() {
 
 		return vehicles.filter((v) => {
 			let statusMatch = true;
+			let wrappedStatus = deriveProperTrackerStatus(
+				v.online,
+				v.device_data.expiration_date,
+			).proper_status;
 
 			if (activeStatusFilter) {
 				switch (activeStatusFilter) {
 					case 'offline':
-						statusMatch = v.online === 'offline';
+						statusMatch = wrappedStatus === 'Offline';
 						break;
 					case 'expired':
-						const expirationDate = v.device_data.expiration_date;
-						// Note: If expiration_date is null/undefined, it can't be expired, so default to false.
-						statusMatch =
-							!!expirationDate && isDateInThePast(expirationDate.toString());
+						statusMatch = wrappedStatus === 'Expired';
 						break;
 					case 'ack':
-						statusMatch = ['ack', 'engine', 'online'].includes(v.online);
+						statusMatch = wrappedStatus === 'Online';
 						break;
 					default:
 						// If deviceOnlineStatus.value is set but isn't one of the filter options (e.g., 'all' or empty string)
@@ -133,12 +134,6 @@ export function useRegentDeviceTracking() {
 
 	function setActiveDeviceTab(tab: ActiveDeviceTab) {
 		activeDeviceTab.value = tab;
-	}
-
-	function isDateInThePast(dateString: string): boolean {
-		const inputDate = new Date(dateString.replace(/-/g, '/'));
-
-		return inputDate.getTime() < today.getTime();
 	}
 
 	function isDeviceSubscriptionExpired(vehicle: TrackedVehicles): boolean {

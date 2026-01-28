@@ -324,6 +324,41 @@ export enum UnitOfDistance {
 	KM = 'Km',
 }
 
-export type ForReport = Pick<TrackedVehicles, 'name' | 'comment' | 'online'> & {
+export type ForReport = Pick<
+	TrackedVehicles,
+	| 'name'
+	| 'comment'
+	| 'online'
+	| 'tail'
+	| 'lat'
+	| 'lng'
+	| 'stop_duration_sec'
+	| 'moved_timestamp'
+	| 'total_distance'
+	| 'protocol'
+> & {
 	driver: Pick<DriverData, 'phone' | 'name'>;
-} & { device_data: Pick<DeviceData, 'expiration_date' | 'created_at'> };
+} & { device_data: Pick<DeviceData, 'expiration_date' | 'created_at'> } & {
+	traccar: Pick<
+		Traccar,
+		| 'moved_at'
+		| 'stoped_at'
+		| 'move_begin_at'
+		| 'stop_begin_at'
+		| 'parked_end_at'
+		| 'engine_on_at'
+		| 'engine_off_at'
+		| 'engine_changed_at'
+		| 'updated_at'
+		| 'course'
+		| 'speed'
+	>;
+} & { wrapped_status: TrackerStatusWrapperName };
+
+// custom wrapper type for a wrapped tracker status
+export type TrackerStatusWrapperName = 'Online' | 'Expired' | 'Offline';
+
+export interface TrackerStatusMetaWrapper {
+	proper_status: TrackerStatusWrapperName;
+	prefered_color: 'green' | 'red' | 'yellow';
+}

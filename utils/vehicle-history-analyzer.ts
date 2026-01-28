@@ -6,36 +6,6 @@ import {
 } from '~/types/regent-tracking/device-history';
 
 /**
- * Formats a total number of seconds back into a clean "HHh MMmin SSs" string.
- */
-function formatSecondsToDuration(totalSeconds: number): string {
-	if (totalSeconds <= 0) return '0s';
-
-	const hours = Math.floor(totalSeconds / 3600);
-	const minutes = Math.floor((totalSeconds % 3600) / 60);
-	const seconds = totalSeconds % 60;
-
-	let result = '';
-	if (hours > 0) result += `${hours}h `;
-	if (minutes > 0 || (hours > 0 && seconds > 0)) result += `${minutes}min `;
-	result += `${seconds}s`;
-
-	return result.trim();
-}
-
-/**
- * Calculates the time difference in seconds between two ISO-like timestamps.
- */
-function calculateTimeDifferenceSeconds(end: string, start: string): number {
-	const endTime = new Date(end).getTime();
-	const startTime = new Date(start).getTime();
-	if (isNaN(endTime) || isNaN(startTime)) return 0;
-	return Math.floor((endTime - startTime) / 1000);
-}
-
-// --- CORE FUNCTION ---
-
-/**
  * Analyzes the GPSWOX vehicle history data to consolidate events into defined trips
  * (Ignition On to Ignition Off) and aggregates all intermediate data.
  *
