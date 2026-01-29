@@ -1,28 +1,5 @@
 <template>
-	<div class="console-layout-spacing flex flex-1 flex-col">
-		<div class="mb-2 flex items-center space-x-3 font-semibold text-gray-500">
-			<button
-				@click="() => (activeView = 'pending')"
-				:class="[
-					'tablet:text-base border-b-2 text-sm',
-					activeView == 'pending'
-						? 'border-b-blue-600 text-blue-600'
-						: 'border-b-inherit',
-				]">
-				<span>Ongoing</span>
-			</button>
-			<button
-				@click="() => (activeView = 'complete')"
-				:class="[
-					'tablet:text-base border-b-2 text-sm',
-					activeView === 'complete'
-						? 'border-b-blue-600 text-blue-600'
-						: 'border-b-inherit',
-				]">
-				<span>Completed</span>
-			</button>
-		</div>
-
+	<div class="flex flex-1 flex-col">
 		<!-- div to show when there is a fetch error -->
 		<div
 			v-if="fetchValuationsError"
@@ -108,8 +85,7 @@
 								</th>
 								<th
 									scope="col"
-									class="table-headers laptop:table-cell hidden"
-									v-if="activeView == 'pending'">
+									class="table-headers laptop:table-cell hidden">
 									Pending
 								</th>
 								<th
@@ -117,9 +93,6 @@
 									class="table-headers laptop:table-cell hidden">
 									Note
 								</th>
-								<th
-									scope="col"
-									class="table-headers" />
 							</tr>
 						</thead>
 						<tbody>
@@ -147,9 +120,7 @@
 										>authorizedby</span
 									>
 								</td>
-								<td
-									class="p-6 text-gray-300"
-									v-if="activeView == 'pending'">
+								<td class="p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>bookingstage</span
 									>
@@ -159,7 +130,6 @@
 										>bookingstage</span
 									>
 								</td>
-								<td></td>
 							</tr>
 
 							<!-- the actual data -->
@@ -189,7 +159,7 @@
 									scope="row"
 									class="flex items-center py-4 whitespace-nowrap text-gray-900">
 									<img
-										class="size-12 rounded-lg object-cover"
+										class="size-12 rounded-lg"
 										:src="valuation.vehicleImage"
 										alt="Vehicle Image"
 										v-if="valuation.vehicleImage" />
@@ -218,72 +188,12 @@
 									}}</span>
 								</td>
 								<td
-									class="laptop:table-cell hidden w-44 max-w-44 py-4 text-xs text-wrap"
-									v-if="activeView == 'pending'">
+									class="laptop:table-cell hidden w-44 max-w-44 py-4 text-xs text-wrap">
 									{{ valuation.pending ?? 'None' }}
 								</td>
 								<td
 									class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
 									{{ valuation.inspectionNote ?? 'N/A' }}
-								</td>
-								<td class="py-4 pe-3">
-									<button
-										:id="'dropdownLeftButton' + index"
-										:data-dropdown-toggle="'dropdownLeft' + index"
-										data-dropdown-placement="left"
-										type="button"
-										v-if="activeView == 'complete'">
-										<MenuKebabIcon />
-									</button>
-
-									<!-- Dropdown menu -->
-									<div
-										:id="'dropdownLeft' + index"
-										class="z-10 hidden w-44 rounded-lg border bg-white shadow-md">
-										<ul
-											class="py-2 text-sm text-gray-500"
-											aria-labelledby="dropdownLeftButton">
-											<li>
-												<button
-													v-if="
-														valuation.reportURL == null ||
-														determineValuationStage(
-															valuation.valuationStage,
-														)?.status == 'Ongoing'
-													"
-													class="block w-full bg-gray-100 px-4 py-2 text-center"
-													type="button">
-													Report N/A
-												</button>
-												<NuxtLink
-													v-else
-													:to="{
-														name: 'vehicle-valuation-report',
-														params: {
-															valuation_id: valuation.valuationId,
-														},
-													}"
-													class="block w-full px-4 py-2 text-center hover:bg-gray-100"
-													type="button">
-													View Report
-												</NuxtLink>
-											</li>
-											<li
-												v-if="
-													valuation.reportURL != null &&
-													determineValuationStage(
-														valuation.valuationStage,
-													)?.status == 'Completed'
-												">
-												<a
-													target="_self"
-													:href="valuation.reportURL"
-													class="block w-full px-4 py-2 text-center hover:bg-gray-100">
-													Download Report
-												</a>
-											</li>
-										</ul>
-									</div>
 								</td>
 							</tr>
 						</tbody>
@@ -445,9 +355,10 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'vehicle-valuation-home',
+		name: 'vehicle-valuation-ongoing-reports',
 		layout: 'console-layout',
 	});
+
 	const corporateModalFiltersRef = useTemplateRef<{ modalElement: HTMLElement }>(
 		'corporateModalFiltersRef',
 	);
@@ -470,7 +381,6 @@
 	}
 
 	const {
-		activeView,
 		fetchValuationsStatus,
 		fetchValuationsError,
 		corpValuations,
@@ -482,10 +392,7 @@
 		showTampered,
 		paymentMethod,
 		searchRegNo,
-		reportDownloading,
-		downloadedReport,
 		executeFetchValuations,
 		clearFilters,
-		downloadReport,
 	} = useCorporateValuations();
 </script>

@@ -2,9 +2,6 @@ export const useCorporateValuations = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal, isPrincipalAdmin } = useAuth();
 	const { name: routeName } = useRoute();
-	const { getBlob } = useStandardizedApi();
-
-	const activeView: Ref<'pending' | 'complete'> = ref('pending');
 
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
@@ -17,8 +14,6 @@ export const useCorporateValuations = () => {
 	const paymentStatus: Ref<'paid' | 'not-paid' | null> = ref(null);
 	const showTampered: Ref<boolean | null> = ref(null);
 	const paymentMethod: Ref<'cash' | 'cheque' | 'mpesa' | 'invoice' | null> = ref(null);
-	const reportDownloading: Ref<boolean> = ref(false);
-	const downloadedReport: Ref<string | undefined> = ref(undefined);
 
 	const {
 		status: fetchValuationsStatus,
@@ -26,7 +21,7 @@ export const useCorporateValuations = () => {
 		error: fetchValuationsError,
 		data: fetchedData,
 	} = useFetch(
-		() => {
+		computed(() => {
 			let requestURL = `/api/v1/valuation/booking/get-all?corpId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (routeName == 'vehicle-valuation-tampered-vehicles') {
@@ -38,9 +33,11 @@ export const useCorporateValuations = () => {
 			}
 
 			// rendering completed or pending requests
-			if (activeView.value == 'pending') {
+			if (routeName == 'vehicle-valuation-ongoing-reports') {
 				requestURL = requestURL + '&completed=false';
-			} else {
+			}
+
+			if (routeName == 'vehicle-valuation-complete-reports') {
 				requestURL = requestURL + '&completed=true';
 			}
 
@@ -74,9 +71,8 @@ export const useCorporateValuations = () => {
 			}
 
 			return requestURL;
-		},
+		}),
 		{
-			key: 'corporate-valuations',
 			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
 			headers: {
@@ -101,7 +97,7 @@ export const useCorporateValuations = () => {
 					};
 				}
 			},
-			watch: [activeView, page],
+			watch: [page],
 		},
 	);
 
@@ -117,32 +113,7 @@ export const useCorporateValuations = () => {
 		executeFetchValuations();
 	}
 
-	async function downloadReport(link: string) {
-		reportDownloading.value = true;
-		try {
-			const responseBlob = await getBlob(link);
-
-			// check if there is no blob
-			if (!responseBlob) {
-				throw new Error(`Failed to download report!`);
-			}
-
-			downloadedReport.value = URL.createObjectURL(responseBlob) + '#zoom=75';
-			useToast('Download successful!', {
-				type: 'success',
-			});
-		} catch (error) {
-			console.log('An error occured: ', error);
-			useToast('Failed. Try Again!', {
-				type: 'error',
-			});
-		} finally {
-			reportDownloading.value = false;
-		}
-	}
-
 	return {
-		activeView,
 		fetchValuationsStatus,
 		fetchValuationsError,
 		corpValuations,
@@ -154,10 +125,7 @@ export const useCorporateValuations = () => {
 		showTampered,
 		paymentMethod,
 		searchRegNo,
-		reportDownloading,
-		downloadedReport,
 		executeFetchValuations,
 		clearFilters,
-		downloadReport,
 	};
 };

@@ -49,7 +49,7 @@ export default function () {
 		{
 			id: 2,
 			screenName: 'Vehicle Valuation',
-			routeName: 'vehicle-valuation-home',
+			routeName: 'vehicle-valuation-ongoing-reports',
 			renderRoute: true,
 			icon: 'icon-[material-symbols-light--garage-money-outline-rounded]',
 			description:
