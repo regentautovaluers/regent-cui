@@ -3,7 +3,7 @@ import { type StandardSuccessResponse } from '~/types/proxy-types';
 import { type RegentTrackingLoginResponse } from '~/types/regent-tracking/client-auth';
 
 export function useRegentTrackingAuth() {
-	const authToken: CookieRef<string | null | undefined> = useCookie('tracking-auth-token', {
+	const authToken: CookieRef<string | null | undefined> = useCookie('tracking_auth_token', {
 		default: () => null,
 		watch: true,
 		expires: new Date(Date.now() + 1209600000), // after 14 days

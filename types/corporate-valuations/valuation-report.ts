@@ -40,53 +40,73 @@ export interface RegentValuer {
 
 export interface ValuationBooking {
 	valuationId: string;
-	bookingSource: string;
-	bookingReversed: boolean;
+	bookingSource?: string;
+	bookingReversed?: boolean;
 	bookingDate: string;
 	inspectionDate: string;
-	draftCreationDate: string;
+	draftCreationDate?: string;
 	approvalDate: string;
 	regNo: string;
 	vehicleImage: string;
-	vehicleOwnership: string;
-	clientName: string;
-	clientEmail: any;
-	clientPhone: string;
-	clientNatIdNumber: any;
-	kraPin: any;
-	vehicleType: any;
+	vehicleOwnership?: string;
+	clientName: string | null;
+	clientEmail: string | null;
+	clientPhone: string | null;
+	clientNatIdNumber?: any;
+	kraPin?: string | null;
+	vehicleType?: string;
 	valuationStage: string;
-	serviceCharge: number;
+	serviceCharge?: number;
 	paymentStatus: string;
-	paymentMethod: string[];
-	valuationLocation: string;
+	paymentMethod?: PaymentMethod[];
+	valuationLocation?: string;
 	pendingDocuments: any[];
-	uploadedDocuments: string[];
-	proposedValuationDate: any;
+	uploadedDocuments?: string[];
+	proposedValuationDate?: any;
 	valuationType: ValuationType;
 	corpOrganization: CorpOrganization;
-	corporateBranch: any;
-	onBehalfOfOrganization: any;
+	corporateBranch: CorporateBranch;
+	onBehalfOfOrganization: CorpOrganization;
 	regentBranch: RegentBranch;
-	onBehalfOfRegentBranch: any;
-	regentValuer: RegentUser;
-	regentBooker: RegentUser;
-	approvedByManager: RegentUser;
-	approvedByQc: RegentUser;
-	approvedBySecretary: RegentUser;
-	pendingDocumentsURL: any;
+	onBehalfOfRegentBranch?: any;
+	regentValuer?: RegentUser;
+	regentBooker?: RegentUser;
+	approvedByManager?: RegentUser;
+	approvedByQc?: RegentUser;
+	approvedBySecretary?: RegentUser;
+	pendingDocumentsURL: string;
 	isSpecial: boolean;
-	specialReportsUnit: any;
+	specialReportsUnit: SpecialReportsUnit;
 	serialNumber: string;
 	corporateRefNumber: any;
-	boxNumber: any;
-	reportURL: any;
-	reportValidationToken: string;
+	boxNumber: string | null;
+	reportURL: string | null;
+	reportValidationToken?: string;
 	vehicleValue: VehicleValue;
 	completeTransaction: CompleteTransaction[];
 	pending: string;
 	inspectionNote: string;
 	inspectionFnl: any;
+}
+
+export type SpecialReportsUnit =
+	| 'TUKTUK'
+	| 'MOTORBIKE'
+	| 'GROUNDED_VEHICLE'
+	| 'TRACTOR'
+	| 'TRAILER'
+	| 'PRE_THEFT'
+	| 'PRE_ACCIDENT'
+	| 'POST_ACCIDENT'
+	| 'FULL_MECHANICAL'
+	| 'INSURANCE_DUTY';
+
+export type PaymentMethod = 'cash' | 'cheque' | 'mpesa' | 'invoice';
+export type PaymentStatus = 'paid' | 'not-paid';
+
+export interface CorporateBranch {
+	branchId: string;
+	branchName: string;
 }
 
 export interface ValuationType {

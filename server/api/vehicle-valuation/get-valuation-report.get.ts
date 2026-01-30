@@ -54,7 +54,6 @@ export default defineEventHandler(async (event) => {
 				tyreCondition: reportData.tyreAndChassisFinal.tyreGeneratedComment,
 				chassisCondition: reportData.tyreAndChassisFinal.chassisGeneratedComment,
 				interiorComment: reportData.interiorFinal.interiorGeneratedComment,
-				dashboardComment: reportData.interiorFinal.dashboardGeneratedComment,
 				mileage: {
 					reading: reportData.interiorFinal.odometerCurrentReading,
 					units: reportData.interiorFinal.odometerReadingUnits,

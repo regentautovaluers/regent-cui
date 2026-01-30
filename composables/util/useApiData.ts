@@ -84,7 +84,7 @@ export const useStandardizedApi = () => {
  * @returns The useAsyncData return object with data, pending, and error states.
  */
 export const useApiData = <T = unknown, R = T>(
-	key: string,
+	key: string | null,
 	endpoint: string | Ref<string> | ComputedRef<string>,
 	options: Omit<AsyncDataOptions<ApiResponse<T>, R>, 'transform'> & {
 		query?: Record<string, any>;
@@ -117,7 +117,7 @@ export const useApiData = <T = unknown, R = T>(
 	const api = useStandardizedApi();
 
 	return useAsyncData<StandardSuccessResponse<T>, StandardErrorResponse, R>(
-		key,
+		!key ? generateRandomLengthedString(16) : key,
 		async () => {
 			const response = await api.handleApiCall<T>(unref(endpoint), {
 				method,

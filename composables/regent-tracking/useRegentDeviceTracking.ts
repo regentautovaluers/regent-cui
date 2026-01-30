@@ -1,5 +1,4 @@
 import { type TrackedVehicles, type Online } from '~/types/regent-tracking/tracked-vehicles';
-import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
 
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
@@ -30,7 +29,7 @@ export function useRegentDeviceTracking() {
 				setClientDevices(response._data.data as TrackedVehicles[]);
 			},
 			onResponseError: (_e) => {
-				useToast('Failed to vehicles! Try Again', {
+				useToast('Failed to load vehicles! Try Again', {
 					type: 'error',
 					title: 'Unable to load devices!',
 				});

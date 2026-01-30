@@ -80,11 +80,6 @@
 								</th>
 								<th
 									scope="col"
-									class="table-headers desktop-4k:table-cell hidden">
-									Progress
-								</th>
-								<th
-									scope="col"
 									class="table-headers laptop:table-cell hidden">
 									Note
 								</th>
@@ -113,11 +108,6 @@
 								<td class="p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300">agency</span>
 								</td>
-								<td class="p-6 text-gray-300">
-									<span class="animate-pulse rounded-lg bg-gray-300"
-										>authorizedby</span
-									>
-								</td>
 
 								<td class="p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
@@ -142,19 +132,20 @@
 								</td>
 
 								<td class="tablet:table-cell py-4">
-									<span class="w-fit">{{
-										valuation.inspectionDate?.split('T')[0] ?? 'Date N/A'
-									}}</span>
-									<br />
 									<span class="w-fit rounded-lg bg-gray-200 px-1">{{
 										valuation.regentBranch.branchName
+									}}</span>
+									<br />
+
+									<span class="w-fit">{{
+										valuation.inspectionDate?.split('T')[0] ?? 'Date N/A'
 									}}</span>
 								</td>
 								<th
 									scope="row"
 									class="flex items-center py-4 whitespace-nowrap text-gray-900">
 									<img
-										class="size-12 rounded-lg object-cover"
+										class="size-12 rounded-sm object-fit"
 										:src="valuation.vehicleImage"
 										alt="Vehicle Image"
 										v-if="valuation.vehicleImage" />
@@ -170,18 +161,8 @@
 											class="w-fit rounded-full bg-blue-200 px-1 text-sm text-blue-600">
 											{{ valuation.regNo }}
 										</div>
-										<div class="font-normal text-gray-500">
-											{{ valuation.vehicleMake ?? 'Make N/A' }}
-										</div>
 									</div>
 								</th>
-								<td class="desktop-4k:table-cell hidden max-w-24 py-4 text-sm">
-									<span class="w-fit">{{
-										(valuation.valuationStage as string)
-											?.toLowerCase()
-											.replaceAll('_', ' ') ?? 'N/A'
-									}}</span>
-								</td>
 								<td
 									class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
 									{{ valuation.inspectionNote ?? 'N/A' }}

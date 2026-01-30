@@ -12,7 +12,7 @@ const useAuth = () => {
 	const updateProfilePictureLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
-	const authToken: CookieRef<string | null | undefined> = useCookie('auth-token');
+	const authToken: CookieRef<string | null | undefined> = useCookie('valuation_auth_token');
 	// const { authToken: trackingAuthToken } = useRegentTrackingAuth();
 
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
