@@ -13,11 +13,11 @@ export const useCorporateValuations = () => {
 	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const corpValuations: ComputedRef<ValuationBooking[] | undefined> = computed(
-		() => fetchedData.value?.data,
+	const corpValuations: ComputedRef<ValuationBooking[]> = computed(
+		() => fetchedData.value?.data || [],
 	);
-	const totalPages: ComputedRef<number | undefined> = computed(
-		() => fetchedData.value?.requestExtras?.totalPages,
+	const totalPages: ComputedRef<number> = computed(
+		() => fetchedData.value?.requestExtras?.totalPages || 0,
 	);
 	const searchRegNo: Ref<string> = ref('');
 	const startDate: Ref<string | null> = ref(null);

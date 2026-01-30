@@ -147,12 +147,12 @@
 								</td>
 
 								<td class="tablet:table-cell py-4">
-									<span class="w-fit">{{
-										valuation.inspectionDate?.split('T')[0] ?? 'Date N/A'
-									}}</span>
-									<br />
 									<span class="w-fit rounded-lg bg-gray-200 px-1">{{
 										valuation.regentBranch.branchName
+									}}</span>
+									<br />
+									<span class="w-fit">{{
+										valuation.inspectionDate?.split('T')[0] ?? 'Date N/A'
 									}}</span>
 								</td>
 								<th
@@ -174,9 +174,6 @@
 										<div
 											class="w-fit rounded-full bg-blue-200 px-1 text-sm text-blue-600">
 											{{ valuation.regNo }}
-										</div>
-										<div class="font-normal text-gray-500">
-											{{ valuation.vehicleMake ?? 'Make N/A' }}
 										</div>
 									</div>
 								</th>
