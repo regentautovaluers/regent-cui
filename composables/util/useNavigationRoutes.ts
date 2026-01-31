@@ -61,18 +61,24 @@ export default function () {
 			childRoutes: [
 				{
 					id: 1,
+					screenName: 'Legacy Reports',
+					routeName: 'vehicle-valuation-legacy-reports',
+					renderRoute: true,
+				},
+				{
+					id: 2,
 					screenName: 'Authorization Letters',
 					routeName: 'vehicle-valuation-create-authorization-letter',
 					renderRoute: true,
 				},
 				{
-					id: 2,
+					id: 3,
 					screenName: 'Fleet Reports',
 					routeName: 'vehicle-valuation-fleet-reports',
 					renderRoute: true,
 				},
 				{
-					id: 3,
+					id: 4,
 					screenName: 'General Valuation Report',
 					routeName: 'vehicle-valuation-report',
 					renderRoute: false,
