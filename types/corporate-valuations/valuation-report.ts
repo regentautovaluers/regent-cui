@@ -45,28 +45,28 @@ export interface ValuationBooking {
 	bookingDate: string;
 	inspectionDate: string;
 	draftCreationDate?: string;
-	approvalDate: string;
-	regNo: string;
-	vehicleImage: string;
+	approvalDate: string | null;
+	regNo: string | null;
+	vehicleImage: string | null;
 	vehicleOwnership?: string;
 	clientName: string | null;
 	clientEmail: string | null;
 	clientPhone: string | null;
 	clientNatIdNumber?: any;
 	kraPin?: string | null;
-	vehicleType?: string;
-	valuationStage: string;
-	serviceCharge?: number;
-	paymentStatus: string;
+	vehicleType?: string | null;
+	valuationStage: string | null;
+	serviceCharge?: number | null;
+	paymentStatus: string | null;
 	paymentMethod?: PaymentMethod[];
 	valuationLocation?: string;
-	pendingDocuments: any[];
-	uploadedDocuments?: string[];
+	pendingDocuments: string[] | null | [];
+	uploadedDocuments?: string[] | null | [];
 	proposedValuationDate?: any;
-	valuationType: ValuationType;
-	corpOrganization: CorpOrganization;
-	corporateBranch: CorporateBranch;
-	onBehalfOfOrganization: CorpOrganization;
+	valuationType: ValuationType | null;
+	corpOrganization: CorpOrganization | null;
+	corporateBranch: CorporateBranch | null;
+	onBehalfOfOrganization: CorpOrganization | null;
 	regentBranch: RegentBranch;
 	onBehalfOfRegentBranch?: any;
 	regentValuer?: RegentUser;
@@ -74,20 +74,31 @@ export interface ValuationBooking {
 	approvedByManager?: RegentUser;
 	approvedByQc?: RegentUser;
 	approvedBySecretary?: RegentUser;
-	pendingDocumentsURL: string;
-	isSpecial: boolean;
-	specialReportsUnit: SpecialReportsUnit;
+	pendingDocumentsURL: string | null;
+	isSpecial: boolean | null;
+	specialReportsUnit: SpecialReportsUnit | null;
 	serialNumber: string;
 	corporateRefNumber: any;
 	boxNumber: string | null;
 	reportURL: string | null;
 	reportValidationToken?: string;
-	vehicleValue: VehicleValue;
-	completeTransaction: CompleteTransaction[];
-	pending: string;
-	inspectionNote: string;
-	inspectionFnl: any;
+	vehicleValue: VehicleValue | null;
+	completeTransaction: CompleteTransaction[] | null;
+	pending: string | null;
+	inspectionNote: string | null;
+	inspectionFnl?: ValuationReport | null;
 }
+
+export type ValuationStages =
+	| 'AWAITING_ASSESSMENT'
+	| 'VALUER_DRAFT'
+	| 'PENDING'
+	| 'AWAITING_MANAGER_APPROVAL'
+	| 'AWAITING_QC_APPROVAL'
+	| 'COMPLETED'
+	| 'INVOICING';
+
+export type SimplifiedValuationStage = 'Completed' | 'Ongoing';
 
 export type SpecialReportsUnit =
 	| 'TUKTUK'
@@ -122,9 +133,9 @@ export interface CorpOrganization {
 }
 
 export interface RegentBranch {
-	branchId: string;
+	branchId: string | null;
 	branchName: string;
-	branchEmail: string;
+	branchEmail: string | null;
 }
 
 export interface RegentUser {
