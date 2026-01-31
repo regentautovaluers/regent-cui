@@ -1,4 +1,4 @@
-import { deriveDriverBehaviour } from '~/server/utils/accident-analysis-computation';
+import { deriveDriverBehaviour } from '~/server/utils/dbehavior-analysis-computation';
 
 export default defineEventHandler(async (event) => {
 	const body: { vehicleIds: number[]; fromDate: string; toDate: string } = await readBody(event);
