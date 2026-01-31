@@ -6,10 +6,31 @@ const { state, getter, mutation, action, ...store } = createStore('activeTracked
 	clientDevices: null as TrackedVehicles[] | null,
 	activeTrackedVehicle: null as TrackedVehicles | null,
 	activeTrackedVehicleLocation: null as string | null,
+	computingFor: 0 as number,
+	totalDone: 0 as number,
 });
 
 // all tracked vehicles
 export const getClientDevices = getter('getClientDevices', (state) => state.clientDevices);
+
+export const getComputingAnalyticsFor = getter(
+	'getComputingAnalyticsFor',
+	(state) => state.computingFor,
+);
+
+export const setComputingAnalyticsFor = mutation(
+	'setComputingAnalyticsFor',
+	(state, target: number) => {
+		state.computingFor = target;
+	},
+);
+
+export const getTotalAnalyticsDone = mutation('getTotalAnalyticsDone', (state) => state.totalDone);
+
+export const setTotalAnalyticsDone = mutation(
+	'setTotalAnalyticsDone',
+	(state) => (state.totalDone += 1),
+);
 
 // tracked device by some id
 export const setDeviceDriverBehaviour = action(

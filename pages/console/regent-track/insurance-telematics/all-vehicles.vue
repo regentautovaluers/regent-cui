@@ -39,11 +39,12 @@
 			<div
 				type="button"
 				class="space-x-1 rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-sm font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none">
-				<span>Computed</span><span class="text-lg">{{ totalDone }}</span
+				<span>Computed</span><span class="text-lg">{{ totalDone() }}</span
 				><span>/</span><span class="text-base">{{ computingFor }}</span>
 			</div>
 		</div>
 	</div>
+
 	<!-- general vehicle data -->
 	<div class="flex flex-1 flex-col rounded-lg border-2 bg-white outline-none">
 		<div
@@ -120,7 +121,7 @@
 									<span
 										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
 										v-if="
-											computingDriverRiskLevel && filterPeriod == e.period
+											computingInsuranceMetrics && filterPeriod == e.period
 										"></span>
 									<span>{{ e.name }}</span>
 								</button>
@@ -260,7 +261,7 @@
 										<span class="text-sm text-gray-600">Harsh Corn.</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											v-if="computingInsuranceMetrics && !v.driverRiskScore"
 											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
 											:class="[
@@ -289,7 +290,7 @@
 										<span class="text-sm text-gray-600">Harsh Accel.</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											v-if="computingInsuranceMetrics && !v.driverRiskScore"
 											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
 											:class="[
@@ -318,7 +319,7 @@
 										<span class="text-sm text-gray-600">Harsh Brake</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											v-if="computingInsuranceMetrics && !v.driverRiskScore"
 											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
 											:class="[
@@ -347,7 +348,7 @@
 										class="rounded-md border-[1px] border-blue-500 bg-blue-100 px-2 py-1 text-blue-500 disabled:border-gray-500 disabled:bg-gray-100 disabled:text-gray-500"
 										:data-modal-target="`driving-score-${idx}-modal`"
 										:data-modal-toggle="`driving-score-${idx}-modal`"
-										:disabled="computingDriverRiskLevel && !v.driverRiskScore"
+										:disabled="computingInsuranceMetrics && !v.driverRiskScore"
 										@click="setSidebarCollapsedState(false)">
 										View Details
 									</button>
@@ -425,12 +426,12 @@
 		totalVehicles,
 		filterPeriod,
 		errorFetchingClientVehicles,
-		computingDriverRiskLevel,
-		computingFor,
-		totalDone,
+		computingInsuranceMetrics,
+		getComputingAnalyticsFor: computingFor,
+		getTotalAnalyticsDone: totalDone,
 		setRiskLevel,
 		setFilterPeriod,
-	} = useDrivingScore();
+	} = useAnalyzeInsuranceMetrics();
 
 	const availablePeriodButtons = reactive([
 		{

@@ -5,12 +5,19 @@ import {
 	type DriverRiskScore,
 } from '~/types/insurance-telematics/driver-behaviour';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
+import type { AccidentAnalytics } from '~/types/insurance-telematics/accident-record';
+import {
+	getComputingAnalyticsFor,
+	setComputingAnalyticsFor,
+	getTotalAnalyticsDone,
+	setTotalAnalyticsDone,
+} from '#imports';
 
 type ComputedVehicles = {
 	vehicles: TrackedVehicles[] | null;
 	totalPages: number;
 };
-export function useDrivingScore() {
+export default function () {
 	const size: Ref<number> = ref(10);
 	const page: Ref<number> = ref(0);
 	const searchString: Ref<string | null> = ref(null);
@@ -22,14 +29,12 @@ export function useDrivingScore() {
 	} = useRegentDeviceTracking();
 	const { fromDate, toDate, calculateDateRange } = useRegentTrackingDeviceHistory();
 	const activeRiskLevel: Ref<RiskLevel | null> = ref(null);
-	const computingDriverRiskLevel: Ref<boolean> = ref(false);
+	const computingInsuranceMetrics: Ref<boolean> = ref(false);
 	const totalVehicles: ComputedRef<number> = computed(() =>
 		!getClientDevices.value ? 0 : getClientDevices.value.length,
 	);
 	const filterPeriod: Ref<FilterTimelines> = ref('this-week');
 	let analysisController = new AbortController();
-	const computingFor: Ref<number> = ref(0);
-	const totalDone: Ref<number> = ref(0);
 
 	const computedVehicles: ComputedRef<ComputedVehicles> = computed(() => {
 		const filtered = getFilteredVehicles();
@@ -60,16 +65,16 @@ export function useDrivingScore() {
 					: getClientDevices.value?.filter(
 							(v) =>
 								!isDeviceSubscriptionExpired(v as TrackedVehicles) &&
-								!v.driverRiskScore,
+								(!v.driverRiskScore || !v.latestAccident),
 						);
 
 			if (viable && viable.length > 0) {
-				computingFor.value = viable.length;
+				setComputingAnalyticsFor(viable.length);
 
 				const { startDate: fromDate, endDate: toDate } =
 					calculateDateRange(newFilterPeriod);
 
-				computingDriverRiskLevel.value = true;
+				computingInsuranceMetrics.value = true;
 				try {
 					await fetchEventSource('/api/regent-tracking/insurance-telematics', {
 						method: 'POST',
@@ -86,26 +91,30 @@ export function useDrivingScore() {
 							if (analysisController.signal.aborted) return;
 
 							if (msg.data === '__DONE__') {
-								computingDriverRiskLevel.value = false;
+								computingInsuranceMetrics.value = false;
 								return;
 							}
 
 							try {
-								const result: DriverRiskScore = JSON.parse(msg.data);
-								setDeviceDriverBehaviour(result);
-								totalDone.value += 1;
+								const result: {
+									driverBehaviour: DriverRiskScore;
+									accidentAnalysis: AccidentAnalytics;
+								} = JSON.parse(msg.data);
+								setDeviceDriverBehaviour(result.driverBehaviour);
+								setLastDeviceAccident(result.accidentAnalysis);
+								setTotalAnalyticsDone();
 							} catch (e) {
 								console.error('Failed to parse stream segment', e);
 							}
 						},
 						onclose() {
-							computingDriverRiskLevel.value = false;
+							computingInsuranceMetrics.value = false;
 							console.log('Stream connection closed gracefully');
 						},
 						onerror(err) {
 							// Don't throw if it was a manual abort
 							if (err.name === 'AbortError') return;
-							computingDriverRiskLevel.value = false;
+							computingInsuranceMetrics.value = false;
 							throw err;
 						},
 					});
@@ -144,7 +153,7 @@ export function useDrivingScore() {
 		activeRiskLevel.value = newLevel;
 	}
 
-	function setFilterPeriod(period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months') {
+	function setFilterPeriod(period: FilterTimelines) {
 		filterPeriod.value = period;
 	}
 
@@ -159,10 +168,10 @@ export function useDrivingScore() {
 		totalVehicles,
 		fromDate,
 		toDate,
-		computingDriverRiskLevel,
+		computingInsuranceMetrics,
 		filterPeriod,
-		computingFor,
-		totalDone,
+		getComputingAnalyticsFor,
+		getTotalAnalyticsDone,
 		setRiskLevel,
 		setFilterPeriod,
 	};

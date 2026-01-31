@@ -1,4 +1,8 @@
 import { deriveDriverBehaviour } from '~/server/utils/dbehavior-analysis-computation';
+import { type DeviceHistory } from '~/types/regent-tracking/device-history';
+import { StandardSuccessResponse } from '~/types/proxy-types';
+import { DriverRiskScore } from '~/types/insurance-telematics/driver-behaviour';
+import { deriveAccidentAnalysis } from '~/server/utils/accident-analysis-computation';
 
 export default defineEventHandler(async (event) => {
 	const body: { vehicleIds: number[]; fromDate: string; toDate: string } = await readBody(event);
@@ -20,13 +24,21 @@ export default defineEventHandler(async (event) => {
 			await Promise.all(
 				batch.map(async (id) => {
 					try {
-						const result = await deriveDriverBehaviour(
-							id,
-							cookies.tracking_auth_token,
-							body.fromDate,
-							body.toDate,
+						let requestUrl = `/api/regent-tracking/device-history?api_hash=${cookies.tracking_auth_token}&device_id=${id}&from_time=00:00:00&to_time=23:59:59&from_date=${body.fromDate}&to_date=${body.toDate}`;
+						const h = (
+							await makeProxyRequest<StandardSuccessResponse<DeviceHistory>>(
+								requestUrl,
+							)
+						).data;
+						const driverBehaviourAnalysis: DriverRiskScore =
+							await deriveDriverBehaviour(h);
+						const accidentAnalysis = await deriveAccidentAnalysis(h);
+						await eventStream.push(
+							JSON.stringify({
+								driverBehaviour: driverBehaviourAnalysis,
+								accidentAnalysis: accidentAnalysis,
+							}),
 						);
-						await eventStream.push(JSON.stringify(result));
 					} catch (e) {
 						await eventStream.push(JSON.stringify({ id, error: true }));
 					}

@@ -1,60 +1,69 @@
 import {
-	type RiskLevel,
-	type DriverRiskScore,
-} from '~/types/insurance-telematics/driver-behaviour';
+	type AccidentAnalytics,
+	type AccidentSeverity,
+} from '~/types/insurance-telematics/accident-record';
 import { type DeviceHistory } from '~/types/regent-tracking/device-history';
-import { StandardSuccessResponse } from '~/types/proxy-types';
 
-export async function deriveDriverBehaviour(
-	vehicleId: string | number,
-	authToken: string,
-	startDate: string,
-	endDate: string,
-): Promise<DriverRiskScore> {
-	let requestUrl = `/api/regent-tracking/device-history?api_hash=${authToken}&device_id=${vehicleId}&from_time=00:00:00&to_time=23:59:59&from_date=${startDate}&to_date=${endDate}`;
-	const h = (await makeProxyRequest<StandardSuccessResponse<DeviceHistory>>(requestUrl)).data;
-
+export async function deriveAccidentAnalysis(h: DeviceHistory): Promise<AccidentAnalytics> {
+	const G_FORCE_MULTIPLIER = 0.01;
 	const deviceId: number = h.device.id;
-	const totalDistanceTraveled = Number(h.distance_sum.split(' ')[0]);
-	let analysis: DriverRiskScore | null = {
+	let analysis: AccidentAnalytics = {
 		deviceId,
-		totalDistanceTraveled,
-		harshAccelerationScore: null,
-		brakingScore: null,
-		harshCornering: null,
-		averageScore: 0,
-		averageRiskLevel: null,
+		coords: null,
+		geoCodeLocation: null,
+		time: null,
+		speedBeforeCrash: null,
+		speedUnits: null,
+		impactForce: null,
+		severity: null,
+		harshBrakingBeforeCrash: false,
 	};
 
-	const appearanceMetrics: {
-		harshAccelerationAppearances: number;
-		harshBrakingAppearances: number;
-		harshTurningAppearances: number;
-	} = {
-		harshAccelerationAppearances: 0,
-		harshBrakingAppearances: 0,
-		harshTurningAppearances: 0,
-	};
-	for (let v of h.items) {
+	coreLoop: for (let v of h.items) {
 		// 1. Access the inner Item2 object(s)
 		if (v.items && v.items.length > 0) {
-			for (let v2 of v.items) {
+			_lookupLoop: for (let x = v.items.length - 1; x >= 0; x--) {
 				// Check if the Item2 object and its other_arr exist
-				if (v2.other_arr) {
-					// 2. Find the string whose name part is "io253"
-					const eventString = v2.other_arr.find((str) => str.includes('io253'));
+				const other_arr = v.items[x].other_arr;
+				if (other_arr) {
+					// 2. Find the string whose name part is "io247"
+					const eventString = other_arr.find((str) => str.includes('io247'));
 
 					if (eventString) {
-						// Extract the value part (after the colon)
-						const value = eventString.split(':')[1]?.trim();
+						analysis.coords = {
+							lat: v.items[x].lat,
+							lng: v.items[x].lng,
+						};
+						/*
+                        TODO: Figure out how to do the geocoding later
+                        analysis.geoCodeLocation = await gecodeLocation(
+							v.items[x].lat,
+							v.items[x].lng,
+						);*/
+						analysis.time = v.items[x].device_time as string;
+						analysis.speedBeforeCrash = v.items[x].speed ?? null;
+						analysis.speedUnits = 'Km/h';
 
-						// 3. Update appearances based on the value
-						if (value === '1') {
-							appearanceMetrics.harshAccelerationAppearances += 1;
-						} else if (value === '2') {
-							appearanceMetrics.harshBrakingAppearances += 1;
-						} else if (value === '3') {
-							appearanceMetrics.harshTurningAppearances += 1;
+						// short circuit the loop
+						continue coreLoop;
+					}
+
+					// 3. Find the string whose name part is io 254
+					const gForceString = other_arr.find((str) => str.includes('io254'));
+					if (gForceString) {
+						const force: number = gForceString
+							.split(':')[1]
+							.trim() as unknown as number;
+						analysis.impactForce = force * G_FORCE_MULTIPLIER;
+						analysis.severity = deriveIncidentSeverity(force * G_FORCE_MULTIPLIER);
+					}
+
+					// 4. Check for harsh braking
+					const harshBrakingEventString = other_arr.find((str) => str.includes('io253'));
+					if (harshBrakingEventString) {
+						const value = harshBrakingEventString.split(':')[1]?.trim();
+						if (value === '2') {
+							analysis.harshBrakingBeforeCrash = true;
 						}
 					}
 				}
@@ -62,79 +71,15 @@ export async function deriveDriverBehaviour(
 		}
 	}
 
-	// for the braking score
-	const brakingPercentageScore = calculateBrakingScore(
-		appearanceMetrics.harshBrakingAppearances,
-		totalDistanceTraveled,
-	);
-	analysis.brakingScore = {
-		rawScore: appearanceMetrics.harshBrakingAppearances,
-		riskLevel: calculateRiskLevel(brakingPercentageScore),
-		percentageScore: brakingPercentageScore,
-	};
-
-	// for the harsh acceleration
-	const harshAcclerationPercentageScore = calculateHarshAccelerationScore(
-		appearanceMetrics.harshAccelerationAppearances,
-		totalDistanceTraveled,
-	);
-	analysis.harshAccelerationScore = {
-		rawScore: appearanceMetrics.harshAccelerationAppearances,
-		riskLevel: calculateRiskLevel(harshAcclerationPercentageScore),
-		percentageScore: harshAcclerationPercentageScore,
-	};
-
-	// for the harsh turning
-	const harshTruningPercentageScore = calculateHarshTurningScore(
-		appearanceMetrics.harshTurningAppearances,
-		totalDistanceTraveled,
-	);
-	analysis.harshCornering = {
-		rawScore: appearanceMetrics.harshTurningAppearances,
-		riskLevel: calculateRiskLevel(harshTruningPercentageScore),
-		percentageScore: harshTruningPercentageScore,
-	};
-
-	// for the averages
-	const averageRiskScore = calculateAverageRiskScore(
-		harshAcclerationPercentageScore,
-		brakingPercentageScore,
-		harshTruningPercentageScore,
-	);
-	analysis.averageScore = averageRiskScore;
-	analysis.averageRiskLevel = calculateRiskLevel(averageRiskScore);
-
 	return analysis;
 }
 
-function calculateRiskLevel(percentageScore: number): RiskLevel {
-	if (percentageScore >= 5) {
-		return 'High Risk';
-	} else if (percentageScore >= 2 && percentageScore <= 4) {
-		return 'Medium Risk';
+function deriveIncidentSeverity(gForceValue: number): AccidentSeverity {
+	if (gForceValue > 8) {
+		return 'Severe';
+	} else if (gForceValue >= 4 && gForceValue <= 8) {
+		return 'Moderate';
 	} else {
-		return 'Low Risk';
+		return 'Minor';
 	}
-}
-
-function calculateAverageRiskScore(...entries: number[]): number {
-	return Number((entries.reduce((acc, curr) => acc + curr, 0) / 3).toFixed(2));
-}
-
-function calculateHarshAccelerationScore(
-	accelerationCount: number,
-	distanceDriven: number,
-): number {
-	if (distanceDriven == 0) return 0;
-	return Number(((accelerationCount / distanceDriven) * 100).toFixed(2));
-}
-
-function calculateBrakingScore(breakingCount: number, distanceDriven: number): number {
-	if (distanceDriven == 0) return 0;
-	return Number(((breakingCount / distanceDriven) * 100).toFixed(2));
-}
-
-function calculateHarshTurningScore(harshTurningCount: number, distanceDriven: number): number {
-	if (distanceDriven == 0) return 0;
-	return Number(((harshTurningCount / distanceDriven) * 100).toFixed(2));
 }

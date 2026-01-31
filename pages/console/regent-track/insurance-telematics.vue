@@ -66,13 +66,13 @@
 	const routeEntries = [
 		{
 			to: 'insurance-telematics-all-vehicles',
-			name: 'All Vehicles',
+			name: 'Driver Behaviour',
 			shouldShow: true,
 			icon: 'icon-[material-symbols-light--delivery-truck-speed-outline]',
 		},
 		{
 			to: 'insurance-telematics-accidents-analysis',
-			name: 'Accidents',
+			name: 'Accident Analysis',
 			shouldShow: true,
 			icon: 'icon-[material-symbols-light--warning-outline-rounded]',
 		},

@@ -3,17 +3,8 @@ import {
 	type DriverRiskScore,
 } from '~/types/insurance-telematics/driver-behaviour';
 import { type DeviceHistory } from '~/types/regent-tracking/device-history';
-import { StandardSuccessResponse } from '~/types/proxy-types';
 
-export async function deriveDriverBehaviour(
-	vehicleId: string | number,
-	authToken: string,
-	startDate: string,
-	endDate: string,
-): Promise<DriverRiskScore> {
-	let requestUrl = `/api/regent-tracking/device-history?api_hash=${authToken}&device_id=${vehicleId}&from_time=00:00:00&to_time=23:59:59&from_date=${startDate}&to_date=${endDate}`;
-	const h = (await makeProxyRequest<StandardSuccessResponse<DeviceHistory>>(requestUrl)).data;
-
+export async function deriveDriverBehaviour(h: DeviceHistory): Promise<DriverRiskScore> {
 	const deviceId: number = h.device.id;
 	const totalDistanceTraveled = Number(h.distance_sum.split(' ')[0]);
 	let analysis: DriverRiskScore | null = {
