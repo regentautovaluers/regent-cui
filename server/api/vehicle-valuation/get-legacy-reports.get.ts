@@ -2,6 +2,7 @@ import type {
 	CleanedRearangedAndMapped,
 	PaginationData,
 	ValuationData,
+	FetchMode,
 } from '~/types/corporate-valuations/legacy-valuations';
 import { mapLegacyValuationToNewType } from '~/utils/vehicle-valuation-utils';
 import { cleanValuations } from '~/server/utils/valuation-utils';
@@ -9,8 +10,9 @@ import { cleanValuations } from '~/server/utils/valuation-utils';
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query: {
-		mode: 'LIST' | 'SEARCH';
+		mode: FetchMode;
 		corp: string;
+		current_page: number;
 		period_from?: string;
 		period_to?: string;
 		reg_no?: string;
@@ -18,8 +20,8 @@ export default defineEventHandler(async (event) => {
 
 	let requestURL =
 		query.mode == 'SEARCH'
-			? `${config.LEGACY_VALUATION_BASE_URL}/ava/api/reg-search?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&password=${config.LEGACY_VALUATION_AUTH_PWD}`
-			: `${config.LEGACY_VALUATION_BASE_URL}/ava/api/corp-report?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&password=${config.LEGACY_VALUATION_AUTH_PWD}&pwd`;
+			? `${config.LEGACY_VALUATION_BASE_URL}/ava/api/reg-search?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&password=${config.LEGACY_VALUATION_AUTH_PWD}&results_per_page=10&current_page=${query.current_page}`
+			: `${config.LEGACY_VALUATION_BASE_URL}/ava/api/corp-report?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&password=${config.LEGACY_VALUATION_AUTH_PWD}&pwd&results_per_page=10&current_page=${query.current_page}`;
 
 	if (query.corp) {
 		requestURL += `&corp=${query.corp}`;
@@ -51,7 +53,6 @@ export default defineEventHandler(async (event) => {
 				return vb;
 			}),
 		};
-
 		return sendSuccessResponse(event, cleanedAndMapped);
 	} catch (err) {
 		console.log(err);

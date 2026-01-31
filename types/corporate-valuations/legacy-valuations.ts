@@ -1,5 +1,7 @@
 import type { ValuationBooking } from '~/types/corporate-valuations/valuation-report';
 
+export type FetchMode = 'SEARCH' | 'LIST';
+
 export interface PaginationData {
 	total_records?: string;
 	total_pages?: number;

@@ -44,7 +44,7 @@ export function mapLegacyValuationToNewType(v: ValuationData): ValuationBooking 
 		inspectionDate: v.inspection?.inspection_date,
 		regNo: v.vehicle?.registration_number,
 		vehicleImage: null,
-		clientName: v.client?.client_name,
+		clientName: v.client?.customer_name,
 		clientEmail: v.client?.email,
 		clientPhone: null,
 		valuationStage: null,
