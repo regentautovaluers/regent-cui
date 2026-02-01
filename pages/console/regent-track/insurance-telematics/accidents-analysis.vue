@@ -326,7 +326,7 @@
 											}}</span
 										>
 									</span>
-									<br />
+									<!-- <br />
 									<span
 										class="inline-flex w-40 items-center justify-between space-x-1">
 										<span class="text-sm text-gray-600">Weather</span>
@@ -340,7 +340,7 @@
 											>{{ v.latestAccident?.weather ?? '-' }}</span
 										>
 									</span>
-									<br />
+									<br /> -->
 								</td>
 								<td class="tablet:table-cell hidden py-4 ps-3">
 									<button
