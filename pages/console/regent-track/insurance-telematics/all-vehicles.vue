@@ -1,4 +1,50 @@
 <template>
+	<!-- Preffered Regent Branch -->
+	<div
+		class="mb-3 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
+		role="alert">
+		<div class="flex items-center">
+			<svg
+				class="me-2 h-4 w-4 shrink-0"
+				aria-hidden="true"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="currentColor"
+				viewBox="0 0 20 20">
+				<path
+					d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+			</svg>
+			<span class="sr-only">Info</span>
+			<h3 class="text-sm font-medium">Notice On Computations</h3>
+		</div>
+
+		<p class="mt-2 mb-4 text-sm">
+			Kindly note that executing these computations is resource intensive and takes a while.
+			We have done our best to optimize the running time.
+			<span class="font-semibold"
+				>Kindly avoid refreshing the page, or navigating away from it during this
+				process!</span
+			>
+			To improve your experience,
+			<span class="font-semibold"
+				>each vehicle's result will be populated as soon as it is available</span
+			>. You are free to scroll through the table even as the computations are running.
+			<span class="font-semibold"
+				>Changing the time period filter or refreshing the page causes this data to reload,
+				and progress to restart.</span
+			>
+			The progress counter below should help you know how many vehicle's computations are
+			already done.
+		</p>
+		<div class="flex">
+			<div
+				type="button"
+				class="space-x-1 rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-sm font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none">
+				<span>Computed</span><span class="text-lg">{{ totalDone() }}</span
+				><span>/</span><span class="text-base">{{ computingFor }}</span>
+			</div>
+		</div>
+	</div>
+
 	<!-- general vehicle data -->
 	<div class="flex flex-1 flex-col rounded-lg border-2 bg-white outline-none">
 		<div
@@ -75,7 +121,7 @@
 									<span
 										class="icon-[svg-spinners--ring-resize] text-lg text-gray-600"
 										v-if="
-											computingDriverRiskLevel && filterPeriod == e.period
+											computingInsuranceMetrics && filterPeriod == e.period
 										"></span>
 									<span>{{ e.name }}</span>
 								</button>
@@ -215,7 +261,7 @@
 										<span class="text-sm text-gray-600">Harsh Corn.</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											v-if="computingInsuranceMetrics && !v.driverRiskScore"
 											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
 											:class="[
@@ -244,7 +290,7 @@
 										<span class="text-sm text-gray-600">Harsh Accel.</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											v-if="computingInsuranceMetrics && !v.driverRiskScore"
 											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
 											:class="[
@@ -273,7 +319,7 @@
 										<span class="text-sm text-gray-600">Harsh Brake</span>
 										<span class="text-gray-500">&VerticalBar;</span>
 										<span
-											v-if="computingDriverRiskLevel && !v.driverRiskScore"
+											v-if="computingInsuranceMetrics && !v.driverRiskScore"
 											class="icon-[svg-spinners--3-dots-scale] size-5 text-gray-500"></span>
 										<span
 											:class="[
@@ -302,7 +348,7 @@
 										class="rounded-md border-[1px] border-blue-500 bg-blue-100 px-2 py-1 text-blue-500 disabled:border-gray-500 disabled:bg-gray-100 disabled:text-gray-500"
 										:data-modal-target="`driving-score-${idx}-modal`"
 										:data-modal-toggle="`driving-score-${idx}-modal`"
-										:disabled="computingDriverRiskLevel && !v.driverRiskScore"
+										:disabled="computingInsuranceMetrics && !v.driverRiskScore"
 										@click="setSidebarCollapsedState(false)">
 										View Details
 									</button>
@@ -380,10 +426,12 @@
 		totalVehicles,
 		filterPeriod,
 		errorFetchingClientVehicles,
-		computingDriverRiskLevel,
+		computingInsuranceMetrics,
+		getComputingAnalyticsFor: computingFor,
+		getTotalAnalyticsDone: totalDone,
 		setRiskLevel,
 		setFilterPeriod,
-	} = useDrivingScore();
+	} = useAnalyzeInsuranceMetrics();
 
 	const availablePeriodButtons = reactive([
 		{

@@ -1,13 +1,15 @@
-import { type DeviceHistory, type DayMovement } from '~/types/regent-tracking/device-history';
+import {
+	type DeviceHistory,
+	type DayMovement,
+	type FilterTimelines,
+} from '~/types/regent-tracking/device-history';
 import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
 import { type AnalyzedLocation } from '~/types/regent-tracking/device-history';
 import { getTrackedVehicle } from '~/stores/regent-tracking-devices-store';
 
 export function useRegentTrackingDeviceHistory() {
 	const { query } = useRoute();
-	const filterPeriod: Ref<
-		'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'last-6-months' | 'custom'
-	> = ref('today');
+	const filterPeriod: Ref<FilterTimelines> = ref('today');
 	const positionOnMap: Ref<{
 		lat: number;
 		lng: number;
@@ -26,9 +28,7 @@ export function useRegentTrackingDeviceHistory() {
 		polylineCoords.value = input;
 	}
 
-	function setFilterPeriod(
-		period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'custom',
-	) {
+	function setFilterPeriod(period: FilterTimelines) {
 		filterPeriod.value = period;
 		executeFetchDeviceHistory();
 	}
@@ -45,15 +45,7 @@ export function useRegentTrackingDeviceHistory() {
 		positionOnMap.value = position;
 	}
 
-	function calculateDateRange(
-		timeframe:
-			| 'today'
-			| 'this-week'
-			| 'last-30-days'
-			| 'last-3-months'
-			| 'last-6-months'
-			| 'custom',
-	): {
+	function calculateDateRange(timeframe: FilterTimelines): {
 		startDate: string;
 		endDate: string;
 	} {
@@ -184,38 +176,6 @@ export function useRegentTrackingDeviceHistory() {
 				: deviceMovement.value.flatMap((e) => e.pingHistory),
 	);
 
-	async function fetchMultipleDeviceHistory(
-		deviceIds: number[],
-		period: 'today' | 'this-week' | 'last-30-days' | 'last-3-months' | 'last-6-months',
-	): Promise<DeviceHistory[]> {
-		let requests = deviceIds.map((id) => {
-			let requestUrl = `/api/regent-tracking/device-history?api_hash=${authToken.value}&device_id=${id}&from_time=00:00:00&to_time=23:59:59`;
-
-			let dateRange = calculateDateRange(period);
-			requestUrl =
-				requestUrl + `&from_date=${dateRange.startDate}&to_date=${dateRange.endDate}`;
-
-			return get<DeviceHistory>(requestUrl);
-		});
-		const responses = await Promise.allSettled(requests);
-
-		return responses
-			.filter(
-				(
-					result,
-				): result is PromiseFulfilledResult<StandardSuccessResponse<DeviceHistory>> => {
-					// First check if promise fulfilled
-					if (result.status !== 'fulfilled') {
-						return false;
-					}
-
-					// Then check if response is a success response
-					return result.value.success === true && 'data' in result.value;
-				},
-			)
-			.map((result) => result.value.data);
-	}
-
 	return {
 		filterPeriod,
 		deviceHistory,
@@ -233,6 +193,6 @@ export function useRegentTrackingDeviceHistory() {
 		setPolylineCoords,
 		executeFetchDeviceHistory,
 		clearDeviceHistory,
-		fetchMultipleDeviceHistory,
+		calculateDateRange,
 	};
 }
