@@ -25,6 +25,11 @@ export const setComputingAnalyticsFor = mutation(
 	},
 );
 
+export const clearAnalyticsCounter = mutation('clearAnalyticsCounter', (state) => {
+	state.computingFor = 0;
+	state.totalDone = 0;
+});
+
 export const getTotalAnalyticsDone = mutation('getTotalAnalyticsDone', (state) => state.totalDone);
 
 export const setTotalAnalyticsDone = mutation(

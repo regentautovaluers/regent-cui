@@ -11,6 +11,7 @@ import {
 	setComputingAnalyticsFor,
 	getTotalAnalyticsDone,
 	setTotalAnalyticsDone,
+	clearAnalyticsCounter,
 } from '#imports';
 
 type ComputedVehicles = {
@@ -57,18 +58,29 @@ export default function () {
 			analysisController.abort();
 			analysisController = new AbortController();
 
-			const viable =
-				newFilterPeriod != oldFilterPeriod
-					? getClientDevices.value?.filter(
-							(v) => !isDeviceSubscriptionExpired(v as TrackedVehicles),
-						)
-					: getClientDevices.value?.filter(
-							(v) =>
-								!isDeviceSubscriptionExpired(v as TrackedVehicles) &&
-								(!v.driverRiskScore || !v.latestAccident),
-						);
+			// 1. Get all unexpired vehicles first
+			const allVehicles = getClientDevices.value || [];
+			const unexpired = allVehicles.filter(
+				(v) => !isDeviceSubscriptionExpired(v as TrackedVehicles),
+			);
+
+			const viable = unexpired.filter((v) => {
+				// FORCE RELOAD: If the user actually changed the date range,
+				// we must ignore existing data because it's for the wrong time period.
+				if (oldFilterPeriod !== undefined && newFilterPeriod !== oldFilterPeriod) {
+					return true;
+				}
+
+				// DATA CHECK: Only include if it's missing insurance OR accident data.
+				// If both fields exist, this returns false and the vehicle is skipped.
+				const hasInsurance = !!v.driverRiskScore;
+				const hasAccidents = !!v.latestAccident;
+
+				return !(hasInsurance && hasAccidents);
+			});
 
 			if (viable && viable.length > 0) {
+				clearAnalyticsCounter();
 				setComputingAnalyticsFor(viable.length);
 
 				const { startDate: fromDate, endDate: toDate } =
@@ -100,6 +112,7 @@ export default function () {
 									driverBehaviour: DriverRiskScore;
 									accidentAnalysis: AccidentAnalytics;
 								} = JSON.parse(msg.data);
+								console.log(JSON.stringify(result, null, 2));
 								setDeviceDriverBehaviour(result.driverBehaviour);
 								setLastDeviceAccident(result.accidentAnalysis);
 								setTotalAnalyticsDone();
