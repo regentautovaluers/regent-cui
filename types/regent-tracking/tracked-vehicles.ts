@@ -51,6 +51,12 @@ export interface TrackedVehicles {
 	latestAccident?: AccidentAnalytics | null;
 }
 
+// custom type for reloading vehicles in map view
+export type TrackedVehicleFetchTick = {
+	vehicles: Pick<TrackedVehicles, 'id' | 'lat' | 'lng'>[];
+	tick_time: string;
+};
+
 export enum Address {
 	Empty = '-',
 	Off = 'Off',

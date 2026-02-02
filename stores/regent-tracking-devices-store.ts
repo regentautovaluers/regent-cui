@@ -64,6 +64,18 @@ export const setDeviceDriverBehaviour = action(
 	},
 );
 
+export const setTickedDeviceLocation = action(
+	'setTickedDeviceLocation',
+	async (payload: { deviceId: number; newLat: number; newLng: number }, mutate) => {
+		const deviceId = payload.deviceId;
+		mutate((state) => {
+			let toEdit = state.clientDevices?.findIndex((e) => e.id == deviceId)!;
+			(state.clientDevices as TrackedVehicles[])[toEdit].lat = payload.newLat;
+			(state.clientDevices as TrackedVehicles[])[toEdit].lng = payload.newLng;
+		});
+	},
+);
+
 export const setLastDeviceAccident = action(
 	'setLastDeviceAccient',
 	async (accidentRecord: AccidentAnalytics, mutate) => {

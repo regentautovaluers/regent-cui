@@ -6,7 +6,8 @@ import { TraceabilityReport } from '~/types/regent-tracking/trace-report';
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query = getQuery(event);
-	let endpoint = `${config.REGENT_TRACK_BASE_URL}/api/get_devices?lang=en&user_api_hash=${query.api_hash}`;
+	const cookies = parseCookies(event);
+	let endpoint = `${config.REGENT_TRACK_BASE_URL}/api/get_devices?lang=en&user_api_hash=${cookies.tracking_auth_token}`;
 
 	if (query.page) {
 		endpoint = endpoint + `&page=${query.page}`;
