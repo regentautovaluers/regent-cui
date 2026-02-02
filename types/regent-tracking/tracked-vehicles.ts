@@ -53,7 +53,7 @@ export interface TrackedVehicles {
 
 // custom type for reloading vehicles in map view
 export type TrackedVehicleFetchTick = {
-	vehicles: Pick<TrackedVehicles, 'id' | 'lat' | 'lng'>[];
+	vehicles: Pick<TrackedVehicles, 'id' | 'lat' | 'lng' | 'time'>[];
 	tick_time: string;
 };
 

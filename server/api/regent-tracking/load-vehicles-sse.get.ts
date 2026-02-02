@@ -24,7 +24,12 @@ export default defineEventHandler(async (event) => {
 			);
 
 			const response: TrackedVehicleFetchTick = {
-				vehicles: combinedVehicleData.map((v) => ({ id: v.id, lat: v.lat, lng: v.lng })),
+				vehicles: combinedVehicleData.map((v) => ({
+					id: v.id,
+					lat: v.lat,
+					lng: v.lng,
+					time: v.time,
+				})),
 				tick_time: new Date().toLocaleTimeString(),
 			};
 

@@ -158,6 +158,7 @@ export function useRegentDeviceTracking() {
 								deviceId: e.id,
 								newLat: e.lat,
 								newLng: e.lng,
+								time: e.time as Date,
 							}),
 						);
 
