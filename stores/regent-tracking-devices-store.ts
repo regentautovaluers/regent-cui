@@ -8,7 +8,19 @@ const { state, getter, mutation, action, ...store } = createStore('activeTracked
 	activeTrackedVehicleLocation: null as string | null,
 	computingFor: 0 as number,
 	totalDone: 0 as number,
+	insuranceTelematicsTrackingRunning: false as boolean,
 });
+
+export const setInsuranceTelematicsTrackingRunning = mutation(
+	'setInsuranceTelematicsTrackingRunning',
+	(state) =>
+		(state.insuranceTelematicsTrackingRunning = !state.insuranceTelematicsTrackingRunning),
+);
+
+export const getInsuranceTelematicsTrackingRunning = getter(
+	'getInsuranceTelematicsTrackingRunning',
+	() => state.insuranceTelematicsTrackingRunning,
+);
 
 // all tracked vehicles
 export const getClientDevices = getter('getClientDevices', (state) => state.clientDevices);
@@ -63,6 +75,15 @@ export const setLastDeviceAccident = action(
 				latestAccident: accidentRecord,
 			};
 		});
+	},
+);
+
+export const resetInsuranceTelematics = mutation(
+	'resetInsuranceTelematics',
+	(state, targetId: number) => {
+		let toEdit = state.clientDevices?.findIndex((e) => e.id == targetId)!;
+		(state.clientDevices as TrackedVehicles[])[toEdit].driverRiskScore = null;
+		(state.clientDevices as TrackedVehicles[])[toEdit].latestAccident = null;
 	},
 );
 

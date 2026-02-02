@@ -12,6 +12,9 @@ import {
 	getTotalAnalyticsDone,
 	setTotalAnalyticsDone,
 	clearAnalyticsCounter,
+	setInsuranceTelematicsTrackingRunning,
+	getInsuranceTelematicsTrackingRunning,
+	resetInsuranceTelematics,
 } from '#imports';
 
 type ComputedVehicles = {
@@ -30,10 +33,30 @@ export default function () {
 	} = useRegentDeviceTracking();
 	const { fromDate, toDate, calculateDateRange } = useRegentTrackingDeviceHistory();
 	const activeRiskLevel: Ref<RiskLevel | null> = ref(null);
-	const computingInsuranceMetrics: Ref<boolean> = ref(false);
+	const computingInsuranceMetrics: ComputedRef<boolean> = computed(
+		() => getInsuranceTelematicsTrackingRunning.value,
+	);
 	const totalVehicles: ComputedRef<number> = computed(() =>
 		!getClientDevices.value ? 0 : getClientDevices.value.length,
 	);
+	const availablePeriodButtons: { name: string; period: FilterTimelines }[] = [
+		{
+			name: 'Today',
+			period: 'today',
+		},
+		{
+			name: 'This Week',
+			period: 'this-week',
+		},
+		{
+			name: 'Last 30 Days',
+			period: 'last-30-days',
+		},
+		{
+			name: 'Last 3 Months',
+			period: 'last-3-months',
+		},
+	];
 	const filterPeriod: Ref<FilterTimelines> = ref('this-week');
 	let analysisController = new AbortController();
 
@@ -80,13 +103,16 @@ export default function () {
 			});
 
 			if (viable && viable.length > 0) {
+				// remove existing telematics for all viable vehicles
+				viable.forEach((e) => resetInsuranceTelematics(e.id));
+				setInsuranceTelematicsTrackingRunning();
+
 				clearAnalyticsCounter();
 				setComputingAnalyticsFor(viable.length);
 
 				const { startDate: fromDate, endDate: toDate } =
 					calculateDateRange(newFilterPeriod);
 
-				computingInsuranceMetrics.value = true;
 				try {
 					await fetchEventSource('/api/regent-tracking/insurance-telematics', {
 						method: 'POST',
@@ -103,7 +129,11 @@ export default function () {
 							if (analysisController.signal.aborted) return;
 
 							if (msg.data === '__DONE__') {
-								computingInsuranceMetrics.value = false;
+								setInsuranceTelematicsTrackingRunning();
+								useToast('Done computing for all vehicles!', {
+									type: 'success',
+									title: 'Computations done!',
+								});
 								return;
 							}
 
@@ -112,7 +142,6 @@ export default function () {
 									driverBehaviour: DriverRiskScore;
 									accidentAnalysis: AccidentAnalytics;
 								} = JSON.parse(msg.data);
-								console.log(JSON.stringify(result, null, 2));
 								setDeviceDriverBehaviour(result.driverBehaviour);
 								setLastDeviceAccident(result.accidentAnalysis);
 								setTotalAnalyticsDone();
@@ -121,13 +150,13 @@ export default function () {
 							}
 						},
 						onclose() {
-							computingInsuranceMetrics.value = false;
+							setInsuranceTelematicsTrackingRunning();
 							console.log('Stream connection closed gracefully');
 						},
 						onerror(err) {
 							// Don't throw if it was a manual abort
 							if (err.name === 'AbortError') return;
-							computingInsuranceMetrics.value = false;
+							setInsuranceTelematicsTrackingRunning();
 							throw err;
 						},
 					});
@@ -135,6 +164,8 @@ export default function () {
 					if (err.name !== 'AbortError') {
 						console.error('SSE Stream Error:', err);
 					}
+				} finally {
+					setInsuranceTelematicsTrackingRunning();
 				}
 			}
 		},
@@ -184,8 +215,10 @@ export default function () {
 		computingInsuranceMetrics,
 		filterPeriod,
 		getComputingAnalyticsFor,
+		availablePeriodButtons,
 		getTotalAnalyticsDone,
 		setRiskLevel,
 		setFilterPeriod,
+		isDeviceSubscriptionExpired,
 	};
 }

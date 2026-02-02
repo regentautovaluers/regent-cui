@@ -26,7 +26,13 @@ export function useRegentDeviceTracking() {
 				if (cached) return cached as TrackedVehicles[];
 			},
 			onResponse: ({ response }) => {
-				setClientDevices(response._data.data as TrackedVehicles[]);
+				let expiredDevices = (response._data.data as TrackedVehicles[]).filter((v) =>
+					isDeviceSubscriptionExpired(v),
+				);
+				let activeDevices = (response._data.data as TrackedVehicles[]).filter(
+					(v) => !isDeviceSubscriptionExpired(v),
+				);
+				setClientDevices([...activeDevices, ...expiredDevices]);
 			},
 			onResponseError: (_e) => {
 				useToast('Failed to load vehicles! Try Again', {

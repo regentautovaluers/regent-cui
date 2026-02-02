@@ -347,7 +347,10 @@
 										class="rounded-md border-[1px] border-blue-500 bg-blue-100 px-2 py-1 text-blue-500 disabled:border-gray-500 disabled:bg-gray-100 disabled:text-gray-500"
 										:data-modal-target="`incident-analysis-${idx}-modal`"
 										:data-modal-toggle="`incident-analysis-${idx}-modal`"
-										:disabled="computingInsuranceMetrics && !v.latestAccident"
+										:disabled="
+											isDeviceSubscriptionExpired(v) ||
+											(computingInsuranceMetrics && !v.latestAccident)
+										"
 										@click="setSidebarCollapsedState(false)">
 										View Details
 									</button>
@@ -405,7 +408,7 @@
 				:client-phone="v.driver_data?.phone ?? 'Name N/A'"
 				:client-name="v.driver_data?.name ?? 'Phone N/A'"
 				:device-status="v.online"
-				:latest-accident="v.latestAccident" />
+				:latest-accident="v.latestAccident!" />
 		</ParentModal>
 	</div>
 </template>
@@ -429,28 +432,11 @@
 		toDate,
 		computingInsuranceMetrics,
 		filterPeriod,
+		availablePeriodButtons,
 		getComputingAnalyticsFor: computingFor,
 		getTotalAnalyticsDone: totalDone,
 		setRiskLevel,
 		setFilterPeriod,
+		isDeviceSubscriptionExpired,
 	} = useAnalyzeInsuranceMetrics();
-
-	const availablePeriodButtons = reactive([
-		{
-			name: 'Today',
-			period: 'today',
-		},
-		{
-			name: 'This Week',
-			period: 'this-week',
-		},
-		{
-			name: 'Last 30 Days',
-			period: 'last-30-days',
-		},
-		{
-			name: 'Last 3 Months',
-			period: 'last-3-months',
-		},
-	]);
 </script>

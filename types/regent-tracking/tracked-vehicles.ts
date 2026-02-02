@@ -45,10 +45,10 @@ export interface TrackedVehicles {
 	on_watchlist: boolean;
 
 	// for driver behaviour
-	driverRiskScore?: DriverRiskScore;
+	driverRiskScore?: DriverRiskScore | null;
 
 	// for latest recorded accident
-	latestAccident?: AccidentAnalytics;
+	latestAccident?: AccidentAnalytics | null;
 }
 
 export enum Address {
