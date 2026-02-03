@@ -421,15 +421,12 @@
 
 	const {
 		page,
-		size,
 		searchString,
 		computedVehicles,
 		fetchingClientVehicles,
-		activeRiskLevel,
 		totalVehicles,
 		filterPeriod,
 		availablePeriodButtons,
-		errorFetchingClientVehicles,
 		computingInsuranceMetrics,
 		getComputingAnalyticsFor: computingFor,
 		getTotalAnalyticsDone: totalDone,

@@ -1,4 +1,7 @@
-import { type TrackedVehicles } from '~/types/regent-tracking/tracked-vehicles';
+import {
+	type TrackedVehicles,
+	type InsuranceTelematicsAnalysis,
+} from '~/types/regent-tracking/tracked-vehicles';
 import type { FilterTimelines } from '~/types/regent-tracking/device-history';
 import {
 	type RiskLevel,
@@ -69,6 +72,80 @@ export default function () {
 				: (filtered.slice(start, start + size.value) as TrackedVehicles[]),
 			totalPages: Math.ceil(filtered.length / size.value) || 1,
 		};
+	});
+
+	const computedAnalytics: ComputedRef<InsuranceTelematicsAnalysis | undefined> = computed(() => {
+		if (computingInsuranceMetrics.value) {
+			return {
+				totalDevices: 0,
+				cummAvgDriverScore: 0,
+				goodDrivers: 0,
+				totalDistance: 0,
+				totalAccidents: 0,
+				driverRiskDitribution: {
+					lowRisk: 0,
+					mediumRisk: 0,
+					highRisk: 0,
+				},
+				accidentsDistribution: {
+					minorAccidents: 0,
+					moderateAccidents: 0,
+					severeAccidents: 0,
+				},
+			};
+		}
+
+		const analytics = getClientDevices.value?.reduce(
+			(acc, v) => ({
+				totalDevices: acc.totalDevices + 1,
+				cummAvgDriverScore: acc.cummAvgDriverScore + (v.driverRiskScore?.averageScore ?? 0),
+				goodDrivers:
+					acc.goodDrivers + (v.driverRiskScore?.averageRiskLevel == 'Low Risk' ? 1 : 0),
+				totalDistance: acc.totalDistance + (v.driverRiskScore?.totalDistanceTraveled ?? 0),
+				totalAccidents: 0,
+				driverRiskDitribution: {
+					lowRisk:
+						acc.driverRiskDitribution.lowRisk +
+						(v.driverRiskScore?.averageRiskLevel == 'Low Risk' ? 1 : 0),
+					mediumRisk:
+						acc.driverRiskDitribution.mediumRisk +
+						(v.driverRiskScore?.averageRiskLevel == 'Medium Risk' ? 1 : 0),
+					highRisk:
+						acc.driverRiskDitribution.highRisk +
+						(v.driverRiskScore?.averageRiskLevel == 'High Risk' ? 1 : 0),
+				},
+				accidentsDistribution: {
+					minorAccidents:
+						acc.accidentsDistribution.minorAccidents +
+						(v.latestAccident?.severity == 'Minor' ? 1 : 0),
+					moderateAccidents:
+						acc.accidentsDistribution.moderateAccidents +
+						(v.latestAccident?.severity == 'Moderate' ? 1 : 0),
+					severeAccidents:
+						acc.accidentsDistribution.severeAccidents +
+						(v.latestAccident?.severity == 'Severe' ? 1 : 0),
+				},
+			}),
+			{
+				totalDevices: 0,
+				cummAvgDriverScore: 0,
+				goodDrivers: 0,
+				totalDistance: 0,
+				totalAccidents: 0,
+				driverRiskDitribution: {
+					lowRisk: 0,
+					mediumRisk: 0,
+					highRisk: 0,
+				},
+				accidentsDistribution: {
+					minorAccidents: 0,
+					moderateAccidents: 0,
+					severeAccidents: 0,
+				},
+			},
+		);
+
+		return analytics;
 	});
 
 	watch(
@@ -216,6 +293,7 @@ export default function () {
 		filterPeriod,
 		getComputingAnalyticsFor,
 		availablePeriodButtons,
+		computedAnalytics,
 		getTotalAnalyticsDone,
 		setRiskLevel,
 		setFilterPeriod,

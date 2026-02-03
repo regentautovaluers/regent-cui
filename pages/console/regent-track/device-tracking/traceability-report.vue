@@ -30,7 +30,8 @@
 		</div>
 
 		<!-- the stats -->
-		<div class="grid h-28 grid-cols-5 gap-5">
+		<div
+			class="tablet:grid-cols-3 laptop:grid-cols-5 laptop:gap-5 grid h-fit grid-cols-2 gap-3">
 			<div
 				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
 				<div class="flex-grow">

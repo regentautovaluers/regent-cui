@@ -53,6 +53,29 @@
 						{{ e.name }}
 					</span>
 				</NuxtLink>
+				<NuxtLink
+					:to="{ name: 'insurance-telematics-analytics' }"
+					class="relative inline-flex items-end space-x-2 disabled:text-gray-500"
+					:disabled="computingInsuranceMetrics">
+					<span
+						:class="[
+							'text-3xl',
+							computingInsuranceMetrics
+								? 'icon-[ph--spinner-light] disabled: animate-spin'
+								: 'icon-[material-symbols-light--stacked-line-chart]',
+							doesRouteNameMatch('insurance-telematics-analytics')
+								? 'text-blue-600'
+								: 'text-gray-500',
+						]"></span>
+					<span
+						:class="[
+							doesRouteNameMatch('insurance-telematics-analytics')
+								? 'font-semibold text-blue-600 after:absolute after:-bottom-[31px] after:left-0 after:h-[5px] after:w-full after:rounded-full after:bg-blue-600'
+								: 'text-gray-500',
+						]">
+						Analytics
+					</span>
+				</NuxtLink>
 			</div>
 		</div>
 		<NuxtPage />
@@ -60,8 +83,8 @@
 </template>
 
 <script setup lang="ts">
-	const loadingReportExport: Ref<boolean> = ref(false);
 	const { doesRouteNameMatch } = useNavigationRoutes();
+	const { computingInsuranceMetrics } = useAnalyzeInsuranceMetrics();
 
 	const routeEntries = [
 		{

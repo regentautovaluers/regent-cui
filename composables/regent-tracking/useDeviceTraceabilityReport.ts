@@ -202,7 +202,7 @@ export function useDeviceTraceabilityReport() {
 							e.device_data.expiration_date,
 						).proper_status,
 					};
-				}),
+				}) as ForReport[],
 			};
 
 			console.log(requestBody.entries[0]);
