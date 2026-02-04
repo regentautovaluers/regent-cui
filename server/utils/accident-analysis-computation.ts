@@ -10,7 +10,6 @@ export async function deriveAccidentAnalysis(h: DeviceHistory): Promise<Accident
 	let analysis: AccidentAnalytics = {
 		deviceId,
 		coords: null,
-		geoCodeLocation: null,
 		time: null,
 		speedBeforeCrash: null,
 		speedUnits: null,
@@ -22,7 +21,7 @@ export async function deriveAccidentAnalysis(h: DeviceHistory): Promise<Accident
 	coreLoop: for (let v of h.items) {
 		// 1. Access the inner Item2 object(s)
 		if (v.items && v.items.length > 0) {
-			_lookupLoop: for (let x = v.items.length - 1; x >= 0; x--) {
+			for (let x = v.items.length - 1; x >= 0; x--) {
 				// Check if the Item2 object and its other_arr exist
 				const other_arr = v.items[x].other_arr;
 				if (other_arr) {
@@ -34,12 +33,7 @@ export async function deriveAccidentAnalysis(h: DeviceHistory): Promise<Accident
 							lat: v.items[x].lat,
 							lng: v.items[x].lng,
 						};
-						/*
-                        TODO: Figure out how to do the geocoding later
-                        analysis.geoCodeLocation = await gecodeLocation(
-							v.items[x].lat,
-							v.items[x].lng,
-						);*/
+
 						analysis.time = v.items[x].device_time as string;
 						analysis.speedBeforeCrash = v.items[x].speed ?? null;
 						analysis.speedUnits = 'Km/h';

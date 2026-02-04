@@ -158,7 +158,7 @@
 								<th
 									scope="col"
 									class="table-headers desktop-4k:table-cell hidden">
-									Impact Time & Loc.
+									Impact Time
 								</th>
 								<th
 									scope="col"
@@ -257,19 +257,7 @@
 									>
 								</td>
 								<td class="tablet:table-cell py-4 ps-3">
-									<p class="inline-flex w-fit items-center space-x-1">
-										<span
-											class="icon-[material-symbols-light--person-2-rounded] text-xl"></span>
-										<span class="text-gray-700">{{
-											v.latestAccident?.geoCodeLocation ?? 'Location N/A'
-										}}</span>
-									</p>
-									<br />
-									<p class="inline-flex w-fit items-center space-x-1">
-										<span
-											class="icon-[material-symbols-light--settings-phone-sharp] text-xl"></span>
-										<span>{{ v.latestAccident?.time ?? 'Time N/A' }}</span>
-									</p>
+									{{ v.latestAccident?.time ?? 'Time N/A' }}
 								</td>
 								<td class="tablet:table-cell hidden space-y-2 py-4">
 									<span

@@ -83,8 +83,9 @@
 </template>
 
 <script setup lang="ts">
+	import { getInsuranceTelematicsTrackingRunning as computingInsuranceMetrics } from '#imports';
+
 	const { doesRouteNameMatch } = useNavigationRoutes();
-	const { computingInsuranceMetrics } = useAnalyzeInsuranceMetrics();
 
 	const routeEntries = [
 		{

@@ -66,9 +66,9 @@
 		<!-- detailed analysis -->
 		<div class="h-fit rounded-lg">
 			<!-- detailed analysis -->
-			<div class="tablet:grid-cols-2 laptop:gap-5 grid grid-cols-1 gap-4">
+			<div class="laptop:grid-cols-2 grid grid-cols-1 gap-4">
 				<!--incident analysis  -->
-				<div class="col-span-2 h-[16.5rem] rounded-lg border-2 p-4 outline-none">
+				<div class="h-[17.5rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 font-semibold text-gray-700">Incident Analysis</h1>
 					<div class="my-3 space-y-2">
 						<div
@@ -114,7 +114,7 @@
 				</div>
 
 				<!--weather report  -->
-				<!-- <div class="h-[16.5rem] rounded-lg border-2 p-4 outline-none">
+				<!-- <div class="h-[17.5rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 font-semibold text-gray-700">Environmental Condition</h1>
 					<div class="my-3 space-y-2">
 						<div
@@ -154,12 +154,8 @@
 				</div> -->
 
 				<!-- incident report  -->
-				<div
-					class="laptop-lg:col-span-2 flex h-[19rem] flex-col rounded-lg border-2 p-4 outline-none">
+				<div class="flex h-[17.5rem] flex-col rounded-lg border-2 p-4 outline-none">
 					<h1 class="font-semibold text-gray-700">Crash Location</h1>
-					<h2 class="mb-2 text-sm text-gray-500">
-						{{ latestAccident?.geoCodeLocation ?? '-' }}
-					</h2>
 					<div class="mb-2 flex-grow space-y-2 rounded-lg outline-none">
 						<GoogleMap
 							ref="mapRef"
@@ -167,7 +163,7 @@
 							:styles="googleMapStyle"
 							style="width: 100%; height: 100%"
 							:map-type-control="false"
-							:zoom="12"
+							:zoom="8"
 							:zoom-control="true"
 							:fullscreen-control="false"
 							:street-view-control="true"
@@ -197,7 +193,7 @@
 										<!-- location -->
 										<h3 class="font-semibold text-gray-700">Location</h3>
 										<p class="text-end text-gray-500">
-											{{ latestAccident?.geoCodeLocation }}
+											-
 										</p>
 
 										<!-- Longitude -->

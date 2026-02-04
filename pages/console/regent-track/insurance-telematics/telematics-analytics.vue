@@ -2,7 +2,7 @@
 	<div class="flex flex-1 flex-col outline-none">
 		<!-- the stats -->
 		<div
-			class="tablet:grid-cols-3 laptop:grid-cols-5 laptop:gap-5 grid h-fit grid-cols-2 gap-3">
+			class="tablet:grid-cols-3 laptop:grid-cols-4 laptop:gap-5 grid h-fit grid-cols-2 gap-3">
 			<div
 				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
 				<div class="flex-grow">
@@ -67,19 +67,6 @@
 					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-blue-300 bg-blue-100">
 					<span
 						class="icon-[material-symbols-light--conversion-path] text-3xl text-blue-600"></span>
-				</button>
-			</div>
-			<div
-				class="flex h-full items-center justify-center rounded-lg border bg-white p-5 shadow-xs outline-none">
-				<div class="flex-grow">
-					<h2 class="text-sm text-gray-500">Accidents</h2>
-					<h1 class="text-lg font-semibold text-gray-700">TODO</h1>
-					<h3 class="text-sm text-gray-500">Of latest Accidents</h3>
-				</div>
-				<button
-					class="inline-flex size-[3.2rem] items-center justify-center rounded-md border border-purple-300 bg-purple-100">
-					<span
-						class="icon-[material-symbols-light--date-range] text-3xl text-purple-600"></span>
 				</button>
 			</div>
 		</div>
