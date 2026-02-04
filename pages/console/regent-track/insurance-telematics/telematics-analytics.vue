@@ -184,7 +184,7 @@
 						<div>
 							<h1 class="font-semibold text-green-800">Minor Accidents</h1>
 							<h2 class="text-sm text-green-800">
-								Vehicles in this category expereinced an impact force between 2G and
+								Vehicles in this category experienced an impact force between 2G and
 								4G
 							</h2>
 						</div>
@@ -199,11 +199,11 @@
 					class="mt-5 flex h-16 items-center justify-between rounded-lg border border-yellow-200 bg-yellow-100 px-5 outline-none">
 					<div class="flex h-full items-center space-x-2">
 						<span
-							class="icon-[material-symbols-light--nest-clock-farsight-analog] text-4xl text-yellow-500"></span>
+							class="icon-[material-symbols-light--warning-outline] text-4xl text-yellow-500"></span>
 						<div>
 							<h1 class="font-semibold text-yellow-800">Moderate Accidents</h1>
 							<h2 class="text-sm text-yellow-800">
-								Vehicles in this category expereinced an impact force between 4G and
+								Vehicles in this category experienced an impact force between 4G and
 								8G
 							</h2>
 						</div>
@@ -218,11 +218,11 @@
 					class="mt-5 flex h-16 items-center justify-between rounded-lg border border-red-200 bg-red-100 px-5 outline-none">
 					<div class="flex h-full items-center space-x-2">
 						<span
-							class="icon-[material-symbols-light--nest-clock-farsight-analog] text-4xl text-red-500"></span>
+							class="icon-[material-symbols-light--warning-outline] text-4xl text-red-500"></span>
 						<div>
 							<h1 class="font-semibold text-red-800">Severe Accidents</h1>
 							<h2 class="text-sm text-red-800">
-								Vehicles in this category expereinced an impact force greater than
+								Vehicles in this category experienced an impact force greater than
 								8G
 							</h2>
 						</div>
