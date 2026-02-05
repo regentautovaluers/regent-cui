@@ -4,7 +4,6 @@ import type {
 } from '~/types/ava-roadside-assistance/ava-fleets';
 
 export const useFleets = () => {
-	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
 	const { post } = useStandardizedApi();
 	const fleetName: Ref<string> = ref('');
@@ -26,7 +25,9 @@ export const useFleets = () => {
 		refresh: refeshFleets,
 	} = useApiData<AvaMembershipFleets[], AvaMembershipFleets[]>(
 		'ava-membership-fleets',
-		computed(() => `/api/roadside-assistance/fleets/${getPrincipal.value?.corpId}`),
+		computed(
+			() => `/api/roadside-assistance/fleets/${getPrincipal()?.corpOrganization.corpId}`,
+		),
 		{
 			method: 'GET',
 			server: false,
@@ -49,12 +50,12 @@ export const useFleets = () => {
 		createFleetLoading.value = true;
 		try {
 			const response = await post('/api/roadside-assistance/fleets/create-ava-fleet', {
-				corporate: getPrincipal.value?.corpId,
+				corporate: getPrincipal()?.corpOrganization.corpId,
 				fleetname: fleetName.value,
 				contact_full_name: contactFullName.value,
 				contact_phone_number: contactPhoneNumber.value,
 				contact_email: contactEmail.value,
-				recordedBy: getPrincipal.value?.userId,
+				recordedBy: getPrincipal()?.userId,
 			} as CreateMembershipFleets);
 
 			if (response.success) {

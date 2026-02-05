@@ -1,8 +1,12 @@
 import type { CookieRef } from '#app';
 import crypto from 'crypto-js';
-import { getPrincipal, setPrincipal, cleanPrincipal } from '~/stores/authenticated-principal';
-import type { LoggedInPrincipal } from '~/types';
-
+import { useValuationPrincipalStore } from '~/stores/valuation-principal-store';
+import type {
+	ValuationPrinicpal,
+	CorpClass,
+	LoginResponse,
+} from '~/types/app-security/app-principal-types';
+import type { StandardSuccessResponse } from '~/types/proxy-types';
 const useAuth = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const email: Ref<string> = ref('');
@@ -13,63 +17,59 @@ const useAuth = () => {
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
 	const authToken: CookieRef<string | null | undefined> = useCookie('valuation_auth_token');
-	// const { authToken: trackingAuthToken } = useRegentTrackingAuth();
+	const { getPrincipal, setPrincipal, cleanPrincipal } = useValuationPrincipalStore();
+	const { post } = useStandardizedApi();
 
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
 		return authToken.value;
 	});
 
-	const attemptLogin = async () => {
-		loginAttemptLoading.value = true;
+	async function attemptLogin() {
+		const requestURL = '/api/app-security/login-valuation-principal';
 		try {
-			await $fetch('/api/v1/auth/corporate-account/login', {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'POST',
-				headers: {
-					Accept: '',
-					'Content-Type': '',
-				},
-				body: JSON.stringify({
-					email: email.value,
-					password: password.value,
-				}),
-
-				onResponse({ response }) {
-					switch (response.status) {
-						case 401: {
-							useToast('Invalid Credentials', {
-								type: 'warn',
-							});
-							break;
-						}
-
-						case 200: {
-							useToast('Login Successful', {
-								type: 'success',
-							});
-
-							setPrincipal(response._data.data as LoggedInPrincipal);
-							// set the auth and csrf tokens
-							authToken.value = response._data.data.jwtToken;
-							navigateTo({ name: 'mobivaluer-home' });
-						}
-					}
-				},
+			loginAttemptLoading.value = false;
+			const response = await post<LoginResponse>(requestURL, {
+				email: email.value,
+				password: password.value,
 			});
-		} catch (er) {
-			console.log('Error encountered. Reason: ', er);
-			useToast('Error. Try Again!', {
+
+			if (response.success) {
+				const data: LoginResponse = (response as StandardSuccessResponse<LoginResponse>)
+					.data;
+
+				// set the auth token
+				authToken.value = data.jwtToken;
+
+				const principal: ValuationPrinicpal = {
+					...data,
+					corpOrganization: {
+						broker: data.isBroker,
+						corpName: data.corpName,
+						corpId: data.corpId,
+						corpClass: data.corpType,
+					},
+					accountEnabled: true,
+				};
+				setPrincipal(principal);
+
+				// navigate to console homepage
+				navigateTo({ name: 'mobivaluer-home' });
+			}
+		} catch (ex) {
+			useToast('Failed to login. Try Again!', {
 				type: 'error',
+				title: 'Authentication Error!',
 			});
 		} finally {
 			loginAttemptLoading.value = false;
 		}
-	};
+	}
 
 	const isPrincipalAdmin: ComputedRef<boolean> = computed(() => {
-		if (!getPrincipal.value) return false;
-		if (!getPrincipal.value.roles) return false;
-		return getPrincipal.value.roles.includes('role_corp_admin'.toUpperCase());
+		const principal = getPrincipal();
+
+		if (!principal) return false;
+		return principal.userRoles.includes('ROLE_CORP_ADMIN');
 	});
 
 	const attemptLogout = () => {
@@ -92,7 +92,7 @@ const useAuth = () => {
 	};
 
 	const displayCookieConsent = (): boolean => {
-		if (!authToken.value || !getPrincipal.value) {
+		if (!authToken.value || !getPrincipal()) {
 			return true;
 		}
 
@@ -100,9 +100,17 @@ const useAuth = () => {
 	};
 
 	const isPrincipalBroker: ComputedRef<boolean> = computed(() => {
-		if (!getPrincipal.value) return false;
-		return getPrincipal.value.isBroker ?? false;
+		const principal = getPrincipal();
+
+		if (!principal) return false;
+		return principal.corpOrganization.broker ?? false;
 	});
+
+	function corporateTypeMatches(t: CorpClass): boolean {
+		const principal = getPrincipal();
+		if (!principal) return false;
+		return principal.corpOrganization.corpClass == t;
+	}
 
 	function encryptCorporateClientId(clientId: string) {
 		const ENCRYPTION_KEY = '7x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H+';
@@ -126,6 +134,7 @@ const useAuth = () => {
 		displayCookieConsent,
 		isPrincipalBroker,
 		encryptCorporateClientId,
+		corporateTypeMatches,
 	};
 };
 

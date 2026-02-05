@@ -14,7 +14,7 @@ export default function () {
 	const registerIndividualMemberLoading = ref(false);
 	const memberVehicles: Ref<IndividualMemberVehicle[]> = ref([
 		{
-			corpName: getPrincipal.value?.corpName!,
+			corpName: getPrincipal()?.corpOrganization.corpName!,
 			membershipTypeId: Number(route.query.membershipType_id),
 			registration: '',
 			make: '',
@@ -35,7 +35,7 @@ export default function () {
 
 	function addNewVehicle() {
 		memberVehicles.value.push({
-			corpName: getPrincipal.value?.corpName!,
+			corpName: getPrincipal()?.corpOrganization.corpName!,
 			membershipTypeId: Number(route.query.membershipType_id),
 			registration: '',
 			make: '',
@@ -60,9 +60,9 @@ export default function () {
 				full_name: clientFullName.value,
 				phone_number: clientPhoneNumber.value,
 				userEmail: clientEmail.value,
-				corporateId: getPrincipal.value?.corpId,
+				corporateId: getPrincipal()?.corpOrganization.corpId,
 				category: 'individual',
-				recordedBy: getPrincipal.value?.userId,
+				recordedBy: getPrincipal()?.userId,
 				vehicles: memberVehicles.value,
 			} as IndividualMemberRegistrationRequest);
 

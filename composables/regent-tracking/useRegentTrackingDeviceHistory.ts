@@ -22,7 +22,6 @@ export function useRegentTrackingDeviceHistory() {
 	const fromDate: Ref<string | null> = ref(null);
 	const toDate: Ref<string | null> = ref(null);
 	const { authToken } = useRegentTrackingAuth();
-	const { get } = useStandardizedApi();
 
 	function setPolylineCoords(input: { lat: number; lng: number }[]) {
 		polylineCoords.value = input;
