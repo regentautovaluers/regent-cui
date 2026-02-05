@@ -14,11 +14,11 @@ export function useFraudDetection() {
 		make: null,
 		model: null,
 		yearOfManufacture: 0,
-		corporateClientId: getPrincipal.value?.corpId,
-		corporateClientName: getPrincipal.value?.corpName,
-		corpClientRepName: getPrincipal.value?.username,
-		corpClientEmail: getPrincipal.value?.email,
-		corpClientPhoneNumber: getPrincipal.value?.phonenumber,
+		corporateClientId: getPrincipal()?.corpOrganization.corpId,
+		corporateClientName: getPrincipal()?.corpOrganization.corpName,
+		corpClientRepName: getPrincipal()?.username,
+		corpClientEmail: getPrincipal()?.email,
+		corpClientPhoneNumber: getPrincipal()?.phoneNumber,
 		description: null,
 		relevantLinks: [] as string[],
 		dateOfIncident: null,
@@ -103,7 +103,7 @@ export function useFraudDetection() {
 				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 				method: 'DELETE',
 				body: JSON.stringify({
-					corporateClientId: getPrincipal.value?.corpId,
+					corporateClientId: getPrincipal()?.corpOrganization.corpId,
 				}),
 				onResponse({ response }) {
 					if (response.ok) {
@@ -130,7 +130,7 @@ export function useFraudDetection() {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/fraud/getbyclient?corporateClientId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/fraud/getbyclient?corporateClientId=${getPrincipal()?.corpOrganization.corpId}&page=${page.value}&size=${pageSize}`;
 
 			return requestURL;
 		},
@@ -356,11 +356,11 @@ export function useBulkOnboardDefaulters() {
 					method: 'POST',
 					body: JSON.stringify({
 						clientDetails: {
-							corporateClientId: getPrincipal.value?.corpId,
-							corporateClientName: getPrincipal.value?.corpName,
-							corpClientRepName: getPrincipal.value?.username,
-							corpClientEmail: getPrincipal.value?.email,
-							corpClientPhoneNumber: getPrincipal.value?.phonenumber,
+							corporateClientId: getPrincipal()?.corpOrganization.corpId,
+							corporateClientName: getPrincipal()?.corpOrganization.corpName,
+							corpClientRepName: getPrincipal()?.username,
+							corpClientEmail: getPrincipal()?.email,
+							corpClientPhoneNumber: getPrincipal()?.phoneNumber,
 						},
 						vehicleDetails: processedBulkData.value,
 					}),

@@ -38,7 +38,7 @@ export function useRegentTrackingAuth() {
 				} else if (
 					getPrincipal &&
 					['BANK', 'MICRO_FINANCE', 'SACCO'].includes(
-						getPrincipal.value?.corpOrganization.corpClass!,
+						getPrincipal()?.corpOrganization.corpClass!,
 					)
 				) {
 					return navigateTo({ name: 'regent-tracking-home' });

@@ -318,7 +318,7 @@
 	// 		isAuthenticated,
 	// 		(isAuth) => {
 	// 			if (isAuth && user.value) {
-	// 				fetchData(`ERP/General/${getPrincipal.value?.corpId}`);
+	// 				fetchData(`ERP/General/${getPrincipal()?.corpId}`);
 	// 			} else {
 	// 				signIn(config.public.FIREBASE_EMAIL, config.public.FIREBASE_PASSWORD);
 	// 			}

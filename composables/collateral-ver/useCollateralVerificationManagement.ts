@@ -16,7 +16,7 @@ function useCollateralVerificationTokensManagement() {
 	const {
 		status: fetchCollateralVerificationTokensStatus,
 		execute: executeFetchCollateralVerificationTokenStatus,
-	} = useFetch(`/api/v1/client-info/${getPrincipal.value?.corpId}`, {
+	} = useFetch(`/api/v1/client-info/${getPrincipal()?.corpOrganization.corpId}`, {
 		key: 'collateral-verifications-tokens-metadata',
 		baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
 		method: 'GET',
@@ -191,7 +191,7 @@ function useCollateralVerificationInvoiceManagement() {
 		data: collateralVerificationInvoiceList,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/invoices/${getPrincipal.value?.corpId}?page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/invoices/${getPrincipal()?.corpOrganization.corpId}?page=${page.value}&size=${pageSize}`;
 
 			if (startDate.value !== null) {
 				requestURL = requestURL + `&startDate=${startDate.value}`;
@@ -312,7 +312,7 @@ function useCollateralVerificationsHistoryManagement() {
 	const history: ComputedRef<any[]> = computed(() => historyData.value?.history);
 
 	const { status: fetchCollateralVerificationHistoryStatus, data: historyData } = useFetch(
-		`/api/v1/client-history/${getPrincipal.value?.corpId}?page=0&size=5`,
+		`/api/v1/client-history/${getPrincipal()?.corpOrganization.corpId}?page=0&size=5`,
 		{
 			key: 'collateral-verifications-history',
 			baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
