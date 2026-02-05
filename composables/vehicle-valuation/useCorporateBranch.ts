@@ -10,25 +10,28 @@ export const useCorporateBranch = () => {
 		status: fetchStatus,
 		error: fetchError,
 		refresh: refreshBranches,
-	} = useFetch(`/api/v1/corporate-branch/get-all?corpId=${getPrincipal.value?.corpId}`, {
-		key: 'corp-branches',
-		baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-		method: 'GET',
-		headers: {
-			Accept: '',
+	} = useFetch(
+		`/api/v1/corporate-branch/get-all?corpId=${getPrincipal()?.corpOrganization.corpId}`,
+		{
+			key: 'corp-branches',
+			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
+			method: 'GET',
+			headers: {
+				Accept: '',
+			},
+			query: {
+				corpId: getPrincipal()?.corpOrganization.corpId,
+			},
+			server: false,
+			lazy: true,
+			transform(data: any) {
+				return data.data;
+			},
+			getCachedData(key) {
+				return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+			},
 		},
-		query: {
-			corpId: getPrincipal.value?.corpId,
-		},
-		server: false,
-		lazy: true,
-		transform(data: any) {
-			return data.data;
-		},
-		getCachedData(key) {
-			return nuxtApp.payload.data[key] || nuxtApp.static.data[key];
-		},
-	}) as any;
+	) as any;
 
 	const reloadCorporateBranches = async () => {
 		refreshBranches();
@@ -47,7 +50,7 @@ export const useCorporateBranch = () => {
 				body: JSON.stringify({
 					branchName: branchName,
 					branchLocation: branchLocation,
-					corpId: getPrincipal.value?.corpId,
+					corpId: getPrincipal()?.corpOrganization.corpId,
 				}),
 				onResponse({ response }) {
 					if (response.ok) {

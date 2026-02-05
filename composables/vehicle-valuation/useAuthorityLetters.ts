@@ -67,7 +67,7 @@ const useAuthorityLetters = () => {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal()?.corpOrganization.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&searchTerm=${searchRegNo.value}`;
@@ -87,10 +87,13 @@ const useAuthorityLetters = () => {
 
 			// for finance valuation
 			if (
-				['BANK', 'SACCO', 'MICRO_FINANCE'].includes(getPrincipal.value?.corpType as string)
+				['BANK', 'SACCO', 'MICRO_FINANCE'].includes(
+					getPrincipal()?.corpOrganization.corpClass as string,
+				)
 			) {
-				if (!isPrincipalAdmin && getPrincipal.value?.corpId) {
-					requestURL = requestURL + `&corpBranchId=${getPrincipal.value?.corpId}`;
+				if (!isPrincipalAdmin && getPrincipal()?.corpOrganization.corpId) {
+					requestURL =
+						requestURL + `&corpBranchId=${getPrincipal()?.corpOrganization.corpId}`;
 				}
 			}
 
@@ -173,7 +176,7 @@ const useAuthorityLetters = () => {
 			formData.append('regNo', registrationNumber.value);
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
-			formData.append('authorizedBy', getPrincipal.value?.userId as string);
+			formData.append('authorizedBy', getPrincipal()?.userId as string);
 
 			if (preferredBranch.value.length > 0) {
 				formData.append('regentBranch', preferredBranch.value);
@@ -276,7 +279,7 @@ const useAuthorityLetters = () => {
 				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 				method: 'GET',
 				query: {
-					corpId: getPrincipal.value?.corpId,
+					corpId: getPrincipal()?.corpOrganization.corpId,
 					startDate: startDate,
 					endDate: endDate,
 				},
@@ -297,7 +300,7 @@ const useAuthorityLetters = () => {
 						link.href = url;
 						link.setAttribute(
 							'download',
-							`authority-letters-${getPrincipal.value?.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
+							`authority-letters-${getPrincipal()?.corpOrganization.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
 						);
 						document.body.appendChild(link);
 						link.click();

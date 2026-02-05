@@ -55,11 +55,11 @@ export default function () {
 
 				/** 2. Data Transformation Logic **/
 				processedFleetData.value.push({
-					corpName: getPrincipal.value?.corpName!,
+					corpName: getPrincipal()?.corpOrganization.corpName!,
 					full_name: stringToSentenceCase(item[0]),
 					phone_number: `254${item[1]}`,
 					userEmail: item[2],
-					corporateId: getPrincipal.value?.corpId!,
+					corporateId: getPrincipal()?.corpOrganization.corpId!,
 					membershipTypeId: Number(route.query.membershipType_id),
 					available_free_distance: route.query.freeDistance,
 					registration: item[3],
@@ -70,7 +70,7 @@ export default function () {
 					color: 'N/A',
 					payment_status: 'paid',
 					membership_status: 'active',
-					recordedBy: getPrincipal.value?.userId!,
+					recordedBy: getPrincipal()?.userId!,
 					category: 'corporate',
 					fleetId: selectedFleetId.value,
 				});

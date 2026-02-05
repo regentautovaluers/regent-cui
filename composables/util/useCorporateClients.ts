@@ -29,13 +29,11 @@ export default function useCorporateClient() {
 				// Check if the API call was successful
 				if (response.success) {
 					// The response.data is correctly typed as TrackedVehicles[] here.
-					return (response as StandardSuccessResponse<CorporateClient[]>).data;
+					return response.data;
 				}
 
 				// If it failed, throw the error
-				throw new Error(
-					(response as StandardErrorResponse).metadata.message || 'Unknown error',
-				);
+				throw new Error(response.metadata.message || 'Unknown error');
 			},
 			onResponse({ response }) {
 				setCorporateClients(response._data.data as CorporateClient[]);

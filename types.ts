@@ -12,28 +12,6 @@ export interface CoreRoute extends NavigationRoute {
 	childRoutes?: NavigationRoute[];
 }
 
-export type LoggedInPrincipal = {
-	userId: string;
-	username: string;
-	email: string;
-	phonenumber: string;
-	roles: string[];
-	corpId: string;
-	branchId: string;
-	corpName: string;
-	roleInOrganization: string;
-	isBroker: boolean;
-	corpType:
-		| 'BANK'
-		| 'MICRO_FINANCE'
-		| 'SACCO'
-		| 'INSURANCE'
-		| 'COURT'
-		| 'GOVT_INST'
-		| 'OTHERS'
-		| null;
-};
-
 export interface LocationCoords {
 	lat: number;
 	lng: number;

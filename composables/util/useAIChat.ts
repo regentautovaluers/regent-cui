@@ -55,7 +55,7 @@ export default function (reportId: string) {
 					report_url,
 					booking_id,
 					report_type,
-					user_id: getPrincipal.value?.userId,
+					user_id: getPrincipal()?.userId,
 				});
 
 				if (response.success) {

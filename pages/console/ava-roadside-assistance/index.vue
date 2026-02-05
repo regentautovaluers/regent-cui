@@ -7,7 +7,7 @@
 				<div class="mobile-lg:text-sm h-full flex-col overflow-hidden text-xs md:flex">
 					<h1 class="inline-flex items-center space-x-3">
 						<span class="font-semibold text-blue-600"
-							>Hi, {{ getPrincipal?.username }}</span
+							>Hi, {{ getPrincipal()?.username }}</span
 						>
 						<HandshakeIcon />
 					</h1>

@@ -33,11 +33,11 @@
 						v-show="getSidebarCollapsedState">
 						<h1
 							class="overflow-clip text-sm text-ellipsis whitespace-nowrap text-gray-500">
-							{{ getPrincipal?.username }}
+							{{ getPrincipal()?.username }}
 						</h1>
 						<h2
 							class="overflow-clip text-xs font-semibold text-ellipsis whitespace-nowrap text-gray-500">
-							{{ getPrincipal?.corpName }}
+							{{ getPrincipal()?.corpOrganization.corpName }}
 						</h2>
 					</div>
 				</div>
@@ -318,7 +318,7 @@
 	// 		isAuthenticated,
 	// 		(isAuth) => {
 	// 			if (isAuth && user.value) {
-	// 				fetchData(`ERP/General/${getPrincipal.value?.corpId}`);
+	// 				fetchData(`ERP/General/${getPrincipal()?.corpId}`);
 	// 			} else {
 	// 				signIn(config.public.FIREBASE_EMAIL, config.public.FIREBASE_PASSWORD);
 	// 			}
