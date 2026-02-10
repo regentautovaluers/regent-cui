@@ -1,5 +1,15 @@
 <template>
-	<main class="laptop:grid-cols-[60%_40%] relative grid h-screen grid-cols-1">
+	<!-- pending state -->
+	<main
+		class="flex h-screen flex-col items-center justify-center"
+		v-if="vpStore.loadPrincipalLoading">
+		<span class="icon-[svg-spinners--blocks-shuffle-3] size-20 text-blue-700"></span>
+		<h2 class="text-gray-500">Processing...</h2>
+	</main>
+
+	<main
+		class="laptop:grid-cols-[60%_40%] relative grid h-screen grid-cols-1"
+		v-else>
 		<section class="laptop:block hidden h-full w-full">
 			<!-- Carousel -->
 			<ClientOnly>
@@ -44,6 +54,8 @@
 </template>
 
 <script setup lang="ts">
+	const vpStore = useValuationPrincipalStore();
+
 	const slides: string[] = [
 		'/images/slides/landingpage/1.jpg',
 		'/images/slides/landingpage/2.jpg',

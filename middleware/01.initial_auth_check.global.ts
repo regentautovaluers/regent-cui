@@ -1,5 +1,4 @@
 import type { ValuationPrinicpal } from '~/types/app-security/app-principal-types';
-import { useValuationPrincipalStore } from '~/stores/valuation-principal-store';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export default defineNuxtRouteMiddleware(async (to) => {
@@ -8,8 +7,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	const isAuthenticated = !!authToken.value;
 	const isLoginPage = to.name === 'exterior-home';
 	const { get } = useStandardizedApi();
-	const { getPrincipal, setPrincipal, cleanPrincipal, toggleLoadingValuationPrincipalState } =
-		useValuationPrincipalStore();
+	const vpStore = useValuationPrincipalStore();
 
 	if (to.name == 'external-test-page') {
 		return;
@@ -34,13 +32,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	// Case 3: Has token, needs user data validation/loading
 	if (isAuthenticated) {
 		// If we already have principal data in store, skip fetch
-		if (getPrincipal() != null) {
+		if (vpStore.principal != null) {
 			return;
 		}
 
 		// Block navigation until we verify/fetch user data
 		// Use Nuxt's payload to avoid refetching on hydration
 		try {
+			vpStore.loadPrincipalLoading = true;
 			// Check if we have pending promise from server payload or create new fetch
 			const principalData: ValuationPrinicpal | null | undefined =
 				await nuxtApp.runWithContext(async () => {
@@ -51,21 +50,20 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
 					// Fetch fresh data
 					const endpoint = '/api/app-security/load-valuation-principal';
-					toggleLoadingValuationPrincipalState();
+
 					const response = await get<ValuationPrinicpal>(endpoint);
+
 					if (response.success) {
 						const data = (response as StandardSuccessResponse<ValuationPrinicpal>).data;
 						return data;
 					}
-
-					toggleLoadingValuationPrincipalState();
 				});
 
 			if (!principalData?.userId) {
 				throw new Error('Invalid principal details!');
 			}
 
-			setPrincipal(principalData);
+			vpStore.setPrincipal(principalData);
 			// Also cache in payload for potential reuse
 			if (nuxtApp.isHydrating) {
 				nuxtApp.payload.data = nuxtApp.payload.data || {};
@@ -75,7 +73,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 			console.error('Auth verification failed:', ex);
 			// Clear invalid token
 			authToken.value = null;
-			cleanPrincipal();
+			vpStore.cleanPrincipal();
 
 			// Force navigation to login, but use external navigation if hydration is problematic
 			if (to.name !== 'exterior-home') {
@@ -87,6 +85,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
 				return navigateTo({ name: 'exterior-home' }, { replace: true });
 			}
+		} finally {
+			vpStore.loadPrincipalLoading = false;
 		}
 	}
 });

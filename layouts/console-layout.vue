@@ -1,9 +1,19 @@
 <template>
-	<main class="hide-scrollbar flex min-h-screen flex-col overflow-y-scroll">
+	<!-- pending state -->
+	<main
+		class="flex h-screen flex-col items-center justify-center"
+		v-if="vpStore.loadPrincipalLoading">
+		<span class="icon-[svg-spinners--blocks-shuffle-3] size-20 text-blue-700"></span>
+		<h2 class="text-gray-500">Processing...</h2>
+	</main>
+
+	<main
+		class="hide-scrollbar flex min-h-screen flex-col overflow-y-scroll"
+		v-else>
 		<!-- button to open/close sidebar -->
 		<button
 			:class="[
-				'fixed top-1/2 z-30 inline-flex size-7 translate-y-1/2 cursor-pointer items-center justify-center rounded-lg border bg-gray-100 shadow-sm',
+				'fixed top-1/2 z-30 inline-flex size-7 translate-y-1/2 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white',
 				!getSidebarCollapsedState ? 'laptop-lg:left-[50px] left-[10px]' : 'left-[235px]',
 			]"
 			@click="toggleSidebarCollapsedState()">
@@ -275,7 +285,7 @@
 </template>
 <script setup lang="ts">
 	const { navigationRoutes, doesRouteNameMatch, fuzzyRouteNameMatch } = useNavigationRoutes();
-
+	const vpStore = useValuationPrincipalStore();
 	const { public: publicConfigs } = useRuntimeConfig();
 	const { attemptLogout } = useAuth();
 	const userInput: Ref<string> = ref('');

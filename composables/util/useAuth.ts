@@ -1,6 +1,5 @@
 import type { CookieRef } from '#app';
 import crypto from 'crypto-js';
-import { useValuationPrincipalStore } from '~/stores/valuation-principal-store';
 import type {
 	ValuationPrinicpal,
 	CorpClass,
@@ -8,7 +7,6 @@ import type {
 } from '~/types/app-security/app-principal-types';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 const useAuth = () => {
-	const runtimeConfig = useRuntimeConfig();
 	const email: Ref<string> = ref('');
 	const password: Ref<string> = ref('');
 	const corpOrBrokerSearchTerm: Ref<string> = ref('');
@@ -17,17 +15,22 @@ const useAuth = () => {
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
 	const authToken: CookieRef<string | null | undefined> = useCookie('valuation_auth_token');
-	const { getPrincipal, setPrincipal, cleanPrincipal } = useValuationPrincipalStore();
+	// const { getPrincipal, setPrincipal, cleanPrincipal } = useValuationPrincipalStore();
 	const { post } = useStandardizedApi();
+	const { principal, setPrincipal, cleanPrincipal, isBroker } = useValuationPrincipalStore();
 
 	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
 		return authToken.value;
 	});
 
+	function getPrincipal(): ValuationPrinicpal | null {
+		return principal;
+	}
+
 	async function attemptLogin() {
 		const requestURL = '/api/app-security/login-valuation-principal';
 		try {
-			loginAttemptLoading.value = false;
+			loginAttemptLoading.value = true;
 			const response = await post<LoginResponse>(requestURL, {
 				email: email.value,
 				password: password.value,
@@ -66,8 +69,6 @@ const useAuth = () => {
 	}
 
 	const isPrincipalAdmin: ComputedRef<boolean> = computed(() => {
-		const principal = getPrincipal();
-
 		if (!principal) return false;
 		return principal.userRoles.includes('ROLE_CORP_ADMIN');
 	});
@@ -92,22 +93,16 @@ const useAuth = () => {
 	};
 
 	const displayCookieConsent = (): boolean => {
-		if (!authToken.value || !getPrincipal()) {
+		if (!authToken.value || !principal) {
 			return true;
 		}
 
 		return false;
 	};
 
-	const isPrincipalBroker: ComputedRef<boolean> = computed(() => {
-		const principal = getPrincipal();
-
-		if (!principal) return false;
-		return principal.corpOrganization.broker ?? false;
-	});
+	const isPrincipalBroker: ComputedRef<boolean> = computed(() => isBroker);
 
 	function corporateTypeMatches(t: CorpClass): boolean {
-		const principal = getPrincipal();
 		if (!principal) return false;
 		return principal.corpOrganization.corpClass == t;
 	}

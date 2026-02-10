@@ -1,35 +1,30 @@
 import { defineStore } from 'pinia';
 import type { ValuationPrinicpal } from '~/types/app-security/app-principal-types';
 
-export const useValuationPrincipalStore = defineStore('valuation-principal-store', () => {
-	const principal: Ref<ValuationPrinicpal | null> = ref(null);
-	const isGetValuationPrincipalLoading: Ref<boolean> = ref(false);
+export const useValuationPrincipalStore = defineStore('valuation-principal-store', {
+	state: () => ({
+		principal: null as ValuationPrinicpal | null,
+		loadPrincipalLoading: false as boolean,
+	}),
 
-	function getPrincipal(): ValuationPrinicpal | null {
-		return principal.value;
-	}
+	getters: {
+		isAuthenticated: (state) => !!state.principal,
+		isAdmin: (state) => state.principal?.userRoles.includes('ROLE_CORP_ADMIN') ?? false,
+		isBroker: (state) => state.principal?.corpOrganization.broker ?? false,
+	},
 
-	function setPrincipal(t: ValuationPrinicpal) {
-		principal.value = t;
-	}
+	actions: {
+		setPrincipal(t: ValuationPrinicpal) {
+			this.principal = t;
+		},
+		cleanPrincipal() {
+			this.principal = null;
+		},
 
-	function cleanPrincipal() {
-		principal.value = null;
-	}
-
-	function toggleLoadingValuationPrincipalState() {
-		isGetValuationPrincipalLoading.value = !isGetValuationPrincipalLoading.value;
-	}
-
-	function getLoadingValuationPrincipalState(): boolean {
-		return isGetValuationPrincipalLoading.value;
-	}
-
-	return {
-		getPrincipal,
-		setPrincipal,
-		cleanPrincipal,
-		toggleLoadingValuationPrincipalState,
-		getLoadingValuationPrincipalState,
-	};
+		// toggleLoadingPrincipalState() {
+		// 	console.log('before state toggled: ', this.loadPrincipalLoading);
+		// 	this.loadPrincipalLoading = !this.loadPrincipalLoading;
+		// 	console.log('after state toggled: ', this.loadPrincipalLoading);
+		// },
+	},
 });
