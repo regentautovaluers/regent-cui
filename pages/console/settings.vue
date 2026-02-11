@@ -40,6 +40,26 @@
 						{{ e.name }}
 					</span>
 				</NuxtLink>
+
+				<NuxtLink
+					:to="{ name: '3rd-party-integrations' }"
+					class="relative inline-flex items-end space-x-2">
+					<span
+						:class="[
+							'icon-[material-symbols-light--code-blocks] size-6',
+							doesRouteNameMatch('3rd-party-integrations')
+								? 'text-yellow-600'
+								: 'text-gray-500',
+						]"></span>
+					<span
+						:class="[
+							doesRouteNameMatch('3rd-party-integrations')
+								? 'font-semibold text-yellow-600 after:absolute after:-bottom-[21px] after:left-0 after:h-[5px] after:w-full after:rounded-full after:bg-yellow-600'
+								: 'text-gray-500',
+						]">
+						Valuation Integrations
+					</span>
+				</NuxtLink>
 			</div>
 		</div>
 		<NuxtPage />
@@ -53,7 +73,7 @@
 	});
 
 	const { doesRouteNameMatch } = useNavigationRoutes();
-	const { isPrincipalAdmin, getPrincipal } = useAuth();
+	const { isPrincipalAdmin } = useAuth();
 	const routeEntries = [
 		{
 			to: 'settings-my-account',
