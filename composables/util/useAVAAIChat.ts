@@ -1,5 +1,5 @@
-import type { ChatResponse } from '~/types/ava-ai-chat-types';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
+import type { ExistingSessionSlim, ChatResponse, SessionHistory } from '~/types/ava-ai-chat-types';
 
 export default function () {
 	const sampleQuestions: readonly string[] = [
@@ -9,12 +9,36 @@ export default function () {
 		'Which Toyota car fetches the highest market value?',
 		'Compare the market value of a Toyota versus a Mercedes',
 	];
-	const { getChatMessages, pushChatMessage } = useAVAAiChatStore();
+	const {
+		getChatMessages,
+		pushChatMessage,
+		setExistingSessions,
+		getExistingSessions,
+		ongoingSessionContains,
+	} = useAVAAiChatStore();
 	const { post, get, delete: del } = useStandardizedApi();
 	const { getPrincipal } = useAuth();
 	const awaitingAnswer: Ref<boolean> = ref(false);
 	const userQuery: Ref<string | null> = ref(null);
-	const activeSessionId: Ref<string | null> = ref('sess_7e27f29732a64817b4ebbd030635d694');
+	const activeSessionId: Ref<string | null> = ref(null);
+
+	const { status: fetchChatSessionsStatus, error: fetchChatSessionsError } = useApiData<
+		ExistingSessionSlim[],
+		ExistingSessionSlim[]
+	>(
+		'user-ai-sessions',
+		computed(() => `/api/ava-chat/get-existing-sessions?user_id=${getPrincipal()?.userId}`),
+		{
+			method: 'GET',
+			server: false,
+			onResponse: ({ response }) => {
+				let existingSessions = response._data.data as ExistingSessionSlim[];
+				if (existingSessions.length > 0) {
+					setExistingSessions(existingSessions);
+				}
+			},
+		},
+	);
 
 	async function submitQuestion() {
 		const endpoint = '/api/ava-chat/request-answer';
@@ -58,7 +82,7 @@ export default function () {
 						response_status: 'successful',
 					},
 					{
-						origin: 'user',
+						origin: 'assistant',
 						response: 'Something went wrong. Kindly repeat the question :(',
 						response_status: 'error',
 					},
@@ -79,6 +103,50 @@ export default function () {
 		}
 	}
 
+	async function retrieveSessionChats(session_id: string) {
+		activeSessionId.value = session_id;
+
+		if (!ongoingSessionContains(session_id)) {
+			try {
+				awaitingAnswer.value = true;
+				const response = await get<SessionHistory>(
+					`/api/ava-chat/get-session-messages?session_id=${session_id}`,
+				);
+
+				if (response.success) {
+					const history = (response as StandardSuccessResponse<SessionHistory>).data;
+					if (history.history.length > 0) {
+						const toAdd: ChatResponse[] = history.history.map((e) => {
+							return {
+								origin: e.role,
+								response: e.content,
+								response_status: 'successful',
+							} as ChatResponse;
+						});
+
+						pushChatMessage(session_id, toAdd);
+						return;
+					}
+
+					pushChatMessage(activeSessionId.value as string, [
+						{
+							origin: 'assistant',
+							response: 'Seems like you have no chats! Ask away...',
+							response_status: 'error',
+						},
+					]);
+				}
+			} catch (ex) {
+				useToast('Failed to get chats! Try Again!', {
+					type: 'error',
+					title: 'Chats Error!',
+				});
+			} finally {
+				awaitingAnswer.value = false;
+			}
+		}
+	}
+
 	return {
 		userQuery,
 		awaitingAnswer,
@@ -86,5 +154,7 @@ export default function () {
 		submitQuestion,
 		activeSessionId,
 		getChatMessages,
+		getExistingSessions,
+		retrieveSessionChats,
 	};
 }

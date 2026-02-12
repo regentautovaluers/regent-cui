@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 		} = await readBody(event);
 
 		let response = await makeProxyRequest<ChatResponse>(endpoint, {
-			body: { ...body, is_admin: true },
+			body: { ...body, is_admin: false },
 			method: 'POST',
 			headers: {
 				'x-api-key': config.AI_CHAT_API_KEY,

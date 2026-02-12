@@ -1,10 +1,5 @@
 import { type CorporateClient } from '~/types/corporate-valuations/corporate-clients';
-import { type StandardSuccessResponse, type StandardErrorResponse } from '~/types/proxy-types';
-import {
-	getCorporateClients,
-	setCorporateClients,
-	cleanCorporateClients,
-} from '~/stores/corporate-clients';
+import { getCorporateClients, setCorporateClients } from '~/stores/corporate-clients';
 
 export default function useCorporateClient() {
 	const { getAuthToken, isPrincipalBroker } = useAuth();

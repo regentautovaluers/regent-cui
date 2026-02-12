@@ -19,7 +19,9 @@
 
 			<!-- new chat button -->
 			<button
-				class="colors inline-flex h-[5%] w-full items-center space-x-2 rounded-xl border border-gray-500 bg-gray-50 px-3 transition duration-150 ease-linear hover:bg-gray-100">
+				class="inline-flex h-[5%] w-full items-center space-x-2 rounded-xl border border-gray-500 bg-gray-50 px-3 transition duration-150 ease-linear hover:bg-gray-100"
+				type="button"
+				@click="activeSessionId = null">
 				<span class="icon-[material-symbols-light--chat-add-on-outline] size-6"></span>
 				<span class="font-medium text-gray-700">New Chat</span>
 			</button>
@@ -27,10 +29,25 @@
 			<!-- chat history -->
 			<div class="thin-scrollbar max-h-[calc(100%-(13%))] flex-grow overflow-y-auto">
 				<div
-					class="colors inline-flex h-[5%] w-full items-center space-x-2 transition duration-150 ease-linear">
+					class="inline-flex h-[5%] w-full items-center space-x-2 transition duration-150 ease-linear">
 					<span
 						class="icon-[material-symbols-light--save-clock-outline-sharp] size-6 text-gray-500"></span>
 					<span class="font-medium text-gray-700">Chat History</span>
+				</div>
+				<div class="ml-3 overflow-x-hidden">
+					<button
+						v-for="(e, idx) in getExistingSessions()"
+						:key="idx"
+						:class="[
+							'h-12 w-56 max-w-56 overflow-clip rounded-lg p-1 text-start text-sm text-nowrap text-ellipsis hover:bg-gray-100',
+							activeSessionId == e.session_id
+								? 'bg-gray-300 text-gray-700'
+								: 'text-gray-500',
+						]"
+						type="button"
+						@click="retrieveSessionChats(e.session_id)">
+						{{ e.title }}
+					</button>
 				</div>
 			</div>
 		</aside>
@@ -189,6 +206,8 @@
 		submitQuestion,
 		activeSessionId,
 		getChatMessages,
+		getExistingSessions,
+		retrieveSessionChats,
 	} = useAVAAIChat();
 </script>
 
