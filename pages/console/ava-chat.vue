@@ -3,8 +3,8 @@
 		<!-- nav bar -->
 		<aside
 			:class="[
-				'all flex h-full max-h-full flex-col space-y-3 transition duration-150 ease-linear',
-				sidebarExpanded ? 'w-[13%]' : 'w-[0%] -translate-x-50',
+				'flex h-full max-h-full flex-col space-y-3 transition-all duration-150 ease-linear',
+				sidebarExpanded ? 'laptop:w-[13%] w-52' : 'w-[0%] -translate-x-50',
 			]">
 			<!-- title -->
 			<div class="inline-flex h-[6%] w-full items-center justify-between p-1">
@@ -123,7 +123,7 @@
 			v-else>
 			<div
 				:class="[
-					'flex h-[6%] items-center px-2',
+					'flex h-[6%] min-h-12 items-center px-2',
 					sidebarExpanded ? 'justify-center' : 'justify-between',
 				]">
 				<button
@@ -144,20 +144,20 @@
 
 			<!-- Q & A strip -->
 			<div
-				class="thin-scrollbar flex flex-grow flex-col items-center justify-center space-y-3 overflow-y-auto">
+				class="thin-scrollbar laptop:px-[28rem] flex h-[calc(100%-(6%+10%))] max-h-[calc(100%-(6%+10%))] flex-grow flex-col space-y-2 overflow-y-scroll px-5">
 				<template
 					v-for="(m, idx) in getChatMessages(activeSessionId)"
 					:key="idx">
 					<!-- user question -->
 					<p
-						class="tablet:max-w-[60%] laptop:max-w-[50%] h-fit max-w-[80%] self-end rounded-2xl bg-gray-100 p-3 text-sm text-gray-700 outline-none"
+						class="tablet:max-w-[60%] laptop:max-w-[50%] h-fit max-w-[80%] self-end rounded-2xl bg-gray-200 p-3 text-sm text-gray-700 outline-none"
 						v-if="m.origin == 'user'">
 						{{ m.response }}
 					</p>
 
 					<!-- AI reponse -->
 					<div
-						class="markdown-content w-[80%] self-start text-gray-700"
+						class="markdown-content tablet:max-w-[60%] laptop:max-w-[50%] h-fit max-w-[80%] self-start rounded-2xl p-2 text-sm text-gray-700 outline-none"
 						v-else-if="m.origin == 'assistant'"
 						v-html="renderMarkdown(m.response as string)"></div>
 				</template>
@@ -165,7 +165,7 @@
 
 			<!-- follow up query strip -->
 			<form
-				class="my-2 flex h-fit justify-center"
+				class="my-2 flex h-[10%] justify-center"
 				@submit.prevent="submitQuestion()">
 				<div
 					class="tablet:w-[75%] laptop:w-[55%] laptop-lg:w-[45%] relative size-fit w-[95%]">
@@ -212,582 +212,165 @@
 </script>
 
 <style scoped>
+	/* Base Container */
 	.markdown-content :deep(*) {
 		box-sizing: border-box;
 	}
 
+	.markdown-content {
+		color: #364153;
+		font-family:
+			system-ui,
+			-apple-system,
+			sans-serif;
+		line-height: 1.6;
+	}
+
+	/* Paragraphs */
 	.markdown-content :deep(p) {
-		margin-bottom: 1rem;
+		margin-bottom: 1.25rem;
 		line-height: 1.75;
-		color: #e5e7eb; /* gray-200 */
+		color: #364153;
 	}
 
 	.markdown-content :deep(p:last-child) {
 		margin-bottom: 0;
 	}
 
-	/* Typography Scale - Major Third (1.25) */
-	.markdown-content :deep(h1) {
-		font-size: 2.986rem;
-		font-weight: 800;
-		margin-bottom: 1.5rem;
-		margin-top: 2.5rem;
+	/* Typography Scale */
+	.markdown-content :deep(h1),
+	.markdown-content :deep(h2),
+	.markdown-content :deep(h3),
+	.markdown-content :deep(h4),
+	.markdown-content :deep(h5),
+	.markdown-content :deep(h6) {
+		color: #364153;
+		font-weight: 700;
 		line-height: 1.2;
-		letter-spacing: -0.025em;
-		background: linear-gradient(to right, #f9fafb, #d1d5db);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
 	}
 
-	.markdown-content :deep(h2) {
-		font-size: 2.488rem;
-		font-weight: 700;
-		margin-bottom: 1.25rem;
-		margin-top: 2rem;
-		line-height: 1.3;
-		color: #f3f4f6; /* gray-100 */
-		border-bottom: 1px solid #374151;
+	.markdown-content :deep(h1) {
+		font-size: 2.25rem;
+		border-bottom: 2px solid #e2e8f0;
 		padding-bottom: 0.5rem;
 	}
 
+	.markdown-content :deep(h2) {
+		font-size: 1.875rem;
+		border-bottom: 1px solid #e2e8f0;
+		padding-bottom: 0.3rem;
+	}
+
 	.markdown-content :deep(h3) {
-		font-size: 2.074rem;
-		font-weight: 600;
-		margin-bottom: 1rem;
-		margin-top: 1.75rem;
-		line-height: 1.4;
-		color: #f9fafb; /* gray-50 */
+		font-size: 1.5rem;
 	}
-
 	.markdown-content :deep(h4) {
-		font-size: 1.728rem;
-		font-weight: 600;
-		margin-bottom: 0.875rem;
-		margin-top: 1.5rem;
-		line-height: 1.4;
-		color: #f3f4f6;
-	}
-
-	.markdown-content :deep(h5) {
-		font-size: 1.44rem;
-		font-weight: 600;
-		margin-bottom: 0.75rem;
-		margin-top: 1.25rem;
-		line-height: 1.5;
-		color: #e5e7eb;
-	}
-
-	.markdown-content :deep(h6) {
-		font-size: 1.2rem;
-		font-weight: 600;
-		margin-bottom: 0.75rem;
-		margin-top: 1rem;
-		line-height: 1.5;
-		color: #d1d5db; /* gray-300 */
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-size: 1.25rem;
 	}
 
 	/* Lists */
 	.markdown-content :deep(ul),
 	.markdown-content :deep(ol) {
-		margin-bottom: 1rem;
-		margin-left: 0;
+		margin-bottom: 1.25rem;
 		padding-left: 1.5rem;
-		line-height: 1.75;
-	}
-
-	.markdown-content :deep(ul) {
-		list-style-type: none;
-	}
-
-	.markdown-content :deep(ul) > li {
-		position: relative;
-		padding-left: 0.5rem;
-	}
-
-	.markdown-content :deep(ul) > li::before {
-		content: '•';
-		color: #60a5fa; /* blue-400 */
-		font-weight: bold;
-		position: absolute;
-		left: -1rem;
-	}
-
-	.markdown-content :deep(ul) > li > ul > li::before {
-		content: '◦';
-		color: #34d399; /* emerald-400 */
-	}
-
-	.markdown-content :deep(ul) > li > ul > li > ul > li::before {
-		content: '▪';
-		color: #a78bfa; /* violet-400 */
-	}
-
-	.markdown-content :deep(ol) {
-		list-style-type: decimal;
-	}
-
-	.markdown-content :deep(ol) > li {
-		padding-left: 0.25rem;
-	}
-
-	.markdown-content :deep(ol) > li::marker {
-		color: #60a5fa;
-		font-weight: 600;
 	}
 
 	.markdown-content :deep(li) {
 		margin-bottom: 0.5rem;
 	}
 
-	.markdown-content :deep(li > p) {
-		margin-bottom: 0.5rem;
-	}
-
-	/* Task Lists */
-	.markdown-content :deep(input[type='checkbox']) {
-		appearance: none;
-		width: 1.125rem;
-		height: 1.125rem;
-		border: 2px solid #4b5563;
-		border-radius: 0.25rem;
-		margin-right: 0.5rem;
-		vertical-align: middle;
-		cursor: pointer;
-		position: relative;
-		top: -1px;
-	}
-
-	.markdown-content :deep(input[type='checkbox']:checked) {
-		background-color: #3b82f6;
-		border-color: #3b82f6;
-	}
-
-	.markdown-content :deep(input[type='checkbox']:checked)::after {
-		content: '✓';
-		position: absolute;
-		color: white;
-		font-size: 0.75rem;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-	}
-
-	/* Text Formatting */
-	.markdown-content :deep(strong) {
-		font-weight: 700;
-		color: #ffffff;
-		text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-	}
-
-	.markdown-content :deep(em) {
-		font-style: italic;
-		color: #c4b5fd; /* violet-300 */
-	}
-
-	.markdown-content :deep(strong em),
-	.markdown-content :deep(em strong) {
-		color: #fbbf24; /* amber-400 */
-		font-style: italic;
-	}
-
-	.markdown-content :deep(del) {
-		text-decoration: line-through;
-		color: #6b7280;
-		opacity: 0.7;
-	}
-
-	.markdown-content :deep(mark) {
-		background: linear-gradient(120deg, #fbbf24 0%, #fbbf24 100%);
-		background-repeat: no-repeat;
-		background-size: 100% 40%;
-		background-position: 0 88%;
-		color: #1f2937;
-		padding: 0.125rem 0.25rem;
-		border-radius: 0.125rem;
-		font-weight: 600;
-	}
-
 	/* Links */
 	.markdown-content :deep(a) {
-		color: #60a5fa; /* blue-400 */
-		text-decoration: none;
-		font-weight: 500;
-		position: relative;
-		transition: color 0.2s ease;
-	}
-
-	.markdown-content :deep(a)::after {
-		content: '';
-		position: absolute;
-		width: 100%;
-		height: 2px;
-		bottom: -2px;
-		left: 0;
-		background: linear-gradient(90deg, #60a5fa, #a78bfa);
-		transform: scaleX(0);
-		transform-origin: bottom right;
-		transition: transform 0.3s ease;
+		color: #2563eb; /* A classic blue for visibility */
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		transition: color 0.2s;
 	}
 
 	.markdown-content :deep(a:hover) {
-		color: #93c5fd; /* blue-300 */
-	}
-
-	.markdown-content :deep(a:hover)::after {
-		transform: scaleX(1);
-		transform-origin: bottom left;
-	}
-
-	.markdown-content :deep(a:active) {
-		color: #3b82f6;
-	}
-
-	/* Code */
-	.markdown-content :deep(code) {
-		background-color: rgba(17, 24, 39, 0.8); /* gray-900 */
-		color: #e5e7eb;
-		padding: 0.2rem 0.4rem;
-		border-radius: 0.375rem;
-		font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, Monaco, monospace;
-		font-size: 0.875em;
-		border: 1px solid #374151;
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-	}
-
-	.markdown-content :deep(pre) {
-		background-color: #0f172a; /* slate-900 */
-		border: 1px solid #1e293b;
-		border-radius: 0.75rem;
-		padding: 1.25rem;
-		margin-bottom: 1.5rem;
-		overflow-x: auto;
-		position: relative;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-	}
-
-	.markdown-content :deep(pre code) {
-		background-color: transparent;
-		border: none;
-		padding: 0;
-		font-size: 0.875rem;
-		line-height: 1.7;
-		color: #e2e8f0;
-		display: block;
-	}
-
-	/* Syntax Highlighting Colors */
-	.markdown-content :deep(pre code .keyword) {
-		color: #c678dd;
-	}
-	.markdown-content :deep(pre code .string) {
-		color: #98c379;
-	}
-	.markdown-content :deep(pre code .number) {
-		color: #d19a66;
-	}
-	.markdown-content :deep(pre code .function) {
-		color: #61afef;
-	}
-	.markdown-content :deep(pre code .comment) {
-		color: #5c6370;
-		font-style: italic;
-	}
-	.markdown-content :deep(pre code .operator) {
-		color: #56b6c2;
-	}
-
-	/* Keyboard Keys */
-	.markdown-content :deep(kbd) {
-		background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
-		border: 1px solid #4b5563;
-		border-bottom-color: #1f2937;
-		box-shadow:
-			0 2px 0 #1f2937,
-			0 3px 3px rgba(0, 0, 0, 0.3);
-		color: #f3f4f6;
-		font-family: inherit;
-		font-size: 0.75em;
-		font-weight: 600;
-		padding: 0.25rem 0.5rem;
-		border-radius: 0.375rem;
-		white-space: nowrap;
-		position: relative;
-		top: -1px;
-	}
-
-	.markdown-content :deep(kbd:hover) {
-		transform: translateY(1px);
-		box-shadow:
-			0 1px 0 #1f2937,
-			0 2px 2px rgba(0, 0, 0, 0.3);
+		color: #1d4ed8;
 	}
 
 	/* Blockquotes */
 	.markdown-content :deep(blockquote) {
-		border-left: 4px solid #3b82f6;
+		border-left: 4px solid #cbd5e1;
 		margin: 1.5rem 0;
-		padding: 1rem 1.5rem;
-		background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
-		border-radius: 0 0.5rem 0.5rem 0;
+		padding: 0.5rem 1rem;
+		background-color: #f8fafc;
+		color: #475569;
 		font-style: italic;
-		color: #d1d5db;
 	}
 
-	.markdown-content :deep(blockquote p:last-child) {
-		margin-bottom: 0;
+	/* Code Blocks */
+	.markdown-content :deep(code) {
+		background-color: #f1f5f9;
+		color: #e11d48; /* Contrast color for inline code */
+		padding: 0.2rem 0.4rem;
+		border-radius: 0.25rem;
+		font-family: monospace;
+		font-size: 0.9em;
 	}
 
-	.markdown-content :deep(blockquote cite) {
-		display: block;
-		margin-top: 0.5rem;
-		font-size: 0.875rem;
-		color: #9ca3af;
-		font-style: normal;
+	.markdown-content :deep(pre) {
+		background-color: #1e293b; /* Keeping code blocks dark for syntax highlighting */
+		color: #f8fafc;
+		padding: 1rem;
+		border-radius: 0.5rem;
+		overflow-x: auto;
+		margin-bottom: 1.5rem;
 	}
 
-	.markdown-content :deep(blockquote cite)::before {
-		content: '— ';
+	.markdown-content :deep(pre code) {
+		background-color: transparent;
+		color: inherit;
+		padding: 0;
 	}
 
 	/* Tables */
 	.markdown-content :deep(table) {
 		width: 100%;
+		border-collapse: collapse;
 		margin-bottom: 1.5rem;
-		border-collapse: separate;
-		border-spacing: 0;
-		border-radius: 0.5rem;
-		overflow: hidden;
-		border: 1px solid #374151;
-	}
-
-	.markdown-content :deep(thead) {
-		background-color: #1f2937;
+		font-size: 0.9rem;
 	}
 
 	.markdown-content :deep(th) {
-		padding: 0.75rem 1rem;
+		background-color: #f8fafc;
+		border: 1px solid #e2e8f0;
+		padding: 0.75rem;
 		text-align: left;
 		font-weight: 600;
-		color: #f9fafb;
-		border-bottom: 2px solid #4b5563;
-		font-size: 0.875rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
 	}
 
 	.markdown-content :deep(td) {
-		padding: 0.75rem 1rem;
-		border-bottom: 1px solid #374151;
-		color: #d1d5db;
+		border: 1px solid #e2e8f0;
+		padding: 0.75rem;
 	}
 
-	.markdown-content :deep(tr:last-child td) {
-		border-bottom: none;
-	}
-
-	.markdown-content :deep(tbody tr) {
-		background-color: #111827;
-		transition: background-color 0.2s ease;
-	}
-
-	.markdown-content :deep(tbody tr:nth-child(even)) {
-		background-color: #1f2937;
-	}
-
-	.markdown-content :deep(tbody tr:hover) {
-		background-color: #374151;
+	.markdown-content :deep(tr:nth-child(even)) {
+		background-color: #fcfcfc;
 	}
 
 	/* Horizontal Rule */
 	.markdown-content :deep(hr) {
-		border: none;
-		height: 1px;
-		background: linear-gradient(90deg, transparent, #4b5563, transparent);
+		border: 0;
+		border-top: 1px solid #e2e8f0;
 		margin: 2rem 0;
-		position: relative;
-	}
-
-	.markdown-content :deep(hr)::before {
-		content: '§';
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-		background-color: #1f2937;
-		color: #6b7280;
-		padding: 0 1rem;
-		font-size: 1rem;
 	}
 
 	/* Images */
 	.markdown-content :deep(img) {
 		max-width: 100%;
 		height: auto;
-		border-radius: 0.5rem;
-		margin: 1.5rem 0;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-		border: 1px solid #374151;
+		border-radius: 0.375rem;
+		margin: 1rem 0;
 	}
 
-	.markdown-content :deep(figcaption) {
-		text-align: center;
-		font-size: 0.875rem;
-		color: #9ca3af;
-		margin-top: -1rem;
-		margin-bottom: 1.5rem;
-		font-style: italic;
-	}
-
-	/* Details/Summary (Collapsible sections) */
-	.markdown-content :deep(details) {
-		background-color: #1f2937;
-		border: 1px solid #374151;
-		border-radius: 0.5rem;
-		margin-bottom: 1rem;
-		overflow: hidden;
-	}
-
-	.markdown-content :deep(summary) {
-		padding: 1rem 1.25rem;
-		cursor: pointer;
-		font-weight: 600;
-		color: #f3f4f6;
-		background-color: #111827;
-		user-select: none;
-		transition: background-color 0.2s ease;
-	}
-
-	.markdown-content :deep(summary:hover) {
-		background-color: #1f2937;
-	}
-
-	.markdown-content :deep(details[open] summary) {
-		border-bottom: 1px solid #374151;
-	}
-
-	.markdown-content :deep(details > *) {
-		padding: 1rem 1.25rem;
-	}
-
-	.markdown-content :deep(details > *:not(summary)) {
-		margin: 0;
-	}
-
-	/* Definition Lists */
-	.markdown-content :deep(dl) {
-		margin-bottom: 1rem;
-	}
-
-	.markdown-content :deep(dt) {
-		font-weight: 600;
-		color: #f3f4f6;
-		margin-top: 1rem;
-	}
-
-	.markdown-content :deep(dd) {
-		margin-left: 1.5rem;
-		color: #d1d5db;
-		margin-bottom: 0.5rem;
-	}
-
-	/* Abbreviations */
-	.markdown-content :deep(abbr) {
-		border-bottom: 1px dotted #6b7280;
-		cursor: help;
-		text-decoration: none;
-	}
-
-	/* Subscript and Superscript */
-	.markdown-content :deep(sub),
-	.markdown-content :deep(sup) {
-		font-size: 0.75em;
-		line-height: 0;
-		position: relative;
-		vertical-align: baseline;
-	}
-
-	.markdown-content :deep(sup) {
-		top: -0.5em;
-		color: #fbbf24;
-	}
-
-	.markdown-content :deep(sub) {
-		bottom: -0.25em;
-		color: #60a5fa;
-	}
-
-	/* Selection */
-	.markdown-content :deep(::selection) {
-		background-color: rgba(59, 130, 246, 0.3);
-		color: #ffffff;
-	}
-
-	/* Scrollbar for code blocks */
-	.markdown-content :deep(pre::-webkit-scrollbar) {
-		height: 8px;
-		width: 8px;
-	}
-
-	.markdown-content :deep(pre::-webkit-scrollbar-track) {
-		background: #0f172a;
-	}
-
-	.markdown-content :deep(pre::-webkit-scrollbar-thumb) {
-		background: #4b5563;
-		border-radius: 4px;
-	}
-
-	.markdown-content :deep(pre::-webkit-scrollbar-thumb:hover) {
-		background: #6b7280;
-	}
-
-	/* Footnotes */
-	.markdown-content :deep(sup a) {
-		text-decoration: none;
-		font-size: 0.75em;
-		color: #60a5fa;
-	}
-
-	.markdown-content :deep(.footnotes) {
-		margin-top: 2rem;
-		padding-top: 1rem;
-		border-top: 1px solid #374151;
-		font-size: 0.875rem;
-		color: #9ca3af;
-	}
-
-	/* Alert/Callout boxes (if your markdown parser supports them) */
-	.markdown-content :deep(.alert) {
-		padding: 1rem 1.25rem;
-		border-radius: 0.5rem;
-		margin-bottom: 1rem;
-		border-left: 4px solid;
-	}
-
-	.markdown-content :deep(.alert-info) {
-		background-color: rgba(59, 130, 246, 0.1);
-		border-color: #3b82f6;
-		color: #bfdbfe;
-	}
-
-	.markdown-content :deep(.alert-warning) {
-		background-color: rgba(251, 191, 36, 0.1);
-		border-color: #fbbf24;
-		color: #fde68a;
-	}
-
-	.markdown-content :deep(.alert-danger) {
-		background-color: rgba(239, 68, 68, 0.1);
-		border-color: #ef4444;
-		color: #fecaca;
-	}
-
-	.markdown-content :deep(.alert-success) {
-		background-color: rgba(34, 197, 94, 0.1);
-		border-color: #22c55e;
-		color: #bbf7d0;
+	/* Checkboxes (Task Lists) */
+	.markdown-content :deep(input[type='checkbox']) {
+		margin-right: 0.5rem;
+		accent-color: #364153;
 	}
 </style>
