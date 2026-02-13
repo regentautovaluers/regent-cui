@@ -9,6 +9,7 @@ export default function () {
 		'Which Toyota car fetches the highest market value?',
 		'Compare the market value of a Toyota versus a Mercedes',
 	];
+	const { query } = useRoute();
 	const {
 		getChatMessages,
 		pushChatMessage,
@@ -19,7 +20,7 @@ export default function () {
 	const { post, get, delete: del } = useStandardizedApi();
 	const { getPrincipal } = useAuth();
 	const awaitingAnswer: Ref<boolean> = ref(false);
-	const userQuery: Ref<string | null> = ref(null);
+	const userQuery: Ref<string | null> = ref((query.uq as string) || null);
 	const activeSessionId: Ref<string | null> = ref(null);
 
 	const { status: fetchChatSessionsStatus, error: fetchChatSessionsError } = useApiData<
@@ -31,6 +32,13 @@ export default function () {
 		{
 			method: 'GET',
 			server: false,
+			lazy: true,
+			getCachedData(_key) {
+				const cached = getExistingSessions();
+				if (cached.length > 0) {
+					return cached as ExistingSessionSlim[];
+				}
+			},
 			onResponse: ({ response }) => {
 				let existingSessions = response._data.data as ExistingSessionSlim[];
 				if (existingSessions.length > 0) {
