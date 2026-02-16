@@ -1,72 +1,92 @@
-import { type LoggedInPrincipal } from '~/types';
-import { setPrincipal } from '~/stores/authenticated-principal';
+import type { ValuationPrinicpal } from '~/types/app-security/app-principal-types';
+import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export default defineNuxtRouteMiddleware(async (to) => {
 	const nuxtApp = useNuxtApp();
-	const runtimeConfig = useRuntimeConfig();
+	const authToken = useCookie('valuation_auth_token');
+	const isAuthenticated = !!authToken.value;
+	const isLoginPage = to.name === 'exterior-home';
+	const { get } = useStandardizedApi();
+	const vpStore = useValuationPrincipalStore();
 
 	if (to.name == 'external-test-page') {
 		return;
 	}
 
-	// will run only on initial client load
-	if (import.meta.client && nuxtApp.isHydrating) {
-		const authToken = useCookie('valuation_auth_token');
+	// Only run auth logic on client during initial hydration or navigation
+	if (import.meta.server) {
+		return;
+	}
 
-		// attempting to access console without existing credentials
-		if (!authToken.value && to.name != 'exterior-home') {
-			return navigateTo({ name: 'exterior-home' });
-		}
+	// Case 1: No token, trying to access protected route → redirect to login
+	if (!isAuthenticated && !isLoginPage) {
+		// Use replace to avoid adding history entry for unauthorized access
+		return navigateTo({ name: 'exterior-home' }, { replace: true });
+	}
 
-		// attempting to access login page without existing credentials
-		if (!authToken.value && to.name == 'exterior-home') {
+	// Case 2: No token, already on login page → allow
+	if (!isAuthenticated && isLoginPage) {
+		return;
+	}
+
+	// Case 3: Has token, needs user data validation/loading
+	if (isAuthenticated) {
+		// If we already have principal data in store, skip fetch
+		if (vpStore.principal != null) {
 			return;
 		}
 
-		// attempting to access console with existing credentials
-		if (authToken.value) {
-			//we try to get user details to set in store
-			let principalDetails: LoggedInPrincipal | null = null;
-			try {
-				await $fetch('/api/v1/auth/corporate-account/get-principal-credentials', {
-					baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-					method: 'GET',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-					},
-					onResponse({ response }) {
-						if (response.ok) {
-							const data = response._data.data;
-							principalDetails = {
-								userId: data.userId,
-								username: data.username,
-								email: data.email,
-								phonenumber: data.phoneNumber,
-								roles: data.userRoles,
-								corpId: data.corpOrganization.corpId,
-								branchId: data.branchId,
-								corpName: data.corpOrganization.corpName,
-								roleInOrganization: data.roleInOrganization,
-								isBroker: data.corpOrganization.broker,
-								corpType: data.corpOrganization.corpClass,
-							};
+		// Block navigation until we verify/fetch user data
+		// Use Nuxt's payload to avoid refetching on hydration
+		try {
+			vpStore.loadPrincipalLoading = true;
+			// Check if we have pending promise from server payload or create new fetch
+			const principalData: ValuationPrinicpal | null | undefined =
+				await nuxtApp.runWithContext(async () => {
+					// Try to use cached data from payload first (SSR→CSR handoff)
+					if (nuxtApp.payload.data?.valuationPrincipal) {
+						return nuxtApp.payload.data.valuationPrincipal as ValuationPrinicpal;
+					}
 
-							setPrincipal(principalDetails as unknown as LoggedInPrincipal);
+					// Fetch fresh data
+					const endpoint = '/api/app-security/load-valuation-principal';
 
-							return;
-						} else {
-							throw new Error('Principal data retrieval failed. Try again!');
-						}
-					},
+					const response = await get<ValuationPrinicpal>(endpoint);
+
+					if (response.success) {
+						const data = (response as StandardSuccessResponse<ValuationPrinicpal>).data;
+						return data;
+					}
 				});
-			} catch (_) {
-				// for any error clear storage and move user to login
-				authToken.value = null;
-				return navigateTo({ name: 'exterior-home' });
+
+			if (!principalData?.userId) {
+				throw new Error('Invalid principal details!');
 			}
 
-			return;
+			vpStore.setPrincipal(principalData);
+			// Also cache in payload for potential reuse
+			if (nuxtApp.isHydrating) {
+				nuxtApp.payload.data = nuxtApp.payload.data || {};
+				nuxtApp.payload.data.valuationPrincipal = principalData;
+			}
+		} catch (ex) {
+			console.error('Auth verification failed:', ex);
+			// Clear invalid token
+			authToken.value = null;
+			vpStore.cleanPrincipal();
+
+			// Force navigation to login, but use external navigation if hydration is problematic
+			if (to.name !== 'exterior-home') {
+				// Use window.location for hard redirect during hydration issues
+				if (nuxtApp.isHydrating) {
+					window.location.href = '/';
+					return new Promise(() => {}); // Prevent further execution
+				}
+
+				return navigateTo({ name: 'exterior-home' }, { replace: true });
+			}
+		} finally {
+			vpStore.loadPrincipalLoading = false;
 		}
 	}
 });

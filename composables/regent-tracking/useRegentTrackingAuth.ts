@@ -12,7 +12,7 @@ export function useRegentTrackingAuth() {
 	const password: Ref<string | null> = ref(null);
 	const loginLoading: Ref<boolean> = ref(false);
 	const { post } = useStandardizedApi();
-	const { getPrincipal } = useAuth();
+	const { getPrincipal, corporateTypeMatches } = useAuth();
 
 	async function attemptLogin() {
 		const url = `/api/regent-tracking/client-login`;
@@ -33,11 +33,13 @@ export function useRegentTrackingAuth() {
 				});
 
 				// redirect to the correct page
-				if (getPrincipal && getPrincipal.value?.corpType == 'INSURANCE') {
+				if (corporateTypeMatches('INSURANCE')) {
 					return navigateTo({ name: 'insurance-telematics-all-vehicles' });
 				} else if (
 					getPrincipal &&
-					['BANK', 'MICRO_FINANCE', 'SACCO'].includes(getPrincipal.value?.corpType!)
+					['BANK', 'MICRO_FINANCE', 'SACCO'].includes(
+						getPrincipal()?.corpOrganization.corpClass!,
+					)
 				) {
 					return navigateTo({ name: 'regent-tracking-home' });
 				}

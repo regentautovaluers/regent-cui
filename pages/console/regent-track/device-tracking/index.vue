@@ -197,7 +197,9 @@
 							<h1 class="font-semibold text-gray-600">
 								{{ getTrackedVehicle?.name }}
 							</h1>
-							<h2 class="text-sm text-gray-500">Updated 1 minute ago</h2>
+							<h2 class="text-sm text-gray-500">
+								Last updated at {{ lastUpdateTime }}
+							</h2>
 						</div>
 						<button
 							class="inline-flex size-11 items-center justify-center rounded-lg border-[1px]"
@@ -794,7 +796,7 @@
 		activeDeviceTab,
 		loadingLocation,
 		getTrackedVehicleLocation,
-		authToken,
+		lastUpdateTime,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,

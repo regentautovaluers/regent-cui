@@ -2,6 +2,24 @@ import { type Comments } from '~/types/regent-tracking/trace-report';
 import { type DriverRiskScore } from '../insurance-telematics/driver-behaviour';
 import type { AccidentAnalytics } from '~/types/insurance-telematics/accident-record';
 
+export interface InsuranceTelematicsAnalysis {
+	totalDevices: number;
+	cummAvgDriverScore: number;
+	goodDrivers: number;
+	totalDistance: number;
+	totalAccidents: number;
+	driverRiskDitribution: {
+		lowRisk: number;
+		mediumRisk: number;
+		highRisk: number;
+	};
+	accidentsDistribution: {
+		minorAccidents: number;
+		moderateAccidents: number;
+		severeAccidents: number;
+	};
+}
+
 export interface TrackedVehicles {
 	id: number;
 	alarm: number;
@@ -45,11 +63,17 @@ export interface TrackedVehicles {
 	on_watchlist: boolean;
 
 	// for driver behaviour
-	driverRiskScore?: DriverRiskScore;
+	driverRiskScore?: DriverRiskScore | null;
 
 	// for latest recorded accident
-	latestAccident?: AccidentAnalytics;
+	latestAccident?: AccidentAnalytics | null;
 }
+
+// custom type for reloading vehicles in map view
+export type TrackedVehicleFetchTick = {
+	vehicles: Pick<TrackedVehicles, 'id' | 'lat' | 'lng' | 'time'>[];
+	tick_time: string;
+};
 
 export enum Address {
 	Empty = '-',

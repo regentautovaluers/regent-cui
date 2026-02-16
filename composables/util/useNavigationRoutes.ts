@@ -129,9 +129,9 @@ export default function () {
 			id: 4,
 			screenName: 'Regent Tracking',
 			routeName: bypassRegentTrackingLogin() ? 'regent-tracking-home' : 'regent-track-auth',
-			renderRoute:
-				getPrincipal &&
-				['BANK', 'MICRO_FINANCE', 'SACCO'].includes(getPrincipal.value?.corpType!),
+			renderRoute: ['BANK', 'MICRO_FINANCE', 'SACCO'].includes(
+				getPrincipal()?.corpOrganization.corpClass!,
+			),
 			icon: 'icon-[material-symbols-light--globe-location-pin]',
 			description:
 				'Our vehicle and fleet tracking services ensure that you have real-time visibility over your assets. \
@@ -155,7 +155,7 @@ export default function () {
 			routeName: bypassRegentTrackingLogin()
 				? 'insurance-telematics-all-vehicles'
 				: 'regent-track-auth',
-			renderRoute: getPrincipal && getPrincipal.value?.corpType == 'INSURANCE',
+			renderRoute: getPrincipal()?.corpOrganization.corpClass == 'INSURANCE',
 			description:
 				"Gain instant and reliable insights into driver's behaviour analysis and risk assessment. Our simple \
 				classification algorithm uses various metrics to intricately classify drives into categories depending on various measurable \

@@ -3,7 +3,7 @@
 		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none"
 		@submit.prevent="
 			updateMyAccountDetails(
-				getPrincipal?.userId!,
+				getPrincipal()?.userId!,
 				firstName,
 				lastName,
 				email,
@@ -11,7 +11,7 @@
 				newPassword,
 				roleInOrganization,
 				true,
-				getPrincipal?.branchId!,
+				getPrincipal()?.branchId!,
 			)
 		">
 		<div class="flex flex-col">
@@ -104,12 +104,12 @@
 
 	const { getPrincipal } = useAuth();
 	const { updateMyAccountDetails, updateCorporateAccountLoading } = useUserAccounts();
-	const firstName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[0]!);
-	const lastName: Ref<string> = ref(getPrincipal.value?.username.split(' ')[1]!);
-	const email: Ref<string> = ref(getPrincipal.value?.email!);
-	const phoneNumber: Ref<string> = ref(getPrincipal.value?.phonenumber as string);
+	const firstName: Ref<string> = ref(getPrincipal()?.username.split(' ')[0]!);
+	const lastName: Ref<string> = ref(getPrincipal()?.username.split(' ')[1]!);
+	const email: Ref<string> = ref(getPrincipal()?.email!);
+	const phoneNumber: Ref<string> = ref(getPrincipal()?.phoneNumber as string);
 	const newPassword: Ref<string | null> = ref(null);
-	const roleInOrganization: Ref<string> = ref(getPrincipal.value?.roleInOrganization as string);
+	const roleInOrganization: Ref<string> = ref(getPrincipal()?.roleInOrganization as string);
 
 	watch(phoneNumber, (newNumber) => {
 		if (newNumber)

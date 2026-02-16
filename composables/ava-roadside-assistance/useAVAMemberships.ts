@@ -1,4 +1,4 @@
-import { type IndividuaProcessedMembershipType } from '~/types';
+import type { IndividualMemberVehicle } from '~/types/ava-roadside-assistance/member-registration';
 
 export const useAVAMemberships = () => {
 	const { getPrincipal } = useAuth();
@@ -22,7 +22,7 @@ export const useAVAMemberships = () => {
 		data: fetchedData,
 	} = useFetch(
 		() => {
-			let requestURL = `/api/v1/memberships?corporateId=${getPrincipal.value?.corpId}&page=${currentPage.value}&size=${size}`;
+			let requestURL = `/api/v1/memberships?corporateId=${getPrincipal()?.corpOrganization.corpId}&page=${currentPage.value}&size=${size}`;
 
 			if (searchTerm.value !== '') {
 				requestURL = requestURL + `&searchTerm=${searchTerm.value}`;
@@ -67,10 +67,7 @@ export const useAVAMemberships = () => {
 		},
 	);
 
-	const addMemberVehicles = async (
-		membershipId: number,
-		vehicles: IndividuaProcessedMembershipType[],
-	) => {
+	const addMemberVehicles = async (membershipId: number, vehicles: IndividualMemberVehicle[]) => {
 		addMemberVehicleLoading.value = true;
 
 		try {

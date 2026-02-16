@@ -3,7 +3,7 @@
 		<div
 			class="tablet:w-[95%] laptop:w-[80%] laptop-lg:w-[75%] desktop-4k:w-[70%] relative my-24 w-full text-center">
 			<h1 class="tablet:text-xl text-lg text-gray-500 uppercase">
-				Hello, {{ getPrincipal?.username }}
+				Hello, {{ getPrincipal()?.username }}
 			</h1>
 			<h2
 				class="tablet:text-4xl laptop-lg:text-6xl my-3 bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-center text-2xl font-semibold text-transparent">
@@ -13,23 +13,36 @@
 			<button
 				disabled
 				class="inline-flex items-center space-x-2 rounded-full bg-blue-200/30 px-4 py-1 text-blue-600">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24">
-					<path
-						fill="currentColor"
-						fill-rule="evenodd"
-						d="M3.211 19.7Q3.773 21 5.12 21h13.76q1.348 0 1.909-1.3t-.37-2.367L15.465 11V5h1.668a.92.92 0 0 0 .69-.283A1 1 0 0 0 18.096 4a1 1 0 0 0-.273-.717a.92.92 0 0 0-.69-.283H6.867a.92.92 0 0 0-.69.283A1 1 0 0 0 5.905 4q0 .434.273.717a.92.92 0 0 0 .69.283h1.668v6L3.58 17.333q-.93 1.066-.369 2.367m4.457-4.423h8.664l-2.792-3.544V5h-3.08v6.733z"
-						clip-rule="evenodd" />
-				</svg>
+				<span class="icon-[material-symbols-light--experiment] size-5"></span>
 				<span>Experimental</span>
 			</button>
 			<p class="mt-16 mb-5 text-center text-lg text-gray-500">
 				Hi there! I am AVA, Regent's Smart Virtual Assistant. <br />
 				How can I help you today?
 			</p>
+
+			<!-- follow up query strip -->
+			<form
+				class="my-2 flex h-[10%] justify-center"
+				@submit.prevent="reRoute()">
+				<div
+					class="tablet:w-[75%] laptop:w-[55%] laptop-lg:w-[45%] relative size-fit w-[95%]">
+					<textarea
+						id="comments"
+						class="generic-text-area resize-none rounded-2xl text-base shadow-xs"
+						rows="3"
+						placeholder="Ask me something..."
+						v-model="userQuery"></textarea>
+					<button
+						type="submit"
+						:to="{ name: 'ava-chat', params: { uq: userQuery } }"
+						class="absolute right-3 bottom-3 inline-flex size-10 items-center justify-center rounded-full bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-700"
+						:disabled="!userQuery">
+						<span
+							class="icon-[material-symbols-light--arrow-upward-alt-rounded] size-7"></span>
+					</button>
+				</div>
+			</form>
 
 			<div class="my-10 flex flex-col items-center space-y-5">
 				<button
@@ -290,4 +303,9 @@
 
 	const { navigationRoutes } = useNavigationRoutes();
 	const { getPrincipal } = useAuth();
+	const userQuery: Ref<string | null> = ref(null);
+
+	function reRoute() {
+		navigateTo({ name: 'ava-chat', query: { uq: userQuery.value } });
+	}
 </script>

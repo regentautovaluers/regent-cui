@@ -19,7 +19,7 @@ const useUserAccounts = () => {
 		execute: executeFetchUsers,
 	} = useFetch(
 		computed(() => {
-			let requestURL = `/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/v1/auth/corporate-account/get-accounts?corporateId=${getPrincipal()?.corpOrganization.corpId}&page=${page.value}&size=${pageSize}`;
 			if (searchSlug.value != null) {
 				requestURL = requestURL + `&searchSlug=${searchSlug.value}`;
 			}
@@ -80,7 +80,7 @@ const useUserAccounts = () => {
 					phoneNumber: phoneNumber,
 					password: password,
 					profilePicture: null,
-					corporateId: getPrincipal.value?.corpId,
+					corporateId: getPrincipal()?.corpOrganization.corpId,
 					corpBranchId: corporateBranchId,
 					roleInOrganization: roleInOrganization,
 					userRoles: roles,

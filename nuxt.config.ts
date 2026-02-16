@@ -25,7 +25,7 @@ export default defineNuxtConfig({
 	},
 	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts', '@pinia/nuxt'],
 	pinia: {
-		storesDir: ['stores'],
+		storesDirs: ['stores'],
 	},
 	app: {
 		// layoutTransition: { name: 'layout', mode: 'out-in' },

@@ -55,7 +55,7 @@ export default function (reportId: string) {
 					report_url,
 					booking_id,
 					report_type,
-					user_id: getPrincipal.value?.userId,
+					user_id: getPrincipal()?.userId,
 				});
 
 				if (response.success) {
@@ -175,12 +175,6 @@ export default function (reportId: string) {
 		}
 	}
 
-	function renderMarkdown(mdtext: string) {
-		if (!mdtext) return '';
-		// 'marked.parse' converts the markdown string to HTML
-		return marked.parse(mdtext);
-	}
-
 	function renderSessionAsHidden() {
 		markSessionAsHidden(computedChatSession.value?.sessionId as string, reportId);
 		isChatOpen.value = false;
@@ -197,7 +191,6 @@ export default function (reportId: string) {
 		initializeChat,
 		getChatSession,
 		requestAnswer,
-		renderMarkdown,
 		deleteChat,
 		renderSessionAsHidden,
 	};

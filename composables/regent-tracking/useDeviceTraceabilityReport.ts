@@ -166,7 +166,7 @@ export function useDeviceTraceabilityReport() {
 				onlineVehicles: computedStatistics.value.total_online,
 				expiredVehicles: computedStatistics.value.total_expired,
 				totalVehicles: computedStatistics.value.total_devices,
-				corporateName: getPrincipal.value?.corpName as string,
+				corporateName: getPrincipal()?.corpOrganization.corpName as string,
 				entries: getClientDevices.value?.map((e) => {
 					return {
 						name: e.name,
@@ -202,7 +202,7 @@ export function useDeviceTraceabilityReport() {
 							e.device_data.expiration_date,
 						).proper_status,
 					};
-				}),
+				}) as ForReport[],
 			};
 
 			console.log(requestBody.entries[0]);
@@ -249,6 +249,7 @@ export function useDeviceTraceabilityReport() {
 export function useTraceabilityReportComments() {
 	const newComment: Ref<string | null> = ref(null);
 	const { post } = useStandardizedApi();
+	const { getPrincipal } = useAuth();
 	const addNewCommentLoading: Ref<boolean> = ref(false);
 
 	async function addNewComment(id: number) {
@@ -257,7 +258,7 @@ export function useTraceabilityReportComments() {
 			let response = await post<any>('/api/regent-tracking/add-device-comment', {
 				id,
 				comment: newComment.value,
-				corp_client: getPrincipal?.value?.corpName ?? 'Unknown',
+				corp_client: getPrincipal()?.corpOrganization.corpName ?? 'Unknown',
 			});
 
 			if (response.success) {

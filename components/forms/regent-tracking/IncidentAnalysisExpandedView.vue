@@ -66,9 +66,9 @@
 		<!-- detailed analysis -->
 		<div class="h-fit rounded-lg">
 			<!-- detailed analysis -->
-			<div class="tablet:grid-cols-2 laptop:gap-5 grid grid-cols-1 gap-4">
+			<div class="laptop:grid-cols-2 grid grid-cols-1 gap-4">
 				<!--incident analysis  -->
-				<div class="h-[16.5rem] rounded-lg border-2 p-4 outline-none">
+				<div class="h-[17.5rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 font-semibold text-gray-700">Incident Analysis</h1>
 					<div class="my-3 space-y-2">
 						<div
@@ -82,7 +82,7 @@
 							</div>
 							<span class="text-blue-600">
 								{{
-									`${latestAccident?.speedBeforeCrash} ${latestAccident?.speedUnits}`
+									`${latestAccident?.speedBeforeCrash || '-'} ${latestAccident?.speedUnits || '-'}`
 								}}
 							</span>
 						</div>
@@ -114,7 +114,7 @@
 				</div>
 
 				<!--weather report  -->
-				<div class="h-[16.5rem] rounded-lg border-2 p-4 outline-none">
+				<!-- <div class="h-[17.5rem] rounded-lg border-2 p-4 outline-none">
 					<h1 class="mb-2 font-semibold text-gray-700">Environmental Condition</h1>
 					<div class="my-3 space-y-2">
 						<div
@@ -151,15 +151,11 @@
 							</span>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<!-- incident report  -->
-				<div
-					class="laptop-lg:col-span-2 flex h-[19rem] flex-col rounded-lg border-2 p-4 outline-none">
+				<div class="flex h-[17.5rem] flex-col rounded-lg border-2 p-4 outline-none">
 					<h1 class="font-semibold text-gray-700">Crash Location</h1>
-					<h2 class="mb-2 text-sm text-gray-500">
-						{{ latestAccident?.geoCodeLocation ?? '-' }}
-					</h2>
 					<div class="mb-2 flex-grow space-y-2 rounded-lg outline-none">
 						<GoogleMap
 							ref="mapRef"
@@ -167,7 +163,7 @@
 							:styles="googleMapStyle"
 							style="width: 100%; height: 100%"
 							:map-type-control="false"
-							:zoom="12"
+							:zoom="8"
 							:zoom-control="true"
 							:fullscreen-control="false"
 							:street-view-control="true"
@@ -197,7 +193,7 @@
 										<!-- location -->
 										<h3 class="font-semibold text-gray-700">Location</h3>
 										<p class="text-end text-gray-500">
-											{{ latestAccident?.geoCodeLocation }}
+											-
 										</p>
 
 										<!-- Longitude -->
@@ -211,8 +207,6 @@
 										<p class="text-end text-gray-500">
 											{{ latestAccident?.coords?.lat }}
 										</p>
-
-										
 									</div>
 								</div>
 							</InfoWindow></GoogleMap
@@ -227,6 +221,7 @@
 <script setup lang="ts">
 	import { type AccidentAnalytics } from '~/types/insurance-telematics/accident-record';
 	import { googleMapStyle } from '~/config/ava-google-map-config';
+	import { GoogleMap, InfoWindow } from 'vue3-google-map';
 
 	const { id, regNo, clientPhone, clientName, latestAccident } = defineProps<{
 		id: number;

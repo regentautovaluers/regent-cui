@@ -1,15 +1,22 @@
-import { type TrackedVehicles, type Online } from '~/types/regent-tracking/tracked-vehicles';
+import {
+	type TrackedVehicles,
+	type TrackedVehicleFetchTick,
+	type Online,
+} from '~/types/regent-tracking/tracked-vehicles';
+import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 export type ActiveDeviceTab = 'details' | 'alerts' | 'history';
 
 export function useRegentDeviceTracking() {
-	const today = new Date();
 	const deviceOnlineStatus: Ref<Online | null> = ref(null);
 	const searchString: Ref<string | null> = ref(null);
 	const activeDeviceTab: Ref<ActiveDeviceTab> = ref('details');
 	const { gecodeLocation } = useGoogleMaps();
 	const { authToken } = useRegentTrackingAuth();
 	const loadingLocation: Ref<boolean> = ref(false);
+	const lastUpdateTime: Ref<string> = ref(new Date().toLocaleTimeString());
+	const { name: routeName } = useRoute();
+	let frequecyUpdatesAbortController = new AbortController();
 
 	const {
 		pending: fetchingClientVehicles,
@@ -26,7 +33,18 @@ export function useRegentDeviceTracking() {
 				if (cached) return cached as TrackedVehicles[];
 			},
 			onResponse: ({ response }) => {
-				setClientDevices(response._data.data as TrackedVehicles[]);
+				let expiredDevices = (response._data.data as TrackedVehicles[]).filter((v) =>
+					isDeviceSubscriptionExpired(v),
+				);
+				let activeDevices = (response._data.data as TrackedVehicles[]).filter(
+					(v) => !isDeviceSubscriptionExpired(v),
+				);
+				setClientDevices([...activeDevices, ...expiredDevices]);
+
+				// for the home route we initiate the sse
+				if (routeName == 'regent-tracking-home') {
+					initializeFrequestUpdateSSE();
+				}
 			},
 			onResponseError: (_e) => {
 				useToast('Failed to load vehicles! Try Again', {
@@ -123,6 +141,41 @@ export function useRegentDeviceTracking() {
 		},
 	);
 
+	async function initializeFrequestUpdateSSE() {
+		try {
+			await fetchEventSource('/api/regent-tracking/load-vehicles-sse', {
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' },
+				signal: frequecyUpdatesAbortController.signal,
+				onmessage(msg) {
+					// If the user aborted, this might still fire once; guard against it
+					if (frequecyUpdatesAbortController.signal.aborted) return;
+
+					try {
+						const result: TrackedVehicleFetchTick = JSON.parse(msg.data);
+						result.vehicles.forEach((e) =>
+							setTickedDeviceLocation({
+								deviceId: e.id,
+								newLat: e.lat,
+								newLng: e.lng,
+								time: e.time as Date,
+							}),
+						);
+
+						lastUpdateTime.value = result.tick_time;
+					} catch (e) {
+						console.error('Failed to parse stream segment', e);
+					}
+				},
+			});
+		} catch (error) {
+			useToast('Failed to update vehicles!', {
+				type: 'error',
+				title: 'Next tick failed!',
+			});
+		}
+	}
+
 	function setDeviceOnlineStatus(newStatus: Online | null) {
 		deviceOnlineStatus.value = newStatus;
 	}
@@ -152,6 +205,7 @@ export function useRegentDeviceTracking() {
 		getTrackedVehicleLocation,
 		authToken,
 		getClientDevices,
+		lastUpdateTime,
 		setDeviceOnlineStatus,
 		setActiveDevice,
 		setActiveDeviceTab,

@@ -42,7 +42,7 @@
 		</button>
 
 		<!-- option for bypassing login  -->
-		<template v-if="getPrincipal">
+		<template v-if="getPrincipal()">
 			<div class="inline-flex w-full items-center justify-center">
 				<hr class="my-8 h-0.5 w-full rounded-sm border-0 bg-gray-200" />
 				<div class="absolute bg-white px-4 text-gray-500">
@@ -53,7 +53,7 @@
 			<div class="flex flex-col items-center justify-center space-y-2">
 				<NuxtLink
 					:to="{ name: 'mobivaluer-home' }"
-					class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-blue-700 ring-4 ring-gray-300">
+					class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-blue-700 ring-4 ring-gray-300 transition-colors duration-200 ease-in-out hover:ring-blue-500">
 					<svg
 						class="-left-1 h-10 w-10 text-white"
 						fill="currentColor"
@@ -65,7 +65,9 @@
 							clip-rule="evenodd"></path>
 					</svg>
 				</NuxtLink>
-				<span class="text-sm font-semibold text-gray-500">{{ getPrincipal.username }}</span>
+				<span class="text-sm font-semibold text-gray-500">{{
+					getPrincipal()?.username
+				}}</span>
 			</div>
 		</template>
 	</form>

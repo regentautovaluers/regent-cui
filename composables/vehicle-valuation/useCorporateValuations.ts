@@ -34,7 +34,7 @@ export const useCorporateValuations = () => {
 	} = useApiData<GenericResponse<ValuationBooking[]>, GenericResponse<ValuationBooking[]>>(
 		null,
 		computed(() => {
-			let requestURL = `/api/vehicle-valuation/load-client-valuations?corpId=${getPrincipal.value?.corpId}&page=${page.value}&size=${pageSize}`;
+			let requestURL = `/api/vehicle-valuation/load-client-valuations?corpId=${getPrincipal()?.corpOrganization.corpId}&page=${page.value}&size=${pageSize}`;
 			{
 				if (searchRegNo.value !== '') {
 					requestURL = requestURL + `&regNo=${searchRegNo.value}`;
@@ -72,11 +72,12 @@ export const useCorporateValuations = () => {
 				// for finance valuation
 				if (
 					['BANK', 'SACCO', 'MICRO_FINANCE'].includes(
-						getPrincipal.value?.corpType as string,
+						getPrincipal()?.corpOrganization.corpClass as string,
 					)
 				) {
-					if (!isPrincipalAdmin && getPrincipal.value?.corpId) {
-						requestURL = requestURL + `&corpBranchId=${getPrincipal.value?.corpId}`;
+					if (!isPrincipalAdmin && getPrincipal()?.corpOrganization.corpId) {
+						requestURL =
+							requestURL + `&corpBranchId=${getPrincipal()?.corpOrganization.corpId}`;
 					}
 				}
 			}

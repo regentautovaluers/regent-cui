@@ -5,6 +5,14 @@ export interface VehiclePing {
 	time_recorded: string; // ISO 8601 string, e.g., '2025-09-15 00:06:35'
 }
 
+export type FilterTimelines =
+	| 'today'
+	| 'this-week'
+	| 'last-30-days'
+	| 'last-3-months'
+	| 'last-6-months'
+	| 'custom';
+
 export interface VehicleMovement {
 	// vehicle starts (ignition on)
 	startedAt: string; // time of start ping

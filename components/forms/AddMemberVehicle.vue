@@ -21,7 +21,7 @@
 			</select>
 			<FormSubmissionLoader
 				class="absolute top-[34%] right-6 mr-2 size-5 animate-spin text-gray-500"
-				v-if="fetchmembershipTypesStatus === 'pending'" />
+				v-if="fetchingMembershipTypes" />
 		</div>
 		<div class="mt-2">
 			<!-- this field is hidden. it holds the data for membershipTypeId -->
@@ -191,17 +191,16 @@
 </template>
 
 <script setup lang="ts">
-	import { type IndividuaProcessedMembershipType } from '~/types';
-
+	import type { IndividualMemberVehicle } from '~/types/ava-roadside-assistance/member-registration';
 	const props = defineProps({
 		membershipId: { required: true, type: Number },
 	});
 	const { getPrincipal } = useAuth();
-	const { fetchmembershipTypesStatus, membershipTypes } = useAVAMembershipTypes();
+	const { fetchingMembershipTypes, membershipTypes } = useAVAMembershipTypes();
 	const { addMemberVehicleLoading, addMemberVehicles } = useAVAMemberships();
 
-	const userVehicles: IndividuaProcessedMembershipType = reactive({
-		corpName: getPrincipal.value?.corpName,
+	const userVehicles: IndividualMemberVehicle = reactive({
+		corpName: getPrincipal()?.corpOrganization.corpName!,
 		membershipTypeId: 0,
 		registration: '',
 		make: '',

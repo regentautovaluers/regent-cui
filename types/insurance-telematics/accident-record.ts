@@ -3,7 +3,6 @@ export type AccidentSeverity = 'Minor' | 'Moderate' | 'Severe';
 export interface AccidentAnalytics {
 	deviceId: number;
 	coords: AccidentLocationCoords | null;
-	geoCodeLocation: string | null;
 	time: string | null;
 	speedBeforeCrash: number | null;
 	speedUnits: 'Km/h' | 'Mi/h' | null;
