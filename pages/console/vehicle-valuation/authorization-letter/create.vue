@@ -119,8 +119,8 @@
 				>
 				<textarea
 					id="comments"
-					class="generic-text-area"
-					rows="8"
+					class="generic-text-area resize-none"
+					rows="10"
 					placeholder="Provide optional instructions for this request."
 					v-model="comments"></textarea>
 			</div>

@@ -1,3 +1,5 @@
+import { marked } from 'marked';
+
 export const stringToTitleCase = (sentence: string): string => {
 	const words = sentence.split(' ');
 
@@ -29,4 +31,10 @@ export function generateRandomLengthedString(length: number = 12) {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
+}
+
+export function renderMarkdown(mdtext: string) {
+	if (!mdtext) return '';
+	// 'marked.parse' converts the markdown string to HTML
+	return marked.parse(mdtext);
 }

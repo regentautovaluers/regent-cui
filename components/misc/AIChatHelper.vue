@@ -167,7 +167,6 @@
 		initializeChat,
 		getChatSession,
 		requestAnswer,
-		renderMarkdown,
 		deleteChat,
 		renderSessionAsHidden,
 	} = useAIChat(booking_id);
