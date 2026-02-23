@@ -40,11 +40,11 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		const response = JSON.parse(
-			await makeProxyRequest<string>(requestURL, {
-				method: 'GET',
-			}),
-		);
+		const res = await makeProxyRequest<string>(requestURL, {
+			method: 'GET',
+		});
+		const res_1 = '[{' + res.split('[{')[1];
+		const response = JSON.parse(res_1);
 		const cleanedAndMapped: CleanedRearangedAndMapped = {
 			paginationData: response[0] as PaginationData,
 			valuationData: (response.toSpliced(0, 1) as ValuationData[]).map((v) => {
