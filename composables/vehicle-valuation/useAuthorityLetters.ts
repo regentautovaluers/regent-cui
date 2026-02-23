@@ -1,6 +1,7 @@
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal, isPrincipalAdmin } = useAuth();
+	const { post } = useStandardizedApi();
 	const consentProvided: Ref<boolean> = ref(false);
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
@@ -21,14 +22,14 @@ const useAuthorityLetters = () => {
 		searchPhrase,
 		shouldTriggerFetch,
 	} = useCorporateClients();
-	const { isPrincipalBroker } = useAuth();
-
-	// for changing state of uploaded documents
-	const logbookUploaded: Ref<boolean> = ref(false);
-	const kraPinUploaded: Ref<boolean> = ref(false);
-	const natIdUploaded: Ref<boolean> = ref(false);
-	const certUploaded: Ref<boolean> = ref(false);
-	const letterUploaded: Ref<boolean> = ref(false);
+	const allowedFiles: readonly string[] = [
+		'Certificate of Incorporation',
+		'KRA PIN',
+		'National ID',
+		'Logbook',
+		'Authority Letter',
+	];
+	const config = useRuntimeConfig();
 
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
@@ -143,7 +144,8 @@ const useAuthorityLetters = () => {
 		},
 	);
 
-	const handleFileUpload = (file: File, prependString: string) => {
+	function handleFileUpload(e: Event, prependString: string) {
+		const file = (e.target as HTMLInputElement)?.files?.[0] as File;
 		if (file) {
 			const ext = file.name.split('.').pop();
 			const renamedFile = `${prependString}-${file.name.replace(`.${ext}`, '')}.${ext}`;
@@ -154,77 +156,24 @@ const useAuthorityLetters = () => {
 				blob: renamedFileBlob,
 			});
 		}
-	};
+	}
 
-	const createAuthorizationLetter = async () => {
-		// if the logged in user is a broker and they have not
-		// filled the agencyOrCorpName show a warning toast and exit
-		// the function
-		if (isPrincipalBroker.value && agencyOrCorpId.value) {
-			useToast('Missing. Select one by clicking from options!', {
-				type: 'warn',
-				title: 'Missing Data!',
-			});
-
-			return;
-		}
-
+	async function createAuthorizationLetter() {
+		// trigger loading state
 		createAuthorizationLetterLoading.value = true;
+		const formData = prepareFormData();
+
 		try {
-			// create the form data
-			const formData = new FormData();
-			formData.append('regNo', registrationNumber.value);
-			formData.append('clientName', clientName.value);
-			formData.append('clientPhone', clientPhone.value);
-			formData.append('authorizedBy', getPrincipal()?.userId as string);
-
-			if (preferredBranch.value.length > 0) {
-				formData.append('regentBranch', preferredBranch.value);
+			const response = await post<any>(
+				`${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`,
+				formData,
+			);
+			if (response.success) {
+				useToast(`Request for ${registrationNumber.value} submitted!`, {
+					type: 'success',
+					title: 'Success!',
+				});
 			}
-
-			if (policyNumber.value.length > 0) {
-				formData.append('policyNumber', policyNumber.value);
-			}
-
-			if (comments.value.length > 0) {
-				formData.append('comments', comments.value);
-			}
-
-			// handle appending the files
-			if (uploadedDocuments.value.length > 0) {
-				for (const file of uploadedDocuments.value) {
-					formData.append('files', file.blob);
-				}
-			}
-
-			if (agencyOrCorpId.value) {
-				formData.append('agencyName', agencyOrCorpId.value);
-			}
-
-			await $fetch('/api/v1/authority-letter/corp/create-authority-letter', {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'POST',
-				body: formData,
-				onResponse({ response }) {
-					if (response.ok) {
-						useToast('Letter created successfully!', {
-							type: 'success',
-						});
-
-						// clear the fields
-						registrationNumber.value = '';
-						clientName.value = '';
-						clientPhone.value = '';
-						preferredBranch.value = '';
-						policyNumber.value = '';
-						comments.value = '';
-						uploadedDocuments.value = [];
-						consentProvided.value = false;
-						agencyOrCorpName.value = '';
-						agencyOrCorpId.value = '';
-					}
-				},
-			});
 		} catch (err) {
 			console.log('Failed to create authorization letter', err);
 			useToast('Failed. Try Again!', {
@@ -233,7 +182,41 @@ const useAuthorityLetters = () => {
 		} finally {
 			createAuthorizationLetterLoading.value = false;
 		}
-	};
+	}
+
+	function prepareFormData(): FormData {
+		// create the form data
+		const formData = new FormData();
+		formData.append('regNo', registrationNumber.value);
+		formData.append('clientName', clientName.value);
+		formData.append('clientPhone', clientPhone.value);
+		formData.append('authorizedBy', getPrincipal()?.userId as string);
+
+		if (preferredBranch.value.length > 0) {
+			formData.append('regentBranch', preferredBranch.value);
+		}
+
+		if (policyNumber.value.length > 0) {
+			formData.append('policyNumber', policyNumber.value);
+		}
+
+		if (comments.value.length > 0) {
+			formData.append('comments', comments.value);
+		}
+
+		// handle appending the files
+		if (uploadedDocuments.value.length > 0) {
+			for (const file of uploadedDocuments.value) {
+				formData.append('files', file.blob);
+			}
+		}
+
+		if (agencyOrCorpId.value) {
+			formData.append('agencyName', agencyOrCorpId.value);
+		}
+
+		return formData;
+	}
 
 	const updateAuthorizationLetter = async (
 		regNo: string,
@@ -350,11 +333,6 @@ const useAuthorityLetters = () => {
 		agencyOrCorpId,
 		createAuthorizationLetterLoading,
 		exportAuthorityLettersLoading,
-		logbookUploaded,
-		kraPinUploaded,
-		natIdUploaded,
-		certUploaded,
-		letterUploaded,
 		fetchAuthorityLetterStatus,
 		fetchAuthorityLetterError,
 		authorityLetters,
@@ -365,6 +343,7 @@ const useAuthorityLetters = () => {
 		searchPhrase,
 		consentProvided,
 		updateAuthorizationLetterLoading,
+		allowedFiles,
 		createAuthorizationLetter,
 		handleFileUpload,
 		exportAuthorityLetter,

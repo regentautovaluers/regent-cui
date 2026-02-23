@@ -186,144 +186,38 @@
 						id="authorized-by"
 						class="generic-input"
 						disabled
-						:value="getPrincipal?.username" />
+						:value="getPrincipal()?.username" />
 				</div>
 			</div>
 
 			<!-- documents -->
-			<div
-				class="mt-4 flex w-full max-w-full grid-cols-2 flex-wrap items-center space-y-2 space-x-2">
-				<!-- Certificate of Registration -->
-				<label
-					for="cert-of-registration"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						certUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>Certificate of Incorporation</span>
-					<input
-						id="cert-of-registration"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'Certificate of Registration',
-								);
-								certUploaded = true;
-							}
-						" />
-				</label>
-
-				<!-- kra pin -->
-				<label
-					for="kra-pin"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						kraPinUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>KRA PIN</span>
-					<input
-						id="kra-pin"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'KRA PIN',
-								);
-								kraPinUploaded = true;
-							}
-						" />
-				</label>
-
-				<!-- National ID -->
-				<label
-					for="national-id"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						natIdUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>National ID</span>
-					<input
-						id="national-id"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'National ID',
-								);
-								natIdUploaded = true;
-							}
-						" />
-				</label>
-
-				<label
-					for="vehicle-logbook"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						logbookUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>Vehicle Logbook</span>
-					<input
-						id="vehicle-logbook"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'Logbook',
-								);
-								logbookUploaded = true;
-							}
-						" />
-				</label>
-
-				<!-- Authority Letter -->
-				<label
-					for="authority-letter"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						letterUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>Authority Letter</span>
-					<input
-						id="authority-letter"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'Authority Letter',
-								);
-								letterUploaded = true;
-							}
-						" />
-				</label>
+			<div class="tablet:grid-cols-2 laptop:grid-cols-3 mt-4 grid grid-cols-1 gap-3">
+				<template
+					v-for="(name, idx) in allowedFiles"
+					:key="idx">
+					<div>
+						<label
+							class="text-heading mb-2 block text-sm font-medium text-gray-600"
+							:for="name.toLocaleLowerCase().replaceAll(' ', '-')"
+							>{{ name }}</label
+						>
+						<input
+							:class="[
+								'bg-neutral-secondary-medium border-default-medium text-heading focus:ring-brand focus:border-brand placeholder:text-body block w-full cursor-pointer rounded-xl border text-sm text-gray-500 shadow-xs',
+							]"
+							:id="name.toLocaleLowerCase().replaceAll(' ', '-')"
+							type="file"
+							accept=".jpg, .jpeg, .png, .pdf, .webp"
+							@change="
+								(e) => {
+									handleFileUpload(e, name);
+								}
+							" />
+					</div>
+				</template>
 			</div>
 
-			<!-- Preffered Regent Branch -->
+			<!-- data consent notice -->
 			<div
 				class="mt-4 rounded-lg border border-blue-300 bg-blue-50 p-4 text-blue-800"
 				role="alert">
@@ -370,7 +264,7 @@
 					'generic-form-submit mt-4 w-full md:w-1/3',
 					createAuthorizationLetterLoading && 'skeleton skeleton-animated',
 				]">
-				{{ createAuthorizationLetterLoading ? 'Please Wait...' : 'Submit Request' }}
+				{{ createAuthorizationLetterLoading ? 'Please Wait...' : 'Create Letter' }}
 			</button>
 		</form>
 	</div>
@@ -394,11 +288,7 @@
 		agencyOrCorpName,
 		agencyOrCorpId,
 		createAuthorizationLetterLoading,
-		logbookUploaded,
-		kraPinUploaded,
-		natIdUploaded,
-		certUploaded,
-		letterUploaded,
+		allowedFiles,
 		createAuthorizationLetter,
 		handleFileUpload,
 		computedCorporateClients,
@@ -407,7 +297,6 @@
 		shouldTriggerFetch,
 	} = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
-	const isExportExcelModalOpen: Ref<boolean> = ref(false);
 
 	onMounted(async () => await shouldTriggerFetch());
 </script>
