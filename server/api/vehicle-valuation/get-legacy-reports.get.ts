@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 	let requestURL =
 		query.mode == 'SEARCH'
 			? `${config.LEGACY_VALUATION_BASE_URL}/ava/api/reg-search?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&password=${config.LEGACY_VALUATION_AUTH_PWD}&results_per_page=10&current_page=${query.current_page}`
-			: `${config.LEGACY_VALUATION_BASE_URL}/ava/api/corp-report?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&password=${config.LEGACY_VALUATION_AUTH_PWD}&pwd&results_per_page=10&current_page=${query.current_page}`;
+			: `${config.LEGACY_VALUATION_BASE_URL}/ava/api/corp-report?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&pwd=${config.LEGACY_VALUATION_AUTH_PWD}&results_per_page=10&current_page=${query.current_page}`;
 
 	if (query.corp) {
 		requestURL += `&corp=${query.corp}`;
@@ -53,6 +53,7 @@ export default defineEventHandler(async (event) => {
 				return vb;
 			}),
 		};
+		console.log(JSON.stringify(cleanedAndMapped.valuationData[0], null, 2));
 		return sendSuccessResponse(event, cleanedAndMapped);
 	} catch (err) {
 		console.log(err);
