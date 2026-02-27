@@ -36,46 +36,41 @@
 			class="flex flex-1 flex-col justify-between"
 			v-else>
 			<!-- search & filter controls -->
-			<div class="flex h-fit flex-col space-y-2">
-				<div
-					class="tablet:space-x-0 mt-2 flex h-fit items-center justify-between space-x-2">
-					<form
-						class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
-						@submit.prevent="handleSearchTriggered(searchRegNo)">
-						<input
-							type="text"
-							class="generic-input h-full"
-							placeholder="Search Registration"
-							required
-							v-model="searchRegNo" />
-						<button
-							type="submit"
-							class="generic-search-submit-button">
-							<SearchIcon />
-						</button>
-					</form>
-					<div class="laptop:w-fit w-full space-x-2">
-						<button
-							data-modal-target="search-authority-letters-filter-modal"
-							data-modal-toggle="search-authority-letters-filter-modal"
-							type="button"
-							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
-							@click="setSidebarCollapsedState(false)">
-							<span
-								class="icon-[material-symbols-light--filter-alt-sharp] size-8 text-gray-400"></span>
-							<span class="text-gray-400">Filters</span>
-						</button>
-						<button
-							data-modal-target="export-authority-letters-modal"
-							data-modal-toggle="export-authority-letters-modal"
-							type="button"
-							class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
-							@click="setSidebarCollapsedState(false)">
-							<span
-								class="icon-[material-symbols-light--arrow-downward-rounded] size-8 text-gray-400"></span>
-							<span class="text-gray-400">Export Report</span>
-						</button>
-					</div>
+			<div
+				class="tablet:space-x-0 tablet:flex-row mt-2 flex flex-col justify-between space-y-2">
+				<form
+					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
+					@submit.prevent="handleSearchTriggered(searchRegNo)">
+					<input
+						type="text"
+						class="generic-input h-full"
+						placeholder="Search Registration"
+						required
+						v-model="searchRegNo" />
+					<button
+						type="submit"
+						class="generic-search-submit-button">
+						<SearchIcon />
+					</button>
+				</form>
+				<div class="flex space-x-2">
+					<button
+						data-modal-target="search-authority-letters-filter-modal"
+						data-modal-toggle="search-authority-letters-filter-modal"
+						type="button"
+						class="filter-button text-gray-600"
+						@click="setSidebarCollapsedState(false)">
+						<span class="icon-[material-symbols-light--filter-list] size-7"></span>
+					</button>
+					<button
+						data-modal-target="export-authority-letters-modal"
+						data-modal-toggle="export-authority-letters-modal"
+						type="button"
+						class="filter-button flex-grow text-gray-600"
+						@click="setSidebarCollapsedState(false)">
+						<span class="icon-[material-symbols-light--downloading] size-7 mr-1"></span>
+						<span>Export Report</span>
+					</button>
 				</div>
 			</div>
 
@@ -178,7 +173,7 @@
 									<br />
 									<span class="text-sm">{{ letter.policyNumber ?? 'N/A' }}</span>
 								</td>
-								<td class="mobile-lg:table-cell hidden py-4 w-64">
+								<td class="mobile-lg:table-cell hidden w-64 py-4">
 									<span>{{ letter.clientName }}</span>
 									<br />
 									<span
@@ -189,24 +184,23 @@
 								<td class="tablet:table-cell hidden w-72 py-4 text-wrap">
 									{{ letter.agencyName ?? 'N/A' }}
 								</td>
-								<td class="tablet:table-cell hidden py-4 w-64">
+								<td class="tablet:table-cell hidden w-64 py-4">
 									<span
 										class="w-fit rounded-lg border-[1px] border-yellow-300 bg-yellow-200 px-1 text-sm text-yellow-600"
-										>{{ letter.authorizedBy.username }}</span
+										>{{ letter.authorizedBy?.username ?? 'Name N/A' }}</span
 									>
 									<br />
-									<span>{{ letter.createdOn.split(' ')[0] }}</span>
+									<span>{{ letter.createdOn?.split(' ')[0] ?? 'Date N/A' }}</span>
 								</td>
 								<td
-									class="laptop:table-cell hidden overflow-hidden py-4 text-wrap text-gray-600 w-44">
+									class="laptop:table-cell hidden w-44 overflow-hidden py-4 text-wrap text-gray-600">
 									{{
 										(letter.assessmentStage as string)
 											?.toLowerCase()
 											.replaceAll('_', ' ') ?? 'instructions received'
 									}}
 								</td>
-								<td
-									class="laptop:table-cell hidden py-4 text-sm text-wrap">
+								<td class="laptop:table-cell hidden py-4 text-sm text-wrap">
 									{{ letter.feedback ?? 'N/A' }}
 								</td>
 								<td class="w-20">

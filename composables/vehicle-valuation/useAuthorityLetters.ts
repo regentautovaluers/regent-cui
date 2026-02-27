@@ -1,3 +1,7 @@
+import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
+import type { AuthorityLetter } from '~/types/corporate-valuations/authority-letters';
+import type { StandardSuccessResponse } from '~/types/proxy-types';
+
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal, isPrincipalAdmin } = useAuth();
@@ -13,30 +17,18 @@ const useAuthorityLetters = () => {
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const updateAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const uploadedDocuments: Ref<any[]> = ref([]);
-	const {
-		computedCorporateClients,
-		fetchingCorporateClients,
-		errorFetchingCorporateClients,
-		getCorporateClients,
-		searchPhrase,
-		shouldTriggerFetch,
-	} = useCorporateClients();
+	const { post } = useStandardizedApi();
 	const { isPrincipalBroker } = useAuth();
-
-	// for changing state of uploaded documents
-	const logbookUploaded: Ref<boolean> = ref(false);
-	const kraPinUploaded: Ref<boolean> = ref(false);
-	const natIdUploaded: Ref<boolean> = ref(false);
-	const certUploaded: Ref<boolean> = ref(false);
-	const letterUploaded: Ref<boolean> = ref(false);
 
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const authorityLetters: ComputedRef<any[]> = computed(
-		() => fetchedData.value?.authorityLetters ?? [],
+	const totalPages: ComputedRef<number> = computed(
+		() => fetchedAuthorityLetters.value?.requestExtras?.totalPages || 0,
 	);
-	const totalPages: ComputedRef<number> = computed(() => fetchedData.value?.totalPages);
+	const authorityLetters: ComputedRef<AuthorityLetter[]> = computed(
+		() => fetchedAuthorityLetters.value?.data || [],
+	);
 	const searchRegNo: Ref<string> = ref('');
 	const startDate: Ref<string | null> = ref(null);
 	const endDate: Ref<string | null> = ref(null);
@@ -51,23 +43,15 @@ const useAuthorityLetters = () => {
 		}
 	});
 
-	// hack to sync search phrase here with search phrase in useCorporateClients
-	watch(agencyOrCorpName, (newValue) => {
-		if (newValue == '' || newValue == null) {
-			agencyOrCorpId.value = null;
-			return;
-		}
-		searchPhrase.value = newValue;
-	});
-
 	const {
 		status: fetchAuthorityLetterStatus,
 		error: fetchAuthorityLetterError,
 		execute: executeGetAuthorityLetters,
-		data: fetchedData,
-	} = useFetch(
-		() => {
-			let requestURL = `/api/v1/authority-letter/corp/get-authority-letter?corpId=${getPrincipal()?.corpOrganization.corpId}&page=${page.value}&size=${pageSize}`;
+		data: fetchedAuthorityLetters,
+	} = useApiData<GenericResponse<AuthorityLetter[]>, GenericResponse<AuthorityLetter[]>>(
+		null,
+		computed(() => {
+			let requestURL = `/api/vehicle-valuation/get-authority-letters?corpId=${getPrincipal()?.corpOrganization.corpId}&page=${page.value}&size=${pageSize}`;
 
 			if (searchRegNo.value !== '') {
 				requestURL = requestURL + `&searchTerm=${searchRegNo.value}`;
@@ -98,46 +82,19 @@ const useAuthorityLetters = () => {
 			}
 
 			return requestURL;
-		},
+		}),
 		{
-			key: 'authority-letters',
-			baseURL: runtimeConfig.public.VALUATION_BASE_URL,
 			method: 'GET',
-			headers: {
-				Accept: '',
-			},
 			server: false,
 			lazy: true,
-			transform(response: any) {
-				if (
-					response?.data &&
-					Array.isArray(response.data) &&
-					(response.data as []).length > 0
-				) {
-					return {
-						authorityLetters: response?.data.map((data: any) => ({
-							letterId: data.letterId,
-							registrationNumber: data.registrationNumber,
-							clientName: data.clientName,
-							feedback:
-								data.feedbackTrail.length == 0
-									? null
-									: data.feedbackTrail[data.feedbackTrail.length - 1].feedback,
-							clientPhone: data.clientPhone,
-							policyNumber: data.policyNumber,
-							agencyName: data.agencyName,
-							authorizedBy: {
-								username: data.authorizedBy.username,
-							},
-							createdOn: data.createdOn,
-							assessmentStage: data.assessmentStage,
-							reportURL: data.reportURL,
-							feedbackTrail: data.feedbackTrail,
-							uploadedDocuments: data.uploadedDocuments,
-						})),
-						totalPages: response.requestExtras?.totalPages || 0,
-					};
-				}
+			transform: (d: StandardSuccessResponse<GenericResponse<AuthorityLetter[]>>) => {
+				return d.data;
+			},
+			onResponseError: (_e) => {
+				useToast('Failed to load reports! Try Again', {
+					type: 'error',
+					title: 'Unable to load reports!',
+				});
 			},
 			watch: [page],
 		},
@@ -235,42 +192,36 @@ const useAuthorityLetters = () => {
 		}
 	};
 
-	const updateAuthorizationLetter = async (
+	async function updateAuthorizationLetter(
 		regNo: string,
 		clientName: string,
 		clientPhone: string,
 		letterId: string,
-	) => {
-		updateAuthorizationLetterLoading.value = true;
+	) {
 		try {
-			// create the form data
-			const formData = new FormData();
-			formData.append('regNo', regNo);
-			formData.append('clientName', clientName);
-			formData.append('clientPhone', clientPhone);
-			formData.append('letterId', letterId);
-
-			await $fetch('/api/v1/authority-letter/corp/update-authority-letter', {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'PATCH',
-				body: formData,
-				onResponse({ response }) {
-					if (response.ok) {
-						useToast('Letter updated successfully!', {
-							type: 'success',
-						});
-					}
-				},
+			updateAuthorizationLetterLoading.value = true;
+			const response = await post('/api/vehicle-valuation/update-authority-letter', {
+				reg_no: regNo,
+				client_name: clientName,
+				client_phone: clientPhone,
+				letter_id: letterId,
 			});
+
+			if (response.success) {
+				useToast('Authority Letter updated successfully!', {
+					type: 'success',
+					title: 'Successfull!',
+				});
+			}
 		} catch (err) {
-			console.log('Failed to update authorization letter', err);
-			useToast('Failed. Try Again!', {
+			useToast('Failed To Update Authority Letter!', {
 				type: 'error',
+				title: 'Error!',
 			});
 		} finally {
 			updateAuthorizationLetterLoading.value = false;
 		}
-	};
+	}
 
 	const exportAuthorityLetter = async (startDate: string, endDate: string) => {
 		try {
@@ -350,19 +301,9 @@ const useAuthorityLetters = () => {
 		agencyOrCorpId,
 		createAuthorizationLetterLoading,
 		exportAuthorityLettersLoading,
-		logbookUploaded,
-		kraPinUploaded,
-		natIdUploaded,
-		certUploaded,
-		letterUploaded,
 		fetchAuthorityLetterStatus,
 		fetchAuthorityLetterError,
 		authorityLetters,
-		computedCorporateClients,
-		fetchingCorporateClients,
-		errorFetchingCorporateClients,
-		getCorporateClients,
-		searchPhrase,
 		consentProvided,
 		updateAuthorizationLetterLoading,
 		createAuthorizationLetter,
@@ -370,7 +311,6 @@ const useAuthorityLetters = () => {
 		exportAuthorityLetter,
 		handleSearchTriggered,
 		executeGetAuthorityLetters,
-		shouldTriggerFetch,
 		clearFilters,
 		updateAuthorizationLetter,
 	};

@@ -3,14 +3,15 @@ import type { GenericResponse } from '~/types/corporate-valuations/generic-respo
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
-	const query = getQuery(event);
+	const { valuation_id }: { valuation_id: string } = getQuery(event);
+	const cookies = parseCookies(event);
 
-	let endpoint = `${config.VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${query.valuation_id}`;
+	let endpoint = `${config.VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${valuation_id}`;
 
 	try {
 		const response = await makeProxyRequest<GenericResponse<ValuationReport>>(endpoint, {
 			headers: {
-				Authorization: `Bearer ${query.api_key}`,
+				Authorization: `Bearer ${cookies.valuation_auth_token}`,
 			},
 		});
 

@@ -1,34 +1,29 @@
 import { type CorporateClient } from '~/types/corporate-valuations/corporate-clients';
-import { getCorporateClients, setCorporateClients } from '~/stores/corporate-clients';
+import { useCorporateClientsStore } from '~/stores/corporate-clients-store';
+import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
 
 export default function useCorporateClient() {
 	const { getAuthToken, isPrincipalBroker } = useAuth();
 	const searchPhrase: Ref<string | null> = ref(null);
+	const { getCorporateClients, setCorporateClients, cleanCorporateClients } =
+		useCorporateClientsStore();
 
-	const {
-		pending: fetchingCorporateClients,
-		error: errorFetchingCorporateClients,
-		execute: refetchCorporateClients,
-	} = useApiData<CorporateClient[], CorporateClient[]>(
+	const { pending: fetchingCorporateClients, error: errorFetchingCorporateClients } = useApiData<
+		CorporateClient[],
+		CorporateClient[]
+	>(
 		'corporate-clients',
 		computed(() => `/api/vehicle-valuation/corporate-clients`),
 		{
 			method: 'GET',
 			server: false,
-			immediate: false,
 			query: {
 				api_key: getAuthToken.value,
 				is_broker: isPrincipalBroker.value,
 			},
-			transform: (response) => {
-				// Check if the API call was successful
-				if (response.success) {
-					// The response.data is correctly typed as TrackedVehicles[] here.
-					return response.data;
-				}
-
-				// If it failed, throw the error
-				throw new Error(response.metadata.message || 'Unknown error');
+			getCachedData(_key) {
+				const cached = getCorporateClients();
+				if (cached.length > 0) return cached as CorporateClient[];
 			},
 			onResponse({ response }) {
 				setCorporateClients(response._data.data as CorporateClient[]);
@@ -37,26 +32,21 @@ export default function useCorporateClient() {
 	);
 
 	const computedCorporateClients: ComputedRef<CorporateClient[]> = computed(() => {
-		if (getCorporateClients.value.length == 0) {
+		const t = getCorporateClients();
+		if (t.length == 0) {
 			return [] as CorporateClient[];
 		}
 
 		// if a search term is provided
 		if (searchPhrase.value) {
-			return getCorporateClients.value.filter((e) => {
+			return t.filter((e) => {
 				return e.corpName.toLowerCase().includes(searchPhrase.value as string);
 			});
 		}
 
 		// general list
-		return getCorporateClients.value as CorporateClient[];
+		return t;
 	});
-
-	async function shouldTriggerFetch(): Promise<void> {
-		if (getCorporateClients.value.length == 0) {
-			await refetchCorporateClients();
-		}
-	}
 
 	return {
 		computedCorporateClients,
@@ -64,6 +54,5 @@ export default function useCorporateClient() {
 		errorFetchingCorporateClients,
 		getCorporateClients,
 		searchPhrase,
-		shouldTriggerFetch,
 	};
 }

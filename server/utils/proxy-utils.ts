@@ -27,7 +27,7 @@ export const makeProxyRequest = async <T = unknown>(
 	return await $fetch<T>(endpoint, {
 		method,
 		headers: headers,
-		body: body ? JSON.stringify(body) : undefined,
+		body: body as any,
 		timeout,
 	});
 };
