@@ -41,7 +41,7 @@
 					</span>
 				</NuxtLink>
 
-				<NuxtLink
+				<!-- <NuxtLink
 					:to="{ name: '3rd-party-integrations' }"
 					class="relative inline-flex items-end space-x-2">
 					<span
@@ -59,7 +59,7 @@
 						]">
 						Valuation Integrations
 					</span>
-				</NuxtLink>
+				</NuxtLink> -->
 			</div>
 		</div>
 		<NuxtPage />
