@@ -17,7 +17,7 @@ const useAuthorityLetters = () => {
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const updateAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const uploadedDocuments: Ref<any[]> = ref([]);
-
+	const { post } = useStandardizedApi();
 	const { isPrincipalBroker } = useAuth();
 
 	// for fetching corp authority letters
@@ -192,42 +192,36 @@ const useAuthorityLetters = () => {
 		}
 	};
 
-	const updateAuthorizationLetter = async (
+	async function updateAuthorizationLetter(
 		regNo: string,
 		clientName: string,
 		clientPhone: string,
 		letterId: string,
-	) => {
-		updateAuthorizationLetterLoading.value = true;
+	) {
 		try {
-			// create the form data
-			const formData = new FormData();
-			formData.append('regNo', regNo);
-			formData.append('clientName', clientName);
-			formData.append('clientPhone', clientPhone);
-			formData.append('letterId', letterId);
-
-			await $fetch('/api/v1/authority-letter/corp/update-authority-letter', {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'PATCH',
-				body: formData,
-				onResponse({ response }) {
-					if (response.ok) {
-						useToast('Letter updated successfully!', {
-							type: 'success',
-						});
-					}
-				},
+			updateAuthorizationLetterLoading.value = true;
+			const response = await post('/api/vehicle-valuation/update-authority-letter', {
+				reg_no: regNo,
+				client_name: clientName,
+				client_phone: clientPhone,
+				letter_id: letterId,
 			});
+
+			if (response.success) {
+				useToast('Authority Letter updated successfully!', {
+					type: 'success',
+					title: 'Successfull!',
+				});
+			}
 		} catch (err) {
-			console.log('Failed to update authorization letter', err);
-			useToast('Failed. Try Again!', {
+			useToast('Failed To Update Authority Letter!', {
 				type: 'error',
+				title: 'Error!',
 			});
 		} finally {
 			updateAuthorizationLetterLoading.value = false;
 		}
-	};
+	}
 
 	const exportAuthorityLetter = async (startDate: string, endDate: string) => {
 		try {
