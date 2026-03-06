@@ -77,7 +77,7 @@ pipeline {
 
         stage('Deploy to Staging') {
             when {
-                branch 'ft-Deployment'
+                branch 'staging'
             }
             steps {
                 script {
