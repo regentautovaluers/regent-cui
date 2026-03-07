@@ -16,9 +16,9 @@ const useAuthorityLetters = () => {
 	const agencyOrCorpId: Ref<string | null> = ref('');
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const updateAuthorizationLetterLoading: Ref<boolean> = ref(false);
+	const generateAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const uploadedDocuments: Ref<any[]> = ref([]);
-	const { post } = useStandardizedApi();
-	const { isPrincipalBroker } = useAuth();
+	const { post, getBlob } = useStandardizedApi();
 
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
@@ -114,18 +114,6 @@ const useAuthorityLetters = () => {
 	};
 
 	const createAuthorizationLetter = async () => {
-		// if the logged in user is a broker and they have not
-		// filled the agencyOrCorpName show a warning toast and exit
-		// the function
-		if (isPrincipalBroker.value && agencyOrCorpId.value) {
-			useToast('Missing. Select one by clicking from options!', {
-				type: 'warn',
-				title: 'Missing Data!',
-			});
-
-			return;
-		}
-
 		createAuthorizationLetterLoading.value = true;
 		try {
 			// create the form data
@@ -158,30 +146,13 @@ const useAuthorityLetters = () => {
 				formData.append('agencyName', agencyOrCorpId.value);
 			}
 
-			await $fetch('/api/v1/authority-letter/corp/create-authority-letter', {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'POST',
-				body: formData,
-				onResponse({ response }) {
-					if (response.ok) {
-						useToast('Letter created successfully!', {
-							type: 'success',
-						});
-
-						// clear the fields
-						registrationNumber.value = '';
-						clientName.value = '';
-						clientPhone.value = '';
-						preferredBranch.value = '';
-						policyNumber.value = '';
-						comments.value = '';
-						uploadedDocuments.value = [];
-						consentProvided.value = false;
-						agencyOrCorpName.value = '';
-						agencyOrCorpId.value = '';
-					}
-				},
-			});
+			const response = await post('/api/vehicle-valuation/create-authority-letter', formData);
+			if (response.success) {
+				useToast('Authority Letter created successfully!', {
+					type: 'success',
+					title: 'Successful!',
+				});
+			}
 		} catch (err) {
 			console.log('Failed to create authorization letter', err);
 			useToast('Failed. Try Again!', {
@@ -210,7 +181,7 @@ const useAuthorityLetters = () => {
 			if (response.success) {
 				useToast('Authority Letter updated successfully!', {
 					type: 'success',
-					title: 'Successfull!',
+					title: 'Successful!',
 				});
 			}
 		} catch (err) {
@@ -245,17 +216,10 @@ const useAuthorityLetters = () => {
 						useToast('Success! Downloading Shortly!', {
 							type: 'success',
 						});
-
-						const url = window.URL.createObjectURL(new Blob([response._data]));
-						const link = document.createElement('a');
-						link.href = url;
-						link.setAttribute(
-							'download',
+						downloadReport(
+							new Blob([response._data]),
 							`authority-letters-${getPrincipal()?.corpOrganization.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
 						);
-						document.body.appendChild(link);
-						link.click();
-						link.remove();
 					}
 				},
 			});
@@ -268,6 +232,29 @@ const useAuthorityLetters = () => {
 			exportAuthorityLettersLoading.value = false;
 		}
 	};
+
+	async function generateAuthorityLetter(t: AuthorityLetter) {
+		try {
+			generateAuthorizationLetterLoading.value = true;
+			const blob = await getBlob('/api/vehicle-valuation/generate-authority-letter', {
+				method: 'POST',
+				body: t,
+			});
+
+			useToast('Success! Downloading Shortly!', {
+				type: 'success',
+			});
+
+			downloadReport(blob, `authority-letter-${t.registrationNumber}.pdf`);
+		} catch (ex) {
+			useToast('File generation failed! Try Again!', {
+				type: 'warn',
+				title: 'Unexpected Error!',
+			});
+		} finally {
+			generateAuthorizationLetterLoading.value = false;
+		}
+	}
 
 	const handleSearchTriggered = (searchSlug: string) => {
 		page.value = 0;
@@ -306,6 +293,7 @@ const useAuthorityLetters = () => {
 		authorityLetters,
 		consentProvided,
 		updateAuthorizationLetterLoading,
+		generateAuthorizationLetterLoading,
 		createAuthorizationLetter,
 		handleFileUpload,
 		exportAuthorityLetter,
@@ -313,6 +301,7 @@ const useAuthorityLetters = () => {
 		executeGetAuthorityLetters,
 		clearFilters,
 		updateAuthorizationLetter,
+		generateAuthorityLetter,
 	};
 };
 

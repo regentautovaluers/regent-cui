@@ -31,4 +31,5 @@ export interface ProxyRequestOptions {
 	body?: unknown;
 	headers?: Record<string, string>;
 	timeout?: number;
+	responseType?: 'blob' | 'arrayBuffer';
 }
