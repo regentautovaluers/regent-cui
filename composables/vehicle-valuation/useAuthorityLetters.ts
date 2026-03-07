@@ -16,9 +16,9 @@ const useAuthorityLetters = () => {
 	const agencyOrCorpId: Ref<string | null> = ref('');
 	const createAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const updateAuthorizationLetterLoading: Ref<boolean> = ref(false);
-	const generateAuthorizationLetterLoading: Ref<boolean> = ref(false);
+	const { post } = useStandardizedApi();
 	const uploadedDocuments: Ref<any[]> = ref([]);
-	const { post, getBlob } = useStandardizedApi();
+	
 
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
@@ -33,9 +33,6 @@ const useAuthorityLetters = () => {
 	const startDate: Ref<string | null> = ref(null);
 	const endDate: Ref<string | null> = ref(null);
 	const onlyOngoing: Ref<boolean | null> = ref(null);
-
-	// for exporting authority letters
-	const exportAuthorityLettersLoading: Ref<boolean> = ref(false);
 
 	watch(clientPhone, (newNumber) => {
 		if (newNumber.startsWith('0') || newNumber.startsWith('+254')) {
@@ -193,68 +190,7 @@ const useAuthorityLetters = () => {
 			updateAuthorizationLetterLoading.value = false;
 		}
 	}
-
-	const exportAuthorityLetter = async (startDate: string, endDate: string) => {
-		try {
-			exportAuthorityLettersLoading.value = true;
-			await $fetch(`/api/v1/authority-letter/corp/export-report`, {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'GET',
-				query: {
-					corpId: getPrincipal()?.corpOrganization.corpId,
-					startDate: startDate,
-					endDate: endDate,
-				},
-				onResponse({ response }) {
-					if (response.status === 404) {
-						useToast('Found No Letters!', {
-							type: 'warn',
-						});
-					}
-
-					if (response.ok) {
-						useToast('Success! Downloading Shortly!', {
-							type: 'success',
-						});
-						downloadReport(
-							new Blob([response._data]),
-							`authority-letters-${getPrincipal()?.corpOrganization.corpName.replaceAll(' ', '').toLocaleLowerCase()}-${startDate}-${endDate}.xls`,
-						);
-					}
-				},
-			});
-		} catch (err) {
-			console.log('Failed to export Excel document', err);
-			useToast('Failed. Try Again!', {
-				type: 'error',
-			});
-		} finally {
-			exportAuthorityLettersLoading.value = false;
-		}
-	};
-
-	async function generateAuthorityLetter(t: AuthorityLetter) {
-		try {
-			generateAuthorizationLetterLoading.value = true;
-			const blob = await getBlob('/api/vehicle-valuation/generate-authority-letter', {
-				method: 'POST',
-				body: t,
-			});
-
-			useToast('Success! Downloading Shortly!', {
-				type: 'success',
-			});
-
-			downloadReport(blob, `authority-letter-${t.registrationNumber}.pdf`);
-		} catch (ex) {
-			useToast('File generation failed! Try Again!', {
-				type: 'warn',
-				title: 'Unexpected Error!',
-			});
-		} finally {
-			generateAuthorizationLetterLoading.value = false;
-		}
-	}
+	
 
 	const handleSearchTriggered = (searchSlug: string) => {
 		page.value = 0;
@@ -287,21 +223,17 @@ const useAuthorityLetters = () => {
 		agencyOrCorpName,
 		agencyOrCorpId,
 		createAuthorizationLetterLoading,
-		exportAuthorityLettersLoading,
 		fetchAuthorityLetterStatus,
 		fetchAuthorityLetterError,
 		authorityLetters,
 		consentProvided,
 		updateAuthorizationLetterLoading,
-		generateAuthorizationLetterLoading,
 		createAuthorizationLetter,
 		handleFileUpload,
-		exportAuthorityLetter,
 		handleSearchTriggered,
 		executeGetAuthorityLetters,
 		clearFilters,
 		updateAuthorizationLetter,
-		generateAuthorityLetter,
 	};
 };
 

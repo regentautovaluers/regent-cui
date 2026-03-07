@@ -22,7 +22,7 @@ export const makeProxyRequest = async <T = unknown>(
 	endpoint: string,
 	options: ProxyRequestOptions = {},
 ): Promise<T> => {
-	const { method, body, headers, timeout = 30000, responseType } = options;
+	const { method, body, headers, timeout = 60000, responseType } = options;
 
 	return await $fetch<T>(endpoint, {
 		method,

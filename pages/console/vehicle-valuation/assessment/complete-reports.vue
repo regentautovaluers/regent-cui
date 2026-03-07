@@ -27,7 +27,9 @@
 			class="flex h-full flex-1 flex-col"
 			v-else>
 			<!-- search and filter controls -->
-			<div class="tablet:space-x-0 my-2 flex h-fit items-center justify-between space-x-2">
+			<div
+				class="tablet:space-x-0 tablet:flex-row mt-2 flex flex-col justify-between space-y-2">
+				>
 				<!-- search box -->
 				<form
 					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
@@ -43,17 +45,25 @@
 						<SearchIcon />
 					</button>
 				</form>
-
-				<button
-					class="group inline-flex h-[50px] w-fit cursor-pointer items-center justify-center rounded-lg border border-gray-400 px-2 outline-none hover:bg-gray-100"
-					data-modal-target="corporate-valuation-filters"
-					data-modal-toggle="corporate-valuation-filters"
-					type="button"
-					@click="setSidebarCollapsedState(false)">
-					<span class="text-gray-400">Filters</span>
-					<span
-						class="icon-[material-symbols-light--filter-alt-sharp] size-7 text-gray-400"></span>
-				</button>
+				<div class="flex space-x-2">
+					<button
+						data-modal-target="corporate-valuation-filters"
+						data-modal-toggle="corporate-valuation-filters"
+						type="button"
+						class="filter-button text-gray-600"
+						@click="setSidebarCollapsedState(false)">
+						<span class="icon-[material-symbols-light--filter-list] size-7"></span>
+					</button>
+					<button
+						data-modal-target="export-authority-letters-modal"
+						data-modal-toggle="export-authority-letters-modal"
+						type="button"
+						class="filter-button flex-grow text-gray-600"
+						@click="setSidebarCollapsedState(false)">
+						<span class="icon-[material-symbols-light--downloading] mr-1 size-7"></span>
+						<span>Export Report</span>
+					</button>
+				</div>
 			</div>
 
 			<div class="my-3 flex-grow">
@@ -145,7 +155,7 @@
 									scope="row"
 									class="flex items-center py-4 whitespace-nowrap text-gray-900">
 									<img
-										class="size-12 rounded-sm object-fit"
+										class="object-fit size-12 rounded-sm"
 										:src="valuation.vehicleImage"
 										alt="Vehicle Image"
 										v-if="valuation.vehicleImage" />
@@ -242,6 +252,13 @@
 				</div>
 			</div>
 		</div>
+
+		<!--  export letters -->
+		<ParentModal
+			modal-id="export-authority-letters-modal"
+			modal-title="Export Reports">
+			<ExportAuthorityLetter />
+		</ParentModal>
 
 		<!-- modal to add filters for table entry -->
 		<ParentModal

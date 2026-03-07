@@ -180,10 +180,7 @@
 	const registrationNumber: Ref<string> = ref(authorityLetter.registrationNumber);
 	const clientName: Ref<string> = ref(authorityLetter.clientName);
 	const clientPhone: Ref<string> = ref(authorityLetter.clientPhone);
-	const {
-		updateAuthorizationLetterLoading,
-		updateAuthorizationLetter,
-		generateAuthorityLetter,
-		generateAuthorizationLetterLoading,
-	} = useAuthorityLetters();
+	const { updateAuthorizationLetterLoading, updateAuthorizationLetter } = useAuthorityLetters();
+	const { generateAuthorityLetter, generateAuthorizationLetterLoading } =
+		useExportValuationAssets();
 </script>
