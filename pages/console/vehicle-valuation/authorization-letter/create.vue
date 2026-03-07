@@ -143,17 +143,16 @@
 						placeholder="e.g POLICY/123"
 						v-model="policyNumber" />
 				</div>
-				<!-- Officer Name -->
+
+				<!-- broker/insurance -->
 				<div class="relative z-0 w-full lg:w-1/3">
-					<label class="generic-input-label peer-focus:bg-red-500">{{
-						isPrincipalBroker ? 'Select Corporate' : 'Select Agent'
-					}}</label>
+					<label class="generic-input-label peer-focus:bg-red-500 text-transparent"> {{ 'h' }}</label>
 					<input
 						type="text"
 						id="officer-name"
 						class="generic-input peer"
 						:required="isPrincipalBroker"
-						placeholder="Start typing to search"
+						:placeholder="isPrincipalBroker ? 'Select Corporate' : 'Select Agent'"
 						v-model="searchPhrase" />
 					<span
 						class="icon-[svg-spinners--ring-resize] absolute top-[37px] right-3 text-2xl text-gray-500"
