@@ -18,7 +18,7 @@ const useAuthorityLetters = () => {
 	const updateAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const { post } = useStandardizedApi();
 	const uploadedDocuments: Ref<any[]> = ref([]);
-	
+	const config = useRuntimeConfig();
 
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
@@ -143,13 +143,27 @@ const useAuthorityLetters = () => {
 				formData.append('agencyName', agencyOrCorpId.value);
 			}
 
-			const response = await post('/api/vehicle-valuation/create-authority-letter', formData);
-			if (response.success) {
-				useToast('Authority Letter created successfully!', {
-					type: 'success',
-					title: 'Successful!',
-				});
-			}
+			// const response = await post(
+			// 	`${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`,
+			// 	formData,
+			// );
+
+			await $fetch('/api/v1/authority-letter/corp/create-authority-letter', {
+				baseURL: config.public.VALUATION_BASE_URL,
+				method: 'POST',
+				body: formData,
+			});
+			// if (response.success) {
+			// 	useToast('Authority Letter created successfully!', {
+			// 		type: 'success',
+			// 		title: 'Successful!',
+			// 	});
+			// }
+
+			useToast('Authority Letter created successfully!', {
+				type: 'success',
+				title: 'Successful!',
+			});
 		} catch (err) {
 			console.log('Failed to create authorization letter', err);
 			useToast('Failed. Try Again!', {
@@ -190,7 +204,6 @@ const useAuthorityLetters = () => {
 			updateAuthorizationLetterLoading.value = false;
 		}
 	}
-	
 
 	const handleSearchTriggered = (searchSlug: string) => {
 		page.value = 0;
