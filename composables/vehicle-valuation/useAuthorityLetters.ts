@@ -148,8 +148,8 @@ const useAuthorityLetters = () => {
 			// 	formData,
 			// );
 
-			await $fetch('/api/v1/authority-letter/corp/create-authority-letter', {
-				baseURL: config.public.VALUATION_BASE_URL,
+			await $fetch(`https://api.regentautovaluers.com/api/v1/authority-letter/corp/create-authority-letter`, {
+				baseURL: 'https://api.regentautovaluers.com',
 				method: 'POST',
 				body: formData,
 			});
