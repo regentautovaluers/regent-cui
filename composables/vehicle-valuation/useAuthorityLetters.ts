@@ -4,7 +4,7 @@ import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal, isPrincipalAdmin } = useAuth();
+	const { getPrincipal, isPrincipalAdmin, getAuthToken } = useAuth();
 	const consentProvided: Ref<boolean> = ref(false);
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
@@ -148,11 +148,17 @@ const useAuthorityLetters = () => {
 			// 	formData,
 			// );
 
-			await $fetch(`https://api.regentautovaluers.com/api/v1/authority-letter/corp/create-authority-letter`, {
-				baseURL: 'https://api.regentautovaluers.com',
-				method: 'POST',
-				body: formData,
-			});
+			await $fetch(
+				`https://api.regentautovaluers.com/api/v1/authority-letter/corp/create-authority-letter`,
+				{
+					baseURL: 'https://api.regentautovaluers.com',
+					method: 'POST',
+					body: formData,
+					headers: {
+						Authorization: `Bearer ${getAuthToken.value}`,
+					},
+				},
+			);
 			// if (response.success) {
 			// 	useToast('Authority Letter created successfully!', {
 			// 		type: 'success',
