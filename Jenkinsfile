@@ -149,15 +149,14 @@ EOF
                             docker run -d \\
                                 --restart always \\
                                 --name corporate-portal \\
-                                --network internal-network \\
                                 -p ${CORPORATE_PORTAL_PORT}:${CORPORATE_PORTAL_PORT} \\
                                 -e NUXT_REGENT_TRACK_BASE_URL='${REGENT_TRACK_BASE_URL}' \\
                                 -e NUXT_REGENT_TRACK_CERTS_BASE_URL='${REGENT_TRACK_CERTS_BASE_URL}' \\
                                 -e NUXT_TRACKING_CERTS_API_KEY='${TRACKING_CERTS_API_KEY}' \\
-                                -e NUXT_AI_CHAT_BASE_URL='${STAGING_AI_CHAT_BASE_URL}' \\
+                                -e NUXT_AI_CHAT_BASE_URL='${PROD_AI_CHAT_BASE_URL}' \\
                                 -e NUXT_AI_CHAT_API_KEY='${AVA_CHAT_API_KEY}' \\
-                                -e NUXT_VALUATION_BASE_URL='${STAGING_VALUATION_BASE_URL}' \\
-                                -e NUXT_AVA_BASE_URL='${STAGING_AVA_BASE_URL}' \\
+                                -e NUXT_VALUATION_BASE_URL='${PROD_VALUATION_BASE_URL}' \\
+                                -e NUXT_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
                                 -e NUXT_REPORT_GENERATOR_BASE_URL='https://reportgenerator.ava.ke' \\
                                 -e NUXT_GOOGLE_MAPS_API_KEY='' \\
                                 -e NUXT_PUBLIC_VALUATION_BASE_URL='${PROD_VALUATION_BASE_URL}' \\
