@@ -146,7 +146,9 @@
 
 				<!-- broker/insurance -->
 				<div class="relative z-0 w-full lg:w-1/3">
-					<label class="generic-input-label peer-focus:bg-red-500 text-transparent"> {{ 'h' }}</label>
+					<label class="generic-input-label text-transparent peer-focus:bg-red-500">
+						{{ 'h' }}</label
+					>
 					<input
 						type="text"
 						id="officer-name"
@@ -224,7 +226,8 @@
 										d,
 									)
 							"
-							type="file" />
+							type="file"
+							accept=".jpeg, .png, .jpg, .pdf" />
 						<p
 							class="mt-1 text-xs text-gray-500"
 							id="file_input_help">
