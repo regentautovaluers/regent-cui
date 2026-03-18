@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 	const cookies = parseCookies(event);
 	const config = useRuntimeConfig();
 	try {
-		const endpoint = `${config.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`;
+		const endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`;
 		await makeProxyRequest<GenericResponse<any>>(endpoint, {
 			headers: {
 				Authorization: `Bearer ${cookies.valuation_auth_token}`,
