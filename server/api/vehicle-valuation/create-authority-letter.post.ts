@@ -6,19 +6,23 @@ export default defineEventHandler(async (event) => {
 	// re-bind the values
 	const formData = new FormData();
 
-	requestData?.forEach((e) => {
-		if (e.name != 'files') {
-			formData.append(e.name as string, e.data as unknown as string);
-		}
+	// Check if requestData exists and iterate using for...of
+	if (requestData) {
+		for (const e of requestData) {
+			const name = e.name as string;
 
-		formData.append(
-			e.name as string,
-			new Blob(e.data as unknown as BlobPart[], {
-				type: e.type as string,
-			}),
-			e.filename as string,
-		);
-	});
+			if (name !== 'files') {
+				formData.append(name, e.data.toString());
+				continue;
+			}
+
+			formData.append(
+				'files',
+				new Blob([e.data] as BlobPart[], { type: e.type }),
+				e.filename,
+			);
+		}
+	}
 
 	const cookies = parseCookies(event);
 	const config = useRuntimeConfig();

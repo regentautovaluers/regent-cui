@@ -6,7 +6,7 @@
 			<div class="inline-flex h-28 w-full items-center justify-between p-5 outline-none">
 				<div class="flex h-full items-center space-x-3">
 					<button
-						class="inline-flex h-[70%] w-[50px] items-center justify-center rounded-lg bg-blue-500 outline-none">
+						class="inline-flex h-[70%] w-[50px] items-center justify-center rounded-lg bg-blue-600 outline-none">
 						<span
 							class="icon-[material-symbols-light--fact-check-outline-rounded] text-4xl text-slate-100"></span>
 					</button>

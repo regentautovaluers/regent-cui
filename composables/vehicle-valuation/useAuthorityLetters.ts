@@ -143,29 +143,7 @@ const useAuthorityLetters = () => {
 				formData.append('agencyName', agencyOrCorpId.value);
 			}
 
-			// const response = await post(
-			// 	`${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`,
-			// 	formData,
-			// );
-
-			await $fetch(
-				`https://api.regentautovaluers.com/api/v1/authority-letter/corp/create-authority-letter`,
-				{
-					baseURL: 'https://api.regentautovaluers.com',
-					method: 'POST',
-					body: formData,
-					headers: {
-						Authorization: `Bearer ${getAuthToken.value}`,
-					},
-				},
-			);
-			// if (response.success) {
-			// 	useToast('Authority Letter created successfully!', {
-			// 		type: 'success',
-			// 		title: 'Successful!',
-			// 	});
-			// }
-
+			await post('/api/vehicle-valuation/create-authority-letter', formData);
 			useToast('Authority Letter created successfully!', {
 				type: 'success',
 				title: 'Successful!',
