@@ -1,7 +1,6 @@
 <template>
 	<div class="console-layout-spacing">
 		<!-- links strip -->
-		<!-- links strip -->
 		<div
 			class="hide-scrollbar mb-5 h-fit space-x-4 divide-y-2 overflow-x-scroll rounded-lg border-2 bg-white whitespace-nowrap">
 			<div class="inline-flex h-28 w-full items-center justify-between p-5 outline-none">
@@ -14,7 +13,7 @@
 					<div>
 						<h1 class="text-xl font-semibold text-gray-800">Authority Letters</h1>
 						<h2 class="text-sm text-gray-500">
-							Create And Access Previous Go-Aheads for Valuations
+							Create And Access Previous Requests for Valuations
 						</h2>
 					</div>
 				</div>

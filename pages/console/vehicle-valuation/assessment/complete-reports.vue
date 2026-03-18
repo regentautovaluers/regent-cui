@@ -29,7 +29,6 @@
 			<!-- search and filter controls -->
 			<div
 				class="tablet:space-x-0 tablet:flex-row mt-2 flex flex-col justify-between space-y-2">
-				>
 				<!-- search box -->
 				<form
 					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
