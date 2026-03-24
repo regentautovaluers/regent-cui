@@ -213,7 +213,7 @@
 													)?.status == 'Completed'
 												">
 												<a
-													target="_self"
+													target="_blank"
 													:href="valuation.reportURL"
 													class="block w-full px-4 py-2 text-center hover:bg-gray-100">
 													Download Report
