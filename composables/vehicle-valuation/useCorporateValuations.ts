@@ -49,6 +49,13 @@ export const useCorporateValuations = () => {
 					requestURL = requestURL + '&completed=true';
 				}
 
+				if (
+					routeName == 'vehicle-valuation-tampered-vehicles' ||
+					showTampered.value !== null
+				) {
+					requestURL = requestURL + `&isVehicleTampered=true`;
+				}
+
 				if (startDate.value !== null) {
 					requestURL = requestURL + `&startDate=${startDate.value}`;
 				}
@@ -59,10 +66,6 @@ export const useCorporateValuations = () => {
 
 				if (paymentStatus.value !== null) {
 					requestURL = requestURL + `&paymentStatus=${paymentStatus.value}`;
-				}
-
-				if (showTampered.value !== null) {
-					requestURL = requestURL + `&isVehicleTampered=${showTampered.value}`;
 				}
 
 				if (paymentMethod.value !== null) {

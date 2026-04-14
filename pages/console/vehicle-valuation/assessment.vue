@@ -55,13 +55,19 @@
 			to: 'vehicle-valuation-ongoing-reports',
 			name: 'Ongoing Assessments',
 			shouldShow: true,
-			icon: 'icon-[material-symbols-light--timer-10-alt-1]',
+			icon: 'icon-[material-symbols-light--timelapse-outline-rounded]',
 		},
 		{
 			to: 'vehicle-valuation-complete-reports',
 			name: 'Complete Assessments',
 			shouldShow: true,
 			icon: 'icon-[material-symbols-light--check-circle-unread]',
+		},
+		{
+			to: 'vehicle-valuation-tampered-vehicles',
+			name: 'Tampered Vehicles',
+			shouldShow: true,
+			icon: 'icon-[material-symbols-light--warning-outline-rounded]',
 		},
 	];
 </script>

@@ -2,8 +2,6 @@ import type { GenericResponse } from '~/types/corporate-valuations/generic-respo
 
 export default defineEventHandler(async (event) => {
 	const requestData = await readMultipartFormData(event);
-
-	// re-bind the values
 	const formData = new FormData();
 
 	// Check if requestData exists and iterate using for...of
@@ -25,6 +23,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	const cookies = parseCookies(event);
+	console.log(cookies);
 	const config = useRuntimeConfig();
 	try {
 		const endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`;

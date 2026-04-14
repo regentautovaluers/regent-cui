@@ -86,6 +86,7 @@ export interface ValuationBooking {
 	completeTransaction: CompleteTransaction[];
 	pending: string;
 	inspectionNote: string;
+	inspectionRemarks?: string;
 	inspectionFnl: any;
 }
 

@@ -18,7 +18,6 @@ const useAuthorityLetters = () => {
 	const updateAuthorizationLetterLoading: Ref<boolean> = ref(false);
 	const { post } = useStandardizedApi();
 	const uploadedDocuments: Ref<any[]> = ref([]);
-	const config = useRuntimeConfig();
 
 	// for fetching corp authority letters
 	const page: Ref<number> = ref(0);
@@ -142,7 +141,7 @@ const useAuthorityLetters = () => {
 			if (agencyOrCorpId.value) {
 				formData.append('agencyName', agencyOrCorpId.value);
 			}
-
+			
 			await post('/api/vehicle-valuation/create-authority-letter', formData);
 			useToast('Authority Letter created successfully!', {
 				type: 'success',

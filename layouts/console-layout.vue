@@ -52,13 +52,13 @@
 					</div>
 				</div>
 
-				<ul class="mt-4 space-y-4">
+				<ul class="mt-4 space-y-4 px-2">
 					<template
 						v-for="(link, index) in navigationRoutes.filter((r) => r.renderRoute)"
 						:key="index">
 						<li
 							:class="[
-								'relative mx-2 flex h-12 items-center rounded-xl py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
+								'relative flex h-12 items-center rounded-xl py-5 text-gray-600 transition-colors duration-200 ease-out hover:bg-gray-300/50 hover:text-gray-600',
 								fuzzyRouteNameMatch(link.routeName, link) && 'space-x-4',
 							]">
 							<div
@@ -71,13 +71,13 @@
 							<NuxtLink
 								:to="{ name: link.routeName }"
 								:class="[
-									'inline-flex size-full max-h-12 max-w-full justify-center',
+									'inline-flex size-full max-h-12 max-w-full items-center px-2',
 									!getSidebarCollapsedState
 										? 'w-19'
 										: 'w-full flex-row items-center justify-center space-x-2',
 								]">
-								<span class="place-self-center">
-									<span :class="['text-[30px]', link.icon]"></span>
+								<span>
+									<span :class="['size-7', link.icon]"></span>
 								</span>
 								<span
 									:class="[
@@ -234,7 +234,7 @@
 						><span>{{ publicConfigs.BUILD_TAG }}</span>
 					</h1>
 					<h2>
-						<span>&copy; 2025.</span>
+						<span>&copy; {{ publicRuntimeConfig.COPYRIGHT_YEAR }}.</span>
 						<span> All Rights Reserved</span>
 					</h2>
 				</div>
@@ -304,6 +304,7 @@
 	// } = useFirebaseRTDB();
 
 	const config = useRuntimeConfig();
+	const { public: publicRuntimeConfig } = useRuntimeConfig();
 
 	// const notifications = computed(() =>
 	// 	dataList.value
