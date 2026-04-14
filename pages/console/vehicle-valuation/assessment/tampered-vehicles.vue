@@ -94,6 +94,11 @@
 								</th>
 								<th
 									scope="col"
+									class="table-headers laptop:table-cell hidden">
+									Remarks
+								</th>
+								<th
+									scope="col"
 									class="table-headers" />
 							</tr>
 						</thead>
@@ -118,6 +123,11 @@
 									<span class="animate-pulse rounded-lg bg-gray-300">agency</span>
 								</td>
 
+								<td class="p-6 text-gray-300">
+									<span class="animate-pulse rounded-lg bg-gray-300"
+										>bookingstage</span
+									>
+								</td>
 								<td class="p-6 text-gray-300">
 									<span class="animate-pulse rounded-lg bg-gray-300"
 										>bookingstage</span
@@ -175,6 +185,10 @@
 								<td
 									class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
 									{{ valuation.inspectionNote ?? 'N/A' }}
+								</td>
+								<td
+									class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
+									{{ valuation.inspectionRemarks ?? 'N/A' }}
 								</td>
 								<td class="py-4 pe-3">
 									<button
@@ -275,25 +289,6 @@
 				class="w-full space-y-3">
 				<div
 					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
-					<h1 class="mb-2 text-xs font-semibold text-gray-500">Tampered Vehicles</h1>
-					<div class="flex h-fit w-full items-center py-2">
-						<input
-							id="show-tampered-vehicles"
-							type="checkbox"
-							:value="true"
-							v-model="showTampered"
-							name="bordered-radio"
-							class="size-5 rounded-lg border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500" />
-						<label
-							for="show-tampered-vehicles"
-							class="3 ms-2 w-full text-sm font-medium text-gray-600"
-							>Also Include Tampered Vehicles</label
-						>
-					</div>
-				</div>
-
-				<div
-					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
 					<h1 class="mb-2 text-xs font-semibold text-gray-500">Payment Status</h1>
 					<div
 						class="tablet:flex-row tablet:space-y-0 tablet:space-x-2 flex w-full flex-col space-y-2">
@@ -389,7 +384,7 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: 'vehicle-valuation-complete-reports',
+		name: 'vehicle-valuation-tampered-vehicles',
 		layout: 'console-layout',
 	});
 

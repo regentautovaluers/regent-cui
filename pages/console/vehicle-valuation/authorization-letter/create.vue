@@ -10,7 +10,7 @@
 					<label
 						for="registration-number"
 						class="generic-input-label generic-input-required-label"
-						>Registration Number</label
+						>Registration</label
 					>
 					<input
 						type="text"
@@ -40,7 +40,7 @@
 					<label
 						for="client-phone"
 						class="generic-input-label generic-input-required-label"
-						>Client Phone Number</label
+						>Client Phone</label
 					>
 					<input
 						type="text"
@@ -113,7 +113,7 @@
 					v-if="fetchStatus === 'pending'" />
 			</div>
 			<!-- comments -->
-			<div class="mt-5">
+			<div class="relative mt-5">
 				<label
 					for="extra_instructions"
 					class="generic-input-label"
@@ -122,9 +122,16 @@
 				<textarea
 					id="extra_instructions"
 					class="generic-text-area resize-none"
-					rows="10"
+					rows="6"
 					placeholder="Provide optional instructions for this request."
-					v-model="comments"></textarea>
+					v-model="comments"
+					maxlength="256"></textarea>
+				<p class="absolute right-3 bottom-2 text-sm font-semibold text-gray-700">
+					<span class="text-lg">
+						{{ comments.length }}
+					</span>
+					<span>/256</span>
+				</p>
 			</div>
 			<!-- data below the comments box -->
 			<div
@@ -143,21 +150,25 @@
 						placeholder="e.g POLICY/123"
 						v-model="policyNumber" />
 				</div>
-				<!-- Officer Name -->
+
+				<!-- broker/insurance -->
 				<div class="relative z-0 w-full lg:w-1/3">
-					<label class="generic-input-label peer-focus:bg-red-500">{{
-						isPrincipalBroker ? 'Select Corporate' : 'Select Agent'
-					}}</label>
+					<label class="generic-input-label text-transparent peer-focus:bg-red-500">
+						{{ 'h' }}</label
+					>
 					<input
 						type="text"
 						id="officer-name"
 						class="generic-input peer"
 						:required="isPrincipalBroker"
-						placeholder="Start typing to search"
+						:placeholder="isPrincipalBroker ? 'Select Corporate' : 'Select Agent'"
 						v-model="searchPhrase" />
 					<span
 						class="icon-[svg-spinners--ring-resize] absolute top-[37px] right-3 text-2xl text-gray-500"
 						v-if="fetchingCorporateClients"></span>
+					<span
+						class="icon-[material-symbols-light--warning-outline-rounded] absolute top-[37px] right-3 text-2xl text-yellow-500"
+						v-if="errorFetchingCorporateClients"></span>
 
 					<!-- selectable entries  -->
 					<div
@@ -225,7 +236,8 @@
 										d,
 									)
 							"
-							type="file" />
+							type="file"
+							accept=".jpeg, .png, .jpg, .pdf" />
 						<p
 							class="mt-1 text-xs text-gray-500"
 							id="file_input_help">

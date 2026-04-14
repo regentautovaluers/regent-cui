@@ -205,20 +205,12 @@ export function useDeviceTraceabilityReport() {
 				}) as ForReport[],
 			};
 
-			console.log(requestBody.entries[0]);
 			const blob = await getBlob('/api/regent-tracking/export-excel-report', {
 				method: 'POST',
 				body: requestBody,
 			});
 
-			const url = window.URL.createObjectURL(blob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.setAttribute('download', 'export.xlsx');
-			document.body.appendChild(link);
-			link.click();
-			link.parentNode?.removeChild(link);
-			window.URL.revokeObjectURL(url); // Clean up memory
+			downloadReport(blob, 'export.xlsx');
 		} catch (ex) {
 			console.log(ex);
 			useToast('Export failed! Try Again!', {

@@ -61,7 +61,7 @@
 						:class="[
 							'text-3xl',
 							computingInsuranceMetrics
-								? 'icon-[ph--spinner-light] disabled: animate-spin'
+								? 'icon-[svg-spinners--ring-resize] disabled: animate-spin'
 								: 'icon-[material-symbols-light--stacked-line-chart]',
 							doesRouteNameMatch('insurance-telematics-analytics')
 								? 'text-blue-600'

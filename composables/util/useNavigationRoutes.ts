@@ -149,7 +149,10 @@ export default function () {
 			routeName: bypassRegentTrackingLogin()
 				? 'insurance-telematics-all-vehicles'
 				: 'regent-track-auth',
-			renderRoute: getPrincipal()?.corpOrganization.corpClass == 'INSURANCE',
+			renderRoute:
+				getPrincipal()?.corpOrganization.corpClass == 'INSURANCE' ||
+				getPrincipal()?.corpOrganization.corpId ==
+					'CP-COAD-3A14D3' /*hardcoded for demo purposes*/,
 			description:
 				"Gain instant and reliable insights into driver's behaviour analysis and risk assessment. Our simple \
 				classification algorithm uses various metrics to intricately classify drives into categories depending on various measurable \

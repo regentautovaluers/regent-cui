@@ -1,7 +1,7 @@
 <template>
 	<div class="space-y-3">
 		<!-- preliminary info -->
-		<div class=" rounded-lg bg-gray-200/80 p-4 outline-none">
+		<div class="rounded-lg bg-gray-200/80 p-4 outline-none">
 			<h1 class="col-span-2 font-bold text-gray-700">Request Information</h1>
 			<form
 				@submit.prevent="
@@ -105,6 +105,55 @@
 		</div>
 
 		<h1 class="font-bold text-gray-700">Available KYCs</h1>
+		<!-- Preffered Regent Branch -->
+		<div
+			class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
+			role="alert">
+			<div class="flex items-center">
+				<svg
+					class="me-2 h-4 w-4 shrink-0"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="currentColor"
+					viewBox="0 0 20 20">
+					<path
+						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+				</svg>
+				<span class="sr-only">Info</span>
+				<h3 class="text-sm font-medium">Authority Letter Download Issue</h3>
+			</div>
+
+			<div class="my-2">
+				<p class="text-sm">
+					We are aware of a known issue that causes Regent's Authority Letter either:
+				</p>
+				<ol class="my-2 list-inside list-decimal ps-3 text-sm">
+					<li>Showing up under the name 'Electronic'</li>
+					<li>Not allowing downloads in some instances</li>
+					<li>Not entirely being available even under the wrong name</li>
+				</ol>
+				<p class="text-sm">
+					We dearly appologize for any inconvenience that these might have caused. As we
+					work to resolve this issue,
+					<span class="font-bold">if you are affected by issues 2 or 3</span> above,
+					kindly use the <span class="italic">Regenerate Letter </span> button below to
+					generate and download a letter on the go.
+				</p>
+			</div>
+			<div class="flex">
+				<button
+					type="button"
+					class="group inline-flex items-center space-x-2 rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
+					@click.prevent="generateAuthorityLetter(authorityLetter)"
+					:disabled="generateAuthorizationLetterLoading">
+					<span class="text-sm font-medium">Regenerate Letter</span>
+					<span
+						class="icon-[svg-spinners--ring-resize] size-4 text-yellow-800 group-hover:text-white"
+						v-if="generateAuthorizationLetterLoading"></span>
+				</button>
+			</div>
+		</div>
+
 		<!-- provided docs -->
 		<div class="flex flex-wrap">
 			<a
@@ -122,12 +171,16 @@
 </template>
 
 <script setup lang="ts">
+	import type { AuthorityLetter } from '~/types/corporate-valuations/authority-letters';
+
 	const { authorityLetter } = defineProps<{
-		authorityLetter: any;
+		authorityLetter: AuthorityLetter;
 	}>();
 
 	const registrationNumber: Ref<string> = ref(authorityLetter.registrationNumber);
 	const clientName: Ref<string> = ref(authorityLetter.clientName);
 	const clientPhone: Ref<string> = ref(authorityLetter.clientPhone);
 	const { updateAuthorizationLetterLoading, updateAuthorizationLetter } = useAuthorityLetters();
+	const { generateAuthorityLetter, generateAuthorizationLetterLoading } =
+		useExportValuationAssets();
 </script>

@@ -148,7 +148,7 @@
 
 								<td class="tablet:table-cell py-4">
 									<span class="w-fit rounded-lg bg-gray-200 px-1">{{
-										valuation.regentBranch.branchName
+										valuation.regentBranch?.branchName ?? 'Branch N/A'
 									}}</span>
 									<br />
 									<span class="w-fit">{{
