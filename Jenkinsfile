@@ -139,8 +139,8 @@ EOF
                             docker stop corporate-portal || true
                             docker rm corporate-portal || true
 
-                            echo "Removing previous image..."
-                            docker rmi ${CORPORATE_PORTAL_DOCKER_IMAGE} || true
+                            // echo "Removing previous image..."
+                            // docker rmi ${CORPORATE_PORTAL_DOCKER_IMAGE}:${PREVIOUS_BUILD_TAG - 1} || true
 
                             echo "Pulling new image..."
                             docker pull ${CORPORATE_PORTAL_DOCKER_IMAGE}:${DOCKER_TAG}
