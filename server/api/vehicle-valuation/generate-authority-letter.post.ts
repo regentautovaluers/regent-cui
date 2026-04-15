@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 
 	try {
-		const endpoint = `${config.REPORT_GENERATOR_BASE_URL}/assets/authority-letter`;
+		const endpoint = `${config.REPORT_GENERATOR_BASE_URL}/report/generate-authority-letter`;
 		const response = await makeProxyRequest<ArrayBuffer>(endpoint, {
 			method: 'POST',
 			body,

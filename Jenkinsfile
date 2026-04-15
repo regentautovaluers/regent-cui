@@ -154,6 +154,7 @@ EOF
                                 -e NUXT_AI_CHAT_API_KEY='${AVA_CHAT_API_KEY}' \\
                                 -e NUXT_VALUATION_BASE_URL='${PROD_VALUATION_BASE_URL}' \\
                                 -e NUXT_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
+                                -e NUXT_REPORT_GENERATOR_BASE_URL='https://media.ava.ke' \\
                                 ${CORPORATE_PORTAL_DOCKER_IMAGE}:${DOCKER_TAG}
 EOF
                         """
