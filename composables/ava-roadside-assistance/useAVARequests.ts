@@ -2,6 +2,8 @@ import { type LocationCoords, type MapCoordsMarker } from '~/types';
 import { Loader } from '@googlemaps/js-api-loader';
 import { useGeolocation } from '@vueuse/core';
 import type { SlimmedSearchResult } from '~/types/ava-roadside-assistance/search-vehicle';
+import type { SlimmedAvaVehicleTypes } from '~/types/ava-roadside-assistance/vehicle-types';
+import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export const useClientGeolocation = () => {
@@ -85,15 +87,16 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		error: loadVehicleTypesError,
 		data: vehicleTypes,
 		refresh: refreshVehicleTypes,
-	} = useFetch('/api/v1/control-unit/vehicle-types', {
-		baseURL: runtimeConfig.public.AVA_BASE_URL,
+	} = useApiData<
+		GenericResponse<SlimmedAvaVehicleTypes[]>,
+		GenericResponse<SlimmedAvaVehicleTypes[]>
+	>('supported-vehicle-types', '/api/roadside-assistance/load-vehicle-types', {
 		method: 'GET',
-		headers: {
-			Accept: '',
-		},
 		server: false,
-		lazy: true,
-	}) as any;
+		transform: (d: StandardSuccessResponse<GenericResponse<SlimmedAvaVehicleTypes[]>>) => {
+			return d.data;
+		},
+	});
 
 	// load the charges for other services
 	const { data: serviceCharges } = useFetch('/api/v1/control-unit/services', {
