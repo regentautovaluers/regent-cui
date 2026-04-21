@@ -88,12 +88,6 @@
 			icon: 'icon-[material-symbols-light--manage-accounts]',
 		},
 		{
-			to: 'vehicle-valuation-add-user',
-			name: 'New Account',
-			shouldShow: isPrincipalAdmin?.value,
-			icon: 'icon-[material-symbols-light--group-add]',
-		},
-		{
 			to: 'corp-branches',
 			name: 'Your Branches',
 			shouldShow: isPrincipalAdmin?.value,

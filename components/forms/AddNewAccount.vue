@@ -1,6 +1,5 @@
 <template>
 	<form
-		class="laptop:p-4 laptop-lg:p-8 flex flex-1 flex-col rounded-lg border-2 bg-white p-2 outline-none"
 		@submit.prevent="
 			addNewAccount(
 				username,
@@ -15,7 +14,7 @@
 		">
 		<div>
 			<label class="generic-input-label generic-input-required-label">Full Name</label>
-			<div class="flex w-full space-x-4">
+			<div class="flex w-full space-x-3">
 				<input
 					type="text"
 					class="generic-input"
@@ -30,13 +29,13 @@
 					v-model.trim="otherName" />
 			</div>
 		</div>
-		<div class="mt-3">
-			<label
-				class="generic-input-label generic-input-required-label"
-				for="email"
-				>Email</label
-			>
-			<div class="flex flex-grow">
+		<div class="tablet:space-y-0 tablet:flex tablet:flex-row tablet: mt-3 space-y-3 space-x-3">
+			<div class="tablet:w-1/2 w-full">
+				<label
+					class="generic-input-label generic-input-required-label"
+					for="email"
+					>Email</label
+				>
 				<input
 					type="email"
 					id="email"
@@ -45,14 +44,12 @@
 					required
 					v-model.trim="email" />
 			</div>
-		</div>
-		<div class="mt-3">
-			<label
-				class="generic-input-label"
-				for="phone"
-				>Phone Number</label
-			>
-			<div class="flex flex-grow">
+			<div class="tablet:w-1/2 w-full">
+				<label
+					class="generic-input-label"
+					for="phone"
+					>Phone Number</label
+				>
 				<input
 					type="text"
 					id="phone"
@@ -78,40 +75,34 @@
 		<div
 			class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800"
 			role="alert">
-			<div class="flex items-center">
-				<svg
-					class="me-2 h-4 w-4 shrink-0"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="currentColor"
-					viewBox="0 0 20 20">
-					<path
-						d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-				</svg>
-				<span class="sr-only">Info</span>
-				<h3 class="text-sm font-medium">Notice On The User's Branch</h3>
+			<div class="flex items-center justify-between">
+				<div class="flex items-center">
+					<svg
+						class="me-2 h-4 w-4 shrink-0"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="currentColor"
+						viewBox="0 0 20 20">
+						<path
+							d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+					</svg>
+					<span class="sr-only">Info</span>
+					<h3 class="text-sm font-semibold">Notice On Branches</h3>
+				</div>
+				<div>
+					<button
+						type="button"
+						class="py-.5 rounded-lg border border-yellow-800 bg-transparent px-2 text-center text-sm font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
+						@click.prevent="refreshBranches()">
+						Reload List
+					</button>
+				</div>
 			</div>
 
-			<p class="mt-2 mb-4 text-sm">
-				If you fail to choose the user's branch, they will be able to access all reports
-				across all your branches. Similarly, if a user is an admin with a branch, they still
-				will be able to access all reports across all you branches. Giving a non-admin a
-				branch will make the user only access reports for that branch. Reload you branches
-				by clicking the 'Refresh List' below, or
-				<NuxtLink
-					:to="{ name: 'corp-branches' }"
-					class="font-semibold underline underline-offset-2"
-					>Add One</NuxtLink
-				>
+			<p class="mt-1 text-sm">
+				Select a branch to prevent this user from seeing all branch's reports. Admins have
+				access to all branch's reports.
 			</p>
-			<div class="flex">
-				<button
-					type="button"
-					class="rounded-lg border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-sm font-medium text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
-					@click.prevent="refreshBranches()">
-					Refresh List
-				</button>
-			</div>
 		</div>
 		<!-- Corp Branch Field -->
 		<div class="relative mt-3">
@@ -190,10 +181,6 @@
 </template>
 
 <script setup lang="ts">
-	definePageMeta({
-		name: 'vehicle-valuation-add-user',
-	});
-
 	const firstName: Ref<string> = ref('');
 	const otherName: Ref<string> = ref('');
 	const email: Ref<string> = ref('');

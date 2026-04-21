@@ -11,6 +11,7 @@ const useUserAccounts = () => {
 	const addNewAccountLoading: Ref<boolean> = ref(false);
 	const updateCorporateAccountLoading: Ref<boolean> = ref(false);
 	const searchSlug: Ref<string | null> = ref(null);
+	const { put, post } = useStandardizedApi();
 
 	const {
 		status: fetchStatus,
@@ -55,7 +56,7 @@ const useUserAccounts = () => {
 		},
 	);
 
-	const addNewAccount = async (
+	async function addNewAccount(
 		username: string,
 		email: string,
 		phoneNumber: string,
@@ -64,38 +65,25 @@ const useUserAccounts = () => {
 		roleInOrganization: string,
 		roles: string[],
 		cleanRefs: () => void,
-	) => {
+	) {
 		addNewAccountLoading.value = true;
 		try {
-			await $fetch('/api/v1/auth/corporate-account/signup', {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'POST',
-				headers: {
-					Accept: '',
-					'Content-Type': '',
-				},
-				body: JSON.stringify({
-					username: username,
-					email: email,
-					phoneNumber: phoneNumber,
-					password: password,
-					profilePicture: null,
-					corporateId: getPrincipal()?.corpOrganization.corpId,
-					corpBranchId: corporateBranchId,
-					roleInOrganization: roleInOrganization,
-					userRoles: roles,
-				}),
-				onResponse({ response }) {
-					if (response.ok) {
-						useToast('Account Creation Successful!', {
-							type: 'success',
-						});
-					} else {
-						throw new Error('Account creation failed. Try again!');
-					}
-					cleanRefs();
-				},
+			let response = await post<any>('/api/app-security/create-account', {
+				username: username,
+				email: email,
+				phoneNumber: phoneNumber,
+				password: password,
+				corporateId: getPrincipal()?.corpOrganization.corpId,
+				corpBranchId: corporateBranchId,
+				roleInOrganization: roleInOrganization,
+				userRoles: roles,
 			});
+			if (response.success) {
+				useToast('Account Created Successfully!', {
+					type: 'success',
+				});
+				cleanRefs();
+			}
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
@@ -104,9 +92,9 @@ const useUserAccounts = () => {
 		} finally {
 			addNewAccountLoading.value = false;
 		}
-	};
+	}
 
-	const updateMyAccountDetails = async (
+	async function updateMyAccountDetails(
 		userId: string,
 		firstName: string,
 		lastName: string,
@@ -117,37 +105,27 @@ const useUserAccounts = () => {
 		isAccountEnabled: boolean,
 		corporateBranchId: string,
 		roles?: string[],
-	) => {
+	) {
 		updateCorporateAccountLoading.value = true;
 		try {
-			await $fetch('/api/v1/auth/corporate-account/update-account-details', {
-				baseURL: runtimeConfig.public.VALUATION_BASE_URL,
-				method: 'PUT',
-				headers: {
-					Accept: '',
-					'Content-Type': '',
-				},
-				body: JSON.stringify({
-					userId: userId,
-					username: `${firstName} ${lastName}`,
-					email: email,
-					password: newPassword,
-					phoneNumber: phoneNumber,
-					roleInOrganization: roleInOrganization,
-					corpBranchId: corporateBranchId,
-					isAccountEnabled: isAccountEnabled,
-					userRoles: !roles ? null : roles,
-				}),
-				onResponse({ response }) {
-					if (response.ok) {
-						useToast('Update Successful!', {
-							type: 'success',
-						});
-					} else {
-						throw new Error('Account updating failed. Try again!');
-					}
-				},
+			let response = await put<any>('/api/app-security/update-valuation-principal', {
+				userId: userId,
+				username: `${firstName} ${lastName}`,
+				email: email,
+				password: newPassword,
+				phoneNumber: phoneNumber,
+				roleInOrganization: roleInOrganization,
+				corpBranchId: corporateBranchId,
+				isAccountEnabled: isAccountEnabled,
+				userRoles: !roles ? null : roles,
 			});
+
+			if (response.success) {
+				useToast('Updated successfully. Kindly Reload!', {
+					type: 'success',
+					title: 'Success',
+				});
+			}
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
@@ -156,7 +134,7 @@ const useUserAccounts = () => {
 		} finally {
 			updateCorporateAccountLoading.value = false;
 		}
-	};
+	}
 
 	return {
 		page,

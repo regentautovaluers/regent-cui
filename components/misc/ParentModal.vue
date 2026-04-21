@@ -18,7 +18,7 @@
 			<!-- Modal content -->
 			<div
 				:class="[
-					'relative flex flex-col rounded-xl border-2 border-blue-700 bg-slate-100',
+					'relative flex flex-col rounded-2xl border-2 border-gray-500 bg-white',
 					modalSize == 'full-screen' && 'h-full',
 				]">
 				<!-- Modal header -->
