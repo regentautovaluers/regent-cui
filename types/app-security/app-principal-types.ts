@@ -37,7 +37,9 @@ export interface LoginResponse {
 	refreshToken: string;
 	jwtToken: string;
 	branchId: string;
-	branchName: any;
+	branchName: string | null;
+	lastLogin: string;
+	firstLogin: boolean;
 	corpId: string;
 	corpName: string;
 	roleInOrganization: string;

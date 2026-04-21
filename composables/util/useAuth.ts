@@ -55,8 +55,8 @@ const useAuth = () => {
 				};
 				setPrincipal(principal);
 
-				// navigate to console homepage
-				navigateTo({ name: 'mobivaluer-home' });
+				// handle re-routing
+				routeAfterLoadPrincipal(data);
 			}
 		} catch (ex) {
 			useToast('Failed to login. Try Again!', {
@@ -73,7 +73,15 @@ const useAuth = () => {
 		return principal.userRoles.includes('ROLE_CORP_ADMIN');
 	});
 
-	const attemptLogout = () => {
+	function routeAfterLoadPrincipal(data: LoginResponse) {
+		if (data.firstLogin) {
+			navigateTo({ name: 'password-setup' });
+		} else {
+			navigateTo({ name: 'mobivaluer-home' });
+		}
+	}
+
+	function attemptLogout() {
 		// unset the auth token and stored principal
 		authToken.value = null;
 		cleanPrincipal();
@@ -90,15 +98,15 @@ const useAuth = () => {
 
 		// redirect to the login page
 		navigateTo({ name: 'exterior-home' });
-	};
+	}
 
-	const displayCookieConsent = (): boolean => {
+	function displayCookieConsent(): boolean {
 		if (!authToken.value || !principal) {
 			return true;
 		}
 
 		return false;
-	};
+	}
 
 	const isPrincipalBroker: ComputedRef<boolean> = computed(() => isBroker);
 
@@ -122,6 +130,7 @@ const useAuth = () => {
 		searchCorpOrBrokerLoading,
 		searchCorpOrBrokerResults,
 		getAuthToken,
+		
 		getPrincipal,
 		attemptLogin,
 		attemptLogout,

@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	const { get } = useStandardizedApi();
 	const vpStore = useValuationPrincipalStore();
 
-	if (to.name == 'external-test-page') {
+	if (['external-test-page', 'password-setup'].includes(to.name as string)) {
 		return;
 	}
 
