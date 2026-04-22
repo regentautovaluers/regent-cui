@@ -39,7 +39,7 @@ export interface LoginResponse {
 	branchId: string;
 	branchName: string | null;
 	lastLogin: string;
-	firstLogin: boolean;
+	passwordUpdated: boolean;
 	corpId: string;
 	corpName: string;
 	roleInOrganization: string;

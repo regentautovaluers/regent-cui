@@ -159,7 +159,7 @@ export default function () {
 				metrics like harsh acceleration and braking.",
 			shortDescription:
 				"Gain instant and reliable insights into driver's behaviour analysis and risk assessment.",
-			icon: 'icon-[material-symbols-light--map-outline-rounded]',
+			icon: 'icon-[material-symbols-light--database-search]',
 			childRoutes: [
 				{
 					id: 1,

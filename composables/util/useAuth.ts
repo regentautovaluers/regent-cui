@@ -74,7 +74,7 @@ const useAuth = () => {
 	});
 
 	function routeAfterLoadPrincipal(data: LoginResponse) {
-		if (data.firstLogin) {
+		if (data.passwordUpdated != undefined && !data.passwordUpdated) {
 			navigateTo({ name: 'password-setup' });
 		} else {
 			navigateTo({ name: 'mobivaluer-home' });
@@ -130,7 +130,7 @@ const useAuth = () => {
 		searchCorpOrBrokerLoading,
 		searchCorpOrBrokerResults,
 		getAuthToken,
-		
+
 		getPrincipal,
 		attemptLogin,
 		attemptLogout,

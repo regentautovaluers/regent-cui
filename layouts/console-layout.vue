@@ -175,23 +175,6 @@
 				<!-- notifs, logout and settings -->
 				<ul class="w-full px-2">
 					<!-- notifs -->
-					<!-- <li
-						class="flex h-12 w-full items-center justify-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
-						<button
-							class="inline-flex size-full cursor-pointer items-center space-x-3"
-							:class="!getSidebarCollapsedState && 'w-19 justify-center'"
-							@click="attemptLogout">
-							<span
-								class="icon-[material-symbols-light--notifications-rounded] size-7 text-inherit"></span>
-							<span
-								class="text-sm transition-all duration-200 ease-out"
-								:class="getSidebarCollapsedState ? 'block' : 'hidden'"
-								>Notifications</span
-							>
-						</button>
-					</li> -->
-
-					<!-- settings -->
 					<li
 						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<NuxtLink
@@ -200,7 +183,8 @@
 								'inline-flex size-full items-center justify-start',
 								!getSidebarCollapsedState ? 'w-19 justify-center' : 'space-x-3',
 							]">
-							<SettingsIcon classes="size-6 text-inherit" />
+							<span
+								class="icon-[material-symbols-light--settings-outline] size-7"></span>
 							<span
 								class="text-sm transition-all duration-200 ease-out"
 								:class="getSidebarCollapsedState ? 'block' : 'hidden'"
@@ -209,14 +193,58 @@
 						</NuxtLink>
 					</li>
 
+					<!-- <li
+						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						<button
+							:class="[
+								'inline-flex size-full items-center justify-start',
+								!getSidebarCollapsedState ? 'w-19 justify-center' : 'space-x-3',
+							]"
+							id="dropdownNotificationButton"
+							data-dropdown-toggle="dropdownNotification">
+							<span
+								class="icon-[material-symbols-light--notifications-outline] size-7"></span>
+							<span
+								class="text-sm transition-all duration-200 ease-out"
+								:class="getSidebarCollapsedState ? 'block' : 'hidden'"
+								>Notifications</span
+							>
+						</button>
+
+						<div
+							id="dropdownNotification"
+							class="divide-default-medium rounded-base z-20 hidden w-full max-w-sm divide-y bg-white shadow"
+							aria-labelledby="dropdownNotificationButton">
+							<div
+								class="text-body rounded-t-base bg-neutral-secondary-medium block px-4 py-2 text-center font-medium">
+								Notifications
+							</div>
+							<div class="divide-default divide-y">
+								<div
+									class="hover:bg-neutral-secondary-medium flex px-4 py-3"
+									v-for="a in 5"
+									:key="a">
+									<div class="w-full">
+										<div class="text-body mb-1.5 text-sm">
+											New message from
+											<span class="text-heading font-semibold">Jese Leos</span
+											>: "Hey, what's up? All set for the presentation?"
+										</div>
+										<div class="text-fg-brand text-xs">a few moments ago</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li> -->
+
 					<!-- logout -->
 					<li
-						class="flex h-12 w-full items-center justify-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
+						class="flex h-12 w-full items-center rounded-xl px-2 text-gray-600 hover:bg-gray-300/50">
 						<button
 							class="inline-flex size-full cursor-pointer items-center space-x-3"
 							:class="!getSidebarCollapsedState && 'w-19 justify-center'"
 							@click="attemptLogout">
-							<LogoutIcon classes="size-6 text-inherit" />
+							<span class="icon-[material-symbols-light--exit-to-app] size-7"></span>
 							<span
 								class="text-sm transition-all duration-200 ease-out"
 								:class="getSidebarCollapsedState ? 'block' : 'hidden'"

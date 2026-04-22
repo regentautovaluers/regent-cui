@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
 				Authorization: `Bearer ${cookies.valuation_auth_token}`,
 			},
 		});
+		return sendSuccessResponse(event, null);
 	} catch (ex) {
 		console.log(ex);
 		return sendErrorResponse(event, ex);
