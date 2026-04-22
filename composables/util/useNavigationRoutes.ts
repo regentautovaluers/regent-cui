@@ -126,7 +126,7 @@ export default function () {
 			renderRoute: ['BANK', 'MICRO_FINANCE', 'SACCO'].includes(
 				getPrincipal()?.corpOrganization.corpClass!,
 			),
-			icon: 'icon-[material-symbols-light--globe-location-pin]',
+			icon: 'icon-[material-symbols-light--location-on]',
 			description:
 				'Our vehicle and fleet tracking services ensure that you have real-time visibility over your assets. \
 			 	Monitor your fleet, track your vehicles, and stay on top of your logistics. Our GPS tracking technology \
