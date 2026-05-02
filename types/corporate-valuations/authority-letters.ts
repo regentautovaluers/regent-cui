@@ -2,6 +2,7 @@ import type { RegentUser } from './valuation-report';
 
 export interface AuthorityLetter {
 	letterId: string;
+	createdByBroker?: boolean;
 	registrationNumber: string;
 	clientName: string;
 	feedback: string;
@@ -14,10 +15,12 @@ export interface AuthorityLetter {
 	reportURL: string | null;
 	feedbackTrail: FeedbackTrail[];
 	uploadedDocuments: string[];
+	corpOrganization?: CorpOrganization;
 }
 
 export interface AuthorizedBy {
 	username: string;
+	phoneNumber?: string;
 }
 
 export interface FeedbackTrail {
@@ -31,4 +34,9 @@ export interface FeedbackTrail {
 export interface AddedByCorporateUser {
 	userId: string;
 	username: string;
+}
+
+interface CorpOrganization {
+	corpId: string;
+	corpName: string;
 }

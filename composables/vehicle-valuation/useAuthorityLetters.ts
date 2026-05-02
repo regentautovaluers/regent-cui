@@ -118,6 +118,18 @@ const useAuthorityLetters = () => {
 			formData.append('clientName', clientName.value);
 			formData.append('clientPhone', clientPhone.value);
 			formData.append('authorizedBy', getPrincipal()?.userId as string);
+			// purely for the PDF - these few don't endup in the request to the proxied URL
+			formData.append('authorizedByUsername', getPrincipal()?.username as string);
+			formData.append('authorizedByPhoneNumber', getPrincipal()?.phoneNumber as string);
+			formData.append(
+				'isCreatedByBroker',
+				getPrincipal()?.corpOrganization.broker as unknown as string,
+			);
+			formData.append('corporateName', getPrincipal()?.corpOrganization.corpName as string);
+			formData.append(
+				'agentName',
+				getPrincipal()?.corpOrganization.corpName as string,
+			);
 
 			if (preferredBranch.value.length > 0) {
 				formData.append('regentBranch', preferredBranch.value);
@@ -141,6 +153,7 @@ const useAuthorityLetters = () => {
 			if (agencyOrCorpId.value) {
 				formData.append('agencyName', agencyOrCorpId.value);
 			}
+
 			await post('/api/vehicle-valuation/create-authority-letter', formData);
 			useToast('Authority Letter created successfully!', {
 				type: 'success',
