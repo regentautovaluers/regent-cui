@@ -7,7 +7,13 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Create the production image with a shared volume
-FROM node:20.19-slim AS serve
+FROM node:22-slim AS serve
+
+RUN apt-get update && apt-get install -y \
+    wkhtmltopdf \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY --from=build /app/.output /app/.output
