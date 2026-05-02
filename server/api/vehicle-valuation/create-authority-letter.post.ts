@@ -3,6 +3,8 @@ import type { GenericResponse } from '~/types/corporate-valuations/generic-respo
 export default defineEventHandler(async (event) => {
 	const requestData = await readMultipartFormData(event);
 	const formData = new FormData();
+	const cookies = parseCookies(event);
+	const config = useRuntimeConfig();
 
 	// Check if requestData exists and iterate using for...of
 	if (requestData) {
@@ -22,9 +24,7 @@ export default defineEventHandler(async (event) => {
 		}
 	}
 
-	const cookies = parseCookies(event);
-	console.log(cookies);
-	const config = useRuntimeConfig();
+	
 	try {
 		const endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`;
 		await makeProxyRequest<GenericResponse<any>>(endpoint, {
