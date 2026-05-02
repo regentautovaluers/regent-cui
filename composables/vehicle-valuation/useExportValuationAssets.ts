@@ -8,7 +8,7 @@ function useExportValuationAssets() {
 	async function generateAuthorityLetter(t: AuthorityLetter) {
 		try {
 			generateAuthorizationLetterLoading.value = true;
-			const blob = await getBlob('/api/vehicle-valuation/generate-authority-letter', {
+			const blob = await getBlob('/api/vehicle-valuation/build-authority-letter', {
 				method: 'POST',
 				body: t,
 			});
