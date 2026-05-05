@@ -39,11 +39,11 @@
 			<div
 				class="tablet:space-x-0 tablet:flex-row mt-2 flex flex-col justify-between space-y-2">
 				<form
-					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex h-[50px] w-full items-center justify-between"
+					class="tablet:mt-0 tablet:w-[50%] laptop-lg:w-[25%] relative flex w-full items-center justify-between"
 					@submit.prevent="handleSearchTriggered(searchRegNo)">
 					<input
 						type="text"
-						class="generic-input h-full"
+						class="generic-input"
 						placeholder="Search Registration"
 						required
 						v-model="searchRegNo" />
@@ -68,7 +68,7 @@
 						type="button"
 						class="filter-button flex-grow text-gray-600"
 						@click="setSidebarCollapsedState(false)">
-						<span class="icon-[material-symbols-light--downloading] size-7 mr-1"></span>
+						<span class="icon-[material-symbols-light--downloading] mr-1 size-7"></span>
 						<span>Export Report</span>
 					</button>
 				</div>
@@ -401,8 +401,22 @@
 				:key="index"
 				:modal-id="`extended-letter-${letter.letterId}`"
 				:modal-subtitle="`For vehicle ${letter.registrationNumber}`"
-				modal-size="large">
-				<AuthorityLetterDetailsForm :authority-letter="letter" />
+				modal-size="default">
+				<template #action-btn>
+					<button
+						type="button"
+						class="group inline-flex items-center space-x-2 rounded-full border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:ring-yellow-300 focus:outline-none"
+						@click.prevent="generateAuthorityLetter(letter)"
+						:disabled="generateAuthorizationLetterLoading">
+						<span class="text-sm font-medium">Download Letter</span>
+						<span
+							class="icon-[svg-spinners--ring-resize] size-3 text-yellow-800 group-hover:text-white"
+							v-if="generateAuthorizationLetterLoading"></span>
+					</button>
+				</template>
+				<template #default
+					><AuthorityLetterDetailsForm :authority-letter="letter"
+				/></template>
 			</ParentModal>
 		</template>
 	</div>
@@ -436,4 +450,6 @@
 		executeGetAuthorityLetters,
 		clearFilters,
 	} = useAuthorityLetters();
+	const { generateAuthorityLetter, generateAuthorizationLetterLoading } =
+		useExportValuationAssets();
 </script>
