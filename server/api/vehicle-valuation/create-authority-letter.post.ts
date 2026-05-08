@@ -102,7 +102,5 @@ function buildAuthorityLetterRequestBody(input: Record<string, string>): Authori
 		},
 	};
 
-	console.log(letter);
-
 	return letter;
 }
