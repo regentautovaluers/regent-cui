@@ -252,7 +252,7 @@
 											>{{ member.phone_number }}</span
 										>
 									</td>
-									<td class="py-4 pr-2 text-end">
+									<td class="p-4 text-end">
 										<button
 											:id="'dropdownLeftButton' + index"
 											:data-dropdown-toggle="'dropdownTop' + index"
@@ -473,14 +473,16 @@
 	<!-- View Member Vehicles modal -->
 	<template v-if="corporateMemberships && corporateMemberships.length > 0">
 		<template
-			v-for="(member, index) in corporateMemberships"
+			v-for="(member, index) in corporateMemberships.filter(
+				(e) => e.membershipVehicles && e.membershipVehicles.length > 0,
+			)"
 			:key="index">
 			<ParentModal
-				v-if="member.membershipVehicles && member.membershipVehicles.length > 0"
 				modal-title="Member Vehicles"
 				:modal-subtitle="`Viewing ${member.membershipVehicles.length ?? 0} Vehicles`"
 				:modal-id="`view-member-${member.id}-vehicles-modal`">
-				<div class="tablet:grid-cols-2 grid grid-cols-1 gap-3">
+				<div
+					class="tablet:grid-cols-2 hide-scrollbar tablet:h-[calc(100vh-30vh)] tablet:max-h-[calc(100vh-30vh)] laptop:h-[calc(100vh-40vh)] laptop:max-h-[calc(100vh-40vh)] laptop-lg:h-[calc(100vh-50vh)] laptop-lg:max-h-[calc(100vh-50vh)] grid h-[calc(100vh-25vh)] max-h-[calc(100vh-25vh)] grid-cols-1 gap-3 overflow-y-auto">
 					<MemberVehiclesCard
 						v-for="(vehicle, index) in member.membershipVehicles"
 						:key="index"

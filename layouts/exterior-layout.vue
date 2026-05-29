@@ -20,7 +20,7 @@
 			</ClientOnly>
 		</section>
 		<div class="flex h-full flex-col">
-			<div class="tablet:h-1/4 tablet:px-12 laptop:px-20 flex h-fit items-center px-4 py-2">
+			<div class="tablet:h-1/4 tablet:px-12 laptop:px-20 flex h-fit items-center px-4">
 				<img
 					src="/images/app-logo.png"
 					class="tablet:h-16 h-14"
@@ -32,7 +32,7 @@
 			<div
 				class="laptop:mb-10 flex flex-col items-center justify-center p-2 text-xs sm:text-sm">
 				<h6>
-					&copy; 2025. All Rights Reserved.
+					&copy; {{ publicRuntimeConfig.COPYRIGHT_YEAR }}. All Rights Reserved.
 					<span class="font-semibold text-pink-500">Regent Auto Valuers</span>
 				</h6>
 			</div>
@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 	const vpStore = useValuationPrincipalStore();
-
+	const { public: publicRuntimeConfig } = useRuntimeConfig();
 	const slides: string[] = [
 		'/images/slides/landingpage/1.jpg',
 		'/images/slides/landingpage/2.jpg',

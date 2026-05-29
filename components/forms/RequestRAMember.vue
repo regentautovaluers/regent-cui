@@ -117,7 +117,7 @@
 			>
 			<select
 				class="generic-input"
-				:class="loadingVehicleTypes ? 'opactiy-50 animate-pulse' : null"
+				:class="loadingVehicleTypes ? 'animate-pulse opacity-50' : null"
 				id="vehicle-type"
 				required
 				v-model.number="vehicleTypeIndex">
@@ -397,11 +397,11 @@
 			isMemberUnderEA.value === false
 		) {
 			const towingCost = calculateTowingChargeMember(
-				selectedVehicleType.towingRate.withinThreshHoldPrice,
+				selectedVehicleType.towingRateWithinThresholdPrice,
 				computedTowingDistance.value,
-				selectedVehicleType.towingRate.overThreshHoldPriceMembers,
+				selectedVehicleType.towingRateOverThresholdPriceMembers,
 				freeDistanceLeftForTowing.value,
-				selectedVehicleType.towingRate.threshHoldDistance,
+				selectedVehicleType.towingRateThresholdDistance,
 			);
 			return towingCost;
 		} else if (
@@ -410,9 +410,9 @@
 			isMemberUnderEA.value === true
 		) {
 			const towingCost = calculateTowingChargeNonMember(
-				selectedVehicleType.towingRate.withinThreshHoldPrice,
+				selectedVehicleType.towingRateWithinThresholdPrice,
 				computedTowingDistance.value,
-				selectedVehicleType.towingRate.overThreshHoldPriceNonMembers,
+				selectedVehicleType.towingRateOverThresholdPriceNonMembers,
 			);
 
 			return towingCost;

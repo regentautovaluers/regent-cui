@@ -1,20 +1,19 @@
 <template>
 	<div class="console-layout-spacing">
 		<!-- links strip -->
-		<!-- links strip -->
 		<div
 			class="hide-scrollbar mb-5 h-fit space-x-4 divide-y-2 overflow-x-scroll rounded-lg border-2 bg-white whitespace-nowrap">
 			<div class="inline-flex h-28 w-full items-center justify-between p-5 outline-none">
 				<div class="flex h-full items-center space-x-3">
 					<button
-						class="inline-flex h-[70%] w-[50px] items-center justify-center rounded-lg bg-blue-500 outline-none">
+						class="inline-flex h-[70%] w-[50px] items-center justify-center rounded-lg bg-blue-600 outline-none">
 						<span
 							class="icon-[material-symbols-light--fact-check-outline-rounded] text-4xl text-slate-100"></span>
 					</button>
 					<div>
 						<h1 class="text-xl font-semibold text-gray-800">Authority Letters</h1>
 						<h2 class="text-sm text-gray-500">
-							Create And Access Previous Go-Aheads for Valuations
+							Create And Access Previous Requests for Valuations
 						</h2>
 					</div>
 				</div>

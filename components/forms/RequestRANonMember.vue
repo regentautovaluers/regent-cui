@@ -382,11 +382,11 @@
 		const selectedVehicleType = vehicleTypes.value
 			? vehicleTypes.value[vehicleTypeIndex.value]
 			: null;
-		if (computedTowingDistance.value) {
+		if (computedTowingDistance.value && selectedVehicleType) {
 			const towingCost = calculateTowingChargeNonMember(
-				selectedVehicleType.towingRate.withinThreshHoldPrice,
+				selectedVehicleType.towingRateWithinThresholdPrice,
 				computedTowingDistance.value,
-				selectedVehicleType.towingRate.overThreshHoldPriceNonMembers,
+				selectedVehicleType.towingRateOverThresholdPriceNonMembers,
 			);
 			return towingCost || 0;
 		} else {

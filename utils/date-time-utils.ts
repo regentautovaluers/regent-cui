@@ -136,3 +136,20 @@ export const screenFormatRAServiceName = (rawType: string): string => {
 
 	return friendlyType;
 };
+
+export function deriveMinDate(t: number): string {
+	const date = new Date();
+
+	// Subtract 3 months from the current month
+	date.setMonth(date.getMonth() - t);
+
+	// Set to the first day of that month
+	date.setDate(1);
+
+	return date.toISOString().split('T')[0];
+}
+
+export function deriveMaxDate(): string {
+	const date = new Date();
+	return date.toISOString().split('T')[0];
+}

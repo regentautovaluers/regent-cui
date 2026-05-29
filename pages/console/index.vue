@@ -285,7 +285,12 @@
 			</div>
 			<div
 				class="tablet:flex-row tablet:space-y-0 desktop-4k:px-[22rem] laptop:px-10 bottom-0 col-span-full flex w-full flex-col items-center justify-between space-y-2 bg-gray-700/80 px-2 py-6 text-sm text-slate-100">
-				<p><span>&copy; 2025. Regent Auto Valuers. All rights reserved.</span></p>
+				<p>
+					<span
+						>&copy; {{ publicRuntimeConfig.COPYRIGHT_YEAR }}. Regent Auto Valuers. All
+						rights reserved.</span
+					>
+				</p>
 				<p class="inline-flex space-x-2">
 					<a href="#">Terms of Use</a><span>&VerticalBar;</span
 					><a href="#">Privacy Policy</a>
@@ -304,6 +309,7 @@
 	const { navigationRoutes } = useNavigationRoutes();
 	const { getPrincipal } = useAuth();
 	const userQuery: Ref<string | null> = ref(null);
+	const { public: publicRuntimeConfig } = useRuntimeConfig();
 
 	function reRoute() {
 		navigateTo({ name: 'ava-chat', query: { uq: userQuery.value } });

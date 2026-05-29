@@ -71,7 +71,7 @@
 							currentRegForm === 1 &&
 							'font-semibold text-blue-600 after:absolute after:-bottom-[2px] after:left-0 after:h-[2.5px] after:w-full after:bg-blue-600'
 						"
-						>Registered Client</span
+						>Unregistered Client</span
 					>
 				</button>
 			</div>

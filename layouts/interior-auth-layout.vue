@@ -22,7 +22,7 @@
 			<div
 				class="laptop:mb-10 flex flex-col items-center justify-center p-2 text-xs sm:text-sm">
 				<h6>
-					&copy; 2025. All Rights Reserved.
+					&copy; {{ publicRuntimeConfig.COPYRIGHT_YEAR }}. All Rights Reserved.
 					<span class="font-semibold text-pink-500">Regent Tracking Company</span>
 				</h6>
 			</div>
@@ -37,4 +37,5 @@
 		'/images/slides/regenttrack/3.png',
 		'/images/slides/regenttrack/4.png',
 	];
+	const { public: publicRuntimeConfig } = useRuntimeConfig();
 </script>

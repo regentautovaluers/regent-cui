@@ -1,6 +1,10 @@
 import { type LocationCoords, type MapCoordsMarker } from '~/types';
 import { Loader } from '@googlemaps/js-api-loader';
 import { useGeolocation } from '@vueuse/core';
+import type { SlimmedSearchResult } from '~/types/ava-roadside-assistance/search-vehicle';
+import type { SlimmedAvaVehicleTypes } from '~/types/ava-roadside-assistance/vehicle-types';
+import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
+import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export const useClientGeolocation = () => {
 	const { coords, error } = useGeolocation();
@@ -30,6 +34,7 @@ export const useClientGeolocation = () => {
 export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMarker) => void) => {
 	const runtimeConfig = useRuntimeConfig();
 	const { getPrincipal } = useAuth();
+	const { get } = useStandardizedApi();
 	const route = useRoute();
 	const makeRequestLoading = ref(false);
 	const vehicleSearchLoading: Ref<boolean> = ref(false);
@@ -82,15 +87,16 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		error: loadVehicleTypesError,
 		data: vehicleTypes,
 		refresh: refreshVehicleTypes,
-	} = useFetch('/api/v1/control-unit/vehicle-types', {
-		baseURL: runtimeConfig.public.AVA_BASE_URL,
+	} = useApiData<
+		GenericResponse<SlimmedAvaVehicleTypes[]>,
+		GenericResponse<SlimmedAvaVehicleTypes[]>
+	>('supported-vehicle-types', '/api/roadside-assistance/load-vehicle-types', {
 		method: 'GET',
-		headers: {
-			Accept: '',
-		},
 		server: false,
-		lazy: true,
-	}) as any;
+		transform: (d: StandardSuccessResponse<GenericResponse<SlimmedAvaVehicleTypes[]>>) => {
+			return d.data;
+		},
+	});
 
 	// load the charges for other services
 	const { data: serviceCharges } = useFetch('/api/v1/control-unit/services', {
@@ -181,52 +187,48 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		});
 	};
 
-	const searchVehicleRegistration = async (): Promise<void> => {
+	async function searchVehicleRegistration() {
 		try {
 			vehicleSearchLoading.value = true;
-
-			await $fetch('/api/v1/bookings', {
-				baseURL: runtimeConfig.public.AVA_BASE_URL,
-				method: 'GET',
-				query: {
+			const response = await get<SlimmedSearchResult>(
+				'/api/roadside-assistance/search-vehicle-reg',
+				{
 					registration: vehicleRegistration.value,
-					corporateId: getPrincipal()?.corpOrganization.corpId,
+					corpId: getPrincipal()?.corpOrganization.corpId,
 				},
-				async onResponse({ response }) {
-					if (response.status === 404) {
-						useToast('Not Found. Try Again!', {
-							type: 'warn',
-						});
-						vehicleRegistration.value = '';
-						return;
-					}
+			);
 
-					useToast('Vehicle Found!', {
-						type: 'success',
+			if (response.success) {
+				const data = (response as StandardSuccessResponse<SlimmedSearchResult>).data;
+				// for no results found
+				if (data == null) {
+					useToast('Vehicle not found!', {
+						type: 'warn',
 					});
+					return;
+				}
 
-					const registrationDetails = response._data;
-					vehicleRegistration.value = registrationDetails.membershipVehicle.registration;
-					userName.value = registrationDetails.membership.full_name;
-					userPhoneNumber.value = registrationDetails.membership.phone_number;
-					userEmail.value = registrationDetails.membership.userEmail;
-					vehicleMake.value = registrationDetails.membershipVehicle.make;
-					vehicleModel.value = registrationDetails.membershipVehicle.model;
+				userName.value = data.user.full_name;
+				userPhoneNumber.value = data.user.phone_number;
+				userEmail.value = data.user.userEmail;
+				vehicleMake.value = data.vehicleDetails.make;
+				vehicleModel.value = data.vehicleDetails.model;
+				vehicleRegistration.value = data.vehicleDetails.registration;
 
-					// if there is a non-null free distance
-					if (registrationDetails.membershipVehicle.available_free_distance) {
-						freeDistanceLeftForTowing.value = registrationDetails.membershipVehicle
-							.available_free_distance as number;
-						// and that the request is for a member who is under roadside assistance
-						isMemberUnderEA.value = false;
-					} else {
-						freeDistanceLeftForTowing.value = 0;
+				// if there is a non-null free distance
+				if (data.vehicleDetails.available_free_distance) {
+					freeDistanceLeftForTowing.value = Number(
+						data.vehicleDetails.available_free_distance,
+					);
+					// and that the request is for a member who is under roadside assistance
+					isMemberUnderEA.value = false;
+				} else {
+					freeDistanceLeftForTowing.value = 0;
 
-						// the request is for a member but is under emergency evacuation
-						isMemberUnderEA.value = true;
-					}
-				},
-			});
+					// the request is for a member but is under emergency evacuation
+					isMemberUnderEA.value = true;
+				}
+			}
 		} catch (error) {
 			console.log('An error occured: ', error);
 			useToast('Failed. Try Again!', {
@@ -235,7 +237,7 @@ export const useRoadsideAssistanceRequests = (callback?: (pinCoords: MapCoordsMa
 		} finally {
 			vehicleSearchLoading.value = false;
 		}
-	};
+	}
 
 	const makeServiceRequest = async (
 		serviceCost: number,

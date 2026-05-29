@@ -82,11 +82,12 @@ export interface ValuationBooking {
 	boxNumber: string | null;
 	reportURL: string | null;
 	reportValidationToken?: string;
-	vehicleValue: VehicleValue | null;
-	completeTransaction: CompleteTransaction[] | null;
-	pending: string | null;
-	inspectionNote: string | null;
-	inspectionFnl?: ValuationReport | null;
+	vehicleValue: VehicleValue;
+	completeTransaction: CompleteTransaction[];
+	pending: string;
+	inspectionNote: string;
+	inspectionRemarks: string;
+	inspectionFnl: ValuationReport | null;
 }
 
 export type ValuationStages =

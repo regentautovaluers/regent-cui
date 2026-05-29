@@ -5,11 +5,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	const nuxtApp = useNuxtApp();
 	const authToken = useCookie('valuation_auth_token');
 	const isAuthenticated = !!authToken.value;
-	const isLoginPage = to.name === 'exterior-home';
+	const unauthPages = ['exterior-home'];
 	const { get } = useStandardizedApi();
 	const vpStore = useValuationPrincipalStore();
 
-	if (to.name == 'external-test-page') {
+	if (unauthPages.includes(to.name as string)) {
 		return;
 	}
 
@@ -19,18 +19,16 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	}
 
 	// Case 1: No token, trying to access protected route → redirect to login
-	if (!isAuthenticated && !isLoginPage) {
+	if (!isAuthenticated && !unauthPages.includes(to.name as string)) {
 		// Use replace to avoid adding history entry for unauthorized access
 		return navigateTo({ name: 'exterior-home' }, { replace: true });
 	}
 
-	// Case 2: No token, already on login page → allow
-	if (!isAuthenticated && isLoginPage) {
-		return;
-	}
-
 	// Case 3: Has token, needs user data validation/loading
-	if (isAuthenticated) {
+	if (
+		isAuthenticated &&
+		(to.name == 'password-setup' || !unauthPages.includes(to.name as string))
+	) {
 		// If we already have principal data in store, skip fetch
 		if (vpStore.principal != null) {
 			return;

@@ -89,7 +89,7 @@ export default function () {
 			id: 3,
 			screenName: 'Collateral Verification',
 			routeName: 'collateral-verification-home',
-			renderRoute: true,
+			renderRoute: false,
 			icon: 'icon-[material-symbols-light--document-search-outline]',
 			description:
 				'Introducing our newest addition to our range of services. Our collateral verification \
@@ -132,7 +132,7 @@ export default function () {
 			renderRoute: ['BANK', 'MICRO_FINANCE', 'SACCO'].includes(
 				getPrincipal()?.corpOrganization.corpClass!,
 			),
-			icon: 'icon-[material-symbols-light--globe-location-pin]',
+			icon: 'icon-[material-symbols-light--location-on]',
 			description:
 				'Our vehicle and fleet tracking services ensure that you have real-time visibility over your assets. \
 			 	Monitor your fleet, track your vehicles, and stay on top of your logistics. Our GPS tracking technology \
@@ -155,14 +155,17 @@ export default function () {
 			routeName: bypassRegentTrackingLogin()
 				? 'insurance-telematics-all-vehicles'
 				: 'regent-track-auth',
-			renderRoute: getPrincipal()?.corpOrganization.corpClass == 'INSURANCE',
+			renderRoute:
+				getPrincipal()?.corpOrganization.corpClass == 'INSURANCE' ||
+				getPrincipal()?.corpOrganization.corpId ==
+					'CP-COAD-3A14D3' /*hardcoded for demo purposes*/,
 			description:
 				"Gain instant and reliable insights into driver's behaviour analysis and risk assessment. Our simple \
 				classification algorithm uses various metrics to intricately classify drives into categories depending on various measurable \
 				metrics like harsh acceleration and braking.",
 			shortDescription:
 				"Gain instant and reliable insights into driver's behaviour analysis and risk assessment.",
-			icon: 'icon-[material-symbols-light--map-outline-rounded]',
+			icon: 'icon-[material-symbols-light--database-search]',
 			childRoutes: [
 				{
 					id: 1,

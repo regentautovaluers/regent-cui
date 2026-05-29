@@ -10,7 +10,7 @@
 					<label
 						for="registration-number"
 						class="generic-input-label generic-input-required-label"
-						>Registration Number</label
+						>Registration</label
 					>
 					<input
 						type="text"
@@ -40,7 +40,7 @@
 					<label
 						for="client-phone"
 						class="generic-input-label generic-input-required-label"
-						>Client Phone Number</label
+						>Client Phone</label
 					>
 					<input
 						type="text"
@@ -83,6 +83,7 @@
 					</button>
 				</div>
 			</div>
+
 			<div class="relative mt-2 flex w-full flex-col">
 				<label
 					for="preffered-branch"
@@ -92,7 +93,8 @@
 				<select
 					class="generic-input"
 					id="preffered-branch"
-					v-model="preferredBranch">
+					v-model="preferredBranch"
+					disabled>
 					<option
 						:value="''"
 						selected>
@@ -100,29 +102,36 @@
 					</option>
 					<!-- TODO: Re-enable this later -->
 					<!-- <option
-					v-for="(branch, index) in regentBranches"
-					:key="index"
-					:value="branch.branchId">
-					{{ branch.branchName }}
-				</option> -->
+						v-for="(branch, index) in regentBranches"
+						:key="index"
+						:value="branch.branchId">
+						{{ branch.branchName }}
+					</option> -->
 				</select>
 				<FormSubmissionLoader
 					class="absolute top-[52%] right-6 mr-2 size-5 animate-spin text-gray-500"
 					v-if="fetchStatus === 'pending'" />
 			</div>
 			<!-- comments -->
-			<div class="mt-5">
+			<div class="relative mt-5">
 				<label
-					for="comments"
+					for="extra_instructions"
 					class="generic-input-label"
 					>Extra Instructions</label
 				>
 				<textarea
-					id="comments"
+					id="extra_instructions"
 					class="generic-text-area resize-none"
-					rows="10"
+					rows="6"
 					placeholder="Provide optional instructions for this request."
-					v-model="comments"></textarea>
+					v-model="comments"
+					maxlength="256"></textarea>
+				<p class="absolute right-3 bottom-2 text-sm font-semibold text-gray-700">
+					<span class="text-lg">
+						{{ comments.length }}
+					</span>
+					<span>/256</span>
+				</p>
 			</div>
 			<!-- data below the comments box -->
 			<div
@@ -138,36 +147,42 @@
 						type="text"
 						id="policy-number"
 						class="generic-input"
-						placeholder="e.g MGL/07/080/00/489586/2020"
+						placeholder="e.g POLICY/123"
 						v-model="policyNumber" />
 				</div>
-				<!-- Officer Name -->
-				<div class="relative w-full lg:w-1/3">
-					<label class="generic-input-label">{{
-						isPrincipalBroker ? 'Select Corporate' : 'Select Broker / Agency'
-					}}</label>
+
+				<!-- broker/insurance -->
+				<div class="relative z-0 w-full lg:w-1/3">
+					<label class="generic-input-label text-transparent peer-focus:bg-red-500">
+						{{ 'h' }}</label
+					>
 					<input
 						type="text"
 						id="officer-name"
 						class="generic-input peer"
 						:required="isPrincipalBroker"
-						placeholder="Start typing to search"
-						v-model="agencyOrCorpName" />
+						:placeholder="isPrincipalBroker ? 'Select Corporate' : 'Select Agent'"
+						v-model="searchPhrase" />
 					<span
 						class="icon-[svg-spinners--ring-resize] absolute top-[37px] right-3 text-2xl text-gray-500"
 						v-if="fetchingCorporateClients"></span>
+					<span
+						class="icon-[material-symbols-light--warning-outline-rounded] absolute top-[37px] right-3 text-2xl text-yellow-500"
+						v-if="errorFetchingCorporateClients"></span>
 
 					<!-- selectable entries  -->
 					<div
-						class="peer thin-scrollbar absolute -top-52 hidden h-52 max-h-52 w-full flex-col space-y-2 overflow-y-auto rounded-xl border border-gray-200 bg-white p-3 shadow-md peer-focus:flex hover:flex">
+						class="peer thin-scrollbar absolute -top-[155px] -z-10 hidden h-60 max-h-60 w-[calc(100%+3%)] -translate-x-2.5 flex-col space-y-2 overflow-y-auto rounded-lg border-2 border-gray-200 bg-white p-3 shadow-md peer-focus:flex hover:flex">
 						<button
-							class="w-full cursor-pointer rounded-md bg-gray-100 p-2 text-start text-gray-500 transition-colors duration-200 outline-none hover:bg-gray-300 hover:text-gray-700"
+							class="w-full cursor-pointer rounded-md bg-gray-100 p-2 text-start text-sm text-gray-500 transition-colors duration-200 outline-none hover:bg-blue-600 hover:text-white"
 							type="button"
 							v-for="(e, idx) in computedCorporateClients"
 							:key="idx"
 							@click.prevent="
 								() => {
-									((agencyOrCorpName = e.corpName), (agencyOrCorpId = e.corpId));
+									agencyOrCorpName = e.corpName;
+									searchPhrase = e.corpName;
+									agencyOrCorpId = e.corpId;
 								}
 							">
 							{{ e.corpName }}
@@ -186,144 +201,53 @@
 						id="authorized-by"
 						class="generic-input"
 						disabled
-						:value="getPrincipal?.username" />
+						:value="getPrincipal()?.username" />
 				</div>
 			</div>
 
 			<!-- documents -->
 			<div
-				class="mt-4 flex w-full max-w-full grid-cols-2 flex-wrap items-center space-y-2 space-x-2">
-				<!-- Certificate of Registration -->
-				<label
-					for="cert-of-registration"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						certUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>Certificate of Incorporation</span>
-					<input
-						id="cert-of-registration"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'Certificate of Registration',
-								);
-								certUploaded = true;
-							}
-						" />
-				</label>
-
-				<!-- kra pin -->
-				<label
-					for="kra-pin"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						kraPinUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>KRA PIN</span>
-					<input
-						id="kra-pin"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'KRA PIN',
-								);
-								kraPinUploaded = true;
-							}
-						" />
-				</label>
-
-				<!-- National ID -->
-				<label
-					for="national-id"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						natIdUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>National ID</span>
-					<input
-						id="national-id"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'National ID',
-								);
-								natIdUploaded = true;
-							}
-						" />
-				</label>
-
-				<label
-					for="vehicle-logbook"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						logbookUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>Vehicle Logbook</span>
-					<input
-						id="vehicle-logbook"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'Logbook',
-								);
-								logbookUploaded = true;
-							}
-						" />
-				</label>
-
-				<!-- Authority Letter -->
-				<label
-					for="authority-letter"
-					class="auth-letter-file-input border-gray-400 backdrop-opacity-50"
-					:class="
-						letterUploaded
-							? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-							: 'border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100'
-					">
-					<span>Authority Letter</span>
-					<input
-						id="authority-letter"
-						type="file"
-						accept=".jpg, .jpeg, .png, .pdf, .webp, .doc, .docx"
-						class="hidden"
-						@change.prevent="
-							(e) => {
-								handleFileUpload(
-									(e.target as HTMLInputElement)?.files?.[0] as File,
-									'Authority Letter',
-								);
-								letterUploaded = true;
-							}
-						" />
-				</label>
+				class="tablet:grid-cols-2 laptop:grid-cols-3 mt-5 grid grid-cols-1 gap-3 rounded-lg bg-gray-100 p-3">
+				<h1 class="col-span-full font-semibold text-gray-700">Required KYCs</h1>
+				<!-- grid -->
+				<template
+					v-for="d in [
+						'Certificate of Registration',
+						'KRA PIN',
+						'National ID',
+						'Logbook',
+						'Authority Letter',
+					]"
+					:key="d.replaceAll(' ', '').toLowerCase()">
+					<div>
+						<label
+							class="text-heading mb-1 block text-sm font-medium text-gray-700"
+							:for="d.replaceAll(' ', '_').toLowerCase()"
+							>{{ d }}</label
+						>
+						<input
+							class="bg-neutral-secondary-medium border-default-medium text-heading focus:ring-brand focus:border-brand placeholder:text-body block w-full cursor-pointer rounded-lg border text-sm shadow-xs"
+							aria-describedby="file_input_help"
+							:id="d.replaceAll(' ', '_').toLowerCase()"
+							@change="
+								(e) =>
+									handleFileUpload(
+										(e.target as HTMLInputElement)?.files?.[0] as File,
+										d,
+									)
+							"
+							type="file"
+							accept=".jpeg, .png, .jpg, .pdf" />
+						<p
+							class="mt-1 text-xs text-gray-500"
+							id="file_input_help">
+							JPEG, PNG, JPG or PDF (MAX 1Mb)
+						</p>
+					</div>
+				</template>
 			</div>
 
-			<!-- Preffered Regent Branch -->
+			<!-- Data consent notice -->
 			<div
 				class="mt-4 rounded-lg border border-blue-300 bg-blue-50 p-4 text-blue-800"
 				role="alert">
@@ -394,20 +318,15 @@
 		agencyOrCorpName,
 		agencyOrCorpId,
 		createAuthorizationLetterLoading,
-		logbookUploaded,
-		kraPinUploaded,
-		natIdUploaded,
-		certUploaded,
-		letterUploaded,
 		createAuthorizationLetter,
 		handleFileUpload,
-		computedCorporateClients,
-		fetchingCorporateClients,
 		consentProvided,
-		shouldTriggerFetch,
 	} = useAuthorityLetters();
 	const { isPrincipalBroker } = useAuth();
-	const isExportExcelModalOpen: Ref<boolean> = ref(false);
-
-	onMounted(async () => await shouldTriggerFetch());
+	const {
+		computedCorporateClients,
+		fetchingCorporateClients,
+		errorFetchingCorporateClients,
+		searchPhrase,
+	} = useCorporateClients();
 </script>

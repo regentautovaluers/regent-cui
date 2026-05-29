@@ -49,6 +49,13 @@
 						<SearchIcon />
 					</button>
 				</form>
+
+				<button
+					class="h-[50px] rounded-lg bg-blue-600 px-2 text-sm text-slate-100 hover:bg-blue-700"
+					data-modal-target="add-user-modal"
+					data-modal-toggle="add-user-modal">
+					Add Account
+				</button>
 			</div>
 
 			<!-- the table itself -->
@@ -154,7 +161,7 @@
 										}}</span>
 									</div>
 								</td>
-								<td class="py-4 pe-3">
+								<td class="py-4">
 									<button
 										:id="'dropdownLeftButton' + index"
 										:data-dropdown-toggle="'dropdownLeft' + index"
@@ -231,6 +238,12 @@
 					:user-role="u.userRoles[0]" />
 			</ParentModal>
 		</template>
+
+		<ParentModal
+			modal-title="Add New Account"
+			modal-id="add-user-modal">
+			<AddNewAccount />
+		</ParentModal>
 	</div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
 	<form @submit.prevent="attemptLogin">
-		<div class="laptop:text-4xl desktop:4k:text-5xl mb-16 text-3xl">
+		<div class="laptop:text-4xl desktop:4k:text-5xl mb-8 text-3xl">
 			<h1 class="font-bold">Hello,</h1>
 			<h2 class="font-bold whitespace-nowrap">Welcome Back</h2>
 		</div>
