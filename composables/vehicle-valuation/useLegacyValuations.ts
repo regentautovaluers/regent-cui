@@ -1,4 +1,4 @@
-import type { LegacyValuation } from '~/types/corporate-valuations/legacy-valuations';
+import type { LegacyValuation, VehicleValue } from '~/types/corporate-valuations/legacy-valuations';
 import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 
@@ -66,6 +66,45 @@ export default function () {
 		executeFetchLegacyValuations();
 	}
 
+	function cleanAwardedValues(
+		values: VehicleValue | null,
+	): { name: string; id: number; value: string }[] | null {
+		if (!values) {
+			return null;
+		}
+
+		const cleanedValues: { name: string; id: number; value: string }[] = [];
+		if (values.market_value != null && values.market_value != '') {
+			cleanedValues.push({ name: 'Market Value', id: 0, value: values.market_value });
+		}
+
+		if (values.assessed_value != null && values.assessed_value != '') {
+			cleanedValues.push({ name: 'Assessed Value', id: 1, value: values.assessed_value });
+		}
+
+		if (values.forced_sale_value != null && values.forced_sale_value != '') {
+			cleanedValues.push({
+				name: 'Forced Sale Value',
+				id: 2,
+				value: values.forced_sale_value,
+			});
+		}
+
+		if (values.windscreen_value != null && values.windscreen_value != '') {
+			cleanedValues.push({ name: 'Windscreen Value', id: 3, value: values.windscreen_value });
+		}
+
+		if (values.radio_value != null && values.radio_value != '') {
+			cleanedValues.push({ name: 'Radio Value', id: 4, value: values.radio_value });
+		}
+
+		if (values.auction_value != null && values.auction_value != '') {
+			cleanedValues.push({ name: 'Auction Value', id: 5, value: values.auction_value });
+		}
+
+		return cleanedValues;
+	}
+
 	return {
 		page,
 		pageSize,
@@ -77,6 +116,7 @@ export default function () {
 		endDate,
 		searchTerm,
 		executeFetchLegacyValuations,
+		cleanAwardedValues,
 		clearFilters,
 	};
 }

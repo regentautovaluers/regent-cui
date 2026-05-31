@@ -89,7 +89,7 @@
 									<th
 										scope="col"
 										class="table-headers tablet:table-cell hidden ps-3">
-										Client Details
+										Vehicle
 									</th>
 									<th
 										scope="col"
@@ -209,7 +209,7 @@
 														:data-modal-target="`view-legacy-report-${valuation.booking_no}-modal`"
 														:data-modal-toggle="`view-legacy-report-${valuation.booking_no}-modal`"
 														@click="setSidebarCollapsedState(false)">
-														Edit Details
+														See More
 													</button>
 												</li>
 											</ul>
@@ -331,8 +331,184 @@
 			v-for="lp in corpValuations"
 			:key="lp.booking_no">
 			<ParentModal
-				modal-title="Edit Account"
+				modal-title="Legacy Report"
+				:modal-subtitle="`${lp.reg_no} Details`"
 				:modal-id="`view-legacy-report-${lp.booking_no}-modal`">
+				<div class="space-y-4">
+					<div class="flex flex-grow flex-col justify-end text-sm">
+						<!-- vehicle registration -->
+						<span class="text-xl font-semibold text-gray-700">{{
+							lp.reg_no ?? 'Reg N/A'
+						}}</span>
+
+						<!-- regent branch details -->
+						<div class="inline-flex items-center space-x-2 text-gray-700">
+							<span
+								class="icon-[material-symbols-light--home-outline-rounded] size-6"></span>
+							<span class="inline-flex items-center">
+								<span class="font-semibold text-gray-800">Regent Branch</span>:
+								{{
+									lp.regent_branch?.branch_name ?? 'Unknown Regent branch!'
+								}}</span
+							>
+						</div>
+
+						<!-- inspection location -->
+						<div class="inline-flex items-center space-x-2 text-gray-700">
+							<span
+								class="icon-[material-symbols-light--location-on-outline-rounded] size-6"></span>
+							<span class="inline-flex items-center">
+								<span class="font-semibold text-gray-800">Assessed at</span>:
+								{{ lp.valuation_location ?? 'Unknown valuation location!' }}</span
+							>
+						</div>
+
+						<!-- inspection date -->
+						<div class="inline-flex items-center space-x-2 text-gray-700">
+							<span
+								class="icon-[material-symbols-light--calendar-today-outline-rounded] size-6"></span>
+							<span class="inline-flex items-center">
+								<span class="font-semibold text-gray-800">Inspected On</span>:
+								{{
+									lp.inspection_date?.split('T')[0] ?? 'Unknown inspection date!'
+								}}</span
+							>
+						</div>
+
+						<!-- approval date -->
+						<div class="inline-flex items-center space-x-2 text-gray-700">
+							<span
+								class="icon-[material-symbols-light--calendar-today-outline-rounded] size-6"></span>
+							<span class="inline-flex items-center">
+								<span class="font-semibold text-gray-800">Approved On</span>:
+								{{
+									lp.approval_date?.split('T')[0] ?? 'Unknown approval date!'
+								}}</span
+							>
+						</div>
+					</div>
+
+					<div class="my-3 flex-grow">
+						<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+							<table class="w-full text-left text-gray-500">
+								<thead class="bg-gray-100 text-sm text-gray-700 uppercase">
+									<tr>
+										<th
+											scope="col"
+											class="table-headers tablet:table-cell hidden ps-3">
+											Item
+										</th>
+										<th
+											scope="col"
+											class="table-headers">
+											Details
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="border-b bg-white text-sm hover:bg-gray-100">
+										<td
+											class="tablet:table-cell hidden py-2 ps-3 text-blue-600">
+											Valuation Type
+										</td>
+										<td class="tablet:table-cell py-2">
+											{{
+												lp.valuation_type?.valuation_type_name ?? 'Unknown'
+											}}
+										</td>
+									</tr>
+
+									<tr class="border-b bg-white text-sm hover:bg-gray-100">
+										<td
+											class="tablet:table-cell hidden py-2 ps-3 text-blue-600">
+											Vehicle Make & Type
+										</td>
+										<td class="tablet:table-cell py-2">
+											{{ lp.vehicleMake ?? 'Make unknown' }} -
+											{{ lp.vehicleType ?? 'Type unknown' }}
+										</td>
+									</tr>
+
+									<tr class="border-b bg-white text-sm hover:bg-gray-100">
+										<td
+											class="tablet:table-cell hidden py-2 ps-3 text-blue-600">
+											Vehicle Color
+										</td>
+										<td class="tablet:table-cell py-2">
+											{{ lp.vehicleColor ?? 'Unknown' }}
+										</td>
+									</tr>
+
+									<tr class="border-b bg-white text-sm hover:bg-gray-100">
+										<td
+											class="tablet:table-cell hidden py-2 ps-3 text-blue-600">
+											Chassis Number
+										</td>
+										<td class="tablet:table-cell py-2">
+											{{ lp.chassisNumber ?? 'Unknown' }}
+										</td>
+									</tr>
+
+									<tr class="border-b bg-white text-sm hover:bg-gray-100">
+										<td
+											class="tablet:table-cell hidden py-2 ps-3 text-blue-600">
+											Engine Number
+										</td>
+										<td class="tablet:table-cell py-2">
+											{{ lp.engineNumber ?? 'Unknown' }}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div
+						class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-2 text-yellow-800"
+						role="alert">
+						<div class="flex items-center">
+							<svg
+								class="me-2 h-4 w-4 shrink-0"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="currentColor"
+								viewBox="0 0 20 20">
+								<path
+									d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+							</svg>
+							<span class="sr-only">Info</span>
+							<h3 class="text-sm font-medium">Inspection Note</h3>
+						</div>
+
+						<p class="my-2 text-sm">
+							{{ lp.inspection_note ?? 'No note available!' }}
+						</p>
+					</div>
+
+					<div class="grid grid-cols-2 gap-2">
+						<template
+							v-if="cleanAwardedValues(lp.vehicle_value)"
+							v-for="e in cleanAwardedValues(lp.vehicle_value)"
+							:key="e.id">
+							<div
+								class="flex h-16 flex-col items-center justify-center rounded-xl border-2 border-blue-500">
+								<span class="text-gray-700">{{ e.name }}</span>
+								<span class="text-blue-600">{{
+									Intl.NumberFormat('en-US', {
+										minimumFractionDigits: 0,
+										maximumFractionDigits: 0,
+									}).format(Number(e.value))
+								}}</span>
+							</div>
+						</template>
+
+						<div
+							v-else
+							class="flex h-20 items-center justify-center rounded-xl border-2">
+							<span class="text-gray-700">No vehicle values awarded yet</span>
+						</div>
+					</div>
+				</div>
 			</ParentModal>
 		</template>
 	</div>
@@ -352,19 +528,6 @@
 		corporateModalFiltersRef.value?.close();
 	}
 
-	function deriveRdBtnName(option: 'paid' | 'not-paid' | 'none'): string {
-		switch (option) {
-			case 'paid':
-				return 'Only Paid';
-			case 'not-paid':
-				return 'Not Paid';
-			case 'none':
-				return 'Show All';
-			default:
-				return '';
-		}
-	}
-
 	const {
 		page,
 		fetchLegacyValuationsStatus,
@@ -376,5 +539,6 @@
 		searchTerm,
 		executeFetchLegacyValuations,
 		clearFilters,
+		cleanAwardedValues,
 	} = useLegacyValuations();
 </script>
