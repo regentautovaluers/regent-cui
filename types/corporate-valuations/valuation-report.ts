@@ -87,7 +87,7 @@ export interface ValuationBooking {
 	pending: string;
 	inspectionNote: string;
 	inspectionRemarks: string;
-	inspectionFnl: ValuationReport | null;
+	inspectionFnl?: ValuationReport | null;
 }
 
 export type ValuationStages =

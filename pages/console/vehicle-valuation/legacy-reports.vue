@@ -6,9 +6,9 @@
 			<div class="inline-flex h-28 w-full items-center justify-between p-5 outline-none">
 				<div class="flex h-full items-center space-x-3">
 					<button
-						class="inline-flex h-[70%] w-[50px] items-center justify-center rounded-lg bg-blue-500 outline-none">
+						class="inline-flex h-[70%] w-[50px] items-center justify-center rounded-lg bg-blue-700 outline-none">
 						<span
-							class="icon-[material-symbols-light--fast-rewind] text-4xl text-slate-100"></span>
+							class="icon-[material-symbols-light--device-reset] text-4xl text-slate-100"></span>
 					</button>
 					<div>
 						<h1 class="text-xl font-semibold text-gray-800">Legacy (Mobi) Reports</h1>
@@ -59,7 +59,7 @@
 							type="text"
 							class="generic-input h-full"
 							placeholder="Search registration number."
-							v-model="searchRegNo" />
+							v-model="searchTerm" />
 						<button
 							type="submit"
 							class="generic-search-submit-button">
@@ -149,49 +149,42 @@
 									v-for="(valuation, index) in corpValuations"
 									:key="index">
 									<td class="tablet:table-cell hidden py-4 ps-3">
-										<span>{{ valuation.clientName }}</span>
+										<span>{{ valuation.booking_no }}</span>
 										<br />
 										<span
 											class="w-fit rounded-lg bg-blue-200 px-1 text-blue-600"
-											>{{ valuation.clientPhone ?? 'Phone N/A' }}</span
+											>{{ valuation.reg_no ?? 'Reg N/A' }}</span
 										>
 									</td>
 
 									<td class="tablet:table-cell py-4">
-										<span class="w-fit rounded-lg bg-gray-200 px-1">{{
-											valuation.regentBranch.branchName
-										}}</span>
+										<span class="w-fit rounded-lg bg-gray-200 px-1">
+											{{ valuation.regent_branch?.branch_name ?? 'N/A' }}
+										</span>
 										<br />
-
 										<span class="w-fit">{{
-											valuation.inspectionDate?.split('T')[0] ?? 'Date N/A'
+											valuation.inspection_date?.split('T')[0] ?? 'Date N/A'
 										}}</span>
 									</td>
 									<th
 										scope="row"
 										class="flex items-center py-4 whitespace-nowrap text-gray-900">
-										<img
-											class="object-fit size-12 rounded-sm"
-											:src="valuation.vehicleImage"
-											alt="Vehicle Image"
-											v-if="valuation.vehicleImage" />
 										<div
-											v-else
 											class="flex size-12 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
 											<span>{{
-												valuation.regNo?.substring(0, 3) ?? 'Reg N/A'
+												valuation.reg_no?.substring(0, 3) ?? 'Reg N/A'
 											}}</span>
 										</div>
 										<div class="ps-2">
 											<div
 												class="w-fit rounded-full bg-blue-200 px-1 text-sm text-blue-600">
-												{{ valuation.regNo }}
+												{{ valuation.vehicleType }}
 											</div>
 										</div>
 									</th>
 									<td
-										class="laptop:table-cell hidden w-48 max-w-48 py-4 text-sm text-wrap">
-										{{ valuation.inspectionNote ?? 'N/A' }}
+										class="laptop:table-cell hidden w-[18rem] max-w-[18rem] py-4 text-sm text-wrap">
+										{{ valuation.inspection_note ?? 'N/A' }}
 									</td>
 									<td class="py-4 pe-3">
 										<button
@@ -209,13 +202,15 @@
 											<ul
 												class="py-2 text-sm text-gray-500"
 												aria-labelledby="dropdownLeftButton">
-												<li v-if="valuation.reportURL != null">
-													<a
-														target="_blank"
-														:href="valuation.reportURL"
-														class="block w-full px-4 py-2 text-center hover:bg-gray-100">
-														Download Report
-													</a>
+												<li>
+													<button
+														class="block w-full px-4 py-2 text-center hover:bg-gray-100"
+														type="button"
+														:data-modal-target="`view-legacy-report-${valuation.booking_no}-modal`"
+														:data-modal-toggle="`view-legacy-report-${valuation.booking_no}-modal`"
+														@click="setSidebarCollapsedState(false)">
+														Edit Details
+													</button>
 												</li>
 											</ul>
 										</div>
@@ -249,86 +244,97 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
-			<!-- modal to add filters for table entry -->
-			<ParentModal
-				modal-title="Filters"
-				modal-id="corporate-valuation-filters"
-				modal-subtitle="Customize your results"
-				ref="corporateModalFiltersRef">
-				<form
-					@submit.prevent="
-						() => {
-							manuallyCloseModal();
-							executeFetchLegacyValuations();
-						}
-					"
-					class="w-full space-y-3">
+		<!-- modal to add filters for table entry -->
+		<ParentModal
+			modal-title="Filters"
+			modal-id="corporate-valuation-filters"
+			modal-subtitle="Customize your results"
+			ref="corporateModalFiltersRef">
+			<form
+				@submit.prevent="
+					() => {
+						manuallyCloseModal();
+						executeFetchLegacyValuations();
+					}
+				"
+				class="w-full space-y-3">
+				<div
+					class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
+					<h1 class="mb-2 text-xs font-semibold text-gray-500">Report Period</h1>
 					<div
-						class="transtion-colors w-full rounded-lg bg-gray-100 px-3 py-2 duration-200 ease-in-out outline-none hover:bg-gray-200">
-						<h1 class="mb-2 text-xs font-semibold text-gray-500">Report Period</h1>
-						<div
-							class="tablet:flex-row tablet:space-y-0 tablet:space-x-2 flex w-full flex-col space-y-2">
-							<!-- start date -->
-							<div class="tablet:w-1/2 w-full space-y-2">
-								<label
-									for="cover-period-starts"
-									class="generic-input-label text-xs"
-									>Start Date</label
-								>
-								<input
-									type="date"
-									id="cover-period-starts"
-									class="generic-input"
-									placeholder="Select"
-									pattern="\d{4}-\d{2}-\d{2}"
-									v-model="startDate" />
-							</div>
+						class="tablet:flex-row tablet:space-y-0 tablet:space-x-2 flex w-full flex-col space-y-2">
+						<!-- start date -->
+						<div class="tablet:w-1/2 w-full space-y-2">
+							<label
+								for="cover-period-starts"
+								class="generic-input-label text-xs"
+								>Start Date</label
+							>
+							<input
+								type="date"
+								id="cover-period-starts"
+								class="generic-input"
+								placeholder="Select"
+								pattern="\d{4}-\d{2}-\d{2}"
+								v-model="startDate" />
+						</div>
 
-							<!-- end date -->
-							<div class="tablet:w-1/2 w-full space-y-2">
-								<label
-									for="cover-period-ends"
-									class="generic-input-label text-xs"
-									>End Date</label
-								>
-								<input
-									type="date"
-									id="cover-period-ends"
-									class="generic-input"
-									placeholder="Select"
-									pattern="\d{4}-\d{2}-\d{2}"
-									v-model="endDate" />
-							</div>
+						<!-- end date -->
+						<div class="tablet:w-1/2 w-full space-y-2">
+							<label
+								for="cover-period-ends"
+								class="generic-input-label text-xs"
+								>End Date</label
+							>
+							<input
+								type="date"
+								id="cover-period-ends"
+								class="generic-input"
+								placeholder="Select"
+								pattern="\d{4}-\d{2}-\d{2}"
+								v-model="endDate" />
 						</div>
 					</div>
+				</div>
 
-					<div class="mt-2 flex w-full justify-center space-x-3">
-						<!-- submit button -->
-						<button
-							type="submit"
-							v-if="startDate || endDate"
-							class="generic-form-submit w-1/2">
-							Apply
-						</button>
+				<div class="mt-2 flex w-full justify-center space-x-3">
+					<!-- submit button -->
+					<button
+						type="submit"
+						v-if="startDate || endDate"
+						class="generic-form-submit w-1/2">
+						Apply
+					</button>
 
-						<!-- clear filters -->
-						<button
-							type="button"
-							@click="
-								() => {
-									manuallyCloseModal();
-									clearFilters();
-								}
-							"
-							v-if="startDate || endDate"
-							class="generic-form-submit w-1/2 border bg-white text-gray-500 shadow-none hover:bg-white">
-							Clear Filters
-						</button>
-					</div>
-				</form>
+					<!-- clear filters -->
+					<button
+						type="button"
+						@click="
+							() => {
+								manuallyCloseModal();
+								clearFilters();
+							}
+						"
+						v-if="startDate || endDate"
+						class="generic-form-submit w-1/2 border bg-white text-gray-500 shadow-none hover:bg-white">
+						Clear Filters
+					</button>
+				</div>
+			</form>
+		</ParentModal>
+
+		<!-- Modal to see more details on valuations -->
+		<template
+			v-if="corpValuations && corpValuations.length > 0"
+			v-for="lp in corpValuations"
+			:key="lp.booking_no">
+			<ParentModal
+				modal-title="Edit Account"
+				:modal-id="`view-legacy-report-${lp.booking_no}-modal`">
 			</ParentModal>
-		</div>
+		</template>
 	</div>
 </template>
 
@@ -367,7 +373,7 @@
 		totalPages,
 		startDate,
 		endDate,
-		searchRegNo,
+		searchTerm,
 		executeFetchLegacyValuations,
 		clearFilters,
 	} = useLegacyValuations();

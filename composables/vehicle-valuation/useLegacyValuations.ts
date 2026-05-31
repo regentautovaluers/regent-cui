@@ -1,50 +1,41 @@
-import type {
-	CleanedRearangedAndMapped,
-	PaginationData,
-	ValuationData,
-	FetchMode,
-} from '~/types/corporate-valuations/legacy-valuations';
-import type { ValuationBooking } from '~/types/corporate-valuations/valuation-report';
+import type { LegacyValuation } from '~/types/corporate-valuations/legacy-valuations';
 import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
 import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export default function () {
-	const { getPrincipal } = useAuth();
-	// for fetching corp valuations
 	const page: Ref<number> = ref(0);
 	const pageSize: number = 10;
-	const searchRegNo: Ref<string> = ref('');
-	const startDate: Ref<string> = ref('2025-01-01');
-	const endDate: Ref<string> = ref('2025-01-31');
-	const corpValuations: ComputedRef<ValuationBooking[]> = computed(
-		() => fetchedLegacyData.value?.valuationData || [],
+	const searchTerm: Ref<string | null> = ref(null);
+	const startDate: Ref<string | null> = ref(null);
+	const endDate: Ref<string | null> = ref(null);
+	const corpValuations: ComputedRef<LegacyValuation[]> = computed(
+		() => fetchedLegacyData.value?.data || [],
 	);
 	const totalPages: ComputedRef<number> = computed(
-		() => fetchedLegacyData.value?.paginationData?.total_pages || 0,
+		() => fetchedLegacyData.value?.requestExtras?.totalPages || 0,
 	);
+	const { getPrincipal } = useAuth();
 
 	const {
 		status: fetchLegacyValuationsStatus,
 		execute: executeFetchLegacyValuations,
 		error: fetchLegacyValuationsError,
 		data: fetchedLegacyData,
-	} = useApiData<CleanedRearangedAndMapped, CleanedRearangedAndMapped>(
-		null,
+	} = useApiData<GenericResponse<LegacyValuation[]>, GenericResponse<LegacyValuation[]>>(
+		`${getPrincipal()?.corpOrganization.corpId}-legacy-${page.value}`,
 		computed(() => {
-			let requestURL = `/api/vehicle-valuation/get-legacy-reports?corp=AUTO CHEK LIMITED&current_page=${page.value}`; // TODO: Remove the hardcoded corp
+			let requestURL = `/api/vehicle-valuation/get-legacy-reports?corpId=${getPrincipal()?.corpOrganization.corpId}&page=${page.value}&size=${pageSize}`;
 			{
-				if (searchRegNo.value !== '') {
-					requestURL += `&reg_no=${searchRegNo.value}&mode=SEARCH`;
-				} else {
-					requestURL += '&mode=LIST';
-				}
-
 				if (startDate.value !== null) {
-					requestURL += `&period_from=${startDate.value}`;
+					requestURL += `&startDate=${startDate.value}`;
 				}
 
 				if (endDate.value !== null) {
-					requestURL += `&period_to=${endDate.value}`;
+					requestURL += `&endDate=${endDate.value}`;
+				}
+
+				if (searchTerm.value != null) {
+					requestURL += `&searchTerm=${searchTerm.value}`;
 				}
 			}
 
@@ -53,7 +44,7 @@ export default function () {
 		{
 			method: 'GET',
 			server: false,
-			transform: (d: StandardSuccessResponse<CleanedRearangedAndMapped>) => {
+			transform: (d: StandardSuccessResponse<GenericResponse<LegacyValuation[]>>) => {
 				return d.data;
 			},
 			onResponseError: (_e) => {
@@ -67,9 +58,9 @@ export default function () {
 	);
 
 	function clearFilters(): void {
-		searchRegNo.value = '';
-		startDate.value = '2025-01-01';
-		endDate.value = '2025-01-31';
+		searchTerm.value = null;
+		startDate.value = null;
+		endDate.value = null;
 
 		// ecxecute the request
 		executeFetchLegacyValuations();
@@ -84,7 +75,7 @@ export default function () {
 		totalPages,
 		startDate,
 		endDate,
-		searchRegNo,
+		searchTerm,
 		executeFetchLegacyValuations,
 		clearFilters,
 	};

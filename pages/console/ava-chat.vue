@@ -48,9 +48,9 @@
 						@click="retrieveSessionChats(e.session_id)">
 						{{ e.title }}
 
-						<button class="rounded-xl p-1 bg-red-300 hover:bg-red-400 absolute hidden group-hover:block right-2 top-[20%] size-6">
+						<span class="rounded-xl p-1 bg-red-300 hover:bg-red-400 absolute hidden group-hover:block right-2 top-[20%] size-6">
 							<span class="icon-[material-symbols-light--delete] text-red-600"></span>	
-						</button>
+						</span>
 					</button>
 				</div>
 			</div>

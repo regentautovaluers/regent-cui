@@ -1,62 +1,49 @@
-import type {
-	CleanedRearangedAndMapped,
-	PaginationData,
-	ValuationData,
-	FetchMode,
-} from '~/types/corporate-valuations/legacy-valuations';
-import { mapLegacyValuationToNewType } from '~/utils/vehicle-valuation-utils';
-import { cleanValuations } from '~/server/utils/valuation-utils';
+import type { LegacyValuation } from '~/types/corporate-valuations/legacy-valuations';
+import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query: {
-		mode: FetchMode;
-		corp: string;
-		current_page: number;
-		period_from?: string;
-		period_to?: string;
-		reg_no?: string;
+		page: number;
+		size: number;
+		bookingId?: string;
+		startDate?: string;
+		endDate?: string;
+		corpId: string;
+		searchTerm?: string; 
 	} = getQuery(event);
 
-	let requestURL =
-		query.mode == 'SEARCH'
-			? `${config.LEGACY_VALUATION_BASE_URL}/ava/api/reg-search?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&password=${config.LEGACY_VALUATION_AUTH_PWD}&results_per_page=10&current_page=${query.current_page}`
-			: `${config.LEGACY_VALUATION_BASE_URL}/ava/api/corp-report?uname=${config.LEGACY_VALUATION_AUTH_UNAME}&pwd=${config.LEGACY_VALUATION_AUTH_PWD}&results_per_page=10&current_page=${query.current_page}`;
+	let requestURL = `${config.LEGACY_VALUATION_BASE_URL}/api/v1/valuations/search?&page=${query.page}&size=${query.size}`;
 
-	if (query.corp) {
-		requestURL += `&corp=${query.corp}`;
+	if (query.bookingId) {
+		requestURL += `&bookingId=${query.bookingId}`;
 	}
 
-	if (query.period_from) {
-		requestURL += `&period_from=${query.period_from}`;
+	if (query.startDate) {
+		requestURL += `&startDate=${query.startDate}`;
 	}
 
-	if (query.period_to) {
-		requestURL += `&period_to=${query.period_to}`;
+	if (query.endDate) {
+		requestURL += `&endDate=${query.endDate}`;
 	}
 
-	if (query.reg_no) {
-		requestURL += `&reg_no=${query.reg_no}`;
+	if (query.corpId) {
+		requestURL += `&corpId=${query.corpId}`;
+	}
+
+	if (query.searchTerm) {
+		requestURL += `&searchTerm=${query.searchTerm}`;
 	}
 
 	try {
-		const res = await makeProxyRequest<string>(requestURL, {
+		const response = await makeProxyRequest<GenericResponse<LegacyValuation[]>>(requestURL, {
 			method: 'GET',
+			headers: {
+				"X-API-Key": `${config.LEGACY_VALUATION_API_KEY}`
+			}
 		});
-		const res_1 = '[{' + res.split('[{')[1];
-		const response = JSON.parse(res_1);
-		const cleanedAndMapped: CleanedRearangedAndMapped = {
-			paginationData: response[0] as PaginationData,
-			valuationData: (response.toSpliced(0, 1) as ValuationData[]).map((v) => {
-				let vb = mapLegacyValuationToNewType(v);
-				cleanValuations(vb);
-				return vb;
-			}),
-		};
-		console.log(JSON.stringify(cleanedAndMapped.valuationData[0], null, 2));
-		return sendSuccessResponse(event, cleanedAndMapped);
+		return sendSuccessResponse(event, response);
 	} catch (err) {
-		console.log(err);
 		return sendErrorResponse(event, err);
 	}
 });
