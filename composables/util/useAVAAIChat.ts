@@ -66,8 +66,9 @@ export default function () {
 				const toAdd: ChatResponse[] = [
 					{
 						origin: 'user',
-						response: userQuery.value,
+						message: userQuery.value!,
 						response_status: 'successful',
+						user_id: user?.userId!
 					},
 					data,
 				];
@@ -86,12 +87,12 @@ export default function () {
 				const toAdd: ChatResponse[] = [
 					{
 						origin: 'user',
-						response: userQuery.value,
+						message: userQuery.value!,
 						response_status: 'successful',
 					},
 					{
 						origin: 'assistant',
-						response: 'Something went wrong. Kindly repeat the question :(',
+						message: 'Something went wrong. Kindly repeat the question :(',
 						response_status: 'error',
 					},
 				];
@@ -127,7 +128,7 @@ export default function () {
 						const toAdd: ChatResponse[] = history.history.map((e) => {
 							return {
 								origin: e.role,
-								response: e.content,
+								message: e.content,
 								response_status: 'successful',
 							} as ChatResponse;
 						});
@@ -139,7 +140,7 @@ export default function () {
 					pushChatMessage(activeSessionId.value as string, [
 						{
 							origin: 'assistant',
-							response: 'Seems like you have no chats! Ask away...',
+							message: 'Seems like you have no chats! Ask away...',
 							response_status: 'error',
 						},
 					]);
