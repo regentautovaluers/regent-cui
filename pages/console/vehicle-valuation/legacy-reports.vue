@@ -331,61 +331,29 @@
 			v-for="lp in corpValuations"
 			:key="lp.booking_no">
 			<ParentModal
-				modal-title="Legacy Report"
-				:modal-subtitle="`${lp.reg_no} Details`"
+				:modal-title="`${lp.reg_no} Details`"
+				:modal-subtitle="`Assessed ${lp.inspection_date?.split('T')[0] ?? 'N/A'} &middot; Approved ${lp.approval_date?.split('T')[0] ?? 'N/A!'}`"
 				:modal-id="`view-legacy-report-${lp.booking_no}-modal`">
-				<div class="space-y-4">
-					<div class="flex flex-grow flex-col justify-end text-sm">
-						<!-- vehicle registration -->
-						<span class="text-xl font-semibold text-gray-700">{{
-							lp.reg_no ?? 'Reg N/A'
+				<template #action-btn>
+					<div
+						type="button"
+						class="inline-flex items-center space-x-2 rounded-full border border-yellow-800 bg-transparent px-3 py-1.5 text-center text-yellow-800">
+						<span
+							class="icon-[material-symbols-light--home-outline-rounded] size-6 text-yellow-800"></span>
+						<span class="text-yellow-800 group-hover:text-white">{{
+							lp.regent_branch?.branch_name ?? 'Unknown Regent branch!'
 						}}</span>
-
-						<!-- regent branch details -->
-						<div class="inline-flex items-center space-x-2 text-gray-700">
-							<span
-								class="icon-[material-symbols-light--home-outline-rounded] size-6"></span>
-							<span class="inline-flex items-center">
-								<span class="font-semibold text-gray-800">Regent Branch</span>:
-								{{
-									lp.regent_branch?.branch_name ?? 'Unknown Regent branch!'
-								}}</span
-							>
-						</div>
-
-						<!-- inspection location -->
-						<div class="inline-flex items-center space-x-2 text-gray-700">
-							<span
-								class="icon-[material-symbols-light--location-on-outline-rounded] size-6"></span>
-							<span class="inline-flex items-center">
-								<span class="font-semibold text-gray-800">Assessed at</span>:
-								{{ lp.valuation_location ?? 'Unknown valuation location!' }}</span
-							>
-						</div>
-
-						<!-- inspection date -->
-						<div class="inline-flex items-center space-x-2 text-gray-700">
-							<span
-								class="icon-[material-symbols-light--calendar-today-outline-rounded] size-6"></span>
-							<span class="inline-flex items-center">
-								<span class="font-semibold text-gray-800">Inspected On</span>:
-								{{
-									lp.inspection_date?.split('T')[0] ?? 'Unknown inspection date!'
-								}}</span
-							>
-						</div>
-
-						<!-- approval date -->
-						<div class="inline-flex items-center space-x-2 text-gray-700">
-							<span
-								class="icon-[material-symbols-light--calendar-today-outline-rounded] size-6"></span>
-							<span class="inline-flex items-center">
-								<span class="font-semibold text-gray-800">Approved On</span>:
-								{{
-									lp.approval_date?.split('T')[0] ?? 'Unknown approval date!'
-								}}</span
-							>
-						</div>
+					</div>
+				</template>
+				<div class="space-y-4">
+					<!-- inspection location -->
+					<div class="inline-flex items-center space-x-2 text-gray-700">
+						<span
+							class="icon-[material-symbols-light--location-on-outline-rounded] size-6"></span>
+						<span class="inline-flex items-center">
+							<span class="font-semibold text-gray-800">Assessed at</span>:
+							{{ lp.valuation_location ?? 'Unknown valuation location!' }}</span
+						>
 					</div>
 
 					<div class="my-3 flex-grow">

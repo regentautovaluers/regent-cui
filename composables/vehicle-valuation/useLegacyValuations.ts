@@ -74,15 +74,27 @@ export default function () {
 		}
 
 		const cleanedValues: { name: string; id: number; value: string }[] = [];
-		if (values.market_value != null && values.market_value != '') {
+		if (
+			values.market_value != null &&
+			values.market_value != '' &&
+			values.market_value != '0'
+		) {
 			cleanedValues.push({ name: 'Market Value', id: 0, value: values.market_value });
 		}
 
-		if (values.assessed_value != null && values.assessed_value != '') {
+		if (
+			values.assessed_value != null &&
+			values.assessed_value != '' &&
+			values.assessed_value != '0'
+		) {
 			cleanedValues.push({ name: 'Assessed Value', id: 1, value: values.assessed_value });
 		}
 
-		if (values.forced_sale_value != null && values.forced_sale_value != '') {
+		if (
+			values.forced_sale_value != null &&
+			values.forced_sale_value != '' &&
+			values.forced_sale_value != '0'
+		) {
 			cleanedValues.push({
 				name: 'Forced Sale Value',
 				id: 2,
@@ -90,15 +102,23 @@ export default function () {
 			});
 		}
 
-		if (values.windscreen_value != null && values.windscreen_value != '') {
+		if (
+			values.windscreen_value != null &&
+			values.windscreen_value != '' &&
+			values.windscreen_value != '0'
+		) {
 			cleanedValues.push({ name: 'Windscreen Value', id: 3, value: values.windscreen_value });
 		}
 
-		if (values.radio_value != null && values.radio_value != '') {
+		if (values.radio_value != null && values.radio_value != '' && values.radio_value != '0') {
 			cleanedValues.push({ name: 'Radio Value', id: 4, value: values.radio_value });
 		}
 
-		if (values.auction_value != null && values.auction_value != '') {
+		if (
+			values.auction_value != null &&
+			values.auction_value != '' &&
+			values.auction_value != '0'
+		) {
 			cleanedValues.push({ name: 'Auction Value', id: 5, value: values.auction_value });
 		}
 
