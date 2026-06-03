@@ -18,6 +18,8 @@ pipeline {
         REGENT_TRACK_CERTS_BASE_URL = credentials('regent-track-certs-base-url')
         STAGING_AI_CHAT_BASE_URL = credentials('staging-ai-chat-base-url')
         PROD_AI_CHAT_BASE_URL = credentials('prod-ai-chat-base-url')
+        LEGACY_VALUATION_BASE_URL = credentials('legacy-api-base-url')
+        LEGACY_VALUATION_API_KEY = credentials('legacy-api-staff-key')
     }
 
     stages {
@@ -106,6 +108,8 @@ pipeline {
                                 -e NUXT_AI_CHAT_BASE_URL='${STAGING_AI_CHAT_BASE_URL}' \\
                                 -e NUXT_AI_CHAT_API_KEY='${AVA_CHAT_API_KEY}' \\
                                 -e NUXT_VALUATION_BASE_URL='${STAGING_VALUATION_BASE_URL}' \\
+                                -e NUXT_LEGACY_VALUATION_BASE_URL='${LEGACY_VALUATION_BASE_URL}' \\
+                                -e NUXT_LEGACY_VALUATION_API_KEY='${LEGACY_VALUATION_API_KEY}' \\
                                 -e NUXT_AVA_BASE_URL='${STAGING_AVA_BASE_URL}' \\
                                 ${CORPORATE_PORTAL_DOCKER_IMAGE}:${DOCKER_TAG}
 EOF
@@ -153,6 +157,8 @@ EOF
                                     -e NUXT_AI_CHAT_BASE_URL='${PROD_AI_CHAT_BASE_URL}' \\
                                     -e NUXT_AI_CHAT_API_KEY='${AVA_CHAT_API_KEY}' \\
                                     -e NUXT_VALUATION_BASE_URL='${PROD_VALUATION_BASE_URL}' \\
+                                    -e NUXT_LEGACY_VALUATION_BASE_URL='${LEGACY_VALUATION_BASE_URL}' \\
+                                    -e NUXT_LEGACY_VALUATION_API_KEY='${LEGACY_VALUATION_API_KEY}' \\
                                     -e NUXT_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
                                     -e NUXT_REPORT_GENERATOR_BASE_URL='https://media.ava.ke' \\
                                     -e NUXT_PUBLIC_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
