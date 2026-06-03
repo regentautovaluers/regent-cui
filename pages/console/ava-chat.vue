@@ -34,12 +34,12 @@
 						class="icon-[material-symbols-light--save-clock-outline-sharp] size-6 text-gray-500"></span>
 					<span class="font-medium text-gray-700">Chat History</span>
 				</div>
-				<div class="ml-3 overflow-x-hidden">
+				<div class="ml-2 overflow-x-hidden space-y-1">
 					<button
 						v-for="(e, idx) in getExistingSessions()"
 						:key="idx"
 						:class="[
-							'h-12 w-56 max-w-56 overflow-clip rounded-lg p-1 text-start text-sm text-nowrap text-ellipsis hover:bg-gray-100',
+							'h-10 relative w-56 max-w-56 overflow-clip rounded-xl p-2 text-start text-sm text-nowrap text-ellipsis hover:bg-gray-200 group',
 							activeSessionId == e.session_id
 								? 'bg-gray-300 text-gray-700'
 								: 'text-gray-500',
@@ -47,6 +47,10 @@
 						type="button"
 						@click="retrieveSessionChats(e.session_id)">
 						{{ e.title }}
+
+						<span class="rounded-xl p-1 bg-red-300 hover:bg-red-400 absolute hidden group-hover:block right-2 top-[20%] size-6">
+							<span class="icon-[material-symbols-light--delete] text-red-600"></span>	
+						</span>
 					</button>
 				</div>
 			</div>
@@ -152,14 +156,14 @@
 					<p
 						class="tablet:max-w-[60%] laptop:max-w-[50%] h-fit max-w-[80%] self-end rounded-2xl bg-gray-200 p-3 text-sm text-gray-700 outline-none"
 						v-if="m.origin == 'user'">
-						{{ m.response }}
+						{{ m.message }}
 					</p>
 
 					<!-- AI reponse -->
 					<div
 						class="markdown-content tablet:max-w-[60%] laptop:max-w-[50%] h-fit max-w-[80%] self-start rounded-2xl p-2 text-sm text-gray-700 outline-none"
 						v-else-if="m.origin == 'assistant'"
-						v-html="renderMarkdown(m.response as string)"></div>
+						v-html="renderMarkdown(m.message as string)"></div>
 				</template>
 			</div>
 

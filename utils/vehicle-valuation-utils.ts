@@ -1,33 +1,31 @@
-import { ValuationStages } from '~/types';
-
+import type {
+	ValuationStages,
+	SimplifiedValuationStage,
+} from '~/types/corporate-valuations/valuation-report';
 export const determineValuationStage = (
-	stage?: String,
-): { status: 'Completed' | 'Ongoing' } | null => {
+	stage?: ValuationStages,
+): { status: SimplifiedValuationStage } | null => {
 	if (!stage) {
 		return null;
 	}
 
 	const stagesRepresentingOngoing: ValuationStages[] = [
-		ValuationStages.AWAITING_ASSESSMENT,
-		ValuationStages.VALUER_DRAFT,
-		ValuationStages.PENDING,
-		ValuationStages.AWAITING_MANAGER_APPROVAL,
-		ValuationStages.AWAITING_QC_APPROVAL,
+		'AWAITING_ASSESSMENT',
+		'VALUER_DRAFT',
+		'PENDING',
+		'AWAITING_MANAGER_APPROVAL',
+		'AWAITING_QC_APPROVAL',
 	];
 
-	const stagesRepresentingCompleted: ValuationStages[] = [
-		ValuationStages.INVOICING,
-		ValuationStages.COMPLETED,
-	];
-	const stageAsEnum = ValuationStages[stage as keyof typeof ValuationStages];
+	const stagesRepresentingCompleted: ValuationStages[] = ['INVOICING', 'COMPLETED'];
 
-	if (stagesRepresentingOngoing.includes(stageAsEnum)) {
+	if (stagesRepresentingOngoing.includes(stage)) {
 		return {
 			status: 'Ongoing',
 		};
 	}
 
-	if (stagesRepresentingCompleted.includes(stageAsEnum)) {
+	if (stagesRepresentingCompleted.includes(stage)) {
 		return {
 			status: 'Completed',
 		};

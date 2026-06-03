@@ -74,7 +74,8 @@ export default defineNuxtConfig({
 		AI_CHAT_API_KEY: process.env.AI_CHAT_API_KEY,
 		VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 		AVA_BASE_URL: process.env.AVA_BASE_URL,
-		REPORT_GENERATOR_BASE_URL: process.env.REPORT_GENERATOR_BASE_URL,
+		LEGACY_VALUATION_BASE_URL: process.env.LEGACY_VALUATION_BASE_URL,
+		LEGACY_VALUATION_API_KEY: process.env.LEGACY_VALUATION_API_KEY,
 
 		// public properties
 		public: {
