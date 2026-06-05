@@ -3,8 +3,8 @@ export interface AVAMembershipType {
 	membership_name: string;
 	membership_rate?: string;
 	benefits: string | string[];
-	createdAt?: Date;
-	updatedAt?: Date;
+	createdAt?: Date | String;
+	updatedAt?: Date | String;
 	membership_description: string;
 	recordedBy?: string;
 	free_distance: null | string;

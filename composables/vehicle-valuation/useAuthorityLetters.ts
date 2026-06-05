@@ -4,7 +4,7 @@ import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 const useAuthorityLetters = () => {
 	const runtimeConfig = useRuntimeConfig();
-	const { getPrincipal, isPrincipalAdmin, getAuthToken } = useAuth();
+	const { getPrincipal, isPrincipalAdmin, getValuationAuthToken } = useAuth();
 	const consentProvided: Ref<boolean> = ref(false);
 	const registrationNumber: Ref<string> = ref('');
 	const clientName: Ref<string> = ref('');
@@ -126,10 +126,7 @@ const useAuthorityLetters = () => {
 				getPrincipal()?.corpOrganization.broker as unknown as string,
 			);
 			formData.append('corporateName', getPrincipal()?.corpOrganization.corpName as string);
-			formData.append(
-				'agentName',
-				getPrincipal()?.corpOrganization.corpName as string,
-			);
+			formData.append('agentName', getPrincipal()?.corpOrganization.corpName as string);
 
 			if (preferredBranch.value.length > 0) {
 				formData.append('regentBranch', preferredBranch.value);

@@ -2,7 +2,7 @@ import { type StandardSuccessResponse, type StandardErrorResponse } from '~/type
 
 export default function () {
 	const { params: routeParams } = useRoute();
-	const { getAuthToken } = useAuth();
+	const { getValuationAuthToken } = useAuth();
 	const activeImage: Ref<number> = ref(0);
 	const imageStretched: Ref<boolean> = ref(true);
 
@@ -18,7 +18,7 @@ export default function () {
 			// lazy: true,
 			// server: true,
 			query: {
-				api_key: getAuthToken.value,
+				api_key: getValuationAuthToken.value,
 				valuation_id: routeParams.valuation_id,
 			},
 			transform: (response) => {

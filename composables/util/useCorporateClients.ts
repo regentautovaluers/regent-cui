@@ -1,9 +1,8 @@
 import { type CorporateClient } from '~/types/corporate-valuations/corporate-clients';
 import { useCorporateClientsStore } from '~/stores/corporate-clients-store';
-import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
 
 export default function useCorporateClient() {
-	const { getAuthToken, isPrincipalBroker } = useAuth();
+	const { isPrincipalBroker } = useAuth();
 	const searchPhrase: Ref<string | null> = ref(null);
 	const { getCorporateClients, setCorporateClients, cleanCorporateClients } =
 		useCorporateClientsStore();
@@ -18,7 +17,6 @@ export default function useCorporateClient() {
 			method: 'GET',
 			server: false,
 			query: {
-				api_key: getAuthToken.value,
 				is_broker: isPrincipalBroker.value,
 			},
 			getCachedData(_key) {
