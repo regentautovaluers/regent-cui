@@ -1,26 +1,41 @@
 import { ofetch } from 'ofetch';
-import SecurityUtil from '~/utils/security-util';
-
-interface Headers {
-	[key: string]: string;
-}
 
 export default defineNuxtPlugin(() => {
-	const { public: runtimeConfig } = useRuntimeConfig();
-	const route = useRoute();
-	const { getAuthToken, encryptCorporateClientId, getPrincipal } = useAuth();
+	const {
+		AVA_BASE_URL,
+		LEGACY_VALUATION_BASE_URL,
+		VALUATION_BASE_URL,
+		LEGACY_VALUATION_API_KEY,
+	} = useRuntimeConfig();
 
 	globalThis.$fetch = ofetch.create({
 		async onRequest({ options }) {
+			const baseURL = options.baseURL!;
+
+			if (baseURL.startsWith(VALUATION_BASE_URL)) {
+				const valuationAuthToken = useCookie('valuation_auth_token');
+				options.headers.set('Authorization', `Bearer ${valuationAuthToken.value}`);
+			}
+
+			if (baseURL.startsWith(AVA_BASE_URL)) {
+				const avaBasicAuthToken = useCookie('ava_basic_auth_token');
+				const avaApiKey = useCookie('ava_basic_auth_token');
+
+				options.headers.set('Ava-Basic-Auth', avaBasicAuthToken.value as string);
+				options.headers.set('Ava-Api-Key', avaApiKey.value as string);
+			}
+
+			if (baseURL.startsWith(LEGACY_VALUATION_BASE_URL)) {
+				options.headers.set('X-API-Key', LEGACY_VALUATION_API_KEY);
+			}
+
+			/*
 			let headers: Headers = {};
 
 			// if the request is going to AVA
 			if (options.baseURL == runtimeConfig.AVA_BASE_URL) {
-				headers['Ava-Basic-Auth'] = SecurityUtil.generateBase64Token(
-					'MOBIVALUER',
-					'LiV1tKgaqEtwPn7',
-				);
-				headers['Ava-Api-Key'] = 'fe08ab023b8f4d44a8612a64f4f642c9bcb34850';
+				headers['Ava-Basic-Auth'] = getAvaBasicAuthToken.value!;
+				headers['Ava-Api-Key'] = getAvaApiKey.value!;
 			}
 
 			// if the request us going to Fraud Detection
@@ -44,10 +59,11 @@ export default defineNuxtPlugin(() => {
 
 			// if the request is going to valuation
 			if (options.baseURL == runtimeConfig.VALUATION_BASE_URL) {
-				headers['Authorization'] = `Bearer ${getAuthToken.value}`;
+				headers['Authorization'] = `Bearer ${getValuationAuthToken.value}`;
 			}
 
 			options.headers = { ...options.headers, ...headers };
+			*/
 		},
 	});
 });

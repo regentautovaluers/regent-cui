@@ -1,5 +1,5 @@
 import { ProxyRequestOptions } from '~/types/proxy-types';
-import type { H3Event } from 'h3';
+import type { EventHandlerRequest, H3Event } from 'h3';
 import { ProxyError, StandardErrorResponse, StandardSuccessResponse } from '~/types/proxy-types';
 
 // Utility function to throw properly formatted errors from API endpoints
@@ -17,16 +17,43 @@ export const createProxyError = (
 	return error;
 };
 
-// function to make API calls
 export const makeProxyRequest = async <T = unknown>(
 	endpoint: string,
 	options: ProxyRequestOptions = {},
+	event: H3Event<EventHandlerRequest>,
 ): Promise<T> => {
-	const { method, body, headers, timeout = 60000, responseType } = options;
+	const cookies = parseCookies(event);
+	const {
+		AVA_BASE_URL,
+		LEGACY_VALUATION_BASE_URL,
+		VALUATION_BASE_URL,
+		LEGACY_VALUATION_API_KEY,
+		AI_CHAT_BASE_URL,
+		AI_CHAT_API_KEY,
+	} = useRuntimeConfig();
+	const customHeaders: Record<string, string> = {};
+
+	if (endpoint.startsWith(VALUATION_BASE_URL)) {
+		customHeaders['Authorization'] = `Bearer ${cookies.valuation_auth_token}`;
+	}
+
+	if (endpoint.startsWith(AVA_BASE_URL)) {
+		customHeaders['Ava-Basic-Auth'] = cookies.ava_basic_auth_token;
+		customHeaders['Ava-Api-Key'] = cookies.ava_api_key;
+	}
+
+	if (endpoint.startsWith(LEGACY_VALUATION_BASE_URL)) {
+		customHeaders['X-API-Key'] = LEGACY_VALUATION_API_KEY;
+	}
+
+	if(endpoint.startsWith(AI_CHAT_BASE_URL)) {
+		customHeaders['x-aPI-key'] = AI_CHAT_API_KEY;
+	}
+	const { method, body, headers, timeout = 30000, responseType } = options;
 
 	return await $fetch<T>(endpoint, {
 		method,
-		headers: headers,
+		headers: { ...headers, ...customHeaders },
 		body: body as any,
 		timeout,
 		responseType,
