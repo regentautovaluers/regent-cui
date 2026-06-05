@@ -15,13 +15,17 @@ export default defineEventHandler(async (event) => {
 
 	const requestURL = `${config.VALUATION_BASE_URL}/api/v1/auth/corporate-account/login`;
 	try {
-		let response = await makeProxyRequest<GenericResponse<LoginResponse>>(requestURL, {
-			method: 'POST',
-			body: {
-				email: body.email,
-				password: body.password,
+		let response = await makeProxyRequest<GenericResponse<LoginResponse>>(
+			requestURL,
+			{
+				method: 'POST',
+				body: {
+					email: body.email,
+					password: body.password,
+				},
 			},
-		});
+			event,
+		);
 
 		// get the response data
 		let data = response.data;

@@ -53,13 +53,14 @@ export default defineEventHandler(async (event) => {
 		formData.append('files', pdfBlob, 'authority-letter.pdf');
 
 		const endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`;
-		await makeProxyRequest<GenericResponse<any>>(endpoint, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
+		await makeProxyRequest<GenericResponse<any>>(
+			endpoint,
+			{
+				body: formData,
+				method: 'POST',
 			},
-			body: formData,
-			method: 'POST',
-		});
+			event,
+		);
 		return sendSuccessResponse(event, null);
 	} catch (err) {
 		return sendErrorResponse(event, err);

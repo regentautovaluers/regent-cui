@@ -12,21 +12,25 @@ export default defineEventHandler(async (event) => {
 			session_id: string;
 		} = await readBody(event);
 
-		let response = await makeProxyRequest<ChatResponse>(endpoint, {
-			body: { ...body, is_admin: false },
-			method: 'POST',
-			headers: {
-				'x-api-key': config.AI_CHAT_API_KEY,
-				'x-corp-id': body.corp_id
+		let response = await makeProxyRequest<ChatResponse>(
+			endpoint,
+			{
+				body: { ...body, is_admin: false },
+				method: 'POST',
+				headers: {
+					'x-api-key': config.AI_CHAT_API_KEY,
+					'x-corp-id': body.corp_id,
+				},
 			},
-		});
+			event,
+		);
 
 		// delete unused data
-		delete response.data_type
-		delete response.has_data
-		delete response.sources_used
-		delete response.valuations
-		delete response.analytics
+		delete response.data_type;
+		delete response.has_data;
+		delete response.sources_used;
+		delete response.valuations;
+		delete response.analytics;
 		delete response.total_found;
 		delete response.corp_scoped;
 		delete response.chart_config;

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 	const endpoint = `${config.AVA_BASE_URL}/api/v1/bookings?registration=${query.registration}&corporateId=${query.corpId}`;
 
 	try {
-		const response = await makeProxyRequest<SearchResult>(endpoint);
+		const response = await makeProxyRequest<SearchResult>(endpoint, undefined, event);
 		const {
 			membership: { full_name, phone_number, userEmail },
 			membershipVehicle: { registration, make, model, available_free_distance },

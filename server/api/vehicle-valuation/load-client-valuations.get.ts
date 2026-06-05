@@ -71,11 +71,11 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		let response = await makeProxyRequest<GenericResponse<ValuationBooking[]>>(requestURL, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
-			},
-		});
+		let response = await makeProxyRequest<GenericResponse<ValuationBooking[]>>(
+			requestURL,
+			undefined,
+			event,
+		);
 
 		if (response.data) {
 			response.data.forEach((vb) => cleanValuations(vb));

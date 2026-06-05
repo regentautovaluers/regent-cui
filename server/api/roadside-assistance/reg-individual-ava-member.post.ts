@@ -10,20 +10,28 @@ export default defineEventHandler(async (event) => {
 		// start by registering the user
 		const registerUserEndpoint = `${AVA_BASE_URL}/api/v1/memberships`;
 		delete body.vehicles;
-		const registerUserResponse = await makeProxyRequest<{ id: number }>(registerUserEndpoint, {
-			method: 'POST',
-			body,
-		});
+		const registerUserResponse = await makeProxyRequest<{ id: number }>(
+			registerUserEndpoint,
+			{
+				method: 'POST',
+				body,
+			},
+			event,
+		);
 
 		// then registering the vehicles
 		const registerVehiclesEndpoint = `${AVA_BASE_URL}/api/v1/membershipVehicles`;
-		await makeProxyRequest(registerVehiclesEndpoint, {
-			method: 'POST',
-			body: {
-				membershipId: registerUserResponse.id,
-				vehicles,
+		await makeProxyRequest(
+			registerVehiclesEndpoint,
+			{
+				method: 'POST',
+				body: {
+					membershipId: registerUserResponse.id,
+					vehicles,
+				},
 			},
-		});
+			event,
+		);
 
 		// return a success response
 		return sendSuccessResponse(event, null);

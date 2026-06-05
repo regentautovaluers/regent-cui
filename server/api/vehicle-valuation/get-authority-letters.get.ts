@@ -33,11 +33,11 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		let response = await makeProxyRequest<GenericResponse<AuthorityLetter[]>>(requestURL, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
-			},
-		});
+		let response = await makeProxyRequest<GenericResponse<AuthorityLetter[]>>(
+			requestURL,
+			undefined,
+			event,
+		);
 		return sendSuccessResponse(event, response);
 	} catch (err) {
 		console.log(err);

@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 	const corp_id = getRouterParam(event, 'corp_id');
 	const endpoint = `${AVA_BASE_URL}/api/v1/fleets/corporate/${corp_id}`;
 	try {
-		const response = await makeProxyRequest<AvaMembershipFleets[]>(endpoint);
+		const response = await makeProxyRequest<AvaMembershipFleets[]>(endpoint, undefined, event);
 
 		// delete unused keys
 		response.forEach((e) => {

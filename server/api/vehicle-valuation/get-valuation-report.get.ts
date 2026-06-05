@@ -9,11 +9,11 @@ export default defineEventHandler(async (event) => {
 	let endpoint = `${config.VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${valuation_id}`;
 
 	try {
-		const response = await makeProxyRequest<GenericResponse<ValuationReport>>(endpoint, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
-			},
-		});
+		const response = await makeProxyRequest<GenericResponse<ValuationReport>>(
+			endpoint,
+			undefined,
+			event,
+		);
 
 		const reportData = response.data;
 		const cleanedResponse = {

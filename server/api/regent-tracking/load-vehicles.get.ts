@@ -18,10 +18,9 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		const vehicleData =
-			await makeProxyRequest<{ id: number; title: string; items: TrackedVehicles[] }[]>(
-				endpoint,
-			);
+		const vehicleData = await makeProxyRequest<
+			{ id: number; title: string; items: TrackedVehicles[] }[]
+		>(endpoint, undefined, event);
 
 		let combinedVehicleData = vehicleData.flatMap(
 			(vehicle) => vehicle.items as TrackedVehicles[],
@@ -40,7 +39,11 @@ export default defineEventHandler(async (event) => {
 					&page=1
 					&limit=${deviceIds.length}`.trim();
 			try {
-				const results = await makeProxyRequest<TraceabilityReport>(userDetailsEndpoint);
+				const results = await makeProxyRequest<TraceabilityReport>(
+					userDetailsEndpoint,
+					undefined,
+					event,
+				);
 				results.results.forEach((r) => {
 					let entry = combinedVehicleData.find(
 						(e) => e.id == r.tracker_id,

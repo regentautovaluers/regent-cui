@@ -7,12 +7,13 @@ export default defineEventHandler(async (event) => {
 	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/unified-chat/session/${query.session_id}`;
 
 	try {
-		let response = await makeProxyRequest<SessionHistory>(endpoint, {
-			method: 'GET',
-			headers: {
-				'x-api-key': config.AI_CHAT_API_KEY,
+		let response = await makeProxyRequest<SessionHistory>(
+			endpoint,
+			{
+				method: 'GET',
 			},
-		});
+			event,
+		);
 
 		return sendSuccessResponse(event, response);
 	} catch (err) {

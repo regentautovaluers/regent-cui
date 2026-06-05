@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 		startDate?: string;
 		endDate?: string;
 		corpId: string;
-		searchTerm?: string; 
+		searchTerm?: string;
 	} = getQuery(event);
 
 	let requestURL = `${config.LEGACY_VALUATION_BASE_URL}/api/v1/valuations/search?&page=${query.page}&size=${query.size}`;
@@ -36,12 +36,13 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		const response = await makeProxyRequest<GenericResponse<LegacyValuation[]>>(requestURL, {
-			method: 'GET',
-			headers: {
-				"X-API-Key": `${config.LEGACY_VALUATION_API_KEY}`
-			}
-		});
+		const response = await makeProxyRequest<GenericResponse<LegacyValuation[]>>(
+			requestURL,
+			{
+				method: 'GET',
+			},
+			event,
+		);
 		return sendSuccessResponse(event, response);
 	} catch (err) {
 		return sendErrorResponse(event, err);

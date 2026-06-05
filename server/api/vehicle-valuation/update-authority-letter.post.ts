@@ -19,13 +19,14 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		const endpoint = `${config.VALUATION_BASE_URL}/api/v1/authority-letter/corp/update-authority-letter`;
-		await makeProxyRequest<GenericResponse<any>>(endpoint, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
+		await makeProxyRequest<GenericResponse<any>>(
+			endpoint,
+			{
+				body: formData,
+				method: 'PATCH',
 			},
-			body: formData,
-			method: 'PATCH',
-		});
+			event,
+		);
 		return sendSuccessResponse(event, null);
 	} catch (err) {
 		return sendErrorResponse(event, err);

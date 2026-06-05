@@ -16,9 +16,13 @@ export default defineEventHandler(async (event) => {
 			endpoint +
 			`&tracker_id=${body.id}&corporate_comment=${body.comment}&corporateUser=${body.corp_client}`;
 
-		await makeProxyRequest<any>(endpoint, {
-			method: 'POST',
-		});
+		await makeProxyRequest<any>(
+			endpoint,
+			{
+				method: 'POST',
+			},
+			event,
+		);
 		return sendSuccessResponse(event, null);
 	} catch (err) {
 		console.log(err);

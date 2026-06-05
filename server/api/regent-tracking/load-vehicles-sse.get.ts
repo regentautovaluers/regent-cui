@@ -14,10 +14,9 @@ export default defineEventHandler(async (event) => {
 
 	const fetchDevices = async () => {
 		try {
-			const vehicleData =
-				await makeProxyRequest<{ id: number; title: string; items: TrackedVehicles[] }[]>(
-					endpoint,
-				);
+			const vehicleData = await makeProxyRequest<
+				{ id: number; title: string; items: TrackedVehicles[] }[]
+			>(endpoint, undefined, event);
 
 			const combinedVehicleData = vehicleData.flatMap(
 				(vehicle) => vehicle.items as TrackedVehicles[],
