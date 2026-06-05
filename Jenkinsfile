@@ -160,7 +160,6 @@ EOF
                                     -e NUXT_LEGACY_VALUATION_BASE_URL='${LEGACY_VALUATION_BASE_URL}' \\
                                     -e NUXT_LEGACY_VALUATION_API_KEY='${LEGACY_VALUATION_API_KEY}' \\
                                     -e NUXT_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
-                                    -e NUXT_REPORT_GENERATOR_BASE_URL='https://media.ava.ke' \\
                                     -e NUXT_PUBLIC_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
                                     -e NUXT_PUBLIC_VALUATION_BASE_URL='${PROD_VALUATION_BASE_URL}' \\
                                     -e NUXT_PUBLIC_GOOGLE_MAPS_GEOFENCING_COUNTRY='ke' \\
