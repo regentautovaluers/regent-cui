@@ -14,13 +14,23 @@ const useAuth = () => {
 	const updateProfilePictureLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerLoading: Ref<boolean> = ref(false);
 	const searchCorpOrBrokerResults: Ref<any[] | null> = ref(null);
-	const authToken: CookieRef<string | null | undefined> = useCookie('valuation_auth_token');
+	const valuationAuthToken: CookieRef<string | null | undefined> =
+		useCookie('valuation_auth_token');
+	const avaBasicAuthToken: CookieRef<string | null | undefined> =
+		useCookie('ava_basic_auth_token');
+	const avaApiKey: CookieRef<string | null | undefined> = useCookie('ava_api_key');
 	// const { getPrincipal, setPrincipal, cleanPrincipal } = useValuationPrincipalStore();
 	const { post } = useStandardizedApi();
 	const { principal, setPrincipal, cleanPrincipal, isBroker } = useValuationPrincipalStore();
 
-	const getAuthToken: ComputedRef<string | null | undefined> = computed(() => {
-		return authToken.value;
+	const getValuationAuthToken: ComputedRef<string | null | undefined> = computed(() => {
+		return valuationAuthToken.value;
+	});
+	const getAvaBasicAuthToken: ComputedRef<string | null | undefined> = computed(() => {
+		return avaBasicAuthToken.value;
+	});
+	const getAvaApiKey: ComputedRef<string | null | undefined> = computed(() => {
+		return avaApiKey.value;
 	});
 
 	function getPrincipal(): ValuationPrinicpal | null {
@@ -40,9 +50,6 @@ const useAuth = () => {
 				const data: LoginResponse = (response as StandardSuccessResponse<LoginResponse>)
 					.data;
 
-				// set the auth token
-				authToken.value = data.jwtToken;
-
 				const principal: ValuationPrinicpal = {
 					...data,
 					corpOrganization: {
@@ -54,6 +61,7 @@ const useAuth = () => {
 					accountEnabled: true,
 				};
 				setPrincipal(principal);
+				console.log(principal);
 
 				// handle re-routing
 				routeAfterLoadPrincipal(data);
@@ -75,15 +83,18 @@ const useAuth = () => {
 
 	function routeAfterLoadPrincipal(data: LoginResponse) {
 		if (data.passwordUpdated != undefined && !data.passwordUpdated) {
-			navigateTo({ name: 'password-setup' });
+			return navigateTo({ name: 'password-setup' });
 		} else {
-			navigateTo({ name: 'mobivaluer-home' });
+			return navigateTo({ name: 'mobivaluer-home' });
 		}
 	}
 
 	function attemptLogout() {
-		// unset the auth token and stored principal
-		authToken.value = null;
+		// unset the cokies
+		valuationAuthToken.value = null;
+		avaBasicAuthToken.value = null;
+		avaApiKey.value = null;
+
 		cleanPrincipal();
 
 		// clean the vehicles loaded by tracking
@@ -92,16 +103,15 @@ const useAuth = () => {
 		// delete the users tracking token
 		// trackingAuthToken.value = null;
 
+		// redirect to the login page
+		navigateTo({ name: 'exterior-home' });
 		useToast('Logout Successful!', {
 			type: 'success',
 		});
-
-		// redirect to the login page
-		navigateTo({ name: 'exterior-home' });
 	}
 
 	function displayCookieConsent(): boolean {
-		if (!authToken.value || !principal) {
+		if (!valuationAuthToken.value || !principal) {
 			return true;
 		}
 
@@ -129,8 +139,9 @@ const useAuth = () => {
 		updateProfilePictureLoading,
 		searchCorpOrBrokerLoading,
 		searchCorpOrBrokerResults,
-		getAuthToken,
-
+		getValuationAuthToken,
+		getAvaBasicAuthToken,
+		getAvaApiKey,
 		getPrincipal,
 		attemptLogin,
 		attemptLogout,
