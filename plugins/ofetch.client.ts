@@ -10,14 +10,14 @@ export default defineNuxtPlugin(() => {
 
 	globalThis.$fetch = ofetch.create({
 		async onRequest({ options }) {
-			const baseURL = options.baseURL!;
+			const baseURL = options.baseURL;
 
-			if (baseURL.startsWith(VALUATION_BASE_URL)) {
+			if (baseURL == VALUATION_BASE_URL) {
 				const valuationAuthToken = useCookie('valuation_auth_token');
 				options.headers.set('Authorization', `Bearer ${valuationAuthToken.value}`);
 			}
 
-			if (baseURL.startsWith(AVA_BASE_URL)) {
+			if (baseURL == AVA_BASE_URL) {
 				const avaBasicAuthToken = useCookie('ava_basic_auth_token');
 				const avaApiKey = useCookie('ava_basic_auth_token');
 
@@ -25,7 +25,7 @@ export default defineNuxtPlugin(() => {
 				options.headers.set('Ava-Api-Key', avaApiKey.value as string);
 			}
 
-			if (baseURL.startsWith(LEGACY_VALUATION_BASE_URL)) {
+			if (baseURL == LEGACY_VALUATION_BASE_URL) {
 				options.headers.set('X-API-Key', LEGACY_VALUATION_API_KEY);
 			}
 
