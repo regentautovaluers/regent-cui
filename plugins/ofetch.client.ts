@@ -11,23 +11,26 @@ export default defineNuxtPlugin(() => {
 	globalThis.$fetch = ofetch.create({
 		async onRequest({ options }) {
 			const baseURL = options.baseURL;
+			let headers: Record<string, string> = {};
 
 			if (baseURL == VALUATION_BASE_URL) {
 				const valuationAuthToken = useCookie('valuation_auth_token');
-				options.headers.set('Authorization', `Bearer ${valuationAuthToken.value}`);
+				headers['Authorization'] = `Bearer ${valuationAuthToken.value}`;
 			}
 
 			if (baseURL == AVA_BASE_URL) {
 				const avaBasicAuthToken = useCookie('ava_basic_auth_token');
 				const avaApiKey = useCookie('ava_basic_auth_token');
 
-				options.headers.set('Ava-Basic-Auth', avaBasicAuthToken.value as string);
-				options.headers.set('Ava-Api-Key', avaApiKey.value as string);
+				headers['Ava-Basic-Auth'] = avaBasicAuthToken.value as string;
+				headers['Ava-Api-Key'] = avaApiKey.value as string;
 			}
 
 			if (baseURL == LEGACY_VALUATION_BASE_URL) {
-				options.headers.set('X-API-Key', LEGACY_VALUATION_API_KEY);
+				headers['X-API-Key'] = LEGACY_VALUATION_API_KEY;
 			}
+
+			options.headers = { ...options.headers, ...headers };
 
 			/*
 			let headers: Headers = {};
