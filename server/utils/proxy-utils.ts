@@ -31,6 +31,7 @@ export const makeProxyRequest = async <T = unknown>(
 		AI_CHAT_BASE_URL,
 		AI_CHAT_API_KEY,
 	} = useRuntimeConfig();
+	
 	const customHeaders: Record<string, string> = {};
 
 	if (endpoint.startsWith(VALUATION_BASE_URL)) {
@@ -47,7 +48,7 @@ export const makeProxyRequest = async <T = unknown>(
 	}
 
 	if(endpoint.startsWith(AI_CHAT_BASE_URL)) {
-		customHeaders['x-aPI-key'] = AI_CHAT_API_KEY;
+		customHeaders['x-api-key'] = AI_CHAT_API_KEY;
 	}
 	const { method, body, headers, timeout = 30000, responseType } = options;
 
