@@ -2,19 +2,39 @@ import type { MessageOrigin } from './ai-reports-chat-types';
 
 export interface ChatResponse {
 	origin: MessageOrigin;
-	message: string
-	user_id?: string
+	message: string;
+	user_id?: string;
 	response_status: ResponseStatus;
-	data_type?: 'general'
-	has_data?: boolean
-	sources_used?: any[]
-	valuations?: null
-	analytics?: null
-	total_found?: null
-	corp_scoped?: boolean
-	suggestions?: string[]
-	chart_config?: any
-	session_id?: string
+	data_type?: 'general' | 'analytics';
+	has_data?: boolean;
+	sources_used?: string[];
+	valuations?: null;
+	analytics: Analytics | null;
+	total_found?: null;
+	corp_scoped?: boolean;
+	suggestions?: string[];
+	chart_config: ChartConfig | null;
+	session_id?: string;
+}
+
+export interface Analytics {
+	row_count: number;
+	total: number | null;
+}
+
+export interface ChartConfig {
+	type: 'pie' | 'bar' | 'line';
+	title: string;
+	x_axis: string;
+	y_axis: string;
+	x_label: string;
+	y_label: string;
+	data: ChartData[];
+}
+
+export interface ChartData {
+	vehicle_make: string;
+	count: number;
 }
 
 export type ResponseStatus = 'successful' | 'error';
@@ -66,21 +86,21 @@ export type ExistingSessionSlim = Pick<Session, 'session_id' | 'created_at' | 't
 
 // --- for session chat message history
 export interface SessionHistory {
-	session_id: string
-  user_id: string
-  corp_id: string
-  title: string
-  created_at: string
-  updated_at: string
-  message_count: number
-  history: History[]
-  pagination: Pagination
+	session_id: string;
+	user_id: string;
+	corp_id: string;
+	title: string;
+	created_at: string;
+	updated_at: string;
+	message_count: number;
+	history: History[];
+	pagination: Pagination;
 }
 
 export interface History {
 	role: string;
 	content: string;
-	timestamp: string
+	timestamp: string;
 }
 
 export interface Pagination {

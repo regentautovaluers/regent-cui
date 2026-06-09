@@ -26,11 +26,7 @@ export default defineEventHandler(async (event) => {
 		const getHistoryEndpoint = `/api/ai-reports-chat/get-chat-history?session_id=${response.session_id}`;
 		const availableHistories = await makeProxyRequest<StandardSuccessResponse<ChatHistory>>(
 			getHistoryEndpoint,
-			{
-				headers: {
-					'x-api-key': config.AI_CHAT_API_KEY,
-				},
-			},
+			undefined,
 			event,
 		);
 

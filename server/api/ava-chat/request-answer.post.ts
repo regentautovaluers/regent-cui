@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
 				body: { ...body, is_admin: false },
 				method: 'POST',
 				headers: {
-					'x-api-key': config.AI_CHAT_API_KEY,
 					'x-corp-id': body.corp_id,
 				},
 			},
@@ -30,10 +29,8 @@ export default defineEventHandler(async (event) => {
 		delete response.has_data;
 		delete response.sources_used;
 		delete response.valuations;
-		delete response.analytics;
 		delete response.total_found;
 		delete response.corp_scoped;
-		delete response.chart_config;
 
 		// set the origin - temporary
 		response.origin = 'assistant';
