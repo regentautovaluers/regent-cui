@@ -1,157 +1,154 @@
 <template>
-	<div :class="['flex h-screen bg-[#f8faf8] p-2', sidebarExpanded && 'space-x-4']">
-		<!-- nav bar -->
+	<div class="h-auto min-h-dvh">
 		<aside
 			:class="[
-				'flex h-full max-h-full flex-col space-y-3 transition-all duration-150 ease-linear',
-				sidebarExpanded ? 'laptop:w-[14%] w-52' : 'w-[0%] -translate-x-50',
+				'tablet:w-[35%] laptop:w-[25%] laptop-lg:w-[15%] fixed left-0 z-20 h-dvh w-[95%] border-r-2 transition-all duration-200 ease-linear',
+				!sidebarExpanded && 'laptop:-translate-x-[80%] -translate-x-[100%]',
 			]">
-			<!-- title -->
-			<div class="inline-flex h-[6%] w-full items-center justify-between p-1">
-				<span class="ava-ai-chat-label">AVA Chat</span>
-				<button
-					class="group size-6 cursor-pointer"
-					@click="() => (sidebarExpanded = !sidebarExpanded)">
-					<span
-						class="icon-[material-symbols-light--thumbnail-bar-outline] size-6 text-gray-500 group-hover:text-gray-700"></span>
-				</button>
+			<!-- version when sidebar is expanded -->
+			<div
+				v-if="sidebarExpanded"
+				class="tablet:p-4 flex size-full flex-col space-y-4 p-2">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center space-x-1">
+						<div
+							class="flex size-12 items-center justify-center rounded-xl border-2 bg-blue-700 p-2">
+							<span
+								class="icon-[material-symbols-light--grain] size-10 text-white"></span>
+						</div>
+
+						<ColouredTextInput
+							text="AVA Chat"
+							:bold-text="true"
+							text-size="text-xl"></ColouredTextInput>
+					</div>
+					<button
+						class="group size-6 cursor-pointer"
+						@click="toggleSidebar(false)">
+						<span
+							class="icon-[material-symbols-light--thumbnail-bar-outline] size-6 text-gray-500 group-hover:text-gray-700"></span>
+					</button>
+				</div>
+
+				<div class="flex h-[5%] items-center divide-x-1 overflow-clip rounded-xl border-2">
+					<button
+						class="inline-flex h-full w-1/2 items-center justify-center space-x-1 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-800"
+						@click="activeSessionId = null">
+						<span
+							class="icon-[material-symbols-light--chat-add-on-outline] size-6"></span>
+						<span>New Chat</span>
+					</button>
+					<button
+						class="inline-flex h-full w-1/2 items-center justify-center space-x-1 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-800">
+						<span
+							class="icon-[material-symbols-light--feature-search-outline] size-6"></span>
+						<span>Search</span>
+					</button>
+				</div>
+
+				<div class="flex-1 space-y-4 rounded-xl bg-gray-100 p-2">
+					<h1 class="rounded-xl bg-gray-200 p-2 text-gray-700">Recents Chats</h1>
+					<!-- loading data -->
+					<div
+						class="space-y-3"
+						v-if="fetchChatSessionsPending">
+						<div
+							class="mb-4 h-8 w-full animate-pulse rounded-xl bg-gray-300"
+							v-for="a in 5"
+							:key="a"></div>
+					</div>
+					<div
+						class="h-[95%] max-h-[95%] space-y-3 overflow-y-auto"
+						v-else>
+						<button
+							type="button"
+							class="group relative flex h-14 w-full cursor-pointer flex-col rounded-xl p-2 hover:bg-gray-200"
+							v-for="e in getExistingSessions()"
+							:key="e.session_id"
+							@click="retrieveSessionChats(e.session_id)">
+							<span class="truncate text-sm whitespace-nowrap text-gray-700">{{
+								e.title
+							}}</span>
+							<span class="text-start text-xs text-gray-500">{{
+								calculateTimePassed(e.created_at.split('+')[0]).durationPassed
+							}}</span>
+
+							<button
+								class="invisible absolute right-2 inline-flex size-8 translate-y-1 items-center justify-center rounded-full bg-gray-300 p-2 group-hover:visible">
+								<span
+									class="icon-[material-symbols-light--menu] size-9 text-gray-700"></span>
+							</button>
+						</button>
+					</div>
+				</div>
 			</div>
 
-			<!-- action buttons -->
+			<!-- version when sidebar is not expanded -->
 			<div
-				class="flex h-[5%] items-center divide-x-1 overflow-clip rounded-xl border border-gray-500">
+				class="flex size-full flex-col items-end space-y-4 p-2"
+				v-else>
+				<component
+					:is="isHovered ? 'button' : 'div'"
+					@mouseover="isHovered = true"
+					@mouseleave="isHovered = false"
+					@click="toggleSidebar(true)"
+					:class="[
+						'flex size-10 items-center justify-center',
+						isHovered ? 'rounded-full border-2' : 'rounded-xl bg-blue-700',
+					]">
+					<span
+						class="icon-[material-symbols-light--grain] size-6 text-white"
+						v-if="!isHovered"></span>
+					<span
+						class="icon-[material-symbols-light--thumbnail-bar-outline] size-6 text-gray-500 group-hover:text-gray-700"
+						v-else></span>
+				</component>
 				<button
-					class="inline-flex h-full w-1/2 items-center justify-center space-x-1 text-sm hover:bg-gray-300"
+					class="inline-flex size-10 items-center justify-center space-x-1 rounded-full bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-800"
 					@click="activeSessionId = null">
 					<span class="icon-[material-symbols-light--chat-add-on-outline] size-6"></span>
-					<span>New Chat</span>
 				</button>
-				<!-- <button
-					class="inline-flex h-full w-1/2 items-center justify-center space-x-1 text-sm hover:bg-gray-300">
-					<span
-						class="icon-[material-symbols-light--feature-search-outline] size-6"></span>
-					<span>Search</span>
-				</button> -->
-			</div>
-
-			<!-- chat history -->
-			<div class="thin-scrollbar max-h-[calc(100%-(13%))] flex-grow overflow-y-auto">
-				<h1 class="font-medium text-gray-700">Recents</h1>
-				<div class="space-y-1 overflow-x-hidden">
-					<button
-						v-for="(e, idx) in getExistingSessions()"
-						:key="idx"
-						:class="[
-							'group relative h-10 w-full max-w-full overflow-clip rounded-xl p-2 text-start text-sm text-nowrap text-ellipsis hover:bg-gray-200',
-							activeSessionId == e.session_id
-								? 'bg-gray-300 text-gray-700'
-								: 'text-gray-500',
-						]"
-						type="button"
-						@click="retrieveSessionChats(e.session_id)">
-						{{ e.title }}
-						<span
-							class="absolute top-[20%] right-2 hidden size-6 rounded-xl bg-red-300 p-1 group-hover:block hover:bg-red-400">
-							<span class="icon-[material-symbols-light--delete] text-red-600"></span>
-						</span>
-					</button>
-				</div>
 			</div>
 		</aside>
-
-		<!-- main chat window for a new chat -->
-		<main
-			class="relative flex h-full flex-grow flex-col rounded-xl border border-gray-300 bg-white px-2 transition-all duration-150 ease-linear"
-			v-if="!activeSessionId">
-			<div
+		<main class="relative h-dvh min-h-full">
+			<!--  top navbar -->
+			<nav
 				:class="[
-					'flex h-[6%] items-center',
-					sidebarExpanded ? 'justify-center' : 'justify-between',
+					'fixed top-0 flex h-12 items-center justify-between border-b px-2',
+					sidebarExpanded && 'hidden',
+					!sidebarExpanded && 'laptop:hidden block',
 				]">
 				<button
-					class="group cursor-pointer"
-					@click="() => (sidebarExpanded = true)"
-					v-if="!sidebarExpanded">
+					class="group size-6 cursor-pointer"
+					@click="toggleSidebar()">
 					<span
 						class="icon-[material-symbols-light--thumbnail-bar-outline] size-6 text-gray-500 group-hover:text-gray-700"></span>
 				</button>
-				<button
-					disabled
-					class="inline-flex items-center space-x-1 rounded-full bg-blue-200 px-3 py-1 text-blue-700">
-					<span class="icon-[material-symbols-light--experiment] size-5"></span>
-					<span>Experimental</span>
-				</button>
-				<div></div>
-			</div>
-			<div class="flex flex-grow flex-col items-center justify-center">
-				<h1 class="mb-4 text-center text-3xl font-bold text-gray-700 uppercase">
-					Chat With <br />
+			</nav>
+
+			<!-- chat interface when no session in progress -->
+			<div
+				v-if="!activeSessionId"
+				class="mobile-md:px-4 tablet:px-[5vw] laptop:px-[10vw] laptop-lg:px-[20vw] desktop-4k:px-[30vw] flex h-full flex-col items-center justify-center px-2">
+				<h1 class="mb-4 text-center text-2xl font-bold text-gray-700 uppercase">
+					Talk To <br />
 					Your Reports
 				</h1>
-				<form
-					class="tablet:w-[60%] laptop:w-[40%] relative h-fit w-[80%]"
-					@submit.prevent="submitQuestion()">
-					<textarea
-						id="comments"
-						class="generic-text-area resize-none rounded-3xl text-base"
-						rows="5"
-						placeholder="What would you like to know?..."
-						v-model="userQuery"
-						:disabled="awaitingAnswer"></textarea>
-					<button
-						type="submit"
-						class="absolute right-4 bottom-4 inline-flex size-10 items-center justify-center rounded-full bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-700"
-						:disabled="!userQuery || awaitingAnswer">
-						<span
-							class="icon-[svg-spinners--90-ring] size-7"
-							v-if="awaitingAnswer"></span>
-						<span
-							class="icon-[material-symbols-light--arrow-upward-alt-rounded] size-7"
-							v-else></span>
-					</button>
-				</form>
 
-				<!-- sample questions -->
-				<div
-					class="tablet:w-[60%] laptop:w-[40%] relative mt-4 flex h-fit w-[80%] flex-wrap space-y-2 space-x-2">
-					<button
-						v-for="(q, idx) in sampleQuestions"
-						:key="idx"
-						class="rounded-full border p-2 text-sm text-gray-700 transition-colors duration-150 ease-in-out outline-none hover:border-gray-300 hover:bg-gray-100/70">
-						{{ q }}
-					</button>
-				</div>
-			</div>
-		</main>
-
-		<!-- chat window for existing chat -->
-		<main
-			class="relative flex h-full flex-grow flex-col rounded-md border border-gray-300"
-			v-else>
-			<div
-				:class="[
-					'flex h-[6%] min-h-12 items-center px-2',
-					sidebarExpanded ? 'justify-center' : 'justify-between',
-				]">
-				<button
-					class="group cursor-pointer"
-					@click="() => (sidebarExpanded = true)"
-					v-if="!sidebarExpanded">
-					<span
-						class="icon-[material-symbols-light--thumbnail-bar-outline] size-6 text-gray-500 group-hover:text-gray-700"></span>
-				</button>
-				<button
-					disabled
-					class="inline-flex items-center space-x-1 rounded-full bg-blue-200 px-3 py-1 text-blue-700">
-					<span class="icon-[material-symbols-light--experiment] size-5"></span>
-					<span>Experimental</span>
-				</button>
-				<div></div>
+				<!-- follow up query strip -->
+				<AIChatInputBox
+					v-model:user-query-model="userQuery"
+					v-model:awaiting-response-model="awaitingAnswer"
+					:show-suggestion-strips="true"
+					call-to-action-text="What would you like to know?"
+					@formSubmitted="submitQuestion()"></AIChatInputBox>
 			</div>
 
-			<!-- Q & A strip -->
+			<!-- chat interface when no session in progress -->
 			<div
-				class="thin-scrollbar laptop:px-[28rem] flex h-[calc(100%-(6%+10%))] max-h-[calc(100%-(6%+10%))] flex-grow flex-col space-y-2 overflow-y-scroll px-5">
+				v-else
+				class="mobile-md:px-4 tablet:px-[5vw] laptop:px-[10vw] laptop-lg:px-[20vw] desktop-4k:px-[30vw] relative flex h-screen min-h-screen flex-col px-2 pt-14">
+				<!-- Q&A strip -->
 				<template
 					v-for="(m, idx) in getChatMessages(activeSessionId)"
 					:key="idx">
@@ -168,34 +165,15 @@
 						optional-styles="self-start">
 					</AIChatBubble>
 				</template>
-			</div>
 
-			<!-- follow up query strip -->
-			<form
-				class="my-2 flex h-[10%] justify-center"
-				@submit.prevent="submitQuestion()">
-				<div
-					class="tablet:w-[75%] laptop:w-[55%] laptop-lg:w-[45%] relative size-fit w-[95%]">
-					<textarea
-						id="comments"
-						class="generic-text-area resize-none rounded-2xl text-base shadow-sm"
-						rows="3"
-						placeholder="Ask a follow up question..."
-						v-model="userQuery"
-						:disabled="awaitingAnswer"></textarea>
-					<button
-						type="submit"
-						class="absolute right-3 bottom-3 inline-flex size-10 items-center justify-center rounded-full bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-700"
-						:disabled="!userQuery || awaitingAnswer">
-						<span
-							class="icon-[svg-spinners--90-ring] size-7"
-							v-if="awaitingAnswer"></span>
-						<span
-							class="icon-[material-symbols-light--arrow-upward-alt-rounded] size-7"
-							v-else></span>
-					</button>
-				</div>
-			</form>
+				<!-- follow up query strip -->
+				<AIChatInputBox
+					class="sticky bottom-0"
+					v-model:user-query-model="userQuery"
+					v-model:awaiting-response-model="awaitingAnswer"
+					call-to-action-text="Ask a follow up question..."
+					@formSubmitted="submitQuestion()"></AIChatInputBox>
+			</div>
 		</main>
 	</div>
 </template>
@@ -205,15 +183,24 @@
 		name: 'ava-chat',
 	});
 
-	const sidebarExpanded: Ref<boolean> = ref(true);
+	const sidebarExpanded: Ref<boolean> = ref(false);
+	const isHovered: Ref<boolean> = ref(false);
+
+	function toggleSidebar(t?: boolean) {
+		if (t) {
+			sidebarExpanded.value = t;
+			return;
+		}
+		sidebarExpanded.value = !sidebarExpanded.value;
+	}
 	const {
 		userQuery,
 		awaitingAnswer,
-		sampleQuestions,
 		submitQuestion,
 		activeSessionId,
 		getChatMessages,
 		getExistingSessions,
 		retrieveSessionChats,
+		fetchChatSessionsPending,
 	} = useAVAAIChat();
 </script>

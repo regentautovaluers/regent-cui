@@ -2,13 +2,6 @@ import type { StandardSuccessResponse } from '~/types/proxy-types';
 import type { ExistingSessionSlim, ChatResponse, SessionHistory } from '~/types/ava-ai-chat-types';
 
 export default function () {
-	const sampleQuestions: readonly string[] = [
-		'Which vehicles usually fetch a value above 2 million shillings?',
-		'How far back does your data set reach?',
-		'What is the average market value of a Mercedes?',
-		'Which Toyota car fetches the highest market value?',
-		'Compare the market value of a Toyota versus a Mercedes',
-	];
 	const { query } = useRoute();
 	const {
 		getChatMessages,
@@ -23,10 +16,11 @@ export default function () {
 	const userQuery: Ref<string | null> = ref((query.uq as string) || null);
 	const activeSessionId: Ref<string | null> = ref(null);
 
-	const { status: fetchChatSessionsStatus, error: fetchChatSessionsError } = useApiData<
-		ExistingSessionSlim[],
-		ExistingSessionSlim[]
-	>(
+	const {
+		status: fetchChatSessionsStatus,
+		pending: fetchChatSessionsPending,
+		error: fetchChatSessionsError,
+	} = useApiData<ExistingSessionSlim[], ExistingSessionSlim[]>(
 		'user-ai-sessions',
 		computed(() => `/api/ava-chat/get-existing-sessions?user_id=${getPrincipal()?.userId}`),
 		{
@@ -68,7 +62,9 @@ export default function () {
 						origin: 'user',
 						message: userQuery.value!,
 						response_status: 'successful',
-						user_id: user?.userId!
+						user_id: user?.userId!,
+						analytics: null,
+						chart_config: null,
 					},
 					data,
 				];
@@ -89,11 +85,15 @@ export default function () {
 						origin: 'user',
 						message: userQuery.value!,
 						response_status: 'successful',
+						analytics: null,
+						chart_config: null,
 					},
 					{
 						origin: 'assistant',
 						message: 'Something went wrong. Kindly repeat the question :(',
 						response_status: 'error',
+						analytics: null,
+						chart_config: null,
 					},
 				];
 
@@ -142,6 +142,8 @@ export default function () {
 							origin: 'assistant',
 							message: 'Seems like you have no chats! Ask away...',
 							response_status: 'error',
+							analytics: null,
+							chart_config: null,
 						},
 					]);
 				}
@@ -159,10 +161,10 @@ export default function () {
 	return {
 		userQuery,
 		awaitingAnswer,
-		sampleQuestions,
 		submitQuestion,
 		activeSessionId,
 		getChatMessages,
+		fetchChatSessionsPending,
 		getExistingSessions,
 		retrieveSessionChats,
 	};

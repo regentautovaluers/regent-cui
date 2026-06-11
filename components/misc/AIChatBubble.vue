@@ -54,27 +54,11 @@
 	.markdown-content :deep(h5),
 	.markdown-content :deep(h6) {
 		color: #364153;
-		font-weight: 100;
+		font-weight: 600;
 		line-height: 1;
 		margin-top: 1rem;
 		margin-bottom: 1rem;
-	}
-
-	.markdown-content :deep(h1) {
-		font-size: 2rem;
-		padding-bottom: 0.5rem;
-	}
-
-	.markdown-content :deep(h2) {
-		font-size: 1.75rem;
-		padding-bottom: 0.3rem;
-	}
-
-	.markdown-content :deep(h3) {
-		font-size: 1.5rem;
-	}
-	.markdown-content :deep(h4) {
-		font-size: 1.25rem;
+		font-size: 0.95rem;
 	}
 
 	/* Lists */
