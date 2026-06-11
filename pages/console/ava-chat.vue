@@ -2,7 +2,7 @@
 	<div class="h-auto min-h-dvh">
 		<aside
 			:class="[
-				'tablet:w-[35%] laptop:w-[25%] laptop-lg:w-[15%] fixed left-0 z-20 h-dvh w-[95%] border-r-2 transition-all duration-200 ease-linear',
+				'tablet:w-[35%] laptop:w-[25%] laptop-lg:w-[15%] fixed left-0 z-20 h-dvh w-[95%] border-r-2 bg-white transition-all duration-200 ease-linear',
 				!sidebarExpanded && 'laptop:-translate-x-[80%] -translate-x-[100%]',
 			]">
 			<!-- version when sidebar is expanded -->
@@ -62,14 +62,14 @@
 						v-else>
 						<button
 							type="button"
-							class="group relative flex h-14 w-full cursor-pointer flex-col rounded-xl p-2 hover:bg-gray-200"
+							class="group relative flex h-14 w-full cursor-pointer flex-col rounded-xl p-2 text-start hover:bg-gray-200"
 							v-for="e in getExistingSessions()"
 							:key="e.session_id"
 							@click="retrieveSessionChats(e.session_id)">
 							<span class="truncate text-sm whitespace-nowrap text-gray-700">{{
 								e.title
 							}}</span>
-							<span class="text-start text-xs text-gray-500">{{
+							<span class="text-xs text-gray-500">{{
 								calculateTimePassed(e.created_at.split('+')[0]).durationPassed
 							}}</span>
 
@@ -110,11 +110,11 @@
 				</button>
 			</div>
 		</aside>
-		<main class="relative h-dvh min-h-full">
+		<main class="relative h-dvh min-h-dvh">
 			<!--  top navbar -->
 			<nav
 				:class="[
-					'fixed top-0 flex h-12 items-center justify-between border-b px-2',
+					'fixed top-0 flex h-12 w-full items-center justify-between border-b bg-white px-2',
 					sidebarExpanded && 'hidden',
 					!sidebarExpanded && 'laptop:hidden block',
 				]">
@@ -144,10 +144,20 @@
 					@formSubmitted="submitQuestion()"></AIChatInputBox>
 			</div>
 
-			<!-- chat interface when no session in progress -->
+			<!-- chat interface when a session in progress -->
 			<div
 				v-else
-				class="mobile-md:px-4 tablet:px-[5vw] laptop:px-[10vw] laptop-lg:px-[20vw] desktop-4k:px-[30vw] relative flex h-screen min-h-screen flex-col px-2 pt-14">
+				class="mobile-md:px-4 tablet:px-[5vw] laptop:px-[10vw] laptop-lg:px-[20vw] desktop-4k:px-[30vw] flex h-full min-h-full flex-col overflow-y-auto px-2 pt-20 pb-40">
+				<!-- when loading content e.g. for loading chat messages or awaiting a response -->
+				<div
+					class="space-y-3"
+					v-if="awaitingAnswer">
+					<div
+						class="mb-4 h-8 w-full animate-pulse rounded-full bg-gray-300"
+						v-for="a in 3"
+						:key="a"></div>
+				</div>
+
 				<!-- Q&A strip -->
 				<template
 					v-for="(m, idx) in getChatMessages(activeSessionId)"
@@ -167,8 +177,12 @@
 				</template>
 
 				<!-- follow up query strip -->
+			</div>
+
+			<div
+				class="mobile-md:px-4 tablet:px-[5vw] laptop:px-[10vw] laptop-lg:px-[20vw] desktop-4k:px-[30vw] fixed bottom-0 w-full"
+				v-if="activeSessionId">
 				<AIChatInputBox
-					class="sticky bottom-0"
 					v-model:user-query-model="userQuery"
 					v-model:awaiting-response-model="awaitingAnswer"
 					call-to-action-text="Ask a follow up question..."
