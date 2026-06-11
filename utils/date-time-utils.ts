@@ -34,43 +34,41 @@ export function calculateTimeDifferenceSeconds(end: string, start: string): numb
 	return Math.floor((endTime - startTime) / 1000);
 }
 
-export function calculateTimePassed(timestamp: BigInt): { durationPassed: string; isNew: boolean } {
-	// Convert BigInt timestamp to a regular number for calculations.
-	const pastTime = Number(timestamp);
+export function calculateTimePassed(timestamp: string): { durationPassed: string; isNew: boolean } {
+	const pastTime = new Date(timestamp).getTime();
 	const now = Date.now();
 	const diffInMs = now - pastTime;
 
-	// Define time constants in milliseconds.
-	const minute = 60 * 1000;
-	const hour = minute * 60;
-	const day = hour * 24;
-	const week = day * 7;
-	const month = day * 30; // Approximation for a month
-	const year = day * 365; // Approximation for a year
+	// Time constants in milliseconds
+	const MS_PER_SECOND = 1000;
+	const MS_PER_MINUTE = 60 * MS_PER_SECOND;
+	const MS_PER_HOUR = 60 * MS_PER_MINUTE;
+	const MS_PER_DAY = 24 * MS_PER_HOUR;
+	const MS_PER_WEEK = 7 * MS_PER_DAY;
+	const MS_PER_MONTH = 30 * MS_PER_DAY; // Approximation
+	const MS_PER_YEAR = 365 * MS_PER_DAY; // Approximation
 
-	let durationPassed = '';
-	let isNew = diffInMs < week;
+	const isNew = diffInMs < MS_PER_WEEK;
 
-	if (diffInMs < minute) {
+	const pluralize = (count: number, unit: string) =>
+		`${count} ${unit}${count > 1 ? 's' : ''} ago`;
+
+	let durationPassed: string;
+
+	if (diffInMs < MS_PER_MINUTE) {
 		durationPassed = 'just now';
-	} else if (diffInMs < hour) {
-		const minutes = Math.floor(diffInMs / minute);
-		durationPassed = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-	} else if (diffInMs < day) {
-		const hours = Math.floor(diffInMs / hour);
-		durationPassed = `${hours} hour${hours > 1 ? 's' : ''} ago`;
-	} else if (diffInMs < week) {
-		const days = Math.floor(diffInMs / day);
-		durationPassed = `${days} day${days > 1 ? 's' : ''} ago`;
-	} else if (diffInMs < month) {
-		const weeks = Math.floor(diffInMs / week);
-		durationPassed = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-	} else if (diffInMs < year) {
-		const months = Math.floor(diffInMs / month);
-		durationPassed = `${months} month${months > 1 ? 's' : ''} ago`;
+	} else if (diffInMs < MS_PER_HOUR) {
+		durationPassed = pluralize(Math.floor(diffInMs / MS_PER_MINUTE), 'minute');
+	} else if (diffInMs < MS_PER_DAY) {
+		durationPassed = pluralize(Math.floor(diffInMs / MS_PER_HOUR), 'hour');
+	} else if (diffInMs < MS_PER_WEEK) {
+		durationPassed = pluralize(Math.floor(diffInMs / MS_PER_DAY), 'day');
+	} else if (diffInMs < MS_PER_MONTH) {
+		durationPassed = pluralize(Math.floor(diffInMs / MS_PER_WEEK), 'week');
+	} else if (diffInMs < MS_PER_YEAR) {
+		durationPassed = pluralize(Math.floor(diffInMs / MS_PER_MONTH), 'month');
 	} else {
-		const years = Math.floor(diffInMs / year);
-		durationPassed = `${years} year${years > 1 ? 's' : ''} ago`;
+		durationPassed = pluralize(Math.floor(diffInMs / MS_PER_YEAR), 'year');
 	}
 
 	return { durationPassed, isNew };
@@ -116,25 +114,6 @@ export const formatServerProvidedDateTime = (servDateTime: string): string => {
 
 export const formatExcelTemplateDate = (dateObj: Date): string => {
 	return format(dateObj, 'yyyy-MM-dd');
-};
-
-export const screenFormatRAServiceName = (rawType: string): string => {
-	let friendlyType: string = '';
-	switch (rawType) {
-		case 'towing':
-			friendlyType = 'Towing';
-			break;
-		case 'fueldelivery':
-			friendlyType = 'Fuel Delivery';
-			break;
-		case 'jumpstarting':
-			friendlyType = 'Jumpstarting';
-			break;
-		case 'tyrechange':
-			friendlyType = 'Tyre Change';
-	}
-
-	return friendlyType;
 };
 
 export function deriveMinDate(t: number): string {

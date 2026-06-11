@@ -38,3 +38,22 @@ export function renderMarkdown(mdtext: string) {
 	// 'marked.parse' converts the markdown string to HTML
 	return marked.parse(mdtext);
 }
+
+export const screenFormatRAServiceName = (rawType: string): string => {
+	let friendlyType: string = '';
+	switch (rawType) {
+		case 'towing':
+			friendlyType = 'Towing';
+			break;
+		case 'fueldelivery':
+			friendlyType = 'Fuel Delivery';
+			break;
+		case 'jumpstarting':
+			friendlyType = 'Jumpstarting';
+			break;
+		case 'tyrechange':
+			friendlyType = 'Tyre Change';
+	}
+
+	return friendlyType;
+};
