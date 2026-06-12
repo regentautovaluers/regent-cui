@@ -10,6 +10,8 @@
 			:height="height ?? 300"
 			:categories="computedCategories"
 			:y-axis="computedYAxisKeys"
+			:y-label="yAxisLabel"
+			:x-label="xAxisLabel"
 			:group-padding="0"
 			:bar-padding="barGroupsPadding ?? 0.2"
 			:x-num-ticks="ticksOnXAxis ?? 3"
@@ -36,6 +38,8 @@
 		showHorizontalGridLines?: boolean;
 		ticksOnXAxis?: number;
 		barGroupsPadding?: number;
+		yAxisLabel: string;
+		xAxisLabel: string;
 	}
 
 	interface BulletLegendItemInterface {
