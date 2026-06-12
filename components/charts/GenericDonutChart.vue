@@ -10,7 +10,7 @@
 			:height="height ?? 200"
 			:radius="radius ?? 0"
 			:categories="categories"
-			:hide-legend="true"
+			:hide-legend="hideLegend ?? false"
 			:type="DonutType.Full"
 			:pad-angle="0"
 			:arc-width="innerHoleWidth ?? 0">
@@ -32,13 +32,11 @@
 </template>
 
 <script setup lang="ts">
-	interface PiePieces {
-		name: string;
-		value: number;
-	}
-
 	interface Props {
-		data: PiePieces[];
+		data: {
+			name: string;
+			value: number;
+		}[];
 		hideLegend?: boolean;
 		height?: number;
 		radius?: number;

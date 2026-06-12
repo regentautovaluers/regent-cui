@@ -21,17 +21,15 @@
 </template>
 
 <script lang="ts" setup>
-	interface LineChartData {
-		[key: string]: string | number;
-	}
-
 	interface BulletLegendItemInterface {
 		name: string;
 		color: string;
 	}
 
 	interface Props {
-		data: LineChartData[];
+		data: {
+			[key: string]: string | number;
+		}[];
 		title?: string;
 		height?: number;
 		hideLegend?: boolean;

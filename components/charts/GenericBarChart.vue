@@ -25,12 +25,10 @@
 </template>
 
 <script lang="ts" setup>
-	interface BarChartData {
-		[key: string]: string | number;
-	}
-
 	interface Props {
-		data: BarChartData[];
+		data: {
+			[key: string]: string | number;
+		}[];
 		title?: string;
 		height?: number;
 		barRadius?: number;
