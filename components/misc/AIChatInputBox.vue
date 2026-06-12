@@ -15,17 +15,16 @@
 				class="absolute right-3 bottom-3 inline-flex items-center justify-center rounded-full bg-blue-600 p-2 text-sm space-x-2 text-slate-100 ring-1 disabled:bg-blue-300 disabled:text-blue-700"
 				v-show="userQueryModel && userQueryModel.length > 0"
 				:disabled="!userQueryModel || awaitingResponseModel">
-				<span>Ask Away</span>
 				<span
-					class="icon-[svg-spinners--90-ring] size-4"
+					class="icon-[svg-spinners--90-ring] size-5"
 					v-if="awaitingResponseModel"></span>
 				<span
 					class="icon-[material-symbols-light--arrow-upward-alt-rounded] size-6"
 					v-else></span>
 			</button>
 		</div>
-		<p class="mt-0.5 text-center text-sm text-gray-500">
-			AVA chat responses are not always accurate and could contain mistakes.
+		<p class="mt-1.5 text-center text-sm text-gray-500">
+			AVA is experimental. Responses could contain mistakes.
 		</p>
 		<div
 			v-if="showSuggestionStrips"

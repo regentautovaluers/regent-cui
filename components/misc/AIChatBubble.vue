@@ -1,23 +1,127 @@
 <template>
 	<div :class="['group h-fit', optionalStyles]">
+		<!-- message rendered from markdown -->
 		<div
 			class="markdown-content h-fit rounded-2xl p-3 text-sm text-gray-700 outline-none"
 			v-html="renderMarkdown(props.message)"></div>
+
+		<!-- optional charts -->
+		<div
+			class="h-fit"
+			v-if="computedChartData">
+			<template v-if="computedChartData.type == 'pie'">
+				<GenericDonutChart
+					:data="
+						computedChartData.data as {
+							name: string;
+							value: number;
+						}[]
+					"
+					:height="pieChartSize ?? 300"
+					:title="computedChartData.title"></GenericDonutChart>
+			</template>
+
+			<template v-if="computedChartData.type == 'bar'">
+				<GenericBarChart
+					:data="computedChartData.data"
+					:show-horizontal-grid-lines="true"
+					:y-axis-label="computedChartData.yAxisLabel!"
+					:x-axis-label="computedChartData.xAxisLabel!"
+					:title="computedChartData.title"
+					:height="barChartHeight ?? 300"></GenericBarChart>
+			</template>
+
+			<template v-if="computedChartData.type == 'line'">
+				<GenericLineChart
+					:data="computedChartData.data"
+					:show-horizontal-grid-lines="true"
+					:title="computedChartData.title"
+					:y-axis-label="computedChartData.yAxisLabel!"
+					:x-axis-label="computedChartData.xAxisLabel!"
+					:height="lineChartHeight ?? 300"></GenericLineChart
+			></template>
+		</div>
+
+		<!-- optional suggestions -->
+		<div v-if="suggestions">
+			<button
+				type="button"
+				v-for="(q, idx) in suggestions"
+				@click="userQueryModel = q"
+				:key="idx"
+				class="m-1 rounded-xl border p-2 text-xs text-gray-700 transition-colors duration-150 ease-in-out outline-none hover:border-gray-400 hover:bg-gray-100/80">
+				{{ q }}
+			</button>
+		</div>
+
+		<!-- optional buttons -->
 		<div class="invisible h-fit w-full group-hover:visible">
-			<button class="inline-flex items-center justify-center rounded-full p-1">
-				<span class="icon-[material-symbols-light--content-copy-outline] size-5"></span>
+			<button
+				type="button"
+				class="inline-flex items-center justify-center rounded-full border p-1 hover:border-gray-400 hover:bg-gray-100/80"
+				@click="useCopyToClipboard([message])">
+				<span
+					class="icon-[material-symbols-light--content-copy-outline] size-5 text-gray-700"></span>
 			</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+	import type { ChartConfig, SupportedAIChartType } from '~/types/ava-ai-chat-types';
+
 	interface Props {
 		message: string;
 		optionalStyles?: string;
+		chartConfig?: ChartConfig | null;
+		pieChartSize?: number;
+		barChartHeight?: number;
+		lineChartHeight?: number;
+		suggestions?: string[] | null;
+	}
+
+	interface SharedChartData {
+		title: string;
+		data: Record<string, string | number>[];
+		xAxisLabel?: string;
+		yAxisLabel?: string;
+		type?: SupportedAIChartType;
 	}
 
 	const props = defineProps<Props>();
+	const userQueryModel = defineModel('userQueryModel', { type: String, default: '' });
+
+	const computedChartData: ComputedRef<SharedChartData | null> = computed(() => {
+		const chartConfig = unref(props.chartConfig);
+		if (!chartConfig) {
+			return null;
+		}
+
+		const initialData: SharedChartData = {
+			type: chartConfig.type,
+			title: chartConfig.title,
+			data: chartConfig.data.map((e: any) => ({
+				name: e[chartConfig.x_axis],
+				value: e[chartConfig.y_axis],
+			})),
+		};
+
+		// for a pie (donut) chart
+		if (chartConfig.type == 'pie') {
+			return initialData;
+		}
+
+		// for a bar chart
+		if (chartConfig.type == 'bar' || chartConfig.type == 'line') {
+			return {
+				...initialData,
+				xAxisLabel: chartConfig.x_label,
+				yAxisLabel: chartConfig.y_label,
+			};
+		}
+
+		return null;
+	});
 </script>
 
 <style scoped>

@@ -15,6 +15,10 @@ export const useAVAAiChatStore = defineStore('useAVAAiChatStore', () => {
 			?.messages as ChatResponse[];
 	}
 
+	function getChatMessagesLength(sessionId: string): number {
+		return ongoingSessions.value.find((e) => e.sessionId == sessionId)?.messages.length ?? 0;
+	}
+
 	function pushChatMessage(sessionId: string, message: ChatResponse[]) {
 		const index = ongoingSessions.value.findIndex((e) => e.sessionId == sessionId);
 		if (index >= 0) {
@@ -47,6 +51,7 @@ export const useAVAAiChatStore = defineStore('useAVAAiChatStore', () => {
 
 	return {
 		getChatMessages,
+		getChatMessagesLength,
 		pushChatMessage,
 		setExistingSessions,
 		getExistingSessions,

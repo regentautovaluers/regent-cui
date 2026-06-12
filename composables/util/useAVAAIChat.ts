@@ -5,6 +5,7 @@ export default function () {
 	const { query } = useRoute();
 	const {
 		getChatMessages,
+		getChatMessagesLength,
 		pushChatMessage,
 		setExistingSessions,
 		getExistingSessions,
@@ -130,6 +131,7 @@ export default function () {
 								origin: e.role,
 								message: e.content,
 								response_status: 'successful',
+								chart_config: e.chart_config,
 							} as ChatResponse;
 						});
 
@@ -158,14 +160,32 @@ export default function () {
 		}
 	}
 
+	function getSuggestions(
+		index: number,
+		chatLength: number,
+		suggestions: string[] | null | undefined,
+	): string[] | null {
+		if (index != chatLength - 1) {
+			return null;
+		}
+
+		if (!suggestions) {
+			return null;
+		}
+
+		return suggestions;
+	}
+
 	return {
 		userQuery,
 		awaitingAnswer,
 		submitQuestion,
 		activeSessionId,
 		getChatMessages,
+		getChatMessagesLength,
 		fetchChatSessionsPending,
 		getExistingSessions,
 		retrieveSessionChats,
+		getSuggestions,
 	};
 }

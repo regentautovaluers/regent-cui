@@ -30,21 +30,12 @@
 					</button>
 				</div>
 
-				<div class="flex h-[5%] items-center divide-x-1 overflow-clip rounded-xl border-2">
-					<button
-						class="inline-flex h-full w-1/2 items-center justify-center space-x-1 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-800"
-						@click="activeSessionId = null">
-						<span
-							class="icon-[material-symbols-light--chat-add-on-outline] size-6"></span>
-						<span>New Chat</span>
-					</button>
-					<button
-						class="inline-flex h-full w-1/2 items-center justify-center space-x-1 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-800">
-						<span
-							class="icon-[material-symbols-light--feature-search-outline] size-6"></span>
-						<span>Search</span>
-					</button>
-				</div>
+				<button
+					class="inline-flex h-12 items-center justify-center space-x-1 rounded-xl border-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-800"
+					@click="activeSessionId = null">
+					<span class="icon-[material-symbols-light--chat-add-on-outline] size-6"></span>
+					<span>New Chat</span>
+				</button>
 
 				<div class="flex-1 space-y-4 rounded-xl bg-gray-100 p-2">
 					<h1 class="rounded-xl bg-gray-200 p-2 text-gray-700">Recents Chats</h1>
@@ -73,11 +64,11 @@
 								calculateTimePassed(e.created_at.split('+')[0]).durationPassed
 							}}</span>
 
-							<button
+							<!-- <button
 								class="invisible absolute right-2 inline-flex size-8 translate-y-1 items-center justify-center rounded-full bg-gray-300 p-2 group-hover:visible">
 								<span
 									class="icon-[material-symbols-light--menu] size-9 text-gray-700"></span>
-							</button>
+							</button> -->
 						</button>
 					</div>
 				</div>
@@ -172,7 +163,18 @@
 					<AIChatBubble
 						v-else-if="m.origin == 'assistant'"
 						:message="m.message"
-						optional-styles="self-start">
+						optional-styles="self-start space-y-4"
+						:pie-chart-size="400"
+						:bar-chart-height="400"
+						:chart-config="m.chart_config"
+						:suggestions="
+							getSuggestions(
+								idx,
+								getChatMessagesLength(activeSessionId),
+								m.suggestions,
+							)
+						"
+						v-model:user-query-model="userQuery">
 					</AIChatBubble>
 				</template>
 
@@ -197,7 +199,7 @@
 		name: 'ava-chat',
 	});
 
-	const sidebarExpanded: Ref<boolean> = ref(false);
+	const sidebarExpanded: Ref<boolean> = ref(true);
 	const isHovered: Ref<boolean> = ref(false);
 
 	function toggleSidebar(t?: boolean) {
@@ -213,8 +215,10 @@
 		submitQuestion,
 		activeSessionId,
 		getChatMessages,
+		getChatMessagesLength,
 		getExistingSessions,
 		retrieveSessionChats,
+		getSuggestions,
 		fetchChatSessionsPending,
 	} = useAVAAIChat();
 </script>

@@ -20,21 +20,28 @@ export interface ChatResponse {
 export interface Analytics {
 	row_count: number;
 	total: number | null;
+	columns: string[];
+	rows: {
+		[key: string]: string | number;
+	}[];
+	summary: string;
+	source: 'legacy_postgres';
+	corp_filter_applied: boolean;
+}
+
+export type SupportedAIChartType = 'pie' | 'bar' | 'line';
+export interface AnyChartData {
+	[key: string]: string | number;
 }
 
 export interface ChartConfig {
-	type: 'pie' | 'bar' | 'line';
+	type: SupportedAIChartType;
 	title: string;
 	x_axis: string;
 	y_axis: string;
 	x_label: string;
 	y_label: string;
-	data: ChartData[];
-}
-
-export interface ChartData {
-	vehicle_make: string;
-	count: number;
+	data: AnyChartData[];
 }
 
 export type ResponseStatus = 'successful' | 'error';
@@ -101,6 +108,12 @@ export interface History {
 	role: string;
 	content: string;
 	timestamp: string;
+	data_type?: 'general' | 'analytics';
+	has_data?: boolean;
+	analytics: Analytics | null;
+	chart_config: ChartConfig | null;
+	total_found: number | null;
+	corp_scoped: boolean;
 }
 
 export interface Pagination {
