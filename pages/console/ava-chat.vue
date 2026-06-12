@@ -139,16 +139,6 @@
 			<div
 				v-else
 				class="mobile-md:px-4 tablet:px-[5vw] laptop:px-[10vw] laptop-lg:px-[20vw] desktop-4k:px-[30vw] flex h-full min-h-full flex-col overflow-y-auto px-2 pt-20 pb-40">
-				<!-- when loading content e.g. for loading chat messages or awaiting a response -->
-				<div
-					class="space-y-3"
-					v-if="awaitingAnswer">
-					<div
-						class="mb-4 h-8 w-full animate-pulse rounded-full bg-gray-300"
-						v-for="a in 3"
-						:key="a"></div>
-				</div>
-
 				<!-- Q&A strip -->
 				<template
 					v-for="(m, idx) in getChatMessages(activeSessionId)"
@@ -178,7 +168,15 @@
 					</AIChatBubble>
 				</template>
 
-				<!-- follow up query strip -->
+				<!-- when loading content e.g. for loading chat messages or awaiting a response -->
+				<div
+					class="space-y-3"
+					v-if="awaitingAnswer">
+					<div
+						class="mb-4 h-8 w-full animate-pulse rounded-full bg-gray-300"
+						v-for="a in 3"
+						:key="a"></div>
+				</div>
 			</div>
 
 			<div

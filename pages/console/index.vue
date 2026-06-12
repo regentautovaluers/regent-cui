@@ -22,27 +22,12 @@
 			</p>
 
 			<!-- follow up query strip -->
-			<form
-				class="my-2 flex h-[10%] justify-center"
-				@submit.prevent="reRoute()">
-				<div
-					class="tablet:w-[75%] laptop:w-[55%] laptop-lg:w-[45%] relative size-fit w-[95%]">
-					<textarea
-						id="comments"
-						class="generic-text-area resize-none rounded-2xl text-base shadow-xs"
-						rows="3"
-						placeholder="Ask me something..."
-						v-model="userQuery"></textarea>
-					<button
-						type="submit"
-						:to="{ name: 'ava-chat', params: { uq: userQuery } }"
-						class="absolute right-3 bottom-3 inline-flex size-10 items-center justify-center rounded-full bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-700"
-						:disabled="!userQuery">
-						<span
-							class="icon-[material-symbols-light--arrow-upward-alt-rounded] size-7"></span>
-					</button>
-				</div>
-			</form>
+			<div class="tablet:px-[20%] laptop:px-[25%] h-fit justify-center px-[5%]">
+				<AIChatInputBox
+					v-model:user-query-model="userQuery"
+					call-to-action-text="Ask me something..."
+					@formSubmitted="reRoute()"></AIChatInputBox>
+			</div>
 
 			<div class="my-10 flex flex-col items-center space-y-5">
 				<button
