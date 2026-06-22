@@ -25,6 +25,7 @@
 			<div class="tablet:px-[20%] laptop:px-[25%] h-fit justify-center px-[5%]">
 				<AIChatInputBox
 					v-model:user-query-model="userQuery"
+					:input-row-height="3"
 					call-to-action-text="Ask me something..."
 					@formSubmitted="reRoute()"></AIChatInputBox>
 			</div>

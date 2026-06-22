@@ -1,12 +1,12 @@
 <template>
 	<form
-		class="w-full bg-white"
+		class="w-full"
 		@submit.prevent="submitQuestion()">
 		<div class="relative size-fit w-full">
 			<textarea
 				id="comments"
 				class="generic-text-area resize-none rounded-2xl text-sm shadow-sm"
-				rows="5"
+				:rows="inputRowHeight ?? 5"
 				:placeholder="callToActionText"
 				v-model="userQueryModel"
 				:disabled="awaitingResponseModel"></textarea>
@@ -44,6 +44,7 @@
 	interface Props {
 		showSuggestionStrips?: boolean;
 		callToActionText: string;
+		inputRowHeight?: number;
 	}
 
 	const sampleQuestions: readonly string[] = [
