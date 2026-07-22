@@ -2,9 +2,18 @@
 import GenericInput from "./components/inputs/GenericInput.vue";
 import GenericInputSearchBox from "./components/inputs/GenericInputSearchBox.vue";
 import GenericTextArea from "./components/inputs/GenericTextArea.vue";
+
+const { supportedThemes, setTheme } = useSettings();
 </script>
 
 <template>
+  <h1>Theme Switcher</h1>
+  <div class="space-x-2">
+    <button v-for="t in supportedThemes" :key="t" @click="setTheme(t)">
+      {{ t }}
+    </button>
+  </div>
+
   <div>
     <button class="btn">Default</button>
     <button class="btn btn-primary">Primary</button>
