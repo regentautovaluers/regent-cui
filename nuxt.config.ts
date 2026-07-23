@@ -24,4 +24,9 @@ export default defineNuxtConfig({
       script: [],
     },
   },
+  runtimeConfig: {
+    public: {
+      SETTINGS_SUPPORTED_THEMES: "",
+    },
+  },
 });

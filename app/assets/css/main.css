@@ -3,3 +3,14 @@
 @plugin "@iconify/tailwind4";
 @import "flyonui/variants.css";
 @source "../node_modules/flyonui/flyonui.js";
+
+@plugin "flyonui" {
+  themes:
+    light --default,
+    black --prefersdark,
+    dark;
+}
+
+.transtion-shared {
+  @apply duration-200 ease-in-out;
+}
