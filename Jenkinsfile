@@ -156,12 +156,12 @@ EOF
                                     -e NUXT_TRACKING_CERTS_API_KEY='${TRACKING_CERTS_API_KEY}' \\
                                     -e NUXT_AI_CHAT_BASE_URL='${PROD_AI_CHAT_BASE_URL}' \\
                                     -e NUXT_AI_CHAT_API_KEY='${AVA_CHAT_API_KEY}' \\
-                                    -e NUXT_VALUATION_BASE_URL='${PROD_VALUATION_BASE_URL}' \\
+                                    -e NUXT_VALUATION_BASE_URL='https://api.regentautovaluers.com' \\
                                     -e NUXT_LEGACY_VALUATION_BASE_URL='${LEGACY_VALUATION_BASE_URL}' \\
                                     -e NUXT_LEGACY_VALUATION_API_KEY='${LEGACY_VALUATION_API_KEY}' \\
                                     -e NUXT_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
                                     -e NUXT_PUBLIC_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
-                                    -e NUXT_PUBLIC_VALUATION_BASE_URL='${PROD_VALUATION_BASE_URL}' \\
+                                    -e NUXT_PUBLIC_VALUATION_BASE_URL='https://api.regentautovaluers.com' \\
                                     -e NUXT_PUBLIC_GOOGLE_MAPS_GEOFENCING_COUNTRY='ke' \\
                                     -e NUXT_PUBLIC_BUILD_TAG='${DOCKER_TAG}' \\
                                     -e NUXT_PUBLIC_COPYRIGHT_YEAR='2026' \\
