@@ -62,12 +62,8 @@ export default defineEventHandler(async (event) => {
 				generalCondition: reportData.generalCondition,
 				remedy: reportData.remedy,
 			},
-			awardedValues: {
-				assessedValue: reportData.valuationBooking.vehicleValue.assessedValue,
-				marketValue: reportData.valuationBooking.vehicleValue.marketValue,
-				forcedValue: reportData.valuationBooking.vehicleValue.forcedSaleValue,
-				windscreenValue: reportData.valuationBooking.vehicleValue.windscreenValue,
-			},
+			awardedValues: reportData.valuationBooking.vehicleValue,
+		
 		};
 		return sendSuccessResponse(event, cleanedResponse);
 	} catch (err) {

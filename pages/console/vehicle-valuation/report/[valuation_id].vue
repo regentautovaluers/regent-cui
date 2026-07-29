@@ -6,12 +6,12 @@
 				class="laptop-lg:w-1/2 h-[31rem] w-full rounded-lg border-[.5px] bg-white shadow-md outline-none">
 				<div class="flex items-center justify-between px-8 py-5">
 					<div class="space-y-3">
-						<h2 class="text-gray-600">{{ valuationReport.valuationId }}</h2>
-						<h1 class="text-2xl font-bold">{{ valuationReport.regNo }}</h1>
+						<h2 class="text-gray-600">{{ valuationReport?.valuationId }}</h2>
+						<h1 class="text-2xl font-bold">{{ valuationReport?.regNo }}</h1>
 					</div>
 					<div>
 						<a
-							:href="valuationReport.reportURL"
+							:href="valuationReport?.reportURL"
 							target="_blank"
 							class="generic-form-submit h-[50px] text-base"
 							>Download Report</a
@@ -21,40 +21,40 @@
 				<hr class="border-[.5px]" />
 				<div class="flex h-fit items-center px-10 py-5">
 					<img
-						:src="valuationReport.vehiclePhotos[0]"
+						:src="valuationReport?.vehiclePhotos[0]"
 						alt="Vehicle Image"
 						class="size-52 rounded-md border shadow-sm" />
 					<div class="flex h-52 flex-grow flex-col justify-end px-5">
-						<span class="text-lg font-semibold">{{ valuationReport.clientName }}</span>
+						<span class="text-lg font-semibold">{{ valuationReport?.clientName }}</span>
 						<span class="text-lg tracking-wide text-gray-600">{{
-							valuationReport.vehicleMake
+							valuationReport?.vehicleMake
 						}}</span>
-						<span class="text-gray-500">{{ valuationReport.vehicleType }}</span>
-						<span class="text-gray-500">{{ valuationReport.policyNumber ?? '' }}</span>
+						<span class="text-gray-500">{{ valuationReport?.vehicleType }}</span>
+						<span class="text-gray-500">{{ valuationReport?.policyNumber ?? '' }}</span>
 					</div>
 				</div>
 				<div class="grid grid-cols-4 gap-x-2 px-10 py-5">
 					<div>
 						<h1 class="text-sm font-semibold">Insurer</h1>
-						<span class="text-sm text-gray-500">{{ valuationReport.insurer }}</span>
+						<span class="text-sm text-gray-500">{{ valuationReport?.insurer }}</span>
 					</div>
 					<div>
 						<h1 class="text-sm font-semibold">Chassis Number</h1>
 						<span class="text-sm text-gray-500">{{
-							valuationReport.chassisNumber
+							valuationReport?.chassisNumber
 						}}</span>
 					</div>
 					<div>
 						<h1 class="text-sm font-semibold">Engine Number</h1>
 						<span class="text-sm text-gray-500">{{
-							valuationReport.engineNumber
+							valuationReport?.engineNumber
 						}}</span>
 					</div>
 					<div>
 						<h1 class="text-sm font-semibold">Mileage</h1>
 						<span class="text-sm text-gray-500"
-							>{{ valuationReport.inspection.mileage.reading }}
-							{{ valuationReport.inspection.mileage.units }}</span
+							>{{ valuationReport?.inspection.mileage.reading }}
+							{{ valuationReport?.inspection.mileage.units }}</span
 						>
 					</div>
 				</div>
@@ -67,7 +67,7 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">Front Section Condition</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.frontSectionComment }}
+							{{ valuationReport?.inspection.frontSectionComment }}
 						</p>
 					</div>
 				</div>
@@ -77,8 +77,8 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">Engine & Windscreen Condition</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.engineSectionComment }}.
-							{{ valuationReport.inspection.windscreenSectionComment }}
+							{{ valuationReport?.inspection.engineSectionComment }}.
+							{{ valuationReport?.inspection.windscreenSectionComment }}
 						</p>
 					</div>
 				</div>
@@ -88,8 +88,8 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">Left & Right Sides Condition</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.leftSideComment }}.
-							{{ valuationReport.inspection.rightSideComment }}
+							{{ valuationReport?.inspection.leftSideComment }}.
+							{{ valuationReport?.inspection.rightSideComment }}
 						</p>
 					</div>
 				</div>
@@ -99,7 +99,7 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">Rear Side & Boot Condition</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.backSideComment }}
+							{{ valuationReport?.inspection.backSideComment }}
 						</p>
 					</div>
 				</div>
@@ -109,8 +109,8 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">Tyre & Chassis Condition</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.tyreCondition }}.
-							{{ valuationReport.inspection.chassisCondition }}
+							{{ valuationReport?.inspection.tyreCondition }}.
+							{{ valuationReport?.inspection.chassisCondition }}
 						</p>
 					</div>
 				</div>
@@ -120,8 +120,8 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">Interior & Dashboard Condition</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.interiorComment }}.
-							{{ valuationReport.inspection.dashboardComment }}
+							{{ valuationReport?.inspection.interiorComment }}.
+							{{ valuationReport?.inspection.dashboardComment }}
 						</p>
 					</div>
 				</div>
@@ -131,8 +131,8 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">Mechanical & Electrical Condition</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.electicalSectionComment }}.
-							{{ valuationReport.inspection.mechanicalSectionComment }}
+							{{ valuationReport?.inspection.electicalSectionComment }}.
+							{{ valuationReport?.inspection.mechanicalSectionComment }}
 						</p>
 					</div>
 				</div>
@@ -142,8 +142,8 @@
 					<div class="h-fit min-h-32 flex-grow">
 						<h1 class="font-semibold">General Condition & Remedy</h1>
 						<p class="mt-3 text-sm text-gray-500">
-							{{ valuationReport.inspection.generalCondition }}.
-							{{ valuationReport.inspection.remedy }}
+							{{ valuationReport?.inspection.generalCondition }}.
+							{{ valuationReport?.inspection.remedy }}
 						</p>
 					</div>
 				</div>
@@ -153,75 +153,20 @@
 		<div
 			class="laptop-lg:grid-cols-4 tablet:grid-cols-2 col-span-2 grid grid-cols-1 gap-10 rounded-lg">
 			<div
-				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
+				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none"
+				v-for="(v, idx) in availableValues"
+				:key="v.name">
 				<div
 					class="flex size-12 items-center justify-center rounded-full bg-blue-500 text-white">
 					<WalletIcon classes="text-inherit" />
 				</div>
 				<div class="flex-grow">
-					<h1 class="text-sm font-semibold text-gray-600">Assessed Value</h1>
+					<h1 class="text-sm font-semibold text-gray-600">{{ v.name }}</h1>
 					<span class="text-lg font-semibold text-blue-700">{{
-						valuationReport.awardedValues.assessedValue == null
-							? 'N/A'
-							: Intl.NumberFormat('en-US', {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 0,
-								}).format(valuationReport.awardedValues.assessedValue)
-					}}</span>
-				</div>
-			</div>
-			<div
-				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
-				<div
-					class="flex size-12 items-center justify-center rounded-full bg-green-500 text-white">
-					<WalletIcon classes="text-inherit" />
-				</div>
-				<div class="flex-grow">
-					<h1 class="text-sm font-semibold text-gray-600">Market Value</h1>
-					<span class="text-lg font-semibold text-blue-700">{{
-						valuationReport.awardedValues.marketValue == null
-							? 'N/A'
-							: Intl.NumberFormat('en-US', {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 0,
-								}).format(valuationReport.awardedValues.marketValue)
-					}}</span>
-				</div>
-			</div>
-
-			<div
-				class="flex h-24 items-center space-x-4 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
-				<div
-					class="flex size-12 items-center justify-center rounded-full bg-purple-500 text-white">
-					<WalletIcon classes="text-inherit" />
-				</div>
-				<div class="flex-grow">
-					<h1 class="text-sm font-semibold text-gray-600">Forced Value</h1>
-					<span class="text-lg font-semibold text-blue-700">{{
-						valuationReport.awardedValues.forcedValue == null
-							? 'N/A'
-							: Intl.NumberFormat('en-US', {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 0,
-								}).format(valuationReport.awardedValues.forcedValue)
-					}}</span>
-				</div>
-			</div>
-			<div
-				class="flex h-24 items-center space-x-5 rounded-lg border-[.5px] bg-white px-8 shadow-md outline-none">
-				<div
-					class="flex size-12 items-center justify-center rounded-full bg-red-500 text-white">
-					<WalletIcon classes="text-inherit" />
-				</div>
-				<div class="flex-grow">
-					<h1 class="text-sm font-semibold text-gray-600">Windscreen Value</h1>
-					<span class="text-lg font-semibold text-blue-700">{{
-						valuationReport.awardedValues.windscreenValue == null
-							? 'N/A'
-							: Intl.NumberFormat('en-US', {
-									minimumFractionDigits: 0,
-									maximumFractionDigits: 0,
-								}).format(valuationReport.awardedValues.windscreenValue)
+						Intl.NumberFormat('en-US', {
+							minimumFractionDigits: 0,
+							maximumFractionDigits: 0,
+						}).format(v.value)
 					}}</span>
 				</div>
 			</div>
@@ -232,7 +177,7 @@
 			<div
 				class="laptop-lg:w-[15%] laptop-lg:flex-col laptop-lg:space-y-3 thin-scrollbar flex h-full max-h-full min-h-52 space-x-3 overflow-y-scroll">
 				<img
-					v-for="(i, index) in valuationReport.vehiclePhotos"
+					v-for="(i, index) in valuationReport?.vehiclePhotos"
 					:key="index"
 					:src="i"
 					alt="Vehicle Image"
@@ -244,7 +189,7 @@
 				<div
 					class="absolute bottom-0 flex h-12 w-full items-center space-x-2 bg-gray-500/50 px-4 text-white">
 					<span>Vehicle Pictures</span>
-					<span>({{ valuationReport.regNo }})</span>
+					<span>({{ valuationReport?.regNo }})</span>
 				</div>
 				<button
 					class="absolute top-2 right-2 flex size-12 items-center justify-center rounded-full bg-blue-600 text-white"
@@ -264,7 +209,7 @@
 					</svg>
 				</button>
 				<img
-					:src="valuationReport.vehiclePhotos[activeImage]"
+					:src="valuationReport?.vehiclePhotos[activeImage]"
 					alt="Vehicle Image"
 					class="size-full rounded-md"
 					:class="imageStretched && 'object-cover'" />
@@ -273,8 +218,8 @@
 
 		<!-- chat interface -->
 		<AIChatHelper
-			:booking_id="valuationReport.valuationId"
-			:report_url="valuationReport.reportURL"
+			:booking_id="valuationReport?.valuationId"
+			:report_url="valuationReport?.reportURL"
 			report_type="VALUATION" />
 	</div>
 </template>
@@ -285,5 +230,6 @@
 		layout: 'console-layout',
 	});
 
-	const { valuationReport, activeImage, imageStretched } = useValuationReportDownloader();
+	const { valuationReport, activeImage, imageStretched, availableValues } =
+		useValuationReportDownloader();
 </script>
