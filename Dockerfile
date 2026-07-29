@@ -3,7 +3,7 @@ FROM node:20.19.2 AS build
 WORKDIR /app
 
 # Enable Corepack to manage pnpm automatically
-RUN corepack enable
+RUN npm install -g pnpm@latest-11
 
 # Copy package manifest and lockfile for optimal layer caching
 COPY package.json pnpm-lock.yaml ./
