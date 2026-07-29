@@ -1,10 +1,16 @@
 # Stage 1: Build the Nuxt application
 FROM node:20.19.2 AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+
+# Enable Corepack to manage pnpm automatically
+RUN corepack enable
+
+# Copy package manifest and lockfile for optimal layer caching
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 # Stage 2: Create the production image with a shared volume
 FROM node:22-slim AS serve
