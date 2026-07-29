@@ -7,7 +7,7 @@ RUN npm install -g pnpm@latest-11
 
 # Copy package manifest and lockfile for optimal layer caching
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --allow-build=@firebase/util,@parcel/watcher,@tailwindcss/oxide,esbuild,maplibre-gl,protobufjs,vue-demi
 
 COPY . .
 RUN pnpm run build
