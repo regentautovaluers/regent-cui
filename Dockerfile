@@ -1,5 +1,5 @@
 # Stage 1: Build the Nuxt application
-FROM node:20.19.2 AS build
+FROM node:22.23 AS build
 WORKDIR /app
 
 # Enable Corepack to manage pnpm automatically
