@@ -14,3 +14,15 @@
 .transtion-shared {
   @apply duration-200 ease-in-out;
 }
+
+/* hide scrollbars */
+.hide-scrollbar::-webkit-scrollbar {
+  /* for Chrome, Safari Opera */
+  display: none;
+}
+
+.hide-scrollbar {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

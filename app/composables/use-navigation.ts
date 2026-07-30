@@ -7,7 +7,7 @@ export default function () {
       name: "home",
       screenName: "Home",
       display: true,
-      icon: "icon-[material-symbols--garage-home-rounded]",
+      icon: "icon-[material-symbols--grid-view-outline-rounded]",
     },
     {
       id: 0,
@@ -21,7 +21,7 @@ export default function () {
       name: "vehicle-valuation",
       screenName: "Vehicle Valuation",
       display: true,
-      icon: "icon-[material-symbols--garage-money-rounded]",
+      icon: "icon-[material-symbols--bar-chart-rounded]",
       children: [
         {
           id: 0,
