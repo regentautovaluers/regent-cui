@@ -3,8 +3,8 @@ import {
   ProxyError,
   StandardErrorResponse,
   StandardSuccessResponse,
-  ProxyRequestOptions
-} from "~/../types/proxy-types";
+  ProxyRequestOptions,
+} from "~~/shared/types/proxy-types";
 
 // Utility function to throw properly formatted errors from API endpoints
 export const createProxyError = (

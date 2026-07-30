@@ -4,12 +4,7 @@ const { sidebarOpen, toggleSidebar } = useSettings();
 
 <template>
   <div class="h-screen flex">
-    <aside
-      :class="[
-        'bg-red-500 text-white h-screen flex-shrink-0 transition-[width] transtion-shared',
-        sidebarOpen ? 'w-72' : 'w-20',
-      ]"
-    ></aside>
+    <AsideNavigation></AsideNavigation>
     <div class="flex flex-col flex-1 min-h-0 overflow-auto relative">
       <header
         class="h-20 flex items-center justify-between px-4 w-full flex-shrink-0 sticky top-0 shadow"
@@ -35,11 +30,10 @@ const { sidebarOpen, toggleSidebar } = useSettings();
         <!-- user avatar -->
         <div class="w-fit flex items-center space-x-5">
           <!-- notification -->
-           <Notification></Notification>
+          <Notification></Notification>
 
           <!-- user's avatar -->
           <UserAvatar></UserAvatar>
-
         </div>
       </header>
       <main class="p-30">

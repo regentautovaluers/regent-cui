@@ -1,7 +1,7 @@
 import {
   type StandardSuccessResponse,
   type StandardErrorResponse,
-} from "~/../types/proxy-types";
+} from "~~/shared/types/proxy-types";
 import { useAsyncData } from "#app";
 import type { AsyncDataOptions, AsyncData } from "#app";
 

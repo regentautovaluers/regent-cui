@@ -1,7 +1,7 @@
 const useSettings = () => {
   const config = useRuntimeConfig();
   const supportedThemes = config.public.SETTINGS_SUPPORTED_THEMES.split(",");
-  const sidebarOpen = useState("sidebarOpen", () => false);
+  const sidebarOpen = useState("sidebarOpen", () => true);
 
   function setTheme(theme: string) {
     const parentElement = document.getElementsByTagName("html")[0]!;

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
       include: ["flyonui/flyonui"],
     },
   },
-  modules: ["nuxt-charts"],
+  modules: ["nuxt-charts", "@nuxt/image"],
   app: {
     head: {
       title: "Nuxt4 Flyon Starter",
@@ -27,6 +27,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
+      COPYRIGHT_YEAR: "",
     },
   },
 });
