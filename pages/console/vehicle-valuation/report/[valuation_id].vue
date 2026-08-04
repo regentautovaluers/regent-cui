@@ -217,10 +217,12 @@
 		</div>
 
 		<!-- chat interface -->
-		<AIChatHelper
-			:booking_id="valuationReport?.valuationId"
-			:report_url="valuationReport?.reportURL"
-			report_type="VALUATION" />
+		<template v-if="valuationReport">
+			<AIChatHelper
+				:booking_id="valuationReport?.valuationId"
+				:report_url="valuationReport?.reportURL"
+				report_type="VALUATION" />
+		</template>
 	</div>
 </template>
 
