@@ -1,16 +1,21 @@
 <template>
-  <div class="">
-    <label class="label-text" for="labelAndHelperText">{{ inputLabel }}</label>
+  <div>
+    <label
+      :class="[
+        'label-text text-base mb-1',
+        inputRequired && 'after:content-[\'*\'] after:ml-0.5',
+      ]"
+      for="inputId"
+      >{{ inputLabel }}</label
+    >
     <input
       :type="inputType"
       :placeholder="inputPlaceHolder"
-      :class="[
-        'input max-w-sm',
-        displayValidityColors,
-        `input-${inputTextSize}`,
-      ]"
+      :class="['input h-14', displayValidityColors, `input-${inputTextSize}`]"
       :id="inputId"
       :disabled="inputDisabled"
+      :required="inputRequired"
+      v-model="model"
     />
     <span class="helper-text" v-show="inputHelpertext">{{
       inputHelpertext
@@ -22,16 +27,18 @@
 interface Props {
   inputType?: "password" | "text";
   inputDisabled?: boolean;
+  inputRequired?: boolean;
   inputId: string;
   inputPlaceHolder?: string;
   inputLabel: string;
   inputValid?: boolean;
   inputTextSize?: "xs" | "sm" | "md" | "lg" | "xl";
-  inputHelpertext?: string | undefined;
+  inputHelpertext?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   inputType: "text",
   inputDisabled: false,
+  inputRequired: false,
   inputId: "generic-input-label",
   inputPlaceHolder: "your placeholder",
   inputValid: undefined,
@@ -39,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
   inputHelpertext: undefined,
 });
 
-const bindTo = defineModel("bindTo", { type: String, default: "" });
+const model = defineModel<string>({ default: "" });
 const displayValidityColors = computed<string | null>(() => {
   if (props.inputValid == undefined) {
     return null;

@@ -1,10 +1,4 @@
-import type { EventHandlerRequest, H3Event } from "h3";
-import {
-  ProxyError,
-  StandardErrorResponse,
-  StandardSuccessResponse,
-  ProxyRequestOptions,
-} from "~~/shared/types/proxy-types";
+import type { H3Event } from "h3";
 
 // Utility function to throw properly formatted errors from API endpoints
 export const createProxyError = (
@@ -23,21 +17,30 @@ export const createProxyError = (
 
 export const makeProxyRequest = async <T = unknown>(
   endpoint: string,
+  event: H3Event,
   options: ProxyRequestOptions = {},
 ): Promise<T> => {
   // add any custom headers to the request
-  const { method, body, headers, timeout = 30000, responseType } = options;
+  const {
+    method = "GET",
+    body = undefined,
+    timeout = 30000,
+    responseType = undefined,
+  } = options;
+  console.log("Headers" + JSON.stringify(event.headers, null, 2));
 
   return await $fetch<T>(endpoint, {
     method,
-    headers: headers,
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZWdlbnQgQXV0byBWYWx1ZXJzICYgQXNzZXNzb3JzIiwic3ViIjoiQXV0aGVudGljYXRpb24gVG9rZW4iLCJ1c2VybmFtZSI6IkNvcnBvcmF0ZSBVc2VycyIsInVzZXItaWQiOiJDUC1DT1VTLTAzNkVGQyIsImF1dGhvcml0aWVzIjoiUk9MRV9DT1JQX0FETUlOIiwiZGVzaWduYXRpb24iOiJDT1JQT1JBVEVfREVTSUdOQVRJT04iLCJpYXQiOjE3ODY4ODk2ODMsImV4cCI6MTc4ODE4NTY4M30.h6zWOSWsujtlGGYJA9STq464QNn66glDxnlCNoEG-q4`,
+    },
     body: body as any,
     timeout,
     responseType,
   });
 };
 
-export function sendSuccessResponse(event: H3Event, data: any) {
+export function sendSuccessResponse<T>(data: T) {
   const response: StandardSuccessResponse = {
     data,
     success: true,
@@ -64,7 +67,7 @@ const getErrorType = (error: ProxyError): string => {
   return "internal_error";
 };
 
-export function sendErrorResponse(event: H3Event, error: any) {
+export function sendErrorResponse(error: any) {
   // Determine appropriate status code
   let statusCode = 500;
   let errorMessage = "Internal Server Error";

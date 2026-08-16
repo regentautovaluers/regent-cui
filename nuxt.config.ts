@@ -5,6 +5,12 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   css: ["./app/assets/css/main.css"],
+  imports: {
+    dirs: [
+      // scan all composables within /composables
+      "~/composables/**",
+    ],
+  },
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
@@ -25,9 +31,11 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    VALUATION_BASE_URL: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
+
     },
   },
 });

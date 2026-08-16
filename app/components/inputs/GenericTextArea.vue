@@ -1,8 +1,8 @@
 <template>
-  <div class="sm:w-96">
-    <label class="label-text" for="textareaLabel"> {{ inputLabel }} </label>
+  <div>
+    <label class="label-text text-base mb-1" for="inputId"> {{ inputLabel }} </label>
     <textarea
-      :class="['textarea', `textarea-${inputTextSize}`, displayValidityColors]"
+      :class="['textarea', displayValidityColors]"
       :placeholder="inputPlaceHolder"
       :id="inputId"
       :rows="inputDefaultRowNum"
@@ -17,7 +17,6 @@ interface Props {
   inputId: string;
   inputPlaceHolder?: string;
   inputDefaultRowNum?: number;
-  inputTextSize?: "xs" | "sm" | "md" | "lg" | "xl";
   inputValid?: boolean;
   inputLabel: string;
 }

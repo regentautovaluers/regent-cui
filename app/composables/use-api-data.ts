@@ -23,7 +23,6 @@ export const useStandardizedApi = () => {
     return await $fetch<ApiResponse<T>>(endpoint, {
       ...options,
       headers: {
-        "Content-Type": "",
         ...options.headers,
       },
     });
