@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { supportedThemes, setTheme } = useSettings();
+</script>
 
 <template>
   <div class="dropdown relative inline-flex">
@@ -45,7 +47,18 @@
           >
         </div>
       </li>
-      <li><a class="dropdown-item" href="#">My Settings</a></li>
+      <li class="bg-red-500">
+        <div class="w-full join">
+          <button
+            class="btn btn-soft btn-primary join-item"
+            v-for="t in supportedThemes"
+            :key="t"
+            @click="setTheme(t)"
+          >
+            {{ t }}
+          </button>
+        </div>
+      </li>
       <li><a class="dropdown-item" href="#">Logout</a></li>
     </ul>
   </div>

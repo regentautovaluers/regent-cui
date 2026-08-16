@@ -2,8 +2,9 @@
 definePageMeta({
   name: "home",
 });
+
+function openModal() {}
 </script>
 
 <template>
-  <h1>Welcome Home</h1>
 </template>
