@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
         body
       },
     );
-	console.log(response);
 
     // get the response data
     let data = response.data;
