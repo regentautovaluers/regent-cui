@@ -213,7 +213,7 @@ async function submitForm() {
           class="label-text"
           :for="`cal-fu-${e.name.toLowerCase().replaceAll(' ', '_')}`"
         >
-          {{ e.name }} {{ e.selected }}
+          {{ e.name }}
         </label>
         <input
           type="file"
