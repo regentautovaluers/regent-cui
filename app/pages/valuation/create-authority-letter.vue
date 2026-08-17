@@ -4,6 +4,7 @@ definePageMeta({
 });
 
 const { post } = useStandardizedApi();
+const store = usePrincipalStore();
 
 const rawData = reactive({
   regNo: "",
@@ -29,7 +30,7 @@ async function submitForm() {
     );
 
     // TODO: Prevent this hardcode later
-    formData.append("authorizedBy", "");
+    formData.append("authorizedBy", store.userId);
 
     await post("/api/vehicle-valuation/create-authority-letter", formData);
   } catch (err) {
