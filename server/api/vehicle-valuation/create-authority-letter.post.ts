@@ -23,27 +23,31 @@ export default defineEventHandler(async (event) => {
           // append to the form
           formData.append(name, e.data.toString());
         }
-      }
+      } else {
+        if (e.filename) {
+          console.log(e.filename);
 
-      // append the files
-      formData.append(
-        "files",
-        new Blob([e.data] as BlobPart[], { type: e.type }),
-        e.filename,
-      );
+          // append the files
+          formData.append(
+            "files",
+            new Blob([e.data] as BlobPart[], { type: e.type }),
+            e.filename,
+          );
+        }
+      }
     }
   }
 
   try {
     const endpoint = `${VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`;
-    console.log(endpoint)
     await makeProxyRequest<GenericResponse<any>>(endpoint, event, {
       body: formData,
       method: "POST",
     });
+
     return sendSuccessResponse(null);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return sendErrorResponse(err);
   }
 });

@@ -5,7 +5,7 @@ definePageMeta({
 
 const { post } = useStandardizedApi();
 const store = usePrincipalStore();
-
+const uploadedDocuments: Ref<any[]> = ref([]);
 const rawData = reactive({
   regNo: "",
   clientName: "",
@@ -15,7 +15,48 @@ const rawData = reactive({
   policyNumber: "",
   agentName: "",
 });
+const requiredDocuments = reactive([
+  { name: "Certificate of Registration", idx: 0, selected: false },
+  { name: "KRA PIN", idx: 1, selected: false },
+  { name: "National ID", idx: 2, selected: false },
+  { name: "Logbook", idx: 3, selected: false },
+  { name: "Authority Letter", idx: 4, selected: false },
+]);
 const submittingRequest = ref(false);
+
+function handleFileUpload(event: Event, index: number) {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+
+  // If user canceled file picker, reset status
+  if (!file) {
+    requiredDocuments[index]!.selected = false;
+    // Remove document if it was previously uploaded for this slot
+    uploadedDocuments.value = uploadedDocuments.value.filter(
+      (doc) => doc.idx !== index,
+    );
+    return;
+  }
+
+  const ext = file.name.split(".").pop();
+  const baseName = file.name.substring(0, file.name.lastIndexOf("."));
+  const renamedFile = `${requiredDocuments[index]!.name}-${baseName}.${ext}`;
+  const renamedFileBlob = new File([file], renamedFile, { type: file.type });
+
+  // Prevent duplicate accumulation: filter out any existing entry for this index first
+  const updatedDocs = uploadedDocuments.value.filter(
+    (doc) => doc.idx !== index,
+  );
+
+  updatedDocs.push({
+    idx: index, // Track index to maintain 1-to-1 mapping
+    name: renamedFile,
+    blob: renamedFileBlob,
+  });
+
+  uploadedDocuments.value = updatedDocs;
+  requiredDocuments[index]!.selected = true;
+}
 
 async function submitForm() {
   try {
@@ -28,9 +69,13 @@ async function submitForm() {
     Object.entries(rawData).forEach(([key, value]) =>
       formData.append(key, value),
     );
-
-    // TODO: Prevent this hardcode later
     formData.append("authorizedBy", store.userId);
+
+    if (uploadedDocuments.value.length > 0) {
+      for (const file of uploadedDocuments.value) {
+        formData.append("files", file.blob);
+      }
+    }
 
     await post("/api/vehicle-valuation/create-authority-letter", formData);
   } catch (err) {
@@ -161,10 +206,25 @@ async function submitForm() {
     </div>
 
     <!-- Kycs -->
-    <!-- <h1 class="mb-10 text-base-content text-xl">
-      Provide Revelant Documents
-    </h1>
-    <InputsGenericFileInputWithPreview></InputsGenericFileInputWithPreview> -->
+    <h1 class="mb-5 text-base-content text-xl">Provide Revelant Documents</h1>
+    <div class="grid grid-cols-5 gap-x-5">
+      <div class="w-full" v-for="e in requiredDocuments" :key="e.idx">
+        <label
+          class="label-text"
+          :for="`cal-fu-${e.name.toLowerCase().replaceAll(' ', '_')}`"
+        >
+          {{ e.name }} {{ e.selected }}
+        </label>
+        <input
+          type="file"
+          :class="['input', e.selected && 'is-valid']"
+          :id="`cal-fu-${e.name.toLowerCase().replaceAll(' ', '_')}`"
+          @change="(ev) => handleFileUpload(ev, e.idx)"
+          accept=".jpeg, .png, .jpg, .pdf"
+        />
+        <span class="helper-text">.pdf, .jpg, .png, .jpeg(Max 1Mb)</span>
+      </div>
+    </div>
 
     <InputsGenericSubmitButton
       button-text="Submit Request"

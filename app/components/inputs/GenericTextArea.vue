@@ -7,6 +7,7 @@
       :id="inputId"
       :rows="inputDefaultRowNum"
       :disabled="inputDisabled"
+      v-model="model"
     ></textarea>
   </div>
 </template>
@@ -30,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   inputValid: undefined,
 });
 
-const bindTo = defineModel("bindTo", { type: String, default: "" });
+const model = defineModel<string>({default: "" });
 const displayValidityColors = computed<string | null>(() => {
   if (props.inputValid == undefined) {
     return null;
