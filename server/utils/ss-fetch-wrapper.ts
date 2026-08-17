@@ -27,7 +27,6 @@ export const makeProxyRequest = async <T = unknown>(
     timeout = 30000,
     responseType = undefined,
   } = options;
-  console.log("Headers" + JSON.stringify(event.headers, null, 2));
 
   return await $fetch<T>(endpoint, {
     method,

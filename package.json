@@ -12,16 +12,21 @@
   "dependencies": {
     "@iconify-json/material-symbols": "^1.2.79",
     "@nuxt/image": "2.0.0",
+    "@pinia/nuxt": "^1.0.2",
     "@tailwindcss/vite": "^4.3.1",
+    "@types/crypto-js": "^4.2.2",
     "@vueuse/core": "^14.3.0",
+    "crypto-js": "^4.2.0",
     "flyonui": "^2.4.1",
     "nuxt": "^4.4.8",
     "nuxt-charts": "^2.1.4",
+    "pinia": "^4.0.3",
     "tailwindcss": "^4.3.1",
     "vue": "^3.5.35",
     "vue-router": "^5.1.0"
   },
   "devDependencies": {
-    "@iconify/tailwind4": "^1.2.3"
+    "@iconify/tailwind4": "^1.2.3",
+    "@types/node": "^26.2.0"
   }
 }

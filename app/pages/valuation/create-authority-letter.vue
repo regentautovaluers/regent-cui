@@ -168,7 +168,7 @@ async function submitForm() {
     <InputsGenericSubmitButton
       button-text="Submit Request"
       :submit-loading="submittingRequest"
-      class="w-1/3 h-14"
+      class="w-1/3"
     ></InputsGenericSubmitButton>
   </form>
 </template>

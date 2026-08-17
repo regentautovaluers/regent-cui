@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { supportedThemes, setTheme } = useSettings();
+const store = usePrincipalStore();
 </script>
 
 <template>
@@ -20,9 +21,9 @@ const { supportedThemes, setTheme } = useSettings();
           />
         </div>
       </div>
-      John Doe
+      {{ store.loadUserIdentifiers.username }}
       <span
-        class="icon-[tabler--chevron-down] dropdown-open:rotate-180 size-4"
+        class="icon-[material-symbols--chevron-backward-rounded] dropdown-open:rotate-180 size-4"
       ></span>
     </button>
     <ul
@@ -41,23 +42,23 @@ const { supportedThemes, setTheme } = useSettings();
           </div>
         </div>
         <div>
-          <h6 class="text-base-content text-base font-semibold">John Doe</h6>
-          <small class="text-base-content/50 text-sm font-normal"
-            >jhon@doe.com</small
-          >
+          <h6 class="text-base-content text-base font-semibold">
+            {{ store.loadUserIdentifiers.username }}
+          </h6>
+          <small class="text-base-content/50 text-sm font-normal">{{
+            store.loadUserIdentifiers.email
+          }}</small>
         </div>
       </li>
-      <li class="bg-red-500">
-        <div class="w-full join">
-          <button
-            class="btn btn-soft btn-primary join-item"
-            v-for="t in supportedThemes"
-            :key="t"
-            @click="setTheme(t)"
-          >
-            {{ t }}
-          </button>
-        </div>
+      <li class="space-x-1">
+        <button
+          class="btn btn-soft btn-primary join-item w-1/2"
+          v-for="t in supportedThemes"
+          :key="t"
+          @click="setTheme(t)"
+        >
+          {{ t }}
+        </button>
       </li>
       <li><a class="dropdown-item" href="#">Logout</a></li>
     </ul>

@@ -9,6 +9,9 @@ export default defineNuxtConfig({
     dirs: [
       // scan all composables within /composables
       "~/composables/**",
+
+      // scan all types in /types
+      "~/types/**"
     ],
   },
   vite: {
@@ -17,7 +20,7 @@ export default defineNuxtConfig({
       include: ["flyonui/flyonui"],
     },
   },
-  modules: ["nuxt-charts", "@nuxt/image"],
+  modules: ["nuxt-charts", "@nuxt/image", "@pinia/nuxt"],
   app: {
     head: {
       title: "Nuxt4 Flyon Starter",
@@ -35,7 +38,7 @@ export default defineNuxtConfig({
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
-
+      PAGE_SIZE: "",
     },
   },
 });
