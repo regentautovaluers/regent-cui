@@ -2,6 +2,7 @@
 const config = useRuntimeConfig();
 const size = config.public.PAGE_SIZE;
 const store = usePrincipalStore();
+const page = ref(0);
 const startDate: Ref<string | null> = ref(null);
 const endDate: Ref<string | null> = ref(null);
 const regNo: Ref<string | null> = ref(null);
@@ -9,26 +10,24 @@ const corpBranchId: Ref<string | null> = ref(null);
 
 const query = computed(() => ({
   size,
-  page: 0,
+  page: page.value,
   corpId: store.corpId,
   startDate: startDate.value,
   endDate: endDate.value,
+  // isVehicleTampered: "",
+  // completed: "",
   regNo: regNo.value,
-  corpBranchId: corpBranchId.value,
+  // corpBranchId: store.isAdmin && store.branchId,
 }));
 
 const { data, pending, status, refresh } = useApiData<
   GenericResponse<ValuationBooking[]>
->(
-  null, // Active key auto-generated from endpoint + query inside wrapper
-  "/api/vehicle-valuation/load-client-valuations",
-  {
-    query,
-    lazy: false,
-    // Keep previous data visible while fetching the next page for seamless UX
-    dedupe: "defer",
-  },
-);
+>(null, "/api/vehicle-valuation/load-client-valuations", {
+  query,
+  lazy: false,
+  // Keep previous data visible while fetching the next page for seamless UX
+  dedupe: "defer",
+});
 const paginationInfo = computed(() => ({
   totalPages: data.value?.requestExtras?.totalPages || 1,
   totalItems: data.value?.requestExtras?.totalItems || 0,
@@ -36,13 +35,20 @@ const paginationInfo = computed(() => ({
 }));
 
 function handlePageChange(newPage: number) {
-  if (newPage >= 1 && newPage <= (paginationInfo.value?.totalPages ?? 1)) {
-    paginationInfo.value.currentPage = newPage;
+  const maxPages = paginationInfo.value.totalPages;
+  if (newPage >= 0 && newPage < maxPages) {
+    page.value = newPage;
   }
 }
 </script>
 
 <template>
+  <!-- filters -->
+  <GenericTableFilters :disable-filters="status === 'pending'">
+    <InputGenericRadioDropdown></InputGenericRadioDropdown>
+  </GenericTableFilters>
+
+  <!-- the table -->
   <GenericTable
     :headers="[
       'Reg',
@@ -88,11 +94,11 @@ function handlePageChange(newPage: number) {
           </div>
         </td>
         <td>{{ booking.vehicleValue?.assessedValue || "-" }}</td>
-        <td>
-          <div>{{ booking.inspectionNote || "-" }}</div>
+        <td class="max-w-60 text-wrap">
+          {{ booking.inspectionNote || "-" }}
         </td>
-        <td>
-          <div>{{ booking.inspectionRemarks || "-" }}</div>
+        <td class="max-w-60 text-wrap">
+          {{ booking.inspectionRemarks || "-" }}
         </td>
         <td>
           <button
@@ -114,9 +120,10 @@ function handlePageChange(newPage: number) {
     </span>
     <div class="flex space-x-2">
       <button
-        class="btn btn-primary h-12 rounded-2xl text-lg"
+        class="btn btn-primary h-12 text-lg"
         type="button"
-        @click="handlePageChange(paginationInfo.currentPage - 1)"
+        @click="handlePageChange(page - 1)"
+        :disabled="page <= 0 || status === 'pending'"
       >
         <span
           class="icon-[material-symbols--chevron-backward-rounded] size-4"
@@ -125,9 +132,12 @@ function handlePageChange(newPage: number) {
       </button>
 
       <button
-        class="btn btn-primary h-12 rounded-2xl text-lg"
+        class="btn btn-primary h-12 text-lg"
         type="button"
-        @click="handlePageChange(paginationInfo.currentPage + 1)"
+        @click="handlePageChange(page + 1)"
+        :disabled="
+          page >= paginationInfo.totalPages - 1 || status === 'pending'
+        "
       >
         Next
         <span

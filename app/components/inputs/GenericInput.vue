@@ -1,6 +1,7 @@
 <template>
   <div>
     <label
+      v-if="inputLabel"
       :class="[
         'label-text text-base mb-1',
         inputRequired && 'after:content-[\'*\'] after:ml-0.5',

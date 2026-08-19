@@ -41,12 +41,6 @@ export default function () {
           screenName: "Legacy Reports (Mobi)",
           display: true,
         },
-        {
-          id: 3,
-          name: "valuations-fleets",
-          screenName: "Fleets",
-          display: true,
-        }
       ],
     },
     {

@@ -8,6 +8,7 @@ export const usePrincipalStore = defineStore("principleStore", {
       email: "",
       phoneNumber: "",
       isAdmin: false,
+      corpId: "",
       corpName: "",
       isLoggedIn: true,
       rememberMe: false,

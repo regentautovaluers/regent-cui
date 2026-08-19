@@ -52,7 +52,14 @@ export interface LoginResponse {
 
 export interface SlimmedLoginReponse extends Pick<
   LoginResponse,
-  "userId" | "username" | "email" | "phoneNumber" | "corpName" | "rememberMe"
+  | "userId"
+  | "username"
+  | "email"
+  | "phoneNumber"
+  | "corpId"
+  | "corpName"
+  | "rememberMe"
+  | "branchId"
 > {
   isAdmin: boolean;
 }

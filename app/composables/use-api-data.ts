@@ -59,10 +59,10 @@ export const useApiData = <T = unknown, R = T>(
   key: string | null,
   endpoint: string | Ref<string> | ComputedRef<string>,
   options: Omit<AsyncDataOptions<T, R>, "transform"> & {
-    query?: Record<string, any> | ComputedRef<Record<string, any>>; // Support reactive query object
+    query?: Record<string, any> | ComputedRef<Record<string, any>>;
     method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
     body?: string | FormData;
-    transform?: (data: T) => R | Promise<R>; // Transform now directly receives the payload data!
+    transform?: (data: T) => R | Promise<R>;
     getCachedData?: (key: string) => R | undefined;
     onResponse?: (context: any) => void | Promise<void>;
     onResponseError?: (context: any) => void | Promise<void>;
@@ -78,17 +78,15 @@ export const useApiData = <T = unknown, R = T>(
 
   const api = useStandardizedApi();
 
-  // Generate a fallback key if null is provided
-  const activeKey =
-    key || `api-${unref(endpoint)}-${JSON.stringify(unref(query))}`;
+  // Stable key (so we keep one cache entry)
+  const activeKey = key || `api-${unref(endpoint)}`;
 
-  return useAsyncData<T, StandardErrorResponse, R>(
+  const asyncData = useAsyncData<T, StandardErrorResponse, R>(
     activeKey,
     async () => {
-      // Fetch using the outer layout type
       const response = await api.handleApiCall<T>(unref(endpoint), {
         method,
-        query: unref(query), // Unref query in case it's reactive
+        query: unref(query),
         body,
         onResponse: options.onResponse,
         onResponseError: options.onResponseError,
@@ -98,14 +96,24 @@ export const useApiData = <T = unknown, R = T>(
         throw response as StandardErrorResponse;
       }
 
-      // Automatically unwrap the standard backend envelope right here
       return response.data;
     },
     {
       ...asyncDataOptions,
-      // If a custom transform is provided, pass the unwrapped data to it.
-      // Otherwise, pass it straight through.
       transform: transform as any,
     },
   );
+
+  // 🔑 Auto-refresh whenever query changes
+  if (query) {
+    watch(
+      query,
+      () => {
+        asyncData.refresh();
+      },
+      { deep: true }, // important: watch nested changes in query object
+    );
+  }
+
+  return asyncData;
 };
