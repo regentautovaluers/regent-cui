@@ -7,14 +7,10 @@ export default defineEventHandler(async (event) => {
     completed?: boolean;
     startDate?: string;
     endDate?: string;
-    paymentStatus?: PaymentStatus;
-    paymentMethod?: PaymentMethod;
     corpBranchId?: string;
     page?: number;
     size: number;
   } = getQuery(event);
-  const cookies = parseCookies(event);
-
   let requestURL = `${config.VALUATION_BASE_URL}/api/v1/valuation/booking/get-all?`;
 
   if (query.page) {
@@ -46,16 +42,8 @@ export default defineEventHandler(async (event) => {
     requestURL = requestURL + `&endDate=${query.endDate}`;
   }
 
-  if (query.paymentStatus) {
-    requestURL = requestURL + `&paymentStatus=${query.paymentStatus}`;
-  }
-
   if (query.isVehicleTampered) {
     requestURL = requestURL + `&isVehicleTampered=${query.isVehicleTampered}`;
-  }
-
-  if (query.paymentMethod) {
-    requestURL = requestURL + `&paymentMethod=${query.paymentMethod}`;
   }
 
   if (query.corpBranchId) {
@@ -64,7 +52,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     let response =
-      await makeProxyRequest<GenericResponse<ValuationBooking[]>>(requestURL);
+      await makeProxyRequest<GenericResponse<ValuationBooking[]>>(requestURL, event);
 
     if (response.data) {
       response.data.forEach((vb) => cleanValuations(vb));
@@ -72,7 +60,6 @@ export default defineEventHandler(async (event) => {
 
     return sendSuccessResponse(response);
   } catch (err) {
-    console.log(err);
     return sendErrorResponse(err);
   }
 });

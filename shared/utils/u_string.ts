@@ -17,15 +17,18 @@ export function arrayBufferToBase64(buffer: ArrayBuffer): string {
   return btoa(binary);
 }
 
-export async function decompress(buffer: ArrayBuffer, encoding: "deflate"): Promise<string> {
+export async function decompress(
+  buffer: ArrayBuffer,
+  encoding: "deflate",
+): Promise<string> {
   const cs = new DecompressionStream(encoding);
   const writer = cs.writable.getWriter();
   writer.write(new Uint8Array(buffer));
   writer.close();
-  
+
   const response = new Response(cs.readable);
   const decompressedBuffer = await response.arrayBuffer();
-  
+
   return new TextDecoder().decode(decompressedBuffer);
 }
 
@@ -36,4 +39,33 @@ export function base64ToArrayBuffer(base64: string): ArrayBuffer {
     bytes[i] = binary.charCodeAt(i);
   }
   return bytes.buffer;
+}
+
+export function censorString(
+  input: string | null,
+  direction: "START" | "CENTER" | "END",
+): string {
+  if (!input) return "";
+
+  const length = input.length;
+  const censorLength = Math.max(1, Math.floor(length / 3));
+
+  switch (direction) {
+    case "START":
+      return "*".repeat(censorLength) + input.slice(censorLength);
+
+    case "CENTER":
+      const start = Math.floor((length - censorLength) / 2);
+      return (
+        input.slice(0, start) +
+        "*".repeat(censorLength) +
+        input.slice(start + censorLength)
+      );
+
+    case "END":
+      return input.slice(0, length - censorLength) + "*".repeat(censorLength);
+
+    default:
+      return input;
+  }
 }
