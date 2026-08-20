@@ -1,21 +1,26 @@
+import { SlimmedValuationReport } from "~~/shared/types/valuation-report";
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
-  const { valuation_id }: { valuation_id: string } = getQuery(event);
+  const { valuationId }: { valuationId: string } = getQuery(event);
 
-  let endpoint = `${config.VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${valuation_id}`;
+  let endpoint = `${config.VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${valuationId}`;
 
   try {
-    const response =
-      await makeProxyRequest<GenericResponse<ValuationReport>>(endpoint);
+    const response = await makeProxyRequest<GenericResponse<ValuationReport>>(
+      endpoint,
+      event,
+    );
 
     const reportData = response.data;
-    const cleanedResponse = {
+    const cleanedResponse: SlimmedValuationReport = {
       reportURL: reportData.valuationBooking.reportURL,
-      insurer: reportData.engineAndWindscreenFinal.insurerName,
+      insurerName: reportData.engineAndWindscreenFinal.insurerName,
       valuationId: reportData.valuationBooking.valuationId,
       regNo: reportData.valuationBooking.regNo,
       clientName: reportData.valuationBooking.clientName,
-      vehicleType: reportData.valuationBooking.vehicleType,
+      vehicleMake: reportData.vehicleMake,
+      vehicleType: reportData.vehicleType,
       engineNumber: reportData.engineAndWindscreenFinal.engineNumber,
       chassisNumber: reportData.tyreAndChassisFinal.chassisNumber,
       policyNumber: reportData.engineAndWindscreenFinal.policyNumber,
@@ -32,32 +37,29 @@ export default defineEventHandler(async (event) => {
         ...reportData.interiorFinal.upholsteryPhotos,
         ...reportData.interiorFinal.odometerPhotos,
       ],
-      inspection: {
-        frontSectionComment: reportData.frontFinal.generatedComment,
-        engineSectionComment:
-          reportData.engineAndWindscreenFinal.engineGeneratedComment,
-        windscreenSectionComment:
-          reportData.engineAndWindscreenFinal.windscreenGeneratedComment,
-        leftSideComment: reportData.leftSideFinal.generatedComment,
-        rightSideComment: reportData.rightSideFinal.generatedComment,
-        backSideComment: reportData.backSideFinal.generatedComment,
-        mechanicalSectionComment:
-          reportData.mechanicalAndElectricalFinal.mechanicalGeneratedComment,
-        electicalSectionComment:
-          reportData.mechanicalAndElectricalFinal.electricalGeneratedComment,
-        vehicleExtras: reportData.extras,
-        tyreCondition: reportData.tyreAndChassisFinal.tyreGeneratedComment,
-        chassisCondition:
-          reportData.tyreAndChassisFinal.chassisGeneratedComment,
-        interiorComment: reportData.interiorFinal.interiorGeneratedComment,
-        mileage: {
-          reading: reportData.interiorFinal.odometerCurrentReading,
-          units: reportData.interiorFinal.odometerReadingUnits,
+      sectionComments: [
+        { name: "Tyre Condition", chipColor: "orange", value: "hello world" },
+        { name: "Extras", chipColor: "pink", value: reportData.extras },
+        {
+          name: "Mechanical Condition",
+          chipColor: "red",
+          value:
+            reportData.mechanicalAndElectricalFinal.generalMechanicalRemarks,
         },
-        generalCondition: reportData.generalCondition,
-        remedy: reportData.remedy,
+        {
+          name: "Electrical Condition",
+          chipColor: "blue",
+          value:
+            reportData.mechanicalAndElectricalFinal.generalElectricalRemarks,
+        },
+      ],
+      mileage: {
+        reading: reportData.interiorFinal.odometerCurrentReading,
+        units: reportData.interiorFinal.odometerReadingUnits,
       },
-      awardedValues: reportData.valuationBooking.vehicleValue,
+      generalCondition: reportData.generalCondition,
+      remedy: reportData.remedy,
+      vehicleValue: reportData.valuationBooking.vehicleValue,
     };
     return sendSuccessResponse(cleanedResponse);
   } catch (err) {

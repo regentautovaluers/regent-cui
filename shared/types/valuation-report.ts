@@ -49,6 +49,8 @@ export type ValuationBookingSource =
   | "VALUERAPP"
   | "CONTROL_ROOM";
 
+export type OdometerReadingUnits = "KM" | "MI" | "HRS";
+
 export interface ValuationBooking {
   valuationId: string;
   bookingSource?: ValuationBookingSource;
@@ -373,7 +375,7 @@ export interface InteriorFinal {
   upholsteryGeneralRemarks: string;
   odometerCurrentReading: number;
   odometerExportReading: number;
-  odometerReadingUnits: string;
+  odometerReadingUnits: OdometerReadingUnits;
   mileageClearlyVisible: string;
   persistentWarningLightsOn: string;
   odometerPhotos: string[];
@@ -403,3 +405,33 @@ export interface MechanicalAndElectricalFinal {
   mechanicalGeneratedComment: any;
   electricalGeneratedComment: any;
 }
+
+export type SlimmedValuationReport = Pick<
+  ValuationBooking,
+  | "reportURL"
+  | "valuationId"
+  | "regNo"
+  | "clientName"
+  | "vehicleType"
+  | "vehicleValue"
+> &
+  Pick<
+    EngineAndWindscreenFinal,
+    "insurerName" | "engineNumber" | "policyNumber"
+  > & {
+    sectionComments: {
+      name: string;
+      chipColor: "blue" | "pink" | "orange" | "red";
+      value: string | string[];
+    }[];
+  } & Pick<
+    ValuationReport,
+    "generalCondition" | "remedy" | "vehicleMake" | "vehicleType"
+  > &
+  Pick<TyreAndChassisFinal, "chassisNumber"> & {
+    mileage: {
+      reading: number;
+      units: OdometerReadingUnits;
+    };
+    vehiclePhotos: string[];
+  };

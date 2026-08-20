@@ -36,7 +36,7 @@ const { sidebarOpen, toggleSidebar } = useSettings();
           <UserAvatar></UserAvatar>
         </div>
       </header>
-      <main class="p-30">
+      <main class="p-5 tablet:p-10 laptop:p-15 laptop-lg:p-20 desktop-4k:p-30">
         <slot></slot>
       </main>
     </div>

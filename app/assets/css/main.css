@@ -4,6 +4,17 @@
 @import "flyonui/variants.css";
 @source "flyonui/flyonui.js";
 
+@theme {
+	--scale-103: 1.03;
+	--breakpoint-mobile-sm: 320px;
+	--breakpoint-mobile-md: 375px;
+	--breakpoint-mobile-lg: 425px;
+	--breakpoint-tablet: 768px;
+	--breakpoint-laptop: 1024px;
+	--breakpoint-laptop-lg: 1440px;
+	--breakpoint-desktop-4k: 1536px;
+}
+
 @plugin "flyonui" {
   themes:
     light --default,
