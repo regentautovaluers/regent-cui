@@ -1,3 +1,5 @@
+import { type CorpOrganization } from "./app-principal-types";
+
 export interface ValuationReport {
   inspectionId: string;
   inspectionDate: string;
@@ -49,6 +51,20 @@ export type ValuationBookingSource =
   | "VALUERAPP"
   | "CONTROL_ROOM";
 
+export type ValuationStages =
+  | "SCHEDULED"
+  | "AWAITING_ASSESSMENT"
+  | "VALUER_DRAFT"
+  | "PENDING"
+  | "AWAITING_MANAGER_APPROVAL"
+  | "AWAITING_QC_APPROVAL"
+  | "PENDING_REPORT"
+  | "INVOICING"
+  | "COMPLETED"
+  | "FAULTY"
+  | "REQUEST_RECEIVED_BR"
+  | "REQUEST_RECEIVED_CC";
+
 export type OdometerReadingUnits = "KM" | "MI" | "HRS";
 
 export interface ValuationBooking {
@@ -68,7 +84,7 @@ export interface ValuationBooking {
   clientNatIdNumber?: any;
   kraPin?: string | null;
   vehicleType?: string | null;
-  valuationStage: string | null;
+  valuationStage: ValuationStages | null;
   serviceCharge?: number | null;
   paymentStatus: string | null;
   paymentMethod?: PaymentMethod[];
@@ -103,15 +119,6 @@ export interface ValuationBooking {
   inspectionFnl?: ValuationReport | null;
 }
 
-export type ValuationStages =
-  | "AWAITING_ASSESSMENT"
-  | "VALUER_DRAFT"
-  | "PENDING"
-  | "AWAITING_MANAGER_APPROVAL"
-  | "AWAITING_QC_APPROVAL"
-  | "COMPLETED"
-  | "INVOICING";
-
 export type SimplifiedValuationStage = "Completed" | "Ongoing";
 
 export type SpecialReportsUnit =
@@ -139,12 +146,10 @@ export interface ValuationType {
   valuationTypeName: string;
 }
 
-export interface CorpOrganization {
-  corpId: string;
-  corpName: string;
+export type CorporateOrganization = Pick<CorpOrganization, "corpId" | "corpName"> & {
   customizeReport: boolean;
   corporateLogo: any;
-}
+};
 
 export interface RegentBranch {
   branchId: string | null;

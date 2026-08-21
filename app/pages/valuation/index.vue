@@ -20,7 +20,7 @@ const query = computed(() => ({
   // corpBranchId: store.isAdmin && store.branchId,
 }));
 
-const { data, pending, status, refresh } = useApiData<
+const { data, status, refresh } = useApiData<
   GenericResponse<ValuationBooking[]>
 >(null, "/api/vehicle-valuation/load-client-valuations", {
   query,
@@ -40,12 +40,27 @@ function handlePageChange(newPage: number) {
     page.value = newPage;
   }
 }
+
+function allowAccessReport(
+  currentStage: ValuationStages | null,
+  reportURL: string | null,
+): boolean {
+  if (currentStage) {
+    if (["INVOICING", "COMPLETED"].includes(currentStage) && reportURL) {
+      return true;
+    }
+  }
+
+  return false;
+}
 </script>
 
 <template>
+  
   <!-- filters -->
   <GenericTableFilters :disable-filters="status === 'pending'">
-    <InputGenericRadioDropdown></InputGenericRadioDropdown>
+    <InputsGenericRadioDropdown></InputsGenericRadioDropdown>
+    <InputsGenericDateInput></InputsGenericDateInput>
   </GenericTableFilters>
 
   <!-- the table -->
@@ -93,7 +108,13 @@ function handlePageChange(newPage: number) {
             End: {{ formatDateToWords(booking.approvalDate) }}
           </div>
         </td>
-        <td>{{ booking.vehicleValue?.assessedValue || "-" }}</td>
+        <td>
+          {{
+            booking.vehicleValue?.assessedValue
+              ? formatNumberWithCommas(booking.vehicleValue.assessedValue)
+              : "-"
+          }}
+        </td>
         <td class="max-w-60 text-wrap">
           {{ booking.inspectionNote || "-" }}
         </td>
@@ -101,49 +122,41 @@ function handlePageChange(newPage: number) {
           {{ booking.inspectionRemarks || "-" }}
         </td>
         <td>
-          <button
-            class="btn btn-circle btn-text btn-sm"
-            aria-label="Action button"
+          <GenericPageActionButton
+            :action-id="`vb-${booking.valuationId}-action`"
           >
-            <span class="icon-[material-symbols--more-vert] size-6"></span>
-          </button>
+            <template
+              v-show="
+                allowAccessReport(booking.valuationStage, booking.reportURL)
+              "
+            >
+              <li>
+                <a :href="booking.reportURL!">Download Report</a>
+              </li>
+              <li>
+                <NuxtLink :to="`/valuation/report-${booking.valuationId}`">
+                  Open Report
+                </NuxtLink>
+              </li>
+            </template>
+          </GenericPageActionButton>
         </td>
       </tr>
     </template>
   </GenericTable>
 
-  <div class="flex mt-10 justify-between items-center">
-    <span class="text-base-content/80 text-base">
-      Showing {{ paginationInfo.currentPage + 1 }} of
-      {{ paginationInfo.totalPages }} pages ({{ paginationInfo.totalItems }}
-      items)
-    </span>
-    <div class="flex space-x-2">
-      <button
-        class="btn btn-primary h-12 text-lg"
-        type="button"
-        @click="handlePageChange(page - 1)"
-        :disabled="page <= 0 || status === 'pending'"
-      >
-        <span
-          class="icon-[material-symbols--chevron-backward-rounded] size-4"
-        ></span>
-        Prev
-      </button>
-
-      <button
-        class="btn btn-primary h-12 text-lg"
-        type="button"
-        @click="handlePageChange(page + 1)"
-        :disabled="
-          page >= paginationInfo.totalPages - 1 || status === 'pending'
-        "
-      >
-        Next
-        <span
-          class="icon-[material-symbols--chevron-forward-rounded] size-4"
-        ></span>
-      </button>
-    </div>
-  </div>
+  <GenericTablePageSwitcher
+    :current-page="paginationInfo.currentPage"
+    :total-pages="paginationInfo.totalPages"
+    :total-items="paginationInfo.totalItems"
+    :scroll-back-disabled="page <= 0 || status === 'pending'"
+    :scroll-forward-disabled="
+      page >= paginationInfo.totalPages - 1 || status === 'pending'
+    "
+    @page-change-clicked="
+      (page) => {
+        handlePageChange(page);
+      }
+    "
+  ></GenericTablePageSwitcher>
 </template>

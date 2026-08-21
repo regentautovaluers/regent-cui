@@ -11,7 +11,7 @@ export default defineNuxtConfig({
       "~/composables/**",
 
       // scan all types in /types
-      "~/types/**"
+      "~/types/**",
     ],
   },
   vite: {
@@ -30,7 +30,6 @@ export default defineNuxtConfig({
           content: "width=device-width, initial-scale=1",
         },
       ],
-      script: [],
     },
   },
   runtimeConfig: {

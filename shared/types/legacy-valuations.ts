@@ -27,17 +27,17 @@ export interface CorpOrg {
 	corp_phone: string;
 }
 
-export interface RegentBranch {
+export interface LegacyRegentBranch {
 	branch_id: string;
 	branch_name: string;
 }
 
-export interface ValuationType {
+export interface LegacyValuationType {
 	id: number;
 	valuation_type_name: string;
 }
 
-export interface VehicleValue {
+export interface LegacyVehicleValue {
 	market_value: string | null;
 	assessed_value: string | null;
 	forced_sale_value: string | null;

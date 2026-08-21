@@ -30,10 +30,7 @@ const extraFiltersOpen = ref(false);
       </div>
     </div>
     <!-- other filters -->
-    <div
-      v-show="extraFiltersOpen"
-      class="bg-red-500 flex items-center space-x-3"
-    >
+    <div v-show="extraFiltersOpen" class="flex items-center space-x-3">
       <slot></slot>
     </div>
   </form>

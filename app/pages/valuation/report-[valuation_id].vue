@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  name: "valuation-open-report",
+});
+
 const route = useRoute();
 const { data } = useApiData<SlimmedValuationReport>(
   `valuation-report-${route.params.valuation_id}`,
@@ -151,7 +155,9 @@ const computedValues: ComputedRef<{ value: number; name: string }[]> = computed(
         <div>
           <h3 class="font-bold">{{ e.name }}</h3>
           <template v-if="Array.isArray(e.value)">
-            <span v-for="(i, idx) in e.value" :key="idx" class="text-sm">{{ i }},</span>
+            <span v-for="(i, idx) in e.value" :key="idx" class="text-sm"
+              >{{ i }},</span
+            >
           </template>
           <template v-else>
             <span class="text-sm">{{ e.value }}</span>

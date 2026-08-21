@@ -32,6 +32,9 @@ importers:
       date-fns:
         specifier: ^4.4.0
         version: 4.4.0
+      flatpickr:
+        specifier: ^4.6.13
+        version: 4.6.13
       flyonui:
         specifier: ^2.4.1
         version: 2.4.1
@@ -2862,6 +2865,9 @@ packages:
 
   find-root@1.1.0:
     resolution: {integrity: sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==}
+
+  flatpickr@4.6.13:
+    resolution: {integrity: sha512-97PMG/aywoYpB4IvbvUJi0RQi8vearvU0oov1WW3k0WZPBMrTQVqekSX5CjSG/M4Q3i6A/0FKXC7RyAoAUUSPw==}
 
   flyonui@2.4.1:
     resolution: {integrity: sha512-WgP/YP1nZXbEtRkl3ThJIcIaisXOyON3zS2Qz2IwikQA/2X/PmqnP6E+eOz7WLBzEQI4ec7wViYAcRf9vljcbg==}
@@ -7344,6 +7350,8 @@ snapshots:
       to-regex-range: 5.0.1
 
   find-root@1.1.0: {}
+
+  flatpickr@4.6.13: {}
 
   flyonui@2.4.1:
     dependencies:
