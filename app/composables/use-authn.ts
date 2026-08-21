@@ -26,6 +26,7 @@ const useAuthn = () => {
           branchId: data.branchId,
           corpName: data.corpName,
           isLoggedIn: true,
+          isTrackingLoggedIn: true,
         });
 
         // set the remember me state

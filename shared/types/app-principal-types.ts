@@ -62,4 +62,6 @@ export interface SlimmedLoginReponse extends Pick<
   | "branchId"
 > {
   isAdmin: boolean;
+  isLoggedIn: boolean;
+  isTrackingLoggedIn: boolean;
 }

@@ -10,4 +10,8 @@ const store = usePrincipalStore();
   <template v-if="!store.isLoggedIn">
     <LoginOverlay></LoginOverlay>
   </template>
+
+  <template >
+    <TrackingLoginOverlay></TrackingLoginOverlay>
+  </template>
 </template>

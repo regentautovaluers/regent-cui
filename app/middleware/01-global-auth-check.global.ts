@@ -1,6 +1,9 @@
-import { useLocalStorage, type RemovableRef } from "@vueuse/core";
+export default defineNuxtRouteMiddleware(async (to) => {
+  // Only run auth logic on client during initial hydration or navigation
+  if (import.meta.server) {
+    return;
+  }
 
-export default defineNuxtPlugin(async () => {
   const store = usePrincipalStore();
   const valuation_auth_token = useCookie("valuation_auth_token");
   const ava_basic_auth_token = useCookie("ava_basic_auth_token");
@@ -28,7 +31,7 @@ export default defineNuxtPlugin(async () => {
 
     // reset the store -> sets the isLoggedIn to false
     store.$reset;
-    store.isLoggedIn = false
+    store.isLoggedIn = false;
     return;
   }
 
@@ -47,6 +50,4 @@ export default defineNuxtPlugin(async () => {
     corpName: data.corpName,
     isLoggedIn: true,
   });
-
-  console.log("plugin runned");
 });

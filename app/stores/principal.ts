@@ -9,8 +9,11 @@ export const usePrincipalStore = defineStore("principleStore", {
       phoneNumber: "",
       isAdmin: false,
       corpId: "",
+      branchId: "",
       corpName: "",
       isLoggedIn: true,
+      isTrackingLoggedIn: true,
+    
       rememberMe: false,
     };
   },

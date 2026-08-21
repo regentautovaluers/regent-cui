@@ -34,6 +34,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     VALUATION_BASE_URL: "",
+    REGENT_TRACKING_BASE_URL: "",
+    TRACKING_CERTIFICATES_BASE_URL: "",
+    TRACKING_CERTIFICATES_API_KEY: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
