@@ -7,6 +7,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const store = usePrincipalStore();
   const valuation_auth_token = useCookie("valuation_auth_token");
   const ava_basic_auth_token = useCookie("ava_basic_auth_token");
+  const tracking_auth_token = useCookie("tracking_auth_token");
   const ava_api_key = useCookie("ava_api_key");
   const principal_obj = localStorage.getItem("principal_obj");
 
@@ -26,6 +27,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     // nuke all of them
     valuation_auth_token.value = undefined;
     ava_basic_auth_token.value = undefined;
+    tracking_auth_token.value = undefined;
     ava_api_key.value = undefined;
     localStorage.removeItem("principal_obj");
 
@@ -49,5 +51,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     isAdmin: data.userRoles.includes("ROLE_CORP_ADMIN"),
     corpName: data.corpName,
     isLoggedIn: true,
+    isTrackingLoggedIn: tracking_auth_token.value == undefined ? false : true,
   });
 });

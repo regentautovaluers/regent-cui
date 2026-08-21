@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const store = usePrincipalStore();
+const route = useRoute();
 </script>
 
 <template>
@@ -11,7 +12,9 @@ const store = usePrincipalStore();
     <LoginOverlay></LoginOverlay>
   </template>
 
-  <template >
+  <template
+    v-if="!store.isTrackingLoggedIn && route.path.includes('/regent-tracking')"
+  >
     <TrackingLoginOverlay></TrackingLoginOverlay>
   </template>
 </template>

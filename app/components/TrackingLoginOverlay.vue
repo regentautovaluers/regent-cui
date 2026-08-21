@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const config = useRuntimeConfig();
 const { post } = useStandardizedApi();
+const tracking_auth_token = useCookie("tracking_auth_token");
+const store = usePrincipalStore();
 const payload = reactive({
   email: "",
   password: "",
@@ -10,13 +12,19 @@ const authnLoading = ref(false);
 async function attemptLogin() {
   try {
     authnLoading.value = true;
-    const response = await post<LoginResponse>(
+    const response = await post<RegentTrackingLoginResponse>(
       "/api/regent-tracking/client-login",
       payload,
     );
 
-    console.log("Regent tracking response: " + response);
-  } catch {
+    if (response.success) {
+      const data = (
+        response as StandardSuccessResponse<RegentTrackingLoginResponse>
+      ).data;
+      tracking_auth_token.value = data.user_api_hash;
+      store.isTrackingLoggedIn = true;
+    }
+  } catch (ex) {
   } finally {
     authnLoading.value = false;
   }
