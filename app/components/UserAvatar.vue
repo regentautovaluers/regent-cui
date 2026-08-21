@@ -25,6 +25,19 @@ const store = usePrincipalStore();
       <span
         class="icon-[material-symbols--chevron-backward-rounded] dropdown-open:rotate-180 size-4"
       ></span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1em"
+        height="1em"
+        viewBox="0 0 24 24"
+        class="dropdown-open:rotate-180 size-4 transition-transform duration-300 rtl:rotate-180"
+      >
+        <path d="M0 0h24v24H0z" fill="none" />
+        <path
+          fill="currentColor"
+          d="M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7z"
+        />
+      </svg>
     </button>
     <ul
       class="dropdown-menu dropdown-open:opacity-100 hidden min-w-60 z-10"

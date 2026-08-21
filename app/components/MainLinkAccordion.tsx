@@ -15,18 +15,33 @@ export default defineComponent({
           id={`sidedd-${props.item.name}-basic`}
         >
           <button
-            class="accordion-toggle inline-flex items-center"
+            class="accordion-toggle inline-flex items-center justify-between"
             aria-controls={`sm-${props.item.name}-collapse`}
             aria-expanded="false"
           >
-            <span class={`${props.item.icon!} size-7`}></span>
-            {sidebarOpen.value && (
-              <span class={`font-medium ${sidebarOpen.value} && ml-4`}>
-                {props.item.screenName}
-              </span>
-            )}
-            {sidebarOpen.value && (
-              <span class="icon-[material-symbols--chevron-forward-rounded] accordion-item-active:rotate-90 size-5 shrink-0 transition-transform duration-300 rtl:rotate-180"></span>
+            <div class="flex items-center">
+              <span class={`${props.item.icon!} size-7`}></span>
+              {sidebarOpen.value && (
+                <span class={`font-medium ${sidebarOpen.value} && ml-4`}>
+                  {props.item.screenName}
+                </span>
+              )}
+            </div>
+
+            {(sidebarOpen.value && props.item.children) && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+                class="accordion-item-active:rotate-90 size-5 transition-transform duration-300 rtl:rotate-180"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  fill="currentColor"
+                  d="M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7z"
+                />
+              </svg>
             )}
           </button>
           <div
