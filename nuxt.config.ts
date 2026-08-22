@@ -41,6 +41,7 @@ export default defineNuxtConfig({
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
       PAGE_SIZE: "",
+      GOOGLE_MAPS_API_KEY: ""
     },
   },
 });
