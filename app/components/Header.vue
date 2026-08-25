@@ -4,7 +4,7 @@ const { sidebarOpen, toggleSidebar } = useSettings();
 
 <template>
   <header
-    class="h-20 flex items-center bg-base-100 justify-between px-4 w-full z-20 flex-shrink-0 sticky top-0 shadow"
+    class="h-20 flex items-center bg-base-100 justify-between px-4 w-full z-20 absolute top-0 shadow"
   >
     <div class="w-fit flex items-center space-x-5">
       <button

@@ -12,7 +12,7 @@
     <input
       :type="inputType"
       :placeholder="inputPlaceHolder"
-      :class="['input h-14', displayValidityColors, `input-${inputTextSize}`]"
+      :class="['input h-13', displayValidityColors, `input-${inputTextSize}`]"
       :id="inputId"
       :disabled="inputDisabled"
       :required="inputRequired"
@@ -31,7 +31,7 @@ interface Props {
   inputRequired?: boolean;
   inputId: string;
   inputPlaceHolder?: string;
-  inputLabel: string;
+  inputLabel?: string;
   inputValid?: boolean;
   inputTextSize?: "xs" | "sm" | "md" | "lg" | "xl";
   inputHelpertext?: string;

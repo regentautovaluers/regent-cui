@@ -3,11 +3,9 @@
 <template>
   <div class="h-screen flex">
     <AsideNavigation></AsideNavigation>
-    <div class="flex flex-col flex-1 min-h-0 overflow-auto relative">
+    <main class="h-screen grow max-h-screen relative">
       <Header></Header>
-      <main class="min-h-screen h-fit">
-        <slot></slot>
-      </main>
-    </div>
+      <slot></slot>
+    </main>
   </div>
 </template>

@@ -59,11 +59,14 @@ export const useApiData = <T = unknown, R = T>(
   key: string | null,
   endpoint: string | Ref<string> | ComputedRef<string>,
   options: Omit<AsyncDataOptions<T, R>, "transform"> & {
-    query?: Record<string, any> | ComputedRef<Record<string, any>>;
+    query?:
+      | Record<string, any>
+      | ComputedRef<Record<string, any>>
+      | Ref<Record<string, any>>;
     method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
     body?: string | FormData;
     transform?: (data: T) => R | Promise<R>;
-    getCachedData?: (key: string) => R | undefined;
+    getCachedData?: (key: string, nuxtApp: any) => R | undefined;
     onResponse?: (context: any) => void | Promise<void>;
     onResponseError?: (context: any) => void | Promise<void>;
   } = {},
@@ -73,20 +76,28 @@ export const useApiData = <T = unknown, R = T>(
     method = "GET",
     body,
     transform,
+    getCachedData,
     ...asyncDataOptions
   } = options;
 
   const api = useStandardizedApi();
+  const nuxtApp = useNuxtApp();
 
-  // Stable key (so we keep one cache entry)
-  const activeKey = key || `api-${unref(endpoint)}`;
+  const activeKey = key || `api-${toValue(endpoint)}`;
+
+  // Provide built-in caching fallback if custom getCachedData isn't explicitly supplied
+  const defaultGetCachedData = (k: string) => {
+    const data = nuxtApp.payload.data[k] || nuxtApp.static.data[k];
+    if (!data) return undefined;
+    return data as R;
+  };
 
   const asyncData = useAsyncData<T, StandardErrorResponse, R>(
     activeKey,
     async () => {
-      const response = await api.handleApiCall<T>(unref(endpoint), {
+      const response = await api.handleApiCall<T>(toValue(endpoint), {
         method,
-        query: unref(query),
+        query: toValue(query),
         body,
         onResponse: options.onResponse,
         onResponseError: options.onResponseError,
@@ -99,19 +110,19 @@ export const useApiData = <T = unknown, R = T>(
       return response.data;
     },
     {
+      getCachedData: getCachedData || defaultGetCachedData,
       ...asyncDataOptions,
       transform: transform as any,
     },
   );
 
-  // 🔑 Auto-refresh whenever query changes
-  if (query) {
+  if (query && isRef(query)) {
     watch(
       query,
       () => {
         asyncData.refresh();
       },
-      { deep: true }, // important: watch nested changes in query object
+      { deep: true },
     );
   }
 

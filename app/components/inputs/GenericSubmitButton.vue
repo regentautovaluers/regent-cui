@@ -3,19 +3,32 @@ interface Props {
   icon?: string;
   buttonText: string;
   submitLoading: boolean;
+  buttonMode?: string;
+  buttonType?: "submit" | "button";
+  emitWithValue?: string | number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   buttonText: "Some Text Here",
   submitLoading: false,
+  buttonType: "submit",
 });
+
+const emits = defineEmits(["button-clicked"]);
 </script>
 
 <template>
   <button
-    class="btn btn-primary h-14 text-lg"
-    type="submit"
+    :class="['btn h-13 text-lg', buttonMode ?? 'btn-primary']"
+    :type="buttonType"
     :disabled="submitLoading"
+    @click="
+      () => {
+        if (buttonType == 'button') {
+          emits('button-clicked', emitWithValue);
+        }
+      }
+    "
   >
     <span v-if="icon" :class="[icon, 'size-5 shrink-0']"></span>
     {{ submitLoading ? "Please Wait" : buttonText }}

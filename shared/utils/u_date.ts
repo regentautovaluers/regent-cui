@@ -1,4 +1,4 @@
-import { parseISO, format } from "date-fns";
+import { parseISO, format, formatDistanceToNow  } from "date-fns";
 
 // Helper to add ordinal suffix (st, nd, rd, th)
 function getOrdinal(day: number): string {
@@ -26,4 +26,21 @@ export function formatDateToWords(dateString: string | null): string {
   const year = format(date, "yy"); // 2026
 
   return `${dayOfWeek} ${day} ${month}, ${year}`;
+}
+
+export function isDateInThePast(dateString: string): boolean {
+  const inputDate = new Date(dateString.replace(/-/g, "/"));
+
+  return inputDate.getTime() < new Date().getTime();
+}
+
+/**
+ * Returns a human-readable string representing the time elapsed since the given date.
+ * Examples: "1 minute ago", "2 hours ago", "30 days ago", "6 months ago", "1 year ago"
+ */
+export function getTimeAgo(date: Date): string {
+  return formatDistanceToNow(date, {
+    addSuffix: true,
+    includeSeconds: false, // Set to true if you want "less than a minute" details
+  });
 }

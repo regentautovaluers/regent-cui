@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ["flyonui/flyonui"],
+      include: ["flyonui/flyonui", "@microsoft/fetch-event-source"],
     },
   },
   modules: ["nuxt-charts", "@nuxt/image", "@pinia/nuxt"],
@@ -41,7 +41,7 @@ export default defineNuxtConfig({
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
       PAGE_SIZE: "",
-      GOOGLE_MAPS_API_KEY: ""
+      GOOGLE_MAPS_API_KEY: "",
     },
   },
 });

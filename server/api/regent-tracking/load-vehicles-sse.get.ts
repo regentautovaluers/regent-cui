@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const cookies = parseCookies(event);
-  const config = useRuntimeConfig();
-  const endpoint = `${config.REGENT_TRACK_BASE_URL}/api/get_devices?lang=en&user_api_hash=${cookies.tracking_auth_token}`;
+  const { REGENT_TRACKING_BASE_URL } = useRuntimeConfig();
+  const endpoint = `${REGENT_TRACKING_BASE_URL}/api/get_devices?lang=en&user_api_hash=${cookies.tracking_auth_token}`;
 
   // Set the headers for SSE
   setResponseHeader(event, "Content-Type", "text/event-stream");

@@ -1,8 +1,12 @@
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
+  const {
+    REGENT_TRACKING_BASE_URL,
+    TRACKING_CERTIFICATES_BASE_URL,
+    TRACKING_CERTIFICATES_API_KEY,
+  } = useRuntimeConfig();
   const query = getQuery(event);
   const cookies = parseCookies(event);
-  let endpoint = `${config.REGENT_TRACK_BASE_URL}/api/get_devices?lang=en&user_api_hash=${cookies.tracking_auth_token}`;
+  let endpoint = `${REGENT_TRACKING_BASE_URL}/api/get_devices?lang=en&user_api_hash=${cookies.tracking_auth_token}`;
 
   if (query.page) {
     endpoint = endpoint + `&page=${query.page}`;
@@ -28,8 +32,8 @@ export default defineEventHandler(async (event) => {
       });
       let base64Encoded = encodeBase64(deviceIds.join(","));
       const userDetailsEndpoint =
-        `${config.REGENT_TRACK_CERTS_BASE_URL}/tracking/traceabilityC.php?
-					api_key=${config.TRACKING_CERTS_API_KEY}
+        `${TRACKING_CERTIFICATES_BASE_URL}/tracking/traceabilityC.php?
+					api_key=${TRACKING_CERTIFICATES_API_KEY}
 					&tracker_id=${base64Encoded}
 					&page=1
 					&limit=${deviceIds.length}`.trim();
@@ -47,7 +51,8 @@ export default defineEventHandler(async (event) => {
           // trace whether vehicle is on watchlist
           if (r.comments.length > 0) {
             const latest_comment = r.comments[0];
-            entry.on_watchlist = latest_comment.watchlist == "Y" ? true : false;
+            entry.on_watchlist =
+              latest_comment!.watchlist == "Y" ? true : false;
           } else {
             entry.on_watchlist = false;
           }
