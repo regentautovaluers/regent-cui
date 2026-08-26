@@ -87,6 +87,7 @@ export default defineNuxtConfig({
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
 			REGENT_AUTOMATIONS_BASE_URL: '',
 			REGENT_MEDIA_STORAGE_BASE_URL: '',
+			IPRS_BASE_URL: '',
 
 			// firebase config
 			FIREBASE_API_KEY: '',

@@ -61,7 +61,6 @@ const useAuth = () => {
 					accountEnabled: true,
 				};
 				setPrincipal(principal);
-				console.log(principal);
 
 				// handle re-routing
 				routeAfterLoadPrincipal(data);

@@ -22,7 +22,7 @@
 				</div>
 
 				<p class="mt-2 text-sm">
-					Use the form below to search for collateral. Provide at least one field or all
+					Use thos form to search for collateral. Provide at least one field or all
 					fields if possible to widen the search scope.
 				</p>
 			</div>
@@ -43,7 +43,6 @@
 					!iaVehicleCollateralDetails ||
 					!ravDefaulterDetails
 				">
-				<h1 class="italic">Use the form on the left to search.</h1>
 				<h2 class="italic">Your results will appear here!</h2>
 			</div>
 

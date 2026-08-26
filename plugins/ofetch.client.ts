@@ -1,4 +1,5 @@
 import { ofetch } from 'ofetch';
+import { generateApiKey, generateApiKeySingle } from '~/shared/security-functions';
 
 export default defineNuxtPlugin(() => {
 	const config = useRuntimeConfig();
@@ -19,6 +20,21 @@ export default defineNuxtPlugin(() => {
 
 				headers['Ava-Basic-Auth'] = avaBasicAuthToken.value as string;
 				headers['Ava-Api-Key'] = avaApiKey.value as string;
+			}
+
+			if (baseURL == config.public.IPRS_BASE_URL) {
+				headers['X-API-Key'] = 'iprs_1dd577aded3f1dacf70fd8e9799df4299fd71bf9401e409d';
+			}
+
+			if (baseURL == config.public.FRAUD_DETECTION_BASE_URL) {
+				const { getPrincipal } = useAuth();
+				headers['X-API-Key'] = generateApiKey(
+					getPrincipal()?.corpOrganization.corpId!,
+					'k8#F$j2!L9@qW7%zX5^pR3&vN6*',
+				);
+				headers['x-client-id'] = generateApiKeySingle(
+					getPrincipal()?.corpOrganization.corpId,
+				);
 			}
 
 			options.headers = { ...options.headers, ...headers };

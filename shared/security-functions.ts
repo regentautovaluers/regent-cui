@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js';
+
 export function generateBase64Token(username: string, password: string): string {
 	return 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64');
 }
@@ -19,6 +21,13 @@ export function generateApiKey(username: string, password: string): string {
 	const ivHex = CryptoJS.enc.Hex.stringify(iv);
 	const encryptedHex = CryptoJS.enc.Hex.stringify(encrypted.ciphertext);
 	return `${ivHex}:${encryptedHex}`;
+}
+
+export function generateApiKeySingle(username: string): string {
+	const key = '7x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H+';
+	const clientId = 'CLIENT001';
+
+	return CryptoJS.AES.encrypt(clientId, key).toString();
 }
 
 export function encodeBase64(str: string): string {

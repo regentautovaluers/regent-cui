@@ -28,75 +28,15 @@ export function useCollateralVerificiation() {
 			prompt: 'Enter national ID number.',
 			opensInModal: true,
 		},
-		{
-			id: 'alien-id',
-			name: 'Alien ID',
-			prompt: 'Enter alien ID number.',
-			opensInModal: true,
-		},
-		{
-			id: 'vehicle-reg',
-			name: 'Vehicle Plate',
-			prompt: 'Enter vehicle reg number.',
-			opensInModal: false,
-		},
-		{
-			id: 'driving-license',
-			name: 'Driving License',
-			prompt: 'Enter national ID number.',
-			opensInModal: true,
-		},
-		{
-			id: 'kra-pin',
-			name: 'KRA PIN',
-			prompt: 'Enter KRA pin',
-			opensInModal: true,
-		},
-		{
-			id: 'business',
-			name: 'Business',
-			prompt: 'Enter business registration number.',
-			opensInModal: true,
-		},
-		{
-			id: 'loan-collateral',
-			name: 'Loan Collateral',
-			prompt: 'Enter vehicle chassis number.',
-			opensInModal: false,
-		},
-		{
-			id: 'bank-account',
-			name: 'Bank Account',
-			prompt: 'Enter bank account number.',
-			opensInModal: true,
-		},
 	]);
 
 	const searchCollateralType: Ref<CollateralSearchTypeOption> = ref(iprsSearchOptions[0]);
 
-	const {
-		status: fetchBankListStatus,
-		execute: executeFetchBankList,
-		data: bankList,
-	} = useFetch('/api/v1/verification/bank-list', {
-		key: 'bank-list',
-		baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
-		method: 'GET',
-		headers: {
-			Accept: '',
-		},
-		server: false,
-		lazy: true,
-		transform(data: any) {
-			return data.data;
-		},
-	}) as any;
-
-	const verifyCollateral = async (requestBody: {}, checkType: string) => {
+	const verifyCollateral = async (requestBody: {}) => {
 		collateralCheckLoading.value = true;
 		try {
-			await $fetch(`/api/v1/verification/${checkType}`, {
-				baseURL: runtimeConfig.public.FRAUD_DETECTION_BASE_URL,
+			await $fetch('/api/v1/iprs/id-card', {
+				baseURL: runtimeConfig.public.IPRS_BASE_URL,
 				method: 'POST',
 				body: JSON.stringify(requestBody),
 
@@ -106,11 +46,7 @@ export function useCollateralVerificiation() {
 							type: 'success',
 						});
 
-						if (checkType == 'verify-driving-license') {
-							responseData.value = response._data.data.data;
-						} else {
-							responseData.value = response._data.data;
-						}
+						responseData.value = response._data.data;
 
 						await executeFetchCollateralVerificationTokenStatus();
 					}
@@ -193,9 +129,6 @@ export function useCollateralVerificiation() {
 		responseData,
 		collateralCheckLoading,
 		searchDefaulterLoading,
-		fetchBankListStatus,
-		executeFetchBankList,
-		bankList,
 		searchCollateralType,
 		iprsSearchOptions,
 		searchDefaulterQuery,

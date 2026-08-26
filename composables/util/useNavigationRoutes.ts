@@ -89,7 +89,7 @@ export default function () {
 			id: 3,
 			screenName: 'Collateral Verification',
 			routeName: 'collateral-verification-home',
-			renderRoute: false,
+			renderRoute: true,
 			icon: 'icon-[material-symbols-light--document-search-outline]',
 			description:
 				'Introducing our newest addition to our range of services. Our collateral verification \
@@ -103,13 +103,13 @@ export default function () {
 					id: 1,
 					screenName: 'Onboard Assets',
 					routeName: 'collateral-verification-onboard-fraudsters',
-					renderRoute: false,
+					renderRoute: true,
 				},
 				{
 					id: 2,
 					screenName: 'Onboard Assets',
 					routeName: 'collateral-verification-bulk-onboard-fraudsters',
-					renderRoute: false,
+					renderRoute: true,
 				},
 				{
 					id: 3,
@@ -121,7 +121,7 @@ export default function () {
 					id: 4,
 					screenName: 'Query Collateral',
 					routeName: 'collateral-verification-query-collateral',
-					renderRoute: false,
+					renderRoute: true,
 				},
 			],
 		},
