@@ -18,6 +18,7 @@ pipeline {
         REGENT_TRACK_CERTS_BASE_URL = credentials('regent-track-certs-base-url')
         STAGING_AI_CHAT_BASE_URL = credentials('staging-ai-chat-base-url')
         PROD_AI_CHAT_BASE_URL = credentials('prod-ai-chat-base-url')
+        PROD_IPRS_BASE_URL = credentials('prod-iprs-base-url')
         LEGACY_VALUATION_BASE_URL = credentials('legacy-api-base-url')
         LEGACY_VALUATION_API_KEY = credentials('legacy-api-staff-key')
     }
@@ -163,6 +164,8 @@ EOF
                                     -e NUXT_PUBLIC_AVA_BASE_URL='${PROD_AVA_BASE_URL}' \\
                                     -e NUXT_PUBLIC_VALUATION_BASE_URL='https://api.regentautovaluers.com' \\
                                     -e NUXT_PUBLIC_GOOGLE_MAPS_GEOFENCING_COUNTRY='ke' \\
+                                    -e NUXT_PUBLIC_FRAUD_DETECTION_BASE_URL=${PROD_FRAUD_DETECTION_BASE_URL} \\
+                                    -e NUXT_PUBLIC_IPRS_BASE_URL=${PROD_IPRS_BASE_URL} \\
                                     -e NUXT_PUBLIC_BUILD_TAG='${DOCKER_TAG}' \\
                                     -e NUXT_PUBLIC_COPYRIGHT_YEAR='2026' \\
                                     ${CORPORATE_PORTAL_DOCKER_IMAGE}:${DOCKER_TAG}
