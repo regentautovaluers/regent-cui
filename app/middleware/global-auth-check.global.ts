@@ -50,6 +50,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
     phoneNumber: data.phoneNumber,
     isAdmin: data.userRoles.includes("ROLE_CORP_ADMIN"),
     corpName: data.corpName,
+    corpId: data.corpId,
+    branchId: data.branchId,
     isLoggedIn: true,
     isTrackingLoggedIn: tracking_auth_token.value == undefined ? false : true,
   });

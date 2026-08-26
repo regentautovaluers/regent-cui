@@ -6,7 +6,7 @@
     <AsideNavigation></AsideNavigation>
     <div class="flex-1 min-h-0 overflow-y-auto relative">
       <Header></Header>
-      <main class="p-5 tablet:p-10 laptop:p-15 laptop-lg:p-30 min-h-screen">
+      <main class="p-5 tablet:p-10 laptop:p-15 laptop-lg:p-30 h-screen min-h-screen">
         <slot></slot>
       </main>
     </div>

@@ -1,16 +1,20 @@
-export interface ValuationPrinicpal {
+export type UserRoles = "ROLE_CORP_NORM" | "ROLE_CORP_ADMIN";
+
+export interface BaseAppPrincipal {
   userId: string;
   username: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber: string | null;
   userRoles: UserRoles[];
   roleInOrganization: string;
-  branchId: string;
-  corpOrganization: CorpOrganization;
-  accountEnabled: boolean;
+  branchId: string | null;
+  lastLogin: string | null;
 }
 
-export type UserRoles = "ROLE_CORP_NORM" | "ROLE_CORP_ADMIN";
+export type ValuationPrincipal = BaseAppPrincipal & {
+  corpOrganization: CorpOrganization;
+  accountEnabled: boolean;
+};
 
 export type CorpClass =
   | "BANK"
@@ -28,27 +32,18 @@ export interface CorpOrganization {
   corpClass: CorpClass;
 }
 
-export interface LoginResponse {
-  username: string;
-  email: string;
-  phoneNumber: string;
-  userId: string;
-  userRoles: UserRoles[];
-  refreshToken?: string;
-  jwtToken?: string;
-  branchId: string;
-  branchName: string | null;
-  lastLogin: string;
-  passwordUpdated: boolean;
-  corpId: string;
-  corpName: string;
-  roleInOrganization: string;
-  isBroker: boolean;
-  corpType: CorpClass;
+export type LoginResponse = BaseAppPrincipal &
+  Pick<CorpOrganization, "corpId" | "corpName"> & {
+    refreshToken?: string;
+    jwtToken?: string;
+    branchName: string | null;
+    passwordUpdated: boolean;
+    isBroker: boolean;
+    corpType: CorpClass;
 
-  // extra
-  rememberMe: boolean;
-}
+    // extra
+    rememberMe: boolean;
+  };
 
 export interface SlimmedLoginReponse extends Pick<
   LoginResponse,

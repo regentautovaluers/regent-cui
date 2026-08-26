@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="inputWrapperStyles">
     <label
       v-if="inputLabel"
       :class="[
@@ -12,7 +12,12 @@
     <input
       :type="inputType"
       :placeholder="inputPlaceHolder"
-      :class="['input h-13', displayValidityColors, `input-${inputTextSize}`]"
+      :class="[
+        'input h-13',
+        displayValidityColors,
+        inputExtraStyles,
+        `input-${inputTextSize}`,
+      ]"
       :id="inputId"
       :disabled="inputDisabled"
       :required="inputRequired"
@@ -26,7 +31,7 @@
 
 <script setup lang="ts">
 interface Props {
-  inputType?: "password" | "text";
+  inputType?: "password" | "text" | "email";
   inputDisabled?: boolean;
   inputRequired?: boolean;
   inputId: string;
@@ -35,6 +40,8 @@ interface Props {
   inputValid?: boolean;
   inputTextSize?: "xs" | "sm" | "md" | "lg" | "xl";
   inputHelpertext?: string;
+  inputExtraStyles?: string;
+  inputWrapperStyles?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   inputType: "text",

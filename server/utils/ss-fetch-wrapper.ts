@@ -31,7 +31,7 @@ export const makeProxyRequest = async <T = unknown>(
   return await $fetch<T>(endpoint, {
     method,
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZWdlbnQgQXV0byBWYWx1ZXJzICYgQXNzZXNzb3JzIiwic3ViIjoiQXV0aGVudGljYXRpb24gVG9rZW4iLCJ1c2VybmFtZSI6IkNvcnBvcmF0ZSBVc2VycyIsInVzZXItaWQiOiJDUC1DT1VTLTAzNkVGQyIsImF1dGhvcml0aWVzIjoiUk9MRV9DT1JQX0FETUlOIiwiZGVzaWduYXRpb24iOiJDT1JQT1JBVEVfREVTSUdOQVRJT04iLCJpYXQiOjE3ODY4ODk2ODMsImV4cCI6MTc4ODE4NTY4M30.h6zWOSWsujtlGGYJA9STq464QNn66glDxnlCNoEG-q4`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZWdlbnQgQXV0byBWYWx1ZXJzICYgQXNzZXNzb3JzIiwic3ViIjoiQXV0aGVudGljYXRpb24gVG9rZW4iLCJ1c2VybmFtZSI6IkNvcnBvcmF0ZSBVc2VycyIsInVzZXItaWQiOiJDUC1DT1VTLTAzNkVGQyIsImF1dGhvcml0aWVzIjoiUk9MRV9DT1JQX0FETUlOIiwiZGVzaWduYXRpb24iOiJDT1JQT1JBVEVfREVTSUdOQVRJT04iLCJpYXQiOjE3ODc3Mzk0MTEsImV4cCI6MTc4OTAzNTQxMX0.ByT4jkUvDVD4FfY-aJAC1hdHyo0S_qgqZTW8fSjyETg`,
     },
     body: body as any,
     timeout,

@@ -56,7 +56,6 @@ function allowAccessReport(
 </script>
 
 <template>
-  
   <!-- filters -->
   <GenericTableFilters :disable-filters="status === 'pending'">
     <InputsGenericRadioDropdown></InputsGenericRadioDropdown>
@@ -78,7 +77,7 @@ function allowAccessReport(
     :dataLoading="status == 'pending'"
   >
     <template v-if="data?.data.length">
-      <tr v-for="booking in data.data">
+      <tr v-for="booking in data.data" :key="booking.valuationId">
         <td class="font-semibold">{{ booking.regNo }}</td>
         <td class="space-y-1">
           <div>{{ booking.clientName }}</div>

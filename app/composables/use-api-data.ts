@@ -111,20 +111,14 @@ export const useApiData = <T = unknown, R = T>(
     },
     {
       getCachedData: getCachedData || defaultGetCachedData,
+      // Merge custom watch targets with query ref/computed
+      watch: query
+        ? [query, ...(asyncDataOptions.watch || [])]
+        : asyncDataOptions.watch,
       ...asyncDataOptions,
       transform: transform as any,
     },
   );
-
-  if (query && isRef(query)) {
-    watch(
-      query,
-      () => {
-        asyncData.refresh();
-      },
-      { deep: true },
-    );
-  }
 
   return asyncData;
 };

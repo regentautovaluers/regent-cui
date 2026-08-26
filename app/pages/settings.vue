@@ -1,16 +1,27 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { routes: aRoutes } = useNavigation();
+</script>
 
 <template>
-  <div class="space-y-10">
-    <!-- user account settings -->
-    <GrowableCard card-title="Your Account"> </GrowableCard>
-
-    <!-- 2fa -->
-    <GrowableCard card-title="Account Security"> </GrowableCard>
-
-    <!-- system settings -->
-    <GrowableCard card-title="Look & Feel">
-      <SettingsSystem />
-    </GrowableCard>
+  <div class="space-y-10 flex space-x-5 min-h-full h-full">
+    <div class="w-[15%] sticky">
+      <h1 class="mb-10 text-2xl font-bold">Actions</h1>
+      <div class="flex flex-col space-y-5">
+        <NuxtLink
+          v-for="e in aRoutes.find((e) => e.id == 5)?.children!"
+          :key="e.id"
+          class="inline-flex space-x-2"
+        >
+          <span :class="[e.icon, 'size-7']"></span>
+          <span> {{ e.screenName }}</span>
+        </NuxtLink>
+      </div>
+    </div>
+    <div class="grow h-fit">
+      <NuxtPage></NuxtPage>
+    </div>
+    <div class="w-[15%]">
+      <UserAvatar2></UserAvatar2>
+    </div>
   </div>
 </template>

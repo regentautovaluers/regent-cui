@@ -92,6 +92,36 @@ export default function () {
       display: true,
       icon: "icon-[material-symbols--data-exploration-rounded]",
     },
+    {
+      id: 5,
+      name: "settings-home",
+      screenName: "Settings",
+      display: false,
+      icon: "icon-[material-symbols--data-exploration-rounded]",
+      children: [
+        {
+          id: 0,
+          name: "settings-add-new-user",
+          screenName: "Add New User",
+          display: true,
+          icon: "icon-[material-symbols--person-add-outline-rounded]",
+        },
+        {
+          id: 1,
+          name: "settings-manage-users",
+          screenName: "Manage All Users",
+          display: true,
+          icon: "icon-[material-symbols--person-edit-rounded]",
+        },
+        {
+          id: 2,
+          name: "settings-manage-branches",
+          screenName: "Your Branches",
+          display: true,
+          icon: "icon-[material-symbols--other-houses-outline-rounded]",
+        },
+      ],
+    },
   ];
 
   function routeNameMatch(t: string) {

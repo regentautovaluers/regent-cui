@@ -35,7 +35,7 @@ const { public: publicRC } = useRuntimeConfig();
       </h5>
       <div class="space-y-3">
         <MainLinkAccordion
-          v-for="r in aRoutes"
+          v-for="r in aRoutes.filter((e) => e.display)"
           :key="r.id"
           :item="r"
         ></MainLinkAccordion>

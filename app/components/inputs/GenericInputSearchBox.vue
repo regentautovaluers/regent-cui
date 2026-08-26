@@ -52,7 +52,7 @@ interface Props {
   inputRequired?: boolean;
   inputId: string;
   inputPlaceHolder?: string;
-  inputLabel: string;
+  inputLabel?: string;
   inputTextSize?: "xs" | "sm" | "md" | "lg" | "xl";
   inputDropdownOptions: { id: string | number; text: string | number }[];
   inputHelpertext?: string;
