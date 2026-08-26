@@ -86,150 +86,149 @@ async function submitForm() {
 </script>
 
 <template>
-  <form class="space-y-10 p-10" @submit.prevent="submitForm()">
-    <h1 class="mb-10 text-base-content text-2xl">
-      Create Your Authorization Letter
-    </h1>
+  <GrowableCard card-title="Create Your Authority Letter">
+    <form class="space-y-10" @submit.prevent="submitForm()">
 
-    <!-- client details -->
-    <div class="grid gap-x-8 grid-cols-3">
-      <InputsGenericInput
-        input-id="cal-registration-number"
-        input-place-holder="enter only one e.g. KAA1224"
-        input-label="Registration Number"
-        input-helpertext="Uppercase with no spaces"
-        :input-required="true"
-        v-model="rawData.regNo"
-      ></InputsGenericInput>
+      <!-- client details -->
+      <div class="grid gap-x-8 grid-cols-3">
+        <InputsGenericInput
+          input-id="cal-registration-number"
+          input-place-holder="enter only one e.g. KAA1224"
+          input-label="Registration Number"
+          input-helpertext="Uppercase with no spaces"
+          :input-required="true"
+          v-model="rawData.regNo"
+        ></InputsGenericInput>
 
-      <InputsGenericInput
-        input-id="cal-client-name"
-        input-place-holder="e.g. Jane Doe"
-        input-label="Client Name"
-        :input-required="true"
-        v-model="rawData.clientName"
-      ></InputsGenericInput>
+        <InputsGenericInput
+          input-id="cal-client-name"
+          input-place-holder="e.g. Jane Doe"
+          input-label="Client Name"
+          :input-required="true"
+          v-model="rawData.clientName"
+        ></InputsGenericInput>
 
-      <InputsGenericInput
-        input-id="cal-client-phone"
-        input-place-holder="e.g. 254701020304"
-        input-label="Client Phone"
-        input-helpertext="Starts with country code without '+'"
-        :input-required="true"
-        v-model="rawData.clientPhone"
-      ></InputsGenericInput>
-    </div>
+        <InputsGenericInput
+          input-id="cal-client-phone"
+          input-place-holder="e.g. 254701020304"
+          input-label="Client Phone"
+          input-helpertext="Starts with country code without '+'"
+          :input-required="true"
+          v-model="rawData.clientPhone"
+        ></InputsGenericInput>
+      </div>
 
-    <!-- preffered regent branch -->
-    <InputsGenericInputSearchBox
-      input-id="cal-select-branch"
-      input-label="Select Preferred Regent Branch"
-      :input-dropdown-options="[
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-        {
-          id: '123',
-          text: 'Customer Care',
-        },
-      ]"
-      input-helpertext="Leave blank to direct to customer service"
-    >
-    </InputsGenericInputSearchBox>
-
-    <!-- comment box -->
-    <InputsGenericTextArea
-      input-id="cal-extra-instructions"
-      input-label="Provide Extra Instructions"
-      input-place-holder="Write here anything extra you would like us to know. Supports up to 256 characters only!"
-      :input-default-row-num="8"
-      v-model="rawData.comments"
-    >
-    </InputsGenericTextArea>
-
-    <!-- finalizations -->
-    <div class="grid gap-x-8 grid-cols-3">
-      <InputsGenericInput
-        input-id="cal-policy-number"
-        input-place-holder="enter only one e.g. POLICY123"
-        input-label="Policy Number"
-        v-model="rawData.policyNumber"
-      ></InputsGenericInput>
-
+      <!-- preffered regent branch -->
       <InputsGenericInputSearchBox
-        input-id="cal-select-side2"
-        input-label="Agency / Broker"
+        input-id="cal-select-branch"
+        input-label="Select Preferred Regent Branch"
         :input-dropdown-options="[
           {
             id: '123',
             text: 'Customer Care',
           },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
+          {
+            id: '123',
+            text: 'Customer Care',
+          },
         ]"
-        v-model="rawData.agentName"
+        input-helpertext="Leave blank to direct to customer service"
       >
       </InputsGenericInputSearchBox>
 
-      <InputsGenericInput
-        input-id="cal-authorized-by"
-        input-label="Authorized By (You)"
-        :input-disabled="true"
-      ></InputsGenericInput>
-    </div>
+      <!-- comment box -->
+      <InputsGenericTextArea
+        input-id="cal-extra-instructions"
+        input-label="Provide Extra Instructions"
+        input-place-holder="Write here anything extra you would like us to know. Supports up to 256 characters only!"
+        :input-default-row-num="8"
+        v-model="rawData.comments"
+      >
+      </InputsGenericTextArea>
 
-    <!-- Kycs -->
-    <h1 class="mb-5 text-base-content text-xl">Provide Revelant Documents</h1>
-    <div class="grid grid-cols-5 gap-x-5">
-      <div class="w-full" v-for="e in requiredDocuments" :key="e.idx">
-        <label
-          class="label-text"
-          :for="`cal-fu-${e.name.toLowerCase().replaceAll(' ', '_')}`"
+      <!-- finalizations -->
+      <div class="grid gap-x-8 grid-cols-3">
+        <InputsGenericInput
+          input-id="cal-policy-number"
+          input-place-holder="enter only one e.g. POLICY123"
+          input-label="Policy Number"
+          v-model="rawData.policyNumber"
+        ></InputsGenericInput>
+
+        <InputsGenericInputSearchBox
+          input-id="cal-select-side2"
+          input-label="Agency / Broker"
+          :input-dropdown-options="[
+            {
+              id: '123',
+              text: 'Customer Care',
+            },
+          ]"
+          v-model="rawData.agentName"
         >
-          {{ e.name }}
-        </label>
-        <input
-          type="file"
-          :class="['input', e.selected && 'is-valid']"
-          :id="`cal-fu-${e.name.toLowerCase().replaceAll(' ', '_')}`"
-          @change="(ev) => handleFileUpload(ev, e.idx)"
-          accept=".jpeg, .png, .jpg, .pdf"
-        />
-        <span class="helper-text">.pdf, .jpg, .png, .jpeg(Max 1Mb)</span>
-      </div>
-    </div>
+        </InputsGenericInputSearchBox>
 
-    <InputsGenericSubmitButton
-      button-text="Submit Request"
-      :submit-loading="submittingRequest"
-      class="w-1/3"
-    ></InputsGenericSubmitButton>
-  </form>
+        <InputsGenericInput
+          input-id="cal-authorized-by"
+          input-label="Authorized By (You)"
+          :input-disabled="true"
+        ></InputsGenericInput>
+      </div>
+
+      <!-- Kycs -->
+      <h1 class="mb-5 text-base-content text-xl">Provide Revelant Documents</h1>
+      <div class="grid grid-cols-5 gap-x-5">
+        <div class="w-full" v-for="e in requiredDocuments" :key="e.idx">
+          <label
+            class="label-text"
+            :for="`cal-fu-${e.name.toLowerCase().replaceAll(' ', '_')}`"
+          >
+            {{ e.name }}
+          </label>
+          <input
+            type="file"
+            :class="['input', e.selected && 'is-valid']"
+            :id="`cal-fu-${e.name.toLowerCase().replaceAll(' ', '_')}`"
+            @change="(ev) => handleFileUpload(ev, e.idx)"
+            accept=".jpeg, .png, .jpg, .pdf"
+          />
+          <span class="helper-text">.pdf, .jpg, .png, .jpeg(Max 1Mb)</span>
+        </div>
+      </div>
+
+      <InputsGenericSubmitButton
+        button-text="Submit Request"
+        :submit-loading="submittingRequest"
+        class="w-1/3"
+      ></InputsGenericSubmitButton>
+    </form>
+  </GrowableCard>
 </template>

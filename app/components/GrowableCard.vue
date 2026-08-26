@@ -8,7 +8,7 @@
 
 <template>
   <div class="card block w-full">
-    <div class="card-body">
+    <div class="card-body p-10">
       <h5 class="card-title mb-2.5">{{cardTitle}}</h5>
       <slot />
     </div>

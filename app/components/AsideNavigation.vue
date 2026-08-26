@@ -7,7 +7,7 @@ const { public: publicRC } = useRuntimeConfig();
 <template>
   <aside
     :class="[
-      'shadow text-white h-screen flex-shrink-0 flex flex-col transition-[width] transtion-shared overflow-y-auto',
+      'shadow text-white h-screen max-h-screen flex-shrink-0 flex flex-col transition-[width] transtion-shared overflow-y-auto',
       sidebarOpen ? 'w-[20rem] p-4' : 'w-20 p-0',
     ]"
   >
@@ -27,7 +27,9 @@ const { public: publicRC } = useRuntimeConfig();
         <span class="text-2xl font-medium">Auto Valuers</span>
       </h2>
     </div>
-    <div class="flex flex-col justify-between min-h-0 flex-1 overflow-auto hide-scrollbar">
+    <div
+      class="flex flex-col justify-between min-h-0 flex-1 overflow-auto hide-scrollbar"
+    >
       <h5 class="text-base-content text-lg font-bold p-4" v-show="sidebarOpen">
         Main Menu
       </h5>
