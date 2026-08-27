@@ -1,5 +1,3 @@
-import { type CorpOrganization } from "./app-principal-types";
-
 export interface ValuationReport {
   inspectionId: string;
   inspectionDate: string;
@@ -96,8 +94,11 @@ export interface ValuationBooking {
   corpOrganization: CorpOrganization | null;
   corporateBranch: CorporateBranch | null;
   onBehalfOfOrganization: CorpOrganization | null;
-  regentBranch: RegentBranch;
-  onBehalfOfRegentBranch?: any;
+  regentBranch: Pick<RegentBranch, "branchId" | "branchName" | "branchEmail">;
+  onBehalfOfRegentBranch?: Pick<
+    RegentBranch,
+    "branchId" | "branchName" | "branchEmail"
+  >;
   regentValuer?: RegentUser;
   regentBooker?: RegentUser;
   approvedByManager?: RegentUser;
@@ -146,16 +147,13 @@ export interface ValuationType {
   valuationTypeName: string;
 }
 
-export type CorporateOrganization = Pick<CorpOrganization, "corpId" | "corpName"> & {
+export type CorporateOrganization = Pick<
+  CorpOrganization,
+  "corpId" | "corpName"
+> & {
   customizeReport: boolean;
   corporateLogo: any;
 };
-
-export interface RegentBranch {
-  branchId: string | null;
-  branchName: string;
-  branchEmail: string | null;
-}
 
 export interface RegentUser {
   userId: string;

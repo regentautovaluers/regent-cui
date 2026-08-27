@@ -11,18 +11,49 @@
     <input
       :type="inputType"
       :placeholder="inputPlaceHolder"
-      :class="['input dropdown-toggle h-14', `input-${inputTextSize}`]"
+      :class="['input dropdown-toggle h-13', `input-${inputTextSize}`]"
       :id="inputId"
       :disabled="inputDisabled"
       aria-haspopup="menu"
       aria-expanded="false"
       v-model="userInput"
     />
+
+    <!-- loading spinner -->
+    <template v-show="inputDataLoading">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1em"
+        height="1em"
+        viewBox="0 0 24 24"
+        class="absolute right-3 top-[43%] size-7"
+      >
+        <path d="M0 0h24v24H0z" fill="none" />
+        <path
+          fill="currentColor"
+          d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+          opacity=".25"
+        />
+        <path
+          fill="currentColor"
+          d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"
+        >
+          <animateTransform
+            attributeName="transform"
+            dur="0.75s"
+            repeatCount="indefinite"
+            type="rotate"
+            values="0 12 12;360 12 12"
+          />
+        </path>
+      </svg>
+    </template>
+
     <span class="helper-text" v-show="inputHelpertext">{{
       inputHelpertext
     }}</span>
     <ul
-      class="dropdown-menu dropdown-open:opacity-100 hidden overflow-y-auto border border-accent mt-1"
+      class="dropdown-menu absolute left-0 right-0 dropdown-open:opacity-100 hidden border border-primary h-fit max-h-64 overflow-y-auto thin-scrollbar"
       role="menu"
       aria-orientation="vertical"
       :aria-labelledby="inputId"
@@ -49,6 +80,7 @@
 interface Props {
   inputType?: "password" | "text";
   inputDisabled?: boolean;
+  inputDataLoading?: boolean;
   inputRequired?: boolean;
   inputId: string;
   inputPlaceHolder?: string;
@@ -60,12 +92,13 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   inputType: "text",
   inputDisabled: false,
+  inputDataLoading: false,
   inputRequired: false,
   inputId: "generic-input-label",
   inputPlaceHolder: "Type to search",
   inputValid: undefined,
   inputTextSize: "md",
-  inputHelpertext: undefined,
+  inputHelpertext: "Type to search",
 });
 const emits = defineEmits(["value-selected"]);
 

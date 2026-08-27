@@ -26,6 +26,16 @@ export function cleanValuations(vb: ValuationBooking) {
   vb.clientEmail = censorString(vb.clientEmail, "CENTER");
 }
 
+export function cleanRegentBranches(rb: RegentBranch) {
+  delete rb.branchEmail;
+  delete rb.branchPhone;
+  delete rb.branchLocation;
+  delete rb.branchCode;
+  delete rb.paymentPool;
+  delete rb.paymentPoolType;
+  delete rb.regentBranchCluster;
+}
+
 export function normalizeValuationBookingSource(
   source: ValuationBookingSource,
 ): string {

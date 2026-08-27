@@ -9,21 +9,18 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const ava_basic_auth_token = useCookie("ava_basic_auth_token");
   const tracking_auth_token = useCookie("tracking_auth_token");
   const ava_api_key = useCookie("ava_api_key");
-  const principal_obj = localStorage.getItem("principal_obj");
+  const app_principal = useCookie("app_principal");
 
   // unref the tokens - we don't care about reactivity here - tokens are in scope
   const urfdTokens = [
     unref(valuation_auth_token),
     unref(ava_basic_auth_token),
     unref(ava_api_key),
+    unref(app_principal),
   ];
 
   // check if any of them is undefined or null
-  if (
-    urfdTokens.includes(undefined) ||
-    urfdTokens.includes(null) ||
-    !principal_obj
-  ) {
+  if (urfdTokens.includes(undefined) || urfdTokens.includes(null)) {
     // nuke all of them
     valuation_auth_token.value = undefined;
     ava_basic_auth_token.value = undefined;
@@ -39,7 +36,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   // we inflate the data stored in local storage
   const data: LoginResponse = JSON.parse(
-    await decompress(base64ToArrayBuffer(principal_obj), "deflate"),
+    await decompress(base64ToArrayBuffer(app_principal.value!), "deflate"),
   );
 
   // set the correct values in store

@@ -5,6 +5,8 @@ definePageMeta({
 
 const { post } = useStandardizedApi();
 const store = usePrincipalStore();
+const branchesStore = useGeneralDataStore();
+
 const uploadedDocuments: Ref<any[]> = ref([]);
 const rawData = reactive({
   regNo: "",
@@ -117,50 +119,23 @@ async function submitForm() {
           v-model="rawData.clientPhone"
         ></InputsGenericInput>
       </div>
-
+      
       <!-- preffered regent branch -->
       <InputsGenericInputSearchBox
         input-id="cal-select-branch"
         input-label="Select Preferred Regent Branch"
-        :input-dropdown-options="[
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-          {
-            id: '123',
-            text: 'Customer Care',
-          },
-        ]"
-        input-helpertext="Leave blank to direct to customer service"
+        :input-dropdown-options="
+          branchesStore.getBranches.map((e) => ({
+            id: e.branchId,
+            text: e.branchName,
+          }))
+        "
+        input-helpertext="Type to search. Leave blank to direct to customer service"
+        :input-data-loading="branchesStore.loadingRegentBranches"
+        :input-disabled="
+          branchesStore.loadingRegentBranches ||
+          branchesStore.getBranches.length < 1
+        "
       >
       </InputsGenericInputSearchBox>
 
@@ -200,6 +175,7 @@ async function submitForm() {
           input-id="cal-authorized-by"
           input-label="Authorized By (You)"
           :input-disabled="true"
+          :input-place-holder="store.username"
         ></InputsGenericInput>
       </div>
 

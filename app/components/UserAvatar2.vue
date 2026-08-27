@@ -21,7 +21,9 @@ function getInitials(str: string): string {
   <div class="h-fit flex flex-col items-center">
     <div class="avatar avatar-placeholder">
       <div class="bg-primary text-error-content w-30 rounded-full">
-        <span class="text-4xl uppercase">{{ getInitials(store.username) }}</span>
+        <span class="text-4xl uppercase">{{
+          getInitials(store.username)
+        }}</span>
       </div>
     </div>
 

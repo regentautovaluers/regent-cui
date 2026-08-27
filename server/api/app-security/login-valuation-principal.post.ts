@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
       event,
       {
         method: "POST",
-        body
+        body,
       },
     );
 
@@ -44,6 +44,12 @@ export default defineEventHandler(async (event) => {
     // delete JWT and refresh token from response data
     delete data.refreshToken;
     delete data.jwtToken;
+
+    // serialize the user object and set it in cookies
+    const asCompressedString = arrayBufferToBase64(
+      await compress(JSON.stringify(data), "deflate"),
+    );
+    setCookie(event, "app_principal", asCompressedString, AUTHS_COOKIE_CONFIG);
 
     return sendSuccessResponse(data);
   } catch (ex) {

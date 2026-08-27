@@ -32,12 +32,7 @@ const useAuthn = () => {
         // set the remember me state
         data.rememberMe = payload.rememberMe;
 
-        // serialize the user object and set it in local storage
-        const asCompressedString = arrayBufferToBase64(
-          await compress(JSON.stringify(data), "deflate"),
-        );
-
-        localStorage.setItem("principal_obj", asCompressedString);
+        
       }
     } catch (ex) {
     } finally {
