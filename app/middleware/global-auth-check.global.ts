@@ -49,6 +49,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     corpName: data.corpName,
     corpId: data.corpId,
     branchId: data.branchId,
+    isBroker: data.isBroker,
     isLoggedIn: true,
     isTrackingLoggedIn: tracking_auth_token.value == undefined ? false : true,
   });

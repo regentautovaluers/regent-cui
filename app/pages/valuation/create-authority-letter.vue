@@ -5,7 +5,7 @@ definePageMeta({
 
 const { post } = useStandardizedApi();
 const store = usePrincipalStore();
-const branchesStore = useGeneralDataStore();
+const generalDataStore = useGeneralDataStore();
 
 const uploadedDocuments: Ref<any[]> = ref([]);
 const rawData = reactive({
@@ -89,7 +89,6 @@ async function submitForm() {
 <template>
   <GrowableCard card-title="Create Your Authority Letter">
     <form class="space-y-10" @submit.prevent="submitForm()">
-
       <!-- client details -->
       <div class="grid gap-x-8 grid-cols-3">
         <InputsGenericInput
@@ -118,22 +117,22 @@ async function submitForm() {
           v-model="rawData.clientPhone"
         ></InputsGenericInput>
       </div>
-      
+
       <!-- preffered regent branch -->
       <InputsGenericInputSearchBox
         input-id="cal-select-branch"
         input-label="Select Preferred Regent Branch"
         :input-dropdown-options="
-          branchesStore.getBranches.map((e) => ({
+          generalDataStore.getRegentBranches.map((e) => ({
             id: e.branchId,
             text: e.branchName,
           }))
         "
         input-helpertext="Type to search. Leave blank to direct to customer service"
-        :input-data-loading="branchesStore.loadingRegentBranches"
+        :input-data-loading="generalDataStore.loadingRegentBranches"
         :input-disabled="
-          branchesStore.loadingRegentBranches ||
-          branchesStore.getBranches.length < 1
+          generalDataStore.loadingRegentBranches ||
+          generalDataStore.getRegentBranches.length == 0
         "
       >
       </InputsGenericInputSearchBox>
@@ -159,13 +158,18 @@ async function submitForm() {
 
         <InputsGenericInputSearchBox
           input-id="cal-select-side2"
-          input-label="Agency / Broker"
-          :input-dropdown-options="[
-            {
-              id: '123',
-              text: 'Customer Care',
-            },
-          ]"
+          :input-label="store.isBroker ? 'Select Corporate' : 'Agency / Broker'"
+          :input-dropdown-options="
+            generalDataStore.getCorporateOrganzations.map((e) => ({
+              id: e.corpId,
+              text: e.corpName,
+            }))
+          "
+          :input-data-loading="generalDataStore.loadingCorporateOrganizations"
+          :input-disabled="
+            generalDataStore.loadingCorporateOrganizations ||
+            generalDataStore.getCorporateOrganzations.length == 0
+          "
           v-model="rawData.agentName"
         >
         </InputsGenericInputSearchBox>

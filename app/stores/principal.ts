@@ -10,10 +10,11 @@ export const usePrincipalStore = defineStore("principleStore", {
       isAdmin: false,
       corpId: "",
       branchId: "",
+      isBroker: false,
       corpName: "",
       isLoggedIn: true,
       isTrackingLoggedIn: true,
-    
+
       rememberMe: false,
     };
   },

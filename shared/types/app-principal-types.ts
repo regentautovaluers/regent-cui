@@ -55,6 +55,7 @@ export interface SlimmedLoginReponse extends Pick<
   | "corpName"
   | "rememberMe"
   | "branchId"
+  | "isBroker"
 > {
   isAdmin: boolean;
   isLoggedIn: boolean;

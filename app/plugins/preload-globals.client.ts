@@ -1,7 +1,8 @@
 export default defineNuxtPlugin(async () => {
-  const branchesStore = useGeneralDataStore();
+  const generalDataStore = useGeneralDataStore();
 
   // Fire and forget, or await if critical for initial render
-  branchesStore.loadRegentBranches();
-  branchesStore.loadCorporateBranches();
+  generalDataStore.loadRegentBranches();
+  generalDataStore.loadCorporateBranches();
+  generalDataStore.loadCorporateOrganizations();
 });
