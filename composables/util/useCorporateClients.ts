@@ -16,9 +16,6 @@ export default function useCorporateClient() {
 		{
 			method: 'GET',
 			server: false,
-			query: {
-				is_broker: isPrincipalBroker.value,
-			},
 			getCachedData(_key) {
 				const cached = getCorporateClients();
 				if (cached.length > 0) return cached as CorporateClient[];
