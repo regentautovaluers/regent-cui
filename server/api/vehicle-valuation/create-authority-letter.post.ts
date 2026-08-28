@@ -1,6 +1,7 @@
 import { type MultiPartData } from "h3";
 
 export default defineEventHandler(async (event) => {
+  const cookies = parseCookies(event);
   const { VALUATION_BASE_URL } = useRuntimeConfig();
   const requestData: MultiPartData[] | undefined =
     await readMultipartFormData(event);
@@ -12,9 +13,13 @@ export default defineEventHandler(async (event) => {
     "corporateName",
     "agentName",
   ];
+  const data: LoginResponse = await inflatePrincipal(cookies);
 
   // Check if requestData exists and iterate using for...of
   if (requestData) {
+    // attach the userId
+    formData.append("authorizedBy", data.userId);
+
     for (const e of requestData) {
       const name = e.name as string;
 
@@ -25,8 +30,6 @@ export default defineEventHandler(async (event) => {
         }
       } else {
         if (e.filename) {
-          console.log(e.filename);
-
           // append the files
           formData.append(
             "files",

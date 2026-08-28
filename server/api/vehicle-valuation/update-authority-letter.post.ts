@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const endpoint = `${config.VALUATION_BASE_URL}/api/v1/authority-letter/corp/update-authority-letter`;
-    await makeProxyRequest<GenericResponse<any>>(endpoint, {
+    await makeProxyRequest<GenericResponse<any>>(endpoint, event, {
       body: formData,
       method: "PATCH",
     });

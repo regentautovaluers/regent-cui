@@ -1,15 +1,17 @@
 export default defineEventHandler(async (event) => {
-	const config = useRuntimeConfig();
-	const query = getQuery(event);
+  const cookies = parseCookies(event);
+  const config = useRuntimeConfig();
+  const data: LoginResponse = await inflatePrincipal(cookies);
 
-	let endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/corporate-organization/get-all?isBroker=${query.is_broker}`;
+  let endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/corporate-organization/get-all?isBroker=${data.isBroker}`;
 
-	try {
-		const response = await makeProxyRequest<GenericResponse<CorporateClient[]>>(
-			endpoint
-		);
-		return sendSuccessResponse(response.data);
-	} catch (err) {
-		return sendErrorResponse(err);
-	}
+  try {
+    const response = await makeProxyRequest<GenericResponse<CorporateClient[]>>(
+      endpoint,
+      event,
+    );
+    return sendSuccessResponse(response.data);
+  } catch (err) {
+    return sendErrorResponse(err);
+  }
 });

@@ -25,7 +25,7 @@ export const useGeneralDataStore = defineStore("generalDataStore", {
         this.loadingRegentBranches = true;
         const { data, status } = await useApiData<
           GenericResponse<RegentBranch[]>
-        >("regent-branch", "/api/vehicle-valuation/get-regent-branches");
+        >("regent-branch", "/api/utils/get-regent-branches");
 
         const rawList = data.value!.data;
         this.regentBranches = rawList;
@@ -46,7 +46,7 @@ export const useGeneralDataStore = defineStore("generalDataStore", {
           GenericResponse<CorporateBranch[]>
         >(
           "corporate-branch",
-          `/api/utils/load-corporate-branches?corpId=${store.userId}`,
+          `/api/utils/load-corporate-branches`,
         );
 
         const rawList = data.value!.data;

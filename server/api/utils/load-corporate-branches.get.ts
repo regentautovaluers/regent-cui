@@ -1,9 +1,10 @@
 export default defineEventHandler(async (event) => {
+  const cookies = parseCookies(event);
   const { VALUATION_BASE_URL } = useRuntimeConfig();
 
-  const query: { corpId: string } = getQuery(event);
-  let endpoint = `${VALUATION_BASE_URL}/api/v1/corporate-branch/get-all?corpId=${query.corpId}`;
+  const data: LoginResponse = await inflatePrincipal(cookies);
 
+  let endpoint = `${VALUATION_BASE_URL}/api/v1/corporate-branch/get-all?corpId=${data.corpId}`;
   try {
     let response = await makeProxyRequest<GenericResponse<CorporateBranch[]>>(
       endpoint,

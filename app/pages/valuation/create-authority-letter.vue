@@ -71,7 +71,6 @@ async function submitForm() {
     Object.entries(rawData).forEach(([key, value]) =>
       formData.append(key, value),
     );
-    formData.append("authorizedBy", store.userId);
 
     if (uploadedDocuments.value.length > 0) {
       for (const file of uploadedDocuments.value) {

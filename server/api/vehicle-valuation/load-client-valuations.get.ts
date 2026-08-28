@@ -1,17 +1,18 @@
 export default defineEventHandler(async (event) => {
+  const cookies = parseCookies(event);
   const config = useRuntimeConfig();
   const query: {
     isVehicleTampered?: boolean;
-    corpId?: string;
     regNo?: string;
     completed?: boolean;
     startDate?: string;
     endDate?: string;
-    corpBranchId?: string;
-    page?: number;
+    page: number;
     size: number;
   } = getQuery(event);
-  let requestURL = `${config.VALUATION_BASE_URL}/api/v1/valuation/booking/get-all?`;
+  const data: LoginResponse = await inflatePrincipal(cookies);
+
+  let requestURL = `${config.VALUATION_BASE_URL}/api/v1/valuation/booking/get-all?&corpId=${data.corpId}`;
 
   if (query.page) {
     requestURL = requestURL + `&page=${query.page}`;
@@ -19,10 +20,6 @@ export default defineEventHandler(async (event) => {
 
   if (query.size) {
     requestURL = requestURL + `&size=${query.size}`;
-  }
-
-  if (query.corpId) {
-    requestURL = requestURL + `&corpId=${query.corpId}`;
   }
 
   if (query.regNo) {
@@ -46,13 +43,17 @@ export default defineEventHandler(async (event) => {
     requestURL = requestURL + `&isVehicleTampered=${query.isVehicleTampered}`;
   }
 
-  if (query.corpBranchId) {
-    requestURL = requestURL + `&corpBranchId=${query.corpBranchId}`;
+  if (!data.userRoles.includes("ROLE_CORP_ADMIN")) {
+    if (data.branchId) {
+      requestURL = requestURL + `&corpBranchId=${data.branchId}`;
+    }
   }
 
   try {
-    let response =
-      await makeProxyRequest<GenericResponse<ValuationBooking[]>>(requestURL, event);
+    let response = await makeProxyRequest<GenericResponse<ValuationBooking[]>>(
+      requestURL,
+      event,
+    );
 
     if (response.data) {
       response.data.forEach((vb) => cleanValuations(vb));
