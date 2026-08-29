@@ -33,7 +33,7 @@ export default defineComponent({
       <div class="flex mt-10 justify-between items-center">
         <span class="text-base-content/80 text-base">
           Showing {props.currentPage + 1} of {props.totalPages} pages
-          {props.totalItems && <span>. (Total items {props.totalItems})</span>}
+          {props.totalItems! > 0 && <span>. (Total items {props.totalItems})</span>}
         </span>
         <div class="flex space-x-2">
           <button

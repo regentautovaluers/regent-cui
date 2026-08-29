@@ -1,23 +1,29 @@
 <script setup lang="ts">
 const config = useRuntimeConfig();
-const size = config.public.PAGE_SIZE;
-const store = usePrincipalStore();
+const { get } = useStandardizedApi();
+const fleetEntries: Ref<FleetEntry[]> = ref([]);
+const loadingFleets = ref(false);
 const page = ref(0);
-const startDate: Ref<string | null> = ref(null);
-const endDate: Ref<string | null> = ref(null);
-const regNo: Ref<string | null> = ref(null);
-const corpBranchId: Ref<string | null> = ref(null);
-
+const formFilters = reactive({
+  startDate: "" as string,
+  endDate: "" as string,
+  // isVehicleTampered: false,
+  completed: true as boolean,
+  regNo: "" as string,
+  fleetId: null as null | string,
+});
+const activeFilters = reactive({
+  startDate: "" as string,
+  endDate: "" as string,
+  // isVehicleTampered: false,
+  completed: true as boolean,
+  regNo: "" as string,
+  fleetId: null as null | string,
+});
 const query = computed(() => ({
-  size,
+  size: config.public.PAGE_SIZE,
   page: page.value,
-  corpId: store.corpId,
-  startDate: startDate.value,
-  endDate: endDate.value,
-  // isVehicleTampered: "",
-  // completed: "",
-  regNo: regNo.value,
-  // corpBranchId: store.isAdmin && store.branchId,
+  ...activeFilters,
 }));
 
 const { data, status, refresh } = useApiData<
@@ -27,6 +33,7 @@ const { data, status, refresh } = useApiData<
   lazy: false,
   // Keep previous data visible while fetching the next page for seamless UX
   dedupe: "defer",
+  watch: [query],
 });
 const paginationInfo = computed(() => ({
   totalPages: data.value?.requestExtras?.totalPages || 1,
@@ -53,30 +60,138 @@ function allowAccessReport(
 
   return false;
 }
+
+function applyFilters() {
+  // Copy form values into active filters
+  Object.assign(activeFilters, formFilters);
+
+  // Reset pagination to first page
+  page.value = 0;
+
+  // Trigger refresh
+  refresh();
+}
+
+async function loadFleets() {
+  if (fleetEntries.value.length > 0) return;
+
+  try {
+    loadingFleets.value = true;
+    const fleets = await get<GenericResponse<FleetEntry[]>>(
+      "/api/vehicle-valuation/get-fleets",
+    );
+    if (fleets.success) {
+      const response = fleets as StandardSuccessResponse<
+        GenericResponse<FleetEntry[]>
+      >;
+      fleetEntries.value = response.data.data;
+    }
+  } catch (ex) {
+    // TODO: Put error toast here
+  } finally {
+    loadingFleets.value = false;
+  }
+}
 </script>
 
 <template>
   <!-- filters -->
-  <GenericTableFilters :disable-filters="status === 'pending'">
-    <InputsGenericRadioDropdown></InputsGenericRadioDropdown>
-    <InputsGenericDateInput></InputsGenericDateInput>
+  <GenericTableFilters
+    :disable-filters="status === 'pending'"
+    :disable-submit-button="status == 'pending'"
+    v-model="formFilters.regNo"
+    @extra-filters-open="loadFleets()"
+  >
+    <template #float-left>
+      <nav
+        class="tabs tabs-bordered flex-1"
+        aria-label="Tabs"
+        role="tablist"
+        aria-orientation="horizontal"
+      >
+        <button
+          type="button"
+          @click="
+            () => {
+              formFilters.completed = true;
+              applyFilters();
+            }
+          "
+          :class="['tab active-tab:tab-active', query.completed && 'active']"
+          id="tabs-basic-item-1"
+          data-tab="#tabs-basic-1"
+          aria-controls="tabs-basic-1"
+          role="tab"
+          aria-selected="true"
+        >
+          Completed
+        </button>
+        <button
+          type="button"
+          @click="
+            () => {
+              formFilters.completed = false;
+              applyFilters();
+            }
+          "
+          :class="[
+            'tab active-tab:tab-active',
+            !formFilters.completed && 'active',
+          ]"
+          id="tabs-basic-item-2"
+          data-tab="#tabs-basic-2"
+          aria-controls="tabs-basic-2"
+          role="tab"
+          aria-selected="false"
+        >
+          Ongoing
+        </button>
+      </nav>
+    </template>
+    <InputsGenericDateInput
+      input-id="val-start-date"
+      input-label="Start Period"
+      input-wrapper-styles="flex-1"
+      v-model="formFilters.startDate"
+    ></InputsGenericDateInput>
+    <InputsGenericDateInput
+      input-id="val-end-date"
+      input-label="End Period"
+      input-wrapper-styles="flex-1"
+      v-model="formFilters.endDate"
+    ></InputsGenericDateInput>
+    <!-- fleet -->
+    <InputsGenericInputSearchBox
+      input-id="cal-select-fleet"
+      input-label="Select Fleet"
+      :input-dropdown-options="
+        fleetEntries.map((e) => ({
+          id: e.id,
+          text: e.fleetName,
+        }))
+      "
+      :input-data-loading="loadingFleets"
+      input-wrapper-styles="flex-1"
+      :input-disabled="loadingFleets || fleetEntries.length == 0"
+      @value-selected="(id) => (formFilters.fleetId = id)"
+    >
+    </InputsGenericInputSearchBox>
   </GenericTableFilters>
 
-  <!-- the table -->
-  <GenericTable
-    :headers="[
-      'Reg',
-      'Client',
-      'Source',
-      'Report Timeline',
-      'Assessed Value',
-      'Note',
-      'Remarks',
-      '',
-    ]"
-    :dataLoading="status == 'pending'"
-  >
-    <template v-if="data?.data.length">
+  <template v-if="data?.data?.length">
+    <GenericTable
+      :headers="[
+        'Reg',
+        'Client',
+        'Source',
+        'Report Timeline',
+        'Assessed Value',
+        'Note',
+        'Remarks',
+        '',
+      ]"
+      :dataLoading="status == 'pending'"
+    >
       <tr v-for="booking in data.data" :key="booking.valuationId">
         <td class="font-semibold">{{ booking.regNo }}</td>
         <td class="space-y-1">
@@ -141,21 +256,30 @@ function allowAccessReport(
           </GenericPageActionButton>
         </td>
       </tr>
-    </template>
-  </GenericTable>
+    </GenericTable>
 
-  <GenericTablePageSwitcher
-    :current-page="paginationInfo.currentPage"
-    :total-pages="paginationInfo.totalPages"
-    :total-items="paginationInfo.totalItems"
-    :scroll-back-disabled="page <= 0 || status === 'pending'"
-    :scroll-forward-disabled="
-      page >= paginationInfo.totalPages - 1 || status === 'pending'
-    "
-    @page-change-clicked="
-      (page) => {
-        handlePageChange(page);
-      }
-    "
-  ></GenericTablePageSwitcher>
+    <GenericTablePageSwitcher
+      :current-page="paginationInfo.currentPage"
+      :total-pages="paginationInfo.totalPages"
+      :total-items="paginationInfo.totalItems"
+      :scroll-back-disabled="page <= 0 || status === 'pending'"
+      :scroll-forward-disabled="
+        page >= paginationInfo.totalPages - 1 || status === 'pending'
+      "
+      @page-change-clicked="
+        (page) => {
+          handlePageChange(page);
+        }
+      "
+    ></GenericTablePageSwitcher>
+  </template>
+
+  <template v-else>
+    <GenericNoTableDataCTA
+      heading="Create A Request"
+      sub-heading="Via Authority Letter"
+      to-page="valuations-create-authorization-letter"
+    >
+    </GenericNoTableDataCTA>
+  </template>
 </template>

@@ -1,26 +1,47 @@
 <!-- components/BaseDatePicker.vue -->
 <script setup lang="ts" id="base-datepicker">
-import { ref, onMounted, onUnmounted } from "vue";
 import flatpickr from "flatpickr";
-
-const props = defineProps({
-  modelValue: { type: String, default: "" },
-  options: { type: Object, default: () => ({}) },
+interface Props {
+  inputType?: "password" | "text" | "email";
+  inputDisabled?: boolean;
+  inputRequired?: boolean;
+  inputId: string;
+  inputPlaceHolder?: string;
+  inputLabel?: string;
+  inputValid?: boolean;
+  inputTextSize?: "xs" | "sm" | "md" | "lg" | "xl";
+  inputHelpertext?: string;
+  inputExtraStyles?: string;
+  inputWrapperStyles?: string;
+}
+const props = withDefaults(defineProps<Props>(), {
+  inputType: "text",
+  inputDisabled: false,
+  inputRequired: false,
+  inputId: "generic-input-label",
+  inputPlaceHolder: "your placeholder",
+  inputValid: undefined,
+  inputTextSize: "md",
+  inputHelpertext: undefined,
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const model = defineModel<string>({ default: "" });
+const displayValidityColors = computed<string | null>(() => {
+  if (props.inputValid == undefined) {
+    return null;
+  }
+
+  return props.inputValid ? "is-valid" : "is-invalid";
+});
 const inputRef = ref(null);
 let fp = null;
 
 onMounted(() => {
   if (inputRef.value) {
     fp = flatpickr(inputRef.value, {
-      defaultDate: props.modelValue,
-      onChange: (selectedDates, dateStr) => {
-        emit("update:modelValue", dateStr);
-      },
       appendTo: document.body,
-      ...props.options,
+      dateFormat: "Y-m-d",
+      altFormat: "F j, Y"
     });
   }
 });
@@ -31,10 +52,33 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <input
+  <div :class="inputWrapperStyles">
+    <label
+      v-if="inputLabel"
+      :class="[
+        'label-text text-base mb-1',
+        inputRequired && 'after:content-[\'*\'] after:ml-0.5',
+      ]"
+      for="inputId"
+      >{{ inputLabel }}</label
+    >
+    <input
     ref="inputRef"
-    type="text"
-    class="input h-14 w-fit"
-    placeholder="Select date"
-  />
+      :type="inputType"
+      :placeholder="inputPlaceHolder"
+      :class="[
+        'input h-13',
+        displayValidityColors,
+        inputExtraStyles,
+        `input-${inputTextSize}`,
+      ]"
+      :id="inputId"
+      :disabled="inputDisabled"
+      :required="inputRequired"
+      v-model="model"
+    />
+    <span class="helper-text" v-show="inputHelpertext">{{
+      inputHelpertext
+    }}</span>
+  </div>
 </template>

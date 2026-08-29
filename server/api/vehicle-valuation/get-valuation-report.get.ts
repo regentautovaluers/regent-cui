@@ -1,10 +1,10 @@
 import { SlimmedValuationReport } from "~~/shared/types/valuation-report";
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
+  const { VALUATION_BASE_URL } = useRuntimeConfig();
   const { valuationId }: { valuationId: string } = getQuery(event);
 
-  let endpoint = `${config.VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${valuationId}`;
+  let endpoint = `${VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${valuationId}`;
 
   try {
     const response = await makeProxyRequest<GenericResponse<ValuationReport>>(

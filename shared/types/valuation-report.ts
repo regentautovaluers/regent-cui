@@ -2,7 +2,7 @@ export interface ValuationReport {
   inspectionId: string;
   inspectionDate: string;
   location: Location;
-  regentValuer: RegentValuer;
+  regentValuer: RegentUser;
   regNo: string;
   vehicleMake: string;
   vehicleType: string;
@@ -33,7 +33,7 @@ export interface Location {
   lat: string;
 }
 
-export interface RegentValuer {
+export interface RegentUser {
   userId: string;
   username: string;
 }

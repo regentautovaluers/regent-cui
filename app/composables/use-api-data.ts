@@ -95,10 +95,16 @@ export const useApiData = <T = unknown, R = T>(
   const asyncData = useAsyncData<T, StandardErrorResponse, R>(
     activeKey,
     async () => {
+      const headers = useRequestHeaders(["cookie"]);
+
       const response = await api.handleApiCall<T>(toValue(endpoint), {
         method,
         query: toValue(query),
         body,
+        headers: {
+          ...headers, // Forwards 'cookie' during SSR
+          ...options.headers,
+        },
         onResponse: options.onResponse,
         onResponseError: options.onResponseError,
       });
@@ -113,7 +119,7 @@ export const useApiData = <T = unknown, R = T>(
       getCachedData: getCachedData || defaultGetCachedData,
       // Merge custom watch targets with query ref/computed
       watch: query
-        ? [query, ...(asyncDataOptions.watch || [])]
+        ? [() => toValue(query), ...(asyncDataOptions.watch || [])]
         : asyncDataOptions.watch,
       ...asyncDataOptions,
       transform: transform as any,

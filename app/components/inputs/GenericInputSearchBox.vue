@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown w-full relative">
+  <div class="dropdown flex-1 relative">
     <label
       :class="[
         'label-text text-base mb-1',
@@ -88,6 +88,7 @@ interface Props {
   inputTextSize?: "xs" | "sm" | "md" | "lg" | "xl";
   inputDropdownOptions: { id: string | number; text: string | number }[];
   inputHelpertext?: string;
+  inputWrapperStyles?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   inputType: "text",
@@ -98,7 +99,6 @@ const props = withDefaults(defineProps<Props>(), {
   inputPlaceHolder: "Type to search",
   inputValid: undefined,
   inputTextSize: "md",
-  inputHelpertext: "Type to search",
 });
 const emits = defineEmits(["value-selected"]);
 
