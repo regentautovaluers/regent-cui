@@ -38,7 +38,16 @@ export default defineEventHandler(async (event) => {
         ...reportData.interiorFinal.odometerPhotos,
       ],
       sectionComments: [
-        { name: "Tyre Condition", chipColor: "orange", value: "hello world" },
+        {
+          name: "Assessment Note",
+          chipColor: "pink",
+          value: reportData.inspectionNB,
+        },
+        {
+          name: "Tyre Condition",
+          chipColor: "orange",
+          value: reportData.tyreAndChassisFinal.tyreGeneralRemarks,
+        },
         { name: "Extras", chipColor: "pink", value: reportData.extras },
         {
           name: "Mechanical Condition",

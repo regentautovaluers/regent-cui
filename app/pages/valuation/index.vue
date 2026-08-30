@@ -241,9 +241,9 @@ async function loadFleets() {
               </div>
               <a
                 v-if="booking.bookingSource == 'AUTHORITY_LETTER'"
-                class="btn btn-soft btn-sm btn-info"
+                class="btn btn-soft btn-sm btn-accent"
                 href="#"
-                target="_self"
+                target="_blank"
               >
                 <span
                   class="icon-[material-symbols--arrow-cool-down-rounded]"
@@ -282,10 +282,19 @@ async function loadFleets() {
                   "
                 >
                   <li>
-                    <a :href="booking.reportURL!">Download Report</a>
+                    <a :href="booking.reportURL!" target="_blank"
+                      >Download Report</a
+                    >
                   </li>
                   <li>
-                    <NuxtLink :to="`/valuation/report-${booking.valuationId}`">
+                    <NuxtLink
+                      :to="{
+                        name: 'valuations-create-authorization-letter',
+                        query: {
+                          valuation_id: booking.valuationId,
+                        },
+                      }"
+                    >
                       Open Report
                     </NuxtLink>
                   </li>

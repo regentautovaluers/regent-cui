@@ -89,7 +89,7 @@ export function normalizeValuationStage(stage: ValuationStages | null): {
     ((ret.wrapperName = "Computing Values"), (ret.wrapperStage = 3));
   }
 
-  if (stage == "AWAITING_MANAGER_APPROVAL") {
+  if (stage == "AWAITING_QC_APPROVAL") {
     ((ret.wrapperName = "Proof-reading Report"), (ret.wrapperStage = 4));
   }
 

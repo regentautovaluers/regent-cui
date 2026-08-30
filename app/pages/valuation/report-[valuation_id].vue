@@ -87,7 +87,7 @@ const computedValues: ComputedRef<{ value: number; name: string }[]> = computed(
 <template>
   <div class="grid grid-cols-4 gap-10">
     <div
-      class="col-span-4 laptop:col-span-2 shadow-lg border overflow-clip h-123 flex flex-col rounded-2xl"
+      class="col-span-4 laptop:col-span-2 shadow-lg overflow-clip h-123 card flex flex-col rounded-2xl"
     >
       <div class="border-b w-full p-8 inline-flex justify-between">
         <div>
@@ -140,7 +140,7 @@ const computedValues: ComputedRef<{ value: number; name: string }[]> = computed(
       </div>
     </div>
     <div
-      class="col-span-4 laptop:col-span-2 shadow-lg border overflow-clip h-123 flex flex-col space-y-6 rounded-2xl p-8"
+      class="col-span-4 laptop:col-span-2 shadow-lg card overflow-clip h-123 flex flex-col space-y-6 rounded-2xl p-8"
     >
       <div
         class="flex items-start space-x-4"
@@ -149,7 +149,7 @@ const computedValues: ComputedRef<{ value: number; name: string }[]> = computed(
       >
         <div
           :class="[
-            `h-8 min-h-8 max-h-8 w-2 min-w-2 max-w-2 rounded-full bg-${e.chipColor}-500`,
+            `h-8 min-h-8 max-h-8 w-2 min-w-2 max-w-2 rounded-full bg-${e.chipColor}-600`,
           ]"
         ></div>
         <div>
@@ -173,10 +173,10 @@ const computedValues: ComputedRef<{ value: number; name: string }[]> = computed(
       :key="idx"
     >
       <div
-        class="size-16 bg-info rounded-full flex items-center justify-center"
+        class="size-16 bg-accent rounded-full flex items-center justify-center"
       >
         <span
-          class="icon-[material-symbols--account-balance-wallet] size-9"
+          class="icon-[material-symbols--account-balance-wallet] text-base-200 size-9"
         ></span>
       </div>
       <div>
