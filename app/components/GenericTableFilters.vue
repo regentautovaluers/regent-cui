@@ -5,7 +5,11 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emits = defineEmits(["execute-filters", "extra-filters-open"]);
+const emits = defineEmits([
+  "execute-filters",
+  "extra-filters-open",
+  "reset-filters",
+]);
 const extraFiltersOpen = ref(false);
 const model = defineModel<string>({ default: "" });
 
@@ -31,7 +35,6 @@ function toggleFilters() {
       <slot name="float-left"></slot>
       <div class="flex-1 relative">
         <InputsGenericInput
-          class=""
           input-id="search-reg-no"
           input-place-holder="Search registration number"
           v-model="model"
@@ -40,6 +43,7 @@ function toggleFilters() {
           class="btn btn-square btn-primary absolute right-0 size-13 top-0"
           aria-label="Search Button"
           type="submit"
+          :disabled="disableFilters"
           v-show="!extraFiltersOpen"
         >
           <span
@@ -62,6 +66,15 @@ function toggleFilters() {
     <!-- other filters -->
     <div v-show="extraFiltersOpen" class="flex items-end space-x-3">
       <slot></slot>
+      <button
+        class="btn btn-square btn-outline btn-primary size-13 max-w-13 max-h-13"
+        aria-label="Reset Filters Button"
+        @click="() => emits('reset-filters')"
+      >
+        <span
+          class="icon-[material-symbols--filter-alt-off] size-4.5 shrink-0"
+        ></span>
+      </button>
       <InputsGenericSubmitButton
         button-text="Apply Filters"
         :submit-loading="disableSubmitButton"

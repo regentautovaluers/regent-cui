@@ -56,7 +56,7 @@ export const useStandardizedApi = () => {
  * R: The final returned type (defaults to T if no extra custom transform is applied).
  */
 export const useApiData = <T = unknown, R = T>(
-  key: string | null,
+  key: string | null | ComputedRef<string>,
   endpoint: string | Ref<string> | ComputedRef<string>,
   options: Omit<AsyncDataOptions<T, R>, "transform"> & {
     query?:
@@ -118,9 +118,8 @@ export const useApiData = <T = unknown, R = T>(
     {
       getCachedData: getCachedData || defaultGetCachedData,
       // Merge custom watch targets with query ref/computed
-      watch: query
-        ? [() => toValue(query), ...(asyncDataOptions.watch || [])]
-        : asyncDataOptions.watch,
+      watch: query ? [() => toValue(query)] : asyncDataOptions.watch,
+      deep: true,
       ...asyncDataOptions,
       transform: transform as any,
     },

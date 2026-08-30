@@ -8,7 +8,7 @@ const formFilters = reactive({
   startDate: "" as string,
   endDate: "" as string,
   // isVehicleTampered: false,
-  completed: true as boolean,
+  completed: false as boolean,
   regNo: "" as string,
   fleetId: null as null | string,
 });
@@ -16,7 +16,7 @@ const activeFilters = reactive({
   startDate: "" as string,
   endDate: "" as string,
   // isVehicleTampered: false,
-  completed: true as boolean,
+  completed: false as boolean,
   regNo: "" as string,
   fleetId: null as null | string,
 });
@@ -28,13 +28,16 @@ const query = computed(() => ({
 
 const { data, status, refresh } = useApiData<
   GenericResponse<ValuationBooking[]>
->(null, "/api/vehicle-valuation/load-client-valuations", {
-  query,
-  lazy: false,
-  // Keep previous data visible while fetching the next page for seamless UX
-  dedupe: "defer",
-  watch: [query],
-});
+>(
+  computed(() => `api-client-valuations-${JSON.stringify(toValue(query))}`),
+  "/api/vehicle-valuation/load-client-valuations",
+  {
+    query,
+    lazy: false,
+    // Keep previous data visible while fetching the next page for seamless UX
+    dedupe: "defer",
+  },
+);
 const paginationInfo = computed(() => ({
   totalPages: data.value?.requestExtras?.totalPages || 1,
   totalItems: data.value?.requestExtras?.totalItems || 0,
@@ -68,7 +71,25 @@ function applyFilters() {
   // Reset pagination to first page
   page.value = 0;
 
-  // Trigger refresh
+  // manually trigger the refresh
+  refresh();
+}
+
+function resetFilters() {
+  // Reset form filters to defaults
+  formFilters.startDate = "";
+  formFilters.endDate = "";
+  formFilters.completed = false;
+  formFilters.regNo = "";
+  formFilters.fleetId = null;
+
+  // Copy defaults into active filters
+  Object.assign(activeFilters, formFilters);
+
+  // Reset pagination
+  page.value = 0;
+
+  // Trigger API refresh with defaults
   refresh();
 }
 
@@ -95,11 +116,12 @@ async function loadFleets() {
 </script>
 
 <template>
-  <!-- filters -->
   <GenericTableFilters
     :disable-filters="status === 'pending'"
     :disable-submit-button="status == 'pending'"
     v-model="formFilters.regNo"
+    @reset-filters="resetFilters()"
+    @execute-filters="applyFilters()"
     @extra-filters-open="loadFleets()"
   >
     <template #float-left>
@@ -179,84 +201,101 @@ async function loadFleets() {
   </GenericTableFilters>
 
   <template v-if="data?.data?.length">
-    <GenericTable
-      :headers="[
-        'Reg',
-        'Client',
-        'Source',
-        'Report Timeline',
-        'Assessed Value',
-        'Note',
-        'Remarks',
-        '',
-      ]"
-      :dataLoading="status == 'pending'"
-    >
-      <tr v-for="booking in data.data" :key="booking.valuationId">
-        <td class="font-semibold">{{ booking.regNo }}</td>
-        <td class="space-y-1">
-          <div>{{ booking.clientName }}</div>
-          <div>{{ booking.clientEmail || "-" }}</div>
-        </td>
-        <td class="space-y-1">
-          <div>
-            {{ normalizeValuationBookingSource(booking.bookingSource!) }}
-          </div>
-          <a
-            v-if="booking.bookingSource == 'AUTHORITY_LETTER'"
-            class="btn btn-soft btn-sm btn-info"
-            href="#"
-            target="_self"
-          >
-            <span
-              class="icon-[material-symbols--arrow-cool-down-rounded]"
-            ></span>
-            Download Letter
-          </a>
-        </td>
-        <td class="space-y-1 flex flex-col">
-          <div class="badge badge-soft badge-info">
-            Start: {{ formatDateToWords(booking.bookingDate) }}
-          </div>
-          <div class="badge badge-soft badge-success">
-            End: {{ formatDateToWords(booking.approvalDate) }}
-          </div>
-        </td>
-        <td>
-          {{
-            booking.vehicleValue?.assessedValue
-              ? formatNumberWithCommas(booking.vehicleValue.assessedValue)
-              : "-"
-          }}
-        </td>
-        <td class="max-w-60 text-wrap">
-          {{ booking.inspectionNote || "-" }}
-        </td>
-        <td class="max-w-60 text-wrap">
-          {{ booking.inspectionRemarks || "-" }}
-        </td>
-        <td>
-          <GenericPageActionButton
-            :action-id="`vb-${booking.valuationId}-action`"
-          >
-            <template
-              v-show="
-                allowAccessReport(booking.valuationStage, booking.reportURL)
-              "
-            >
-              <li>
-                <a :href="booking.reportURL!">Download Report</a>
-              </li>
-              <li>
-                <NuxtLink :to="`/valuation/report-${booking.valuationId}`">
-                  Open Report
-                </NuxtLink>
-              </li>
-            </template>
-          </GenericPageActionButton>
-        </td>
-      </tr>
-    </GenericTable>
+    <GrowableCard :show-padding="false">
+      <template #no-padding>
+        <GenericTable
+          :headers="[
+            'Reg',
+            'Client',
+            'Progress',
+            'Source',
+            'Report Timeline',
+            'Assessed Value',
+            'Note',
+            'Remarks',
+            '',
+          ]"
+          :dataLoading="status == 'pending'"
+        >
+          <tr v-for="booking in data.data" :key="booking.valuationId">
+            <td class="font-semibold">{{ booking.regNo }}</td>
+            <td class="space-y-1">
+              <div>{{ booking.clientName }}</div>
+              <div>{{ booking.clientEmail || "-" }}</div>
+            </td>
+            <td>
+              <div class="font-semibold w-fit">
+                {{
+                  normalizeValuationStage(booking.valuationStage).wrapperName
+                }}
+              </div>
+              <div class="w-fit badge badge-warning">
+                {{
+                  normalizeValuationStage(booking.valuationStage).wrapperStage
+                }}/5
+              </div>
+            </td>
+            <td class="space-y-1">
+              <div>
+                {{ normalizeValuationBookingSource(booking.bookingSource!) }}
+              </div>
+              <a
+                v-if="booking.bookingSource == 'AUTHORITY_LETTER'"
+                class="btn btn-soft btn-sm btn-info"
+                href="#"
+                target="_self"
+              >
+                <span
+                  class="icon-[material-symbols--arrow-cool-down-rounded]"
+                ></span>
+                Download Letter
+              </a>
+            </td>
+            <td class="space-y-1 flex flex-col">
+              <div class="badge badge-soft badge-info">
+                Start: {{ formatDateToWords(booking.bookingDate) }}
+              </div>
+              <div class="badge badge-soft badge-success">
+                End: {{ formatDateToWords(booking.approvalDate) }}
+              </div>
+            </td>
+            <td class="font-semibold text-accent">
+              {{
+                booking.vehicleValue?.assessedValue
+                  ? formatNumberWithCommas(booking.vehicleValue.assessedValue)
+                  : "-"
+              }}
+            </td>
+            <td class="max-w-60 text-wrap">
+              {{ booking.inspectionNote || "-" }}
+            </td>
+            <td class="max-w-60 text-wrap">
+              {{ booking.inspectionRemarks || "-" }}
+            </td>
+            <td>
+              <GenericPageActionButton
+                :action-id="`vb-${booking.valuationId}-action`"
+              >
+                <template
+                  v-show="
+                    allowAccessReport(booking.valuationStage, booking.reportURL)
+                  "
+                >
+                  <li>
+                    <a :href="booking.reportURL!">Download Report</a>
+                  </li>
+                  <li>
+                    <NuxtLink :to="`/valuation/report-${booking.valuationId}`">
+                      Open Report
+                    </NuxtLink>
+                  </li>
+                </template>
+              </GenericPageActionButton>
+            </td>
+          </tr>
+        </GenericTable>
+      </template>
+    </GrowableCard>
 
     <GenericTablePageSwitcher
       :current-page="paginationInfo.currentPage"

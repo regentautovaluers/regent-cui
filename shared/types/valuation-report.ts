@@ -60,8 +60,6 @@ export type ValuationStages =
   | "INVOICING"
   | "COMPLETED"
   | "FAULTY"
-  | "REQUEST_RECEIVED_BR"
-  | "REQUEST_RECEIVED_CC";
 
 export type OdometerReadingUnits = "KM" | "MI" | "HRS";
 

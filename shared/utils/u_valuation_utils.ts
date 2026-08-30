@@ -65,3 +65,37 @@ export function normalizeValuationBookingSource(
 
   return "-";
 }
+
+export function normalizeValuationStage(stage: ValuationStages | null): {
+  wrapperName: string;
+  wrapperStage: number;
+} {
+  const ret: {
+    wrapperName: string;
+    wrapperStage: number;
+  } = { wrapperName: "Received", wrapperStage: 0 };
+
+  if (!stage || stage == "SCHEDULED") return ret;
+
+  if (["AWAITING_ASSESSMENT", "VALUER_DRAFT"].includes(stage)) {
+    ((ret.wrapperName = "Awaiting Assessment"), (ret.wrapperStage = 1));
+  }
+
+  if (stage == "PENDING") {
+    ((ret.wrapperName = "Validating KYCs"), (ret.wrapperStage = 2));
+  }
+
+  if (stage == "AWAITING_MANAGER_APPROVAL") {
+    ((ret.wrapperName = "Computing Values"), (ret.wrapperStage = 3));
+  }
+
+  if (stage == "AWAITING_MANAGER_APPROVAL") {
+    ((ret.wrapperName = "Proof-reading Report"), (ret.wrapperStage = 4));
+  }
+
+  if (["PENDING_REPORT", "INVOICING", "COMPLETED"].includes(stage)) {
+    ((ret.wrapperName = "Proof-reading Report"), (ret.wrapperStage = 5));
+  }
+
+  return ret;
+}
