@@ -16,12 +16,16 @@ export interface InsuranceTelematicsAnalysis {
   };
 }
 
+// custom wrapper type for a wrapped tracker status
+export type TrackerStatusWrapperName = "Online" | "Expired" | "Offline";
+
 export interface TrackedVehicles {
   id: number;
+  wrapperStatus: TrackerStatusWrapperName | null;
   alarm: number;
   name: string;
   online: VehicleOnlineStatus;
-  time: Date | TimeEnum;
+  time: string | TimeEnum;
   timestamp: number;
   acktimestamp: number;
   lat: number;
@@ -113,7 +117,7 @@ export interface DeviceData {
   additional_notes: string;
   authentication: null;
   comment: string;
-  expiration_date: Date | null;
+  expiration_date: string | null;
   sim_expiration_date: null;
   sim_activation_date: null;
   installation_date: null;
@@ -374,11 +378,3 @@ export type ForReport = Pick<
     | "speed"
   >;
 } & { wrapped_status: TrackerStatusWrapperName };
-
-// custom wrapper type for a wrapped tracker status
-export type TrackerStatusWrapperName = "Active" | "Idling" | "Offline";
-
-export interface TrackerStatusMetaWrapper {
-  proper_status: TrackerStatusWrapperName;
-  prefered_color: "success" | "warning" | "error";
-}

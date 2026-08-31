@@ -124,24 +124,24 @@ onUnmounted(() => {
             <button
               class="btn btn-soft btn-primary join-item flex-1"
               type="button"
-              @click="() => (trackedVehiclesStore.activeView = 'active')"
+              @click="() => (trackedVehiclesStore.activeView = 'Online')"
             >
-              Active
+              Online
             </button>
             <button
               class="btn btn-soft btn-primary join-item flex-1"
               type="button"
-              @click="() => (trackedVehiclesStore.activeView = 'idling')"
+              @click="() => (trackedVehiclesStore.activeView = 'Offline')"
             >
-              Idling
+              Offline
             </button>
 
             <button
               class="btn btn-soft btn-primary join-item flex-1"
               type="button"
-              @click="() => (trackedVehiclesStore.activeView = 'offline')"
+              @click="() => (trackedVehiclesStore.activeView = 'Expired')"
             >
-              No Signal
+              Expired
             </button>
           </div>
         </form>
@@ -170,7 +170,7 @@ onUnmounted(() => {
               :device-expiration-date="e.device_data.expiration_date"
               :device-speed="e.speed"
               :units-of-speed="e.distance_unit_hour"
-              :icon-color="e.icon_color"
+              :wrapped-status="e.wrapperStatus!"
               @vehicle-open-request="
                 (id) => (trackedVehiclesStore.openVehicleId = id)
               "
@@ -179,7 +179,7 @@ onUnmounted(() => {
         </div>
       </div>
       <div
-        class="w-105 min-h-full flex flex-col p-4 space-y-6.5 border-l border-l-base-content/25"
+        class="w-105 min-h-full flex flex-col p-4 space-y-5.5 border-l border-l-base-content/25"
         v-if="
           trackedVehiclesStore.openVehicleId &&
           trackedVehiclesStore.getActiveVehicle
@@ -212,10 +212,8 @@ onUnmounted(() => {
           :units-of-speed="
             trackedVehiclesStore.getActiveVehicle!.distance_unit_hour
           "
-          :online-status="
-            deriveProperTrackerStatus(
-              trackedVehiclesStore.getActiveVehicle!.icon_color,
-            )
+          :wrapped-online-status="
+            trackedVehiclesStore.getActiveVehicle!.wrapperStatus!
           "
         ></TrackedVehicleStatus>
 
@@ -235,7 +233,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="border border-base-content/50 grid grid-cols-2 p-4 py-5 rounded-lg gap-y-4 shadow-md"
+          class="border border-base-content/50 grid grid-cols-[30%_auto] p-4 py-5 rounded-lg gap-y-4 shadow-md"
         >
           <div class="col-span-2">
             <h3 class="text-base-content text-xl font-bold">

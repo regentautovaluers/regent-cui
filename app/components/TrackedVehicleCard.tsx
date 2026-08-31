@@ -17,11 +17,7 @@ export default defineComponent({
     },
     deviceTime: {
       required: true,
-      type: [Object, String] as PropType<Date | TimeEnum>,
-    },
-    deviceExpirationDate: {
-      required: true,
-      type: [Object, String] as PropType<Date | null>,
+      type: [Object, String] as PropType<string | TimeEnum>,
     },
     deviceSpeed: {
       required: false,
@@ -31,9 +27,9 @@ export default defineComponent({
       required: false,
       type: String as PropType<DistanceUnitHour>,
     },
-    iconColor: {
+    wrappedStatus: {
       required: true,
-      type: String as PropType<IconColor>,
+      type: String as PropType<TrackerStatusWrapperName>,
     },
   },
   emits: {
@@ -44,13 +40,11 @@ export default defineComponent({
       emit("vehicle-open-request", id);
     };
 
-    const designatedTrackerStatus = deriveProperTrackerStatus(props.iconColor);
-
     return () => (
       <div class="border-base-content/50 p-3 h-fit w-full space-y-5 rounded-md border">
         <div class="flex justify-between space-x-3 items-start">
           <div
-            class={`size-13 rounded-md text-white flex items-center justify-center shadow-md bg-${designatedTrackerStatus.prefered_color}`}
+            class={`size-13 rounded-md text-white flex items-center justify-center shadow-md bg-${props.wrappedStatus == "Online" ? "success" : props.wrappedStatus == "Offline" ? "warning" : "error"}`}
           >
             <span class="icon-[material-symbols--delivery-truck-speed-rounded] size-8"></span>
           </div>
@@ -89,7 +83,7 @@ export default defineComponent({
           </span>
         </div>
         <TrackedVehicleStatus
-          onlineStatus={designatedTrackerStatus}
+          wrappedOnlineStatus={props.wrappedStatus}
           deviceSpeed={props.deviceSpeed}
           unitsOfSpeed={props.unitsOfSpeed}
         ></TrackedVehicleStatus>

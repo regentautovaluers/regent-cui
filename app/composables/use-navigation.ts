@@ -13,7 +13,7 @@ export default function () {
       id: 0,
       name: "ava-chat",
       screenName: "AVA Chat",
-      display: true,
+      display: false,
       icon: "icon-[material-symbols--family-star]",
     },
     {

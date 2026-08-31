@@ -1,4 +1,4 @@
-import { parseISO, format, formatDistanceToNow  } from "date-fns";
+import { parseISO, format, formatDistanceToNow } from "date-fns";
 
 // Helper to add ordinal suffix (st, nd, rd, th)
 function getOrdinal(day: number): string {
@@ -43,4 +43,15 @@ export function getTimeAgo(date: Date): string {
     addSuffix: true,
     includeSeconds: false, // Set to true if you want "less than a minute" details
   });
+}
+
+export function dateStringToDate(
+  input: string /* format 'YYYY-MM-DD HH:mm:ss'*/,
+) {
+  console.log(input)
+  const [datePart, timePart] = input.split(" ");
+  const [y, m, d] = datePart!.split("-").map(Number);
+  const [hh, mm, ss] = timePart!.split(":").map(Number);
+
+  return new Date(y as number, (m as number) - 1, d, hh, mm, ss);
 }

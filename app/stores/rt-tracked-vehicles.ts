@@ -4,7 +4,7 @@ import { fetchEventSource } from "@microsoft/fetch-event-source";
 export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
   state: (): {
     allVehicles: TrackedVehicles[];
-    activeView: "active" | "idling" | "offline" | null;
+    activeView: TrackerStatusWrapperName | null;
     openVehicleId: number | null;
     lastUpdateTime: Date | null;
     searchRegNo: string;
@@ -43,7 +43,6 @@ export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
       data: string | null | undefined;
     }[] {
       const activeVehicle = this.getActiveVehicle;
-      const status = deriveProperTrackerStatus(activeVehicle!.icon_color);
 
       return [
         {
@@ -54,12 +53,15 @@ export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
         {
           icon: "icon-[material-symbols--android-wifi-4-bar-question-rounded]",
           name: "Status",
-          data: status.proper_status,
+          data: activeVehicle!.wrapperStatus as string,
         },
         {
           icon: "icon-[material-symbols--avg-time-outline-rounded]",
           name: "Last Ping",
-          data: activeVehicle!.time instanceof Date ? getTimeAgo(activeVehicle!.time) : '-',
+          data:
+            activeVehicle!.time == null || activeVehicle!.time == "Expired"
+              ? "-"
+              : getTimeAgo(dateStringToDate(activeVehicle!.time)),
         },
       ];
     },
@@ -72,32 +74,10 @@ export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
       // Pre-calculate search term
       const lowerCaseSearch = state.searchRegNo?.toLowerCase() || "";
 
-      // Pre-calculate active status filter
-      const activeStatusFilter = state.activeView;
-
       return state.allVehicles.filter((v) => {
-        let statusMatch = true;
-        let wrappedStatus = deriveProperTrackerStatus(
-          v.icon_color,
-        ).proper_status;
-
-        if (activeStatusFilter) {
-          switch (activeStatusFilter) {
-            case "active":
-              statusMatch = wrappedStatus === "Active";
-              break;
-            case "idling":
-              statusMatch = wrappedStatus === "Idling";
-              break;
-            case "offline":
-              statusMatch = wrappedStatus === "Offline";
-              break;
-            default:
-              // If deviceOnlineStatus.value is set but isn't one of the filter options (e.g., 'all' or empty string)
-              statusMatch = true;
-              break;
-          }
-        }
+        let statusMatch = !state.activeView
+          ? true
+          : state.activeView == v.wrapperStatus;
 
         const searchMatch =
           !lowerCaseSearch ||
@@ -131,6 +111,16 @@ export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
         }
 
         const rawList = data.value || [];
+
+        // classify the vehicles here
+        rawList.forEach((value, index, arr) => {
+          const properTrackerStatus = deriveProperTrackerStatus(
+            value.online,
+            value.device_data.expiration_date,
+          );
+          arr[index]!.wrapperStatus = properTrackerStatus;
+        });
+
         this.allVehicles = rawList;
 
         this.lastUpdateTime = new Date();
@@ -148,7 +138,7 @@ export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
       deviceId: string | number;
       newLat: number;
       newLng: number;
-      time: Date;
+      time: string;
     }) {
       const updateList = (list: TrackedVehicles[]) => {
         const target = list.find((v) => v.id === tick.deviceId);
@@ -195,7 +185,7 @@ export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
                   deviceId: e.id,
                   newLat: e.lat,
                   newLng: e.lng,
-                  time: e.time as Date,
+                  time: e.time,
                 });
               });
 
