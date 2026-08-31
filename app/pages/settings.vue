@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { routes: aRoutes } = useNavigation();
+const { name: rName } = useRoute();
 </script>
 
 <template>
@@ -10,7 +11,8 @@ const { routes: aRoutes } = useNavigation();
         <NuxtLink
           v-for="e in aRoutes.find((e) => e.id == 5)?.children!"
           :key="e.id"
-          class="inline-flex space-x-2"
+          :class="['inline-flex space-x-3', rName == e.name && 'text-primary']"
+          :to="{ name: e.name }"
         >
           <span :class="[e.icon, 'size-7']"></span>
           <span> {{ e.screenName }}</span>

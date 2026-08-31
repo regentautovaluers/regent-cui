@@ -15,7 +15,7 @@ const accountDetails = reactive({
   userRoles: "role_corp_norm",
   corporateId: store.corpId,
 });
-
+const generalDataStore = useGeneralDataStore();
 const { post } = useStandardizedApi();
 
 watch(
@@ -116,45 +116,14 @@ async function createNewUser() {
           <!-- preffered regent branch -->
           <InputsGenericInputSearchBox
             input-id="add-user-branch"
-            :input-dropdown-options="[
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-              {
-                id: '123',
-                text: 'Customer Care',
-              },
-            ]"
+            :input-dropdown-options="
+              generalDataStore.getCorporateBranches.map((e) => ({
+                id: e.branchId,
+                text: e.branchName,
+              }))
+            "
             input-helpertext="can be left blank"
+            @value-selected="(id) => (accountDetails.corpBranchId = id)"
           >
           </InputsGenericInputSearchBox>
         </div>

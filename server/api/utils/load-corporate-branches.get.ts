@@ -11,10 +11,6 @@ export default defineEventHandler(async (event) => {
       event,
     );
 
-    if (response.data) {
-      response.data.forEach((rb) => cleanRegentBranches(rb));
-    }
-
     return sendSuccessResponse(response.data);
   } catch (ex) {
     console.log(ex);

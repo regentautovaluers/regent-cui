@@ -170,7 +170,7 @@ async function submitForm() {
             generalDataStore.loadingCorporateOrganizations ||
             generalDataStore.getCorporateOrganzations.length == 0
           "
-          v-model="rawData.agentName"
+          @value-selected="(id) => rawData.agentName = id"
         >
         </InputsGenericInputSearchBox>
 

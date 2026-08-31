@@ -138,6 +138,7 @@ export type PaymentStatus = "paid" | "not-paid";
 export interface CorporateBranch {
   branchId: string;
   branchName: string;
+  branchLocation: string;
 }
 
 export interface ValuationType {

@@ -21,7 +21,7 @@ const { sidebarOpen, toggleSidebar } = useSettings();
       </button>
 
       <!-- active page -->
-      <h1 class="text-base-content text-4xl font-bold">Heading 1</h1>
+      <h1 class="text-base-content text-3xl font-bold">Heading 1</h1>
     </div>
 
     <!-- user avatar -->

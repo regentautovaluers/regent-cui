@@ -101,7 +101,7 @@ export default function () {
       children: [
         {
           id: 0,
-          name: "settings-add-new-user",
+          name: "settings-add-user",
           screenName: "Add New User",
           display: true,
           icon: "icon-[material-symbols--person-add-outline-rounded]",
