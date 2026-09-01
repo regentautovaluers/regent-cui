@@ -32,16 +32,23 @@ async function attemptLogin() {
 </script>
 
 <template>
-  <div class="fixed top-0 w-screen flex grow flex-col bg-red-500 h-screen">
-    <div class="h-[20%] p-16"></div>
-    <div class="grow p-16">
-      <span class="text-base-content text-5xl font-semibold">Hello,</span>
-      <br />
-      <span class="text-base-content text-5xl font-semibold"
-        >Welcome Back!</span
-      >
+  <div
+    class="fixed top-0 z-50 w-screen flex grow flex-col bg-base-100 h-screen"
+  >
+    <div class="h-[10%] p-10">
+      <NuxtLink class="btn btn-soft" :to="{ name: 'home' }">
+        <span
+          class="icon-[material-symbols--arrow-back-rounded] inline-flex items-center"
+        ></span>
+        Go Back Home
+      </NuxtLink>
+    </div>
+    <div class="grow flex flex-col justify-center items-center">
       <NuxtImg src="/regent-maxi-logo.png" densities="x1 x2" class="h-22" />
-      <form @submit.prevent="attemptLogin()" class="grow space-y-5">
+      <span class="text-base-content text-2xl mt-5 font-semibold"
+        >Login To Regent Tracking</span
+      >
+      <form @submit.prevent="attemptLogin()" class="grow space-y-5 w-1/3">
         <div class="mt-10"></div>
         <InputsGenericInput
           input-id="cal-registration-number"
@@ -62,10 +69,28 @@ async function attemptLogin() {
           :submit-loading="authnLoading"
           class="w-full"
         ></InputsGenericSubmitButton>
+
+        <div
+          class="alert alert-outline alert-warning flex items-center gap-4"
+          role="alert"
+        >
+          <span class="icon-[tabler--alert-triangle] shrink-0 size-6"></span>
+          <p>
+            <span class="">Have no account?</span>
+            <a
+              href="mailto:support@regenttrack.co.ke,operations@regenttrack.co.ke"
+              class="font-semibold underline underline-offset-2"
+              target="_blank"
+            >
+              Contact Us</a
+            >
+            To Set Up One Today!
+          </p>
+        </div>
       </form>
     </div>
 
-    <div class="h-[15%] flex justify-center items-end p-16">
+    <div class="h-[10%] flex justify-center items-end p-10">
       Copyright &copy; {{ config.public.COPYRIGHT_YEAR }}. All Rights Reserved.
     </div>
   </div>

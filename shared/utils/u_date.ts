@@ -48,10 +48,100 @@ export function getTimeAgo(date: Date): string {
 export function dateStringToDate(
   input: string /* format 'YYYY-MM-DD HH:mm:ss'*/,
 ) {
-  console.log(input)
   const [datePart, timePart] = input.split(" ");
   const [y, m, d] = datePart!.split("-").map(Number);
   const [hh, mm, ss] = timePart!.split(":").map(Number);
 
   return new Date(y as number, (m as number) - 1, d, hh, mm, ss);
+}
+
+export function calculateDateRange(timeframe: FilterTimelines): {
+  startDate: string;
+  endDate: string;
+} {
+  const today = new Date();
+  const formatISODate = (date: Date): string => {
+    return date.toISOString().split("T")[0]!; // yyyy-MM-dd format
+  };
+
+  switch (timeframe) {
+    case "today":
+      return {
+        startDate: formatISODate(today),
+        endDate: formatISODate(today),
+      };
+
+    case "this_week": {
+      // Find the most recent Sunday (start of week)
+      const daysSinceSunday = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - daysSinceSunday);
+
+      return {
+        startDate: formatISODate(startOfWeek),
+        endDate: formatISODate(today),
+      };
+    }
+
+    case "last_thirty_days": {
+      const startDate = new Date(today);
+      startDate.setDate(today.getDate() - 29); // 29 days ago + today = 30 days total
+
+      return {
+        startDate: formatISODate(startDate),
+        endDate: formatISODate(today),
+      };
+    }
+
+    case "last_three_months": {
+      const startDate = new Date(today);
+      startDate.setMonth(today.getMonth() - 3);
+
+      return {
+        startDate: formatISODate(startDate),
+        endDate: formatISODate(today),
+      };
+    }
+
+    case "last_six_months": {
+      const startDate = new Date(today);
+      startDate.setMonth(today.getMonth() - 6);
+
+      return {
+        startDate: formatISODate(startDate),
+        endDate: formatISODate(today),
+      };
+    }
+
+    default:
+      throw new Error(`Unsupported timeframe: ${timeframe}`);
+  }
+}
+
+export function calculateTimeDifferenceSeconds(
+  end: string,
+  start: string,
+): number {
+  const endTime = dateStringToDate(end).getTime();
+  const startTime = dateStringToDate(start).getTime();
+  if (isNaN(endTime) || isNaN(startTime)) return 0;
+  return Math.floor((endTime - startTime) / 1000);
+}
+
+/**
+ * Formats a total number of seconds back into a clean "HHh MMmin SSs" string.
+ */
+export function formatSecondsToDuration(totalSeconds: number): string {
+  if (totalSeconds <= 0) return "0s";
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  let result = "";
+  if (hours > 0) result += `${hours}h `;
+  if (minutes > 0 || (hours > 0 && seconds > 0)) result += `${minutes}min `;
+  result += `${seconds}s`;
+
+  return result.trim();
 }

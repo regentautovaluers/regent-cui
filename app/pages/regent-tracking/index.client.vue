@@ -7,6 +7,7 @@ import {
 } from "vue3-google-map";
 
 type DeviceCommands = "start" | "stop";
+type OpenVehicleActiveView = "details" | "history";
 
 definePageMeta({
   name: "tracking-home",
@@ -23,6 +24,15 @@ const principalStore = usePrincipalStore();
 const authToken = useCookie<string | null>("tracking_auth_token");
 const startDeviceCommandLoading = ref(false);
 const stopDeviceCommandLoading = ref(false);
+const openVehicleActiveView: Ref<OpenVehicleActiveView> = ref("details");
+// device nesting analysis
+const {
+  customPickCalendarOpen,
+  dateRangeForAnalysis,
+  nestingAreas,
+  deviceMovement,
+  loadDeviceHistory,
+} = useNestingAnalysis();
 
 /**
  * Executes boot flow: Initial snapshot -> Route check -> Start SSE
@@ -221,83 +231,124 @@ onUnmounted(() => {
           <button
             class="btn btn-soft btn-primary join-item flex-1"
             type="button"
+            @click="openVehicleActiveView = 'details'"
           >
             Details
           </button>
           <button
             class="btn btn-soft btn-primary join-item flex-1"
             type="button"
+            @click="openVehicleActiveView = 'history'"
           >
             History
           </button>
         </div>
 
-        <div
-          class="border border-base-content/50 grid grid-cols-[30%_auto] p-4 py-5 rounded-lg gap-y-4 shadow-md"
-        >
-          <div class="col-span-2">
-            <h3 class="text-base-content text-xl font-bold">
-              Vehicle Information
-            </h3>
-          </div>
+        <template v-if="openVehicleActiveView == 'details'">
           <div
-            class="p-2 rounded-lg col-span-2 bg-success-content border border-success"
+            class="border border-base-content/50 grid grid-cols-[30%_auto] p-4 py-5 rounded-lg gap-y-4"
           >
-            <div class="flex items-center justify-between">
-              <h4 class="text-base-content font-semibold text-lg">Location</h4>
-              <button></button>
+            <div class="col-span-2">
+              <h3 class="text-base-content text-xl font-bold">
+                Vehicle Information
+              </h3>
             </div>
-            <p>Location information here!!</p>
-          </div>
-          <template
-            v-for="e in trackedVehiclesStore.getVehicleMetadata"
-            :key="e.name"
-          >
-            <div class="flex space-x-1 items-center border-r px-1">
-              <span :class="[e.icon, 'size-5']"></span>
-              <span>{{ e.name }}</span>
-            </div>
-            <p class="px-2">
-              {{ e.data }}
-            </p>
-          </template>
-        </div>
 
-        <div
-          class="border border-base-content/50 grid grid-cols-2 p-4 py-5 rounded-lg gap-4 shadow-md"
-        >
-          <div class="col-span-2">
-            <h3 class="text-base-content text-xl font-bold">
-              Vehicle Commands
-            </h3>
+            <div
+              class="col-span-2 alert alert-soft alert-success flex items-start p-3"
+            >
+              <div class="flex flex-col">
+                <h5 class="text-lg font-semibold">Location</h5>
+                <p class="text-sm">Location Information Here</p>
+              </div>
+            </div>
+            <template
+              v-for="e in trackedVehiclesStore.getVehicleMetadata"
+              :key="e.name"
+            >
+              <div class="flex space-x-1 items-center border-r px-1">
+                <span :class="[e.icon, 'size-5']"></span>
+                <span>{{ e.name }}</span>
+              </div>
+              <p class="px-2">
+                {{ e.data }}
+              </p>
+            </template>
           </div>
-          <InputsGenericSubmitButton
-            id="vc-stop-engine"
-            icon="icon-[material-symbols--stop-circle-outline-rounded]"
-            button-text="Stop Engine"
-            button-mode="btn-error"
-            button-type="button"
-            emit-with-value="stop"
-            :submit-loading="stopDeviceCommandLoading"
-            @button-clicked="
-              (command: DeviceCommands) => triggerDeviceCommand(command)
-            "
+
+          <div
+            class="border border-base-content/50 grid grid-cols-2 p-4 py-5 rounded-lg gap-4"
           >
-          </InputsGenericSubmitButton>
-          <InputsGenericSubmitButton
-            id="vc-stop-engine"
-            icon="icon-[material-symbols--not-started-rounded]"
-            button-text="Start Engine"
-            button-mode="btn-success"
-            button-type="button"
-            emit-with-value="start"
-            :submit-loading="startDeviceCommandLoading"
-            @button-clicked="
-              (command: DeviceCommands) => triggerDeviceCommand(command)
-            "
-          >
-          </InputsGenericSubmitButton>
-        </div>
+            <div class="col-span-2">
+              <h3 class="text-base-content text-xl font-bold">
+                Vehicle Commands
+              </h3>
+            </div>
+            <InputsGenericSubmitButton
+              id="vc-stop-engine"
+              icon="icon-[material-symbols--stop-circle-outline-rounded]"
+              button-text="Stop Engine"
+              button-mode="btn-error"
+              button-type="button"
+              emit-with-value="stop"
+              :submit-loading="stopDeviceCommandLoading"
+              @button-clicked="
+                (command: DeviceCommands) => triggerDeviceCommand(command)
+              "
+            >
+            </InputsGenericSubmitButton>
+            <InputsGenericSubmitButton
+              id="vc-stop-engine"
+              icon="icon-[material-symbols--not-started-rounded]"
+              button-text="Start Engine"
+              button-mode="btn-success"
+              button-type="button"
+              emit-with-value="start"
+              :submit-loading="startDeviceCommandLoading"
+              @button-clicked="
+                (command: DeviceCommands) => triggerDeviceCommand(command)
+              "
+            >
+            </InputsGenericSubmitButton>
+          </div>
+        </template>
+
+        <template v-if="openVehicleActiveView == 'history'">
+          <div class="flex-1 overflow-y-auto thin-scrollbar">
+            <form class="p-0.5 space-y-2">
+              {{ dateRangeForAnalysis }}
+              <div
+                class="bg-green-500 inline-flex space-x-2 w-full items-center"
+              >
+                <InputsGenericRadioDropdown> </InputsGenericRadioDropdown>
+                <button
+                  type="button"
+                  class="btn btn-square btn-outline btn-primary"
+                  aria-label="Outline Icon Button"
+                  @click="customPickCalendarOpen = !customPickCalendarOpen"
+                >
+                  <span
+                    class="icon-[material-symbols--calendar-clock-rounded] size-5 shrink-0"
+                  ></span>
+                </button>
+              </div>
+              <div v-show="customPickCalendarOpen" class="flex space-x-2">
+                <InputsGenericDateInput
+                  input-id="val-start-date"
+                  input-wrapper-styles="flex-1"
+                  input-place-holder="Pick start date"
+                  v-model="dateRangeForAnalysis.fromDate"
+                ></InputsGenericDateInput>
+                <InputsGenericDateInput
+                  input-id="val-end-date"
+                  input-wrapper-styles="flex-1"
+                  input-place-holder="Pick end date"
+                  v-model="dateRangeForAnalysis.toDate"
+                ></InputsGenericDateInput>
+              </div>
+            </form>
+          </div>
+        </template>
       </div>
     </div>
 

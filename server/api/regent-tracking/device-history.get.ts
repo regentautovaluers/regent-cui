@@ -1,8 +1,13 @@
 export default defineEventHandler(async (event) => {
   const { REGENT_TRACKING_BASE_URL } = useRuntimeConfig();
-  const query = getQuery(event);
+  const query: {
+    deviceId: string;
+    fromDate: string;
+    toDate: string;
+  } = getQuery(event);
+  const cookies = parseCookies(event);
 
-  let requestUrl = `${REGENT_TRACKING_BASE_URL}/api/get_history?lang=en&user_api_hash=${query.api_hash}&device_id=${query.device_id}&from_date=${query.from_date}&from_time=${query.from_time}&to_date=${query.to_date}&to_time=${query.to_time}&snap_to_road=true`;
+  let requestUrl = `${REGENT_TRACKING_BASE_URL}/api/get_history?lang=en&user_api_hash=${cookies.tracking_auth_token}&device_id=${query.deviceId}&from_date=${query.fromDate}&from_time=00:00:00&to_date=${query.toDate}&to_time=23:59:59&snap_to_road=true`;
   try {
     const deviceHistory = await makeProxyRequest<DeviceHistory>(
       requestUrl,
