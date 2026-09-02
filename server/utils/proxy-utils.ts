@@ -30,6 +30,7 @@ export const makeProxyRequest = async <T = unknown>(
 		LEGACY_VALUATION_API_KEY,
 		AI_CHAT_BASE_URL,
 		AI_CHAT_API_KEY,
+		ACCIDENT_BASE_URL,
 	} = useRuntimeConfig();
 	
 	const customHeaders: Record<string, string> = {};
@@ -49,6 +50,19 @@ export const makeProxyRequest = async <T = unknown>(
 
 	if(endpoint.startsWith(AI_CHAT_BASE_URL)) {
 		customHeaders['x-api-key'] = AI_CHAT_API_KEY;
+	}
+
+	// The accident service verifies the estate's own JWT with the shared secret
+	// and issuer rather than minting one of its own, so the cookie the console
+	// already holds is the credential. Nothing new to configure, nothing new to
+	// rotate.
+	//
+	// The truthiness check is not decoration: startsWith('') is true for every
+	// endpoint, so an unset base URL would attach this Authorization header to
+	// every upstream call the console makes, including ones that already carry
+	// a different credential.
+	if (ACCIDENT_BASE_URL && endpoint.startsWith(ACCIDENT_BASE_URL)) {
+		customHeaders['Authorization'] = `Bearer ${cookies.valuation_auth_token}`;
 	}
 	const { method, body, headers, timeout = 30000, responseType } = options;
 

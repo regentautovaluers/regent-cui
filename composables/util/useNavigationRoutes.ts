@@ -191,7 +191,32 @@ export default function () {
 			id: 7,
 			screenName: 'Accident Management',
 			routeName: 'accident-management-home',
-			renderRoute: false,
+			/*
+			 * A computed, not a plain value, and the difference matters here.
+			 *
+			 * This array is built by reactive() at the moment the composable is
+			 * called, but getPrincipal() reads a store the middleware fills
+			 * ASYNCHRONOUSLY. A plain expression is therefore frozen at whatever
+			 * the principal was during the layout's first run -- usually nothing
+			 * -- and the section never appears for anyone. Entries 4 and 5 carry
+			 * that latent bug; this one does not inherit it.
+			 *
+			 * Verified rather than assumed: Vue unwraps a computed held in a
+			 * reactive array element to its boolean value, so the layout's
+			 * `.filter(r => r.renderRoute)` reads true/false as it expects, and
+			 * re-evaluates once the principal lands.
+			 */
+			renderRoute: computed(
+				() => getPrincipal()?.corpOrganization.corpClass == 'INSURANCE',
+			) as unknown as boolean,
+			description:
+				'Follow every accident claim raised against your policies, from the assessor\'s \
+				first inspection through costing and quality control to the issued report. Each claim \
+				carries the vehicle, the damage recorded on site, the photographs taken at inspection \
+				and the approved repair figures.',
+			shortDescription:
+				'Follow accident claims raised against your policies, from inspection to issued report.',
+			icon: 'icon-[material-symbols-light--car-crash-outline]',
 		},
 		{
 			id: 8,

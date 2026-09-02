@@ -76,6 +76,10 @@ export default defineNuxtConfig({
 		AVA_BASE_URL: process.env.AVA_BASE_URL,
 		LEGACY_VALUATION_BASE_URL: process.env.LEGACY_VALUATION_BASE_URL,
 		LEGACY_VALUATION_API_KEY: process.env.LEGACY_VALUATION_API_KEY,
+		// Accident assessment service. It verifies the estate's own JWT rather
+		// than issuing one, so the valuation_auth_token cookie is already a valid
+		// credential here and no separate key is needed.
+		ACCIDENT_BASE_URL: process.env.ACCIDENT_BASE_URL,
 
 		// public properties
 		public: {
