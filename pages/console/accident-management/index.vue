@@ -107,8 +107,15 @@
 							v-for="(claim, index) in claims"
 							:key="claim.id ?? index"
 							class="border-t hover:bg-gray-50">
-							<td class="px-4 py-3 font-medium text-gray-700">
-								{{ claim.regNo || '—' }}
+							<td class="px-4 py-3 font-medium">
+								<NuxtLink
+									:to="{
+										name: 'accident-management-claim',
+										params: { claim_id: claim.id },
+									}"
+									class="text-blue-600 hover:underline">
+									{{ claim.regNo || '—' }}
+								</NuxtLink>
 							</td>
 							<td class="tablet:table-cell hidden px-4 py-3 text-gray-600">
 								{{ claim.claimNo || '—' }}
