@@ -77,6 +77,7 @@ export default function useNestingAnalysis() {
     dateRangeForAnalysis,
     nestingAreas,
     deviceMovement,
+    loadingDeviceHistory,
     loadDeviceHistory,
   };
 }

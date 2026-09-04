@@ -1,7 +1,7 @@
 export default defineComponent({
   setup() {
     return () => (
-      <div class="border-base-content/25 h-fit w-full space-y-3 border-y">
+      <div class="border-base-content/25 h-fit w-full space-y-3 border-b">
         <div class="border-b p-3 border-base-content/25 font-bold">
           08/12/2025
         </div>

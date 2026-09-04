@@ -31,6 +31,7 @@ const {
   dateRangeForAnalysis,
   nestingAreas,
   deviceMovement,
+  loadingDeviceHistory,
   loadDeviceHistory,
 } = useNestingAnalysis();
 
@@ -44,7 +45,7 @@ async function bootTrackingFlow() {
   await trackedVehiclesStore.loadTrackedVehicles(true);
 
   // 2. Enable live stream
-  trackedVehiclesStore.initializeFrequentUpdateSSE();
+  // trackedVehiclesStore.initializeFrequentUpdateSSE();
 }
 
 async function triggerDeviceCommand(commandType: DeviceCommands) {
@@ -314,9 +315,8 @@ onUnmounted(() => {
         </template>
 
         <template v-if="openVehicleActiveView == 'history'">
-          <div class="flex-1 overflow-y-auto thin-scrollbar">
-            <form class="p-0.5 space-y-2">
-              {{ dateRangeForAnalysis }}
+          <div class="flex-1 overflow-y-auto thin-scrollbar space-y-2">
+            <form class="space-y-2">
               <div
                 class="bg-green-500 inline-flex space-x-2 w-full items-center"
               >
@@ -347,6 +347,76 @@ onUnmounted(() => {
                 ></InputsGenericDateInput>
               </div>
             </form>
+
+            <!-- nesting area card -->
+            <NestingAreaCard
+              title="Nesting Area Prediction"
+              sub-title="Locations where vehicle spent most idle time"
+            >
+              <!-- when loading -->
+              <template v-if="loadingDeviceHistory">
+                <SkeletonsTrackedVehicleNestingAreaCardSkeleton
+                  v-for="a in 6"
+                  :key="a"
+                ></SkeletonsTrackedVehicleNestingAreaCardSkeleton>
+              </template>
+
+              <!-- when there nothing -->
+              <h1 v-else-if="!loadingDeviceHistory && nestingAreas.length < 1">
+                Nothing to show! Select a timeline to trigger computations.
+              </h1>
+
+              <!-- when there is something -->
+              <template v-else>
+                <TrackedVehicleNestingAreaCard
+                  v-for="(e, idx) in nestingAreas"
+                  :key="idx"
+                  :idx="idx"
+                  :time-spent="e.location_time_hours"
+                  :time-spent-frac="e.location_time_hours_fraction"
+                  :visit-times="e.appearances"
+                  :ordinates="{
+                    lat: e.representative_lat,
+                    lng: e.representative_lng,
+                  }"
+                ></TrackedVehicleNestingAreaCard>
+              </template>
+            </NestingAreaCard>
+
+            <!-- trip history card -->
+            <NestingAreaCard
+              title="Trip History"
+              sub-title="Ingition on marks the start of a trip, and ignition off marks the end"
+            >
+              <!-- when loading -->
+              <template v-if="loadingDeviceHistory">
+                <SkeletonsTrackedVehicleNestingTripsCardSkeleton
+                  v-for="a in 6"
+                  :key="a"
+                ></SkeletonsTrackedVehicleNestingTripsCardSkeleton>
+              </template>
+
+              <!-- when there nothing -->
+              <h1 v-else-if="!loadingDeviceHistory && nestingAreas.length < 1">
+                Nothing to show! Select a timeline to trigger computations.
+              </h1>
+
+              <!-- when there is something -->
+              <template v-else>
+                <TrackedVehicleNestingTripsCard
+                  v-for="(e, idx) in nestingAreas"
+                  :key="idx"
+                  :idx="idx"
+                  :time-spent="e.location_time_hours"
+                  :time-spent-frac="e.location_time_hours_fraction"
+                  :visit-times="e.appearances"
+                  :ordinates="{
+                    lat: e.representative_lat,
+                    lng: e.representative_lng,
+                  }"
+                ></TrackedVehicleNestingTripsCard>
+              </template>
+            </NestingAreaCard>
           </div>
         </template>
       </div>
