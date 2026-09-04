@@ -1,3 +1,12 @@
+# pnpm refuses to run at all without this field, including `pnpm --version`:
+#   ERROR  packages field missing or empty
+#
+# This is not a workspace. The file exists only to carry allowBuilds, which
+# pnpm 10 requires for packages with install scripts. Listing the root as the
+# single package is what makes the file valid without inventing a monorepo.
+packages:
+  - .
+
 allowBuilds:
   '@firebase/util': true
   '@parcel/watcher': true
