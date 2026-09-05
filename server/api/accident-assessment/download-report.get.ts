@@ -71,16 +71,74 @@ export default defineEventHandler(async (event) => {
 			};
 		}
 
-		const absolute = pdfUrl.startsWith('http')
-			? pdfUrl
-			: `${config.ACCIDENT_BASE_URL}${pdfUrl.startsWith('/') ? '' : '/'}${pdfUrl}`;
+		/*
+		 * Where this is allowed to fetch from, and what it may carry there.
+		 *
+		 * `pdfUrl` arrives in a response body. Fetching whatever it says, with
+		 * the caller's session bearer attached, would make this route a way to
+		 * aim an authenticated request at any host the server can reach and to
+		 * hand that host a live estate credential. The service being internal is
+		 * not a defence: an internal service is exactly what an SSRF is used to
+		 * reach.
+		 *
+		 * So the destination is resolved and then checked by HOSTNAME against
+		 * the accident service's own host, not by a `startsWith('http')` that
+		 * would admit plaintext and a lookalike like `https-evil.example`. The
+		 * Authorization header goes only to that host, and redirects are not
+		 * followed, because a 302 is otherwise a way to move the credential
+		 * somewhere the check already passed.
+		 */
+		const serviceOrigin = new URL(config.ACCIDENT_BASE_URL as string);
+		let absolute: URL;
+		try {
+			absolute = new URL(pdfUrl, serviceOrigin);
+		} catch {
+			setHeader(event, 'Content-Type', 'application/json');
+			return {
+				issued: true,
+				available: false,
+				reason: 'The stored report link is not a valid address.',
+			};
+		}
 
-		// A firewalled host black-holes the connection; without a bound the
-		// request sits open and the button looks dead with nothing on screen.
+		const sameHost =
+			absolute.hostname === serviceOrigin.hostname &&
+			absolute.port === serviceOrigin.port &&
+			absolute.protocol === serviceOrigin.protocol;
+
+		if (!sameHost) {
+			setHeader(event, 'Content-Type', 'application/json');
+			return {
+				issued: true,
+				available: false,
+				reason:
+					'The stored report link points outside the accident service, so ' +
+					'it was not followed. Report this to IT.',
+			};
+		}
+
 		const response = await fetch(absolute, {
-			headers: { Authorization: `Bearer ${parseCookies(event).valuation_auth_token}` },
+			// Only ever to the service's own host, checked immediately above.
+			headers: {
+				Authorization: `Bearer ${parseCookies(event).valuation_auth_token}`,
+			},
+			// A redirect would move the credential to a host this check never saw.
+			redirect: 'manual',
+			// A firewalled host black-holes the connection; without a bound the
+			// request sits open and the button looks dead with nothing on screen.
 			signal: AbortSignal.timeout(15_000),
 		});
+
+		if (response.status >= 300 && response.status < 400) {
+			setHeader(event, 'Content-Type', 'application/json');
+			return {
+				issued: true,
+				available: false,
+				reason:
+					'The document store redirected the request, which is not followed ' +
+					'for a signed report. Report this to IT.',
+			};
+		}
 
 		if (!response.ok) {
 			setHeader(event, 'Content-Type', 'application/json');
