@@ -54,12 +54,19 @@
 					type="button"
 					class="ml-auto inline-flex items-center space-x-2 rounded-lg border px-3 py-1.5 text-sm font-medium"
 					:class="
-						reportUrl
+						reportIssued
 							? 'border-blue-600 text-blue-700 hover:bg-blue-50'
 							: 'border-gray-300 text-gray-500 hover:bg-gray-50'
 					"
+					:disabled="downloading"
 					@click="openReport()">
-					<span>{{ reportUrl ? 'Download report' : 'Report not issued yet' }}</span>
+					<span>{{
+						downloading
+							? 'Fetching...'
+							: reportIssued
+								? 'Download report'
+								: 'Report not issued yet'
+					}}</span>
 				</button>
 			</div>
 
@@ -210,26 +217,30 @@
 	/*
 	 * The signed report.
 	 *
-	 * This is the one thing an insurer actually wants from the claim, and it
-	 * was the feature accident-portal's insurer view had that this page did
-	 * not. Regent publishes the PDF when the report is ISSUED, so for most of a
-	 * claim's life there is nothing to download and saying why matters more
-	 * than hiding the button: "not issued yet" and "something went wrong" send
-	 * an insurer to two different places.
+	 * This is the one thing an insurer actually wants from a claim, and it was
+	 * the feature accident-portal's insurer view had that this page did not.
+	 *
+	 * It goes through our own server, which fetches the file and refuses
+	 * anything that is not a PDF before sending it back. That guard is not
+	 * theoretical: accident-portal shipped a download that produced 1,648 bytes
+	 * of HTML saved as `KCX-904M-v1.pdf`, because a missing file falls through
+	 * to a single-page app answering 200 with `text/html`, and someone opened
+	 * it expecting a report. Handing the browser a bare URL repeats that.
 	 */
 	const OFFICE_EMAIL = 'qualitycontrol@regentautovaluers.co.ke';
 
-	const reportUrl = computed<string | null>(
-		() => claim.value?.report?.pdfUrl ?? null,
+	const reportIssued = computed(
+		() => Boolean(claim.value?.report?.pdfUrl ?? claim.value?.report?.pdf_url),
 	);
 
+	const downloading = ref(false);
 	const downloadProblem = ref<string | null>(null);
 
-	function openReport() {
+	async function openReport() {
 		downloadProblem.value = null;
 		const reg = vehicle.value.regNo || 'this claim';
 
-		if (!reportUrl.value) {
+		if (!reportIssued.value) {
 			const reference =
 				assessment.value.claimNo || assessment.value.policyNo || reg;
 			downloadProblem.value =
@@ -239,43 +250,46 @@
 			return;
 		}
 
-		const opened = window.open(reportUrl.value, '_blank', 'noopener,noreferrer');
-		if (!opened) {
-			// A blocked pop-up looks exactly like a broken button unless it is
-			// named, and the fix is on the reader's side.
+		downloading.value = true;
+		try {
+			const blob = await $fetch<Blob>(
+				'/api/accident-assessment/download-report',
+				{ query: { claimId: claimId.value }, responseType: 'blob' },
+			);
+
+			/*
+			 * The server answers JSON when there is no document to give: not
+			 * issued yet, or a link that did not return a PDF. Opening that as a
+			 * file is the exact fault this route exists to prevent, so the type is
+			 * checked before anything is handed to the browser.
+			 */
+			if (blob.type.includes('application/json')) {
+				const said = JSON.parse(await blob.text());
+				downloadProblem.value =
+					said.reason || 'The report could not be opened.';
+				return;
+			}
+
+			// Only reached once the server has confirmed it really is a PDF.
+			const url = URL.createObjectURL(blob);
+			const opened = window.open(url, '_blank', 'noopener,noreferrer');
+			if (!opened) {
+				downloadProblem.value =
+					'Your browser blocked the report tab. Allow pop-ups for this site, ' +
+					'then try again.';
+			}
+			// Freed on the next tick rather than immediately: revoking it before
+			// the new tab has read it hands over an empty document.
+			window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+		} catch (err: any) {
 			downloadProblem.value =
-				'Your browser blocked the report tab. Allow pop-ups for this site, ' +
-				'then try again.';
+				err?.data?.metadata?.message ||
+				err?.data?.message ||
+				`The report for ${reg} could not be opened. Please try again.`;
+		} finally {
+			downloading.value = false;
 		}
 	}
-
-	const vehicleFields = computed(() => [
-		{ label: 'Registration', value: vehicle.value.regNo },
-		{ label: 'Make', value: vehicle.value.make },
-		{ label: 'Model', value: vehicle.value.model },
-		{ label: 'Body type', value: vehicle.value.bodyType },
-		{ label: 'Year', value: vehicle.value.mfgYear },
-		{ label: 'Chassis / VIN', value: vehicle.value.chassisVin },
-	]);
-
-	const claimFields = computed(() => [
-		{ label: 'Claim no.', value: assessment.value.claimNo },
-		{ label: 'Policy no.', value: assessment.value.policyNo },
-		{ label: 'Client', value: assessment.value.clientName },
-		{ label: 'Assessor', value: assessment.value.assessorName },
-		{ label: 'Inspection location', value: assessment.value.inspectionLocation },
-	]);
-
-	/** Only the lines that carry a figure; an empty row is noise on a report. */
-	const costLines = computed(() =>
-		[
-			{ label: 'Parts', value: cost.value.parts },
-			{ label: 'Labour', value: cost.value.labour },
-			{ label: 'Panel beating', value: cost.value.panelBeating },
-			{ label: 'Painting', value: cost.value.painting },
-			{ label: 'Other', value: cost.value.misc },
-		].filter((l) => Number(l.value) > 0),
-	);
 
 	const STATUS_LABEL: Record<string, string> = {
 		assigned: 'Assigned',
