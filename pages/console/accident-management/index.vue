@@ -114,17 +114,17 @@
 										params: { claim_id: claim.id },
 									}"
 									class="text-blue-600 hover:underline">
-									{{ claim.regNo || '—' }}
+									{{ claim.regNo || 'None' }}
 								</NuxtLink>
 							</td>
 							<td class="tablet:table-cell hidden px-4 py-3 text-gray-600">
-								{{ claim.claimNo || '—' }}
+								{{ claim.claimNo || 'None' }}
 							</td>
 							<td class="laptop:table-cell hidden px-4 py-3 text-gray-600">
-								{{ claim.clientName || '—' }}
+								{{ claim.clientName || 'None' }}
 							</td>
 							<td class="laptop:table-cell hidden px-4 py-3 text-gray-600">
-								{{ claim.assessorName || '—' }}
+								{{ claim.assessorName || 'None' }}
 							</td>
 							<td class="px-4 py-3 text-right tabular-nums text-gray-700">
 								{{ formatAmount(claim.grandTotal) }}
@@ -235,8 +235,8 @@
 			: 'Not yet costed';
 
 	const formatDate = (value?: string) => {
-		if (!value) return '—';
+		if (!value) return 'None';
 		const d = new Date(value);
-		return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString('en-GB');
+		return Number.isNaN(d.getTime()) ? 'None' : d.toLocaleDateString('en-GB');
 	};
 </script>

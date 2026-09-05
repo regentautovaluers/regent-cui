@@ -44,7 +44,31 @@
 					:class="statusClasses(assessment.status)">
 					{{ statusLabel(assessment.status) }}
 				</span>
+
+				<!--
+					Always offered, never hidden. A button that disappears leaves the
+					reader wondering whether the report exists; one that explains
+					itself tells them it is coming and who to ask.
+				-->
+				<button
+					type="button"
+					class="ml-auto inline-flex items-center space-x-2 rounded-lg border px-3 py-1.5 text-sm font-medium"
+					:class="
+						reportUrl
+							? 'border-blue-600 text-blue-700 hover:bg-blue-50'
+							: 'border-gray-300 text-gray-500 hover:bg-gray-50'
+					"
+					@click="openReport()">
+					<span>{{ reportUrl ? 'Download report' : 'Report not issued yet' }}</span>
+				</button>
 			</div>
+
+			<p
+				v-if="downloadProblem"
+				role="status"
+				class="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+				{{ downloadProblem }}
+			</p>
 
 			<div class="grid gap-4 laptop:grid-cols-3">
 				<div class="space-y-4 laptop:col-span-2">
@@ -55,7 +79,7 @@
 						<dl class="grid grid-cols-2 gap-4 p-4 tablet:grid-cols-3">
 							<div v-for="f in vehicleFields" :key="f.label">
 								<dt class="text-xs uppercase tracking-wide text-gray-500">{{ f.label }}</dt>
-								<dd class="mt-0.5 text-sm text-gray-800">{{ f.value || '—' }}</dd>
+								<dd class="mt-0.5 text-sm text-gray-800">{{ f.value || 'None' }}</dd>
 							</div>
 						</dl>
 					</section>
@@ -76,9 +100,9 @@
 									v-for="(d, i) in damages"
 									:key="d.id ?? i"
 									class="flex flex-wrap items-baseline gap-x-3 py-2">
-									<span class="text-sm font-medium text-gray-800">{{ d.component || '—' }}</span>
+									<span class="text-sm font-medium text-gray-800">{{ d.component || 'None' }}</span>
 									<span class="text-xs text-gray-500">
-										{{ [d.vehicleArea, d.side].filter(Boolean).join(' · ') || '—' }}
+										{{ [d.vehicleArea, d.side].filter(Boolean).join(' · ') || 'None' }}
 									</span>
 									<span
 										v-if="d.severity"
@@ -151,7 +175,7 @@
 						<dl class="space-y-3 p-4">
 							<div v-for="f in claimFields" :key="f.label">
 								<dt class="text-xs uppercase tracking-wide text-gray-500">{{ f.label }}</dt>
-								<dd class="mt-0.5 text-sm text-gray-800">{{ f.value || '—' }}</dd>
+								<dd class="mt-0.5 text-sm text-gray-800">{{ f.value || 'None' }}</dd>
 							</div>
 						</dl>
 					</section>
@@ -182,6 +206,48 @@
 	const photoUrls = computed(() =>
 		photos.value.map((p: any) => p.remoteUrl).filter(Boolean),
 	);
+
+	/*
+	 * The signed report.
+	 *
+	 * This is the one thing an insurer actually wants from the claim, and it
+	 * was the feature accident-portal's insurer view had that this page did
+	 * not. Regent publishes the PDF when the report is ISSUED, so for most of a
+	 * claim's life there is nothing to download and saying why matters more
+	 * than hiding the button: "not issued yet" and "something went wrong" send
+	 * an insurer to two different places.
+	 */
+	const OFFICE_EMAIL = 'qualitycontrol@regentautovaluers.co.ke';
+
+	const reportUrl = computed<string | null>(
+		() => claim.value?.report?.pdfUrl ?? null,
+	);
+
+	const downloadProblem = ref<string | null>(null);
+
+	function openReport() {
+		downloadProblem.value = null;
+		const reg = vehicle.value.regNo || 'this claim';
+
+		if (!reportUrl.value) {
+			const reference =
+				assessment.value.claimNo || assessment.value.policyNo || reg;
+			downloadProblem.value =
+				`The signed report for ${reg} has not been released yet. Regent ` +
+				`publishes it once the report is issued. Email ${OFFICE_EMAIL} ` +
+				`quoting ${reference} if you need it sooner.`;
+			return;
+		}
+
+		const opened = window.open(reportUrl.value, '_blank', 'noopener,noreferrer');
+		if (!opened) {
+			// A blocked pop-up looks exactly like a broken button unless it is
+			// named, and the fix is on the reader's side.
+			downloadProblem.value =
+				'Your browser blocked the report tab. Allow pop-ups for this site, ' +
+				'then try again.';
+		}
+	}
 
 	const vehicleFields = computed(() => [
 		{ label: 'Registration', value: vehicle.value.regNo },
