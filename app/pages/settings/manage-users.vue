@@ -35,7 +35,6 @@ const paginationInfo = computed(() => ({
 }));
 
 function handlePageChange(newPage: number) {
-    console.log(newPage)
   const maxPages = paginationInfo.value.totalPages;
   if (newPage >= 0 && newPage < maxPages) {
     page.value = newPage;

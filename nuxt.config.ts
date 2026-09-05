@@ -37,6 +37,10 @@ export default defineNuxtConfig({
     REGENT_TRACKING_BASE_URL: "",
     TRACKING_CERTIFICATES_BASE_URL: "",
     TRACKING_CERTIFICATES_API_KEY: "",
+    COLV_BASE_URL: "",
+    COLV_KEY_PASSKEY: "",
+    COLV_API_KEY_SECRET: "",
+    COLV_CID: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
