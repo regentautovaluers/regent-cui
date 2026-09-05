@@ -28,11 +28,31 @@ export const makeProxyRequest = async <T = unknown>(
     responseType = undefined,
   } = options;
 
+  const { COLV_BASE_URL, COLV_KEY_PASSKEY, VALUATION_BASE_URL } =
+    useRuntimeConfig();
+
+  // develop the headers
+  let headers: Record<string, string> = {};
+  {
+    const cookies = parseCookies(event);
+    const data: LoginResponse = await inflatePrincipal(cookies);
+
+    if (endpoint.startsWith(COLV_BASE_URL)) {
+      headers["X-API-Key"] = generateCollateralVerificationXApiKey(
+        data.corpId,
+        COLV_KEY_PASSKEY,
+      );
+      headers["X-Client-ID"] = generateCollateralVerificationCIDHeader();
+    }
+
+    if (endpoint.startsWith(VALUATION_BASE_URL)) {
+      headers["Authorization"] = `Bearer ${cookies.valuation_auth_token}`;
+    }
+  }
+
   return await $fetch<T>(endpoint, {
     method,
-    headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJSZWdlbnQgQXV0byBWYWx1ZXJzICYgQXNzZXNzb3JzIiwic3ViIjoiQXV0aGVudGljYXRpb24gVG9rZW4iLCJ1c2VybmFtZSI6IkNvcnBvcmF0ZSBVc2VycyIsInVzZXItaWQiOiJDUC1DT1VTLTAzNkVGQyIsImF1dGhvcml0aWVzIjoiUk9MRV9DT1JQX0FETUlOIiwiZGVzaWduYXRpb24iOiJDT1JQT1JBVEVfREVTSUdOQVRJT04iLCJpYXQiOjE3ODc3Mzk0MTEsImV4cCI6MTc4OTAzNTQxMX0.ByT4jkUvDVD4FfY-aJAC1hdHyo0S_qgqZTW8fSjyETg`,
-    },
+    headers,
     body: body as any,
     timeout,
     responseType,
