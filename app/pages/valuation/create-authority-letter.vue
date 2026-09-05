@@ -80,6 +80,7 @@ async function submitForm() {
 
     await post("/api/vehicle-valuation/create-authority-letter", formData);
   } catch (err) {
+    // TODO: show failed toast here
   } finally {
     submittingRequest.value = false;
   }

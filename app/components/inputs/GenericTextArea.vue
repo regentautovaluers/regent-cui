@@ -19,7 +19,7 @@ interface Props {
   inputPlaceHolder?: string;
   inputDefaultRowNum?: number;
   inputValid?: boolean;
-  inputLabel: string;
+  inputLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {

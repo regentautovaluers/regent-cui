@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const { COLV_BASE_URL, COLV_KEY_PASSKEY } = useRuntimeConfig();
+  const { COLV_BASE_URL } = useRuntimeConfig();
   const cookies = parseCookies(event);
   const query: {
     page: number;
