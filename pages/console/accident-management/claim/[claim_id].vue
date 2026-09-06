@@ -126,21 +126,48 @@
 							Photographs
 						</h2>
 						<div class="p-4">
-							<p v-if="!photos.length" class="text-sm text-gray-500">
+							<p v-if="!photoTiles.length" class="text-sm text-gray-500">
 								No photographs are attached to this claim.
 							</p>
+
 							<!--
-								carouselHeight and controlButtonsPosition are both declared
-								required, and carouselHeight is appended to the container as a
-								class -- omit it and the images, which are h-full, collapse to
-								nothing. This component has no other caller in the codebase, so
-								there was no working example to copy.
+								Labelled, not a bare carousel.
+								An assessor is asked for nine specific angles by name, and the
+								claim is refused until each one exists. Showing them unlabelled
+								hands an insurer nine pictures of a car and leaves them to work
+								out which is the offside and which is the chassis plate. The
+								label is the one the handset asked for, so both ends of the job
+								call the same photograph the same thing.
 							-->
-							<ImageCarousel
-								v-else
-								:images="photoUrls"
-								carousel-height="h-96"
-								control-buttons-position="bottom-4" />
+							<ul v-else class="grid grid-cols-1 gap-4 tablet:grid-cols-2 laptop:grid-cols-3">
+								<li
+									v-for="tile in photoTiles"
+									:key="tile.id"
+									class="overflow-hidden rounded-lg border bg-white">
+									<div class="aspect-video bg-gray-100">
+										<img
+											:src="tile.url"
+											:alt="tile.label"
+											loading="lazy"
+											class="h-full w-full object-cover" />
+									</div>
+									<div class="space-y-1 px-3 py-2">
+										<p class="text-sm font-medium text-gray-800">{{ tile.label }}</p>
+										<p v-if="tile.caption" class="text-xs text-gray-600">
+											{{ tile.caption }}
+										</p>
+										<!--
+											An angle can be absent for a real reason: a vehicle with
+											no odometer, a plate already removed. The assessor
+											photographs where it should be and says so, and that
+											sentence is the whole value of the tile.
+										-->
+										<p v-if="tile.absenceReason" class="text-xs text-amber-700">
+											Not present: {{ tile.absenceReason }}
+										</p>
+									</div>
+								</li>
+							</ul>
 						</div>
 					</section>
 				</div>
@@ -210,8 +237,53 @@
 	const photos = computed(() => claim.value?.photos ?? []);
 	const cost = computed(() => claim.value?.cost ?? {});
 
-	const photoUrls = computed(() =>
-		photos.value.map((p: any) => p.remoteUrl).filter(Boolean),
+	/**
+	 * The photographs, each named as the assessor was asked for it.
+	 *
+	 * The service refuses a submission until nine specific angles exist and
+	 * lists them by label when they do not, so these are its own words rather
+	 * than a second set invented here: the same photograph is called the same
+	 * thing on the handset, in the refusal, and on this page.
+	 *
+	 * Ordered as they are shot. An unknown category still renders, under its
+	 * wire value, because a photograph nobody has labelled is still evidence
+	 * and dropping it would be worse than showing it plainly.
+	 */
+	const PHOTO_LABEL: Record<string, string> = {
+		front: 'Front view',
+		rear: 'Rear view',
+		near_side: 'Near-side view',
+		offside: 'Offside view',
+		reg_plate: 'Registration plate',
+		chassis_vin: 'Chassis / VIN',
+		odometer: 'Odometer',
+		overall_damage: 'Overall accident damage',
+		close_up_damage: 'Close-up damage',
+		engine: 'Engine bay',
+		interior: 'Interior',
+		pre_existing_damage: 'Pre-existing damage',
+		damaged_parts: 'Damaged parts',
+		repair_progress: 'Repair in progress',
+		post_repair: 'After repair',
+	};
+
+	const PHOTO_ORDER = Object.keys(PHOTO_LABEL);
+
+	const photoTiles = computed(() =>
+		[...photos.value]
+			.filter((p: any) => p?.remoteUrl)
+			.sort(
+				(a: any, b: any) =>
+					(PHOTO_ORDER.indexOf(a.category) + 1 || 99) -
+					(PHOTO_ORDER.indexOf(b.category) + 1 || 99),
+			)
+			.map((p: any, i: number) => ({
+				id: p.id ?? `${p.category}-${i}`,
+				url: p.remoteUrl,
+				label: PHOTO_LABEL[p.category] ?? p.category ?? 'Photograph',
+				caption: p.caption ?? null,
+				absenceReason: p.absenceReason ?? null,
+			})),
 	);
 
 	/*
