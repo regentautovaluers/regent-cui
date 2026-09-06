@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
 			event,
 		);
 
-		return sendSuccessResponse(event, convertKeys(response));
+		return sendSuccessResponse(event, withProxiedPhotos(convertKeys(response)));
 	} catch (err) {
 		console.log(err);
 		return sendErrorResponse(event, err);
@@ -61,3 +61,25 @@ const convertKeys = (value: unknown): any => {
 	}
 	return out;
 };
+
+/**
+ * Point photo URLs at this console instead of at the accident service.
+ *
+ * The service signs them as service-relative `/api/media/{id}` paths. Left
+ * alone they resolve against regent-cui's origin, which serves nothing there,
+ * and every damage photograph renders as a broken tile.
+ */
+function withProxiedPhotos(claim: any): any {
+	if (!claim || !Array.isArray(claim.photos)) return claim;
+	return {
+		...claim,
+		photos: claim.photos.map((photo: any) => {
+			const url: string | undefined = photo?.remoteUrl;
+			if (typeof url !== 'string' || !url.startsWith('/api/media/')) return photo;
+			return {
+				...photo,
+				remoteUrl: `/api/accident-assessment/photo?path=${encodeURIComponent(url)}`,
+			};
+		}),
+	};
+}

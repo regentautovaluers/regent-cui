@@ -291,6 +291,34 @@
 		}
 	}
 
+	const vehicleFields = computed(() => [
+		{ label: 'Registration', value: vehicle.value.regNo },
+		{ label: 'Make', value: vehicle.value.make },
+		{ label: 'Model', value: vehicle.value.model },
+		{ label: 'Body type', value: vehicle.value.bodyType },
+		{ label: 'Year', value: vehicle.value.mfgYear },
+		{ label: 'Chassis / VIN', value: vehicle.value.chassisVin },
+	]);
+
+	const claimFields = computed(() => [
+		{ label: 'Claim no.', value: assessment.value.claimNo },
+		{ label: 'Policy no.', value: assessment.value.policyNo },
+		{ label: 'Client', value: assessment.value.clientName },
+		{ label: 'Assessor', value: assessment.value.assessorName },
+		{ label: 'Inspection location', value: assessment.value.inspectionLocation },
+	]);
+
+	/** Only the lines that carry a figure; an empty row is noise on a report. */
+	const costLines = computed(() =>
+		[
+			{ label: 'Parts', value: cost.value.parts },
+			{ label: 'Labour', value: cost.value.labour },
+			{ label: 'Panel beating', value: cost.value.panelBeating },
+			{ label: 'Painting', value: cost.value.painting },
+			{ label: 'Other', value: cost.value.misc },
+		].filter((l) => Number(l.value) > 0),
+	);
+
 	const STATUS_LABEL: Record<string, string> = {
 		assigned: 'Assigned',
 		in_progress: 'In progress',
