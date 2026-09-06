@@ -126,7 +126,7 @@
 							Photographs
 						</h2>
 						<div class="p-4">
-							<p v-if="!photoTiles.length" class="text-sm text-gray-500">
+							<p v-if="!photoTiles.length && !extraPhotos.length" class="text-sm text-gray-500">
 								No photographs are attached to this claim.
 							</p>
 
@@ -144,12 +144,17 @@
 									v-for="tile in photoTiles"
 									:key="tile.id"
 									class="overflow-hidden rounded-lg border bg-white">
-									<div class="aspect-video bg-gray-100">
+									<div class="flex aspect-video items-center justify-center bg-gray-100">
 										<img
+											v-if="!failedPhotos.has(tile.id)"
 											:src="tile.url"
 											:alt="tile.label"
 											loading="lazy"
-											class="h-full w-full object-cover" />
+											class="h-full w-full object-cover"
+											@error="markFailed(tile.id)" />
+										<p v-else class="px-3 text-center text-xs text-gray-500">
+											This photograph could not be loaded.
+										</p>
 									</div>
 									<div class="space-y-1 px-3 py-2">
 										<p class="text-sm font-medium text-gray-800">{{ tile.label }}</p>
@@ -168,6 +173,42 @@
 									</div>
 								</li>
 							</ul>
+
+							<!--
+								The rest, as a slider. They are not a checklist and there is no
+								fixed number of them, so they scroll rather than pushing the
+								claim off the screen. Every one still says what it is for.
+							-->
+							<div v-if="extraPhotos.length" class="mt-6">
+								<h3 class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+									Other photographs ({{ extraPhotos.length }})
+								</h3>
+								<ul class="flex snap-x gap-4 overflow-x-auto pb-2">
+									<li
+										v-for="tile in extraPhotos"
+										:key="tile.id"
+										class="w-64 flex-none snap-start overflow-hidden rounded-lg border bg-white">
+										<div class="flex aspect-video items-center justify-center bg-gray-100">
+											<img
+												v-if="!failedPhotos.has(tile.id)"
+												:src="tile.url"
+												:alt="tile.label"
+												loading="lazy"
+												class="h-full w-full object-cover"
+												@error="markFailed(tile.id)" />
+											<p v-else class="px-3 text-center text-xs text-gray-500">
+												This photograph could not be loaded.
+											</p>
+										</div>
+										<div class="space-y-1 px-3 py-2">
+											<p class="text-sm font-medium text-gray-800">{{ tile.label }}</p>
+											<p v-if="tile.caption" class="text-xs text-gray-600">
+												{{ tile.caption }}
+											</p>
+										</div>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</section>
 				</div>
@@ -269,22 +310,71 @@
 
 	const PHOTO_ORDER = Object.keys(PHOTO_LABEL);
 
-	const photoTiles = computed(() =>
+	/** The nine the service demands before a claim may be submitted. */
+	const REQUIRED_ANGLES = [
+		'front',
+		'rear',
+		'near_side',
+		'offside',
+		'reg_plate',
+		'chassis_vin',
+		'odometer',
+		'overall_damage',
+		'close_up_damage',
+	];
+
+	const toTile = (p: any, i: number) => ({
+		id: p.id ?? `${p.category}-${i}`,
+		url: p.remoteUrl,
+		label: PHOTO_LABEL[p.category] ?? p.category ?? 'Photograph',
+		caption: p.caption ?? null,
+		absenceReason: p.absenceReason ?? null,
+	});
+
+	const usablePhotos = computed(() =>
 		[...photos.value]
 			.filter((p: any) => p?.remoteUrl)
 			.sort(
 				(a: any, b: any) =>
 					(PHOTO_ORDER.indexOf(a.category) + 1 || 99) -
 					(PHOTO_ORDER.indexOf(b.category) + 1 || 99),
-			)
-			.map((p: any, i: number) => ({
-				id: p.id ?? `${p.category}-${i}`,
-				url: p.remoteUrl,
-				label: PHOTO_LABEL[p.category] ?? p.category ?? 'Photograph',
-				caption: p.caption ?? null,
-				absenceReason: p.absenceReason ?? null,
-			})),
+			),
 	);
+
+	/** The required angles, laid out so all nine can be taken in at once. */
+	const photoTiles = computed(() =>
+		usablePhotos.value
+			.filter((p: any) => REQUIRED_ANGLES.includes(p.category))
+			.map(toTile),
+	);
+
+	/*
+	 * Everything else: the engine bay, the cabin, a close-up of one panel,
+	 * repair progress. There is no fixed number of them and they are not a
+	 * checklist, so they scroll instead of pushing the rest of the claim off
+	 * the screen. Each still carries its caption, because an unlabelled extra
+	 * photograph is the thing this section exists to stop.
+	 */
+	const extraPhotos = computed(() =>
+		usablePhotos.value
+			.filter((p: any) => !REQUIRED_ANGLES.includes(p.category))
+			.map(toTile),
+	);
+
+	/*
+	 * Photographs whose file would not load.
+	 *
+	 * valuation-app has been doing this in the field for years and gives every
+	 * Image.network an errorBuilder rather than letting a failure render as a
+	 * broken tile; accident-portal had to learn the same lesson afterwards. A
+	 * tile that fails silently looks like a photograph nobody took. Naming it
+	 * says the angle exists and the file did not arrive, which is a different
+	 * problem with a different fix.
+	 */
+	const failedPhotos = ref<Set<string>>(new Set());
+	const markFailed = (id: string) => {
+		failedPhotos.value = new Set(failedPhotos.value).add(id);
+	};
 
 	/*
 	 * The signed report.
