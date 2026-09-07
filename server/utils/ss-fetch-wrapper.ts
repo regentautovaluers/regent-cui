@@ -27,26 +27,32 @@ export const makeProxyRequest = async <T = unknown>(
     timeout = 30000,
     responseType = undefined,
   } = options;
+  const allowForSuffix: readonly string[] = [
+    "/corporate-account/login",
+    "/api/login",
+  ];
 
   const { COLV_BASE_URL, COLV_KEY_PASSKEY, VALUATION_BASE_URL } =
     useRuntimeConfig();
 
   // develop the headers
   let headers: Record<string, string> = {};
-  {
-    const cookies = parseCookies(event);
-    const data: LoginResponse = await inflatePrincipal(cookies);
+  if (!allowForSuffix.some((item) => endpoint.includes(item))) {
+    {
+      const cookies = parseCookies(event);
+      const data: LoginResponse = await inflatePrincipal(cookies);
 
-    if (endpoint.startsWith(COLV_BASE_URL)) {
-      headers["X-API-Key"] = generateCollateralVerificationXApiKey(
-        data.corpId,
-        COLV_KEY_PASSKEY,
-      );
-      headers["X-Client-ID"] = generateCollateralVerificationCIDHeader();
-    }
+      if (endpoint.startsWith(COLV_BASE_URL)) {
+        headers["X-API-Key"] = generateCollateralVerificationXApiKey(
+          data.corpId,
+          COLV_KEY_PASSKEY,
+        );
+        headers["X-Client-ID"] = generateCollateralVerificationCIDHeader();
+      }
 
-    if (endpoint.startsWith(VALUATION_BASE_URL)) {
-      headers["Authorization"] = `Bearer ${cookies.valuation_auth_token}`;
+      if (endpoint.startsWith(VALUATION_BASE_URL)) {
+        headers["Authorization"] = `Bearer ${cookies.valuation_auth_token}`;
+      }
     }
   }
 

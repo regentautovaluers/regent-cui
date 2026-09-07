@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const { routes: aRoutes } = useNavigation();
 const { name: rName } = useRoute();
+const tokenStore = useCollateralVerificationsTokenStore();
+
+onMounted(async () => {
+  await tokenStore.loadTokenData();
+});
 </script>
 
 <template>
@@ -19,11 +24,33 @@ const { name: rName } = useRoute();
         </NuxtLink>
       </div>
     </div>
-    <div class="grow h-fit">
+    <div class="grow w-0 min-w-0 h-fit">
       <NuxtPage></NuxtPage>
     </div>
     <div class="w-[15%]">
-      <UserAvatar2></UserAvatar2>
+      <div class="h-fit flex flex-col items-center">
+        <div class="avatar avatar-placeholder">
+          <div class="bg-primary text-error-content w-35 rounded-full">
+            <span class="text-3xl uppercase">{{
+              tokenStore.getTokenBalance
+            }}</span>
+          </div>
+        </div>
+
+        <div class="mt-3"></div>
+        <h4 class="text-base-content text-xl font-semibold">
+          Tokens Available
+        </h4>
+
+        <div class="mt-3"></div>
+        <button
+          type="button"
+          class="btn btn-outline btn-secondary rounded-full"
+        >
+          Top Up Tokens
+          <span class="icon-[material-symbols--add-2-rounded]"></span>
+        </button>
+      </div>
     </div>
   </div>
 </template>

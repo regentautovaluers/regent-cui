@@ -145,3 +145,15 @@ export function formatSecondsToDuration(totalSeconds: number): string {
 
   return result.trim();
 }
+
+/**
+ * Accepts an example date string like '2021-02-01T00:00:00.000Z' and returns the date part only
+ * e.g.2021-02-01
+ */
+export function extractDate(isoString: string): string {
+  try {
+    return format(parseISO(isoString), "yyyy-MM-dd");
+  } catch (Err) {
+    return "";
+  }
+}

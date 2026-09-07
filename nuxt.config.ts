@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ["flyonui/flyonui", "@microsoft/fetch-event-source"],
+      include: ["flyonui/flyonui", "date-fns", "@microsoft/fetch-event-source"],
     },
   },
   modules: ["nuxt-charts", "@nuxt/image", "@pinia/nuxt"],

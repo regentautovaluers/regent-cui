@@ -7,8 +7,7 @@ export interface GenericCollateralVerificationResponse<T> {
   pagination: CollateralVerificationPagination;
 }
 
-export interface CollateralVerificationEntry {
-  id: string;
+export interface CollateralVerification {
   registrationNumber: string;
   chassisNumber: string;
   engineNumber: string;
@@ -16,16 +15,43 @@ export interface CollateralVerificationEntry {
   make: string;
   model: string;
   yearOfManufacture: number;
-  corporateClientId: string;
-  corporateClientName: string;
-  corpClientRepName: string;
-  corpClientEmail: string;
-  corpClientPhoneNumber: string;
   description: any;
   relevantLinks: any[];
   dateOfIncident: string;
   amountDefaulted: string;
 }
+
+export interface CollateralVerificationCreator {
+  corporateClientId: string;
+  corporateClientName: string;
+  corpClientRepName: string;
+  corpClientEmail: string;
+  corpClientPhoneNumber: string | null;
+}
+
+export type CollateralVerificationEntry = {
+  id: string;
+} & CollateralVerification &
+  CollateralVerificationCreator;
+
+export type CollateralVerificationTokens = {
+  id: string;
+  name: string | null;
+  balance: number;
+  billingType: "postpaid" | "prepaid";
+  invoiceDueDays: string | number | null;
+  fraudBundleSearches: number | null;
+  verifyNationalIdSearches: number | null;
+  verifyAlienIdSearches: number | null;
+  verifyVehicleSearches: number | null;
+  verifyDrivingLicenseSearches: number | null;
+  verifyKraPinSearches: number | null;
+  verifyBusinessSearches: number | null;
+  verifyCollateralSearches: number | null;
+  verifyBankAccountSearches: number | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export interface CollateralVerificationPagination {
   totalRecords: number;

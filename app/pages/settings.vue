@@ -19,7 +19,7 @@ const { name: rName } = useRoute();
         </NuxtLink>
       </div>
     </div>
-    <div class="grow h-fit">
+    <div class="grow w-0 min-w-0 h-fit">
       <NuxtPage></NuxtPage>
     </div>
     <div class="w-[15%]">
