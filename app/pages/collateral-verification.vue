@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { routes: aRoutes } = useNavigation();
-const { name: rName } = useRoute();
 const tokenStore = useCollateralVerificationsTokenStore();
+const { activeRouteDisplay } = useNavigation();
 
 onMounted(async () => {
   await tokenStore.loadTokenData();
@@ -16,7 +16,10 @@ onMounted(async () => {
         <NuxtLink
           v-for="e in aRoutes.find((e) => e.id == 3)?.children!"
           :key="e.id"
-          :class="['inline-flex space-x-3', rName == e.name && 'text-primary']"
+          :class="[
+            'inline-flex space-x-3',
+            activeRouteDisplay == e.name && 'text-primary',
+          ]"
           :to="{ name: e.name }"
         >
           <span :class="[e.icon, 'size-7']"></span>
@@ -30,8 +33,8 @@ onMounted(async () => {
     <div class="w-[15%]">
       <div class="h-fit flex flex-col items-center">
         <div class="avatar avatar-placeholder">
-          <div class="bg-primary text-error-content w-35 rounded-full">
-            <span class="text-3xl uppercase">{{
+          <div class="bg-primary text-error-content w-30 rounded-full">
+            <span class="text-2xl font-semibold">{{
               tokenStore.getTokenBalance
             }}</span>
           </div>

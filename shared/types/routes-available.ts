@@ -4,6 +4,7 @@ export interface RoutesAvailable {
   screenName: string;
   display: boolean;
   icon?: string; // the optional MDI icon representing the route
+  showChildren?: boolean;
   children?: ChildRoute;
 }
 

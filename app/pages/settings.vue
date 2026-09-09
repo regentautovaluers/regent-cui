@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { routes: aRoutes } = useNavigation();
-const { name: rName } = useRoute();
+const { activeRouteName } = useNavigation();
 </script>
 
 <template>
@@ -9,9 +9,13 @@ const { name: rName } = useRoute();
       <h1 class="mb-10 text-2xl font-bold">Actions</h1>
       <div class="flex flex-col space-y-5">
         <NuxtLink
-          v-for="e in aRoutes.find((e) => e.id == 5)?.children!"
+          v-for="e in aRoutes.find((e) => e.id == 6 /*for settings*/)
+            ?.children!"
           :key="e.id"
-          :class="['inline-flex space-x-3', rName == e.name && 'text-primary']"
+          :class="[
+            'inline-flex space-x-3',
+            activeRouteName == e.name && 'text-primary',
+          ]"
           :to="{ name: e.name }"
         >
           <span :class="[e.icon, 'size-7']"></span>
