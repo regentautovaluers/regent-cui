@@ -1,4 +1,5 @@
 @import "tailwindcss";
+/* @import "nuxt-notify/styles"; */
 @plugin "flyonui";
 @plugin "@iconify/tailwind4";
 @import "flyonui/variants.css";
@@ -41,27 +42,27 @@
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-	/* for Chrome, Safari Opera */
-	display: none;
+  /* for Chrome, Safari Opera */
+  display: none;
 }
 
 .hide-scrollbar {
-	/* Hide scrollbar for IE, Edge and Firefox */
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* thin the scrollbars */
 .thin-scrollbar::-webkit-scrollbar {
-	width: 8px; /* Adjust the width */
-	height: 8px; /* For horizontal scrollbars */
+  width: 8px; /* Adjust the width */
+  height: 8px; /* For horizontal scrollbars */
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
-	background: #6b7280; /* Customize the thumb color */
-	border-radius: 4px; /* Rounded corners */
+  background: #6b7280; /* Customize the thumb color */
+  border-radius: 4px; /* Rounded corners */
 }
 
 .thin-scrollbar::-webkit-scrollbar-track {
-	background: none; /* Customize the track color */
+  background: none; /* Customize the track color */
 }

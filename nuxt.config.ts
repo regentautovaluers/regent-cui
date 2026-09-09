@@ -20,7 +20,14 @@ export default defineNuxtConfig({
       include: ["flyonui/flyonui", "date-fns", "@microsoft/fetch-event-source"],
     },
   },
-  modules: ["nuxt-charts", "@nuxt/image", "@pinia/nuxt"],
+  modules: ["nuxt-charts", "@nuxt/image", "@pinia/nuxt", "nuxt-notify"],
+  notify: {
+    position: "top-right",
+    duration: 5000,
+    maxToasts: 8,
+    theme: "system", // 'light' | 'dark' | 'system'
+    showIcon: false,
+  },
   app: {
     head: {
       title: "Nuxt4 Flyon Starter",

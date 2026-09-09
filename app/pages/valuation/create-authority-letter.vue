@@ -7,7 +7,7 @@ definePageMeta({
 const { post } = useStandardizedApi();
 const store = usePrincipalStore();
 const generalDataStore = useGeneralDataStore();
-
+const { $showToast } = useNuxtApp();
 const uploadedDocuments: Ref<any[]> = ref([]);
 const rawData = reactive({
   regNo: "",
@@ -80,16 +80,49 @@ async function submitForm() {
     }
 
     await post("/api/vehicle-valuation/create-authority-letter", formData);
+    $showToast({
+      title: "Success!",
+      description: "Request submitted successfully! Check back later...",
+      color: "success",
+    });
   } catch (err) {
-    // TODO: show failed toast here
+    $showToast({
+      title: "Failed!",
+      description: "Unable to submit request!",
+      color: "error",
+    });
   } finally {
     submittingRequest.value = false;
+    resetState();
   }
+}
+
+function resetState() {
+  rawData.regNo = "";
+  rawData.clientName = "";
+  rawData.clientPhone = "";
+  rawData.regentBranch = "";
+  rawData.comments = "";
+  rawData.policyNumber = "";
+  rawData.agentName = "";
 }
 </script>
 
 <template>
   <GrowableCard card-title="Create Your Authority Letter">
+    <button
+      @click="
+        () =>
+          $showToast({
+            title: 'Failed!',
+            description: 'Unable to submit request!',
+            color: 'error',
+          })
+      "
+    >
+      Show Toast
+    </button>
+
     <form class="space-y-10" @submit.prevent="submitForm()">
       <!-- client details -->
       <div class="grid gap-x-8 grid-cols-3">
