@@ -7,11 +7,11 @@ export default defineEventHandler(async (event) => {
 
 	const requestURL = `${config.VALUATION_BASE_URL}/api/v1/auth/corporate-account/get-principal-credentials`;
 	try {
-		let response = await makeProxyRequest<GenericResponse<ValuationPrinicpal>>(requestURL, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
-			},
-		});
+		let response = await makeProxyRequest<GenericResponse<ValuationPrinicpal>>(
+			requestURL,
+			undefined,
+			event,
+		);
 
 		return sendSuccessResponse(event, response.data);
 	} catch (ex) {

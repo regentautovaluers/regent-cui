@@ -3,9 +3,9 @@ import type { StandardSuccessResponse } from '~/types/proxy-types';
 
 export default defineNuxtRouteMiddleware(async (to) => {
 	const nuxtApp = useNuxtApp();
-	const authToken = useCookie('valuation_auth_token');
-	const isAuthenticated = !!authToken.value;
-	const unauthPages = ['exterior-home'];
+	const { getValuationAuthToken, attemptLogout, getPrincipal } = useAuth();
+	const isAuthenticated = !getValuationAuthToken.value ? false : true;
+	const unauthPages = ['exterior-home', 'password-setup'];
 	const { get } = useStandardizedApi();
 	const vpStore = useValuationPrincipalStore();
 
@@ -17,7 +17,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	if (import.meta.server) {
 		return;
 	}
-
 	// Case 1: No token, trying to access protected route → redirect to login
 	if (!isAuthenticated && !unauthPages.includes(to.name as string)) {
 		// Use replace to avoid adding history entry for unauthorized access
@@ -25,12 +24,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	}
 
 	// Case 3: Has token, needs user data validation/loading
-	if (
-		isAuthenticated &&
-		(to.name == 'password-setup' || !unauthPages.includes(to.name as string))
-	) {
+	if (isAuthenticated && !unauthPages.includes(to.name as string)) {
 		// If we already have principal data in store, skip fetch
-		if (vpStore.principal != null) {
+		if (getPrincipal() != null) {
 			return;
 		}
 
@@ -70,8 +66,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 		} catch (ex) {
 			console.error('Auth verification failed:', ex);
 			// Clear invalid token
-			authToken.value = null;
-			vpStore.cleanPrincipal();
+			attemptLogout();
 
 			// Force navigation to login, but use external navigation if hydration is problematic
 			if (to.name !== 'exterior-home') {

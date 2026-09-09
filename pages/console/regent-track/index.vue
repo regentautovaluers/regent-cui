@@ -1,8 +1,16 @@
 <template>
-	<form @submit.prevent="attemptLogin">
-		<div class="laptop:text-4xl desktop:4k:text-5xl mb-16 text-3xl">
-			<h1 class="font-bold">Hello,</h1>
-			<h2 class="font-bold whitespace-nowrap">Welcome Back</h2>
+	<form @submit.prevent="attemptLogin" class="h-[55%] w-full tablet:w-[65%] laptop:w-[50%] laptop-lg:w-[45%] desktop-4k:w-[30%] p-4">
+		<div class="mb-10 flex flex-col items-center text-gray-600">
+			<img src="/images/tracking-logo.jpg" alt="regent-tracking-logo" class="p-1 size-16 mb-8 ring-2 rounded-full ring-blue-300 shadow-lg shadow-blue-400"/>
+			<h1 class="font-semibold text-2xl">Welcome back!</h1>
+			<h2 class="whitespace-nowrap mt-1">
+				<span>Don't have an account yet? </span>
+				<a 
+					href="mailto:support@regenttrack.co.ke?cc=support@regenttrack.co.ke &subject=Request Account Creation &body=Say something..."
+					class="text-blue-600 hover:text-blue-700 transition-colors duration-150 ease-in-out">
+					Contact Us
+				</a>
+			</h2>
 		</div>
 		<div class="space-y-4">
 			<input
@@ -35,11 +43,15 @@
 		</div>
 
 		<!-- submit button -->
-		<button
-			type="submit"
-			:class="['generic-form-submit', loginLoading && 'skeleton skeleton-animated']">
-			{{ loginLoading ? 'Please Wait...' : 'Login' }}
-		</button>
+		 <div class="flex justify-center">
+			<button
+				type="submit"
+				:disabled="loginLoading"
+				:class="['generic-form-submit w-1/2 self-end', loginLoading && 'skeleton skeleton-animated']">
+				{{ loginLoading ? 'Please Wait...' : 'Login' }}
+			</button>
+		 </div>
+		
 	</form>
 </template>
 

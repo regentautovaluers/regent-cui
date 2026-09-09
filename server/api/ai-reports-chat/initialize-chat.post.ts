@@ -13,23 +13,21 @@ export default defineEventHandler(async (event) => {
 			report_type: string;
 			user_id: string;
 		} = await readBody(event);
-		const response = await makeProxyRequest<InitializeChatReponseStruct>(endpoint, {
-			body,
-			method: 'POST',
-			headers: {
-				'x-api-key': config.AI_CHAT_API_KEY,
+		const response = await makeProxyRequest<InitializeChatReponseStruct>(
+			endpoint,
+			{
+				body,
+				method: 'POST',
 			},
-		});
+			event,
+		);
 
 		// attempt to get any history if possible
 		const getHistoryEndpoint = `/api/ai-reports-chat/get-chat-history?session_id=${response.session_id}`;
 		const availableHistories = await makeProxyRequest<StandardSuccessResponse<ChatHistory>>(
 			getHistoryEndpoint,
-			{
-				headers: {
-					'x-api-key': config.AI_CHAT_API_KEY,
-				},
-			},
+			undefined,
+			event,
 		);
 
 		if (availableHistories.data.history.length > 0) {

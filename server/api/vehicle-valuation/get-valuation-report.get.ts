@@ -9,11 +9,11 @@ export default defineEventHandler(async (event) => {
 	let endpoint = `${config.VALUATION_BASE_URL}/api/v1/final/get-inspection-details?valuationId=${valuation_id}`;
 
 	try {
-		const response = await makeProxyRequest<GenericResponse<ValuationReport>>(endpoint, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
-			},
-		});
+		const response = await makeProxyRequest<GenericResponse<ValuationReport>>(
+			endpoint,
+			undefined,
+			event,
+		);
 
 		const reportData = response.data;
 		const cleanedResponse = {
@@ -62,12 +62,8 @@ export default defineEventHandler(async (event) => {
 				generalCondition: reportData.generalCondition,
 				remedy: reportData.remedy,
 			},
-			awardedValues: {
-				assessedValue: reportData.valuationBooking.vehicleValue.assessedValue,
-				marketValue: reportData.valuationBooking.vehicleValue.marketValue,
-				forcedValue: reportData.valuationBooking.vehicleValue.forcedSaleValue,
-				windscreenValue: reportData.valuationBooking.vehicleValue.windscreenValue,
-			},
+			awardedValues: reportData.valuationBooking.vehicleValue,
+		
 		};
 		return sendSuccessResponse(event, cleanedResponse);
 	} catch (err) {

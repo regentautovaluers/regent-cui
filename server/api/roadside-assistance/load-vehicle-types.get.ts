@@ -9,6 +9,8 @@ export default defineEventHandler(async (event) => {
 	try {
 		const supportedTypes = await makeProxyRequest<AvaVehicleTypes[]>(
 			`${AVA_BASE_URL}/api/v1/control-unit/vehicle-types`,
+			undefined,
+			event,
 		);
 		if (supportedTypes == null || supportedTypes.length == 0) {
 			return sendSuccessResponse(event, []);

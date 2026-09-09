@@ -34,8 +34,8 @@ export interface LoginResponse {
 	phoneNumber: string;
 	userId: string;
 	userRoles: UserRoles[];
-	refreshToken: string;
-	jwtToken: string;
+	refreshToken?: string;
+	jwtToken?: string;
 	branchId: string;
 	branchName: string | null;
 	lastLogin: string;

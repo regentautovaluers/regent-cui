@@ -33,12 +33,13 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		const response = await makeProxyRequest<ArrayBuffer>(endpoint, {
-			responseType: 'arrayBuffer',
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
+		const response = await makeProxyRequest<ArrayBuffer>(
+			endpoint,
+			{
+				responseType: 'arrayBuffer',
 			},
-		});
+			event,
+		);
 		// 2. Set the appropriate headers so the browser knows it's a PDF
 		setResponseHeaders(event, {
 			'Content-Type': 'application/vnd.ms-excel',

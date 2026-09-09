@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 		const discoveredEvents = await makeProxyRequest<{
 			status: string;
 			items: { data: DeviceEvent[] };
-		}>(requestUrl);
+		}>(requestUrl, undefined, event);
 		// Simple transformation
 		return sendSuccessResponse(event, discoveredEvents.items.data as DeviceEvent[]);
 	} catch (err) {

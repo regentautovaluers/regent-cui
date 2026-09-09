@@ -6,10 +6,14 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		const body: BulkMemberRegistrationRequest[] = await readBody(event);
-		await makeProxyRequest<unknown>(endpoint, {
-			method: 'POST',
-			body,
-		});
+		await makeProxyRequest<unknown>(
+			endpoint,
+			{
+				method: 'POST',
+				body,
+			},
+			event,
+		);
 
 		// return a success response
 		return sendSuccessResponse(event, null);

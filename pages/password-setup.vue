@@ -80,16 +80,28 @@
 			</div>
 		</div>
 
+		<div class="flex flex-col tablet:flex-row space-y-3 tablet:space-y-0 tablet:space-x-3 tablet:items-center">
+			<button
+				type="submit"
+				:disabled="disableNewPassword2 || newPassword1 != newPassword2"
+				:class="[
+					'generic-form-submit',
+					passwordChangeAttemptLoading && 'skeleton skeleton-animated',
+				]">
+				{{ passwordChangeAttemptLoading ? 'Please Wait...' : 'Save Password' }}
+			</button>
+			<NuxtLink
+				:to="{ name: 'mobivaluer-home' }"
+				:class="[
+					'generic-form-submit bg-yellow-600 hover:bg-yellow-700',
+				]">
+				<span>Skip For Now</span>
+				<span class="icon-[material-symbols-light--warning-rounded] size-6"></span>
+			</NuxtLink>
+		</div>
+
 		<!-- submit button -->
-		<button
-			type="submit"
-			:disabled="disableNewPassword2 || newPassword1 != newPassword2"
-			:class="[
-				'generic-form-submit',
-				passwordChangeAttemptLoading && 'skeleton skeleton-animated',
-			]">
-			{{ passwordChangeAttemptLoading ? 'Please Wait...' : 'Save Password' }}
-		</button>
+		
 	</form>
 </template>
 
@@ -109,7 +121,6 @@
 		updatePassword,
 		disableNewPassword2,
 	} = usePasswordManagement();
-	const { getPrincipal } = useAuth();
 </script>
 
 <style scoped>

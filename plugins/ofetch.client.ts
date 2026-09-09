@@ -1,50 +1,40 @@
 import { ofetch } from 'ofetch';
-import SecurityUtil from '~/utils/security-util';
-
-interface Headers {
-	[key: string]: string;
-}
+import { generateApiKey, generateApiKeySingle } from '~/shared/security-functions';
 
 export default defineNuxtPlugin(() => {
-	const { public: runtimeConfig } = useRuntimeConfig();
-	const route = useRoute();
-	const { getAuthToken, encryptCorporateClientId, getPrincipal } = useAuth();
+	const config = useRuntimeConfig();
 
 	globalThis.$fetch = ofetch.create({
 		async onRequest({ options }) {
-			let headers: Headers = {};
+			const baseURL = options.baseURL;
+			let headers: Record<string, string> = {};
 
-			// if the request is going to AVA
-			if (options.baseURL == runtimeConfig.AVA_BASE_URL) {
-				headers['Ava-Basic-Auth'] = SecurityUtil.generateBase64Token(
-					'MOBIVALUER',
-					'LiV1tKgaqEtwPn7',
-				);
-				headers['Ava-Api-Key'] = 'fe08ab023b8f4d44a8612a64f4f642c9bcb34850';
+			if (baseURL == config.public.VALUATION_BASE_URL) {
+				const valuationAuthToken = useCookie('valuation_auth_token');
+				headers['Authorization'] = `Bearer ${valuationAuthToken.value}`;
 			}
 
-			// if the request us going to Fraud Detection
-			if (options.baseURL == runtimeConfig.FRAUD_DETECTION_BASE_URL) {
-				headers['X-Client-Id'] = encryptCorporateClientId(
+			if (baseURL == config.public.AVA_BASE_URL) {
+				const avaBasicAuthToken = useCookie('ava_basic_auth_token');
+				const avaApiKey = useCookie('ava_api_key');
+
+				headers['Ava-Basic-Auth'] = avaBasicAuthToken.value as string;
+				headers['Ava-Api-Key'] = avaApiKey.value as string;
+			}
+
+			if (baseURL == config.public.IPRS_BASE_URL) {
+				headers['X-API-Key'] = 'iprs_1dd577aded3f1dacf70fd8e9799df4299fd71bf9401e409d';
+			}
+
+			if (baseURL == config.public.FRAUD_DETECTION_BASE_URL) {
+				const { getPrincipal } = useAuth();
+				headers['X-API-Key'] = generateApiKey(
 					getPrincipal()?.corpOrganization.corpId!,
+					'k8#F$j2!L9@qW7%zX5^pR3&vN6*',
 				);
-
-				// API-key
-				const USERNAME = getPrincipal()?.corpOrganization.corpId!;
-				const PASSWORD = 'k8#F$j2!L9@qW7%zX5^pR3&vN6*';
-				headers['X-Api-Key'] = SecurityUtil.generateApiKey(USERNAME, PASSWORD);
-
-				// if we are paying up for tokens -> not via invoice
-				if (route.name == 'collateral-verification-home') {
-					headers['Entity-Token'] = encryptCorporateClientId(
-						getPrincipal()?.corpOrganization.corpId!,
-					);
-				}
-			}
-
-			// if the request is going to valuation
-			if (options.baseURL == runtimeConfig.VALUATION_BASE_URL) {
-				headers['Authorization'] = `Bearer ${getAuthToken.value}`;
+				headers['x-client-id'] = generateApiKeySingle(
+					getPrincipal()?.corpOrganization.corpId,
+				);
 			}
 
 			options.headers = { ...options.headers, ...headers };

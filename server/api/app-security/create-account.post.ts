@@ -17,13 +17,14 @@ export default defineEventHandler(async (event) => {
 	const requestURL = `${VALUATION_BASE_URL}/api/v1/auth/corporate-account/signup`;
 
 	try {
-		await makeProxyRequest<GenericResponse<null>>(requestURL, {
-			method: 'POST',
-			body,
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
+		await makeProxyRequest<GenericResponse<null>>(
+			requestURL,
+			{
+				method: 'POST',
+				body,
 			},
-		});
+			event,
+		);
 		return sendSuccessResponse(event, null);
 	} catch (ex) {
 		console.log(ex);

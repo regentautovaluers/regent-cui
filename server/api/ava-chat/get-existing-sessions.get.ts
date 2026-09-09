@@ -4,15 +4,16 @@ export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query: { user_id: string } = getQuery(event);
 
-	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/corporate/sessions/user/${query.user_id}`;
+	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/unified-chat/sessions/${query.user_id}`;
 
 	try {
-		const response = await makeProxyRequest<ExistingSessions>(endpoint, {
-			method: 'GET',
-			headers: {
-				'x-api-key': config.AI_CHAT_API_KEY,
+		const response = await makeProxyRequest<ExistingSessions>(
+			endpoint,
+			{
+				method: 'GET',
 			},
-		});
+			event,
+		);
 
 		if (response.sessions.length > 0) {
 			const slim: ExistingSessionSlim[] = response.sessions.map((e) => {

@@ -23,7 +23,7 @@ export default defineNuxtConfig({
 	imports: {
 		dirs: ['./utils/**', './composables/**', './stores/**'],
 	},
-	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts', '@pinia/nuxt'],
+	modules: ['@nuxtjs/harlem', 'nuxt3-notifications', '@nuxt/fonts', '@pinia/nuxt', 'nuxt-charts'],
 	pinia: {
 		storesDirs: ['stores'],
 	},
@@ -74,7 +74,12 @@ export default defineNuxtConfig({
 		AI_CHAT_API_KEY: process.env.AI_CHAT_API_KEY,
 		VALUATION_BASE_URL: process.env.VALUATION_BASE_URL,
 		AVA_BASE_URL: process.env.AVA_BASE_URL,
-		REPORT_GENERATOR_BASE_URL: process.env.REPORT_GENERATOR_BASE_URL,
+		LEGACY_VALUATION_BASE_URL: process.env.LEGACY_VALUATION_BASE_URL,
+		LEGACY_VALUATION_API_KEY: process.env.LEGACY_VALUATION_API_KEY,
+		// Accident assessment service. It verifies the estate's own JWT rather
+		// than issuing one, so the valuation_auth_token cookie is already a valid
+		// credential here and no separate key is needed.
+		ACCIDENT_BASE_URL: process.env.ACCIDENT_BASE_URL,
 
 		// public properties
 		public: {
@@ -86,6 +91,7 @@ export default defineNuxtConfig({
 			GOOGLE_MAPS_GEOFENCING_COUNTRY: '',
 			REGENT_AUTOMATIONS_BASE_URL: '',
 			REGENT_MEDIA_STORAGE_BASE_URL: '',
+			IPRS_BASE_URL: '',
 
 			// firebase config
 			FIREBASE_API_KEY: '',

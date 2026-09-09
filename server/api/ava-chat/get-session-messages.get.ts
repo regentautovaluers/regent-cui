@@ -4,19 +4,16 @@ export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const query: { session_id: string } = getQuery(event);
 
-	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/corporate/sessions/${query.session_id}/history`;
+	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/unified-chat/session/${query.session_id}`;
 
 	try {
-		let response = await makeProxyRequest<SessionHistory>(endpoint, {
-			method: 'GET',
-			headers: {
-				'x-api-key': config.AI_CHAT_API_KEY,
+		let response = await makeProxyRequest<SessionHistory>(
+			endpoint,
+			{
+				method: 'GET',
 			},
-		});
-
-		// delete unused data
-		delete response.pagination;
-		delete response.user_id;
+			event,
+		);
 
 		return sendSuccessResponse(event, response);
 	} catch (err) {

@@ -7,11 +7,7 @@ export default defineEventHandler(async (event) => {
 	const endpoint = `${config.AI_CHAT_BASE_URL}/api/v1/chat/${query.session_id}/history`;
 	try {
 		// attach session id
-		const chatHistory = await makeProxyRequest<ChatHistory>(endpoint, {
-			headers: {
-				'x-api-key': config.AI_CHAT_API_KEY,
-			},
-		});
+		const chatHistory = await makeProxyRequest<ChatHistory>(endpoint, undefined, event);
 
 		return sendSuccessResponse(event, chatHistory);
 	} catch (err) {

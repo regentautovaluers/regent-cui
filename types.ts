@@ -60,16 +60,6 @@ export type SelectedCorpOrBroker = {
 	id: string;
 };
 
-export enum ValuationStages {
-	AWAITING_ASSESSMENT,
-	VALUER_DRAFT,
-	PENDING,
-	AWAITING_MANAGER_APPROVAL,
-	AWAITING_QC_APPROVAL,
-	COMPLETED,
-	INVOICING,
-}
-
 export type CollateralSearchTypeOption = {
 	name: string;
 	id: string;

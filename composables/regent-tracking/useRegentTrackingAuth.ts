@@ -17,7 +17,7 @@ export function useRegentTrackingAuth() {
 	async function attemptLogin() {
 		const url = `/api/regent-tracking/client-login`;
 		try {
-			loginLoading.value = false;
+			loginLoading.value = true;
 			const response = await post<RegentTrackingLoginResponse>(url, {
 				email: email.value,
 				password: password.value,

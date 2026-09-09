@@ -63,11 +63,11 @@
 			shouldShow: true,
 			icon: 'icon-[material-symbols-light--check-circle-unread]',
 		},
-		{
-			to: 'vehicle-valuation-tampered-vehicles',
-			name: 'Tampered Vehicles',
-			shouldShow: true,
-			icon: 'icon-[material-symbols-light--warning-outline-rounded]',
-		},
+		// {
+		// 	to: 'vehicle-valuation-tampered-vehicles',
+		// 	name: 'Tampered Vehicles',
+		// 	shouldShow: true,
+		// 	icon: 'icon-[material-symbols-light--warning-outline-rounded]',
+		// },
 	];
 </script>

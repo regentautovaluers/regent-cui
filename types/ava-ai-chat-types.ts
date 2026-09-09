@@ -1,12 +1,47 @@
 import type { MessageOrigin } from './ai-reports-chat-types';
 
 export interface ChatResponse {
-	session_id?: string;
-	response: string | null;
-	sources?: Source[];
-	metadata?: Metadata;
-	response_status: ResponseStatus;
 	origin: MessageOrigin;
+	message: string;
+	user_id?: string;
+	response_status: ResponseStatus;
+	data_type?: 'general' | 'analytics';
+	has_data?: boolean;
+	sources_used?: string[];
+	valuations?: null;
+	analytics: Analytics | null;
+	total_found?: null;
+	corp_scoped?: boolean;
+	suggestions?: string[];
+	chart_config: ChartConfig | null;
+	session_id?: string;
+}
+
+export interface Analytics {
+	row_count: number;
+	total: number | null;
+	columns: string[];
+	rows: {
+		[key: string]: string | number;
+	}[];
+	summary: string;
+	source: 'legacy_postgres';
+	corp_filter_applied: boolean;
+}
+
+export type SupportedAIChartType = 'pie' | 'bar' | 'line';
+export interface AnyChartData {
+	[key: string]: string | number;
+}
+
+export interface ChartConfig {
+	type: SupportedAIChartType;
+	title: string;
+	x_axis: string;
+	y_axis: string;
+	x_label: string;
+	y_label: string;
+	data: AnyChartData[];
 }
 
 export type ResponseStatus = 'successful' | 'error';
@@ -39,10 +74,10 @@ export interface ExistingSessions {
 export interface Session {
 	session_id: string;
 	title: string;
-	message_count: number;
 	created_at: string;
-	last_activity: string;
-	last_message_preview: string;
+	updated_at: string;
+	message_count: number;
+	corp_id: string;
 }
 
 export interface Pagination {
@@ -59,22 +94,26 @@ export type ExistingSessionSlim = Pick<Session, 'session_id' | 'created_at' | 't
 // --- for session chat message history
 export interface SessionHistory {
 	session_id: string;
-	user_id?: string;
+	user_id: string;
+	corp_id: string;
+	title: string;
+	created_at: string;
+	updated_at: string;
+	message_count: number;
 	history: History[];
-	pagination?: Pagination;
+	pagination: Pagination;
 }
 
 export interface History {
 	role: string;
 	content: string;
 	timestamp: string;
-	metadata: Metadata;
-}
-
-export interface Metadata {
-	sources_count?: number;
-	has_analytics?: boolean;
-	is_analytical?: boolean;
+	data_type?: 'general' | 'analytics';
+	has_data?: boolean;
+	analytics: Analytics | null;
+	chart_config: ChartConfig | null;
+	total_found: number | null;
+	corp_scoped: boolean;
 }
 
 export interface Pagination {

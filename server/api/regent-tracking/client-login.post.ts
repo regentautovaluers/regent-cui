@@ -7,7 +7,11 @@ export default defineEventHandler(async (event) => {
 
 	const endpoint = `${config.REGENT_TRACK_BASE_URL}/api/login?${params.toString()}`;
 	try {
-		const discoveredAlerts = await makeProxyRequest<RegentTrackingLoginResponse>(endpoint);
+		const discoveredAlerts = await makeProxyRequest<RegentTrackingLoginResponse>(
+			endpoint,
+			undefined,
+			event,
+		);
 		// remove the unnecesary fields
 		delete discoveredAlerts.permissions;
 

@@ -104,49 +104,9 @@ function useCollateralVerificationTokensManagement() {
 		computed(() => {
 			let entries = [
 				{
-					searchType: 'Collateral Verification',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.fraudBundleSearches ?? 0,
-				},
-				{
 					searchType: 'National ID',
 					totalSearches:
 						getCollateralVerificationTokenInfo.value?.verifyNationalIdSearches ?? 0,
-				},
-				{
-					searchType: 'Vehicle Registration',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.verifyVehicleSearches ?? 0,
-				},
-				{
-					searchType: 'Alien ID',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.verifyAlienIdSearches ?? 0,
-				},
-				{
-					searchType: 'Bank Account',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.verifyBankAccountSearches ?? 0,
-				},
-				{
-					searchType: 'Business Verification',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.verifyBusinessSearches ?? 0,
-				},
-				{
-					searchType: 'Loan Collateral',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.verifyCollateralSearches ?? 0,
-				},
-				{
-					searchType: 'Driving License',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.verifyDrivingLicenseSearches ?? 0,
-				},
-				{
-					searchType: 'KRA PIN',
-					totalSearches:
-						getCollateralVerificationTokenInfo.value?.verifyKraPinSearches ?? 0,
 				},
 			];
 

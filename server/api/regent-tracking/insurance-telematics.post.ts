@@ -28,6 +28,8 @@ export default defineEventHandler(async (event) => {
 						const h = (
 							await makeProxyRequest<StandardSuccessResponse<DeviceHistory>>(
 								requestUrl,
+								undefined,
+								event,
 							)
 						).data;
 						const driverBehaviourAnalysis: DriverRiskScore =

@@ -4,6 +4,7 @@ import type {
 	PaymentStatus,
 } from '~/types/corporate-valuations/valuation-report';
 import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
+import { cleanValuations } from '~/server/utils/valuation-utils';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
@@ -70,36 +71,14 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		let response = await makeProxyRequest<GenericResponse<ValuationBooking[]>>(requestURL, {
-			headers: {
-				Authorization: `Bearer ${cookies.valuation_auth_token}`,
-			},
-		});
+		let response = await makeProxyRequest<GenericResponse<ValuationBooking[]>>(
+			requestURL,
+			undefined,
+			event,
+		);
 
 		if (response.data) {
-			response.data.forEach((vb) => {
-				delete vb.bookingSource;
-				delete vb.bookingReversed;
-				delete vb.draftCreationDate;
-				delete vb.vehicleOwnership;
-				delete vb.clientNatIdNumber;
-				delete vb.kraPin;
-				delete vb.vehicleType;
-				delete vb.serviceCharge;
-				delete vb.paymentMethod;
-				delete vb.valuationLocation;
-				delete vb.uploadedDocuments;
-				delete vb.proposedValuationDate;
-				delete vb.onBehalfOfRegentBranch;
-				delete vb.onBehalfOfRegentBranch;
-				delete vb.regentValuer;
-				delete vb.regentBooker;
-				delete vb.approvedByManager;
-				delete vb.approvedByQc;
-				delete vb.approvedBySecretary;
-				delete vb.reportValidationToken;
-				delete vb.inspectionFnl;
-			});
+			response.data.forEach((vb) => cleanValuations(vb));
 		}
 
 		return sendSuccessResponse(event, response);

@@ -2,16 +2,10 @@ import type { StandardSuccessResponse } from '~/types/proxy-types';
 import type { ExistingSessionSlim, ChatResponse, SessionHistory } from '~/types/ava-ai-chat-types';
 
 export default function () {
-	const sampleQuestions: readonly string[] = [
-		'Which vehicles usually fetch a value above 2 million shillings?',
-		'How far back does your data set reach?',
-		'What is the average market value of a Mercedes?',
-		'Which Toyota car fetches the highest market value?',
-		'Compare the market value of a Toyota versus a Mercedes',
-	];
 	const { query } = useRoute();
 	const {
 		getChatMessages,
+		getChatMessagesLength,
 		pushChatMessage,
 		setExistingSessions,
 		getExistingSessions,
@@ -23,10 +17,11 @@ export default function () {
 	const userQuery: Ref<string | null> = ref((query.uq as string) || null);
 	const activeSessionId: Ref<string | null> = ref(null);
 
-	const { status: fetchChatSessionsStatus, error: fetchChatSessionsError } = useApiData<
-		ExistingSessionSlim[],
-		ExistingSessionSlim[]
-	>(
+	const {
+		status: fetchChatSessionsStatus,
+		pending: fetchChatSessionsPending,
+		error: fetchChatSessionsError,
+	} = useApiData<ExistingSessionSlim[], ExistingSessionSlim[]>(
 		'user-ai-sessions',
 		computed(() => `/api/ava-chat/get-existing-sessions?user_id=${getPrincipal()?.userId}`),
 		{
@@ -66,8 +61,11 @@ export default function () {
 				const toAdd: ChatResponse[] = [
 					{
 						origin: 'user',
-						response: userQuery.value,
+						message: userQuery.value!,
 						response_status: 'successful',
+						user_id: user?.userId!,
+						analytics: null,
+						chart_config: null,
 					},
 					data,
 				];
@@ -86,13 +84,17 @@ export default function () {
 				const toAdd: ChatResponse[] = [
 					{
 						origin: 'user',
-						response: userQuery.value,
+						message: userQuery.value!,
 						response_status: 'successful',
+						analytics: null,
+						chart_config: null,
 					},
 					{
 						origin: 'assistant',
-						response: 'Something went wrong. Kindly repeat the question :(',
+						message: 'Something went wrong. Kindly repeat the question :(',
 						response_status: 'error',
+						analytics: null,
+						chart_config: null,
 					},
 				];
 
@@ -127,8 +129,9 @@ export default function () {
 						const toAdd: ChatResponse[] = history.history.map((e) => {
 							return {
 								origin: e.role,
-								response: e.content,
+								message: e.content,
 								response_status: 'successful',
+								chart_config: e.chart_config,
 							} as ChatResponse;
 						});
 
@@ -139,8 +142,10 @@ export default function () {
 					pushChatMessage(activeSessionId.value as string, [
 						{
 							origin: 'assistant',
-							response: 'Seems like you have no chats! Ask away...',
+							message: 'Seems like you have no chats! Ask away...',
 							response_status: 'error',
+							analytics: null,
+							chart_config: null,
 						},
 					]);
 				}
@@ -155,14 +160,32 @@ export default function () {
 		}
 	}
 
+	function getSuggestions(
+		index: number,
+		chatLength: number,
+		suggestions: string[] | null | undefined,
+	): string[] | null {
+		if (index != chatLength - 1) {
+			return null;
+		}
+
+		if (!suggestions) {
+			return null;
+		}
+
+		return suggestions;
+	}
+
 	return {
 		userQuery,
 		awaitingAnswer,
-		sampleQuestions,
 		submitQuestion,
 		activeSessionId,
 		getChatMessages,
+		getChatMessagesLength,
+		fetchChatSessionsPending,
 		getExistingSessions,
 		retrieveSessionChats,
+		getSuggestions,
 	};
 }
