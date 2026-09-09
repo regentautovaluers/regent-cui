@@ -1,9 +1,11 @@
-<!-- components/Dropdown.vue -->
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+interface Props {
+  actionId: string;
+}
 
 const isOpen = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
+const props = defineProps<Props>();
 
 function toggleDropdown() {
   isOpen.value = !isOpen.value;
@@ -32,9 +34,10 @@ onBeforeUnmount(() => {
   <div class="relative inline-block" ref="dropdownRef">
     <button
       @click="toggleDropdown"
-      class="px-3 py-1 bg-blue-600 text-white rounded"
+      class="btn btn-circle btn-text btn-sm"
+      :id="actionId"
     >
-      Actions
+      <span class="icon-[material-symbols--more-vert] size-6"></span>
     </button>
 
     <transition
@@ -47,25 +50,11 @@ onBeforeUnmount(() => {
     >
       <div
         v-if="isOpen"
-        class="absolute left-0 mr-1 mt-2 w-40 bg-white border rounded shadow-lg z-50"
+        class="bg-base-100 absolute -left-42 -top-2 mr-1 mt-2 w-40 border rounded-md shadow-lg z-40"
+        @click="closeDropdown"
       >
-        <ul>
-          <li>
-            <button
-              @click="closeDropdown"
-              class="block w-full text-left px-4 py-2 hover:bg-gray-100"
-            >
-              Edit
-            </button>
-          </li>
-          <li>
-            <button
-              @click="closeDropdown"
-              class="block w-full text-left px-4 py-2 hover:bg-gray-100"
-            >
-              Delete
-            </button>
-          </li>
+        <ul class="p-1 space-y-1">
+          <slot />
         </ul>
       </div>
     </transition>
