@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  name: "valuations-all-valuations",
+  displayName: "Your Assessments",
+});
 const config = useRuntimeConfig();
 const { get } = useStandardizedApi();
 const fleetEntries: Ref<FleetEntry[]> = ref([]);
@@ -273,21 +277,25 @@ async function loadFleets() {
               {{ booking.inspectionRemarks || "-" }}
             </td>
             <td>
-              <GenericPageActionButton
+              <GenericTableActionButton
                 :action-id="`vb-${booking.valuationId}-action`"
               >
                 <template
-                  v-show="
+                  v-if="
                     allowAccessReport(booking.valuationStage, booking.reportURL)
                   "
                 >
                   <li>
-                    <a :href="booking.reportURL!" target="_blank"
+                    <a
+                      class="dropdown-item"
+                      :href="booking.reportURL!"
+                      target="_blank"
                       >Download Report</a
                     >
                   </li>
                   <li>
                     <NuxtLink
+                      class="dropdown-item"
                       :to="{
                         name: 'valuations-create-authorization-letter',
                         query: {
@@ -299,7 +307,12 @@ async function loadFleets() {
                     </NuxtLink>
                   </li>
                 </template>
-              </GenericPageActionButton>
+                <li v-else>
+                  <button class="dropdown-item" disabled>
+                    No Action Available
+                  </button>
+                </li>
+              </GenericTableActionButton>
             </td>
           </tr>
         </GenericTable>

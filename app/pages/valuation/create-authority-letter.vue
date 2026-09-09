@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "valuations-create-authorization-letter",
+  displayName: "Authorization Letter",
 });
 
 const { post } = useStandardizedApi();
@@ -171,7 +172,7 @@ async function submitForm() {
             generalDataStore.loadingCorporateOrganizations ||
             generalDataStore.getCorporateOrganzations.length == 0
           "
-          @value-selected="(id) => rawData.agentName = id"
+          @value-selected="(id) => (rawData.agentName = id)"
         >
         </InputsGenericInputSearchBox>
 

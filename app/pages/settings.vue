@@ -7,6 +7,7 @@ const { activeRouteName } = useNavigation();
   <div class="space-y-10 flex space-x-5 min-h-full h-full">
     <div class="w-[15%] sticky">
       <h1 class="mb-10 text-2xl font-bold">Actions</h1>
+      
       <div class="flex flex-col space-y-5">
         <NuxtLink
           v-for="e in aRoutes.find((e) => e.id == 6 /*for settings*/)

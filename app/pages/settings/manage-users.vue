@@ -76,9 +76,11 @@ function handlePageChange(newPage: number) {
           {{ user.userRoles.includes("ROLE_CORP_ADMIN") ? "Admin" : "Normal" }}
         </td>
         <td>
-          <GenericPageActionButton
-            :action-id="`u-${user.userId}-action`"
-          ></GenericPageActionButton>
+          <GenericTableActionButton :action-id="`u-${user.userId}-action`">
+            <li>
+              <button class="dropdown-item">Edit</button>
+            </li>
+          </GenericTableActionButton>
         </td>
       </tr>
     </template>
