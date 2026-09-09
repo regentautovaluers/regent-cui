@@ -27,7 +27,10 @@ const disableUploadButton = computed(() => {
 async function uploadBulkCollateral() {
   try {
     uploadingData.value = true;
-    await post("/api/col-v/onboard-collateral-bulk", JSON.stringify(uploadTarget.value));
+    await post(
+      "/api/col-v/onboard-collateral-bulk",
+      JSON.stringify(uploadTarget.value),
+    );
   } catch (ex) {
     // TODO: Add a toast here
   } finally {
@@ -118,19 +121,12 @@ function parseToCollateralVerification(rowNum: number, row: string[]) {
 
 <template>
   <div>
-    <div
-      class="rounded-box ring-primary/20 to-primary/10 from-base-100/10 mb-6 w-full gap-6 bg-linear-to-br p-6 text-start ring-1 sm:flex"
+    <HeadboardAnnouncer
+      announcer-title="Onboard In Bulk"
+      highlight-text="About Onboarding Template"
     >
-      <div class="flex flex-col gap-1.5 sm:w-7/12">
-        <p class="text-primary text-lg font-semibold capitalize">
-          Onboard In Bulk
-        </p>
-        <h1
-          class="text-base-content text-2xl leading-tight font-bold capitalize sm:text-4xl"
-        >
-          About Onboarding Template
-        </h1>
-        <p class="text-base-content/80 mt-2 text-base font-normal">
+      <template #description
+        ><p class="text-base-content/80 mt-2 text-base font-normal">
           You can quickly onboard a group of users at once by providing an Excel
           document written in a specific format. Download our template using the
           option to the right and fill it then re-upload it using the form
@@ -139,22 +135,26 @@ function parseToCollateralVerification(rowNum: number, row: string[]) {
             >Kindly refrain from changing any of the column structure and leave
             blank where you don't have input data.</span
           >
-        </p>
-      </div>
-      <div
-        class="flex grow items-center justify-center max-sm:mt-5 max-sm:justify-start"
+        </p></template
       >
-        <a
-          href="https://media.regentautovaluers.com/media/download/utility-media/collateral-verification/onboarding_template.xlsx"
-          target="_blank"
-          class="inline-flex items-center flex-col space-y-1 text-primary"
-          ><span
-            class="icon-[material-symbols--downloading-rounded] size-12"
-          ></span>
-          <span class="font-semibold text-lg">Download Template</span></a
+
+      <template #aside>
+        <div
+          class="flex grow items-center justify-center max-sm:mt-5 max-sm:justify-start"
         >
-      </div>
-    </div>
+          <a
+            href="https://media.regentautovaluers.com/media/download/utility-media/collateral-verification/onboarding_template.xlsx"
+            target="_blank"
+            class="inline-flex items-center flex-col space-y-1 text-primary"
+          >
+            <span
+              class="icon-[material-symbols--downloading-rounded] size-12"
+            ></span>
+            <span class="font-semibold text-lg">Download Template</span>
+          </a>
+        </div>
+      </template>
+    </HeadboardAnnouncer>
 
     <ul
       class="timeline timeline-snap-icon timeline-compact timeline-vertical w-full"

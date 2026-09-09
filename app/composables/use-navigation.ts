@@ -1,5 +1,8 @@
 export default function () {
   const { meta, name: routeName } = useRoute();
+  const activeRouteName = useState<string>("activeRouteName", () => "");
+  const activeRouteDisplay = useState<string>("activeRouteDisplay", () => "");
+  const route = useRoute();
 
   const routes: RoutesAvailable[] = [
     {
@@ -22,6 +25,7 @@ export default function () {
       screenName: "Vehicle Valuation",
       display: true,
       icon: "icon-[material-symbols--bar-chart-rounded]",
+      showChildren: true,
       children: [
         {
           id: 0,
@@ -49,6 +53,7 @@ export default function () {
       screenName: "Roadside Assistance",
       display: true,
       icon: "icon-[material-symbols--auto-towing-rounded]",
+      showChildren: true,
       children: [
         {
           id: 0,
@@ -75,7 +80,8 @@ export default function () {
       name: "cv-onboard-single",
       screenName: "Collateral Verification",
       display: true,
-      icon: "icon-[material-symbols--auto-towing-rounded]",
+      icon: "icon-[material-symbols--database-search]",
+      showChildren: false,
       children: [
         {
           id: 0,
@@ -114,8 +120,8 @@ export default function () {
         },
         {
           id: 5,
-          name: "cv-token-manager",
-          screenName: "Manage Search Tokens",
+          name: "cv-billing-and-invoice",
+          screenName: "Billing & Invoice",
           display: true,
           icon: "icon-[material-symbols--energy-savings-leaf-outline-rounded]",
         },
@@ -127,6 +133,7 @@ export default function () {
       screenName: "Regent Tracking",
       display: true,
       icon: "icon-[material-symbols--globe-location-pin-rounded]",
+      showChildren: true,
       children: [
         {
           id: 0,
@@ -149,6 +156,7 @@ export default function () {
       screenName: "Settings",
       display: false,
       icon: "icon-[material-symbols--data-exploration-rounded]",
+      showChildren: false,
       children: [
         {
           id: 0,
@@ -175,12 +183,25 @@ export default function () {
     },
   ];
 
+  watch(
+    () => route.name,
+    () => {
+      activeRouteName.value = String(route.name ?? "");
+      activeRouteDisplay.value = String(
+        route.meta?.displayName ?? activeRouteName.value,
+      );
+    },
+    { immediate: true },
+  );
+
   function routeNameMatch(t: string) {
     return routeName === t;
   }
 
   return {
     routes,
+    activeRouteName,
+    activeRouteDisplay,
     routeNameMatch,
   };
 }

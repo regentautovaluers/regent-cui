@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "settings-manage-branches",
+  displayName: "Manage Branches",
 });
 
 const generalDataStore = useGeneralDataStore();

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "settings-add-user",
+  displayName: "Add User",
 });
 
 const createUserLoading = ref(false);

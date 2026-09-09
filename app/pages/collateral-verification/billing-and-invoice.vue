@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  name: "cv-token-manager",
+  name: "cv-billing-and-invoice",
 });
 </script>
 

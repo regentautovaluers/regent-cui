@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { sidebarOpen, toggleSidebar } = useSettings();
+const { activeRouteDisplay } = useNavigation();
 </script>
 
 <template>
@@ -21,7 +22,9 @@ const { sidebarOpen, toggleSidebar } = useSettings();
       </button>
 
       <!-- active page -->
-      <h1 class="text-base-content text-3xl font-bold">Heading 1</h1>
+      <h1 class="text-base-content text-3xl font-bold">
+        {{ activeRouteDisplay }}
+      </h1>
     </div>
 
     <!-- user avatar -->

@@ -40,6 +40,8 @@ export default defineNuxtConfig({
     COLV_BASE_URL: "",
     COLV_KEY_PASSKEY: "",
     COLV_API_KEY_SECRET: "",
+    IPRS_BASE_URL: "",
+    IPRS_API_KEY: "",
     COLV_CID: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",

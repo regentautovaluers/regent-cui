@@ -59,3 +59,35 @@ export interface CollateralVerificationPagination {
   currentPage: number;
   pageSize: number;
 }
+
+export interface GenericIPRSQueryResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  timestamp: string;
+}
+
+export interface IPRSIDCheckData {
+  ErrorCode: string | null;
+  ErrorMessage: string | null;
+  ErrorOcurred: string | null;
+  Citizenship: string | null;
+  Clan: string | null;
+  Date_of_Birth: string | null;
+  Date_of_Death: string | null;
+  Ethnic_Group: string | null;
+  Family: string | null;
+  First_Name: string | null;
+  Gender: string | null;
+  ID_Number: string | null;
+  Occupation: string | null;
+  Other_Name: string | null;
+  Pin: string | null;
+  Place_of_Birth: string | null;
+  Place_of_Death: string | null;
+  Place_of_Live: string | null;
+  Surname: string | null;
+  Date_of_Issue: string | null;
+  RegOffice: string | null;
+  Serial_Number: string | null;
+}

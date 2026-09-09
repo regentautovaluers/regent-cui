@@ -32,8 +32,13 @@ export const makeProxyRequest = async <T = unknown>(
     "/api/login",
   ];
 
-  const { COLV_BASE_URL, COLV_KEY_PASSKEY, VALUATION_BASE_URL } =
-    useRuntimeConfig();
+  const {
+    COLV_BASE_URL,
+    COLV_KEY_PASSKEY,
+    VALUATION_BASE_URL,
+    IPRS_BASE_URL,
+    IPRS_API_KEY,
+  } = useRuntimeConfig();
 
   // develop the headers
   let headers: Record<string, string> = {};
@@ -52,6 +57,10 @@ export const makeProxyRequest = async <T = unknown>(
 
       if (endpoint.startsWith(VALUATION_BASE_URL)) {
         headers["Authorization"] = `Bearer ${cookies.valuation_auth_token}`;
+      }
+
+      if (endpoint.startsWith(IPRS_BASE_URL)) {
+        headers["X-API-Key"] = IPRS_API_KEY;
       }
     }
   }

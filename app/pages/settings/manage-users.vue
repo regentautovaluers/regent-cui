@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "settings-manage-users",
+  displayName: "Manage Users",
 });
 
 const config = useRuntimeConfig();
@@ -82,7 +83,7 @@ function handlePageChange(newPage: number) {
       </tr>
     </template>
   </GenericTable>
-  
+
   <GenericTablePageSwitcher
     :current-page="paginationInfo.currentPage"
     :total-pages="paginationInfo.totalPages"

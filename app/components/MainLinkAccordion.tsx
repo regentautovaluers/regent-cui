@@ -28,7 +28,7 @@ export default defineComponent({
               )}
             </div>
 
-            {(sidebarOpen.value && props.item.children) && (
+            {sidebarOpen.value && props.item.children && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1em"
@@ -50,23 +50,25 @@ export default defineComponent({
             aria-labelledby={`sidedd-${props.item.name}-basic`}
             role="region"
           >
-            {props.item.children && sidebarOpen.value && (
-              <ul class="timeline timeline-vertical timeline-compact ml-4">
-                {props.item.children.map((i, idx) => {
-                  return (
-                    <li key={idx}>
-                      <div class="timeline-middle h-fit">
-                        <span class="border-primary border flex w-3 h-6 items-center justify-center rounded-full"></span>
-                      </div>
-                      <div class="timeline-end text-base-content ml-4">
-                        {i.screenName}
-                      </div>
-                      <hr />
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+            {props.item.children &&
+              props.item.showChildren &&
+              sidebarOpen.value && (
+                <ul class="timeline timeline-vertical timeline-compact ml-4">
+                  {props.item.children.map((i, idx) => {
+                    return (
+                      <li key={idx}>
+                        <div class="timeline-middle h-fit">
+                          <span class="border-primary border flex w-3 h-6 items-center justify-center rounded-full"></span>
+                        </div>
+                        <div class="timeline-end text-base-content ml-4">
+                          {i.screenName}
+                        </div>
+                        <hr />
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
           </div>
         </div>
       </div>
