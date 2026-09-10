@@ -110,18 +110,6 @@ function resetState() {
 
 <template>
   <GrowableCard card-title="Create Your Authority Letter">
-    <button
-      @click="
-        () =>
-          $showToast({
-            title: 'Failed!',
-            description: 'Unable to submit request!',
-            color: 'error',
-          })
-      "
-    >
-      Show Toast
-    </button>
 
     <form class="space-y-10" @submit.prevent="submitForm()">
       <!-- client details -->

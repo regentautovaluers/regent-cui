@@ -8,29 +8,34 @@ const store = usePrincipalStore();
     <button
       id="dropdown-avatar"
       type="button"
-      class="dropdown-toggle btn btn-lg btn-outline btn-primary flex items-center gap-2 rounded-full"
+      class="dropdown-toggle btn-primary flex w-58 max-w-58 min-w-58 items-center gap-2"
       aria-haspopup="menu"
       aria-expanded="false"
       aria-label="Dropdown"
     >
       <div class="avatar">
-        <div class="size-6 rounded-full">
+        <div class="size-12 rounded-full">
           <img
             src="https://cdn.flyonui.com/fy-assets/avatar/avatar-3.png"
             alt="User Avatar"
           />
         </div>
       </div>
-      {{ store.loadUserIdentifiers.username }}
-      <span
-        class="icon-[material-symbols--chevron-backward-rounded] dropdown-open:rotate-180 size-4"
-      ></span>
+      <div class="h-full flex justify-center items-start flex-col">
+        <span class="font-bold text-ellipsis"
+          >{{ store.loadUserIdentifiers.username }}
+        </span>
+        <span class="text-xs text-ellipsis">{{
+          store.loadUserIdentifiers.corporate
+        }}</span>
+      </div>
+
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
         height="1em"
         viewBox="0 0 24 24"
-        class="dropdown-open:rotate-180 size-4 transition-transform duration-300 rtl:rotate-180"
+        class="dropdown-open:rotate-180 rotate-90 size-7 transition-transform duration-300 rtl:rotate-180"
       >
         <path d="M0 0h24v24H0z" fill="none" />
         <path
@@ -46,26 +51,19 @@ const store = usePrincipalStore();
       aria-labelledby="dropdown-avatar"
     >
       <li class="dropdown-header gap-3">
-        <div class="avatar">
-          <div class="w-10 rounded-full">
-            <img
-              src="https://cdn.flyonui.com/fy-assets/avatar/avatar-3.png"
-              alt="User Avatar"
-            />
-          </div>
-        </div>
-        <div>
+        <div class="flex flex-col">
           <h6 class="text-base-content text-base font-semibold">
             {{ store.loadUserIdentifiers.username }}
           </h6>
+
           <small class="text-base-content/50 text-sm font-normal">{{
             store.loadUserIdentifiers.email
           }}</small>
         </div>
       </li>
-      <li class="space-x-1">
+      <li>
         <button
-          class="btn btn-soft btn-primary join-item w-1/2"
+          class="btn flex-1 btn-soft btn-primary join-item"
           v-for="t in supportedThemes"
           :key="t"
           @click="setTheme(t)"
@@ -73,7 +71,6 @@ const store = usePrincipalStore();
           {{ t }}
         </button>
       </li>
-      <li><a class="dropdown-item" href="#">Logout</a></li>
     </ul>
   </div>
 </template>

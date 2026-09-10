@@ -58,7 +58,7 @@ export default function () {
         {
           id: 0,
           name: "ra-request-assistance",
-          screenName: "Request Assistance",
+          screenName: "Request Roadside Assistance",
           display: true,
         },
         {
@@ -147,7 +147,7 @@ export default function () {
       id: 5,
       name: "telematics-home",
       screenName: "Insurance Telematics",
-      display: true,
+      display: false,
       icon: "icon-[material-symbols--data-exploration-rounded]",
     },
     {
