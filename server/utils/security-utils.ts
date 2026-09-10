@@ -1,9 +1,9 @@
 import CryptoJS from "crypto-js";
 
-export function generateCollateralVerificationCIDHeader() {
+export function generateCollateralVerificationCIDHeader(corpId: string) {
   const { COLV_CID } = useRuntimeConfig();
   const key = COLV_CID;
-  const clientId = "CLIENT001";
+  const clientId = corpId;
 
   return CryptoJS.AES.encrypt(clientId, key).toString();
 }

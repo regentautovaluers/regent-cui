@@ -52,7 +52,9 @@ export const makeProxyRequest = async <T = unknown>(
           data.corpId,
           COLV_KEY_PASSKEY,
         );
-        headers["X-Client-ID"] = generateCollateralVerificationCIDHeader();
+        headers["X-Client-ID"] = generateCollateralVerificationCIDHeader(
+          data.corpId,
+        );
       }
 
       if (endpoint.startsWith(VALUATION_BASE_URL)) {
