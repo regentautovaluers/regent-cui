@@ -24,7 +24,7 @@ const { activeRouteName } = useNavigation();
         </NuxtLink>
       </div>
     </div>
-    <div class="grow w-0 min-w-0 h-fit">
+    <div class="grow w-0 min-w-0">
       <NuxtPage></NuxtPage>
     </div>
     <div class="w-[15%]">

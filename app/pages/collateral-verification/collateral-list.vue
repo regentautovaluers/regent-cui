@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "cv-collateral-list",
+  displayName: "Your Collateral List",
 });
 
 const config = useRuntimeConfig();
@@ -43,58 +44,62 @@ function handlePageChange(newPage: number) {
 </script>
 
 <template>
-  <GenericTable
-    :headers="[
-      'Reg',
-      'Vehicle IDs',
-      'Vehicle Look',
-      'Added By',
-      'Incident On',
-      'Amount',
-      '',
-    ]"
-    :dataLoading="status == 'pending'"
-  >
-    <template v-if="data?.data.length">
-      <tr v-for="entry in data.data" :key="entry.id">
-        <td class="font-semibold">{{ entry.registrationNumber }}</td>
-        <td class="space-y-1">
-          <div class="flex space-x-1">
-            <span class="font-semibold"> Engine: </span>
-            <span>{{ entry.engineNumber }}</span>
-          </div>
-          <div class="flex space-x-1">
-            <span class="font-semibold"> Chassis: </span>
-            <span>{{ entry.chassisNumber }}</span>
-          </div>
-        </td>
-        <td class="space-y-1">
-          <div>{{ entry.make }} {{ entry.model }}</div>
-          <div class="btn btn-soft btn-sm btn-accent">
-            {{ entry.color ?? "Color N/A" }}
-          </div>
-        </td>
-        <td class="space-y-1">
-          <div>{{ entry.corporateClientName }}</div>
-          <div class="badge badge-soft badge-success">
-            {{ entry.corpClientEmail }}
-          </div>
-        </td>
-        <td class="font-semibold">{{ entry.dateOfIncident }}</td>
-        <td class="font-semibold text-accent">
-          {{
-            entry.amountDefaulted
-              ? formatNumberWithCommas(Number(entry.amountDefaulted))
-              : ""
-          }}
-        </td>
-        <td>
-          <GenericPageActionButton :action-id="`colv-${entry.id}-action`">
-          </GenericPageActionButton>
-        </td>
-      </tr>
+  <GrowableCard :show-padding="false">
+    <template #no-padding>
+      <GenericTable
+        :headers="[
+          'Reg',
+          'Vehicle IDs',
+          'Vehicle Look',
+          'Added By',
+          'Incident On',
+          'Amount',
+          '',
+        ]"
+        :dataLoading="status == 'pending'"
+      >
+        <template v-if="data?.data.length">
+          <tr v-for="entry in data.data" :key="entry.id">
+            <td class="font-semibold">{{ entry.registrationNumber }}</td>
+            <td class="space-y-1">
+              <div class="flex space-x-1">
+                <span class="font-semibold"> Engine: </span>
+                <span>{{ entry.engineNumber }}</span>
+              </div>
+              <div class="flex space-x-1">
+                <span class="font-semibold"> Chassis: </span>
+                <span>{{ entry.chassisNumber }}</span>
+              </div>
+            </td>
+            <td class="space-y-1">
+              <div>{{ entry.make }} {{ entry.model }}</div>
+              <div class="btn btn-soft btn-sm btn-accent">
+                {{ entry.color ?? "Color N/A" }}
+              </div>
+            </td>
+            <td class="space-y-1">
+              <div>{{ entry.corporateClientName }}</div>
+              <div class="badge badge-soft badge-success">
+                {{ entry.corpClientEmail }}
+              </div>
+            </td>
+            <td class="font-semibold">{{ entry.dateOfIncident }}</td>
+            <td class="font-semibold text-accent">
+              {{
+                entry.amountDefaulted
+                  ? formatNumberWithCommas(Number(entry.amountDefaulted))
+                  : ""
+              }}
+            </td>
+            <td>
+              <GenericPageActionButton :action-id="`colv-${entry.id}-action`">
+              </GenericPageActionButton>
+            </td>
+          </tr>
+        </template>
+      </GenericTable>
     </template>
-  </GenericTable>
+  </GrowableCard>
 
   <GenericTablePageSwitcher
     :current-page="paginationInfo.currentPage"

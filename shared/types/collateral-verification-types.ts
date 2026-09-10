@@ -91,3 +91,8 @@ export interface IPRSIDCheckData {
   RegOffice: string | null;
   Serial_Number: string | null;
 }
+
+export interface IPRSCollateralSearchResultEntry {
+  title: string;
+  value: string | number | null;
+}

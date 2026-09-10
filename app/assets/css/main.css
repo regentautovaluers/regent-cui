@@ -25,6 +25,12 @@
     dark;
 }
 
+@plugin "flyonui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #1447e6;
+}
+
 .transtion-shared {
   @apply duration-200 ease-in-out;
 }

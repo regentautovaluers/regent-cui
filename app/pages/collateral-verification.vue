@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { routes: aRoutes } = useNavigation();
 const tokenStore = useCollateralVerificationsTokenStore();
-const { activeRouteDisplay } = useNavigation();
+const { activeRouteName } = useNavigation();
 
 onMounted(async () => {
   await tokenStore.loadTokenData();
@@ -10,7 +10,7 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-10 flex space-x-5 min-h-full h-full">
-    <div class="w-[15%] sticky">
+    <div class="w-[15%] sticky h-full">
       <h1 class="mb-10 text-2xl font-bold">Actions</h1>
       <div class="flex flex-col space-y-5">
         <NuxtLink
@@ -18,7 +18,7 @@ onMounted(async () => {
           :key="e.id"
           :class="[
             'inline-flex space-x-3',
-            activeRouteDisplay == e.name && 'text-primary',
+            activeRouteName == e.name && 'text-primary',
           ]"
           :to="{ name: e.name }"
         >
@@ -27,10 +27,10 @@ onMounted(async () => {
         </NuxtLink>
       </div>
     </div>
-    <div class="grow w-0 min-w-0 h-fit">
+    <div class="grow w-0 min-w-0 h-full">
       <NuxtPage></NuxtPage>
     </div>
-    <div class="w-[15%]">
+    <div class="w-[15%] h-full">
       <div class="h-fit flex flex-col items-center">
         <div class="avatar avatar-placeholder">
           <div class="bg-primary text-error-content w-30 rounded-full">

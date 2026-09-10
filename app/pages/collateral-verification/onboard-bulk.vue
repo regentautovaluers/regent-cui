@@ -4,6 +4,7 @@ import { type Reactive } from "vue";
 
 definePageMeta({
   name: "cv-onboard-bulk",
+  displayName: "Onboard Collateral - Bulk",
 });
 const { post } = useStandardizedApi();
 const uploadTarget: Ref<CollateralVerification[]> = ref([]);
@@ -23,6 +24,7 @@ const disableUploadButton = computed(() => {
     uploadStepsProgress[1]?.done == false
   );
 });
+const { $showToast } = useNuxtApp();
 
 async function uploadBulkCollateral() {
   try {
@@ -31,8 +33,17 @@ async function uploadBulkCollateral() {
       "/api/col-v/onboard-collateral-bulk",
       JSON.stringify(uploadTarget.value),
     );
+    $showToast({
+      title: "Success!",
+      description: `${uploadTarget.value} Cases onboard successfully!`,
+      color: "success",
+    });
   } catch (ex) {
-    // TODO: Add a toast here
+    $showToast({
+      title: "Failed!",
+      description: `Uploading ${uploadTarget.value} failed. Try again!`,
+      color: "error",
+    });
   } finally {
     uploadingData.value = false;
   }
@@ -217,8 +228,7 @@ function parseToCollateralVerification(rowNum: number, row: string[]) {
           </div>
           <p class="mb-2">
             Before uploading, we check the validity of your data and tell you
-            what's wrong before the upload. Click the button below to initiate
-            the check.
+            what's wrong before the upload.
           </p>
         </div>
         <hr class="bg-primary" />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "cv-onboard-single",
+  displayName: "Onboard Collateral",
 });
 
 const onboardCollatertal = reactive({
@@ -18,13 +19,23 @@ const onboardCollatertal = reactive({
 });
 const onboardCollateralLoading = ref(false);
 const { post } = useStandardizedApi();
+const { $showToast } = useNuxtApp();
 
 async function onboardCollateral() {
   try {
     onboardCollateralLoading.value = true;
     await post("/api/col-v/onboard-collateral", onboardCollatertal);
+    $showToast({
+      title: "Success!",
+      description: "Case onboard successfull!",
+      color: "success",
+    });
   } catch (err) {
-    // TODO: show failed toast here
+    $showToast({
+      title: "Failed!",
+      description: "Something went wrong. Please try again!",
+      color: "error",
+    });
   } finally {
     onboardCollateralLoading.value = false;
   }
