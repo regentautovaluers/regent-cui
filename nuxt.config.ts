@@ -50,6 +50,7 @@ export default defineNuxtConfig({
     IPRS_BASE_URL: "",
     IPRS_API_KEY: "",
     COLV_CID: "",
+    AVA_BASE_URL: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",

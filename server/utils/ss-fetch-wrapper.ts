@@ -38,6 +38,7 @@ export const makeProxyRequest = async <T = unknown>(
     VALUATION_BASE_URL,
     IPRS_BASE_URL,
     IPRS_API_KEY,
+    AVA_BASE_URL,
   } = useRuntimeConfig();
 
   // develop the headers
@@ -63,6 +64,11 @@ export const makeProxyRequest = async <T = unknown>(
 
       if (endpoint.startsWith(IPRS_BASE_URL)) {
         headers["X-API-Key"] = IPRS_API_KEY;
+      }
+
+      if (endpoint.startsWith(AVA_BASE_URL)) {
+        headers["Ava-Basic-Auth"] = cookies.ava_basic_auth_token!;
+        headers["Ava-Api-Key"] = cookies.ava_api_key!;
       }
     }
   }
