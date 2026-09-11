@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  name: "home",
-  displayName: "Home",
+  name: "ra-ava-members",
+  displayName: "AVA Members",
 });
 
 const { triggerModal } = useModal();

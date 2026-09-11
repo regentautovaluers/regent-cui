@@ -24,6 +24,8 @@ export const usePrincipalStore = defineStore("principleStore", {
         username: state.username,
         email: state.email,
         corporate: state.corpName,
+        corporateId: state.corpId,
+        corporateName: state.corpName,
       };
     },
   },

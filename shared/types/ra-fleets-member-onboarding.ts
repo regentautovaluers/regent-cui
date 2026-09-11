@@ -28,21 +28,21 @@ export interface AVAMember {
   full_name: string;
   phone_number: string;
   userEmail: string;
-  corporateId: string;
+  corporateId?: string;
   category: MembershipCategory;
-  recordedBy: string;
+  recordedBy?: string;
 }
 
 // the person's (AVAMember) vehicle
 export interface AVAMemberVehicle {
-  corpName: string;
+  corpName?: string;
   membershipTypeId: number;
   registration: string;
   make: string;
   model: string;
   color: string;
   payment_status: string;
-  membership_status: PaymentStatus | ""; // This is sketchy. Figure out another way to do this!
+  membership_status: PaymentStatus | string; // This is sketchy. Figure out another way to do this!
   start_date: string;
   end_date: string;
 }

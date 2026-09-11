@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  name: "home",
-  displayName: "Home",
+  name: "ra-home",
+  displayName: "Roadside Assistance",
 });
 
 const { triggerModal } = useModal();

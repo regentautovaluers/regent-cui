@@ -57,22 +57,28 @@ export default function () {
       children: [
         {
           id: 0,
-          name: "ra-request-assistance",
-          screenName: "Request Roadside Assistance",
+          name: "ra-summary-page",
+          screenName: "AVA Roadside Assistance",
           display: true,
         },
         {
           id: 1,
-          name: "ra-previous-incidents",
-          screenName: "Previous Incidents",
+          name: "ra-ava-members",
+          screenName: "Your AVA Members",
           display: true,
         },
         {
           id: 2,
-          name: "ra-onboard-client",
-          screenName: "Client Onboarding",
+          name: "ra-onboard-single-member",
+          screenName: "Onboard AVA Member",
           display: true,
         },
+        {
+          id: 3,
+          name: "ra-incidents",
+          screenName: "Roadside Incidents",
+          display: true,
+        }
       ],
     },
     {

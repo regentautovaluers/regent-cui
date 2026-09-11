@@ -41,7 +41,7 @@ onMounted(() => {
     fp = flatpickr(inputRef.value, {
       appendTo: document.body,
       dateFormat: "Y-m-d",
-      altFormat: "F j, Y"
+      altFormat: "F j, Y",
     });
   }
 });
@@ -52,7 +52,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :class="inputWrapperStyles">
+  <div :class="[inputWrapperStyles, 'relative']">
     <label
       v-if="inputLabel"
       :class="[
@@ -63,7 +63,7 @@ onUnmounted(() => {
       >{{ inputLabel }}</label
     >
     <input
-    ref="inputRef"
+      ref="inputRef"
       :type="inputType"
       :placeholder="inputPlaceHolder"
       :class="[
@@ -77,6 +77,8 @@ onUnmounted(() => {
       :required="inputRequired"
       v-model="model"
     />
+
+    <span class="icon-[material-symbols--calendar-month] absolute right-3 top-[53%] size-7"></span>
     <span class="helper-text" v-show="inputHelpertext">{{
       inputHelpertext
     }}</span>
