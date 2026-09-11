@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import GenericSubmitButton from "~/components/inputs/GenericSubmitButton.vue";
-
 definePageMeta({
   name: "home",
 });
 
-const { openModal } = useModal();
-
-const handleEdit = () => {
-  openModal(GenericSubmitButton);
-};
+const { triggerModal } = useModal();
 </script>
 
-<template><button @click="handleEdit()">Open Model</button></template>
+<template>
+  <button @click="triggerModal()">Open Model</button>
+  <Teleport to="#modal-body">
+    <h1>Hello world</h1>
+  </Teleport>
+</template>

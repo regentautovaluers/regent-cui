@@ -17,4 +17,7 @@ const route = useRoute();
   >
     <TrackingLoginOverlay></TrackingLoginOverlay>
   </template>
+
+  <!-- shared modal -->
+  <GenericModal></GenericModal>
 </template>
