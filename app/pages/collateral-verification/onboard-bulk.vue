@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { readSheet } from "read-excel-file/browser";
-import { type Reactive } from "vue";
 
 definePageMeta({
   name: "cv-onboard-bulk",
@@ -8,31 +7,17 @@ definePageMeta({
 });
 const { post } = useStandardizedApi();
 const uploadTarget: Ref<CollateralVerification[]> = ref([]);
-const uploadStepsProgress: Reactive<
-  { item: number; errorMessage: string | null; done: boolean }[]
-> = reactive([
-  { item: 0, errorMessage: null, done: false }, // pick file
-  { item: 1, errorMessage: null, done: false }, // parse
-]);
 const parsingData = ref(false);
 const uploadingData = ref(false);
 const disableUploadButton = computed(() => {
-  return (
-    parsingData.value == true ||
-    uploadingData.value == true ||
-    uploadStepsProgress[0]?.done == false ||
-    uploadStepsProgress[1]?.done == false
-  );
+  return parsingData.value == true || uploadingData.value == true;
 });
 const { $showToast } = useNuxtApp();
 
 async function uploadBulkCollateral() {
   try {
     uploadingData.value = true;
-    await post(
-      "/api/col-v/onboard-collateral-bulk",
-      JSON.stringify(uploadTarget.value),
-    );
+    await post("/api/col-v/onboard-collateral-bulk", uploadTarget.value);
     $showToast({
       title: "Success!",
       description: `${uploadTarget.value} Cases onboard successfully!`,
@@ -52,7 +37,6 @@ async function uploadBulkCollateral() {
 async function processUploadedFile(uploadEvent: any) {
   try {
     const data = await readSheet(uploadEvent.target.files[0]);
-    uploadStepsProgress[0]!.done = true;
     let row = 1;
 
     parsingData.value = true;
@@ -61,15 +45,29 @@ async function processUploadedFile(uploadEvent: any) {
         parseToCollateralVerification(row, data[row] as string[]),
       );
     }
-    uploadStepsProgress[1]!.done = true;
-  } catch (ex: any) {
-    uploadStepsProgress[1]!.errorMessage = ex;
+  } catch (ex: unknown) {
+    if (ex instanceof Error) {
+      $showToast({
+        title: "Invalid File Input!",
+        description: ex.message,
+        color: "error",
+      });
+    } else {
+      $showToast({
+        title: "Invalid File Input!",
+        description: "Unable to parse file. Please try again!",
+        color: "error",
+      });
+    }
   } finally {
     parsingData.value = false;
   }
 }
 
-function parseToCollateralVerification(rowNum: number, row: string[]) {
+function parseToCollateralVerification(
+  rowNum: number,
+  row: string[],
+): CollateralVerification {
   if (row.length < 10 || row.length > 10) {
     throw new Error("Entries on row: " + rowNum + " must be exactly 10");
   }
@@ -93,35 +91,43 @@ function parseToCollateralVerification(rowNum: number, row: string[]) {
       case 0: {
         // registration number
         ret.registrationNumber = value;
+        break;
       }
       case 1: {
         ret.chassisNumber = value;
+        break;
       }
       case 2: {
         ret.color = value;
+        break;
       }
       case 3: {
         ret.engineNumber = value;
+        break;
       }
       case 4: {
         ret.make = value;
+        break;
       }
       case 5: {
         ret.model = value;
+        break;
       }
       case 6: {
         ret.yearOfManufacture = !value ? 0 : Number(value);
+        break;
       }
       case 7: {
         ret.description = value;
+        break;
       }
       case 8: {
-        ret.dateOfIncident = !value
-          ? ""
-          : extractDate(value); /*TODO: Validate this parsing*/
+        ret.dateOfIncident = !value ? "" : extractDate(value);
+        break;
       }
       case 9: {
         ret.amountDefaulted = value;
+        break;
       }
     }
   }
