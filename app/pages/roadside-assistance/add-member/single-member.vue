@@ -117,7 +117,7 @@ function setMembershipStatus(statusId: 0 | 1, targetIndex: number) {
 <template>
   <form class="space-y-10" @submit.prevent="onboardAVAMember()">
     <!-- client details -->
-    <div class="grid gap-x-8 grid-cols-3">
+    <div class="grid gap-8 grid-cols-3">
       <InputsGenericInput
         input-id="ava-reg-fullname"
         input-place-holder="e.g. John Doe"

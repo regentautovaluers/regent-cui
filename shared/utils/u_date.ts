@@ -150,10 +150,14 @@ export function formatSecondsToDuration(totalSeconds: number): string {
  * Accepts an example date string like '2021-02-01T00:00:00.000Z' and returns the date part only
  * e.g.2021-02-01
  */
-export function extractDate(isoString: string): string {
-  try {
-    return format(parseISO(isoString), "yyyy-MM-dd");
-  } catch (Err) {
-    return "";
+export function extractDate(isoInput: string | Date | unknown): string {
+  if (!isoInput) {
+    return ""; // Handle null, undefined, or empty strings gracefully
   }
+
+  // If it's already a Date object, use it; otherwise parse the string
+  const dateObj =
+    isoInput instanceof Date ? isoInput : parseISO(String(isoInput));
+
+  return format(dateObj, "yyyy-MM-dd");
 }
