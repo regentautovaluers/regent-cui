@@ -7,6 +7,10 @@
 @import "flyonui/src/vendor/flatpickr.css";
 @import "flatpickr/dist/flatpickr.css";
 
+:root {
+  --vis-donut-background-color: transparent !important;
+}
+
 @theme {
   --scale-103: 1.03;
   --breakpoint-mobile-sm: 320px;

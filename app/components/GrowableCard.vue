@@ -13,7 +13,7 @@ const slots = useSlots();
 </script>
 
 <template>
-  <div class="card block w-full min-h-full">
+  <div class="card block w-full h-full min-h-full">
     <div :class="['card-body gap-0', showPadding && 'p-10']" v-if="slots.default">
       <h5 class="card-title mb-2.5" v-if="cardTitle">{{ cardTitle }}</h5>
       <slot name="default" />

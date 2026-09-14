@@ -58,3 +58,40 @@ export interface MembershipVehicleCount {
   membership_name: string;
   vehicleCount: number;
 }
+
+export interface CorporateAVAFleet {
+  id: number;
+  fleetname: string;
+  corporate: string;
+  contact_full_name: string;
+  contact_phone_number: string;
+  contact_email: string;
+  createdAt: string;
+  updatedAt: string;
+  recordedBy: string;
+}
+
+export type GetCorporateAVAMemberVehiclesPagination = {
+  currentPage: number;
+  currentSize: number;
+  totalCount: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+};
+
+export type GetCorporateAVAMemberVehiclesMember = Pick<
+  AVAMember,
+  "full_name" | "phone_number" | "userEmail" | "corporateId" | "category"
+> & { fleet: CorporateAVAFleet; membershipVehicles: AVAMemberVeh[] };
+
+export type GetCorporateAVAMemberVehicles = {
+  memberships: GetCorporateAVAMemberVehiclesMember[];
+  pagination: GetCorporateAVAMemberVehiclesPagination | null;
+};
+
+export type SlimmedGetCorporateAVAMemberVehicles = Pick<
+  GetCorporateAVAMemberVehiclesMember,
+  "membershipVehicles"
+> &
+  Pick<GetCorporateAVAMemberVehicles, "pagination">;

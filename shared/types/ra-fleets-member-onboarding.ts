@@ -26,8 +26,8 @@ export type MembershipStatus = "active" | "inactive";
 // the person and their account -> called a member
 export interface AVAMember {
   full_name: string;
-  phone_number: string;
-  userEmail: string;
+  phone_number: string | null;
+  userEmail: string | null;
   corporateId?: string;
   category: MembershipCategory;
   recordedBy?: string;
@@ -57,3 +57,17 @@ export type BulkAVAMemberRegistration = AVAMember &
     fleetId: number;
     available_free_distance: number | string;
   };
+
+export interface GetAVAMemberVehicleDistribution {
+  data: AVAMemberVehicleDistribution;
+  statusCode: number;
+  message: string;
+}
+
+export interface AVAMemberVehicleDistribution {
+  total: number;
+  paid: number;
+  unpaid: number;
+  active: number;
+  inactive: number;
+}

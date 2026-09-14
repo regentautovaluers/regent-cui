@@ -10,20 +10,94 @@ const {
   status,
   getActiveDescription,
   activeDescription,
+  avaMemberDistribution,
+  loadingAVAMemberDistributionStatus,
+  refreshAVAMemberDistributionStatus,
   refresh,
 } = useAVAMembers();
+const { $showToast } = useNuxtApp();
+const { get } = useStandardizedApi();
+const loadingMemberVehicles = ref(false);
 const paginationInfo = computed(() => ({
   totalPages: avaMembers.value?.totalPages || 1,
   totalItems: avaMembers.value?.totalCount || 0,
   currentPage: page.value,
 }));
+const { public: pubConf } = useRuntimeConfig();
 const { triggerModal } = useModal();
 const store = usePrincipalStore();
+const activeAVAMember: Ref<Pick<
+  AVAMember,
+  "full_name" | "phone_number" | "userEmail"
+> | null> = ref(null);
+const memberVehicleEntries: Ref<SlimmedGetCorporateAVAMemberVehicles> = ref({
+  membershipVehicles: [],
+  pagination: null,
+});
 
 function handlePageChange(newPage: number) {
   const maxPages = paginationInfo.value.totalPages;
   if (newPage >= 0 && newPage < maxPages) {
     page.value = newPage;
+  }
+}
+
+function triggerLoadMemberVehicles(
+  fullName: string,
+  email: string | null,
+  phone: string | null,
+) {
+  // set the active member
+  activeAVAMember.value = {
+    full_name: fullName,
+    phone_number: phone,
+    userEmail: email,
+  };
+
+  //  trigger the modal
+  triggerModal();
+
+  // then start the loading process
+  loadMemberVehicles(0);
+}
+
+async function loadMemberVehicles(page: number) {
+  try {
+    loadingMemberVehicles.value = true;
+    // build the request URL
+    let requestUrl = `/api/roadside-assistance/load-ava-member-vehicles?page=${page}&size=${pubConf.PAGE_SIZE}`;
+    if (activeAVAMember.value) {
+      if (activeAVAMember.value.phone_number) {
+        requestUrl +=
+          requestUrl + `&userPhone=${activeAVAMember.value.phone_number}`;
+      }
+
+      if (activeAVAMember.value.userEmail) {
+        requestUrl +=
+          requestUrl + `&userEmail=${activeAVAMember.value.userEmail}`;
+      }
+    }
+    let vehicleEntries = await get(requestUrl);
+
+    if (vehicleEntries.success) {
+      const response =
+        vehicleEntries as StandardSuccessResponse<SlimmedGetCorporateAVAMemberVehicles>;
+      // set the pagination
+      memberVehicleEntries.value.pagination = response.data.pagination;
+
+      // copy in the vehicles
+      for (let x of response.data.membershipVehicles) {
+        memberVehicleEntries.value.membershipVehicles.push(x);
+      }
+    }
+  } catch (ex) {
+    $showToast({
+      title: "Failed to load vehicles!",
+      description: "Something went wrong. Please try again!",
+      color: "error",
+    });
+  } finally {
+    loadingMemberVehicles.value = true;
   }
 }
 </script>
@@ -114,7 +188,13 @@ function handlePageChange(newPage: number) {
                     <button
                       type="button"
                       class="btn btn-soft btn-primary join-item"
-                      @click="triggerModal()"
+                      @click="
+                        triggerLoadMemberVehicles(
+                          membership.full_name,
+                          membership.userEmail,
+                          membership.phone_number,
+                        )
+                      "
                     >
                       <span
                         class="icon-[material-symbols--open-in-full-rounded] size-4"
@@ -211,11 +291,81 @@ function handlePageChange(newPage: number) {
           </div>
         </div>
       </div>
-      <div class="h-130"><GrowableCard> </GrowableCard></div>
+      <div class="h-130 card block rounded-lg">
+        <div class="flex flex-col w-full h-full">
+          <h3 class="h-16 p-4 font-bold text-2xl">Data Chart</h3>
+          <div class="grow px-10 mt-4">
+            <ClientOnly>
+              <ChartsGenericDonutChart
+                :data="[
+                  { name: 'item 1', value: 25 },
+                  { name: 'item 2', value: 25 },
+                  { name: 'item 3', value: 35 },
+                  { name: 'item 4', value: 15 },
+                ]"
+                :height="250"
+                :hide-legend="false"
+                :inner-hole-width="50"
+              >
+              </ChartsGenericDonutChart>
+            </ClientOnly>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <Teleport to="#modal-body">
-    <h1>Hello world</h1>
+    <div class="w-screen h-screen flex items-center justify-center">
+      <div class="w-1/3 h-2/3">
+        <GrowableCard>
+          <template #no-padding>
+            <div class="h-full flex flex-col w-full">
+              <form class="relative border-b w-full h-[20%]">
+                <InputsGenericInput
+                  input-id="search-reg-no"
+                  input-place-holder="Search registration number"
+                ></InputsGenericInput>
+                <button
+                  type="button"
+                  class="absolute right-2 top-1.5 btn btn-text [--btn-color:#000] size-10"
+                  aria-label="Soft Icon Button"
+                  @click="triggerModal()"
+                >
+                  <span
+                    class="icon-[material-symbols--close-rounded] size-6 shrink-0"
+                  ></span>
+                </button>
+
+                <div class="px-4">
+                  <h3 class="my-2 text-lg font-bold">Actions</h3>
+                  <div class="w-full h-fit space-x-2">
+                    <button
+                      class="btn btn-soft btn-sm btn-success"
+                      type="button"
+                    >
+                      <span
+                        class="icon-[material-symbols--add-2-rounded]"
+                      ></span>
+                      Add Vehicle
+                    </button>
+                    <button
+                      class="btn btn-soft btn-sm btn-primary"
+                      type="button"
+                    >
+                      <span
+                        class="icon-[material-symbols--file-present]"
+                      ></span>
+                      Add Multiple Vehicles
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <div class=""></div>
+            </div>
+          </template>
+        </GrowableCard>
+      </div>
+    </div>
   </Teleport>
 </template>

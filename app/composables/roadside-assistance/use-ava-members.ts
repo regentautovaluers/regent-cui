@@ -43,12 +43,30 @@ export function useAVAMembers() {
     },
   );
 
+  const {
+    data: avaMemberDistribution,
+    status: loadingAVAMemberDistributionStatus,
+    refresh: refreshAVAMemberDistributionStatus,
+  } = useApiData<CorporateAVAMembers>(
+    computed(() => `ava-member-distribution`),
+    "/api/roadside-assistance/load-ava-members-distribution",
+    {
+      query,
+      lazy: false,
+      // Keep previous data visible while fetching the next page for seamless UX
+      dedupe: "defer",
+    },
+  );
+
   return {
     page,
     avaMembers,
     status,
     getActiveDescription,
     activeDescription,
+    avaMemberDistribution,
+    loadingAVAMemberDistributionStatus,
+    refreshAVAMemberDistributionStatus,
     refresh,
   };
 }
