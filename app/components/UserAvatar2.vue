@@ -1,20 +1,5 @@
 <script setup lang="ts">
 const store = usePrincipalStore();
-
-function getInitials(str: string): string {
-  const words = str.trim().split(/\s+/);
-
-  if (words.length >= 2) {
-    // Return first char of first two words
-    return (words[0][0] + words[1][0]).toUpperCase();
-  } else if (words.length === 1 && words[0].length >= 2) {
-    // Return first two chars of the single word
-    return words[0].slice(0, 2).toUpperCase();
-  } else {
-    // Fallback for empty strings or single character words
-    return str.trim().slice(0, 2).toUpperCase();
-  }
-}
 </script>
 
 <template>
