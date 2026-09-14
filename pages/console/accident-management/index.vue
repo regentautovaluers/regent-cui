@@ -73,7 +73,10 @@
 							<th class="tablet:table-cell hidden px-4 py-3">Claim No.</th>
 							<th class="laptop:table-cell hidden px-4 py-3">Client</th>
 							<th class="laptop:table-cell hidden px-4 py-3">Assessor</th>
-							<th class="px-4 py-3 text-right">Approved (KES)</th>
+							<!-- No currency code in the header. An insurer writing in more than
+							     one country sees all of them in this table, so no single header
+							     can be right and the unit goes on the row beside the figure. -->
+							<th class="px-4 py-3 text-right">Approved</th>
 							<th class="laptop-lg:table-cell hidden px-4 py-3">Updated</th>
 							<th class="px-4 py-3">Status</th>
 						</tr>
@@ -127,7 +130,7 @@
 								{{ claim.assessorName || 'None' }}
 							</td>
 							<td class="px-4 py-3 text-right tabular-nums text-gray-700">
-								{{ formatAmount(claim.grandTotal) }}
+								{{ formatAmount(claim.grandTotal, claim.jurisdiction) }}
 							</td>
 							<td class="laptop-lg:table-cell hidden px-4 py-3 text-gray-500">
 								{{ formatDate(claim.updatedAt) }}
@@ -229,10 +232,15 @@
 	 * A blank money cell reads as zero, and zero is a different claim. Say so
 	 * explicitly when there is no approved figure yet.
 	 */
-	const formatAmount = (value?: number) =>
+	const formatAmount = (value?: number, jurisdiction?: string) =>
 		typeof value === 'number' && !Number.isNaN(value)
-			? new Intl.NumberFormat('en-KE', { maximumFractionDigits: 0 }).format(value)
-			: 'Not yet costed';
+			? `${currencyOf(jurisdiction)} ${new Intl.NumberFormat('en-KE', {
+					maximumFractionDigits: 0,
+				}).format(value)}`
+			: // Deliberately no currency in front of this. "KES Not yet costed"
+				// reads as a figure, and a claim nobody has costed is not a claim
+				// costed at nothing in some currency.
+				'Not yet costed';
 
 	const formatDate = (value?: string) => {
 		if (!value) return 'None';

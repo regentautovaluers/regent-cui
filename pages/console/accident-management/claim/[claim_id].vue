@@ -509,9 +509,22 @@
 	const statusClasses = (s?: string) =>
 		(s && STATUS_CLASSES[s]) || 'bg-gray-100 text-gray-700';
 
+	/**
+	 * The claim's own money, not this deployment's.
+	 *
+	 * Read from the assessment rather than assumed. A Nairobi user opening a
+	 * Kigali claim is looking at francs, and a figure labelled KES beside a
+	 * franc amount is wrong in a way that never looks wrong.
+	 */
+	const currency = computed(() => currencyOf(assessment.value?.jurisdiction));
+
 	/** A blank money cell reads as zero, and zero is a different claim. */
 	const formatAmount = (value?: number) =>
 		typeof value === 'number' && !Number.isNaN(value)
-			? new Intl.NumberFormat('en-KE', { maximumFractionDigits: 0 }).format(value)
-			: 'Not recorded';
+			? `${currency.value} ${new Intl.NumberFormat('en-KE', {
+					maximumFractionDigits: 0,
+				}).format(value)}`
+			: // No currency in front of this. "KES Not recorded" reads as a
+				// figure, and an uncosted claim is not a claim costed at nothing.
+				'Not recorded';
 </script>

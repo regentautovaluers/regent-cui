@@ -28,6 +28,16 @@ export interface AccidentClaimRow {
 	policyNo?: string;
 	assessorName?: string;
 	grandTotal?: number;
+	/**
+	 * Which country's rules the claim is priced under, so the table can say
+	 * what its money column is in.
+	 *
+	 * An insurer writing in more than one country sees all of them here, so no
+	 * single column header can be right and the unit goes on the row. Optional,
+	 * and absent reads as Kenya: every claim written before the service carried
+	 * the column was one.
+	 */
+	jurisdiction?: string;
 	status: AccidentReportStatus;
 	updatedAt?: string;
 	assessmentDate?: string;
