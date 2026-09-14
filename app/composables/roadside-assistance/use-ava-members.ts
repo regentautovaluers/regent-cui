@@ -1,4 +1,8 @@
 export function useAVAMembers() {
+  const { public: pubConf } = useRuntimeConfig();
+  const { triggerModal } = useModal();
+  const { $showToast } = useNuxtApp();
+  const { get } = useStandardizedApi();
   const REQ_PAGE_SIZE = 12;
   const page = ref(0);
   const query = computed(() => ({
@@ -6,6 +10,15 @@ export function useAVAMembers() {
     page: page.value,
   }));
   const activeDescription: Ref<0 | 1> = ref(0);
+  const activeAVAMember: Ref<Pick<
+    AVAMember,
+    "full_name" | "phone_number" | "userEmail"
+  > | null> = ref(null);
+  const memberVehicleEntries: Ref<SlimmedGetCorporateAVAMemberVehicles> = ref({
+    membershipVehicles: [],
+    pagination: null,
+  });
+  const loadingMemberVehicles = ref(false);
   const serviceDescriptions: readonly {
     name: string;
     description: string;
@@ -58,6 +71,65 @@ export function useAVAMembers() {
     },
   );
 
+  function triggerLoadMemberVehicles(
+    fullName: string,
+    email: string | null,
+    phone: string | null,
+  ) {
+    // set the active member
+    activeAVAMember.value = {
+      full_name: fullName,
+      phone_number: phone,
+      userEmail: email,
+    };
+
+    //  trigger the modal
+    triggerModal();
+
+    // then start the loading process
+    loadMemberVehicles(0);
+  }
+
+  async function loadMemberVehicles(page: number) {
+    try {
+      loadingMemberVehicles.value = true;
+      // build the request URL
+      let requestUrl = `/api/roadside-assistance/load-ava-member-vehicles?page=${page}&size=${pubConf.PAGE_SIZE}`;
+      if (activeAVAMember.value) {
+        if (activeAVAMember.value.phone_number) {
+          requestUrl +=
+            requestUrl + `&userPhone=${activeAVAMember.value.phone_number}`;
+        }
+
+        if (activeAVAMember.value.userEmail) {
+          requestUrl +=
+            requestUrl + `&userEmail=${activeAVAMember.value.userEmail}`;
+        }
+      }
+      let vehicleEntries = await get(requestUrl);
+
+      if (vehicleEntries.success) {
+        const response =
+          vehicleEntries as StandardSuccessResponse<SlimmedGetCorporateAVAMemberVehicles>;
+        // set the pagination
+        memberVehicleEntries.value.pagination = response.data.pagination;
+
+        // copy in the vehicles
+        for (let x of response.data.membershipVehicles) {
+          memberVehicleEntries.value.membershipVehicles.push(x);
+        }
+      }
+    } catch (ex) {
+      $showToast({
+        title: "Failed to load vehicles!",
+        description: "Something went wrong. Please try again!",
+        color: "error",
+      });
+    } finally {
+      loadingMemberVehicles.value = false;
+    }
+  }
+
   return {
     page,
     avaMembers,
@@ -66,7 +138,11 @@ export function useAVAMembers() {
     activeDescription,
     avaMemberDistribution,
     loadingAVAMemberDistributionStatus,
+    loadingMemberVehicles,
+    memberVehicleEntries,
     refreshAVAMemberDistributionStatus,
+    triggerLoadMemberVehicles,
+    loadMemberVehicles,
     refresh,
   };
 }

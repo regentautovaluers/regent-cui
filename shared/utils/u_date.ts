@@ -1,4 +1,4 @@
-import { parseISO, format, formatDistanceToNow } from "date-fns";
+import { parseISO, format, formatDistanceToNow, isPast } from "date-fns";
 
 // Helper to add ordinal suffix (st, nd, rd, th)
 function getOrdinal(day: number): string {
@@ -160,4 +160,9 @@ export function extractDate(isoInput: string | Date | unknown): string {
     isoInput instanceof Date ? isoInput : parseISO(String(isoInput));
 
   return format(dateObj, "yyyy-MM-dd");
+}
+
+export function isDateInPast(dateString: string): boolean {
+  const date = parseISO(dateString);
+  return isPast(date);
 }

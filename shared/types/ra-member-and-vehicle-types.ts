@@ -41,9 +41,11 @@ export type AVAMemberVeh = Pick<
   updatedAt: string;
 };
 
+export type MembershipName = "Roadside Assistance" | "Emergency Evacuation";
+
 export interface MembershipType {
   id: number;
-  membership_name: string;
+  membership_name: MembershipName;
   membership_rate: string;
   benefits: string;
   createdAt: string;

@@ -12,28 +12,20 @@ const {
   activeDescription,
   avaMemberDistribution,
   loadingAVAMemberDistributionStatus,
+  loadingMemberVehicles,
+  memberVehicleEntries,
   refreshAVAMemberDistributionStatus,
+  triggerLoadMemberVehicles,
+  loadMemberVehicles,
   refresh,
 } = useAVAMembers();
-const { $showToast } = useNuxtApp();
-const { get } = useStandardizedApi();
-const loadingMemberVehicles = ref(false);
 const paginationInfo = computed(() => ({
   totalPages: avaMembers.value?.totalPages || 1,
   totalItems: avaMembers.value?.totalCount || 0,
   currentPage: page.value,
 }));
-const { public: pubConf } = useRuntimeConfig();
 const { triggerModal } = useModal();
 const store = usePrincipalStore();
-const activeAVAMember: Ref<Pick<
-  AVAMember,
-  "full_name" | "phone_number" | "userEmail"
-> | null> = ref(null);
-const memberVehicleEntries: Ref<SlimmedGetCorporateAVAMemberVehicles> = ref({
-  membershipVehicles: [],
-  pagination: null,
-});
 
 function handlePageChange(newPage: number) {
   const maxPages = paginationInfo.value.totalPages;
@@ -42,63 +34,34 @@ function handlePageChange(newPage: number) {
   }
 }
 
-function triggerLoadMemberVehicles(
-  fullName: string,
-  email: string | null,
-  phone: string | null,
-) {
-  // set the active member
-  activeAVAMember.value = {
-    full_name: fullName,
-    phone_number: phone,
-    userEmail: email,
-  };
-
-  //  trigger the modal
+function closeViewVehiclesModal() {
+  // close the modal
   triggerModal();
 
-  // then start the loading process
-  loadMemberVehicles(0);
+  // after some time clear the storage
+  setTimeout(
+    () =>
+      // remove loaded vehicles
+      (memberVehicleEntries.value = {
+        membershipVehicles: [],
+        pagination: null,
+      }),
+    100, //ms
+  );
 }
 
-async function loadMemberVehicles(page: number) {
-  try {
-    loadingMemberVehicles.value = true;
-    // build the request URL
-    let requestUrl = `/api/roadside-assistance/load-ava-member-vehicles?page=${page}&size=${pubConf.PAGE_SIZE}`;
-    if (activeAVAMember.value) {
-      if (activeAVAMember.value.phone_number) {
-        requestUrl +=
-          requestUrl + `&userPhone=${activeAVAMember.value.phone_number}`;
-      }
+function navigateToBulkUpload() {
+  // close the modal
+  triggerModal();
 
-      if (activeAVAMember.value.userEmail) {
-        requestUrl +=
-          requestUrl + `&userEmail=${activeAVAMember.value.userEmail}`;
-      }
-    }
-    let vehicleEntries = await get(requestUrl);
-
-    if (vehicleEntries.success) {
-      const response =
-        vehicleEntries as StandardSuccessResponse<SlimmedGetCorporateAVAMemberVehicles>;
-      // set the pagination
-      memberVehicleEntries.value.pagination = response.data.pagination;
-
-      // copy in the vehicles
-      for (let x of response.data.membershipVehicles) {
-        memberVehicleEntries.value.membershipVehicles.push(x);
-      }
-    }
-  } catch (ex) {
-    $showToast({
-      title: "Failed to load vehicles!",
-      description: "Something went wrong. Please try again!",
-      color: "error",
-    });
-  } finally {
-    loadingMemberVehicles.value = true;
-  }
+  // after some time navigate
+  setTimeout(
+    () =>
+      navigateTo({
+        name: "ra-onboard-bulk",
+      }),
+    100, //ms
+  );
 }
 </script>
 
@@ -330,7 +293,7 @@ async function loadMemberVehicles(page: number) {
                   type="button"
                   class="absolute right-2 top-1.5 btn btn-text [--btn-color:#000] size-10"
                   aria-label="Soft Icon Button"
-                  @click="triggerModal()"
+                  @click="closeViewVehiclesModal()"
                 >
                   <span
                     class="icon-[material-symbols--close-rounded] size-6 shrink-0"
@@ -352,6 +315,7 @@ async function loadMemberVehicles(page: number) {
                     <button
                       class="btn btn-soft btn-sm btn-primary"
                       type="button"
+                      @click="navigateToBulkUpload()"
                     >
                       <span
                         class="icon-[material-symbols--file-present]"
@@ -361,7 +325,44 @@ async function loadMemberVehicles(page: number) {
                   </div>
                 </div>
               </form>
-              <div class=""></div>
+              <div
+                class="h-[80%] max-h-[80%] w-full overflow-y-auto thin-scrollbar"
+              >
+                <template v-if="loadingMemberVehicles">
+                  <div class="w-full grid p-3 gap-3 grid-cols-2 h-fit">
+                    <SkeletonsMembershipVehicleCardSkeleton
+                      v-for="a in 9"
+                      :key="a"
+                    ></SkeletonsMembershipVehicleCardSkeleton>
+                  </div>
+                </template>
+
+                <template
+                  v-else-if="
+                    !loadingMemberVehicles &&
+                    !memberVehicleEntries.membershipVehicles.length
+                  "
+                >
+                  <GenericNoTableDataCTA
+                    heading="Onboard A Member"
+                    sub-heading="One Or Many"
+                    to-page="ra-onboard-single-member"
+                  >
+                  </GenericNoTableDataCTA>
+                </template>
+                <template v-else>
+                  <div class="w-full grid grid-cols-2 p-3 gap-3 h-fit">
+                    <MembershipVehicleCard
+                      v-for="e in memberVehicleEntries.membershipVehicles"
+                      :key="e.id"
+                      :registration="e.registration"
+                      :membership-name="e.membershipType.membership_name"
+                      :start-date="e.start_date"
+                      :end-date="e.end_date"
+                    ></MembershipVehicleCard>
+                  </div>
+                </template>
+              </div>
             </div>
           </template>
         </GrowableCard>
