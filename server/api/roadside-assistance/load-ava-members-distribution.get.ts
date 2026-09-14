@@ -10,7 +10,11 @@ export default defineEventHandler(async (event) => {
       event,
     );
 
-    return sendSuccessResponse(response);
+    if (response && response.data) {
+      return sendSuccessResponse(response.data);
+    }
+
+    return sendSuccessResponse(null);
   } catch (err) {
     return sendErrorResponse(err);
   }

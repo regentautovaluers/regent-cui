@@ -41,6 +41,7 @@ const clientVehicles: Reactive<AVAMemberVehicle[]> = reactive([
 ]);
 
 const creatingMembership = ref(false);
+const disableClientDetailsFields = ref(false);
 async function onboardAVAMember() {
   try {
     creatingMembership.value = true;
@@ -112,6 +113,23 @@ function setMembershipStatus(statusId: 0 | 1, targetIndex: number) {
     clientVehicles[targetIndex]!.membership_status = "inactive";
   }
 }
+
+onMounted(async () => {
+  const { query } = useRoute();
+
+  if (query.client) {
+    const { username, phone, email } = JSON.parse(
+      await decompress(base64ToArrayBuffer(query.client as string), "deflate"),
+    );
+
+    clientDetails.full_name = username;
+    clientDetails.userEmail = email;
+    clientDetails.phone_number = phone;
+
+    // disable editting of these fields
+    disableClientDetailsFields.value = true;
+  }
+});
 </script>
 
 <template>
@@ -123,6 +141,7 @@ function setMembershipStatus(statusId: 0 | 1, targetIndex: number) {
         input-place-holder="e.g. John Doe"
         input-label="Full Name"
         :input-required="true"
+        :input-disabled="disableClientDetailsFields"
         v-model="clientDetails.full_name"
       ></InputsGenericInput>
 
@@ -132,6 +151,7 @@ function setMembershipStatus(statusId: 0 | 1, targetIndex: number) {
         input-label="Phone"
         :input-required="true"
         input-helpertext="Starts with country code without '+'"
+        :input-disabled="disableClientDetailsFields"
         v-model="clientDetails.phone_number"
       ></InputsGenericInput>
 
@@ -141,6 +161,7 @@ function setMembershipStatus(statusId: 0 | 1, targetIndex: number) {
         input-label="Client Email"
         input-helpertext="For official onboarding communication"
         :input-required="true"
+        :input-disabled="disableClientDetailsFields"
         v-model="clientDetails.userEmail"
       ></InputsGenericInput>
     </div>

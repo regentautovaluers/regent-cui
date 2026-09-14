@@ -17,11 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
     <div
       class="card-body flex flex-col space-y-4 items-center justify-center h-full w-full laptop:w-1/3 p-10"
     >
-      <span class="text-base-content text-4xl font-bold">Nothing Found!</span>
-      <span class="text-base-content text-center"
-        >Your search produced no results. Probably because your account
-        has no data or the filters need tweaking.</span
-      >
+      <span class="text-base-content text-2xl font-bold w-full">Nothing Found!</span>
+      
       <NuxtImg src="/not-found-illustration.svg" :width="200"></NuxtImg>
 
       <!-- CTA 1 -->

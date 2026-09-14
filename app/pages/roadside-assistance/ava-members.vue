@@ -10,14 +10,11 @@ const {
   status,
   getActiveDescription,
   activeDescription,
-  avaMemberDistribution,
-  loadingAVAMemberDistributionStatus,
+  activeAVAMember,
   loadingMemberVehicles,
   memberVehicleEntries,
-  refreshAVAMemberDistributionStatus,
+  transformDistribution,
   triggerLoadMemberVehicles,
-  loadMemberVehicles,
-  refresh,
 } = useAVAMembers();
 const paginationInfo = computed(() => ({
   totalPages: avaMembers.value?.totalPages || 1,
@@ -46,7 +43,7 @@ function closeViewVehiclesModal() {
         membershipVehicles: [],
         pagination: null,
       }),
-    100, //ms
+    200, //ms
   );
 }
 
@@ -60,8 +57,32 @@ function navigateToBulkUpload() {
       navigateTo({
         name: "ra-onboard-bulk",
       }),
-    100, //ms
+    200, //ms
   );
+}
+
+async function navigateToSingleUpload(
+  username: string,
+  phone: string | null,
+  email: string | null,
+  modalOpen: boolean = false,
+) {
+  if (modalOpen) {
+    // close the modal
+    triggerModal();
+  }
+
+  // after some time navigate
+  const queryPayload = arrayBufferToBase64(
+    await compress(JSON.stringify({ username, phone, email }), "deflate"),
+  );
+
+  navigateTo({
+    name: "ra-onboard-single-member",
+    query: {
+      client: queryPayload,
+    },
+  });
 }
 </script>
 
@@ -170,6 +191,30 @@ function navigateToBulkUpload() {
                 <td>
                   {{ formatDateToWords(membership.createdAt) }}
                 </td>
+                <td>
+                  <GenericTableActionButton
+                    :action-id="`member-${membership.id}-action`"
+                  >
+                    <li>
+                      <button
+                        class="dropdown-item"
+                        type="button"
+                        @click="
+                          navigateToSingleUpload(
+                            membership.full_name,
+                            membership.phone_number,
+                            membership.userEmail,
+                          )
+                        "
+                      >
+                        Add Vehicle
+                      </button>
+                    </li>
+                    <li>
+                      <button class="dropdown-item">Edit Details</button>
+                    </li>
+                  </GenericTableActionButton>
+                </td>
               </tr>
             </GenericTable>
           </template>
@@ -260,15 +305,11 @@ function navigateToBulkUpload() {
           <div class="grow px-10 mt-4">
             <ClientOnly>
               <ChartsGenericDonutChart
-                :data="[
-                  { name: 'item 1', value: 25 },
-                  { name: 'item 2', value: 25 },
-                  { name: 'item 3', value: 35 },
-                  { name: 'item 4', value: 15 },
-                ]"
+                :data="transformDistribution.distribution"
                 :height="250"
                 :hide-legend="false"
                 :inner-hole-width="50"
+                :total="transformDistribution.total"
               >
               </ChartsGenericDonutChart>
             </ClientOnly>
@@ -306,6 +347,14 @@ function navigateToBulkUpload() {
                     <button
                       class="btn btn-soft btn-sm btn-success"
                       type="button"
+                      @click="
+                        navigateToSingleUpload(
+                          activeAVAMember!.full_name,
+                          activeAVAMember!.full_name,
+                          activeAVAMember!.userEmail,
+                          true,
+                        )
+                      "
                     >
                       <span
                         class="icon-[material-symbols--add-2-rounded]"
@@ -331,7 +380,7 @@ function navigateToBulkUpload() {
                 <template v-if="loadingMemberVehicles">
                   <div class="w-full grid p-3 gap-3 grid-cols-2 h-fit">
                     <SkeletonsMembershipVehicleCardSkeleton
-                      v-for="a in 9"
+                      v-for="a in 5"
                       :key="a"
                     ></SkeletonsMembershipVehicleCardSkeleton>
                   </div>

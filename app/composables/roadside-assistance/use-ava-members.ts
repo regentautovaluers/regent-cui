@@ -60,7 +60,7 @@ export function useAVAMembers() {
     data: avaMemberDistribution,
     status: loadingAVAMemberDistributionStatus,
     refresh: refreshAVAMemberDistributionStatus,
-  } = useApiData<CorporateAVAMembers>(
+  } = useApiData<AVAMemberVehicleDistribution>(
     computed(() => `ava-member-distribution`),
     "/api/roadside-assistance/load-ava-members-distribution",
     {
@@ -70,6 +70,39 @@ export function useAVAMembers() {
       dedupe: "defer",
     },
   );
+
+  const transformDistribution = computed(() => {
+    if (!avaMemberDistribution.value) {
+      return {
+        distribution: [
+          { name: "Paid", value: 25 },
+          { name: "Unpaid", value: 25 },
+          { name: "Active", value: 25 },
+          { name: "Inactive", value: 25 },
+        ],
+        total: 25 + 25,
+      };
+    }
+    return {
+      distribution: [
+        { name: "Paid", value: Math.trunc(avaMemberDistribution.value.paid) },
+        {
+          name: "Unpaid",
+          value: Math.trunc(avaMemberDistribution.value.unpaid),
+        },
+        {
+          name: "Active",
+          value: Math.trunc(avaMemberDistribution.value.active),
+        },
+        {
+          name: "Inactive",
+          value: Math.trunc(avaMemberDistribution.value.inactive),
+        },
+      ],
+      total:
+        avaMemberDistribution.value.paid + avaMemberDistribution.value.unpaid,
+    };
+  });
 
   function triggerLoadMemberVehicles(
     fullName: string,
@@ -136,10 +169,12 @@ export function useAVAMembers() {
     status,
     getActiveDescription,
     activeDescription,
+    activeAVAMember,
     avaMemberDistribution,
     loadingAVAMemberDistributionStatus,
     loadingMemberVehicles,
     memberVehicleEntries,
+    transformDistribution,
     refreshAVAMemberDistributionStatus,
     triggerLoadMemberVehicles,
     loadMemberVehicles,

@@ -12,6 +12,7 @@
       :type="DonutType.Full"
       :pad-angle="0"
       :arc-width="innerHoleWidth ?? 0"
+      :glow="true"
     >
       <template #tooltip="{ values }">
         <div class="text-default flex items-center gap-2 p-2">
@@ -70,6 +71,7 @@ interface Props {
   radius?: number;
   innerHoleWidth?: number;
   title?: string;
+  total?: number;
 }
 
 interface BulletLegendItemInterface {
@@ -122,7 +124,9 @@ const tailwindColors = [
 
 const props = defineProps<Props>();
 const totalInput: ComputedRef<number> = computed(() =>
-  props.data.map((e) => e.value).reduce((cumm, curr) => cumm + curr, 0),
+  props.total
+    ? props.total
+    : props.data.map((e) => e.value).reduce((cumm, curr) => cumm + curr, 0),
 );
 const categories = computed(() => {
   return props.data.reduce(
