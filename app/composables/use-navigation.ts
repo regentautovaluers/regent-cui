@@ -50,27 +50,27 @@ export default function () {
     {
       id: 2,
       name: "ra-home",
-      screenName: "Roadside Assistance",
+      screenName: "AVA Road Rescue",
       display: true,
       icon: "icon-[material-symbols--auto-towing-rounded]",
       showChildren: true,
       children: [
         {
           id: 0,
-          name: "ra-summary-page",
-          screenName: "AVA Roadside Assistance",
-          display: true,
-        },
-        {
-          id: 1,
           name: "ra-ava-members",
           screenName: "Your AVA Members",
           display: true,
         },
         {
-          id: 2,
+          id: 1,
           name: "ra-onboard-single-member",
           screenName: "Onboard AVA Member",
+          display: true,
+        },
+        {
+          id: 2,
+          name: "ra-request-roadside-assistance",
+          screenName: "Request Road Rescue",
           display: true,
         },
         {
@@ -78,7 +78,7 @@ export default function () {
           name: "ra-incidents",
           screenName: "Roadside Incidents",
           display: true,
-        }
+        },
       ],
     },
     {

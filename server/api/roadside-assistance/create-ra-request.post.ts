@@ -1,8 +1,9 @@
 export default defineEventHandler(async (event) => {
   const { AVA_BASE_URL } = useRuntimeConfig();
-  const endpoint = `${AVA_BASE_URL}/api/v1/memberships/bulk`;
-  const body: BulkAVAMemberRegistration[] = await readBody(event);
-  const cookies = parseCookies(event);
+  const body: unknown = await readBody(event);
+  const endpoint = `${AVA_BASE_URL}/api/v1/mobile/${determineEndpointSuffix(
+    (body as RequestRoadsideAssitanceBase).appServiceType,
+  )}`;
 
   try {
     await makeProxyRequest(endpoint, event, {

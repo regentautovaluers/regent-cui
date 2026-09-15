@@ -82,7 +82,7 @@ async function submitForm() {
     await post("/api/vehicle-valuation/create-authority-letter", formData);
     $showToast({
       title: "Success!",
-      description: "Request submitted successfully! Check back later...",
+      description: "Valuation request submitted successfully!",
       color: "success",
     });
   } catch (err) {
@@ -110,10 +110,9 @@ function resetState() {
 
 <template>
   <GrowableCard card-title="Create Your Authority Letter">
-
     <form class="space-y-10" @submit.prevent="submitForm()">
       <!-- client details -->
-      <div class="grid gap-x-8 grid-cols-3">
+      <div class="grid gap-8 grid-cols-3">
         <InputsGenericInput
           input-id="cal-registration-number"
           input-place-holder="enter only one e.g. KAA1224"
