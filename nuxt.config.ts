@@ -3,6 +3,9 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
+  devServer: {
+    port: 8000,
+  },
   devtools: { enabled: true },
   css: ["./app/assets/css/main.css"],
   imports: {
@@ -56,6 +59,7 @@ export default defineNuxtConfig({
       COPYRIGHT_YEAR: "",
       PAGE_SIZE: "",
       GOOGLE_MAPS_API_KEY: "",
+      GOOGLE_MAPS_GEOFENCING_COUNTRY: "",
     },
   },
 });

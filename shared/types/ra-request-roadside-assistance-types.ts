@@ -27,6 +27,7 @@ export type RoadsideAssistanceFixedServiceChargesServices =
 export interface RoadsideAssistanceFixedServiceCharges {
   id: number;
   service_name: RoadsideAssistanceFixedServiceChargesServices;
+  charge: string;
   createdAt: string;
   updatedAt: string;
   recordedBy: string;

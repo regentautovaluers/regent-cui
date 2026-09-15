@@ -1,14 +1,51 @@
 <script setup lang="ts">
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 type RoadRescueModes = "tow" | "fd" | "jstart" | "tyrec";
 interface RoadRescueModesSelector {
   short: RoadRescueModes;
   long: String;
 }
+type PlaceCallback = (data: {
+  id: number;
+  label: string;
+  lat: number;
+  lng: number;
+  name: string;
+}) => void;
+type ActiveRequestMode = "tow" | "fd" | "jstart" | "tyrec";
 
 definePageMeta({
   layout: "no-pad",
   displayName: "Request Road Rescue",
 });
+const {
+  data: avaVehicleClasses,
+  status: loadAvaVehicleClassesStatus,
+  refresh: refreshAvaVehicleClassesStatus,
+} = useApiData<SlimmedAvaVehicleTypes[]>(
+  computed(() => `available-ava-vehicle-classes`),
+  "/api/roadside-assistance/load-ava-vehicle-classes",
+  {
+    lazy: false,
+    // Keep previous data visible while fetching the next page for seamless UX
+    dedupe: "defer",
+  },
+);
+
+const {
+  data: fixedServiceCharges,
+  status: loadFixedServiceChargesStatus,
+  refresh: refreshFixedServiceCharges,
+} = useApiData<RoadsideAssistanceFixedServiceCharges[]>(
+  computed(() => `ava-vfixed-service-charges`),
+  "/api/roadside-assistance/load-ava-service-charges",
+  {
+    lazy: false,
+    // Keep previous data visible while fetching the next page for seamless UX
+    dedupe: "defer",
+  },
+);
+
 const availableRoadRescueModes: readonly RoadRescueModesSelector[] = [
   {
     short: "tow",
@@ -38,8 +75,10 @@ const tyreType: { id: number; text: "tube" | "tubeless" | "unknown" }[] = [
 ];
 const { post } = useStandardizedApi();
 const { $showToast } = useNuxtApp();
+const { public: pubConf } = useRuntimeConfig();
 const activeDisplay: Ref<"registered" | "unregistered"> = ref("registered");
-const requestMode: Ref<"tow" | "fd" | "jstart" | "tyrec"> = ref("tow");
+const isMemberUnderEA: Ref<boolean | null> = ref(null);
+const requestMode: Ref<ActiveRequestMode> = ref("tow");
 const submittingRequest = ref(false);
 const requestData = reactive<RequestRoadsideAssistanceMerged>({
   appUserName: "",
@@ -91,73 +130,77 @@ const formTitle = computed(() => {
   }
   return basic;
 });
-// const staticServiceCost: ComputedRef<number> = computed(() => {
-//   if (serviceCharges.value) {
-//     switch (route.name) {
-//       case "ra-jumpstarting-request":
-//         return pickServiceToSourceCharge(serviceCharges.value, "Jumpstarting")
-//           .charge;
-//       case "ra-fueldelivery-request":
-//         return pickServiceToSourceCharge(serviceCharges.value, "Fuel Delivery")
-//           .charge;
-//       case "ra-tyrechange-request":
-//         return pickServiceToSourceCharge(serviceCharges.value, "Tyre Change")
-//           .charge;
-//     }
-//   } else {
-//     return 0;
-//   }
-// });
-const {
-  data: avaVehicleClasses,
-  status,
-  refresh,
-} = useApiData<SlimmedAvaVehicleTypes[]>(
-  computed(() => `available-ava-vehicle-classes`),
-  "/api/roadside-assistance/load-ava-vehicle-classes",
-  {
-    lazy: false,
-    // Keep previous data visible while fetching the next page for seamless UX
-    dedupe: "defer",
-  },
-);
+const staticServiceCost: ComputedRef<number> = computed(() => {
+  if (fixedServiceCharges.value) {
+    const fixedCharges = unref(fixedServiceCharges.value);
 
-function calculateTowingChargeNonMember(
-  basePrice: number,
-  distance: number,
-  chargePerExtraKm: number,
-): number {
-  if (distance < 10) {
-    return basePrice;
-  }
-
-  return Math.ceil(basePrice + (distance - 10) * chargePerExtraKm);
-}
-
-function calculateTowingChargeMember(
-  basePrice: number,
-  distance: number,
-  chargePerExtraKm: number,
-  freeDistanceBenefit: number,
-  thresholdDistance: number,
-): number {
-  if (freeDistanceBenefit <= 0) {
-    if (distance < thresholdDistance) {
-      return basePrice;
-    } else {
-      return Math.ceil(
-        basePrice + (distance - thresholdDistance) * chargePerExtraKm,
-      );
+    switch (requestMode.value) {
+      case "jstart":
+        return Number(
+          pickFixedServiceCharge(fixedCharges, "Jumpstarting")!.charge,
+        );
+      case "fd":
+        return Number(
+          pickFixedServiceCharge(fixedCharges, "Fuel Delivery")!.charge,
+        );
+      case "tyrec":
+        return Number(
+          pickFixedServiceCharge(fixedCharges, "Tyre Change")!.charge,
+        );
     }
   }
 
-  const distanceAboveBenefit = distance - freeDistanceBenefit;
-  if (distanceAboveBenefit >= 0) {
-    return Math.ceil(0 + distanceAboveBenefit * chargePerExtraKm);
-  } else {
+  return 0;
+});
+
+const computedServiceCost: ComputedRef<number> = computed(() => {
+  const isMember = isMemberUnderEA.value !== undefined; // or however you track membership
+
+  // Case 1: static service cost modes
+  if (
+    (["fd", "jstart", "tyrec"] as ActiveRequestMode[]).includes(
+      requestMode.value,
+    )
+  ) {
+    return isMember ? 0 : staticServiceCost.value;
+  }
+
+  // Case 2: towing cost
+  const availableVehicleClasses = unref(avaVehicleClasses);
+  const selectedVehicleType = availableVehicleClasses
+    ? availableVehicleClasses[requestData.vehicleType]
+    : null;
+
+  if (!requestData.appDistance || !selectedVehicleType) {
     return 0;
   }
-}
+
+  if (isMember) {
+    if (isMemberUnderEA.value === false) {
+      return calculateTowingChargeMember(
+        selectedVehicleType.towingRateWithinThresholdPrice,
+        requestData.appDistance,
+        selectedVehicleType.towingRateOverThresholdPriceMembers,
+        requestData.currentFreeDistance,
+        selectedVehicleType.towingRateThresholdDistance,
+      );
+    } else {
+      return calculateTowingChargeNonMember(
+        selectedVehicleType.towingRateWithinThresholdPrice,
+        requestData.appDistance,
+        selectedVehicleType.towingRateOverThresholdPriceNonMembers,
+      );
+    }
+  } else {
+    return (
+      calculateTowingChargeNonMember(
+        selectedVehicleType.towingRateWithinThresholdPrice,
+        requestData.appDistance,
+        selectedVehicleType.towingRateOverThresholdPriceNonMembers,
+      ) || 0
+    );
+  }
+});
 
 async function requestRoadsideAssistance() {
   try {
@@ -178,12 +221,113 @@ async function requestRoadsideAssistance() {
     submittingRequest.value = false;
   }
 }
+
+async function bindToLocation(
+  inputId: string,
+  id: number,
+  label: string,
+  callback?: PlaceCallback,
+) {
+  setOptions({
+    key: pubConf.GOOGLE_MAPS_API_KEY,
+    v: "weekly",
+  });
+
+  const { Autocomplete } = await importLibrary("places");
+  const input = document.getElementById(inputId) as HTMLInputElement;
+
+  const options = {
+    componentRestrictions: {
+      country: pubConf.GOOGLE_MAPS_GEOFENCING_COUNTRY,
+    },
+    fields: ["address_components", "geometry", "name"],
+    strictBounds: false,
+  };
+
+  const autocomplete = new Autocomplete(input, options);
+
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+    const lat = place.geometry?.location?.lat()!;
+    const lng = place.geometry?.location?.lng()!;
+    const name = `${place.address_components![0].short_name} ${
+      place.address_components![1].short_name
+    }, ${place.address_components![2].short_name}`;
+
+    if (callback) {
+      callback({ id, label, lat, lng, name });
+    }
+  });
+}
+
+// distance calculator
+watch(
+  () => [
+    requestData.appPickupLat,
+    requestData.appPickupLon,
+    requestData.appDestinationLat,
+    requestData.appDestinationLon,
+  ],
+  async ([pickupLat, pickupLon, destLat, destLon]) => {
+    if (pickupLat && pickupLon && destLat && destLon) {
+      const directionsService = new google.maps.DirectionsService();
+
+      const directionsRequest: google.maps.DirectionsRequest = {
+        origin: new google.maps.LatLng(pickupLat, pickupLon),
+        destination: new google.maps.LatLng(destLat, destLon),
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC,
+        drivingOptions: {
+          departureTime: new Date(),
+          trafficModel: "optimistic",
+        },
+      };
+
+      directionsService.route(directionsRequest, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK && result) {
+          const leg = result.routes[0].legs[0];
+          if (leg?.distance) {
+            // Store the distance (in km) directly in requestData
+            requestData.appDistance = leg.distance.value / 1000;
+          }
+        } else {
+          console.error("Failed to compute route:", status);
+        }
+      });
+    }
+  },
+);
+
+// bind google maps places picker
+onMounted(() => {
+  bindToLocation(
+    "rra-incident-location",
+    1,
+    "Client's Location",
+    ({ lat, lng, name }) => {
+      requestData.appPickupLat = lat;
+      requestData.appPickupLon = lng;
+      // pickupPointName.value = name;
+    },
+  );
+
+  bindToLocation(
+    "rra-incident-destination",
+    2,
+    "Client's Destination",
+    ({ lat, lng, name }) => {
+      requestData.appDestinationLat = lat;
+      requestData.appDestinationLon = lng;
+      // dropOffPointName.value = name;
+    },
+  );
+});
 </script>
 
 <template>
   <div class="h-full min-h-full bg-red-500">
     <h1>Hello world</h1>
-    {{ avaVehicleClasses }}
+    {{ JSON.stringify(requestData, null, 2) }}
   </div>
   <div class="h-full min-h-full p-20 space-y-8">
     <div class="w-full">
@@ -313,6 +457,39 @@ async function requestRoadsideAssistance() {
       class="grid grid-cols-1 gap-8"
       @submit.prevent="requestRoadsideAssistance()"
     >
+      <!-- location stuff -->
+      <div class="grid grid-cols-1 gap-8">
+        <div class="flex items-end space-x-2 w-full">
+          <div class="btn size-13 w-13 btn-square btn-soft btn-primary">
+            <span
+              class="icon-[material-symbols--person-pin-rounded] size-8"
+            ></span>
+          </div>
+          <div class="grow">
+            <InputsGenericInput
+              input-id="rra-incident-location"
+              input-place-holder="Type to start searching"
+              input-label="Incident Location"
+              :input-required="true"
+            ></InputsGenericInput>
+          </div>
+        </div>
+
+        <div class="flex items-end space-x-2 w-full">
+          <div class="btn size-13 w-13 btn-square btn-soft btn-success">
+            <span class="icon-[material-symbols--home-pin] size-8"></span>
+          </div>
+          <div class="grow">
+            <InputsGenericInput
+              input-id="rra-incident-destination"
+              input-place-holder="Type to start searching"
+              input-label="Towing Destination"
+              :input-required="true"
+            ></InputsGenericInput>
+          </div>
+        </div>
+      </div>
+
       <!-- vehicle type -->
       <InputsGenericInputSearchBox
         input-id="rra-vehicle-class"
