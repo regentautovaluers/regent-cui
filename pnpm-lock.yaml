@@ -92,9 +92,6 @@ importers:
       vue3-google-map:
         specifier: ^0.24.1
         version: 0.24.1(vue@3.5.21)
-      wkhtmltopdf:
-        specifier: ^0.4.0
-        version: 0.4.0
     devDependencies:
       '@iconify-json/material-symbols-light':
         specifier: ^1.2.34
@@ -3084,10 +3081,6 @@ packages:
   is-ssh@1.4.1:
     resolution: {integrity: sha512-JNeu1wQsHjyHgn9NcWTaXq6zWSR6hqE0++zhfZlkFBbScNkyvxCdeV8sRkSBaeLKxmbpR21brail63ACNxJ0Tg==}
 
-  is-stream@1.1.0:
-    resolution: {integrity: sha512-uQPm8kcs47jx38atAcWTVxyltQYoPT68y9aWYdV6yWXSyW8mzSat0TL6CiWdZeCdF3KrAvpVtnHbTv4RN+rqdQ==}
-    engines: {node: '>=0.10.0'}
-
   is-stream@2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
     engines: {node: '>=8'}
@@ -4195,9 +4188,6 @@ packages:
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
-  slang@0.3.0:
-    resolution: {integrity: sha512-kGj3TvxSDR1Enhig/aan5ucfWNDULTiWg3NrExUzO2ShXcYsm6k2oPxnav8GtslYvozxRAqL+E2O3P3QKtQYSg==}
-
   slash@5.1.0:
     resolution: {integrity: sha512-ZA6oR3T/pEyuqwMgAKT0/hAv8oAXckzbkmR0UkUosQ+Mc4RxGoJkRmwHgHufaenlyAgE1Mxgpdcrf75y6XcnDg==}
     engines: {node: '>=14.16'}
@@ -4763,10 +4753,6 @@ packages:
     resolution: {integrity: sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
     hasBin: true
-
-  wkhtmltopdf@0.4.0:
-    resolution: {integrity: sha512-PXvsPehsmP1HeUDPx5qofitc+TJ0+Gb4Xn11iPJnHrLgXwyzRUzn9/b2t+soE+fwBMqUPs4Wchd0CRW+52MkNQ==}
-    engines: {node: '>=0.6'}
 
   wkt-parser@1.5.5:
     resolution: {integrity: sha512-/zMYi94/7D7fxcOSlVmWn6vnOMj3Gq5d1xvVjaYOS9n6h0qOJ4I7YYVxBWYcH1vq9+suhqzXkn05Yx47zQNUIA==}
@@ -8238,8 +8224,6 @@ snapshots:
     dependencies:
       protocols: 2.0.2
 
-  is-stream@1.1.0: {}
-
   is-stream@2.0.1: {}
 
   is-stream@3.0.0: {}
@@ -9478,8 +9462,6 @@ snapshots:
 
   sisteransi@1.0.5: {}
 
-  slang@0.3.0: {}
-
   slash@5.1.0: {}
 
   smob@1.5.0: {}
@@ -10024,11 +10006,6 @@ snapshots:
   which@5.0.0:
     dependencies:
       isexe: 3.1.1
-
-  wkhtmltopdf@0.4.0:
-    dependencies:
-      is-stream: 1.1.0
-      slang: 0.3.0
 
   wkt-parser@1.5.5: {}
 

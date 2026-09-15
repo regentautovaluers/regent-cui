@@ -1,11 +1,9 @@
 import type { GenericResponse } from '~/types/corporate-valuations/generic-response-type';
-import type { AuthorityLetter } from '~/types/corporate-valuations/authority-letters';
 import { type MultiPartData } from 'h3';
 
 export default defineEventHandler(async (event) => {
 	const requestData: MultiPartData[] | undefined = await readMultipartFormData(event);
 	const formData = new FormData();
-	const cookies = parseCookies(event);
 	const config = useRuntimeConfig();
 	const pdfInput: Record<string, string> = {};
 	const blackListedKeys: string[] = [
@@ -41,17 +39,6 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		// source the authority letter pdf
-		const requestBody: AuthorityLetter = buildAuthorityLetterRequestBody(pdfInput);
-		const pdfBlob = await $fetch<Blob>('/api/vehicle-valuation/build-authority-letter', {
-			method: 'POST',
-			body: requestBody,
-			responseType: 'blob',
-		});
-
-		// append it to the request's formData
-		formData.append('files', pdfBlob, 'authority-letter.pdf');
-
 		const endpoint = `${config.public.VALUATION_BASE_URL}/api/v1/authority-letter/corp/create-authority-letter`;
 		await makeProxyRequest<GenericResponse<any>>(
 			endpoint,
@@ -66,42 +53,3 @@ export default defineEventHandler(async (event) => {
 		return sendErrorResponse(event, err);
 	}
 });
-
-function buildAuthorityLetterRequestBody(input: Record<string, string>): AuthorityLetter {
-	let letter: AuthorityLetter = {
-		letterId: 'UNKNOWN',
-		createdByBroker: input.isCreatedByBroker == 'true',
-		registrationNumber: input.regNo,
-		clientName: input.clientName,
-		feedback: 'UNKNOWN',
-		clientPhone: input.clientPhone,
-		policyNumber: input.policyNumber ?? '-',
-		agencyName: input.isCreatedByBroker == 'true' ? input.agentName : '-',
-		authorizedBy: {
-			username: input.authorizedByUsername,
-			phoneNumber: input.authorizedByPhoneNumber,
-		},
-		createdOn: new Date().toISOString().replace('T', ' '),
-		assessmentStage: 'UNKNOWN',
-		reportURL: 'UNKNOWN',
-		feedbackTrail: [
-			{
-				id: 0,
-				feedback: input.comments,
-				dateAdded: 'UNKNOWN',
-				addedByRegentUser: null,
-				addedByCorporateUser: {
-					userId: 'UNKNOWN',
-					username: 'UNKNOWN',
-				},
-			},
-		],
-		uploadedDocuments: [],
-		corpOrganization: {
-			corpId: 'UNKNOWN',
-			corpName: input.corporateName,
-		},
-	};
-
-	return letter;
-}
