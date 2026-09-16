@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown flex-1 relative">
+  <div class="dropdown flex-1 relative" ref="ddSelectRef">
     <label
       :class="[
         'label-text text-base mb-1',
@@ -17,6 +17,7 @@
       aria-haspopup="menu"
       aria-expanded="false"
       v-model="userInput"
+      @focus="toggleDropdown()"
     />
 
     <!-- loading spinner -->
@@ -52,27 +53,36 @@
     <span class="helper-text" v-show="inputHelpertext">{{
       inputHelpertext
     }}</span>
-    <ul
-      class="dropdown-menu absolute left-0 right-0 dropdown-open:opacity-100 hidden border border-primary h-fit max-h-64 overflow-y-auto thin-scrollbar"
-      role="menu"
-      aria-orientation="vertical"
-      :aria-labelledby="inputId"
+    <transition
+      enter-active-class="transition ease-out duration-200"
+      enter-from-class="opacity-0 translate-y-2"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition ease-in duration-150"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 translate-y-2"
     >
-      <li v-for="i in filteredOptions" :key="i.id">
-        <button
-          class="dropdown-item inline-flex items-center justify-between group"
-          type="button"
-          @mousedown="selectOption(i.id, i.text)"
-        >
-          <span>
-            {{ i.text }}
-          </span>
-          <span
-            class="icon-[material-symbols--arrow-insert-rounded] text-base-content/80 size-5 hidden group-hover:block"
-          ></span>
-        </button>
-      </li>
-    </ul>
+      <ul
+        class="absolute z-30 w-full mt-2 bg-base-100 left-0 right-0 rounded-lg border border-primary h-fit max-h-64 overflow-y-auto thin-scrollbar"
+        role="menu"
+        aria-orientation="vertical"
+        :aria-labelledby="inputId"
+        v-if="isOpen"
+      >
+        <li v-for="i in filteredOptions" :key="i.id">
+          <button
+            class="dropdown-item inline-flex items-center justify-between group"
+            type="button"
+            @mousedown="selectOption(i.id, i.text)"
+          >
+            <span>
+              {{ i.text }}
+            </span>
+            <span
+              class="icon-[material-symbols--arrow-insert-rounded] text-base-content/80 size-5 hidden group-hover:block"
+            ></span>
+          </button>
+        </li></ul
+    ></transition>
   </div>
 </template>
 
@@ -101,8 +111,9 @@ const props = withDefaults(defineProps<Props>(), {
   inputTextSize: "md",
 });
 const emits = defineEmits(["value-selected"]);
-
+const isOpen = ref(false);
 const userInput: Ref<string> = ref("");
+const ddSelectRef = ref<HTMLElement | null>(null);
 
 /**
  * High-performance UI Filtering
@@ -124,5 +135,28 @@ const filteredOptions = computed(() => {
 const selectOption = (id: string | number, text: string | number) => {
   userInput.value = text.toString();
   emits("value-selected", id);
+  closeDropdown();
 };
+
+function toggleDropdown() {
+  isOpen.value = !isOpen.value;
+}
+
+function closeDropdown() {
+  isOpen.value = false;
+}
+
+function handleClickOutside(event: MouseEvent) {
+  if (ddSelectRef.value && !ddSelectRef.value.contains(event.target as Node)) {
+    closeDropdown();
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
