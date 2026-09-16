@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { GoogleMap, CustomMarker, Polyline } from "vue3-google-map";
 definePageMeta({
   layout: "no-pad",
   displayName: "Request Road Rescue",
@@ -61,6 +62,7 @@ const tyreType: { id: number; text: TyreTypes }[] = [
 const { post, get } = useStandardizedApi();
 const { $showToast } = useNuxtApp();
 const { public: pubConf } = useRuntimeConfig();
+const polylineCoords = ref<{ lat: number; lon: number }[]>([]);
 const activeDisplay: Ref<"registered" | "unregistered"> = ref("registered");
 const isMemberUnderEA: Ref<boolean | null> = ref(null);
 const requestMode: Ref<ActiveRequestMode> = ref("tow");
@@ -275,7 +277,7 @@ watch(requestMode, (newMode) => {
   }
 });
 
-// distance calculator
+// directions calculator
 watch(
   () => [
     requestData.appPickupLat,
@@ -304,6 +306,17 @@ watch(
           if (leg?.distance) {
             // Store the distance (in km) directly in requestData
             requestData.appDistance = leg.distance.value / 1000;
+          }
+
+          // polyline for most optimistic path
+          // Save polyline coordinates for drawing
+          if (leg?.steps) {
+            polylineCoords.value = leg.steps.flatMap((step) =>
+              step.path.map((latLng) => ({
+                lat: latLng.lat(),
+                lon: latLng.lng(),
+              })),
+            );
           }
         } else {
           console.error("Failed to compute route:", status);
@@ -345,9 +358,88 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full min-h-full bg-red-500">
-    <h1>Hello world</h1>
-    {{ JSON.stringify(requestData, null, 2) }}
+  <div class="h-full min-h-full">
+    <GoogleMap
+      ref="mapRef"
+      :api-key="pubConf.GOOGLE_MAPS_API_KEY"
+      :styles="googleMapStyle"
+      :center="{ lat: -1.2687054, lng: 36.8069326 }"
+      style="width: 100%; height: 100%"
+      :map-type-control="false"
+      :zoom="13"
+      :zoom-control="true"
+      :fullscreen-control="false"
+      :street-view-control="false"
+    >
+      <!-- where logged in client is -->
+      <CustomMarker
+        :options="{
+          position: { lat: -1.2685284532098227, lng: 36.80946458168313 },
+          anchorPoint: 'BOTTOM_CENTER',
+        }"
+      >
+        <div
+          class="myloc-box text-center w-fit h-fit rounded-lg bg-primary p-3 text-base-content"
+        >
+          <h3 class="text-base font-semibold">Our Head Office</h3>
+          <span>TRV Plaza, Muthithi Road</span>
+        </div>
+      </CustomMarker>
+
+      <!-- where client needing roadside assistance is -->
+      <template v-if="requestData.appPickupLat && requestData.appPickupLon">
+        <CustomMarker
+          :options="{
+            position: {
+              lat: requestData.appPickupLat,
+              lng: requestData.appPickupLon,
+            },
+            anchorPoint: 'BOTTOM_CENTER',
+          }"
+        >
+          <div
+            class="myloc-box text-center w-fit h-fit rounded-lg bg-primary p-3 text-base-content"
+          >
+            <h3 class="text-base font-semibold">Incident Location</h3>
+            <span>{{ requestData.appPickupPoint }}</span>
+          </div>
+        </CustomMarker>
+      </template>
+
+      <!-- where client needing roadside assistance is -->
+      <template
+        v-if="requestData.appDestinationLat && requestData.appDestinationLon"
+      >
+        <CustomMarker
+          :options="{
+            position: {
+              lat: requestData.appDestinationLat,
+              lng: requestData.appDestinationLon,
+            },
+            anchorPoint: 'BOTTOM_CENTER',
+          }"
+        >
+          <div
+            class="myloc-box text-center w-fit h-fit rounded-lg bg-primary p-3 text-base-content"
+          >
+            <h3 class="text-base font-semibold">Towing Destination</h3>
+            <span>{{ requestData.appDestinationPoint }}</span>
+          </div>
+        </CustomMarker>
+      </template>
+
+      <!-- polyline -->
+      <template v-if="polylineCoords.length > 0">
+        <Polyline
+          :options="{
+            path: polylineCoords,
+            geodesic: true,
+            strokeColor: '#ec4899',
+            strokeOpacity: 1.0,
+            strokeWeight: 5,
+          }"
+      /></template>
+    </GoogleMap>
   </div>
   <div class="h-full min-h-full p-20 space-y-8">
     <div class="w-full">
