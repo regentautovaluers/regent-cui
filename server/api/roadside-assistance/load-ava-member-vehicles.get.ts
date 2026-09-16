@@ -3,10 +3,11 @@ export default defineEventHandler(async (event) => {
   const query: {
     userEmail: string | null;
     userPhone: string | null;
+    searchReg: string | null;
     page: number;
     size: number;
   } = getQuery(event);
-  let requestURL = `${AVA_BASE_URL}/api/v1/mobile/user-memberships?&page=${query.page}&size=${query.size}`;
+  let requestURL = `${AVA_BASE_URL}/api/v1/mobile/user-memberships?page=${query.page}&size=${query.size}`;
 
   if (query.userEmail) {
     requestURL += requestURL + `&userEmail=${query.userEmail}`;
@@ -14,6 +15,10 @@ export default defineEventHandler(async (event) => {
 
   if (query.userPhone) {
     requestURL += requestURL + `&phoneNumber=${query.userPhone}`;
+  }
+
+  if (query.searchReg) {
+    requestURL += requestURL + `&serchTerm=${query.searchReg}`;
   }
 
   try {

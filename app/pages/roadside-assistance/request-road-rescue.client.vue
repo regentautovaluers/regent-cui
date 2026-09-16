@@ -58,13 +58,14 @@ const tyreType: { id: number; text: TyreTypes }[] = [
   { id: 1, text: "tubeless" },
   { id: 2, text: "unknown" },
 ];
-const { post } = useStandardizedApi();
+const { post, get } = useStandardizedApi();
 const { $showToast } = useNuxtApp();
 const { public: pubConf } = useRuntimeConfig();
 const activeDisplay: Ref<"registered" | "unregistered"> = ref("registered");
 const isMemberUnderEA: Ref<boolean | null> = ref(null);
 const requestMode: Ref<ActiveRequestMode> = ref("tow");
 const submittingRequest = ref(false);
+const searchingVehicle = ref(false);
 const requestData = reactive<RequestRoadsideAssistanceMerged>({
   appUserName: "",
   corporate_client: "",
@@ -204,6 +205,20 @@ async function requestRoadsideAssistance() {
     });
   } finally {
     submittingRequest.value = false;
+  }
+}
+
+async function searchVehicle() {
+  try {
+    searchingVehicle.value = true;
+  } catch (ex) {
+    $showToast({
+      title: "Search failed!",
+      description: "Please try search again!",
+      color: "error",
+    });
+  } finally {
+    searchingVehicle.value = false;
   }
 }
 
@@ -373,6 +388,73 @@ onMounted(() => {
       </h1>
     </div>
 
+    <!-- vehicle details -->
+    <form class="grid grid-cols-1 gap-8">
+      <!-- vehicle details -->
+      <h3 class="text-base-content text-lg">Vehicle Details</h3>
+      <div class="grid gap-8 grid-cols-2">
+        <div class="col-span-full relative">
+          <InputsGenericInput
+            input-id="rra-vehicle-reg"
+            input-place-holder="e.g. KAA123X"
+            input-label="Vehicle Registration"
+            :input-required="true"
+            v-model="requestData.appRegistration"
+          ></InputsGenericInput>
+
+          <!-- trigger search vehicle button -->
+          <button
+            class="btn btn-square btn-soft btn-primary size-12 absolute right-[3px] top-[38px]"
+            aria-label="Soft Icon Button"
+            type="submit"
+            disabled
+            v-show="activeDisplay == 'registered'"
+          >
+            <span
+              class="icon-[material-symbols--search-rounded] size-5 shrink-0"
+            ></span>
+          </button>
+        </div>
+
+        <InputsGenericInput
+          input-id="rra-vehicle-make"
+          input-place-holder="e.g. Toyota"
+          input-label="Make"
+          v-model="requestData.vehicleMake"
+        ></InputsGenericInput>
+
+        <InputsGenericInput
+          input-id="rra-vehicle-model"
+          input-place-holder="e.g. Corolla"
+          input-label="Model"
+          v-model="requestData.vehicleModel"
+        ></InputsGenericInput>
+      </div>
+
+      <div class="w-full">
+        <div
+          class="progress h-4"
+          role="progressbar"
+          aria-label="50% Progressbar"
+          aria-valuenow="50"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <div class="progress-bar w-1/2"></div>
+        </div>
+        <div class="my-2 flex items-end justify-between">
+          <p class="text-base-content uppercase font-semibold">
+            {{
+              !requestData.appRegistration ? "-" : requestData.appRegistration
+            }}
+          </p>
+          <span class="text-base-content uppercase font-semibold text-sm"
+            >{{ requestData.currentFreeDistance }} Free Towing Left</span
+          >
+        </div>
+      </div>
+    </form>
+
     <!-- client details -->
     <form>
       <h3 class="mb-5 text-base-content text-lg">Client Details</h3>
@@ -436,36 +518,6 @@ onMounted(() => {
       class="grid grid-cols-1 gap-8"
       @submit.prevent="requestRoadsideAssistance()"
     >
-      <!-- vehicle details -->
-      <h3 class="text-base-content text-lg">Vehicle Details</h3>
-      <div class="grid gap-8 grid-cols-2">
-        <div class="col-span-full">
-          <InputsGenericInput
-            input-id="rra-vehicle-reg"
-            input-place-holder="e.g. KAA123X"
-            input-label="Vehicle Registration"
-            :input-required="true"
-            v-model="requestData.appRegistration"
-          ></InputsGenericInput>
-        </div>
-
-        <InputsGenericInput
-          input-id="rra-vehicle-make"
-          input-place-holder="e.g. Toyota"
-          input-label="Make"
-          :input-required="true"
-          v-model="requestData.vehicleMake"
-        ></InputsGenericInput>
-
-        <InputsGenericInput
-          input-id="rra-vehicle-model"
-          input-place-holder="e.g. Corolla"
-          input-label="Model"
-          :input-required="true"
-          v-model="requestData.vehicleModel"
-        ></InputsGenericInput>
-      </div>
-
       <!-- location stuff -->
       <div class="grid grid-cols-1 gap-8">
         <div class="flex items-end space-x-2 w-full">
