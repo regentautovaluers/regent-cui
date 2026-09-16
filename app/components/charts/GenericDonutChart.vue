@@ -25,7 +25,7 @@
           <span class="text-dimmed mr-1">
             {{ values?.label }}
           </span>
-          {{ values ? values[values?.label] : "" }}
+          ~{{ values ? values[values?.label] : "" }} %
         </div>
       </template>
 
@@ -144,7 +144,7 @@ const categories = computed(() => {
 });
 
 function derivePercentage(x: number, total: number): number {
-  return (x * 100) / total;
+  return Math.trunc((x * 100) / total);
 }
 
 function getCategoryColor(label: string): string | undefined {

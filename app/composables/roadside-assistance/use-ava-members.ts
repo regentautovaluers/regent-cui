@@ -26,16 +26,15 @@ export function useAVAMembers() {
     {
       name: "Roadside Assistance",
       description:
-        "Our 24/7 road rescue service swiftly gets you back on track, whether it’s a flat tire or a breakdown. \
-				Trust our services to ensure a smooth ride, committed to minimizing disruptions and maximizing safety \
+        "Our 24/7 road rescue service gets you back on track, whether it’s a flat tire or a breakdown. We are, committed to minimizing disruptions and maximizing safety \
         on the road, so you can continue your journey with peace of mind!",
     },
     {
       name: "Emergency Evacuation",
       description:
-        "Our emergency response service is your lifeline during critical moments. Whether it’s a remote wilderness \
+        "Whether it’s a remote wilderness \
 				rescue or a medical evacuation, our team combines the speed of air travel with the stability of ground \
-				support, ensuring your safety when every second counts.",
+				support, ensuring your safety during critical moments.",
     },
   ];
   const getActiveDescription = computed(

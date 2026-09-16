@@ -10,15 +10,15 @@ export default defineEventHandler(async (event) => {
   let requestURL = `${AVA_BASE_URL}/api/v1/mobile/user-memberships?page=${query.page}&size=${query.size}`;
 
   if (query.userEmail) {
-    requestURL += requestURL + `&userEmail=${query.userEmail}`;
+    requestURL += `&userEmail=${query.userEmail}`;
   }
 
   if (query.userPhone) {
-    requestURL += requestURL + `&phoneNumber=${query.userPhone}`;
+    requestURL += `&phoneNumber=${query.userPhone}`;
   }
 
   if (query.searchReg) {
-    requestURL += requestURL + `&serchTerm=${query.searchReg}`;
+    requestURL += `&serchTerm=${query.searchReg}`;
   }
 
   try {

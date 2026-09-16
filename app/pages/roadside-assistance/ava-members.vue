@@ -2,6 +2,7 @@
 definePageMeta({
   name: "ra-ava-members",
   displayName: "AVA Members",
+  layout: "ava-tables",
 });
 
 const {
@@ -87,9 +88,7 @@ async function navigateToSingleUpload(
 </script>
 
 <template>
-  <div
-    class="w-full h-full min-h-full grid grid-rows-[auto_1fr] grid-cols-[80%_20%] gap-8"
-  >
+  <div class="flex-1 flex flex-col gap-8">
     <div class="card block w-full col-span-2 h-fit">
       <div class="gap-0 p-4 flex items-center justify-between">
         <div class="flex items-center space-x-3">
@@ -123,197 +122,210 @@ async function navigateToSingleUpload(
       </div>
     </div>
 
-    <div>
-      <template v-if="avaMembers?.memberships?.length">
-        <GrowableCard :show-padding="false">
-          <template #no-padding>
-            <GenericTable
-              :headers="[
-                'Number',
-                'Client',
-                'Contacts',
-                'Vehicles',
-                'Created At',
-                '',
-              ]"
-              :dataLoading="status == 'pending'"
-            >
-              <tr
-                v-for="membership in avaMembers.memberships"
-                :key="membership.id"
+    <div
+      class="flex-1 grid grid-cols-1 lg:grid-cols-[4fr_1fr] gap-8 items-stretch"
+    >
+      <div class="flex flex-col min-h-270">
+        <template v-if="avaMembers?.memberships?.length">
+          <GrowableCard :show-padding="false">
+            <template #no-padding>
+              <GenericTable
+                :headers="[
+                  'Number',
+                  'Client',
+                  'Contacts',
+                  'Vehicles',
+                  'Created At',
+                  '',
+                ]"
+                :dataLoading="status == 'pending'"
               >
-                <td class="font-semibold">{{ membership.id }}</td>
-                <td>
-                  <div class="font-semibold w-fit">
-                    {{ membership.full_name }}
-                  </div>
-                  <div class="btn btn-soft btn-sm btn-accent">
-                    {{ membership.category }}
-                  </div>
-                </td>
-                <td class="space-y-1 flex flex-col">
-                  <div class="badge badge-soft badge-info">
-                    Email: {{ membership.userEmail ?? "-" }}
-                  </div>
-                  <div class="badge badge-soft badge-success">
-                    Phone:
-                    {{
-                      !membership.phone_number
-                        ? "-"
-                        : censorString(membership.phone_number, "END")
-                    }}
-                  </div>
-                </td>
-                <td>
-                  <div class="join">
-                    <div class="btn btn-soft btn-primary join-item">
-                      {{ membership.membershipVehicleCount }}
+                <tr
+                  v-for="membership in avaMembers.memberships"
+                  :key="membership.id"
+                >
+                  <td class="font-semibold">{{ membership.id }}</td>
+                  <td>
+                    <div class="font-semibold w-fit">
+                      {{ membership.full_name }}
                     </div>
-                    <button
-                      type="button"
-                      class="btn btn-soft btn-primary join-item"
-                      @click="
-                        triggerLoadMemberVehicles(
-                          membership.full_name,
-                          membership.userEmail,
-                          membership.phone_number,
-                        )
-                      "
-                    >
-                      <span
-                        class="icon-[material-symbols--open-in-full-rounded] size-4"
-                      >
-                      </span>
-                      <span>View</span>
-                    </button>
-                  </div>
-                </td>
-                <td>
-                  {{ formatDateToWords(membership.createdAt) }}
-                </td>
-                <td>
-                  <GenericTableActionButton
-                    :action-id="`member-${membership.id}-action`"
-                  >
-                    <li>
+                    <div class="btn btn-soft btn-sm btn-accent">
+                      {{ membership.category }}
+                    </div>
+                  </td>
+                  <td class="space-y-1 flex flex-col">
+                    <div class="badge badge-soft badge-info">
+                      Email: {{ membership.userEmail ?? "-" }}
+                    </div>
+                    <div class="badge badge-soft badge-success">
+                      Phone:
+                      {{
+                        !membership.phone_number
+                          ? "-"
+                          : censorString(membership.phone_number, "END")
+                      }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="join">
+                      <div class="btn btn-soft btn-primary join-item">
+                        {{ membership.membershipVehicleCount }}
+                      </div>
                       <button
-                        class="dropdown-item"
                         type="button"
+                        class="btn btn-soft btn-primary join-item"
                         @click="
-                          navigateToSingleUpload(
+                          triggerLoadMemberVehicles(
                             membership.full_name,
-                            membership.phone_number,
                             membership.userEmail,
+                            membership.phone_number,
                           )
                         "
                       >
-                        Add Vehicle
+                        <span
+                          class="icon-[material-symbols--open-in-full-rounded] size-4"
+                        >
+                        </span>
+                        <span>View</span>
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    {{ formatDateToWords(membership.createdAt) }}
+                  </td>
+                  <td>
+                    <GenericTableActionButton
+                      :action-id="`member-${membership.id}-action`"
+                    >
+                      <li>
+                        <button
+                          class="dropdown-item"
+                          type="button"
+                          @click="
+                            navigateToSingleUpload(
+                              membership.full_name,
+                              membership.phone_number,
+                              membership.userEmail,
+                            )
+                          "
+                        >
+                          Add Vehicle
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item">Edit Details</button>
+                      </li>
+                    </GenericTableActionButton>
+                  </td>
+                </tr>
+              </GenericTable>
+            </template>
+          </GrowableCard>
+
+          <GenericTablePageSwitcher
+            :current-page="paginationInfo.currentPage"
+            :total-pages="paginationInfo.totalPages"
+            :total-items="paginationInfo.totalItems"
+            :scroll-back-disabled="page <= 0 || status === 'pending'"
+            :scroll-forward-disabled="
+              page >= paginationInfo.totalPages - 1 || status === 'pending'
+            "
+            @page-change-clicked="
+              (page) => {
+                handlePageChange(page);
+              }
+            "
+          ></GenericTablePageSwitcher>
+        </template>
+        <template v-else>
+          <GenericNoTableDataCTA
+            heading="Onboard AVA Member"
+            sub-heading="As One Or Many"
+            to-page="ra-onboard-single-member"
+          >
+          </GenericNoTableDataCTA>
+        </template>
+      </div>
+      <div class="flex flex-col space-y-8">
+        <div class="h-1/2">
+          <GrowableCard>
+            <template #no-padding>
+              <div class="flex flex-col w-full h-full">
+                <div class="h-16 flex items-center justify-between w-full p-4">
+                  <h3 class="font-bold text-2xl">About</h3>
+                  <GenericTableActionButton action-id="about-ra-switcher"
+                    ><li>
+                      <button
+                        type="button"
+                        class="dropdown-item"
+                        target="_blank"
+                        @click="() => (activeDescription = 0)"
+                      >
+                        Roadside Assistance
                       </button>
                     </li>
                     <li>
-                      <button class="dropdown-item">Edit Details</button>
-                    </li>
-                  </GenericTableActionButton>
-                </td>
-              </tr>
-            </GenericTable>
-          </template>
-        </GrowableCard>
-
-        <GenericTablePageSwitcher
-          :current-page="paginationInfo.currentPage"
-          :total-pages="paginationInfo.totalPages"
-          :total-items="paginationInfo.totalItems"
-          :scroll-back-disabled="page <= 0 || status === 'pending'"
-          :scroll-forward-disabled="
-            page >= paginationInfo.totalPages - 1 || status === 'pending'
-          "
-          @page-change-clicked="
-            (page) => {
-              handlePageChange(page);
-            }
-          "
-        ></GenericTablePageSwitcher>
-      </template>
-      <template v-else>
-        <GenericNoTableDataCTA
-          heading="Onboard AVA Member"
-          sub-heading="As One Or Many"
-          to-page="ra-onboard-single-member"
-        >
-        </GenericNoTableDataCTA>
-      </template>
-    </div>
-    <div class="grid grid-cols-1 gap-8">
-      <div class="h-130 card block rounded-lg">
-        <div class="flex flex-col w-full h-full">
-          <div class="h-16 p-4 flex items-center justify-between">
-            <h3 class="font-bold text-2xl">About</h3>
-            <GenericTableActionButton action-id="about-ra-switcher"
-              ><li>
-                <button
-                  type="button"
-                  class="dropdown-item"
-                  target="_blank"
-                  @click="() => (activeDescription = 0)"
+                      <button
+                        type="button"
+                        class="dropdown-item"
+                        target="_blank"
+                        @click="() => (activeDescription = 1)"
+                      >
+                        Emergency Evacuation
+                      </button>
+                    </li></GenericTableActionButton
+                  >
+                </div>
+                <div class="grow flex flex-col items-center p-4">
+                  <div class="avatar avatar-placeholder">
+                    <div
+                      class="bg-primary text-error-content w-25 rounded-full"
+                    >
+                      <span
+                        class="icon-[material-symbols--group-rounded] size-12 font-semibold"
+                      ></span>
+                    </div>
+                  </div>
+                  <h2 class="text-2xl font-bold mt-2">Our Membership</h2>
+                  <h3>{{ getActiveDescription.name }}</h3>
+                  <p class="text-start mt-4">
+                    {{ getActiveDescription.description }}
+                  </p>
+                </div>
+                <div
+                  class="h-16 p-4 flex items-center justify-between border-t"
                 >
-                  Roadside Assistance
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  class="dropdown-item"
-                  target="_blank"
-                  @click="() => (activeDescription = 1)"
-                >
-                  Emergency Evacuation
-                </button>
-              </li></GenericTableActionButton
-            >
-          </div>
-          <div class="grow flex flex-col items-center px-4">
-            <div class="avatar avatar-placeholder">
-              <div class="bg-primary text-error-content w-30 rounded-full">
-                <span
-                  class="icon-[material-symbols--group-rounded] size-12 font-semibold"
-                ></span>
-              </div>
-            </div>
-            <h2 class="text-2xl font-bold mt-2">Our Membership</h2>
-            <h3>{{ getActiveDescription.name }}</h3>
-            <p class="text-start mt-4">
-              {{ getActiveDescription.description }}
-            </p>
-          </div>
-          <div class="h-16 p-4 flex items-center justify-between border-t">
-            <a
-              href="https://regentautovaluers.com/roadside-assistance/"
-              target="_blank"
-              class="text-primary inline-flex items-center space-x-2"
-              ><span>Learn More</span
-              ><span
-                class="icon-[material-symbols--double-arrow-rounded] size-4.5"
-              ></span
-            ></a>
-          </div>
+                  <a
+                    href="https://regentautovaluers.com/roadside-assistance/"
+                    target="_blank"
+                    class="text-primary inline-flex items-center space-x-2"
+                    ><span>Learn More</span
+                    ><span
+                      class="icon-[material-symbols--double-arrow-rounded] size-4.5"
+                    ></span
+                  ></a>
+                </div>
+              </div> </template
+          ></GrowableCard>
         </div>
-      </div>
-      <div class="h-130 card block rounded-lg">
-        <div class="flex flex-col w-full h-full">
-          <h3 class="h-16 p-4 font-bold text-2xl">Data Chart</h3>
-          <div class="grow px-10 mt-4">
-            <ClientOnly>
-              <ChartsGenericDonutChart
-                :data="transformDistribution.distribution"
-                :height="250"
-                :hide-legend="false"
-                :inner-hole-width="50"
-                :total="transformDistribution.total"
-              >
-              </ChartsGenericDonutChart>
-            </ClientOnly>
-          </div>
+        <div class="h-1/2">
+          <GrowableCard>
+            <template #no-padding
+              ><div class="flex flex-col w-full h-full">
+                <h3 class="h-16 p-4 font-bold text-xl">Data Chart</h3>
+                <div class="grow px-10 mt-4">
+                  <ClientOnly>
+                    <ChartsGenericDonutChart
+                      :data="transformDistribution.distribution"
+                      :height="250"
+                      :hide-legend="false"
+                      :inner-hole-width="50"
+                      :total="transformDistribution.total"
+                    >
+                    </ChartsGenericDonutChart>
+                  </ClientOnly>
+                </div></div></template
+          ></GrowableCard>
         </div>
       </div>
     </div>
