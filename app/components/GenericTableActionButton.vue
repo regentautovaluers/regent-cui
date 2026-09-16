@@ -50,7 +50,7 @@ onBeforeUnmount(() => {
     >
       <div
         v-if="isOpen"
-        class="bg-base-100 absolute -left-53 -top-2 mt-2 w-52 border rounded-md shadow-lg z-40"
+        class="bg-base-100 absolute -left-53 -top-2 mt-2 w-52 border rounded-lg shadow-lg z-30"
         @click="closeDropdown"
       >
         <ul class="p-1 space-y-1">

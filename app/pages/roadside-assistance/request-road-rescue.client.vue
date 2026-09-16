@@ -1,19 +1,4 @@
 <script setup lang="ts">
-import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
-type RoadRescueModes = "tow" | "fd" | "jstart" | "tyrec";
-interface RoadRescueModesSelector {
-  short: RoadRescueModes;
-  long: String;
-}
-type PlaceCallback = (data: {
-  id: number;
-  label: string;
-  lat: number;
-  lng: number;
-  name: string;
-}) => void;
-type ActiveRequestMode = "tow" | "fd" | "jstart" | "tyrec";
-
 definePageMeta({
   layout: "no-pad",
   displayName: "Request Road Rescue",
@@ -64,11 +49,11 @@ const availableRoadRescueModes: readonly RoadRescueModesSelector[] = [
     long: "Tyrechange",
   },
 ];
-const fuelType: { id: number; text: "Diesel" | "Petrol" }[] = [
+const fuelType: { id: number; text: FuelTypes }[] = [
   { id: 0, text: "Diesel" },
   { id: 1, text: "Petrol" },
 ];
-const tyreType: { id: number; text: "tube" | "tubeless" | "unknown" }[] = [
+const tyreType: { id: number; text: TyreTypes }[] = [
   { id: 0, text: "tube" },
   { id: 1, text: "tubeless" },
   { id: 2, text: "unknown" },
@@ -85,7 +70,7 @@ const requestData = reactive<RequestRoadsideAssistanceMerged>({
   corporate_client: "",
   appUserPhone: "",
   appUserEmail: "",
-  appServiceType: "Fuel Delivery",
+  appServiceType: "Tow",
   appRegistration: "",
   vehicleMake: "",
   vehicleModel: "",
@@ -105,7 +90,7 @@ const requestData = reactive<RequestRoadsideAssistanceMerged>({
   fuelType: "",
   fuelAmount: "",
   tyreType: "",
-  hasSpareTyre: "",
+  hasSpareTyre: null,
 });
 const formTitle = computed(() => {
   let basic = `${activeDisplay.value == "registered" ? "Registered Client" : "Unregistered Client"}`;
@@ -222,43 +207,58 @@ async function requestRoadsideAssistance() {
   }
 }
 
-async function bindToLocation(
-  inputId: string,
-  id: number,
-  label: string,
-  callback?: PlaceCallback,
-) {
-  setOptions({
-    key: pubConf.GOOGLE_MAPS_API_KEY,
-    v: "weekly",
-  });
-
-  const { Autocomplete } = await importLibrary("places");
-  const input = document.getElementById(inputId) as HTMLInputElement;
-
-  const options = {
-    componentRestrictions: {
-      country: pubConf.GOOGLE_MAPS_GEOFENCING_COUNTRY,
-    },
-    fields: ["address_components", "geometry", "name"],
-    strictBounds: false,
-  };
-
-  const autocomplete = new Autocomplete(input, options);
-
-  autocomplete.addListener("place_changed", () => {
-    const place = autocomplete.getPlace();
-    const lat = place.geometry?.location?.lat()!;
-    const lng = place.geometry?.location?.lng()!;
-    const name = `${place.address_components![0].short_name} ${
-      place.address_components![1].short_name
-    }, ${place.address_components![2].short_name}`;
-
-    if (callback) {
-      callback({ id, label, lat, lng, name });
+function assignTyreType(id: number) {
+  switch (id) {
+    case 0: {
+      requestData.tyreType = "tube";
+      break;
     }
-  });
+
+    case 1: {
+      requestData.tyreType = "tubeless";
+      break;
+    }
+
+    case 2: {
+      requestData.tyreType = null;
+      break;
+    }
+  }
 }
+
+function assignFuelType(id: number) {
+  switch (id) {
+    case 0: {
+      requestData.fuelType = "Diesel";
+      break;
+    }
+
+    case 1: {
+      requestData.tyreType = "Petrol";
+      break;
+    }
+  }
+}
+
+// change the type of the backend service
+watch(requestMode, (newMode) => {
+  switch (newMode) {
+    case "fd":
+      requestData.appServiceType = "Fuel Delivery";
+      break;
+    case "tow":
+      requestData.appServiceType = "Tow";
+      break;
+    case "jstart":
+      requestData.appServiceType = "Jumpstart";
+      break;
+    case "tyrec":
+      requestData.appServiceType = "Tyre";
+      break;
+    default:
+      requestData.appServiceType = "Tow";
+  }
+});
 
 // distance calculator
 watch(
@@ -298,27 +298,32 @@ watch(
   },
 );
 
+// cost calculator setup
+watch(computedServiceCost, (newValue) => (requestData.appCost = newValue));
+
 // bind google maps places picker
 onMounted(() => {
   bindToLocation(
+    pubConf,
     "rra-incident-location",
     1,
     "Client's Location",
     ({ lat, lng, name }) => {
       requestData.appPickupLat = lat;
       requestData.appPickupLon = lng;
-      // pickupPointName.value = name;
+      requestData.appPickupPoint = name;
     },
   );
 
   bindToLocation(
+    pubConf,
     "rra-incident-destination",
     2,
     "Client's Destination",
     ({ lat, lng, name }) => {
       requestData.appDestinationLat = lat;
       requestData.appDestinationLon = lng;
-      // dropOffPointName.value = name;
+      requestData.appDestinationPoint = name;
     },
   );
 });
@@ -378,6 +383,7 @@ onMounted(() => {
             input-place-holder="e.g. Jane Doe"
             input-label="Client Name"
             :input-required="true"
+            v-model="requestData.appUserName"
           ></InputsGenericInput>
         </div>
 
@@ -387,6 +393,7 @@ onMounted(() => {
           input-label="Client Email"
           input-helpertext="Required for notifications with the client."
           :input-required="true"
+          v-model="requestData.appUserEmail"
         ></InputsGenericInput>
 
         <InputsGenericInput
@@ -395,35 +402,7 @@ onMounted(() => {
           input-label="Client Phone"
           input-helpertext="Required - start with country code without '+'"
           :input-required="true"
-        ></InputsGenericInput>
-      </div>
-    </form>
-
-    <!-- client details -->
-    <form>
-      <h3 class="mb-5 text-base-content text-lg">Vehicle Details</h3>
-      <div class="grid gap-8 grid-cols-2">
-        <div class="col-span-full">
-          <InputsGenericInput
-            input-id="rra-vehicle-reg"
-            input-place-holder="e.g. KAA123X"
-            input-label="Vehicle Registration"
-            :input-required="true"
-          ></InputsGenericInput>
-        </div>
-
-        <InputsGenericInput
-          input-id="rra-vehicle-make"
-          input-place-holder="e.g. Toyota"
-          input-label="Make"
-          :input-required="true"
-        ></InputsGenericInput>
-
-        <InputsGenericInput
-          input-id="rra-vehicle-model"
-          input-place-holder="e.g. Corolla"
-          input-label="Model"
-          :input-required="true"
+          v-model="requestData.appUserPhone"
         ></InputsGenericInput>
       </div>
     </form>
@@ -457,6 +436,36 @@ onMounted(() => {
       class="grid grid-cols-1 gap-8"
       @submit.prevent="requestRoadsideAssistance()"
     >
+      <!-- vehicle details -->
+      <h3 class="text-base-content text-lg">Vehicle Details</h3>
+      <div class="grid gap-8 grid-cols-2">
+        <div class="col-span-full">
+          <InputsGenericInput
+            input-id="rra-vehicle-reg"
+            input-place-holder="e.g. KAA123X"
+            input-label="Vehicle Registration"
+            :input-required="true"
+            v-model="requestData.appRegistration"
+          ></InputsGenericInput>
+        </div>
+
+        <InputsGenericInput
+          input-id="rra-vehicle-make"
+          input-place-holder="e.g. Toyota"
+          input-label="Make"
+          :input-required="true"
+          v-model="requestData.vehicleMake"
+        ></InputsGenericInput>
+
+        <InputsGenericInput
+          input-id="rra-vehicle-model"
+          input-place-holder="e.g. Corolla"
+          input-label="Model"
+          :input-required="true"
+          v-model="requestData.vehicleModel"
+        ></InputsGenericInput>
+      </div>
+
       <!-- location stuff -->
       <div class="grid grid-cols-1 gap-8">
         <div class="flex items-end space-x-2 w-full">
@@ -475,7 +484,10 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="flex items-end space-x-2 w-full">
+        <div
+          class="flex items-end space-x-2 w-full"
+          v-show="requestMode == 'tow'"
+        >
           <div class="btn size-13 w-13 btn-square btn-soft btn-success">
             <span class="icon-[material-symbols--home-pin] size-8"></span>
           </div>
@@ -501,6 +513,7 @@ onMounted(() => {
           })) || []
         "
         :input-required="true"
+        @value-selected="(id) => (requestData.vehicleClass = id)"
       >
       </InputsGenericInputSearchBox>
 
@@ -511,11 +524,12 @@ onMounted(() => {
           input-label="Fuel Type"
           :input-dropdown-options="fuelType"
           :input-required="true"
+          @value-selected="(id) => assignFuelType(id)"
         >
         </InputsGenericInputSearchBox>
       </template>
 
-      <!-- tyre change -> tyre type and if has spare tyre -->
+      <!-- tyre type and if has spare tyre -->
       <template v-if="requestMode == 'tyrec'">
         <div class="grid grid-cols-1 gap-8">
           <!-- tyre type -->
@@ -524,6 +538,7 @@ onMounted(() => {
             input-label="Tyre Type"
             :input-dropdown-options="tyreType"
             :input-required="true"
+            @value-selected="(id) => assignTyreType(id)"
           >
           </InputsGenericInputSearchBox>
 
@@ -540,7 +555,7 @@ onMounted(() => {
                   <input
                     id="rra-has-spare-tyre"
                     :value="true"
-                    v-model="requestMode"
+                    v-model="requestData.hasSpareTyre"
                     type="radio"
                     name="radio-14"
                     class="radio radio-primary ms-3"
@@ -552,8 +567,8 @@ onMounted(() => {
                 <label class="flex items-center gap-2 p-3">
                   <input
                     id="rra-has-spare-tyre2"
-                    :value="true"
-                    v-model="requestMode"
+                    :value="false"
+                    v-model="requestData.hasSpareTyre"
                     type="radio"
                     name="radio-14"
                     class="radio radio-primary ms-3"
@@ -566,8 +581,35 @@ onMounted(() => {
         </div></template
       >
 
+      <!-- comment box -->
+      <InputsGenericTextArea
+        input-id="cal-extra-instructions"
+        input-label="Provide Extra Instructions"
+        input-place-holder="Write here anything extra you would like us to know. Supports up to 512 characters only!"
+        :input-default-row-num="5"
+        v-model="requestData.requestRemarks"
+      >
+      </InputsGenericTextArea>
+
       <!-- cost estimator -->
-      <div class="grid grid-cols-3 gap-8"></div>
+      <div class="grid grid-cols-3 gap-8">
+        <div class="space-y-2 rounded-lg border border-primary p-4 h-23">
+          <h3 class="font-semibold text-lg text-primary">Distance</h3>
+          <span class="text-base-content"
+            >{{ requestData.appDistance }} KM</span
+          >
+        </div>
+        <div class="space-y-2 rounded-lg border border-primary p-4 h-23">
+          <h3 class="font-semibold text-lg text-primary">Free Tow</h3>
+          <span class="text-base-content"
+            >{{ requestData.currentFreeDistance }} KM</span
+          >
+        </div>
+        <div class="space-y-2 rounded-lg border border-primary p-4 h-23">
+          <h3 class="font-semibold text-lg text-primary">Cost</h3>
+          <span class="text-base-content">{{ requestData.appCost }} Ksh</span>
+        </div>
+      </div>
 
       <InputsGenericSubmitButton
         :button-text="`Submit Request`"

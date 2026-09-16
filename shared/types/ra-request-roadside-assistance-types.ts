@@ -86,8 +86,8 @@ export type RequestRoadsideAssitanceFuelDelivery =
 
 export type RequestRoadsideAssitanceTyreChange =
   RequestRoadsideAssitanceBase & {
-    tyreType: string;
-    hasSpareTyre: string;
+    tyreType: string | null;
+    hasSpareTyre: boolean | null;
   };
 
 export type RequestRoadsideAssitanceJumpstarting =
@@ -98,3 +98,20 @@ export type RequestRoadsideAssistanceMerged = RequestRoadsideAssitanceBase &
   RequestRoadsideAssitanceFuelDelivery &
   RequestRoadsideAssitanceTyreChange &
   RequestRoadsideAssitanceJumpstarting;
+
+export type PlaceCallback = (data: {
+  id: number;
+  label: string;
+  lat: number;
+  lng: number;
+  name: string;
+}) => void;
+
+export type RoadRescueModes = "tow" | "fd" | "jstart" | "tyrec";
+export type ActiveRequestMode = "tow" | "fd" | "jstart" | "tyrec";
+export type TyreTypes = "tube" | "tubeless" | "unknown";
+export type FuelTypes = "Diesel" | "Petrol";
+export interface RoadRescueModesSelector {
+  short: RoadRescueModes;
+  long: String;
+}
