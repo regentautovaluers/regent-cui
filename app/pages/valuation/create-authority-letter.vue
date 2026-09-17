@@ -156,6 +156,7 @@ function resetState() {
           generalDataStore.loadingRegentBranches ||
           generalDataStore.getRegentBranches.length == 0
         "
+        :filter-inputs="false"
       >
       </InputsGenericInputSearchBox>
 

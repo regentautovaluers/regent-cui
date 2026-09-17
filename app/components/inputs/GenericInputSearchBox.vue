@@ -99,6 +99,7 @@ interface Props {
   inputDropdownOptions: { id: string | number; text: string | number }[];
   inputHelpertext?: string;
   inputWrapperStyles?: string;
+  filterInputs?: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
   inputType: "text",
@@ -109,6 +110,7 @@ const props = withDefaults(defineProps<Props>(), {
   inputPlaceHolder: "Type to search",
   inputValid: undefined,
   inputTextSize: "md",
+  filterInputs: true,
 });
 const emits = defineEmits(["value-selected"]);
 const isOpen = ref(false);
@@ -121,6 +123,9 @@ const ddSelectRef = ref<HTMLElement | null>(null);
  * for typical autocomplete dataset sizes.
  */
 const filteredOptions = computed(() => {
+  if (!props.filterInputs) {
+    return props.inputDropdownOptions;
+  }
   const query = userInput.value.trim().toLowerCase();
 
   if (!query) return props.inputDropdownOptions;

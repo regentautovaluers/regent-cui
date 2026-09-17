@@ -51,14 +51,13 @@ async function loadIPRSId() {
   <div>
     <HeadboardAnnouncer
       announcer-title="How It Works"
-      highlight-text="Search Through IPRS"
+      highlight-text="Search Through Collateral"
     >
       <template #description
         ><p class="text-base-content/80 mt-2 text-base font-normal">
-          Find out if a client's vehicle appears in our database of previous
-          collateral incidents e.g. loan evasion. For a higher chance of
-          retrieval, provide an engine, chassis and registration number,
-          although at least only one is needed.
+          Find out if a client's vehicle appears in our database of accidents or
+          previous collateral incidents. To improve matches, provide an engine,
+          chassis and registration number, although only one is needed.
           <span class="font-semibold"
             >You have {{ tokenStore.getTokenBalance }} search tokens left.</span
           >
@@ -115,6 +114,7 @@ async function loadIPRSId() {
                 },
               ]"
               input-helpertext="Leaving blank searches across Collateral DBby default."
+              :filter-inputs="false"
               @value-selected="
                 (id) => {
                   searchType = id;
