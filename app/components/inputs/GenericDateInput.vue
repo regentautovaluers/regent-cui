@@ -52,7 +52,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :class="[inputWrapperStyles, 'relative']">
+  <div :class="inputWrapperStyles">
     <label
       v-if="inputLabel"
       :class="[
@@ -78,7 +78,6 @@ onUnmounted(() => {
       v-model="model"
     />
 
-    <span class="icon-[material-symbols--calendar-month] absolute right-3 top-[53%] size-7"></span>
     <span class="helper-text" v-show="inputHelpertext">{{
       inputHelpertext
     }}</span>
