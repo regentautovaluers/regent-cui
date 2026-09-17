@@ -97,8 +97,6 @@ const processedIncidents = computed(() => {
     distribution,
   };
 });
-
-const collectiveResponse = computed(() => {});
 </script>
 
 <template>
@@ -139,7 +137,7 @@ const collectiveResponse = computed(() => {});
     <div
       class="flex-1 grid grid-cols-1 lg:grid-cols-[4fr_1fr] gap-8 items-stretch"
     >
-      <div class="flex flex-col min-h-250">
+      <div class="flex flex-col min-h-270">
         <GenericTableFilters
           :disable-filters="status === 'pending'"
           :disable-submit-button="status == 'pending'"
@@ -206,8 +204,8 @@ const collectiveResponse = computed(() => {});
           <GrowableCard>
             <template #no-padding>
               <div class="flex flex-col w-full h-full p-4">
-                <h3 class="h-12 font-bold text-xl">Distribution</h3>
-                <div class="grow px-10">
+                <h3 class="h-16 font-bold text-xl">Distribution</h3>
+                <div class="grow">
                   <ClientOnly>
                     <ChartsGenericDonutChart
                       :data="[
@@ -247,7 +245,11 @@ const collectiveResponse = computed(() => {});
 
         <div class="h-1/2">
           <GrowableCard>
-            <template #no-padding><h1>Hello world2</h1></template></GrowableCard
+            <template #no-padding
+              ><div class="flex flex-col w-full h-full p-4">
+                <h3 class="h-16 font-bold text-xl">Recent Vehicles</h3>
+              </div></template
+            ></GrowableCard
           >
         </div>
       </div>

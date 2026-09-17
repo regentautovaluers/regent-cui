@@ -12,15 +12,19 @@ const colVerData: Ref<CollateralVerificationEntry[] | null> = ref(null);
 const searchLoading = ref(false);
 const { $showToast } = useNuxtApp();
 const tokenStore = useCollateralVerificationsTokenStore();
+const searchType: Ref<"aki" | "valuation"> = ref("valuation");
+
+const computedSearchParams = computed(() => ({
+  searchTerms: `${regNo.value},${chassisNo.value},${engineNo.value}`,
+  searchType: searchType.value,
+}));
 
 async function loadIPRSId() {
   try {
     searchLoading.value = true;
     const response = await get<
       GenericCollateralVerificationResponse<CollateralVerificationEntry[]>
-    >(`/api/col-v/search-collateral`, {
-      searchTerms: `${regNo.value},${chassisNo.value},${engineNo.value}`,
-    });
+    >(`/api/col-v/search-collateral`, computedSearchParams.value);
 
     if (response.success) {
       const data: CollateralVerificationEntry[] = (
@@ -91,11 +95,34 @@ async function loadIPRSId() {
           <div
             class="text-base-content pt-0.5 mb-3 flex gap-2 font-bold max-sm:flex-col-reverse sm:items-center sm:justify-between"
           >
-            Input At Least One Search Parameter.
+            Input Your Desired Search Parameters.
             <span class="text-base-content/50 text-sm font-normal">Step 1</span>
           </div>
 
           <form class="space-y-5" @submit.prevent="loadIPRSId">
+            <!-- search type -->
+            <InputsGenericInputSearchBox
+              input-id="cal-select-branch"
+              input-label="Select Database To Search Through"
+              :input-dropdown-options="[
+                {
+                  id: 'aki',
+                  text: 'Known Accident Vehicles Database',
+                },
+                {
+                  id: 'valuation',
+                  text: 'Collateral Database',
+                },
+              ]"
+              input-helpertext="Leaving blank searches across Collateral DBby default."
+              @value-selected="
+                (id) => {
+                  searchType = id;
+                }
+              "
+            >
+            </InputsGenericInputSearchBox>
+
             <div class="grid gap-x-8 grid-cols-3">
               <InputsGenericInput
                 input-id="colver-reg-no"
@@ -193,8 +220,12 @@ async function loadIPRSId() {
                   value: e.dateOfIncident,
                 },
                 {
-                  title: 'Defaulted Amount',
+                  title: 'Disputed Amount',
                   value: e.amountDefaulted,
+                },
+                {
+                  title: 'Insured Amount',
+                  value: e.sumInsured,
                 },
                 {
                   title: 'Incident Description',

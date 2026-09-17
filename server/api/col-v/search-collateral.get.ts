@@ -2,9 +2,9 @@ export default defineEventHandler(async (event) => {
   const { COLV_BASE_URL } = useRuntimeConfig();
   const cookies = parseCookies(event);
   const data: LoginResponse = await inflatePrincipal(cookies);
-  const query: { searchTerms: string } = getQuery(event);
+  const query: { searchType: string; searchTerms: string } = getQuery(event);
 
-  let requestURL = `${COLV_BASE_URL}/api/v1/fraud/search?searchType=valuation&searcherEmail=${data.email}&searcherPhone=${data.phoneNumber}&searcherName=${data.username}&searcherOrganisation=${data.corpName}`;
+  let requestURL = `${COLV_BASE_URL}/api/v1/fraud/search?searchType=${query.searchType}&searcherEmail=${data.email}&searcherPhone=${data.phoneNumber}&searcherName=${data.username}&searcherOrganisation=${data.corpName}&country=KE&page=0&size=10`;
 
   // attatch the searchTerms
   const searchTerms = query.searchTerms
@@ -17,7 +17,9 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    let response = await makeProxyRequest<GenericCollateralVerificationResponse<CollateralVerificationEntry[]>>(requestURL, event);
+    let response = await makeProxyRequest<
+      GenericCollateralVerificationResponse<CollateralVerificationEntry[]>
+    >(requestURL, event);
 
     return sendSuccessResponse(response);
   } catch (err) {

@@ -19,6 +19,7 @@ export interface CollateralVerification {
   relevantLinks: any[];
   dateOfIncident: string;
   amountDefaulted: string;
+  sumInsured: string;
 }
 
 export interface CollateralVerificationCreator {
