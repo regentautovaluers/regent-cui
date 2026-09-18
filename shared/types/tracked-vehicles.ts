@@ -136,8 +136,8 @@ export interface DeviceData {
   max_speed: null;
   parameters: null | string;
   currents: null;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
   forward: null;
   device_type_id: null;
   app_tracker_login: number;
@@ -156,7 +156,7 @@ export interface DeviceData {
   enable: number;
   group_id: number;
   user_timezone_id: null;
-  time: Date | null;
+  time: string | null;
   course: number;
   speed: number;
 }
@@ -229,25 +229,25 @@ export interface Traccar {
   lastValidLongitude: number | null;
   other: null | string;
   speed: null | string;
-  time: Date | null;
-  device_time: Date | null;
-  server_time: Date | null;
-  ack_time: Date | null;
+  time: string | null;
+  device_time: string | null;
+  server_time: string | null;
+  ack_time: string | null;
   altitude: number | null;
   course: number | null;
   power: null;
   address: null;
   protocol: Protocol | null;
   latest_positions: null | string;
-  moved_at: Date | null;
-  stoped_at: Date | null;
-  move_begin_at: Date | null;
-  stop_begin_at: Date | null;
-  parked_end_at: Date | null;
-  engine_on_at: Date | null;
-  engine_off_at: Date | null;
-  engine_changed_at: Date | null;
-  updated_at: Date | null;
+  moved_at: string | null;
+  stoped_at: string | null;
+  move_begin_at: string | null;
+  stop_begin_at: string | null;
+  parked_end_at: string | null;
+  engine_on_at: string | null;
+  engine_off_at: string | null;
+  engine_changed_at: string | null;
+  updated_at: string | null;
   database_id: null;
 }
 

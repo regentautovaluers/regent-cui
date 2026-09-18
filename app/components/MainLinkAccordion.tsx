@@ -78,23 +78,25 @@ export default defineComponent({
               props.item.showChildren &&
               sidebarOpen.value && (
                 <ul class="timeline timeline-vertical timeline-compact ml-3">
-                  {props.item.children.map((i, idx) => {
-                    return (
-                      <li key={idx}>
-                        <div class="timeline-middle h-fit">
-                          <span
-                            class={`border-primary border flex w-3 h-6 items-center justify-center rounded-full ${childRouteMatches(i.name) && "bg-primary"}`}
-                          ></span>
-                        </div>
-                        <div
-                          class={`timeline-end text-base-content ml-4 ${childRouteMatches(i.name) && "text-primary font-semibold"}`}
-                        >
-                          {i.screenName}
-                        </div>
-                        <hr />
-                      </li>
-                    );
-                  })}
+                  {props.item.children
+                    .filter((e) => e.display)
+                    .map((i, idx) => {
+                      return (
+                        <li key={idx}>
+                          <div class="timeline-middle h-fit">
+                            <span
+                              class={`border-primary border flex w-3 h-6 items-center justify-center rounded-full ${childRouteMatches(i.name) && "bg-primary"}`}
+                            ></span>
+                          </div>
+                          <div
+                            class={`timeline-end text-base-content ml-4 ${childRouteMatches(i.name) && "text-primary font-semibold"}`}
+                          >
+                            {i.screenName}
+                          </div>
+                          <hr />
+                        </li>
+                      );
+                    })}
                 </ul>
               )}
           </div>

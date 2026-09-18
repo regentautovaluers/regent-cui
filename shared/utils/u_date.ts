@@ -158,3 +158,24 @@ export function isDateInPast(dateString: string): boolean {
   const date = parseISO(dateString);
   return isPast(date);
 }
+
+export function expiresWithinXDays(
+  dateStr: string | Date,
+  days: number,
+): boolean {
+  const expiryDate = new Date(dateStr);
+  const today = new Date();
+  const thirtyDaysFromNow = new Date();
+  thirtyDaysFromNow.setDate(today.getDate() + days);
+  return expiryDate >= today && expiryDate <= thirtyDaysFromNow;
+}
+
+export function isLastMonth(dateStr: string | Date): boolean {
+  const date = new Date(dateStr);
+  const lastMonth = new Date();
+  lastMonth.setMonth(lastMonth.getMonth() - 1);
+  return (
+    date.getMonth() === lastMonth.getMonth() &&
+    date.getFullYear() === lastMonth.getFullYear()
+  );
+}

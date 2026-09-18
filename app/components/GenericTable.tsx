@@ -13,11 +13,11 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     return () => (
-      <div class="border-base-content/25 w-full rounded-lg border">
+      <div class="any-border w-full rounded-lg">
         <div class="overflow-x-auto">
           <table class="table">
             <thead>
-              <tr class="h-14">
+              <tr class="h-16">
                 {props.headers.map((e) => (
                   <th class="font-bold">{e}</th>
                 ))}

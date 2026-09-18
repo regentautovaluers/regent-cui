@@ -2,8 +2,8 @@
   <div class="dropdown flex-1 relative" ref="ddSelectRef">
     <label
       :class="[
-        'label-text text-base mb-1',
         inputRequired && 'after:content-[\'*\'] after:ml-0.5',
+        inputLabel && 'mb-1 label-text text-base',
       ]"
       :for="inputId"
       >{{ inputLabel }}</label
