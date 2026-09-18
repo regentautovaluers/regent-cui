@@ -50,7 +50,7 @@ function handlePageChange(newPage: number) {
         :headers="[
           'Reg',
           'Vehicle IDs',
-          'Vehicle Look',
+          'Vehicle',
           'Added By',
           'Incident On',
           'Amount',

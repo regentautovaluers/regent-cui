@@ -13,6 +13,7 @@ interface Props {
   inputHelpertext?: string;
   inputExtraStyles?: string;
   inputWrapperStyles?: string;
+  inputMinDate?: ExtendedTimelineFilters;
 }
 const props = withDefaults(defineProps<Props>(), {
   inputType: "text",
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   inputValid: undefined,
   inputTextSize: "md",
   inputHelpertext: undefined,
+  inputMinDate: "last_one_year",
 });
 
 const model = defineModel<string>({ default: "" });
@@ -42,6 +44,8 @@ onMounted(() => {
       appendTo: document.body,
       dateFormat: "Y-m-d",
       altFormat: "F j, Y",
+      maxDate: "today",
+      minDate: calculateDateRange(props.inputMinDate).startDate,
     });
   }
 });

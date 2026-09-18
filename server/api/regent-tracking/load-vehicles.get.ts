@@ -1,8 +1,8 @@
 export default defineEventHandler(async (event) => {
   const {
     REGENT_TRACKING_BASE_URL,
-    TRACKING_CERTIFICATES_BASE_URL,
-    TRACKING_CERTIFICATES_API_KEY,
+    REGENT_TRACKING_CERTIFICATES_BASE_URL,
+    REGENT_TRACKING_CERTIFICATES_API_KEY,
   } = useRuntimeConfig();
   const query = getQuery(event);
   const cookies = parseCookies(event);
@@ -32,8 +32,8 @@ export default defineEventHandler(async (event) => {
       });
       let base64Encoded = encodeBase64(deviceIds.join(","));
       const userDetailsEndpoint =
-        `${TRACKING_CERTIFICATES_BASE_URL}/tracking/traceabilityC.php?
-					api_key=${TRACKING_CERTIFICATES_API_KEY}
+        `${REGENT_TRACKING_CERTIFICATES_BASE_URL}/tracking/traceabilityC.php?
+					api_key=${REGENT_TRACKING_CERTIFICATES_API_KEY}
 					&tracker_id=${base64Encoded}
 					&page=1
 					&limit=${deviceIds.length}`.trim();

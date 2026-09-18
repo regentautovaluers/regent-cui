@@ -64,22 +64,31 @@ function toggleFilters() {
       </div>
     </div>
     <!-- other filters -->
-    <div v-show="extraFiltersOpen" class="flex items-end space-x-3">
-      <slot></slot>
-      <button
-        class="btn btn-square btn-outline btn-primary size-13 max-w-13 max-h-13"
-        aria-label="Reset Filters Button"
-        @click="() => emits('reset-filters')"
-      >
-        <span
-          class="icon-[material-symbols--filter-alt-off] size-4.5 shrink-0"
-        ></span>
-      </button>
-      <InputsGenericSubmitButton
-        button-text="Apply Filters"
-        :submit-loading="disableSubmitButton"
-        class="flex-1"
-      ></InputsGenericSubmitButton>
+    <div
+      v-show="extraFiltersOpen"
+      class="flex items-end justify-between space-x-3"
+    >
+      <div class="grow h-fit flex items-end space-x-3">
+        <slot></slot>
+      </div>
+
+      <div class="w-fit h-fit flex items-end space-x-3">
+        <button
+          class="btn btn-square btn-outline btn-primary size-13 max-w-13 max-h-13"
+          aria-label="Reset Filters Button"
+          @click="() => emits('reset-filters')"
+        >
+          <span
+            class="icon-[material-symbols--filter-alt-off] size-4.5 shrink-0"
+          ></span>
+        </button>
+
+        <InputsGenericSubmitButton
+          button-text="Apply Filters"
+          :submit-loading="disableSubmitButton"
+          class="flex-1"
+        ></InputsGenericSubmitButton>
+      </div>
     </div>
   </form>
 </template>

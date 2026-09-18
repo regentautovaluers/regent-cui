@@ -5,6 +5,16 @@ export interface VehiclePing {
   time_recorded: string; // ISO 8601 string, e.g., '2025-09-15 00:06:35'
 }
 
+export type VehicleMovementEventType = "start" | "stop";
+
+export interface NestingAreaAnalysisMapPin {
+  lat: number;
+  lng: number;
+  location: string;
+  eventName?: VehicleMovementEventType;
+  time?: string;
+}
+
 /**
  * Internal interface for a processed stop event before clustering.
  */
@@ -15,13 +25,22 @@ export interface ProcessedStop {
   durationMs: number;
 }
 
+export interface DateRangeForFilters {
+  startDate: string;
+  endDate: string;
+}
+
 export type FilterTimelines =
   | "today"
   | "this_week"
   | "last_thirty_days"
   | "last_three_months"
-  | "last_six_months"
   | "custom";
+
+export interface AvailableTimelines {
+  id: FilterTimelines;
+  text: string;
+}
 
 export interface VehicleMovement {
   // vehicle starts (ignition on)

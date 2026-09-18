@@ -259,9 +259,15 @@ export function analyzeNestingAreas(data: DeviceHistory): AnalyzedLocation[] {
   });
 
   // Sort by most time spent so the most significant nesting areas are first
-  return analyzedLocations.sort(
-    (a, b) => b.location_time_hours - a.location_time_hours,
-  );
+  if (analyzedLocations.length < 10) {
+    return analyzedLocations.sort(
+      (a, b) => b.location_time_hours - a.location_time_hours,
+    );
+  }
+
+  return analyzedLocations
+    .sort((a, b) => b.location_time_hours - a.location_time_hours)
+    .slice(0, 12);
 }
 
 export function calculateLocationTimeFractions(
@@ -289,4 +295,30 @@ export function calculateLocationTimeFractions(
       (loc.location_time_hours / totalHours) * 100,
     ),
   }));
+}
+
+export async function gecodeLocation(
+  lat: number,
+  lng: number,
+): Promise<string> {
+  console.log("lat: ", lat, "lng: ", lng);
+  return new Promise<string>((resolve) => {
+    // Ensure API is loaded
+    if (
+      typeof window.google === "undefined" ||
+      typeof window.google.maps === "undefined"
+    ) {
+      resolve("Google Maps API is not loaded.");
+      return;
+    }
+
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
+        resolve(results[0].formatted_address);
+      } else {
+        resolve(`Geocoding failed: ${status}`);
+      }
+    });
+  });
 }

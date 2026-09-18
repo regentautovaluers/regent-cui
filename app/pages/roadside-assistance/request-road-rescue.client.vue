@@ -371,7 +371,7 @@ onMounted(() => {
       :fullscreen-control="false"
       :street-view-control="false"
     >
-      <!-- where logged in client is -->
+      <!-- our head office -->
       <CustomMarker
         :options="{
           position: { lat: -1.2685284532098227, lng: 36.80946458168313 },

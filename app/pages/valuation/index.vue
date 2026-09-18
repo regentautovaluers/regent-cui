@@ -88,13 +88,7 @@ function resetFilters() {
   formFilters.fleetId = null;
 
   // Copy defaults into active filters
-  Object.assign(activeFilters, formFilters);
-
-  // Reset pagination
-  page.value = 0;
-
-  // Trigger API refresh with defaults
-  refresh();
+  applyFilters();
 }
 
 async function loadFleets() {

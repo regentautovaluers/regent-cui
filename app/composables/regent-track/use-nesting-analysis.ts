@@ -3,6 +3,13 @@ import { toDate } from "date-fns";
 export default function useNestingAnalysis() {
   const { get } = useStandardizedApi();
   const customPickCalendarOpen = ref(false);
+  const availableTimelines: AvailableTimelines[] = [
+    { id: "today", text: "Today" },
+    { id: "this_week", text: "This Week" },
+    { id: "last_thirty_days", text: "Last Thirty Days" },
+    { id: "last_three_months", text: "Last Three Months" },
+    { id: "custom", text: "Custom" },
+  ];
   const dateRangeForAnalysis = reactive({
     fromDate: "",
     toDate: "",
@@ -58,6 +65,18 @@ export default function useNestingAnalysis() {
     return analyzeVehicleTripHistory(deviceHistory.value);
   });
 
+  function deriveDateRange(timeline: FilterTimelines) {
+    if (timeline == "custom") {
+      customPickCalendarOpen.value = true;
+      return;
+    }
+
+    customPickCalendarOpen.value = false;
+    const range = calculateDateRange(timeline);
+    dateRangeForAnalysis.fromDate = range.startDate;
+    dateRangeForAnalysis.toDate = range.endDate;
+  }
+
   watch(
     dateRangeForAnalysis,
     async (newRange) => {
@@ -78,6 +97,7 @@ export default function useNestingAnalysis() {
     nestingAreas,
     deviceMovement,
     loadingDeviceHistory,
-    loadDeviceHistory,
+    availableTimelines,
+    deriveDateRange,
   };
 }

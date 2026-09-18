@@ -1,4 +1,13 @@
-import { parseISO, format, formatDistanceToNow, isPast } from "date-fns";
+import {
+  parseISO,
+  formatDistanceToNow,
+  isPast,
+  format,
+  subDays,
+  subMonths,
+  subYears,
+  startOfWeek,
+} from "date-fns";
 
 // Helper to add ordinal suffix (st, nd, rd, th)
 function getOrdinal(day: number): string {
@@ -55,67 +64,50 @@ export function dateStringToDate(
   return new Date(y as number, (m as number) - 1, d, hh, mm, ss);
 }
 
-export function calculateDateRange(timeframe: FilterTimelines): {
-  startDate: string;
-  endDate: string;
-} {
+export function calculateDateRange(
+  timeframe: ExtendedTimelineFilters,
+): DateRangeForFilters {
   const today = new Date();
-  const formatISODate = (date: Date): string => {
-    return date.toISOString().split("T")[0]!; // yyyy-MM-dd format
-  };
+  const DATE_FORMAT = "yyyy-MM-dd";
+
+  let startDate: Date;
 
   switch (timeframe) {
     case "today":
-      return {
-        startDate: formatISODate(today),
-        endDate: formatISODate(today),
-      };
+      startDate = today;
+      break;
 
-    case "this_week": {
-      // Find the most recent Sunday (start of week)
-      const daysSinceSunday = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
-      const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() - daysSinceSunday);
+    case "this_week":
+      // Gets the Sunday leading up to today
+      startDate = startOfWeek(today, { weekStartsOn: 0 });
+      break;
 
-      return {
-        startDate: formatISODate(startOfWeek),
-        endDate: formatISODate(today),
-      };
+    case "last_thirty_days":
+      startDate = subDays(today, 30);
+      break;
+
+    case "last_three_months":
+      startDate = subMonths(today, 2);
+      break;
+
+    case "last_six_months":
+      startDate = subMonths(today, 6);
+      break;
+
+    case "last_one_year":
+      startDate = subYears(today, 1);
+      break;
+
+    default: {
+      // const _exhaustiveCheck: never = timeframe;
+      throw new Error("Unsupported timeframe!");
     }
-
-    case "last_thirty_days": {
-      const startDate = new Date(today);
-      startDate.setDate(today.getDate() - 29); // 29 days ago + today = 30 days total
-
-      return {
-        startDate: formatISODate(startDate),
-        endDate: formatISODate(today),
-      };
-    }
-
-    case "last_three_months": {
-      const startDate = new Date(today);
-      startDate.setMonth(today.getMonth() - 3);
-
-      return {
-        startDate: formatISODate(startDate),
-        endDate: formatISODate(today),
-      };
-    }
-
-    case "last_six_months": {
-      const startDate = new Date(today);
-      startDate.setMonth(today.getMonth() - 6);
-
-      return {
-        startDate: formatISODate(startDate),
-        endDate: formatISODate(today),
-      };
-    }
-
-    default:
-      throw new Error(`Unsupported timeframe: ${timeframe}`);
   }
+
+  return {
+    startDate: format(startDate, DATE_FORMAT),
+    endDate: format(today, DATE_FORMAT),
+  };
 }
 
 export function calculateTimeDifferenceSeconds(

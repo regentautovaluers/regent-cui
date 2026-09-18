@@ -9,7 +9,7 @@ export interface GetIncidentsWrapper {
   towing: IndividualRequestTypeSharedResponse & {
     data: TowingEntry[];
   };
-  fueldelivey: IndividualRequestTypeSharedResponse & {
+  fueldelivery: IndividualRequestTypeSharedResponse & {
     data: FuelDeliveryEntry[];
   };
   tyrechange: IndividualRequestTypeSharedResponse & {

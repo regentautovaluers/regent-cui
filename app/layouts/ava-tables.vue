@@ -6,7 +6,7 @@
     <div class="flex-1 min-h-0 overflow-y-auto relative">
       <Header></Header>
       <main
-        class="p-5 tablet:p-10 flex-1 flex flex-col lg:pt-30 min-h-full"
+        class="p-5 tablet:p-10 flex-1 flex flex-col lg:pt-40 min-h-full"
       >
         <slot></slot>
       </main>

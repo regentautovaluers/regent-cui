@@ -5,9 +5,18 @@ definePageMeta({
   layout: "ava-tables",
 });
 
+type IncidentType =
+  | "towing"
+  | "fueldelivery"
+  | "tyrechange"
+  | "jumpstarting"
+  | null;
+
 type IncidentEntry = (TowingEntry | FuelDeliveryEntry | TyreChangeEntry) & {
-  incidentType: "towing" | "fueldelivery" | "tyrechange" | "jumpstarting";
+  incidentType: IncidentType;
 };
+
+type IncidentCompleted = "pending" | "completed";
 
 const config = useRuntimeConfig();
 const store = usePrincipalStore();
@@ -16,14 +25,15 @@ const page = ref(0);
 const formFilters = reactive({
   startDate: "" as string,
   endDate: "" as string,
-  completed: false as boolean,
+  serviceStatus: "pending" as IncidentCompleted,
+  serviceType: null as IncidentType,
   regNo: "" as string,
 });
 const activeFilters = reactive({
   startDate: "" as string,
   endDate: "" as string,
-  // isVehicleTampered: false,
-  completed: false as boolean,
+  serviceStatus: "pending" as IncidentCompleted,
+  serviceType: null as IncidentType,
   regNo: "" as string,
 });
 const query = computed(() => ({
@@ -61,7 +71,7 @@ const processedIncidents = computed(() => {
 
   const distribution = {
     towing: rawData.towing?.data?.length || 0,
-    fueldelivery: rawData.fueldelivey?.data?.length || 0,
+    fueldelivery: rawData.fueldelivery?.data?.length || 0,
     tyrechange: rawData.tyrechange?.data?.length || 0,
     jumpstarting: rawData.jumpstarting?.data?.length || 0,
   };
@@ -72,7 +82,7 @@ const processedIncidents = computed(() => {
       ...item,
       incidentType: "towing" as const,
     })),
-    ...(rawData.fueldelivey?.data || []).map((item) => ({
+    ...(rawData.fueldelivery?.data || []).map((item) => ({
       ...item,
       incidentType: "fueldelivery" as const,
     })),
@@ -97,6 +107,56 @@ const processedIncidents = computed(() => {
     distribution,
   };
 });
+
+function applyFilters() {
+  // Copy form values into active filters
+  Object.assign(activeFilters, formFilters);
+
+  // Reset pagination to first page
+  page.value = 0;
+
+  // manually trigger the refresh
+  refresh();
+}
+
+function resetFilters() {
+  // Reset form filters to defaults
+  formFilters.startDate = "";
+  formFilters.endDate = "";
+  formFilters.serviceStatus = "pending";
+  formFilters.serviceType = null;
+  formFilters.regNo = "";
+  // Copy defaults into active filters
+  applyFilters();
+}
+
+function setIncidentType(id: number) {
+  switch (id) {
+    case 0: {
+      formFilters.serviceType = "towing";
+      break;
+    }
+
+    case 1: {
+      formFilters.serviceType = "jumpstarting";
+      break;
+    }
+
+    case 2: {
+      formFilters.serviceType = "fueldelivery";
+      break;
+    }
+
+    case 3: {
+      formFilters.serviceType = "tyrechange";
+      break;
+    }
+
+    default: {
+      formFilters.serviceType = null;
+    }
+  }
+}
 </script>
 
 <template>
@@ -142,6 +202,85 @@ const processedIncidents = computed(() => {
           :disable-filters="status === 'pending'"
           :disable-submit-button="status == 'pending'"
           v-model="formFilters.regNo"
+          @reset-filters="resetFilters()"
+          @execute-filters="applyFilters()"
+          ><template #float-left
+            ><nav
+              class="tabs tabs-bordered flex-1"
+              aria-label="Tabs"
+              role="tablist"
+              aria-orientation="horizontal"
+            >
+              <button
+                type="button"
+                @click="
+                  () => {
+                    formFilters.serviceStatus = 'pending';
+                    applyFilters();
+                  }
+                "
+                :class="[
+                  'tab active-tab:tab-active',
+                  formFilters.serviceStatus == 'pending' && 'active',
+                ]"
+                id="tabs-basic-item-2"
+                data-tab="#tabs-basic-2"
+                aria-controls="tabs-basic-2"
+                role="tab"
+                aria-selected="false"
+              >
+                Ongoing
+              </button>
+              <button
+                type="button"
+                @click="
+                  () => {
+                    formFilters.serviceStatus = 'completed';
+                    applyFilters();
+                  }
+                "
+                :class="[
+                  'tab active-tab:tab-active',
+                  formFilters.serviceStatus == 'completed' && 'active',
+                ]"
+                id="tabs-basic-item-1"
+                data-tab="#tabs-basic-1"
+                aria-controls="tabs-basic-1"
+                role="tab"
+                aria-selected="true"
+              >
+                Completed
+              </button>
+            </nav></template
+          ><InputsGenericDateInput
+            input-id="val-start-date"
+            input-label="Start Period"
+            input-wrapper-styles="flex-1"
+            v-model="formFilters.startDate"
+          ></InputsGenericDateInput>
+          <InputsGenericDateInput
+            input-id="val-end-date"
+            input-label="End Period"
+            input-wrapper-styles="flex-1"
+            v-model="formFilters.endDate"
+          ></InputsGenericDateInput>
+          <InputsGenericInputSearchBox
+            input-id="cal-select-fleet"
+            input-label="Select Incident Type"
+            :filter-inputs="false"
+            :input-dropdown-options="
+              (
+                [
+                  'towing',
+                  'jumpstarting',
+                  'fueldelivery',
+                  'tyrechange',
+                ] as IncidentType[]
+              ).map((e, idx) => ({ id: idx, text: e as string }))
+            "
+            @value-selected="(id) => setIncidentType(id)"
+          >
+          </InputsGenericInputSearchBox
         ></GenericTableFilters>
         <div class="grow">
           <template v-if="processedIncidents?.data?.length">

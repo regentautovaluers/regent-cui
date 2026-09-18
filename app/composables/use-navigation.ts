@@ -147,6 +147,12 @@ export default function () {
           screenName: "Traceability Reports",
           display: true,
         },
+        {
+          id: 1,
+          name: "tracking-detailed-analysis-view",
+          screenName: "Analysis View",
+          display: false,
+        }
       ],
     },
     {

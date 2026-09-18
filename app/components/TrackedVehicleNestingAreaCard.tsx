@@ -1,4 +1,6 @@
 import type { PropType } from "vue";
+import { useIntersectionObserver } from "@vueuse/core";
+import type { ShallowRef } from "vue";
 
 export default defineComponent({
   props: {
@@ -26,10 +28,29 @@ export default defineComponent({
   emits: {
     "page-change-clicked": (newPage: number) => typeof newPage === "number",
   },
-  setup(props, { emit }) {
-    const handlePageChange = (newPage: number) => {
-      emit("page-change-clicked", newPage);
-    };
+  setup(props) {
+    const location: ShallowRef<string | null> = shallowRef(null);
+    const entry = useTemplateRef<HTMLElement>("entry");
+
+    const { stop } = useIntersectionObserver(
+      entry,
+      async ([entry]) => {
+        if (entry!.intersectionRatio >= 0.5 && !location.value) {
+          location.value = "Loading location...";
+          try {
+            location.value = await gecodeLocation(
+              Number(props.ordinates.lat),
+              Number(props.ordinates.lng),
+            );
+          } catch (_er) {
+            location.value = "Failed to find location!";
+          }
+
+          stop(); // stop observing after the first observation
+        }
+      },
+      { threshold: 0.5 },
+    );
 
     const displayTag = (index: number) => {
       if (index == 0) {
@@ -63,12 +84,15 @@ export default defineComponent({
     };
 
     return () => (
-      <div class="p-3 h-fit w-full space-y-5 rounded-md border border-base-content/50 bg-base-300/5">
+      <div
+        ref="entry"
+        class="p-3 h-fit w-full space-y-5 rounded-md border border-base-content/50 bg-base-300/5"
+      >
         <div class="flex items-center justify-between">
-          <div>
+          <div class="w-3/4 max-w-3/4">
             <span class="text-lg font-semibold">{displayTag(props.idx)}</span>
             <br />
-            <span>Some Location Here</span>
+            <span>{location.value ?? "-"}</span>
           </div>
           {displayBadge(props.idx)}
         </div>

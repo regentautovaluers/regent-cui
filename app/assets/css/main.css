@@ -35,6 +35,34 @@
   --color-primary: #1447e6;
 }
 
+.any-border {
+  @apply border-[1.4px] border-base-content/20;
+}
+
+.any-border-b {
+  @apply border-b-[1.4px] border-base-content/20;
+}
+
+.any-border-r {
+  @apply border-r-[1.4px] border-base-content/20;
+}
+
+.any-border-l {
+  @apply border-l-[1.4px] border-base-content/20;
+}
+
+.any-border-t {
+  @apply border-t-[1.4px] border-base-content/20;
+}
+
+.card {
+  @apply border-[1.4px] shadow-none border-base-content/20;
+}
+
+/* .input {
+  @apply border-[1.4px] focus:border-[1.6px] border-base-content/20 focus:border-base-content/50 transition-all duration-150 ease-in-out;
+} */
+
 .transtion-shared {
   @apply duration-200 ease-in-out;
 }

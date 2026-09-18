@@ -12,3 +12,8 @@ export interface ToastNotificationConfig {
   description: string;
   color?: ToastNotificationColor;
 }
+
+export type ExtendedTimelineFilters =
+  | FilterTimelines
+  | "last_six_months"
+  | "last_one_year";

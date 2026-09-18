@@ -9,7 +9,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="space-y-10 flex space-x-5 min-h-full h-full">
+  <div class="flex-1 flex space-x-5 min-h-full h-full">
     <div class="w-[15%] sticky h-full">
       <h1 class="mb-10 text-2xl font-bold">Actions</h1>
       <div class="flex flex-col space-y-5">

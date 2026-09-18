@@ -70,7 +70,7 @@
       >
         <li v-for="i in filteredOptions" :key="i.id">
           <button
-            class="dropdown-item inline-flex items-center justify-between group"
+            class="dropdown-item inline-flex items-center justify-between group capitalize"
             type="button"
             @mousedown="selectOption(i.id, i.text)"
           >

@@ -12,6 +12,7 @@ type OpenVehicleActiveView = "details" | "history";
 definePageMeta({
   name: "tracking-home",
   layout: "tracking",
+  displayName: "Regent Tracking",
 });
 
 const { public: publicConf } = useRuntimeConfig();
@@ -32,7 +33,8 @@ const {
   nestingAreas,
   deviceMovement,
   loadingDeviceHistory,
-  loadDeviceHistory,
+  availableTimelines,
+  deriveDateRange,
 } = useNestingAnalysis();
 
 /**
@@ -67,6 +69,28 @@ async function triggerDeviceCommand(commandType: DeviceCommands) {
     startDeviceCommandLoading.value = false;
     stopDeviceCommandLoading.value = false;
   }
+}
+
+async function navigateToDetailedView() {
+  // after some time navigate
+  const queryPayload = arrayBufferToBase64(
+    await compress(
+      JSON.stringify({
+        registration: trackedVehiclesStore.getActiveVehicle!.name,
+        id: trackedVehiclesStore.openVehicleId!.toString(),
+        fromDate: dateRangeForAnalysis.fromDate,
+        toDate: dateRangeForAnalysis.toDate,
+      }),
+      "deflate",
+    ),
+  );
+
+  navigateTo({
+    name: "tracking-detailed-analysis-view",
+    query: {
+      device: queryPayload,
+    },
+  });
 }
 
 // Reactively start boot flow when token is ready or available
@@ -316,33 +340,32 @@ onUnmounted(() => {
 
         <template v-if="openVehicleActiveView == 'history'">
           <div class="flex-1 overflow-y-auto thin-scrollbar space-y-2">
-            <form class="space-y-2">
-              <div
-                class="bg-green-500 inline-flex space-x-2 w-full items-center"
+            <form class="space-y-4">
+              <InputsGenericInputSearchBox
+                input-id="cal-select-side2"
+                input-label="Select A Timeline"
+                :input-dropdown-options="availableTimelines"
+                :filter-inputs="false"
+                @value-selected="
+                  (id: FilterTimelines) => {
+                    deriveDateRange(id);
+                  }
+                "
               >
-                <InputsGenericRadioDropdown> </InputsGenericRadioDropdown>
-                <button
-                  type="button"
-                  class="btn btn-square btn-outline btn-primary"
-                  aria-label="Outline Icon Button"
-                  @click="customPickCalendarOpen = !customPickCalendarOpen"
-                >
-                  <span
-                    class="icon-[material-symbols--calendar-clock-rounded] size-5 shrink-0"
-                  ></span>
-                </button>
-              </div>
+              </InputsGenericInputSearchBox>
               <div v-show="customPickCalendarOpen" class="flex space-x-2">
                 <InputsGenericDateInput
                   input-id="val-start-date"
                   input-wrapper-styles="flex-1"
                   input-place-holder="Pick start date"
+                  input-min-date="last_three_months"
                   v-model="dateRangeForAnalysis.fromDate"
                 ></InputsGenericDateInput>
                 <InputsGenericDateInput
                   input-id="val-end-date"
                   input-wrapper-styles="flex-1"
                   input-place-holder="Pick end date"
+                  input-min-date="last_three_months"
                   v-model="dateRangeForAnalysis.toDate"
                 ></InputsGenericDateInput>
               </div>
@@ -353,40 +376,43 @@ onUnmounted(() => {
               title="Nesting Area Prediction"
               sub-title="Locations where vehicle spent most idle time"
             >
-              <!-- when loading -->
-              <template v-if="loadingDeviceHistory">
-                <SkeletonsTrackedVehicleNestingAreaCardSkeleton
-                  v-for="a in 6"
-                  :key="a"
-                ></SkeletonsTrackedVehicleNestingAreaCardSkeleton>
-              </template>
+              <template #with-pad>
+                <!-- when loading -->
+                <template v-if="loadingDeviceHistory">
+                  <SkeletonsTrackedVehicleNestingAreaCardSkeleton
+                    v-for="a in 6"
+                    :key="a"
+                  ></SkeletonsTrackedVehicleNestingAreaCardSkeleton>
+                </template>
 
-              <!-- when there nothing -->
-              <h1 v-else-if="!loadingDeviceHistory && nestingAreas.length < 1">
-                Nothing to show! Select a timeline to trigger computations.
-              </h1>
+                <!-- when there nothing -->
+                <h1
+                  v-else-if="!loadingDeviceHistory && nestingAreas.length < 1"
+                >
+                  Nothing to show! Select a timeline to trigger computations.
+                </h1>
 
-              <!-- when there is something -->
-              <template v-else>
-                <TrackedVehicleNestingAreaCard
-                  v-for="(e, idx) in nestingAreas"
-                  :key="idx"
-                  :idx="idx"
-                  :time-spent="e.location_time_hours"
-                  :time-spent-frac="e.location_time_hours_fraction"
-                  :visit-times="e.appearances"
-                  :ordinates="{
-                    lat: e.representative_lat,
-                    lng: e.representative_lng,
-                  }"
-                ></TrackedVehicleNestingAreaCard>
-              </template>
+                <!-- when there is something -->
+                <template v-else>
+                  <TrackedVehicleNestingAreaCard
+                    v-for="(e, idx) in nestingAreas"
+                    :key="idx"
+                    :idx="idx"
+                    :time-spent="e.location_time_hours"
+                    :time-spent-frac="e.location_time_hours_fraction"
+                    :visit-times="e.appearances"
+                    :ordinates="{
+                      lat: e.representative_lat,
+                      lng: e.representative_lng,
+                    }"
+                  ></TrackedVehicleNestingAreaCard> </template
+              ></template>
             </NestingAreaCard>
 
             <!-- trip history card -->
             <NestingAreaCard
               title="Trip History"
-              sub-title="Ingition on marks the start of a trip, and ignition off marks the end"
+              sub-title="'Start' the start of a trip, and 'Stop' marks the end of the trip."
             >
               <!-- when loading -->
               <template v-if="loadingDeviceHistory">
@@ -404,19 +430,21 @@ onUnmounted(() => {
               <!-- when there is something -->
               <template v-else>
                 <TrackedVehicleNestingTripsCard
-                  v-for="(e, idx) in nestingAreas"
+                  v-for="(e, idx) in deviceMovement"
                   :key="idx"
-                  :idx="idx"
-                  :time-spent="e.location_time_hours"
-                  :time-spent-frac="e.location_time_hours_fraction"
-                  :visit-times="e.appearances"
-                  :ordinates="{
-                    lat: e.representative_lat,
-                    lng: e.representative_lng,
-                  }"
+                  :event-date="e.date"
+                  :movement="e.movement"
                 ></TrackedVehicleNestingTripsCard>
               </template>
             </NestingAreaCard>
+
+            <button
+              class="h-14 btn btn-primary w-full"
+              type="button"
+              @click="navigateToDetailedView()"
+            >
+              View Detailed History
+            </button>
           </div>
         </template>
       </div>
@@ -427,12 +455,27 @@ onUnmounted(() => {
       ref="mapRef"
       :api-key="publicConf.GOOGLE_MAPS_API_KEY"
       :styles="googleMapStyle"
-      style="width: 100%; height: 100%; position: absolute"
+      :center="{ lat: -1.2687054, lng: 36.8069326 }"
+      style="width: 100%; height: 100%"
       :map-type-control="true"
       :zoom-control="true"
       :fullscreen-control="false"
       :street-view-control="true"
     >
+      <!-- our head office -->
+      <CustomMarker
+        :options="{
+          position: { lat: -1.2685284532098227, lng: 36.80946458168313 },
+          anchorPoint: 'BOTTOM_CENTER',
+        }"
+      >
+        <div
+          class="myloc-box text-center w-fit h-fit rounded-lg bg-primary p-3 text-base-content"
+        >
+          <h3 class="text-base font-semibold">Our Head Office</h3>
+          <span>TRV Plaza, Muthithi Road</span>
+        </div>
+      </CustomMarker>
     </GoogleMap>
   </div>
 </template>
