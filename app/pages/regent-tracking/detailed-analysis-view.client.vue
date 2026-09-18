@@ -13,10 +13,13 @@ const {
   deviceMovement,
   loadingDeviceHistory,
   availableTimelines,
+  combinedDeviceMovement,
   deriveDateRange,
 } = useNestingAnalysis();
 const { public: pubConf } = useRuntimeConfig();
 const trackedVehiclesStore = useTrackedVehiclesStore();
+const activeTripPin = ref<NestingAreaAnalysisMapPin | null>(null);
+const activeDeviceReg = ref("");
 
 onMounted(async () => {
   const { query } = useRoute();
@@ -32,6 +35,9 @@ onMounted(async () => {
 
     // then load the other vehicles for searching
     await trackedVehiclesStore.loadTrackedVehicles(true);
+
+    // set active reg
+    activeDeviceReg.value = registration;
   }
 });
 </script>
@@ -60,9 +66,7 @@ onMounted(async () => {
                 }))
             "
             @value-selected="
-              (id: number) => {
-                deriveDateRange(id);
-              }
+              (id: number) => (trackedVehiclesStore.openVehicleId = id)
             "
           >
           </InputsGenericInputSearchBox>
@@ -83,8 +87,8 @@ onMounted(async () => {
           <div class="grow">
             <h1 class="text-lg">Registration</h1>
             <h3 class="inline-flex flex-col mt-1">
-              <span class="font-semibold text-xl">5</span>
-              <span class="text-sm">Currently Open</span>
+              <span class="font-semibold text-xl">{{ activeDeviceReg }}</span>
+              <span class="text-sm">Currently Being Viewed</span>
             </h3>
           </div>
           <div class="size-16 btn btn-info btn-soft">
@@ -97,11 +101,16 @@ onMounted(async () => {
           <div class="grow">
             <h1 class="text-lg">Total Trips</h1>
             <h3 class="inline-flex flex-col mt-1">
-              <span class="font-semibold text-xl">5</span>
-              <span class="text-sm text-success">Over the Last One Week</span>
+              <span class="font-semibold text-xl">{{
+                deviceMovement.reduce(
+                  (accum, curr) => accum + curr.totalTrips,
+                  0,
+                )
+              }}</span>
+              <span class="text-sm text-success">Over this Time Period</span>
             </h3>
           </div>
-          <div class="size-16 btn btn-primary btn-soft">
+          <div class="size-16 btn btn-success btn-soft">
             <span class="icon-[material-symbols--route-outline] size-7"></span>
           </div>
         </div>
@@ -111,8 +120,17 @@ onMounted(async () => {
           <div class="grow">
             <h1 class="text-lg">Total Distance</h1>
             <h3 class="inline-flex flex-col mt-1">
-              <span class="font-semibold text-xl">2392KM</span>
-              <span class="text-sm text-success">Over the Last One Week</span>
+              <span class="font-semibold text-xl"
+                >{{
+                  Math.trunc(
+                    deviceMovement.reduce(
+                      (accum, curr) => accum + curr.cummTotalDistance,
+                      0,
+                    ),
+                  )
+                }}Km</span
+              >
+              <span class="text-sm">Over this Time Period</span>
             </h3>
           </div>
           <div class="size-16 btn btn-primary btn-soft">
@@ -125,12 +143,19 @@ onMounted(async () => {
           <div class="grow">
             <h1 class="text-lg">Total Stops</h1>
             <h3 class="inline-flex flex-col mt-1">
-              <span class="font-semibold text-xl">10</span>
-              <span class="text-sm text-success">Over the Last One Week</span>
+              <span class="font-semibold text-xl">{{
+                deviceMovement.reduce(
+                  (accum, curr) => accum + curr.totalTrips,
+                  0,
+                )
+              }}</span>
+              <span class="text-sm text-error">Over this Time Period</span>
             </h3>
           </div>
-          <div class="size-16 btn btn-primary btn-soft">
-            <span class="icon-[material-symbols--route-outline] size-7"></span>
+          <div class="size-16 btn btn-error btn-soft">
+            <span
+              class="icon-[material-symbols--stop-circle-outline] size-7"
+            ></span>
           </div>
         </div>
       </div>
@@ -191,22 +216,28 @@ onMounted(async () => {
                 </p>
                 <p class="inline-flex items-center space-x-1">
                   <span class="size-4 bg-primary rounded-full"></span>
-                  <span>Nesting Area</span>
+                  <span>Trip Route</span>
                 </p>
               </div>
               <div class="grow flex flex-col p-4">
                 <div class="h-25 flex items-center space-x-16">
                   <p class="inline-flex flex-col">
                     <span>Trip Date</span>
-                    <span class="text-lg font-semibold">2hrs 15Min</span>
+                    <span class="text-lg font-semibold">{{
+                      activeTripPin?.tripDate ?? "-"
+                    }}</span>
                   </p>
                   <p class="inline-flex flex-col">
                     <span>Trip Duration</span>
-                    <span class="text-lg font-semibold">2hrs 15Min</span>
+                    <span class="text-lg font-semibold">{{
+                      activeTripPin?.tripDuration ?? "-"
+                    }}</span>
                   </p>
                   <p class="inline-flex flex-col">
-                    <span>Trip Distance Covered</span>
-                    <span class="text-lg font-semibold">2hrs 15Min</span>
+                    <span>Distance Covered</span>
+                    <span class="text-lg font-semibold"
+                      >{{ activeTripPin?.distanceCovered ?? "-" }}Km</span
+                    >
                   </p>
                 </div>
                 <div class="grow rounded-lg overflow-clip any-border">
@@ -231,19 +262,139 @@ onMounted(async () => {
                         anchorPoint: 'BOTTOM_CENTER',
                       }"
                     >
-                      <div
-                        class="myloc-box text-center w-fit h-fit rounded-lg bg-primary p-3 text-base-content"
-                      >
+                      <div class="myloc-box any-border text-center">
                         <h3 class="text-base font-semibold">Our Head Office</h3>
                         <span>TRV Plaza, Muthithi Road</span>
                       </div>
-                    </CustomMarker></GoogleMap
-                  >
+                    </CustomMarker>
+
+                    <!-- info for active trip -->
+                    <template v-if="activeTripPin">
+                      <!-- start marker -->
+                      <CustomMarker
+                        :options="{
+                          position: {
+                            lat: activeTripPin.startPin.lat,
+                            lng: activeTripPin.startPin.lng,
+                          },
+                          anchorPoint: 'BOTTOM_CENTER',
+                        }"
+                      >
+                        <div class="myloc-box any-border">
+                          <h3
+                            class="any-border-b w-full h-12 p-3 text-base font-semibold inline-flex items-center space-x-2"
+                          >
+                            <span class="inline-flex items-center space-x-1">
+                              <span
+                                class="size-4 bg-success rounded-full"
+                              ></span>
+                              <span>Trip Start</span></span
+                            >
+                            <span>&middot;</span>
+                            <span>{{ activeDeviceReg }}</span>
+                          </h3>
+                          <div
+                            class="grid grid-cols-[30%_70%] gap-y-4 text-base p-3"
+                          >
+                            <span class="font-semibold text-start"
+                              >Location</span
+                            >
+                            <span class="text-sm text-end">{{
+                              activeTripPin.startPin.name
+                            }}</span>
+                            <span class="font-semibold text-start">Lat</span>
+                            <span class="text-sm text-end">{{
+                              activeTripPin.startPin.lat
+                            }}</span>
+                            <span class="font-semibold text-start">Lng</span>
+                            <span class="text-sm text-end">{{
+                              activeTripPin.startPin.lng
+                            }}</span>
+                            <span class="font-semibold text-start">Time</span>
+                            <span class="text-sm text-end">{{
+                              activeTripPin.startPin.time
+                            }}</span>
+                            <span class="font-semibold text-start">Event</span>
+                            <span class="text-sm text-end">Start of Trip</span>
+                          </div>
+                        </div>
+                      </CustomMarker>
+
+                      <!-- stop marker -->
+                      <CustomMarker
+                        :options="{
+                          position: {
+                            lat: activeTripPin.stopPin.lat,
+                            lng: activeTripPin.stopPin.lng,
+                          },
+                          anchorPoint: 'BOTTOM_CENTER',
+                        }"
+                      >
+                        <div class="myloc-box any-border">
+                          <h3
+                            class="any-border-b w-full h-12 p-3 text-base font-semibold inline-flex items-center space-x-2"
+                          >
+                            <span class="inline-flex items-center space-x-1">
+                              <span class="size-4 bg-error rounded-full"></span>
+                              <span>Trip Stop</span></span
+                            >
+                            <span>&middot;</span>
+                            <span>{{ activeDeviceReg }}</span>
+                          </h3>
+                          <div
+                            class="grid grid-cols-[30%_70%] gap-y-4 text-base p-3"
+                          >
+                            <span class="font-semibold text-start"
+                              >Location</span
+                            >
+                            <span class="text-sm text-end">{{
+                              activeTripPin.stopPin.name
+                            }}</span>
+                            <span class="font-semibold text-start">Lat</span>
+                            <span class="text-sm text-end">{{
+                              activeTripPin.stopPin.lat
+                            }}</span>
+                            <span class="font-semibold text-start">Lng</span>
+                            <span class="text-sm text-end">{{
+                              activeTripPin.stopPin.lng
+                            }}</span>
+                            <span class="font-semibold text-start">Time</span>
+                            <span class="text-sm text-end">{{
+                              activeTripPin.stopPin.time
+                            }}</span>
+                            <span class="font-semibold text-start">Event</span>
+                            <span class="text-sm text-end">Stop of Trip</span>
+                          </div>
+                        </div>
+                      </CustomMarker>
+
+                      <!-- polyline for active trip -->
+                      <Polyline
+                        :options="{
+                          path: activeTripPin.routePins,
+                          geodesic: true,
+                          strokeColor: '#e60076',
+                          strokeOpacity: 1.0,
+                          strokeWeight: 5,
+                        }"
+                      />
+                    </template>
+
+                    <!-- general device movement -->
+                    <template v-if="combinedDeviceMovement">
+                      <Polyline
+                        :options="{
+                          path: combinedDeviceMovement,
+                          geodesic: true,
+                          strokeColor: '#155dfc',
+                          strokeOpacity: 0.8,
+                          strokeWeight: 10,
+                        }"
+                    /></template>
+                  </GoogleMap>
                 </div>
-              </div>
-            </div></template
-          ></GrowableCard
-        >
+              </div></div></template
+        ></GrowableCard>
       </div>
 
       <NestingAreaCard
@@ -271,6 +422,7 @@ onMounted(async () => {
             :key="idx"
             :event-date="e.date"
             :movement="e.movement"
+            @show-pin-clicked="(pin) => (activeTripPin = pin)"
           ></TrackedVehicleNestingTripsCard>
         </template>
       </NestingAreaCard>

@@ -65,6 +65,14 @@ export default function useNestingAnalysis() {
     return analyzeVehicleTripHistory(deviceHistory.value);
   });
 
+  const combinedDeviceMovement: ComputedRef<
+    { lat: number; lng: number }[] | null
+  > = computed(() =>
+    deviceMovement.value.length == 0
+      ? null
+      : deviceMovement.value.flatMap((e) => e.pingHistory),
+  );
+
   function deriveDateRange(timeline: FilterTimelines) {
     if (timeline == "custom") {
       customPickCalendarOpen.value = true;
@@ -98,6 +106,7 @@ export default function useNestingAnalysis() {
     deviceMovement,
     loadingDeviceHistory,
     availableTimelines,
+    combinedDeviceMovement,
     deriveDateRange,
   };
 }

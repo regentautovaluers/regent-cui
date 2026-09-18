@@ -7,12 +7,21 @@ export interface VehiclePing {
 
 export type VehicleMovementEventType = "start" | "stop";
 
-export interface NestingAreaAnalysisMapPin {
+export interface NestingAreaPlacePin {
   lat: number;
   lng: number;
-  location: string;
-  eventName?: VehicleMovementEventType;
-  time?: string;
+  name: string;
+  time: string;
+  event: VehicleMovementEventType;
+}
+
+export interface NestingAreaAnalysisMapPin {
+  startPin: NestingAreaPlacePin;
+  stopPin: NestingAreaPlacePin;
+  routePins: { lat: number; lng: number }[];
+  tripDuration: string;
+  tripDate: string;
+  distanceCovered: number;
 }
 
 /**

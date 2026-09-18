@@ -86,7 +86,7 @@ export default defineComponent({
     return () => (
       <div
         ref="entry"
-        class="p-3 h-fit w-full space-y-5 rounded-md border border-base-content/50 bg-base-300/5"
+        class="p-3 h-fit w-full space-y-5 rounded-md any-border"
       >
         <div class="flex items-center justify-between">
           <div class="w-3/4 max-w-3/4">

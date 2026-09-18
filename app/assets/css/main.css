@@ -106,10 +106,11 @@
 }
 
 .myloc-box {
+  @apply bg-base-100 rounded-lg h-fit;
   position: relative;
-  padding: 5px;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 350px;
 }
 
 .myloc-box::after {
@@ -119,5 +120,5 @@
   left: 50%;
   transform: translateX(-50%);
   border: 10px solid transparent;
-  border-top-color: var(--color-primary);
+  border-top-color: var(--color-base-100);
 }

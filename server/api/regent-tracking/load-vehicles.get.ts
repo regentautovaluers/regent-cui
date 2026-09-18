@@ -28,20 +28,20 @@ export default defineEventHandler(async (event) => {
     // we have to load the client details here to reduce complicated calls on the front-end
     if (combinedVehicleData.length > 0) {
       const deviceIds: number[] = combinedVehicleData.map((v) => {
-        return v.id;
+        return v.device_data.id;
       });
-      let base64Encoded = encodeBase64(deviceIds.join(","));
-      const userDetailsEndpoint =
-        `${REGENT_TRACKING_CERTIFICATES_BASE_URL}/tracking/traceabilityC.php?
-					api_key=${REGENT_TRACKING_CERTIFICATES_API_KEY}
-					&tracker_id=${base64Encoded}
-					&page=1
-					&limit=${deviceIds.length}`.trim();
+
       try {
         const results = await makeProxyRequest<TraceabilityReport>(
-          userDetailsEndpoint,
-
+          `${REGENT_TRACKING_CERTIFICATES_BASE_URL}/tracking/traceabilityC.php?`,
           event,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              api_key: REGENT_TRACKING_CERTIFICATES_API_KEY,
+              tracker_id: deviceIds,
+            }),
+          },
         );
         results.results.forEach((r) => {
           let entry = combinedVehicleData.find(

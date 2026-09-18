@@ -18,8 +18,23 @@ export default defineComponent({
       return true;
     },
   },
-  setup(props) {
-    function emitShowPin() {}
+  setup(props, { emit }) {
+    function emitShowPin(
+      startPin: NestingAreaPlacePin,
+      stopPin: NestingAreaPlacePin,
+      routePins: NestingAreaAnalysisMapPin["routePins"],
+      tripDuration: string,
+      distanceCovered: number,
+    ) {
+      emit("show-pin-clicked", {
+        startPin,
+        stopPin,
+        routePins,
+        tripDuration,
+        tripDate: props.eventDate,
+        distanceCovered,
+      });
+    }
 
     // cache for geocoded locations, one per movement entry
     const locations = reactive<
@@ -70,7 +85,7 @@ export default defineComponent({
     return () => (
       <div
         ref="entry"
-        class="border-base-content/25 h-fit w-full space-y-3 border-b"
+        class="any-border-b h-fit w-full space-y-3"
       >
         <div class="p-4 border-base-content/50 font-bold">
           {props.eventDate}
@@ -79,8 +94,29 @@ export default defineComponent({
           return (
             <div
               ref={entryRefs[idx]}
-              class="border-t border-base-content/50 p-4"
+              class="any-border-t hover:bg-primary/20 cursor-pointer p-4"
               key={idx}
+              onMousedown={(_mdev) =>
+                emitShowPin(
+                  {
+                    lat: ev.startAtLat,
+                    lng: ev.startAtLng,
+                    name: locations[idx]!.startLocation,
+                    time: ev.startedAt,
+                    event: "start",
+                  },
+                  {
+                    lat: ev.stoppedAtLat,
+                    lng: ev.stoppedAtLng,
+                    name: locations[idx]!.stopLocation,
+                    time: ev.stoppedAt,
+                    event: "stop",
+                  },
+                  ev.tripRoute,
+                  ev.drivingDuration!,
+                  ev.totalDistance,
+                )
+              }
             >
               <ul class="timeline timeline-snap-icon timeline-compact timeline-vertical w-full">
                 <li>
