@@ -152,7 +152,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative flex-1 w-full min-h-screen bg-red-500">
+  <div class="relative flex-1 w-full min-h-screen">
     <!-- side panel -->
     <div
       class="absolute top-24 left-4 z-20 h-[90%] flex shadow-md border rounded-sm border-accent-content bg-base-100"
