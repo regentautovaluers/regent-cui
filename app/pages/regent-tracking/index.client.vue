@@ -29,6 +29,7 @@ const openVehicleActiveView: Ref<OpenVehicleActiveView> = ref("details");
 // device nesting analysis
 const {
   customPickCalendarOpen,
+  activeSearchTimeline,
   dateRangeForAnalysis,
   nestingAreas,
   deviceMovement,
@@ -80,6 +81,7 @@ async function navigateToDetailedView() {
         id: trackedVehiclesStore.openVehicleId!.toString(),
         fromDate: dateRangeForAnalysis.fromDate,
         toDate: dateRangeForAnalysis.toDate,
+        activeTimeline: activeSearchTimeline.value,
       }),
       "deflate",
     ),
@@ -150,33 +152,42 @@ onUnmounted(() => {
           ></InputsGenericInput>
           <div class="join flex">
             <button
-              class="btn btn-soft btn-primary join-item flex-1"
+              :class="[
+                'btn btn-soft join-item flex-1 inline-flex items-center space-x-2 any-border',
+                trackedVehiclesStore.activeView == null
+                  ? 'btn-primary'
+                  : 'bg-transparent',
+              ]"
               type="button"
               @click="() => (trackedVehiclesStore.activeView = null)"
             >
-              All Vehicles
+              <span
+                v-show="trackedVehiclesStore.activeView == null"
+                class="size-2 rounded-full bg-primary"
+              ></span>
+              <span>All</span>
             </button>
             <button
-              class="btn btn-soft btn-primary join-item flex-1"
+              :class="[
+                'btn btn-soft join-item flex-1 inline-flex items-center space-x-2 any-border',
+                trackedVehiclesStore.activeView == e
+                  ? 'btn-primary'
+                  : 'bg-transparent',
+              ]"
               type="button"
-              @click="() => (trackedVehiclesStore.activeView = 'Online')"
+              v-for="e in ['Online', 'Offline', 'Expired']"
+              :key="e"
+              @click="
+                () =>
+                  (trackedVehiclesStore.activeView =
+                    e as TrackerStatusWrapperName)
+              "
             >
-              Online
-            </button>
-            <button
-              class="btn btn-soft btn-primary join-item flex-1"
-              type="button"
-              @click="() => (trackedVehiclesStore.activeView = 'Offline')"
-            >
-              Offline
-            </button>
-
-            <button
-              class="btn btn-soft btn-primary join-item flex-1"
-              type="button"
-              @click="() => (trackedVehiclesStore.activeView = 'Expired')"
-            >
-              Expired
+              <span
+                v-show="trackedVehiclesStore.activeView == e"
+                class="size-2 rounded-full bg-primary"
+              ></span>
+              <span>{{ e }}</span>
             </button>
           </div>
         </form>
@@ -254,18 +265,23 @@ onUnmounted(() => {
 
         <div class="join flex">
           <button
-            class="btn btn-soft btn-primary join-item flex-1"
             type="button"
-            @click="openVehicleActiveView = 'details'"
+            v-for="e in [
+              { id: 'details', name: 'Details' },
+              { id: 'history', name: 'History' },
+            ]"
+            :class="[
+              'btn btn-soft join-item flex-1 inline-flex items-center space-x-2 any-border',
+              openVehicleActiveView == e.id ? 'btn-primary' : 'bg-transparent',
+            ]"
+            :key="e.id"
+            @click="openVehicleActiveView = e.id"
           >
-            Details
-          </button>
-          <button
-            class="btn btn-soft btn-primary join-item flex-1"
-            type="button"
-            @click="openVehicleActiveView = 'history'"
-          >
-            History
+            <span
+              v-show="openVehicleActiveView == e.id"
+              class="size-2 rounded-full bg-primary"
+            ></span>
+            {{ e.name }}
           </button>
         </div>
 
@@ -374,6 +390,7 @@ onUnmounted(() => {
             <!-- nesting area card -->
             <NestingAreaCard
               title="Nesting Area Prediction"
+              custom-class="h-110 max-h-110"
               sub-title="Locations where vehicle spent most idle time"
             >
               <template #with-pad>
@@ -412,7 +429,8 @@ onUnmounted(() => {
             <!-- trip history card -->
             <NestingAreaCard
               title="Trip History"
-              sub-title="'Start' the start of a trip, and 'Stop' marks the end of the trip."
+              custom-class="h-110 max-h-110"
+              sub-title="'Start' marks the start of a trip, and 'Stop' marks the end of the trip."
             >
               <!-- when loading -->
               <template v-if="loadingDeviceHistory">

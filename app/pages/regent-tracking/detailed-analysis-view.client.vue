@@ -13,6 +13,7 @@ const {
   deviceMovement,
   loadingDeviceHistory,
   availableTimelines,
+  activeSearchTimeline,
   combinedDeviceMovement,
   deriveDateRange,
 } = useNestingAnalysis();
@@ -24,7 +25,7 @@ const activeDeviceReg = ref("");
 onMounted(async () => {
   const { query } = useRoute();
   if (query.device) {
-    const { registration, id, fromDate, toDate } = JSON.parse(
+    const { registration, id, fromDate, toDate, activeTimeline } = JSON.parse(
       await decompress(base64ToArrayBuffer(query.device as string), "deflate"),
     );
 
@@ -32,6 +33,7 @@ onMounted(async () => {
     trackedVehiclesStore.openVehicleId = id;
     dateRangeForAnalysis.fromDate = fromDate;
     dateRangeForAnalysis.toDate = toDate;
+    activeSearchTimeline.value = activeTimeline as FilterTimelines;
 
     // then load the other vehicles for searching
     await trackedVehiclesStore.loadTrackedVehicles(true);
@@ -77,6 +79,44 @@ onMounted(async () => {
           <span class="icon-[material-symbols--calendar-month] size-5"></span>
           <span class="font-semibold">Analysis Period</span>
         </p>
+
+        <div class="size-fit flex flex-col space-y-4">
+          <div class="join">
+            <button
+              type="button"
+              :class="[
+                'btn btn-soft join-item h-13 min-w-32 inline-flex items-center space-x-2 any-border',
+                t.id == activeSearchTimeline ? 'btn-primary' : 'bg-transparent',
+              ]"
+              v-for="t in availableTimelines"
+              @click="deriveDateRange(t.id)"
+              :key="t.id"
+            >
+              <span
+                v-show="t.id == activeSearchTimeline"
+                class="size-3 rounded-full bg-primary"
+              ></span>
+              <span>{{ t.text }}</span>
+            </button>
+          </div>
+
+          <form v-show="customPickCalendarOpen" class="flex space-x-4">
+            <InputsGenericDateInput
+              input-id="val-start-date"
+              input-wrapper-styles="flex-1"
+              input-place-holder="Pick start date"
+              input-min-date="last_three_months"
+              v-model="dateRangeForAnalysis.fromDate"
+            ></InputsGenericDateInput>
+            <InputsGenericDateInput
+              input-id="val-end-date"
+              input-wrapper-styles="flex-1"
+              input-place-holder="Pick end date"
+              input-min-date="last_three_months"
+              v-model="dateRangeForAnalysis.toDate"
+            ></InputsGenericDateInput>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -87,7 +127,9 @@ onMounted(async () => {
           <div class="grow">
             <h1 class="text-lg">Registration</h1>
             <h3 class="inline-flex flex-col mt-1">
-              <span class="font-semibold text-xl">{{ activeDeviceReg }}</span>
+              <span class="font-semibold text-xl">{{
+                trackedVehiclesStore.getActiveVehicle!.name ?? activeDeviceReg
+              }}</span>
               <span class="text-sm">Currently Being Viewed</span>
             </h3>
           </div>
@@ -217,6 +259,10 @@ onMounted(async () => {
                 <p class="inline-flex items-center space-x-1">
                   <span class="size-4 bg-primary rounded-full"></span>
                   <span>Trip Route</span>
+                </p>
+                <p class="inline-flex items-center space-x-1">
+                  <span class="size-4 bg-pink-500 rounded-full"></span>
+                  <span>Active Trip Route</span>
                 </p>
               </div>
               <div class="grow flex flex-col p-4">

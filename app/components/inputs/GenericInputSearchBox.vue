@@ -62,7 +62,7 @@
       leave-to-class="opacity-0 translate-y-2"
     >
       <ul
-        class="absolute z-30 w-full mt-2 bg-base-100 left-0 right-0 rounded-lg border border-primary h-fit max-h-64 overflow-y-auto thin-scrollbar"
+        class="absolute z-30 w-full mt-2 bg-base-100 left-0 right-0 rounded-lg any-border h-fit max-h-64 overflow-y-auto thin-scrollbar"
         role="menu"
         aria-orientation="vertical"
         :aria-labelledby="inputId"

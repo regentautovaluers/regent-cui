@@ -53,7 +53,8 @@ export default defineComponent({
             <p class="text-sm">Open to View Location</p>
           </div>
           <button
-            class="btn btn-square btn-soft btn-primary"
+            class={`btn btn-square btn-soft ${props.wrappedStatus == "Expired" ? "" : " btn-primary"}`}
+            disabled={props.wrappedStatus == "Expired"}
             onClick={() => handleOpenRequest(props.id)}
           >
             <svg

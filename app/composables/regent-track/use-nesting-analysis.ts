@@ -1,15 +1,13 @@
-import { toDate } from "date-fns";
-
 export default function useNestingAnalysis() {
   const { get } = useStandardizedApi();
   const customPickCalendarOpen = ref(false);
-  const availableTimelines: AvailableTimelines[] = [
+  const availableTimelines: Ref<AvailableTimelines[]> = ref([
     { id: "today", text: "Today" },
     { id: "this_week", text: "This Week" },
     { id: "last_thirty_days", text: "Last Thirty Days" },
     { id: "last_three_months", text: "Last Three Months" },
     { id: "custom", text: "Custom" },
-  ];
+  ]);
   const dateRangeForAnalysis = reactive({
     fromDate: "",
     toDate: "",
@@ -17,6 +15,7 @@ export default function useNestingAnalysis() {
   const deviceHistory: Ref<DeviceHistory | null> = ref(null);
   const loadingDeviceHistory = ref(false);
   const store = useTrackedVehiclesStore();
+  const activeSearchTimeline: Ref<FilterTimelines | null> = ref(null);
 
   async function loadDeviceHistory(
     fromDate: string,
@@ -74,6 +73,9 @@ export default function useNestingAnalysis() {
   );
 
   function deriveDateRange(timeline: FilterTimelines) {
+    // set the activeSelectTimeline variable
+    activeSearchTimeline.value = timeline;
+
     if (timeline == "custom") {
       customPickCalendarOpen.value = true;
       return;
@@ -86,17 +88,17 @@ export default function useNestingAnalysis() {
   }
 
   watch(
-    dateRangeForAnalysis,
-    async (newRange) => {
-      if (newRange.fromDate && newRange.toDate) {
+    [() => ({ ...dateRangeForAnalysis }), () => store.openVehicleId],
+    async ([newRange, newVehicleId]) => {
+      if (newRange.fromDate && newRange.toDate && newVehicleId != null) {
         await loadDeviceHistory(
           newRange.fromDate,
           newRange.toDate,
-          store.openVehicleId!.toString(),
+          newVehicleId.toString(),
         );
       }
     },
-    { immediate: true, deep: true },
+    { immediate: true },
   );
 
   return {
@@ -107,6 +109,7 @@ export default function useNestingAnalysis() {
     loadingDeviceHistory,
     availableTimelines,
     combinedDeviceMovement,
+    activeSearchTimeline,
     deriveDateRange,
   };
 }
