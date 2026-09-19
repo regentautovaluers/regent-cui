@@ -35,6 +35,7 @@ const {
   deviceMovement,
   loadingDeviceHistory,
   availableTimelines,
+  activeTripPin,
   deriveDateRange,
 } = useNestingAnalysis();
 
@@ -106,6 +107,42 @@ watch(
   { immediate: true },
 );
 
+// watch(
+//   [
+//     () => mapRef.value?.ready,
+//     () => trackedVehiclesStore.allVehicles,
+//     () => trackedVehiclesStore.getActiveVehicle,
+//   ],
+//   (
+//     [newReady, newDevices, newActiveTrackedDevice],
+//     [_oldReady, _oldDevices, _oldActiveTrackedDevice],
+//   ) => {
+//     if (!newReady || !newDevices) return;
+
+//     if (newActiveTrackedDevice) {
+//       // Hide cluster markers without destroying them
+//       markerCluster.value.markerCluster?.setMap(null);
+
+//       mapRef.value.map.panTo({
+//         lat: newActiveTrackedDevice.lat,
+//         lng: newActiveTrackedDevice.lng,
+//       });
+//       mapRef.value.map.panBy(-50, 0);
+//     } else {
+//       // Show cluster markers again
+//       markerCluster.value.markerCluster.setMap(mapRef.value.map);
+
+//       const firstActive = newDevices.find((v) => v.wrapperStatus == "Online");
+//       if (firstActive) {
+//         mapRef.value.map.panTo({
+//           lat: firstActive.lat,
+//           lng: firstActive.lng,
+//         });
+//       }
+//     }
+//   },
+// );
+
 // Clean up SSE connection when component unmounts or user navigates away
 onUnmounted(() => {
   if (import.meta.client) {
@@ -115,7 +152,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative flex-1 w-full min-h-screen">
+  <div class="relative flex-1 w-full min-h-screen bg-red-500">
     <!-- side panel -->
     <div
       class="absolute top-24 left-4 z-20 h-[90%] flex shadow-md border rounded-sm border-accent-content bg-base-100"
@@ -473,12 +510,13 @@ onUnmounted(() => {
       ref="mapRef"
       :api-key="publicConf.GOOGLE_MAPS_API_KEY"
       :styles="googleMapStyle"
-      :center="{ lat: -1.2687054, lng: 36.8069326 }"
-      style="width: 100%; height: 100%"
+      :center="{ lat: -1.2685284532098227, lng: 36.80946458168313 }"
+      style="position: absolute; width: 100%; height: 100%"
       :map-type-control="true"
+      :zoom="13"
       :zoom-control="true"
       :fullscreen-control="false"
-      :street-view-control="true"
+      :street-view-control="false"
     >
       <!-- our head office -->
       <CustomMarker
@@ -487,13 +525,137 @@ onUnmounted(() => {
           anchorPoint: 'BOTTOM_CENTER',
         }"
       >
-        <div
-          class="myloc-box text-center w-fit h-fit rounded-lg bg-primary p-3 text-base-content"
-        >
+        <div class="myloc-box any-border text-center">
           <h3 class="text-base font-semibold">Our Head Office</h3>
           <span>TRV Plaza, Muthithi Road</span>
         </div>
       </CustomMarker>
+
+      <MarkerCluster ref="markerCluster">
+        <!-- to avoid rendering fragment components -->
+        <CustomMarker
+          v-if="trackedVehiclesStore.getViableMapPinVehicles.length"
+          v-for="v in trackedVehiclesStore.getViableMapPinVehicles"
+          :key="v.id"
+          :options="{
+            position: { lat: v.lat, lng: v.lng },
+            anchorPoint: 'BOTTOM_CENTER',
+            visible: false,
+          }"
+          :style="{
+            display: !trackedVehiclesStore.getActiveVehicle ? 'block' : 'none',
+          }"
+        >
+          <div>
+            <p :class="['any-border bg-base-100 rounded-lg p-3 size-fit']">
+              {{ v.name.trim() }}
+            </p>
+            <img src="/maps-car.png" width="50" height="50" />
+          </div>
+        </CustomMarker>
+      </MarkerCluster>
+
+      <!-- info for active trip -->
+      <template v-if="activeTripPin">
+        <!-- start marker -->
+        <CustomMarker
+          :options="{
+            position: {
+              lat: activeTripPin.startPin.lat,
+              lng: activeTripPin.startPin.lng,
+            },
+            anchorPoint: 'BOTTOM_CENTER',
+          }"
+        >
+          <div class="myloc-box any-border">
+            <h3
+              class="any-border-b w-full h-12 p-3 text-base font-semibold inline-flex items-center space-x-2"
+            >
+              <span class="inline-flex items-center space-x-1">
+                <span class="size-4 bg-success rounded-full"></span>
+                <span>Trip Start</span></span
+              >
+              <span>&middot;</span>
+              <span>{{ trackedVehiclesStore.getActiveVehicle!.name }}</span>
+            </h3>
+            <div class="grid grid-cols-[30%_70%] gap-y-4 text-base p-3">
+              <span class="font-semibold text-start">Location</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.startPin.name
+              }}</span>
+              <span class="font-semibold text-start">Lat</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.startPin.lat
+              }}</span>
+              <span class="font-semibold text-start">Lng</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.startPin.lng
+              }}</span>
+              <span class="font-semibold text-start">Time</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.startPin.time
+              }}</span>
+              <span class="font-semibold text-start">Event</span>
+              <span class="text-sm text-end">Start of Trip</span>
+            </div>
+          </div>
+        </CustomMarker>
+
+        <!-- stop marker -->
+        <CustomMarker
+          :options="{
+            position: {
+              lat: activeTripPin.stopPin.lat,
+              lng: activeTripPin.stopPin.lng,
+            },
+            anchorPoint: 'BOTTOM_CENTER',
+          }"
+        >
+          <div class="myloc-box any-border">
+            <h3
+              class="any-border-b w-full h-12 p-3 text-base font-semibold inline-flex items-center space-x-2"
+            >
+              <span class="inline-flex items-center space-x-1">
+                <span class="size-4 bg-error rounded-full"></span>
+                <span>Trip Stop</span></span
+              >
+              <span>&middot;</span>
+              <span>{{ trackedVehiclesStore.getActiveVehicle!.name }}</span>
+            </h3>
+            <div class="grid grid-cols-[30%_70%] gap-y-4 text-base p-3">
+              <span class="font-semibold text-start">Location</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.stopPin.name
+              }}</span>
+              <span class="font-semibold text-start">Lat</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.stopPin.lat
+              }}</span>
+              <span class="font-semibold text-start">Lng</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.stopPin.lng
+              }}</span>
+              <span class="font-semibold text-start">Time</span>
+              <span class="text-sm text-end">{{
+                activeTripPin.stopPin.time
+              }}</span>
+              <span class="font-semibold text-start">Event</span>
+              <span class="text-sm text-end">Stop of Trip</span>
+            </div>
+          </div>
+        </CustomMarker>
+
+        <!-- polyline for active trip -->
+        <Polyline
+          :options="{
+            path: activeTripPin.routePins,
+            geodesic: true,
+            strokeColor: '#e60076',
+            strokeOpacity: 1.0,
+            strokeWeight: 5,
+          }"
+        />
+      </template>
     </GoogleMap>
   </div>
 </template>

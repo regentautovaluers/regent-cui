@@ -16,6 +16,7 @@ export default function useNestingAnalysis() {
   const loadingDeviceHistory = ref(false);
   const store = useTrackedVehiclesStore();
   const activeSearchTimeline: Ref<FilterTimelines | null> = ref(null);
+  const activeTripPin = ref<NestingAreaAnalysisMapPin | null>(null);
 
   async function loadDeviceHistory(
     fromDate: string,
@@ -110,6 +111,7 @@ export default function useNestingAnalysis() {
     availableTimelines,
     combinedDeviceMovement,
     activeSearchTimeline,
+    activeTripPin,
     deriveDateRange,
   };
 }

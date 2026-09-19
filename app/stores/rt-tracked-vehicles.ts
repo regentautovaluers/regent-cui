@@ -88,6 +88,16 @@ export const useTrackedVehiclesStore = defineStore("trackedVehiclesStore", {
         return statusMatch && searchMatch;
       }) as TrackedVehicles[];
     },
+
+    getViableMapPinVehicles(state): TrackedVehicles[] {
+      if (state.allVehicles.length == 0) {
+        return [];
+      }
+
+      return state.allVehicles.filter(
+        (v) => v.wrapperStatus == "Online" || v.wrapperStatus == "Offline",
+      ) as TrackedVehicles[];
+    },
   },
   actions: {
     async loadTrackedVehicles(forceRefresh = false) {

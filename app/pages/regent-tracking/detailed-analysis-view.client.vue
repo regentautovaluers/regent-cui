@@ -15,11 +15,11 @@ const {
   availableTimelines,
   activeSearchTimeline,
   combinedDeviceMovement,
+  activeTripPin,
   deriveDateRange,
 } = useNestingAnalysis();
 const { public: pubConf } = useRuntimeConfig();
 const trackedVehiclesStore = useTrackedVehiclesStore();
-const activeTripPin = ref<NestingAreaAnalysisMapPin | null>(null);
 const activeDeviceReg = ref("");
 
 onMounted(async () => {
@@ -337,7 +337,10 @@ onMounted(async () => {
                               <span>Trip Start</span></span
                             >
                             <span>&middot;</span>
-                            <span>{{ activeDeviceReg }}</span>
+                            <span>{{
+                              trackedVehiclesStore.getActiveVehicle!.name ??
+                              activeDeviceReg
+                            }}</span>
                           </h3>
                           <div
                             class="grid grid-cols-[30%_70%] gap-y-4 text-base p-3"
@@ -385,7 +388,10 @@ onMounted(async () => {
                               <span>Trip Stop</span></span
                             >
                             <span>&middot;</span>
-                            <span>{{ activeDeviceReg }}</span>
+                            <span>{{
+                              trackedVehiclesStore.getActiveVehicle!.name ??
+                              activeDeviceReg
+                            }}</span>
                           </h3>
                           <div
                             class="grid grid-cols-[30%_70%] gap-y-4 text-base p-3"
