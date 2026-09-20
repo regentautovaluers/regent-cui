@@ -19,24 +19,35 @@ const availableStatuses: { id: number; text: TrackerStatusWrapperName }[] = [
     text: "Expired",
   },
 ];
-const size: Ref<number> = ref(10);
+
 const page: Ref<number> = ref(0);
-const searchString: Ref<string | null> = ref(null);
 const trackedVehiclesStore = useTrackedVehiclesStore();
+const { public: pubConf } = useRuntimeConfig();
+const { triggerModal } = useModal();
 
 const computedVehicles: ComputedRef<{
   vehicles: TrackedVehicles[] | null;
   totalPages: number;
 }> = computed(() => {
-  const filtered = getFilteredVehicles();
-  const start = page.value * size.value;
+  const start = page.value * Number(pubConf.PAGE_SIZE);
   return {
-    vehicles: !filtered.length
-      ? null
-      : (filtered.slice(start, start + size.value) as TrackedVehicles[]),
-    totalPages: Math.ceil(filtered.length / size.value) || 1,
+    vehicles: trackedVehiclesStore.getSumVehicles.slice(
+      start,
+      start + Number(pubConf.PAGE_SIZE),
+    ) as TrackedVehicles[],
+    totalPages:
+      Math.ceil(
+        trackedVehiclesStore.getSumVehicles.length / Number(pubConf.PAGE_SIZE),
+      ) || 1,
   };
 });
+
+const totalPages = computed(
+  () =>
+    Math.ceil(
+      trackedVehiclesStore.getSumVehicles.length / Number(pubConf.PAGE_SIZE),
+    ) || 1,
+);
 
 const computedStatistics: ComputedRef<{
   total_online: number;
@@ -113,21 +124,6 @@ const computedStatistics: ComputedRef<{
   }
 });
 
-function getFilteredVehicles() {
-  const search = searchString.value ? searchString.value.toLowerCase() : "";
-
-  return trackedVehiclesStore.allVehicles.filter((v) => {
-    // 2. Search Filter
-    const passesSearchFilter =
-      !search ||
-      v.name?.toLowerCase().includes(search) ||
-      v.driver_data.name?.toLowerCase().includes(search);
-
-    // A vehicle must pass BOTH filters to be included
-    return passesSearchFilter;
-  });
-}
-
 function deriveDistribution(a: number, b: number): number {
   const total = a + b;
   return Number(((a * 100) / total).toFixed(2));
@@ -158,16 +154,27 @@ onMounted(async () => {
 
     <NestingAreaCard
       title="All Vehicles"
-      sub-title="1200 Total Vehicles"
+      :sub-title="`${trackedVehiclesStore.getSumVehicles.length} Total Vehicles`"
       custom-class="min-h-250"
+      :allow-scroll="false"
     >
-      <form class="any-border-b h-25 flex items-center justify-between p-4">
-        <InputsGenericInput
+      <form
+        class="any-border-b h-25 flex items-center justify-between space-x-4 p-4"
+      >
+        <InputsGenericInputSearchBox
           input-id="cal-registration-number"
           input-place-holder="Search Registration"
-          :input-required="true"
+          :input-disabled="trackedVehiclesStore.allVehicles.length == 0"
           input-wrapper-styles="w-100"
-        ></InputsGenericInput>
+          :input-dropdown-options="
+            trackedVehiclesStore.getSumVehicles.map((e) => ({
+              id: e.name,
+              text: `${e.name} - ${e.wrapperStatus?.toString()}`,
+            }))
+          "
+          @value-selected="(id) => (trackedVehiclesStore.searchRegNo = id)"
+          @clear-option-triggered="trackedVehiclesStore.searchRegNo == ''"
+        ></InputsGenericInputSearchBox>
 
         <div class="w-100">
           <InputsGenericInputSearchBox
@@ -193,7 +200,6 @@ onMounted(async () => {
               'Last Signal',
               'Status',
               'Notes',
-              '',
             ]"
             :dataLoading="trackedVehiclesStore.isLoading"
           >
@@ -284,7 +290,11 @@ onMounted(async () => {
                 </div>
               </td>
               <td>
-                <button class="btn btn-soft btn-primary">
+                <button
+                  class="btn btn-soft btn-primary"
+                  tye="button"
+                  @click="triggerModal()"
+                >
                   <span
                     class="icon-[material-symbols--add-comment-rounded]"
                   ></span

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { GoogleMap, CustomMarker, Polyline } from "vue3-google-map";
 definePageMeta({
+  name: "ra-request-roadside-assistance",
   layout: "no-pad",
   displayName: "Request Road Rescue",
 });

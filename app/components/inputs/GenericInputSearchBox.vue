@@ -13,21 +13,34 @@
       :placeholder="inputPlaceHolder"
       :class="['input dropdown-toggle h-13', `input-${inputTextSize}`]"
       :id="inputId"
-      :disabled="inputDisabled"
+      :disabled="inputDisabled || inputDataLoading"
       aria-haspopup="menu"
       aria-expanded="false"
       v-model="userInput"
       @focus="toggleDropdown()"
     />
 
+    <!-- clear button -->
+    <template v-if="userInput.length > 0">
+      <button
+        class="btn btn-square btn-soft btn-primary absolute right-2 translate-y-2"
+        aria-label="Soft Icon Button"
+        @click="clearOption()"
+      >
+        <span
+          class="icon-[material-symbols--close-small-outline-rounded] size-8 shrink-0"
+        ></span>
+      </button>
+    </template>
+
     <!-- loading spinner -->
-    <template v-show="inputDataLoading">
+    <template v-if="inputDataLoading">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1em"
         height="1em"
         viewBox="0 0 24 24"
-        class="absolute right-3 top-[43%] size-7"
+        class="absolute right-2 -translate-y-10 size-7"
       >
         <path d="M0 0h24v24H0z" fill="none" />
         <path
@@ -112,7 +125,7 @@ const props = withDefaults(defineProps<Props>(), {
   inputTextSize: "md",
   filterInputs: true,
 });
-const emits = defineEmits(["value-selected"]);
+const emits = defineEmits(["value-selected", "clear-option-triggered"]);
 const isOpen = ref(false);
 const userInput: Ref<string> = ref("");
 const ddSelectRef = ref<HTMLElement | null>(null);
@@ -143,12 +156,21 @@ const selectOption = (id: string | number, text: string | number) => {
   closeDropdown();
 };
 
+const clearOption = () => {
+  userInput.value = "";
+  emits("clear-option-triggered");
+};
+
 function toggleDropdown() {
   isOpen.value = !isOpen.value;
 }
 
 function closeDropdown() {
   isOpen.value = false;
+}
+
+function openDropDown() {
+  isOpen.value = true;
 }
 
 function handleClickOutside(event: MouseEvent) {

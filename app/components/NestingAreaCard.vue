@@ -3,9 +3,10 @@ interface Props {
   title: string;
   subTitle: string;
   customClass?: string;
+  allowScroll?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { allowScroll: true });
 </script>
 
 <template>
@@ -14,7 +15,12 @@ const props = defineProps<Props>();
       <h3 class="font-semibold text-lg">{{ title }}</h3>
       <h4 class="text-sm">{{ subTitle }}</h4>
     </div>
-    <div class="space-y-4 h-[100%-27%] overflow-y-auto thin-scrollbar">
+    <div
+      :class="[
+        'space-y-4 h-[100%-27%]',
+        allowScroll && 'overflow-y-auto thin-scrollbar',
+      ]"
+    >
       <slot></slot>
     </div>
     <div class="space-y-4 h-[100%-27%] overflow-y-auto thin-scrollbar p-4">
