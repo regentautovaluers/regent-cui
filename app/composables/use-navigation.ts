@@ -11,6 +11,7 @@ export default function () {
       screenName: "Home",
       display: true,
       icon: "icon-[material-symbols--grid-view-outline-rounded]",
+      asNuxtLink: true,
     },
     {
       id: 0,
@@ -41,7 +42,7 @@ export default function () {
         },
         {
           id: 2,
-          name: "valuations-legacy",
+          name: "valuations-mobi-reports",
           screenName: "Legacy Reports (Mobi)",
           display: true,
         },
@@ -88,6 +89,7 @@ export default function () {
       display: true,
       icon: "icon-[material-symbols--database-search]",
       showChildren: false,
+      asNuxtLink: true,
       children: [
         {
           id: 0,
@@ -143,16 +145,22 @@ export default function () {
       children: [
         {
           id: 0,
+          name: "racking-home",
+          screenName: "Your Vehicles",
+          display: true,
+        },
+        {
+          id: 1,
           name: "tracking-traceability-reports",
           screenName: "Traceability Reports",
           display: true,
         },
         {
-          id: 1,
+          id: 2,
           name: "tracking-detailed-analysis-view",
           screenName: "Analysis View",
           display: false,
-        }
+        },
       ],
     },
     {

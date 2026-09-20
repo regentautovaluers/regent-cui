@@ -6,6 +6,7 @@ export interface RoutesAvailable {
   icon?: string; // the optional MDI icon representing the route
   showChildren?: boolean;
   children?: ChildRoute;
+  asNuxtLink?: boolean;
 }
 
 export interface RouteMetadata {
