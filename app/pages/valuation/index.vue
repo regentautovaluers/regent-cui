@@ -291,7 +291,7 @@ async function loadFleets() {
                     <NuxtLink
                       class="dropdown-item"
                       :to="{
-                        name: 'valuations-create-authorization-letter',
+                        name: 'valuation-open-report',
                         query: {
                           valuation_id: booking.valuationId,
                         },
