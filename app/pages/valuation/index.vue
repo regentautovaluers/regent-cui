@@ -198,7 +198,7 @@ async function loadFleets() {
     </InputsGenericInputSearchBox>
   </GenericTableFilters>
 
-  <template v-if="data?.data?.length">
+  <template v-if="data?.data?.length || status == 'pending'">
     <GrowableCard :show-padding="false">
       <template #no-padding>
         <GenericTable
@@ -215,7 +215,7 @@ async function loadFleets() {
           ]"
           :dataLoading="status == 'pending'"
         >
-          <tr v-for="booking in data.data" :key="booking.valuationId">
+          <tr v-for="booking in data!.data" :key="booking.valuationId">
             <td class="font-semibold">{{ booking.regNo }}</td>
             <td class="space-y-1">
               <div>{{ booking.clientName }}</div>
