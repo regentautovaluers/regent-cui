@@ -145,7 +145,7 @@ export default function () {
       children: [
         {
           id: 0,
-          name: "racking-home",
+          name: "tracking-home",
           screenName: "Your Vehicles",
           display: true,
         },

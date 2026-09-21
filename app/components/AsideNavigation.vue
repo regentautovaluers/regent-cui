@@ -42,45 +42,7 @@ const { public: publicRC } = useRuntimeConfig();
       </div>
 
       <!-- carousel -->
-      <div v-show="!sidebarOpen" class=""></div>
-      <div
-        id="indicators"
-        data-carousel='{ "loadingClasses": "opacity-0", "dotsItemClasses": "carousel-dot carousel-active:bg-primary", "isAutoPlay": true, "speed": 5000 }'
-        class="relative w-full"
-        v-show="sidebarOpen"
-      >
-        <div class="carousel h-80">
-          <div class="carousel-body h-full opacity-0">
-            <!-- Slide 1 -->
-            <div class="carousel-slide">
-              <div class="bg-base-200/60 flex h-full justify-center p-6">
-                <span class="self-center text-2xl sm:text-4xl"
-                  >First slide</span
-                >
-              </div>
-            </div>
-            <!-- Slide 2 -->
-            <div class="carousel-slide">
-              <div class="bg-base-200/80 flex h-full justify-center p-6">
-                <span class="self-center text-2xl sm:text-4xl"
-                  >Second slide</span
-                >
-              </div>
-            </div>
-            <!-- Slide 3 -->
-            <div class="carousel-slide">
-              <div class="bg-base-200 flex h-full justify-center p-6">
-                <span class="self-center text-2xl sm:text-4xl"
-                  >Third slide</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="carousel-pagination absolute bottom-3 end-0 start-0 flex justify-center gap-3"
-        ></div>
-      </div>
+      
 
       <!-- other links -->
       <div class="mt-4">
