@@ -10,7 +10,7 @@ export interface LegacyValuation {
 	corp_org: CorpOrg;
 	regent_branch: RegentBranch | null;
 	valuation_type: ValuationType | null;
-	vehicle_value: VehicleValue;
+	vehicle_value: LegacyVehicleValue;
 	vehicleMake: string;
 	vehicleType: string;
 	vehicleColor: string;

@@ -2,7 +2,6 @@
 import { GoogleMap, CustomMarker, Polyline } from "vue3-google-map";
 definePageMeta({
   name: "tracking-detailed-analysis-view",
-  layout: "ava-tables",
   displayName: "Nesting Area - Detailed Analysis",
 });
 

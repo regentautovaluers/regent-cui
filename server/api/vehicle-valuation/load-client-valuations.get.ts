@@ -61,7 +61,6 @@ export default defineEventHandler(async (event) => {
 
     return sendSuccessResponse(response);
   } catch (err) {
-    console.log(err);
     return sendErrorResponse(err);
   }
 });

@@ -12,12 +12,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <div
-    class="card w-full h-full min-h-full flex items-center justfify-center overflow-clip"
+    class="card w-full h-full flex items-center justify-center"
   >
     <div
       class="card-body flex flex-col space-y-4 items-center justify-center h-full w-full laptop:w-1/3 p-10"
     >
-      <span class="text-base-content text-2xl font-bold w-full">Nothing Found!</span>
+      <span class="text-base-content text-2xl font-bold">Nothing Found!</span>
       
       <NuxtImg src="/not-found-illustration.svg" :width="200"></NuxtImg>
 

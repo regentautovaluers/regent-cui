@@ -1,7 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
   name: "tracking-traceability-reports",
-  layout: "ava-tables",
   displayName: "Regent Tracking - Traceability Report",
 });
 

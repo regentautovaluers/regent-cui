@@ -13,7 +13,7 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     return () => (
-      <div class="any-border w-full rounded-lg">
+      <div class="w-full rounded-lg">
         <div class="overflow-x-auto">
           <table class="table">
             <thead>

@@ -2,7 +2,6 @@
 definePageMeta({
   name: "ra-incidents",
   displayName: "Road Rescue Incidents",
-  layout: "ava-tables",
 });
 
 type IncidentType =

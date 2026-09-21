@@ -54,6 +54,8 @@ export default defineNuxtConfig({
     IPRS_API_KEY: "",
     COLV_CID: "",
     AVA_BASE_URL: "",
+    LEGACY_VALUATION_BASE_URL: "",
+    LEGACY_VALUATION_API_KEY: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",

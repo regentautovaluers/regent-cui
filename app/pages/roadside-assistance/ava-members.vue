@@ -2,7 +2,6 @@
 definePageMeta({
   name: "ra-ava-members",
   displayName: "AVA Members",
-  layout: "ava-tables",
 });
 
 const {
