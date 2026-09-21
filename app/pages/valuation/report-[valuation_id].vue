@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "valuation-open-report",
+  displayName: "Assessment Report",
 });
 
 const route = useRoute();
@@ -168,7 +169,7 @@ const computedValues: ComputedRef<{ value: number; name: string }[]> = computed(
 
     <!-- the values -->
     <div
-      class="col-span-2 laptop-lg:col-span-1 items-center shadow-lg border h-25 p-5 space-x-7 rounded-2xl flex"
+      class="col-span-2 laptop-lg:col-span-1 items-center shadow-lg any-border bg-base-100 h-25 p-5 space-x-7 rounded-2xl flex"
       v-for="(v, idx) in computedValues"
       :key="idx"
     >
@@ -176,7 +177,7 @@ const computedValues: ComputedRef<{ value: number; name: string }[]> = computed(
         class="size-16 bg-accent rounded-full flex items-center justify-center"
       >
         <span
-          class="icon-[material-symbols--account-balance-wallet] text-base-200 size-9"
+          class="icon-[material-symbols--account-balance-wallet] text-base-content size-9"
         ></span>
       </div>
       <div>
