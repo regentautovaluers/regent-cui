@@ -13,14 +13,14 @@ const store = usePrincipalStore();
       aria-expanded="false"
       aria-label="Dropdown"
     >
-      <div class="avatar">
-        <div class="size-12 rounded-full">
-          <img
-            src="https://cdn.flyonui.com/fy-assets/avatar/avatar-3.png"
-            alt="User Avatar"
-          />
-        </div>
+      <div
+        class="size-12 bg-primary rounded-full flex items-center justify-center"
+      >
+        <span class="text-slate-100 text-xl font-semibold">{{
+          getInitials(store.username)
+        }}</span>
       </div>
+
       <div class="h-full flex justify-center items-start flex-col">
         <span class="font-bold text-ellipsis"
           >{{ store.loadUserIdentifiers.username }}
@@ -45,7 +45,7 @@ const store = usePrincipalStore();
       </svg>
     </button>
     <ul
-      class="dropdown-menu dropdown-open:opacity-100 hidden min-w-60 z-10"
+      class="dropdown-menu dropdown-open:opacity-100 hidden min-w-60 z-10 any-border"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="dropdown-avatar"
@@ -61,14 +61,14 @@ const store = usePrincipalStore();
           }}</small>
         </div>
       </li>
-      <li>
+      <li class="join flex">
         <button
-          class="btn flex-1 btn-soft btn-primary join-item"
+          class="btn flex-1 btn-soft btn-primary join-item any-border capitalize"
           v-for="t in supportedThemes"
           :key="t"
           @click="setTheme(t)"
         >
-          {{ t }}
+          {{ t == "black" ? "Dark" : "Light" }}
         </button>
       </li>
     </ul>

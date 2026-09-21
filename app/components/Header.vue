@@ -5,7 +5,7 @@ const { activeRouteDisplay } = useNavigation();
 
 <template>
   <header
-    class="h-20 flex items-center bg-base-100 justify-between px-4 w-full z-50 absolute top-0 shadow"
+    class="h-20 flex items-center bg-base-100 justify-between pl-4 w-full z-50 absolute top-0 shadow"
   >
     <div class="w-fit flex items-center space-x-5">
       <button
@@ -22,7 +22,7 @@ const { activeRouteDisplay } = useNavigation();
       </button>
 
       <!-- active page -->
-      <h1 class="text-base-content text-3xl font-bold">
+      <h1 class="text-base-content text-2xl font-bold">
         {{ activeRouteDisplay }}
       </h1>
     </div>
@@ -30,7 +30,7 @@ const { activeRouteDisplay } = useNavigation();
     <!-- user avatar -->
     <div class="w-fit flex items-center space-x-5">
       <!-- notification -->
-      <Notification></Notification>
+      <!-- <Notification></Notification> -->
 
       <!-- user's avatar -->
       <UserAvatar></UserAvatar>
