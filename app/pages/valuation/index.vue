@@ -292,7 +292,7 @@ async function loadFleets() {
                       class="dropdown-item"
                       :to="{
                         name: 'valuation-open-report',
-                        query: {
+                        params: {
                           valuation_id: booking.valuationId,
                         },
                       }"

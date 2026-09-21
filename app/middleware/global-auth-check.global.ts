@@ -39,6 +39,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
     await decompress(base64ToArrayBuffer(app_principal.value!), "deflate"),
   );
 
+  console.log(data);
+
   // set the correct values in store
   store.$patch({
     userId: data.userId,

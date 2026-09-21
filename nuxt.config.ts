@@ -56,12 +56,14 @@ export default defineNuxtConfig({
     AVA_BASE_URL: "",
     LEGACY_VALUATION_BASE_URL: "",
     LEGACY_VALUATION_API_KEY: "",
+    RUN_URL: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
       PAGE_SIZE: "",
       GOOGLE_MAPS_API_KEY: "",
       GOOGLE_MAPS_GEOFENCING_COUNTRY: "",
+      RUN_ENV: "",
     },
   },
 });

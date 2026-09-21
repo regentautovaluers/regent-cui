@@ -1,12 +1,14 @@
 export default defineEventHandler(async (event) => {
   const { VALUATION_BASE_URL } = useRuntimeConfig();
   const body: { email: string; password: string } = await readBody(event);
+  const config = useRuntimeConfig();
   const AUTHS_COOKIE_CONFIG = {
-    maxAge: 60 * 60 * 24 * 3, // 3 days
+    maxAge: 60 * 60 * 24 * 3,
     path: "/",
-    httpOnly: false, // Prevents client-side JS access (security) !!(TODO: Clean this massive security flaw)
-    secure: true, // Only send over HTTPS
-    sameSite: "lax" as any,
+    httpOnly: config.public.RUN_ENV === "dev" ? false : true,
+    secure: config.public.RUN_ENV === "dev" ? false : true,
+    sameSite: config.public.RUN_ENV === "dev" ? "lax" : "none",
+    domain: config.public.RUN_ENV === "dev" ? undefined : config.RUN_URL,
   };
 
   const requestURL = `${VALUATION_BASE_URL}/api/v1/auth/corporate-account/login`;
