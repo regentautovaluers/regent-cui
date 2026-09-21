@@ -2,21 +2,21 @@
 FROM node:22.23 AS build
 
 # Setup enviroment variables - for pnpm
-#ENV PNPM_NODE_LINKER=hoisted
-#ENV CI=true
+ENV PNPM_NODE_LINKER=hoisted
+ENV CI=true
 
 WORKDIR /app
 
 # Enable Corepack to manage pnpm automatically
-#RUN npm install -g pnpm@latest-11
+RUN npm install -g pnpm@latest-11
 
 # Copy package manifest and lockfile for optimal layer caching
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN npm install
+RUN pnpm install --frozen-lockfile 
 
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
 # Stage 2: Create the production image with a shared volume
 FROM node:22-slim AS serve
