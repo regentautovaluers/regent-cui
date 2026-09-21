@@ -13,7 +13,7 @@ const slots = useSlots();
 </script>
 
 <template>
-  <div class="card block w-full h-full min-h-full overflow-clip">
+  <div class="card block w-full flex-1 h-fit overflow-clip">
     <div
       :class="['card-body gap-0', showPadding && 'p-10']"
       v-if="slots.default"

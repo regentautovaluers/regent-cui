@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <div
-    class="card w-full h-full flex items-center justify-center"
+    class="card w-full flex-1 h-fit flex items-center justify-center"
   >
     <div
       class="card-body flex flex-col space-y-4 items-center justify-center h-full w-full laptop:w-1/3 p-10"
