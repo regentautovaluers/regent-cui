@@ -48,7 +48,7 @@ async function loadIPRSId() {
 </script>
 
 <template>
-  <div>
+  <div class="min-h-full">
     <HeadboardAnnouncer
       announcer-title="How It Works"
       highlight-text="Search Through Collateral"

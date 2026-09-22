@@ -5,7 +5,10 @@ const { activeRouteDisplay } = useNavigation();
 
 <template>
   <header
-    class="h-20 flex items-center bg-base-100 justify-between pl-4 w-full z-50 absolute top-0 shadow"
+    :class="[
+      'h-20 right-0 flex items-center bg-base-100 transition-[width] transtion-shared justify-between pl-4 z-10 fixed top-0',
+      sidebarOpen ? 'left-[20rem]' : 'left-20',
+    ]"
   >
     <div class="w-fit flex items-center space-x-5">
       <button

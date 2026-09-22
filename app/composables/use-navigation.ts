@@ -130,7 +130,7 @@ export default function () {
           id: 5,
           name: "cv-billing-and-invoice",
           screenName: "Billing & Invoice",
-          display: true,
+          display: false,
           icon: "icon-[material-symbols--energy-savings-leaf-outline-rounded]",
         },
       ],

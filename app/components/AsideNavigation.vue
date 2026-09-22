@@ -7,7 +7,7 @@ const { public: publicRC } = useRuntimeConfig();
 <template>
   <aside
     :class="[
-      'shadow text-white h-screen max-h-screen flex-shrink-0 flex flex-col transition-[width] transtion-shared overflow-y-auto',
+      'shadow bg-base-100 h-screen max-h-screen flex-shrink-0 flex flex-col transition-[width] transtion-shared overflow-y-auto',
       sidebarOpen ? 'w-[20rem] p-4' : 'w-20 p-0',
     ]"
   >
@@ -42,7 +42,6 @@ const { public: publicRC } = useRuntimeConfig();
       </div>
 
       <!-- carousel -->
-      
 
       <!-- other links -->
       <div class="mt-4">

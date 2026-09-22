@@ -137,7 +137,7 @@ function parseToCollateralVerification(
 </script>
 
 <template>
-  <div>
+  <div class="min-h-full">
     <HeadboardAnnouncer
       announcer-title="Onboard In Bulk"
       highlight-text="About Onboarding Template"

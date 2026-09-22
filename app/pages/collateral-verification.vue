@@ -9,12 +9,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex-1 flex space-x-5 min-h-full h-full">
-    <div class="w-[15%] sticky h-full">
+  <div class="flex-1 flex space-x-5 min-h-full">
+    <div class="w-[15%] max-w-[15%] min-w-[15%] flex-1 min-h-full">
       <h1 class="mb-10 text-2xl font-bold">Actions</h1>
       <div class="flex flex-col space-y-5">
         <NuxtLink
-          v-for="e in aRoutes.find((e) => e.id == 3)?.children!"
+          v-for="e in aRoutes
+            .find((e) => e.id == 3)
+            ?.children!.filter((e) => e.display)"
           :key="e.id"
           :class="[
             'inline-flex space-x-3',
@@ -27,10 +29,10 @@ onMounted(async () => {
         </NuxtLink>
       </div>
     </div>
-    <div class="grow w-0 min-w-0 h-full">
+    <div class="grow min-h-full">
       <NuxtPage></NuxtPage>
     </div>
-    <div class="w-[15%] h-full">
+    <div class="w-[15%] max-w-[15%] min-w-[15%] flex-1 min-h-full">
       <div class="h-fit flex flex-col items-center">
         <div class="avatar avatar-placeholder">
           <div class="bg-primary text-error-content w-30 rounded-full">
