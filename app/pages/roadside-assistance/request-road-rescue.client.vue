@@ -191,6 +191,10 @@ const computedServiceCost: ComputedRef<number> = computed(() => {
   }
 });
 
+const computedFreeDistancePercentage = computed(() =>
+  Math.ceil((requestData.currentFreeDistance * 100) / 20),
+);
+
 async function requestRoadsideAssistance() {
   try {
     submittingRequest.value = true;
@@ -211,9 +215,48 @@ async function requestRoadsideAssistance() {
   }
 }
 
-async function searchVehicle() {
+async function searchVehicleRegistration() {
   try {
     searchingVehicle.value = true;
+    const getVehicle = await get(
+      "/api/roadside-assistance/search-vehicle-reg",
+      {
+        regNo: requestData.appRegistration,
+      },
+    );
+
+    if (getVehicle.success) {
+      const vehicle = (
+        getVehicle as StandardSuccessResponse<SearchAVAMemberVehicle>
+      ).data;
+
+      $showToast({
+        title: "Vehicle found!",
+        description: "Common values have been pre-filled!",
+        color: "success",
+      });
+
+      requestData.appUserName = vehicle.membership.full_name;
+      requestData.appUserEmail = vehicle.membership.userEmail;
+      requestData.appUserPhone = vehicle.membership.phone_number;
+      requestData.appRegistration = vehicle.membershipVehicle.registration;
+      requestData.vehicleMake = vehicle.membershipVehicle.make;
+      requestData.vehicleModel = vehicle.membershipVehicle.model;
+
+      // if there is a non-null free distance
+      if (vehicle.membershipVehicle.available_free_distance) {
+        requestData.currentFreeDistance = Number(
+          vehicle.membershipVehicle.available_free_distance,
+        );
+        // and that the request is for a member who is under roadside assistance
+        isMemberUnderEA.value = false;
+      } else {
+        requestData.currentFreeDistance = 0;
+
+        // the request is for a member but is under emergency evacuation
+        isMemberUnderEA.value = true;
+      }
+    }
   } catch (ex) {
     $showToast({
       title: "Search failed!",
@@ -482,7 +525,10 @@ onMounted(() => {
     </div>
 
     <!-- vehicle details -->
-    <form class="grid grid-cols-1 gap-8">
+    <form
+      class="grid grid-cols-1 gap-8"
+      @submit.prevent="searchVehicleRegistration"
+    >
       <!-- vehicle details -->
       <h3 class="text-base-content text-lg">Vehicle Details</h3>
       <div class="grid gap-8 grid-cols-2">
@@ -500,7 +546,6 @@ onMounted(() => {
             class="btn btn-square btn-soft btn-primary size-12 absolute right-[3px] top-[38px]"
             aria-label="Soft Icon Button"
             type="submit"
-            disabled
             v-show="activeDisplay == 'registered'"
           >
             <span
@@ -525,15 +570,15 @@ onMounted(() => {
       </div>
 
       <div class="w-full">
-        <div
-          class="progress h-4"
-          role="progressbar"
-          aria-label="50% Progressbar"
-          aria-valuenow="50"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        >
-          <div class="progress-bar w-1/2"></div>
+        <div class="progress h-4" role="progressbar">
+          <div
+            :class="[
+              'progress-bar',
+              computedFreeDistancePercentage == 100
+                ? `w-full`
+                : `w-[${computedFreeDistancePercentage}%]`,
+            ]"
+          ></div>
         </div>
         <div class="my-2 flex items-end justify-between">
           <p class="text-base-content uppercase font-semibold">
@@ -542,7 +587,7 @@ onMounted(() => {
             }}
           </p>
           <span class="text-base-content uppercase font-semibold text-sm"
-            >{{ requestData.currentFreeDistance }} Free Towing Left</span
+            >{{ requestData.currentFreeDistance }} Kms Free Towing Left</span
           >
         </div>
       </div>

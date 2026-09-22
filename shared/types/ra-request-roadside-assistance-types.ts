@@ -51,8 +51,8 @@ export type RequestRoadsideAssistanceBackendServiceName =
 export interface RequestRoadsideAssitanceBase {
   appUserName: string;
   corporate_client: string;
-  appUserPhone: string;
-  appUserEmail: string;
+  appUserPhone: string | null;
+  appUserEmail: string | null;
   appServiceType: RequestRoadsideAssistanceBackendServiceName;
   appRegistration: string;
   vehicleMake: string;

@@ -2,7 +2,6 @@ import type {
   AVAMember,
   AVAMemberVehicle,
 } from "./ra-fleets-member-onboarding";
-
 export interface CorporateAVAMembers {
   memberships: AVAMem[];
   totalPages: number;
@@ -22,6 +21,11 @@ export type AVAMem = Pick<
   membershipVehicleCounts: MembershipVehicleCount[];
 };
 
+export type SlimmedAVAMem = Omit<
+  AVAMem,
+  "membershipVehicles" | "membershipVehicleCount" | "membershipVehicleCounts"
+>;
+
 export type AVAMemberVeh = Pick<
   AVAMemberVehicle,
   | "registration"
@@ -40,6 +44,11 @@ export type AVAMemberVeh = Pick<
   createdAt: string;
   updatedAt: string;
 };
+
+export interface SearchAVAMemberVehicle {
+  membership: SlimmedAVAMem;
+  membershipVehicle: AVAMemberVeh & { membership: SlimmedAVAMem };
+}
 
 export type MembershipName = "Roadside Assistance" | "Emergency Evacuation";
 
