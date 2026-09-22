@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<Props>(), { allowScroll: true });
 </script>
 
 <template>
-  <div :class="['rounded-lg any-border flex flex-col', customClass]">
+  <div :class="['rounded-lg any-border flex flex-col card', customClass]">
     <div class="p-4 space-y-1 any-border-b h-25">
       <h3 class="font-semibold text-lg">{{ title }}</h3>
       <h4 class="text-sm">{{ subTitle }}</h4>

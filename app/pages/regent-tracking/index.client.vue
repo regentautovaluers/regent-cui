@@ -26,6 +26,7 @@ const authToken = useCookie<string | null>("tracking_auth_token");
 const startDeviceCommandLoading = ref(false);
 const stopDeviceCommandLoading = ref(false);
 const openVehicleActiveView: Ref<OpenVehicleActiveView> = ref("details");
+const openVehicleLocation = ref("");
 // device nesting analysis
 const {
   customPickCalendarOpen,
@@ -107,6 +108,23 @@ watch(
   { immediate: true },
 );
 
+watch(
+  () => trackedVehiclesStore.getActiveVehicle,
+  async (newVehicle) => {
+    if (newVehicle) {
+      openVehicleLocation.value = "Loading location...";
+      try {
+        openVehicleLocation.value = await gecodeLocation(
+          newVehicle.lat,
+          newVehicle.lng,
+        );
+      } catch (ex) {
+        openVehicleLocation.value = "Failed to load location!";
+      }
+    }
+  },
+);
+
 // watch(
 //   [
 //     () => mapRef.value?.ready,
@@ -182,11 +200,22 @@ onUnmounted(() => {
           </span>
         </h2>
         <form class="h-fit space-y-2" @submit.prevent="() => {}">
-          <InputsGenericInput
+          <InputsGenericInputSearchBox
             input-id="search-vehicles"
             input-place-holder="search registration here"
-            :model-value="trackedVehiclesStore.searchRegNo"
-          ></InputsGenericInput>
+            :input-dropdown-options="
+              trackedVehiclesStore.allVehicles
+                .filter((e) => e.wrapperStatus != 'Expired')
+                .map((e) => ({
+                  id: e.name,
+                  text: `${e.name} - ${e.wrapperStatus?.toString()}`,
+                }))
+            "
+            @value-selected="
+              (id: string) => (trackedVehiclesStore.searchRegNo = id)
+            "
+            @clear-option-triggered="trackedVehiclesStore.searchRegNo = ''"
+          ></InputsGenericInputSearchBox>
           <div class="join flex">
             <button
               :class="[
@@ -332,12 +361,10 @@ onUnmounted(() => {
               </h3>
             </div>
 
-            <div
-              class="col-span-2 alert alert-soft alert-success flex items-start p-3"
-            >
+            <div class="col-span-2 any-border rounded-lg flex items-start p-3">
               <div class="flex flex-col">
                 <h5 class="text-lg font-semibold">Location</h5>
-                <p class="text-sm">Location Information Here</p>
+                <p class="text-sm">{{ openVehicleLocation ?? "-" }}</p>
               </div>
             </div>
             <template
@@ -427,7 +454,7 @@ onUnmounted(() => {
             <!-- nesting area card -->
             <NestingAreaCard
               title="Nesting Area Prediction"
-              custom-class="h-110 max-h-110"
+              custom-class="h-180 max-h-180"
               sub-title="Locations where vehicle spent most idle time"
             >
               <template #with-pad>
@@ -466,7 +493,7 @@ onUnmounted(() => {
             <!-- trip history card -->
             <NestingAreaCard
               title="Trip History"
-              custom-class="h-110 max-h-110"
+              custom-class="h-180 max-h-180"
               sub-title="'Start' marks the start of a trip, and 'Stop' marks the end of the trip."
             >
               <!-- when loading -->
@@ -547,7 +574,13 @@ onUnmounted(() => {
           }"
         >
           <div>
-            <p :class="['any-border bg-base-100 rounded-lg p-3 size-fit']">
+            <p
+              :class="[
+                'border-[1.4px] bg-base-100 rounded-lg p-3 size-fit',
+                v.wrapperStatus == 'Online' && 'border-success/50',
+                v.wrapperStatus == 'Offline' && 'border-warning/50',
+              ]"
+            >
               {{ v.name.trim() }}
             </p>
             <img src="/maps-car.png" width="50" height="50" />

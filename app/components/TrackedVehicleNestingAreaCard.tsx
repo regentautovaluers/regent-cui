@@ -90,7 +90,7 @@ export default defineComponent({
             <span class="text-lg font-semibold">{displayTag(props.idx)}</span>
             {displayBadge(props.idx)}
           </div>
-          <span>{location.value ?? "-"}</span>
+          <span class="mt-2">{location.value ?? "-"}</span>
         </div>
         <div class="grid grid-cols-3">
           <div>

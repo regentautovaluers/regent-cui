@@ -48,7 +48,10 @@ const { public: publicRC } = useRuntimeConfig();
         <button
           class="accordion-toggle inline-flex items-center justify-between text-start"
         >
-          <NuxtLink :to="{ name: '' }" class="inline-flex items-center">
+          <NuxtLink
+            :to="{ name: 'settings-add-user' }"
+            class="inline-flex items-center"
+          >
             <span
               class="icon-[material-symbols--settings-b-roll-rounded] size-7"
             ></span>

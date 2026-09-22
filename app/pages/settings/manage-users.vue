@@ -44,47 +44,61 @@ function handlePageChange(newPage: number) {
 </script>
 
 <template>
-  <GenericTable
-    :headers="['Name', 'Phone', 'Last Login', 'Status', 'Privilege', '']"
-    :dataLoading="status == 'pending'"
-  >
-    <template v-if="data?.data.length">
-      <tr v-for="user in data.data" :key="user.userId">
-        <td class="space-y-1 flex flex-col">
-          <span class="font-semibold">
-            {{ user.username }}
-          </span>
-          <div class="badge badge-soft badge-success">
-            {{ censorString(user.email, "START") }}
-          </div>
-        </td>
-        <td>{{ censorString(user.phoneNumber, "CENTER") }}</td>
-        <td>
-          {{ user.lastLogin ? getTimeAgo(new Date(user.lastLogin)) : "-" }}
-        </td>
-        <td>
-          <div
-            :class="[
-              'badge badge-soft ',
-              user.accountEnabled ? 'badge-success' : 'badge-error',
-            ]"
-          >
-            {{ user.accountEnabled ? "Enabled" : "Disabled" }}
-          </div>
-        </td>
-        <td class="font-semibold">
-          {{ user.userRoles.includes("ROLE_CORP_ADMIN") ? "Admin" : "Normal" }}
-        </td>
-        <td>
-          <GenericTableActionButton :action-id="`u-${user.userId}-action`">
-            <li>
-              <button class="dropdown-item">Edit</button>
-            </li>
-          </GenericTableActionButton>
-        </td>
-      </tr>
-    </template>
-  </GenericTable>
+  <div class="h-full min-h-full">
+    <GrowableCard
+      ><template #no-padding
+        ><GenericTable
+          :headers="['Name', 'Phone', 'Last Login', 'Status', 'Privilege', '']"
+          :dataLoading="status == 'pending'"
+        >
+          <template v-if="data?.data.length">
+            <tr v-for="user in data.data" :key="user.userId">
+              <td class="space-y-1 flex flex-col">
+                <span class="font-semibold">
+                  {{ user.username }}
+                </span>
+                <div class="badge badge-soft badge-success">
+                  {{ censorString(user.email, "START") }}
+                </div>
+              </td>
+              <td>{{ censorString(user.phoneNumber, "CENTER") }}</td>
+              <td>
+                {{
+                  user.lastLogin ? getTimeAgo(new Date(user.lastLogin)) : "-"
+                }}
+              </td>
+              <td>
+                <div
+                  :class="[
+                    'badge badge-soft ',
+                    user.accountEnabled ? 'badge-success' : 'badge-error',
+                  ]"
+                >
+                  {{ user.accountEnabled ? "Enabled" : "Disabled" }}
+                </div>
+              </td>
+              <td class="font-semibold">
+                {{
+                  user.userRoles.includes("ROLE_CORP_ADMIN")
+                    ? "Admin"
+                    : "Normal"
+                }}
+              </td>
+              <td>
+                <GenericTableActionButton
+                  :action-id="`u-${user.userId}-action`"
+                >
+                  <li>
+                    <button class="dropdown-item">Edit</button>
+                  </li>
+                </GenericTableActionButton>
+              </td>
+            </tr>
+          </template>
+        </GenericTable></template
+      ></GrowableCard
+    >
+  </div>
 
   <GenericTablePageSwitcher
     :current-page="paginationInfo.currentPage"
