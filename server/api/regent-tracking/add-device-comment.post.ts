@@ -1,23 +1,26 @@
 export default defineEventHandler(async (event) => {
-  const { TRACKING_CERTIFICATES_BASE_URL, TRACKING_CERTIFICATES_API_KEY } =
-    useRuntimeConfig();
-
-  let endpoint = `${TRACKING_CERTIFICATES_BASE_URL}/tracking/update_corporate_comment.php?api_key=${TRACKING_CERTIFICATES_API_KEY}`;
+  const {
+    REGENT_TRACKING_CERTIFICATES_BASE_URL,
+    REGENT_TRACKING_CERTIFICATES_API_KEY,
+  } = useRuntimeConfig();
+  const cookies = parseCookies(event);
+  const data: LoginResponse = await inflatePrincipal(cookies);
+  let endpoint = `${REGENT_TRACKING_CERTIFICATES_BASE_URL}/tracking/update_corporate_comment.php?api_key=${REGENT_TRACKING_CERTIFICATES_API_KEY}`;
 
   try {
     // extract JSON body
     const body: {
       id: number | string;
       comment: string;
-      corp_client: string;
     } = await readBody(event);
 
     // put fields in the JSON onto api url (query params)
     endpoint =
       endpoint +
-      `&tracker_id=${body.id}&corporate_comment=${body.comment}&corporateUser=${body.corp_client}`;
+      `&tracker_id=${body.id}&corporate_comment=${body.comment}&corporateUser=${data.corpName}`;
 
-    await makeProxyRequest<any>(endpoint, event, {
+      console.log(endpoint)
+    await makeProxyRequest<null>(endpoint, event, {
       method: "POST",
     });
     return sendSuccessResponse(null);

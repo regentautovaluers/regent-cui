@@ -25,10 +25,10 @@ export default defineEventHandler(async (event) => {
       (vehicle) => vehicle.items as TrackedVehicles[],
     );
 
-    // we have to load the client details here to reduce complicated calls on the front-end
+    // we load the client details here to reduce complicated calls on the front-end
     if (combinedVehicleData.length > 0) {
       const deviceIds: number[] = combinedVehicleData.map((v) => {
-        return v.device_data.id;
+        return v.id;
       });
 
       try {
@@ -43,6 +43,7 @@ export default defineEventHandler(async (event) => {
             }),
           },
         );
+
         results.results.forEach((r) => {
           let entry = combinedVehicleData.find(
             (e) => e.id == r.tracker_id,
@@ -67,12 +68,25 @@ export default defineEventHandler(async (event) => {
         console.error("Failed to fetch traceability details. Cause: ", error);
       }
 
-      return sendSuccessResponse(combinedVehicleData);
+      // Place the vehicles with comments at the front of the queue
+      const vehiclesWithComments = combinedVehicleData.filter(
+        (v) => v.comment && v.comment.length > 0,
+      );
+
+      const vehiclesWithoutComments = combinedVehicleData.filter(
+        (v) => !v.comment || v.comment.length === 0,
+      );
+
+      const reorderedVehicles = [
+        ...vehiclesWithComments,
+        ...vehiclesWithoutComments,
+      ];
+
+      return sendSuccessResponse(reorderedVehicles);
     } else {
       return sendSuccessResponse([] as TrackedVehicles[]);
     }
   } catch (err) {
-    console.log(err);
     return sendErrorResponse(err);
   }
 });
