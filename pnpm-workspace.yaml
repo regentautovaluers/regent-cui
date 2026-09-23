@@ -1,8 +1,0 @@
-allowBuilds:
-  '@firebase/util': true
-  '@parcel/watcher': true
-  '@tailwindcss/oxide': true
-  esbuild: true
-  maplibre-gl: true
-  protobufjs: true
-  vue-demi: true
