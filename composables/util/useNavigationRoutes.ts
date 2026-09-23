@@ -192,30 +192,56 @@ export default function () {
 			screenName: 'Accident Management',
 			routeName: 'accident-management-home',
 			/*
-			 * A computed, not a plain value, and the difference matters here.
+			 * OPEN TO EVERY CLIENT, and it used to be INSURANCE only:
 			 *
-			 * This array is built by reactive() at the moment the composable is
-			 * called, but getPrincipal() reads a store the middleware fills
-			 * ASYNCHRONOUSLY. A plain expression is therefore frozen at whatever
-			 * the principal was during the layout's first run -- usually nothing
-			 * -- and the section never appears for anyone. Entries 4 and 5 carry
-			 * that latent bug; this one does not inherit it.
+			 *     computed(() => getPrincipal()?.corpOrganization.corpClass == 'INSURANCE')
 			 *
-			 * Verified rather than assumed: Vue unwraps a computed held in a
-			 * reactive array element to its boolean value, so the layout's
-			 * `.filter(r => r.renderRoute)` reads true/false as it expects, and
-			 * re-evaluates once the principal lands.
+			 * That read as the safe choice and it hid people's own data from them. A
+			 * claim is filed under whichever organisation raised it -- the accident
+			 * service stamps `insurer_id` from the corporate session that created the
+			 * booking, whatever class it is -- so a bank, a SACCO or a micro-finance
+			 * client can hold claims of their own and could not reach the page that
+			 * lists them.
+			 *
+			 * Nothing is widened by showing it. The list is scoped SERVER-side from
+			 * the estate token, so a client sees their own claims and nobody else's
+			 * whether or not this entry renders; the gate was a menu filter, never a
+			 * boundary. `definePageMeta` on the page carries no guard either, so the
+			 * route was always reachable by URL.
+			 *
+			 * STILL A COMPUTED, AND STILL DEPENDENT ON THE PRINCIPAL, which looks
+			 * redundant for a condition that is now "anyone" and is not. A plain
+			 * `true` renders this entry during SSR, where there is no principal and
+			 * so entries 4 and 5 do NOT render. The client then hydrates a longer
+			 * list, Vue reuses the server's node at that position, updates its text
+			 * and leaves the href the server wrote: "Regent Tracking" ends up
+			 * pointing at /console/accident-management.
+			 *
+			 * Observed, not reasoned. The server-rendered HTML for a signed-in client
+			 * contains this entry at position 5 and neither tracking entry; the
+			 * hydrated DOM has all three, and the fifth anchor carries entry 4's name
+			 * with entry 7's href. Its `to` prop and the router both say
+			 * `/console/regent-track`; only the attribute is stale.
+			 *
+			 * Depending on the principal keeps this entry on the same side of the
+			 * SSR boundary as its neighbours, so the server list and the client list
+			 * differ by an append rather than an insert, exactly as before this
+			 * change.
+			 *
+			 * The wider bug is entries 4 and 5 using PLAIN expressions over
+			 * `getPrincipal()`: this array is built by reactive() when the composable
+			 * is called, while the middleware fills the principal asynchronously, so
+			 * a plain value is frozen at whatever it was on the first run. That is
+			 * theirs to fix and is reported separately, not worked around here.
 			 */
-			renderRoute: computed(
-				() => getPrincipal()?.corpOrganization.corpClass == 'INSURANCE',
-			) as unknown as boolean,
+			renderRoute: computed(() => !!getPrincipal()) as unknown as boolean,
 			description:
-				'Follow every accident claim raised against your policies, from the assessor\'s \
+				'Follow every accident claim raised against your vehicles, from the assessor\'s \
 				first inspection through costing and quality control to the issued report. Each claim \
 				carries the vehicle, the damage recorded on site, the photographs taken at inspection \
 				and the approved repair figures.',
 			shortDescription:
-				'Follow accident claims raised against your policies, from inspection to issued report.',
+				'Follow accident claims raised against your vehicles, from inspection to issued report.',
 			icon: 'icon-[material-symbols-light--car-crash-outline]',
 		},
 		{
