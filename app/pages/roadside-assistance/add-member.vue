@@ -14,19 +14,22 @@ const { activeRouteName } = useNavigation();
         <NuxtLink
           :to="{ name: 'ra-onboard-single-member' }"
           :class="[
-            'tab w-fit',
-            activeRouteName == 'ra-onboard-single-member' && 'text-red-500',
+            'tab active-tab:tab-active w-fit',
+            activeRouteName == 'ra-onboard-single-member' && 'active',
           ]"
+          id="tabs-basic-item-1"
+          data-tab="#tabs-basic-1"
         >
           Individual Registration
         </NuxtLink>
         <NuxtLink
           :to="{ name: 'ra-onboard-bulk' }"
           :class="[
-            'tab w-fit',
-            activeRouteName == 'ra-onboard-bulk' &&
-              'active-tab:tab-active active',
+            'tab active-tab:tab-active w-fit',
+            activeRouteName == 'ra-onboard-bulk' && 'active',
           ]"
+          id="tabs-basic-item-2"
+          data-tab="#tabs-basic-2"
         >
           Fleet / Bulk Registration
         </NuxtLink>

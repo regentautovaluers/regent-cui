@@ -10,6 +10,7 @@ export function useAVAMembers() {
     page: page.value,
   }));
   const activeDescription: Ref<0 | 1> = ref(0);
+  const loadVehiclesPage = ref(0);
   const activeAVAMember: Ref<Pick<
     AVAMember,
     "full_name" | "phone_number" | "userEmail"
@@ -103,7 +104,7 @@ export function useAVAMembers() {
     };
   });
 
-  function triggerLoadMemberVehicles(
+  async function triggerLoadMemberVehicles(
     fullName: string,
     email: string | null,
     phone: string | null,
@@ -119,14 +120,14 @@ export function useAVAMembers() {
     triggerModal();
 
     // then start the loading process
-    loadMemberVehicles(0);
+    await loadMemberVehicles();
   }
 
-  async function loadMemberVehicles(page: number) {
+  async function loadMemberVehicles() {
     try {
       loadingMemberVehicles.value = true;
       // build the request URL
-      let requestUrl = `/api/roadside-assistance/load-ava-member-vehicles?page=${page}&size=${pubConf.PAGE_SIZE}`;
+      let requestUrl = `/api/roadside-assistance/load-ava-member-vehicles?page=${loadVehiclesPage.value}&size=${pubConf.PAGE_SIZE}`;
       if (activeAVAMember.value) {
         if (activeAVAMember.value.phone_number) {
           requestUrl +=
@@ -174,6 +175,7 @@ export function useAVAMembers() {
     loadingMemberVehicles,
     memberVehicleEntries,
     transformDistribution,
+    loadVehiclesPage,
     refreshAVAMemberDistributionStatus,
     triggerLoadMemberVehicles,
     loadMemberVehicles,

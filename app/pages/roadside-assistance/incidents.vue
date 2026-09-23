@@ -281,114 +281,103 @@ function setIncidentType(id: number) {
           >
           </InputsGenericInputSearchBox
         ></GenericTableFilters>
-        <div class="grow">
+        <div class="grow card">
           <template v-if="processedIncidents?.data?.length">
-            <GrowableCard :show-padding="false">
-              <template #no-padding>
-                <GenericTable
-                  :headers="[
-                    'Reg',
-                    'Booking Date',
-                    'Client',
-                    'type',
-                    'Location',
-                    'Cost',
-                    '',
-                  ]"
-                  :dataLoading="status == 'pending'"
-                >
-                  <tr v-for="entry in processedIncidents.data" :key="entry.id">
-                    <td class="text-primary font-semibold">
-                      {{ entry.registration_no || "-" }}
-                    </td>
-                    <td class="font-semibold">
-                      {{ formatDateToWords(entry.date_created) }}
-                    </td>
-                    <td class="space-y-1">
-                      <div>{{ entry.user_name }}</div>
-                      <div class="btn btn-soft btn-sm btn-accent">
-                        {{
-                          entry.user_phone
-                            ? censorString(entry.user_phone, "CENTER")
-                            : "-"
-                        }}
-                      </div>
-                    </td>
-                    <td class="font-semibold capitalize text-warning">
-                      {{ entry.incidentType }}
-                    </td>
-                    <td>{{ entry.pickup_location }}</td>
-                    <td class="font-semibold text-accent">
-                      {{
-                        entry.total_cost
-                          ? formatNumberWithCommas(entry.total_cost)
-                          : "-"
-                      }}
-                    </td>
-                    <td>
-                      <GenericTableActionButton
-                        :action-id="`incident-${''}-action`"
-                      ></GenericTableActionButton>
-                    </td>
-                  </tr>
-                </GenericTable>
-              </template>
-            </GrowableCard>
+            <GenericTable
+              :headers="[
+                'Reg',
+                'Booking Date',
+                'Client',
+                'type',
+                'Location',
+                'Cost',
+                '',
+              ]"
+              :dataLoading="status == 'pending'"
+            >
+              <tr v-for="entry in processedIncidents.data" :key="entry.id">
+                <td class="text-primary font-semibold">
+                  {{ entry.registration_no || "-" }}
+                </td>
+                <td class="font-semibold">
+                  {{ formatDateToWords(entry.date_created) }}
+                </td>
+                <td class="space-y-1">
+                  <div>{{ entry.user_name }}</div>
+                  <div class="btn btn-soft btn-sm btn-accent">
+                    {{
+                      entry.user_phone
+                        ? censorString(entry.user_phone, "CENTER")
+                        : "-"
+                    }}
+                  </div>
+                </td>
+                <td class="font-semibold capitalize text-warning">
+                  {{ entry.incidentType }}
+                </td>
+                <td>{{ entry.pickup_location }}</td>
+                <td class="font-semibold text-accent">
+                  {{
+                    entry.total_cost
+                      ? formatNumberWithCommas(entry.total_cost)
+                      : "-"
+                  }}
+                </td>
+                <td>
+                  <GenericTableActionButton
+                    :action-id="`incident-${''}-action`"
+                  ></GenericTableActionButton>
+                </td>
+              </tr>
+            </GenericTable>
           </template>
         </div>
       </div>
       <div class="flex flex-col space-y-8">
-        <div class="h-1/2">
-          <GrowableCard>
-            <template #no-padding>
-              <div class="flex flex-col w-full h-full p-4">
-                <h3 class="h-16 font-bold text-xl">Distribution</h3>
-                <div class="grow">
-                  <ClientOnly>
-                    <ChartsGenericDonutChart
-                      :data="[
-                        {
-                          name: 'Towing',
-                          value: processedIncidents.distribution.towing,
-                        },
-                        {
-                          name: 'Fuel Delivery',
-                          value: processedIncidents.distribution.fueldelivery,
-                        },
-                        {
-                          name: 'Jumpstarting',
-                          value: processedIncidents.distribution.jumpstarting,
-                        },
-                        {
-                          name: 'Tyre Change',
-                          value: processedIncidents.distribution.tyrechange,
-                        },
-                      ]"
-                      :height="250"
-                      :hide-legend="false"
-                      :inner-hole-width="50"
-                      :total="
-                        processedIncidents.distribution.towing +
-                        processedIncidents.distribution.fueldelivery +
-                        processedIncidents.distribution.jumpstarting +
-                        processedIncidents.distribution.tyrechange
-                      "
-                    >
-                    </ChartsGenericDonutChart>
-                  </ClientOnly>
-                </div>
-              </div> </template
-          ></GrowableCard>
+        <div class="h-1/2 card">
+          <div class="flex flex-col w-full h-full p-4">
+            <h3 class="h-16 font-bold text-xl">Distribution</h3>
+            <div class="grow">
+              <ClientOnly>
+                <ChartsGenericDonutChart
+                  :data="[
+                    {
+                      name: 'Towing',
+                      value: processedIncidents.distribution.towing,
+                    },
+                    {
+                      name: 'Fuel Delivery',
+                      value: processedIncidents.distribution.fueldelivery,
+                    },
+                    {
+                      name: 'Jumpstarting',
+                      value: processedIncidents.distribution.jumpstarting,
+                    },
+                    {
+                      name: 'Tyre Change',
+                      value: processedIncidents.distribution.tyrechange,
+                    },
+                  ]"
+                  :height="250"
+                  :hide-legend="false"
+                  :inner-hole-width="50"
+                  :total="
+                    processedIncidents.distribution.towing +
+                    processedIncidents.distribution.fueldelivery +
+                    processedIncidents.distribution.jumpstarting +
+                    processedIncidents.distribution.tyrechange
+                  "
+                >
+                </ChartsGenericDonutChart>
+              </ClientOnly>
+            </div>
+          </div>
         </div>
 
-        <div class="h-1/2">
-          <GrowableCard>
-            <template #no-padding
-              ><div class="flex flex-col w-full h-full p-4">
-                <h3 class="h-16 font-bold text-xl">Recent Vehicles</h3>
-              </div></template
-            ></GrowableCard
-          >
+        <div class="h-1/2 card">
+          <div class="flex flex-col w-full h-full p-4">
+            <h3 class="h-16 font-bold text-xl">Recent Vehicles</h3>
+          </div>
         </div>
       </div>
     </div>

@@ -97,23 +97,23 @@ const requestData = reactive<RequestRoadsideAssistanceMerged>({
   hasSpareTyre: null,
 });
 const formTitle = computed(() => {
-  let basic = `${activeDisplay.value == "registered" ? "Registered Client" : "Unregistered Client"}`;
+  let basic = "";
 
   switch (requestMode.value) {
     case "fd": {
-      basic += " Fuel Delivery Request";
+      basic += "Fuel Delivery";
       break;
     }
     case "tow": {
-      basic += " Towing Request";
+      basic += "Towing";
       break;
     }
     case "tyrec": {
-      basic += " Tyrechange Request";
+      basic += "Tyrechange";
       break;
     }
     case "jstart": {
-      basic += " Jumpstarting Request";
+      basic += "Jumpstarting";
       break;
     }
   }
@@ -402,7 +402,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full min-h-full">
+  <div class="flex-1 min-h-full">
     <GoogleMap
       ref="mapRef"
       :api-key="pubConf.GOOGLE_MAPS_API_KEY"
@@ -486,6 +486,10 @@ onMounted(() => {
     </GoogleMap>
   </div>
   <div class="h-full min-h-full p-20 space-y-8">
+    <h1 class="mb-10 text-base-content text-xl">
+      Request
+      {{ formTitle }}
+    </h1>
     <div class="w-full">
       <div
         class="tabs tabs-bordered"
@@ -520,7 +524,12 @@ onMounted(() => {
       </div>
 
       <h1 class="my-10 text-base-content text-xl">
-        {{ formTitle }}
+        {{
+          activeDisplay == "registered"
+            ? "Registered Client"
+            : "Unregistered Client"
+        }}
+        {{ formTitle }} Request
       </h1>
     </div>
 
