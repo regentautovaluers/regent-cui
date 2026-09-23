@@ -24,8 +24,10 @@ const trackedVehiclesStore = useTrackedVehiclesStore();
 const { public: pubConf } = useRuntimeConfig();
 const { triggerModal } = useModal();
 const addCommentLoading = ref(false);
+const loadingReportExport = ref(false);
 const newVehicleComment = ref("");
-const { post } = useStandardizedApi();
+const userStore = usePrincipalStore();
+const { post, getBlob } = useStandardizedApi();
 const { $showToast } = useNuxtApp();
 
 const computedVehicles: ComputedRef<{
@@ -163,6 +165,78 @@ async function addVehicleComment() {
   }
 }
 
+async function reportToExcel(): Promise<void> {
+  try {
+    loadingReportExport.value = true;
+    let requestBody: {
+      offlineVehicles: number;
+      onlineVehicles: number;
+      expiredVehicles: number;
+      totalVehicles: number;
+      corporateName: string;
+      entries: ForReport[];
+    } = {
+      offlineVehicles: computedStatistics.value.total_offline,
+      onlineVehicles: computedStatistics.value.total_online,
+      expiredVehicles: computedStatistics.value.total_expired,
+      totalVehicles: computedStatistics.value.total_devices,
+      corporateName: userStore.corpName,
+      entries: trackedVehiclesStore.allVehicles.map((e) => {
+        return {
+          name: e.name,
+          comment: e.comment,
+          online: e.online,
+          tail: e.tail,
+          lat: e.lat,
+          lng: e.lng,
+          stop_duration_sec: e.stop_duration_sec,
+          moved_timestamp: e.moved_timestamp,
+          total_distance: e.total_distance,
+          protocol: e.protocol,
+          driver: { phone: e.driver_data.phone, name: e.driver_data.name },
+          device_data: {
+            expiration_date: e.device_data.expiration_date,
+            created_at: e.device_data.created_at,
+          },
+          traccar: {
+            moved_at: e.device_data.traccar.moved_at,
+            stoped_at: e.device_data.traccar.stoped_at,
+            move_begin_at: e.device_data.traccar.move_begin_at,
+            stop_begin_at: e.device_data.traccar.stop_begin_at,
+            parked_end_at: e.device_data.traccar.parked_end_at,
+            engine_on_at: e.device_data.traccar.engine_on_at,
+            engine_off_at: e.device_data.traccar.engine_off_at,
+            engine_changed_at: e.device_data.traccar.engine_changed_at,
+            updated_at: e.device_data.traccar.updated_at,
+            course: e.device_data.traccar.course,
+            speed: e.device_data.traccar.speed,
+          },
+          wrapped_status: e.wrapperStatus,
+        };
+      }) as ForReport[],
+    };
+
+    const blob = await getBlob("/api/regent-tracking/export-excel-report", {
+      method: "POST",
+      body: requestBody,
+    });
+
+    downloadBlob(
+      blob,
+      `export-${userStore.corpName.toLowerCase().trim().replaceAll(" ", "_")}.xlsx`,
+    );
+  } catch (ex) {
+    console.log(ex);
+    $showToast({
+      title: "Failed!",
+      description: "Unable to download report!",
+      color: "error",
+    });
+  } finally {
+    loadingReportExport.value = false;
+  }
+}
+
 onMounted(async () => {
   await trackedVehiclesStore.loadTrackedVehicles(true);
 });
@@ -177,12 +251,103 @@ onMounted(async () => {
           <h2 class="font-bold text-3xl">Traceability Report</h2>
           <span class="text-sm">Real-time Vehicle Status &amp; Monitoring</span>
         </div>
-        <form>
+        <form @submit.prevent="reportToExcel()">
           <InputsGenericSubmitButton
             button-text="Export Excel"
-            :submit-loading="false"
+            :submit-loading="loadingReportExport"
           ></InputsGenericSubmitButton>
         </form>
+      </div>
+    </div>
+
+    <div class="w-full col-span-2 h-fit grid gap-8 grid-cols-5">
+      <div class="card h-32 overflow-clip">
+        <div class="size-full p-6 flex items-center justify-between">
+          <div class="grow">
+            <h1 class="text-lg">Total Vehicles</h1>
+            <h3 class="inline-flex flex-col mt-1">
+              <span class="font-semibold text-xl">{{
+                trackedVehiclesStore.allVehicles.length
+              }}</span>
+              <span class="text-sm">You're currently tracking</span>
+            </h3>
+          </div>
+          <div class="size-16 btn btn-info btn-soft">
+            <span class="icon-[material-symbols--groups] size-7"></span>
+          </div>
+        </div>
+      </div>
+      <div class="card h-32 overflow-clip">
+        <div class="size-full p-6 flex items-center justify-between">
+          <div class="grow">
+            <h1 class="text-lg">Total Online</h1>
+            <h3 class="inline-flex flex-col mt-1">
+              <span class="font-semibold text-xl">{{
+                computedStatistics.total_online
+              }}</span>
+              <span class="text-sm text-success">Actively sending signal</span>
+            </h3>
+          </div>
+          <div class="size-16 btn btn-success btn-soft">
+            <span
+              class="icon-[material-symbols--android-wifi-3-bar-rounded] size-7"
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="card h-32 overflow-clip">
+        <div class="size-full p-6 flex items-center justify-between">
+          <div class="grow">
+            <h1 class="text-lg">Total Offline</h1>
+            <h3 class="inline-flex flex-col mt-1">
+              <span class="font-semibold text-xl">{{
+                computedStatistics.total_offline
+              }}</span>
+              <span class="text-sm text-warning">Signal not reachable</span>
+            </h3>
+          </div>
+          <div class="size-16 btn btn-warning btn-soft">
+            <span
+              class="icon-[material-symbols--android-wifi-3-bar-alert-rounded] size-7"
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="card h-32 overflow-clip">
+        <div class="size-full p-6 flex items-center justify-between">
+          <div class="grow">
+            <h1 class="text-lg">On Watchlist</h1>
+            <h3 class="inline-flex flex-col mt-1">
+              <span class="font-semibold text-xl">{{
+                computedStatistics.total_on_watchlist
+              }}</span>
+              <span class="text-sm text-error">Requires attention</span>
+            </h3>
+          </div>
+          <div class="size-16 btn btn-error btn-soft">
+            <span
+              class="icon-[material-symbols--warning-rounded] size-7"
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="card h-32 overflow-clip">
+        <div class="size-full p-6 flex items-center justify-between">
+          <div class="grow">
+            <h1 class="text-lg">Expiring Soon</h1>
+            <h3 class="inline-flex flex-col mt-1">
+              <span class="font-semibold text-xl">{{
+                computedStatistics.expires_soon
+              }}</span>
+              <span class="text-sm text-accent">Within 30 days</span>
+            </h3>
+          </div>
+          <div class="size-16 btn btn-accent btn-soft">
+            <span
+              class="icon-[material-symbols--timer-pause-rounded] size-7"
+            ></span>
+          </div>
+        </div>
       </div>
     </div>
 

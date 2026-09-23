@@ -153,7 +153,7 @@ export default defineEventHandler(async (event) => {
       worksheet,
       `H${intialRow}`,
       entry.comment && entry.comment.length > 0
-        ? entry.comment[0].comment
+        ? entry.comment[0]!.comment
         : "-",
     );
     if (query.return_full && query.return_full) {
