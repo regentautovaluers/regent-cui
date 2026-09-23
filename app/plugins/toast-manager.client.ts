@@ -10,7 +10,7 @@ export default defineNuxtPlugin((_nuxtApp) => {
           description: input.description,
           close: true,
           ui: {
-            root: "bg-linear-to-bl to-primary/10 from-base-100/10 border-none",
+            root: "bg-linear-to-bl to-primary/10 from-base-100/10 border-none z-50",
             title: "text-lg text-primary font-semibold",
             description: "text-sm text-base-content",
           },

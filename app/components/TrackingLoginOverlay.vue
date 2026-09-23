@@ -1,39 +1,45 @@
 <script setup lang="ts">
 const config = useRuntimeConfig();
 const { post } = useStandardizedApi();
-const tracking_auth_token = useCookie("tracking_auth_token");
 const store = usePrincipalStore();
 const payload = reactive({
   email: "",
   password: "",
 });
 const authnLoading = ref(false);
+const trackedVehiclesStore = useTrackedVehiclesStore();
 
 async function attemptLogin() {
   try {
     authnLoading.value = true;
-    const response = await post<RegentTrackingLoginResponse>(
+    await post<RegentTrackingLoginResponse>(
       "/api/regent-tracking/client-login",
       payload,
     );
 
-    if (response.success) {
-      const data = (
-        response as StandardSuccessResponse<RegentTrackingLoginResponse>
-      ).data;
-      tracking_auth_token.value = data.user_api_hash;
-      store.isTrackingLoggedIn = true;
-    }
+    // mark them as logged in
+    store.isTrackingLoggedIn = true;
+
+    // start the tracking process
+    bootTrackingFlow();
   } catch (ex) {
   } finally {
     authnLoading.value = false;
   }
 }
+
+async function bootTrackingFlow() {
+  // 1. Load initial REST snapshot
+  await trackedVehiclesStore.loadTrackedVehicles(true);
+
+  // 2. Enable live stream
+  // trackedVehiclesStore.initializeFrequentUpdateSSE();
+}
 </script>
 
 <template>
   <div
-    class="fixed top-0 z-50 w-screen flex grow flex-col bg-base-100 h-screen"
+    class="fixed top-0 z-40 w-screen flex grow flex-col bg-base-100 h-screen"
   >
     <div class="h-[10%] p-10">
       <NuxtLink class="btn btn-soft" :to="{ name: 'home' }">

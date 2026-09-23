@@ -2,6 +2,8 @@ export default defineEventHandler(async (event) => {
   const { REGENT_TRACKING_BASE_URL } = useRuntimeConfig();
   const body: { email: string; password: string } = await readBody(event);
   const params = new URLSearchParams(body);
+  const config = useRuntimeConfig();
+  const cookieConfig = generateCookieConfig(config);
 
   const endpoint = `${REGENT_TRACKING_BASE_URL}/api/login?${params.toString()}`;
   try {
@@ -12,7 +14,13 @@ export default defineEventHandler(async (event) => {
     // remove the unnecesary fields
     delete trackingLoginResponse.permissions;
 
-    return sendSuccessResponse(trackingLoginResponse);
+    setCookie(
+      event,
+      "tracking_auth_token",
+      trackingLoginResponse.user_api_hash,
+      cookieConfig,
+    );
+    return sendSuccessResponse(null);
   } catch (err) {
     console.log(err);
     return sendErrorResponse(err);

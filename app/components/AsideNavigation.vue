@@ -2,6 +2,7 @@
 const { routes: aRoutes, routeNameMatch } = useNavigation();
 const { sidebarOpen, toggleSidebar } = useSettings();
 const { public: publicRC } = useRuntimeConfig();
+const { attemptLogout } = useAuthn();
 </script>
 
 <template>
@@ -63,12 +64,12 @@ const { public: publicRC } = useRuntimeConfig();
           aria-controls="payment-arrow-collapse"
           aria-expanded="true"
         >
-          <NuxtLink :to="{ name: '' }" class="inline-flex items-center">
+          <button type="button" @click="attemptLogout()">
             <span
               class="icon-[material-symbols--power-settings-circle] size-7"
             ></span>
             <span class="ml-4 font-medium" v-show="sidebarOpen">Logout</span>
-          </NuxtLink>
+          </button>
         </button>
       </div>
     </div>

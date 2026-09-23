@@ -26,6 +26,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     ava_basic_auth_token.value = undefined;
     tracking_auth_token.value = undefined;
     ava_api_key.value = undefined;
+    app_principal.value = undefined;
     localStorage.removeItem("principal_obj");
 
     // reset the store -> sets the isLoggedIn to false
@@ -38,8 +39,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const data: LoginResponse = JSON.parse(
     await decompress(base64ToArrayBuffer(app_principal.value!), "deflate"),
   );
-
-  console.log(data);
 
   // set the correct values in store
   store.$patch({

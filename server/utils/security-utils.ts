@@ -1,4 +1,5 @@
 import CryptoJS from "crypto-js";
+import { RuntimeConfig } from "nuxt/schema";
 
 export function generateCollateralVerificationCIDHeader(corpId: string) {
   const { COLV_CID } = useRuntimeConfig();
@@ -30,4 +31,20 @@ export function generateCollateralVerificationXApiKey(
   const ivHex = CryptoJS.enc.Hex.stringify(iv);
   const encryptedHex = CryptoJS.enc.Hex.stringify(encrypted.ciphertext);
   return `${ivHex}:${encryptedHex}`;
+}
+
+export function generateCookieConfig(config: RuntimeConfig) {
+  const AUTHS_COOKIE_CONFIG = {
+    maxAge: 60 * 60 * 24 * 3,
+    path: "/",
+    httpOnly: config.public.RUN_ENV === "dev" ? false : true,
+    secure: config.public.RUN_ENV === "dev" ? false : true,
+    sameSite:
+      config.public.RUN_ENV === "dev"
+        ? "lax"
+        : ("none" as boolean | "lax" | "none" | "strict" | undefined),
+    domain: config.public.RUN_ENV === "dev" ? undefined : config.RUN_URL,
+  };
+
+  return AUTHS_COOKIE_CONFIG;
 }

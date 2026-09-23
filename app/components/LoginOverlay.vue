@@ -17,7 +17,7 @@ const slideImages: readonly string[] = [
 </script>
 
 <template>
-  <div class="fixed top-0 z-50 w-screen bg-base-100 h-screen flex">
+  <div class="fixed top-0 z-40 w-screen bg-base-100 h-screen flex">
     <div class="w-[60%] h-full max-h-full">
       <div
         id="indicators"

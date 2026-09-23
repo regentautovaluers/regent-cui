@@ -127,7 +127,7 @@ onMounted(async () => {
             <h1 class="text-lg">Registration</h1>
             <h3 class="inline-flex flex-col mt-1">
               <span class="font-semibold text-xl">{{
-                trackedVehiclesStore.getActiveVehicle!.name ?? activeDeviceReg
+                trackedVehiclesStore.getActiveVehicle?.name ?? activeDeviceReg
               }}</span>
               <span class="text-sm">Currently Being Viewed</span>
             </h3>

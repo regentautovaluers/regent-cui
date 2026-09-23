@@ -44,7 +44,6 @@ const {
  * Executes boot flow: Initial snapshot -> Route check -> Start SSE
  */
 async function bootTrackingFlow() {
-  if (!authToken.value) return;
 
   // 1. Load initial REST snapshot
   await trackedVehiclesStore.loadTrackedVehicles(true);
@@ -96,17 +95,6 @@ async function navigateToDetailedView() {
     },
   });
 }
-
-// Reactively start boot flow when token is ready or available
-watch(
-  authToken,
-  () => {
-    if (import.meta.client) {
-      bootTrackingFlow();
-    }
-  },
-  { immediate: true },
-);
 
 watch(
   () => trackedVehiclesStore.getActiveVehicle,
@@ -162,6 +150,7 @@ watch(
 // );
 
 // Clean up SSE connection when component unmounts or user navigates away
+
 onUnmounted(() => {
   if (import.meta.client) {
     trackedVehiclesStore.stopSSEUpdates();

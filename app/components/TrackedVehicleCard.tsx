@@ -72,12 +72,11 @@ export default defineComponent({
             </svg>
           </button>
         </div>
-        <div class="flex space-x-2 items-center">
+        <div class="flex flex-col space-y-2">
           <span class="inline-flex items-center space-x-2">
             <span class="icon-[material-symbols--account-circle]"></span>
-            <span>{props.driverName}</span>
+            <span class="font-semibold">{props.driverName}</span>
           </span>
-          <span>|</span>
           <span class="inline-flex items-center space-x-2">
             <span class="icon-[material-symbols--nest-clock-farsight-analog-outline-rounded]"></span>
             <span>{props.deviceTime}</span>
