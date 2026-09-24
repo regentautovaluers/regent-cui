@@ -39,7 +39,7 @@ pipeline {
 
         stage('Build Docker Image - Staging') {
             when {
-                branch 'staging'
+                branch 'rewrite-start'
             }
             steps {
                 script {
@@ -85,7 +85,7 @@ pipeline {
 
         stage('Deploy to Staging') {
             when {
-                branch 'staging'
+                branch 'rewrite-start'
             }
             steps {
                 script {
