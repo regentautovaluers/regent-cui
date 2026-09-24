@@ -165,13 +165,21 @@ export default function () {
     },
     {
       id: 5,
+      name: "accident-assessment-home",
+      screenName: "Accident Assessment",
+      display: true,
+      icon: "icon-[material-symbols--car-crash]",
+      asNuxtLink: true,
+    },
+    {
+      id: 6,
       name: "telematics-home",
       screenName: "Insurance Telematics",
       display: false,
       icon: "icon-[material-symbols--data-exploration-rounded]",
     },
     {
-      id: 6,
+      id: 7,
       name: "settings-home",
       screenName: "Settings",
       display: false,

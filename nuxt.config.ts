@@ -57,6 +57,7 @@ export default defineNuxtConfig({
     LEGACY_VALUATION_BASE_URL: "",
     LEGACY_VALUATION_API_KEY: "",
     RUN_URL: "",
+    ACCIDENT_ASSESSMENT_BASE_URL: "",
     public: {
       SETTINGS_SUPPORTED_THEMES: "",
       COPYRIGHT_YEAR: "",
