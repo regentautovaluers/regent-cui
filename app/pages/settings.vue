@@ -10,7 +10,7 @@ const { activeRouteName } = useNavigation();
 
       <div class="flex flex-col space-y-5">
         <NuxtLink
-          v-for="e in aRoutes.find((e) => e.id == 6 /*for settings*/)
+          v-for="e in aRoutes.find((e) => e.id == 7 /*for settings*/)
             ?.children!"
           :key="e.id"
           :class="[
