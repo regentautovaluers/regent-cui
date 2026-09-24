@@ -5,6 +5,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   const store = usePrincipalStore();
+
+  console.log("Store data: " + JSON.stringify(store, null, 2));
   const valuation_auth_token = useCookie("valuation_auth_token");
   const ava_basic_auth_token = useCookie("ava_basic_auth_token");
   const tracking_auth_token = useCookie("tracking_auth_token");
@@ -39,6 +41,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const data: LoginResponse = JSON.parse(
     await decompress(base64ToArrayBuffer(app_principal.value!), "deflate"),
   );
+  // TODO: Remove this later
+  console.log("Principal data: " + data);
 
   // set the correct values in store
   store.$patch({
