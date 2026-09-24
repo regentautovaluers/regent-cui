@@ -6,7 +6,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const store = usePrincipalStore();
 
-  console.log("Store data: " + JSON.stringify(store, null, 2));
   const valuation_auth_token = useCookie("valuation_auth_token");
   const ava_basic_auth_token = useCookie("ava_basic_auth_token");
   const tracking_auth_token = useCookie("tracking_auth_token");
