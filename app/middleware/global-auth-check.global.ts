@@ -31,7 +31,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     localStorage.removeItem("principal_obj");
 
     // reset the store -> sets the isLoggedIn to false
-    store.$reset;
+    store.$reset();
     store.isLoggedIn = false;
     return;
   }
@@ -40,8 +40,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const data: LoginResponse = JSON.parse(
     await decompress(base64ToArrayBuffer(app_principal.value!), "deflate"),
   );
-  // TODO: Remove this later
-  console.log("Principal data: " + data);
 
   // set the correct values in store
   store.$patch({
