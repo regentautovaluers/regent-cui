@@ -37,7 +37,7 @@ export function generateCookieConfig(config: RuntimeConfig) {
   const AUTHS_COOKIE_CONFIG = {
     maxAge: 60 * 60 * 24 * 3,
     path: "/",
-    httpOnly: config.public.RUN_ENV === "dev" ? false : true,
+    httpOnly: false, // config.public.RUN_ENV === "dev" ? false : true,
     secure: config.public.RUN_ENV === "dev" ? false : true,
     sameSite:
       config.public.RUN_ENV === "dev"
@@ -47,4 +47,14 @@ export function generateCookieConfig(config: RuntimeConfig) {
   };
 
   return AUTHS_COOKIE_CONFIG;
+}
+
+export async function inflatePrincipal(
+  cookies: Record<string, string>,
+): Promise<LoginResponse> {
+  const data: LoginResponse = JSON.parse(
+    await decompress(base64ToArrayBuffer(cookies.app_principal!), "deflate"),
+  );
+
+  return data;
 }
